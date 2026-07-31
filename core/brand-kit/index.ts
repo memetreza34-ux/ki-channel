@@ -1,0 +1,70 @@
+// ════════════════════════════════════════════════════════════════════════════
+//  STUDIO CORE · BRAND-KIT (neutral) — zentraler Import für alle Kanäle.
+//  In jeder Szene:  import { C, Card, Counter, useTheme, ... } from '@studio/core';
+//  Brand-Identität (Akzent/BG) kommt pro Kanal über ThemeProvider/useTheme.
+// ════════════════════════════════════════════════════════════════════════════
+import './fonts';                       // Fonts beim Import laden
+
+export * from './tokens';
+export { ThemeProvider, useTheme, defaultTheme } from './theme';
+export type { Theme } from './theme';
+export { MeshGradientBG, FocusBlurResolve, ChromaticReveal, GlassCodeBlock } from './components/AtmosphereEffects';
+export { LivingBackground, FilmGrain, Float, Breathe, SoftBlurIn, PerCharRise, ShimmerText, KineticCaption } from './components/motion';
+export { KenBurns, ParallaxLayer, WhipIn, ZoomPunch, PushThrough } from './components/camera';
+export { ChatUI } from './components/ChatUI';
+export type { ChatMsg } from './components/ChatUI';
+export { NeuralNet } from './components/NeuralNet';
+export { TokenStream, AiCanvasReveal, BeforeAfterSlider, AiThinking } from './components/AiTools';
+export { KineticCenterBuild, Constellation, WaveWipe, Dissolve, LiveCodeCompile } from './components/premium2';
+export { Terminal, DynamicGrid } from './components/extras2';
+export { Snowball, LeakyBucket, Diversification, DollarCostAverage, RuleOf72, CompoundVsSimple, TaxDrag, Correlation, SequenceRisk, InflationAdjusted, YieldCurve, MarketCycle, PresentValue, DebtSpiral } from './components/metaphors';
+export { Ticker, RankedList, ChecklistCompare, InvestorQuote, PremiumOutro, Milestones, StepList, TitleCard, LowerThird, AlertNotice, GoalRing, PlanCompare, AchievementBadge, ScoreRing, ProcessFlow, FeatureHighlight, ProfileBadge, TaskChecklist, RevenueCard, ConceptExplainer, ComparisonBars, TrendBadge, FlipCard, CalloutBadge, UpdateList, LevelBar, SpeakerIntro, SocialProofPost, CollabBadge, CartSuccess, NewsBanner, DontDoInstead, CashflowWaterfall } from './components/PremiumFinance';
+export type { TickerItem, RankItem, Milestone, Step, Plan, FlowStep, Feature, DontDoItem, CashflowItem } from './components/PremiumFinance';
+export { PremiumIcon, PremiumIconLabel } from './components/PremiumIcon';
+export type { PremiumIconSize } from './components/PremiumIcon';
+export { WordmarkReveal, LiquidBlob, GlowOrb, ShapeRing, DiagonalWipe, CircleReveal, GlitchBurst, MoodGradient, NeonFlicker, StampImpact, ParticleAssemble, CurtainReveal, Perspective3DFlip, CinematicGrade, InkSplash, MorphShape, HexGrid, Toast, LoadingPulse, ButtonPress, ToggleSwitch, DropdownOpen, ModalPopIn, TooltipPop, Cursor, Shake } from './components/PremiumMotion';
+export type { CineMood } from './components/PremiumMotion';
+export type { Mood } from './components/PremiumMotion';
+export { CANVAS, MARGIN, SAFE, cell, ZONE, Slot, Move, Focus, dim, makeGrid } from './stage';
+export type { Box, Key } from './stage';
+export { FONT } from './fonts';
+export { Background, Vignette, Progress } from './components/Background';
+export { ParticleField, HologramGrid, BorderBeam, RetroGrid, Meteors, MatrixRain, LightRays } from './components/PremiumBackgrounds';
+export { StockTicker, NotificationStack, AIRipple, PulseDotsLoader, AccordionReveal, AutoCarousel, SwitchToggle, AnimatedBeam, AvatarCircles, WordRotate, GooBlobs, ScrollingImageStrip, IconOrbit, CodeCompare, FileTreeReveal, TagMarquee, TextHighlightSweep, HyperText, DockRow } from './components/PremiumAccents';
+export type { TickerScrollItem, NotifItem, CarouselCard, AvatarItem, CodeCompareLine, FileTreeNode } from './components/PremiumAccents';
+export { Icon } from './components/Icon';
+export type { IconName } from './components/Icon';
+export { Lucide, resolveLucide, IconStrike } from './components/Lucide';
+export { Flag, resolveFlag } from './components/Flag';
+export { Title, Body, Kicker, WordReveal } from './components/Text';
+export { Card } from './components/Card';
+export { Counter } from './components/Counter';
+export { NumberedSteps, CheckCards, Timeline } from './components/Steps';
+export { Particles } from './components/Particles';
+export { LottieBox } from './components/Lottie';
+export { Clip } from './components/Clip';
+export { Voiceover, SoundBed, Sfx, AudioVisualizer } from './components/Sound';
+export { PhoneMockup, AppScreenDemo } from './components/PhoneMockup';
+export { PortfolioDashboard, IncomeSources, ExpenseTracker } from './components/FinanceExtras';
+export { GrowthCurveHero, DuelBarsHero, OrbitHubHero } from './components/HeroVisuals';
+export { Typewriter, MaskReveal, WordStagger, DrawOn } from './components/TextFX';
+export { Table, BigStat, Gauge, StatBar, MilestoneTimeline, StatsCards } from './components/DataBlocks';
+export { SlotRoller, DigitSlots, SplitFlap, DrumRoller, DramaticNumber, CountdownRoller } from './components/Rollers';
+export { CompareSplit, Checklist, Quote, Badge, FeatureGrid, BentoGrid } from './components/Layouts';
+export { Mindmap, Flowchart, Pyramid, Cycle, KanbanBoard } from './components/Diagrams';
+export { Balance, GoalTracker, Ranking, Callout } from './components/MoreBlocks';
+export { AreaPremium, BarsPremium, PiePremium, RadarPremium, LabeledAxisChart, DualAreaCompare } from './components/PremiumCharts';
+export type { AxisPoint, DualSeriesPoint } from './components/PremiumCharts';
+export { RollingNumber, MoneyRain, Confetti, Sparkles, AuroraBG, PulseGrid, Shine, SpotlightReveal, Emphasis, PushIn, MotionBlur, CameraBlur, BoundingBox } from './components/Effects';
+export { Captions, CaptionsBoxed } from './components/Captions';
+export type { Caption } from './components/Captions';
+export { LogoIntro, SubscribeBar, EndCard } from './components/Branding';
+export { Disclaimer } from './components/Disclaimer';
+export { HookScene, StatScene, CompareScene, ExplainScene, CTAScene, IntroScene, StepsScene, ListScene, QuoteScene, SectionDivider } from './templates';
+export { WindowMock, IconTile } from './components/WindowMock';
+export { PremiumGrade } from './components/PremiumGrade';
+export type { GradeIntensity } from './components/PremiumGrade';
+export { LightLeak } from '@remotion/light-leaks';
+export { RecurringDeposit } from './components/RecurringDeposit';
+export { SKETCH, SketchBox, SketchCircle, SketchUnderline, SketchArrow, SketchIconCard, SketchChecklist, SketchWireframeBox } from './components/Sketch';
+export * from './transitions';

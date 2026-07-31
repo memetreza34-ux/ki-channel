@@ -1,0 +1,35 @@
+# ---- Abhängigkeiten / Build ----
+node_modules/
+dist/
+.remotion/
+.cache/
+whisper.cpp/
+*.16k.wav
+
+# ---- Renders (groß, regenerierbar) ----
+out/
+frames/
+*.mp4
+*.mov
+*.mkv
+
+# ---- Audio (kommt pro Video von Arman) ----
+*.wav
+*.mp3
+*.m4a
+*.aiff
+
+# ---- Secrets / Keys (NIE auf GitHub) ----
+.env
+.env.local
+*.key
+*.pem
+
+# ---- System ----
+.DS_Store
+*.log
+__pycache__/
+*.pyc
+
+# Claude Code worktree sessions (local, not project data)
+.claude/worktrees/

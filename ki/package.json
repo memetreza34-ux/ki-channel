@@ -1,0 +1,9 @@
+{
+  "name": "@studio/ki",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kanal: KI — Künstliche Intelligenz erklärt",
+  "dependencies": {
+    "@studio/core": "*"
+  }
+}
