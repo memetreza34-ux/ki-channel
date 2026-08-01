@@ -19,6 +19,14 @@ frames/
 *.m4a
 *.aiff
 
+# ---- Reel-Bilder (groß, viel pro Reel, sprengt GitHub-Storage) ----
+# nur lokal — auf GitHub landet nur Code/Doku/Timing-JSON
+public/reels/**/images/
+public/reels/**/*.jpeg
+public/reels/**/*.jpg
+public/reels/**/*.png
+public/reels/**/*.webp
+
 # ---- Secrets / Keys (NIE auf GitHub) ----
 .env
 .env.local
