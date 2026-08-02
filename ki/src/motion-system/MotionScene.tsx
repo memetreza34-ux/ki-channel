@@ -7,6 +7,8 @@ import {TokenFlow} from './components/TokenFlow';
 import {ProcessingCore} from './components/ProcessingCore';
 import {ComparisonStage} from './components/ComparisonStage';
 import {ErrorPathStage} from './components/ErrorPathStage';
+import {ContextWindowStage} from './components/ContextWindowStage';
+import {ProcessChainStage} from './components/ProcessChainStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -27,8 +29,8 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
   const positions = template.positions;
   const aiElement = parsed.elements.find((element) => element.id === 'ai');
   const aiPos = positions.ai;
-
   const byId = (id: string) => parsed.elements.find((element) => element.id === id);
+  const usesDedicatedStage = ['comparison', 'error-path', 'context-window', 'process-chain'].includes(parsed.visualType);
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -66,7 +68,15 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         />
       ) : null}
 
-      {parsed.visualType !== 'comparison' && parsed.visualType !== 'error-path' ? (
+      {parsed.visualType === 'context-window' ? (
+        <ContextWindowStage x={160} y={470} startFrame={0} />
+      ) : null}
+
+      {parsed.visualType === 'process-chain' ? (
+        <ProcessChainStage x={100} y={560} startFrame={0} />
+      ) : null}
+
+      {!usesDedicatedStage ? (
         <>
           {parsed.beats
             .filter((beat) => beat.action === 'connect' && beat.sourceId)
