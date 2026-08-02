@@ -1,20 +1,43 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
+export type ErrorPathStageTimings = {
+  inputFrame?: number;
+  errorFrame?: number;
+  checkFrame?: number;
+  shakeFrame?: number;
+};
+
 export const ErrorPathStage: React.FC<{
   inputLabel: string;
   errorLabel: string;
   checkLabel: string;
   startFrame?: number;
-}> = ({inputLabel, errorLabel, checkLabel, startFrame = 0}) => {
+  timings?: ErrorPathStageTimings;
+}> = ({inputLabel, errorLabel, checkLabel, startFrame = 0, timings}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const enter = spring({fps, frame: frame - startFrame, config: {damping: 18, stiffness: 170}});
-  const branch = interpolate(frame, [startFrame + 20, startFrame + 55], [0, 1], {
+  const inputFrame = timings?.inputFrame ?? startFrame;
+  const errorFrame = timings?.errorFrame ?? startFrame + 58;
+  const checkFrame = timings?.checkFrame ?? startFrame + 103;
+  const shakeFrame = timings?.shakeFrame ?? errorFrame + 6;
+
+  const inputProgress = spring({fps, frame: frame - inputFrame, config: {damping: 18, stiffness: 170}});
+  const errorProgress = spring({fps, frame: frame - errorFrame, config: {damping: 18, stiffness: 170}});
+  const checkProgress = spring({fps, frame: frame - checkFrame, config: {damping: 18, stiffness: 170}});
+  const errorPath = interpolate(frame, [inputFrame + 12, Math.max(inputFrame + 13, errorFrame + 8)], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const pulse = 1 + Math.sin(Math.max(0, frame - startFrame) * 0.18) * 0.035;
+  const checkPath = interpolate(frame, [inputFrame + 12, Math.max(inputFrame + 13, checkFrame + 8)], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const shakeAge = Math.max(0, frame - shakeFrame);
+  const errorShake = frame >= shakeFrame && frame <= shakeFrame + 18
+    ? Math.sin(shakeAge * 1.4) * 8 * (1 - shakeAge / 18)
+    : 0;
+  const pulse = 1 + Math.sin(Math.max(0, frame - errorFrame) * 0.18) * 0.035;
 
   return (
     <div style={{position: 'absolute', left: 70, right: 70, top: 430, height: 790}}>
@@ -35,9 +58,11 @@ export const ErrorPathStage: React.FC<{
           fontSize: 36,
           fontWeight: 800,
           color: '#1A1A2E',
-          transform: `translateX(${interpolate(enter, [0, 1], [-120, 0])}px)`,
+          transform: `translateX(${interpolate(inputProgress, [0, 1], [-120, 0])}px)`,
           textAlign: 'center',
           padding: 24,
+          opacity: inputProgress,
+          overflowWrap: 'anywhere',
         }}
       >
         {inputLabel}
@@ -52,7 +77,7 @@ export const ErrorPathStage: React.FC<{
           strokeLinecap="round"
           pathLength={1}
           strokeDasharray={1}
-          strokeDashoffset={1 - branch}
+          strokeDashoffset={1 - errorPath}
         />
         <path
           d="M330 310 C470 310 520 500 660 500"
@@ -62,7 +87,7 @@ export const ErrorPathStage: React.FC<{
           strokeLinecap="round"
           pathLength={1}
           strokeDasharray={1}
-          strokeDashoffset={1 - branch}
+          strokeDashoffset={1 - checkPath}
         />
       </svg>
 
@@ -85,8 +110,9 @@ export const ErrorPathStage: React.FC<{
           color: '#8B2530',
           textAlign: 'center',
           padding: 24,
-          transform: `scale(${pulse})`,
-          opacity: branch,
+          transform: `translateX(${errorShake}px) scale(${pulse})`,
+          opacity: errorProgress,
+          overflowWrap: 'anywhere',
         }}
       >
         {errorLabel}
@@ -111,7 +137,9 @@ export const ErrorPathStage: React.FC<{
           color: '#1A5C3F',
           textAlign: 'center',
           padding: 24,
-          opacity: branch,
+          opacity: checkProgress,
+          transform: `translateY(${interpolate(checkProgress, [0, 1], [24, 0])}px)`,
+          overflowWrap: 'anywhere',
         }}
       >
         {checkLabel}
