@@ -98,8 +98,7 @@ const matchesPattern = (tokens: string[], pattern: string): boolean => {
 const patternScore = (pattern: string): number => {
   const tokens = parsePattern(pattern);
   const phraseBonus = tokens.length > 1 ? tokens.length * 2 : 0;
-  const exactBonus = tokens.every((token) => !token.prefix) ? 1 : 0;
-  return tokens.length + phraseBonus + exactBonus;
+  return tokens.length + phraseBonus + 1;
 };
 
 export type SentenceClassificationCandidate = {
