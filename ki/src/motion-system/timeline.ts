@@ -93,32 +93,64 @@ const resolveTimelineFps = (
   return resolvedFps;
 };
 
-const assertUniqueExplicitIds = (scenes: BuildMotionSceneInput[]): void => {
-  const seen = new Set<string>();
+const collectExplicitIds = (scenes: BuildMotionSceneInput[]): Set<string> => {
+  const explicitIds = new Set<string>();
 
   scenes.forEach((scene, index) => {
     if (scene.storyboardId === undefined) return;
     const normalizedId = scene.storyboardId.trim();
     if (!normalizedId) return;
 
-    if (seen.has(normalizedId)) {
+    if (explicitIds.has(normalizedId)) {
       throw new Error(
         `Storyboard-ID ${normalizedId} wird in der Timeline mehrfach verwendet (Szene ${index + 1}).`,
       );
     }
-    seen.add(normalizedId);
+    explicitIds.add(normalizedId);
   });
+
+  return explicitIds;
 };
 
-const makeStoryboardIdUnique = (
-  storyboard: MotionStoryboard,
-  idOccurrences: Map<string, number>,
-): MotionStoryboard => {
-  const occurrence = (idOccurrences.get(storyboard.id) ?? 0) + 1;
-  idOccurrences.set(storyboard.id, occurrence);
+const reserveStoryboardId = ({
+  storyboard,
+  explicit,
+  sceneIndex,
+  reservedExplicitIds,
+  usedIds,
+  automaticOccurrences,
+}: {
+  storyboard: MotionStoryboard;
+  explicit: boolean;
+  sceneIndex: number;
+  reservedExplicitIds: Set<string>;
+  usedIds: Set<string>;
+  automaticOccurrences: Map<string, number>;
+}): MotionStoryboard => {
+  if (explicit) {
+    if (usedIds.has(storyboard.id)) {
+      throw new Error(
+        `Explizite Storyboard-ID ${storyboard.id} kollidiert in Szene ${sceneIndex + 1} mit einer bereits geplanten Szene.`,
+      );
+    }
+    usedIds.add(storyboard.id);
+    return storyboard;
+  }
 
-  if (occurrence === 1) return storyboard;
-  return assertMotionStoryboard({...storyboard, id: `${storyboard.id}-${occurrence}`});
+  const baseId = storyboard.id;
+  let occurrence = (automaticOccurrences.get(baseId) ?? 0) + 1;
+  let candidate = occurrence === 1 ? baseId : `${baseId}-${occurrence}`;
+
+  while (usedIds.has(candidate) || reservedExplicitIds.has(candidate)) {
+    occurrence += 1;
+    candidate = `${baseId}-${occurrence}`;
+  }
+
+  automaticOccurrences.set(baseId, occurrence);
+  usedIds.add(candidate);
+
+  if (candidate === storyboard.id) return storyboard;
+  return assertMotionStoryboard({...storyboard, id: candidate});
 };
 
 export const buildMotionTimeline = ({
@@ -137,16 +169,24 @@ export const buildMotionTimeline = ({
   }
 
   assertGapFrames(gapFrames);
-  assertUniqueExplicitIds(scenes);
+  const reservedExplicitIds = collectExplicitIds(scenes);
   const fps = resolveTimelineFps(scenes, requestedFps);
-  const idOccurrences = new Map<string, number>();
+  const usedIds = new Set<string>();
+  const automaticOccurrences = new Map<string, number>();
   const timelineScenes: MotionTimelineScene[] = [];
   const issues: MotionTimelineIssue[] = [];
   let cursor = 0;
 
   scenes.forEach((sceneInput, index) => {
     const result = buildMotionScene({...sceneInput, fps});
-    const storyboard = makeStoryboardIdUnique(result.storyboard, idOccurrences);
+    const storyboard = reserveStoryboardId({
+      storyboard: result.storyboard,
+      explicit: sceneInput.storyboardId !== undefined,
+      sceneIndex: index,
+      reservedExplicitIds,
+      usedIds,
+      automaticOccurrences,
+    });
     const startFrame = cursor;
     const endFrameExclusive = startFrame + storyboard.durationInFrames;
 
