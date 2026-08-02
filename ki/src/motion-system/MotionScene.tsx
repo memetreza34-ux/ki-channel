@@ -5,6 +5,8 @@ import {MotionCard} from './components/MotionCard';
 import {AnimatedConnector} from './components/AnimatedConnector';
 import {TokenFlow} from './components/TokenFlow';
 import {ProcessingCore} from './components/ProcessingCore';
+import {ComparisonStage} from './components/ComparisonStage';
+import {ErrorPathStage} from './components/ErrorPathStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -25,7 +27,8 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
   const positions = template.positions;
   const aiElement = parsed.elements.find((element) => element.id === 'ai');
   const aiPos = positions.ai;
-  const aiShow = aiElement ? latestBeat(parsed, aiElement.id, 'show') : undefined;
+
+  const byId = (id: string) => parsed.elements.find((element) => element.id === id);
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -45,79 +48,101 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         {template.title}
       </div>
 
-      {parsed.beats
-        .filter((beat) => beat.action === 'connect' && beat.sourceId)
-        .map((beat) => {
-          const from = positions[beat.sourceId as string];
-          const to = positions[beat.targetId];
-          if (!from || !to) return null;
-          return (
-            <React.Fragment key={beat.id}>
-              <AnimatedConnector
-                from={cardCenter(from)}
-                to={cardCenter(to)}
-                startFrame={beat.atFrame}
-                durationFrames={beat.durationFrames}
-              />
-              {(parsed.visualType === 'data-flow' || parsed.visualType === 'tool-orchestration') ? (
-                <TokenFlow
-                  from={cardCenter(from)}
-                  to={cardCenter(to)}
-                  startFrame={beat.atFrame}
-                  durationFrames={Math.max(24, beat.durationFrames)}
-                />
-              ) : null}
-            </React.Fragment>
-          );
-        })}
-
-      {parsed.elements.map((element) => {
-        const pos = positions[element.id];
-        if (!pos) return null;
-        const show = latestBeat(parsed, element.id, 'show');
-        const dim = latestBeat(parsed, element.id, 'dim');
-        const highlight = latestBeat(parsed, element.id, 'highlight');
-        const shake = latestBeat(parsed, element.id, 'shake');
-
-        if (element.id === 'ai') {
-          return (
-            <ProcessingCore
-              key={element.id}
-              x={pos.x + 35}
-              y={pos.y - 20}
-              startFrame={show?.atFrame ?? 0}
-              label={element.label || 'KI'}
-            />
-          );
-        }
-
-        return (
-          <MotionCard
-            key={element.id}
-            element={element}
-            x={pos.x}
-            y={pos.y}
-            appearAt={show?.atFrame ?? 0}
-            dimmed={Boolean(dim && frame >= dim.atFrame)}
-            highlighted={Boolean(highlight && frame >= highlight.atFrame)}
-            shaking={Boolean(shake && frame >= shake.atFrame && frame <= shake.atFrame + shake.durationFrames)}
-          />
-        );
-      })}
-
-      {aiElement && aiPos && parsed.visualType === 'agent-loop' ? (
-        <div
-          style={{
-            position: 'absolute',
-            left: aiPos.x - 60,
-            top: aiPos.y - 95,
-            width: 380,
-            height: 380,
-            borderRadius: '50%',
-            border: '4px dashed rgba(185,140,255,0.55)',
-            transform: `rotate(${frame * 1.4}deg)`,
-          }}
+      {parsed.visualType === 'comparison' ? (
+        <ComparisonStage
+          leftLabel={byId('left')?.label ?? 'Variante A'}
+          rightLabel={byId('right')?.label ?? 'Variante B'}
+          metricLabel={byId('metric')?.label ?? 'Vergleich'}
+          startFrame={0}
         />
+      ) : null}
+
+      {parsed.visualType === 'error-path' ? (
+        <ErrorPathStage
+          inputLabel={byId('input')?.label ?? 'Eingabe'}
+          errorLabel={byId('error')?.label ?? 'Fehler'}
+          checkLabel={byId('check')?.label ?? 'Prüfen'}
+          startFrame={0}
+        />
+      ) : null}
+
+      {parsed.visualType !== 'comparison' && parsed.visualType !== 'error-path' ? (
+        <>
+          {parsed.beats
+            .filter((beat) => beat.action === 'connect' && beat.sourceId)
+            .map((beat) => {
+              const from = positions[beat.sourceId as string];
+              const to = positions[beat.targetId];
+              if (!from || !to) return null;
+              return (
+                <React.Fragment key={beat.id}>
+                  <AnimatedConnector
+                    from={cardCenter(from)}
+                    to={cardCenter(to)}
+                    startFrame={beat.atFrame}
+                    durationFrames={beat.durationFrames}
+                  />
+                  {parsed.visualType === 'data-flow' || parsed.visualType === 'tool-orchestration' ? (
+                    <TokenFlow
+                      from={cardCenter(from)}
+                      to={cardCenter(to)}
+                      startFrame={beat.atFrame}
+                      durationFrames={Math.max(24, beat.durationFrames)}
+                    />
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+
+          {parsed.elements.map((element) => {
+            const pos = positions[element.id];
+            if (!pos) return null;
+            const show = latestBeat(parsed, element.id, 'show');
+            const dim = latestBeat(parsed, element.id, 'dim');
+            const highlight = latestBeat(parsed, element.id, 'highlight');
+            const shake = latestBeat(parsed, element.id, 'shake');
+
+            if (element.id === 'ai') {
+              return (
+                <ProcessingCore
+                  key={element.id}
+                  x={pos.x + 35}
+                  y={pos.y - 20}
+                  startFrame={show?.atFrame ?? 0}
+                  label={element.label || 'KI'}
+                />
+              );
+            }
+
+            return (
+              <MotionCard
+                key={element.id}
+                element={element}
+                x={pos.x}
+                y={pos.y}
+                appearAt={show?.atFrame ?? 0}
+                dimmed={Boolean(dim && frame >= dim.atFrame)}
+                highlighted={Boolean(highlight && frame >= highlight.atFrame)}
+                shaking={Boolean(shake && frame >= shake.atFrame && frame <= shake.atFrame + shake.durationFrames)}
+              />
+            );
+          })}
+
+          {aiElement && aiPos && parsed.visualType === 'agent-loop' ? (
+            <div
+              style={{
+                position: 'absolute',
+                left: aiPos.x - 60,
+                top: aiPos.y - 95,
+                width: 380,
+                height: 380,
+                borderRadius: '50%',
+                border: '4px dashed rgba(185,140,255,0.55)',
+                transform: `rotate(${frame * 1.4}deg)`,
+              }}
+            />
+          ) : null}
+        </>
       ) : null}
 
       <div
