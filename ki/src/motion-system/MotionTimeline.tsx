@@ -16,7 +16,6 @@ export const MotionTimelineComposition: React.FC<MotionTimelineCompositionProps>
         key={`${scene.storyboard.id}-${scene.index}`}
         from={scene.startFrame}
         durationInFrames={scene.durationInFrames}
-        name={`Scene ${scene.index + 1}: ${scene.storyboard.visualType}`}
       >
         <MotionScene storyboard={scene.storyboard} />
       </Sequence>
