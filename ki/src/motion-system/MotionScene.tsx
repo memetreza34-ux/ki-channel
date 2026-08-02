@@ -3,70 +3,22 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {motionStoryboardSchema, type MotionStoryboard} from './schema';
 import {MotionCard} from './components/MotionCard';
 import {AnimatedConnector} from './components/AnimatedConnector';
+import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
-const positionsByType: Record<MotionStoryboard['visualType'], Record<string, {x: number; y: number}>> = {
-  'input-output': {
-    input: {x: 90, y: 640},
-    ai: {x: 410, y: 640},
-    output: {x: 730, y: 640},
-  },
-  'tool-orchestration': {
-    task: {x: 60, y: 650},
-    ai: {x: 410, y: 650},
-    browser: {x: 700, y: 470},
-    files: {x: 700, y: 790},
-    result: {x: 410, y: 1050},
-  },
-  comparison: {
-    left: {x: 110, y: 650},
-    right: {x: 710, y: 650},
-    metric: {x: 410, y: 1020},
-  },
-  'before-after': {
-    input: {x: 110, y: 650},
-    ai: {x: 410, y: 650},
-    output: {x: 710, y: 650},
-  },
-  'data-flow': {
-    input: {x: 90, y: 640},
-    ai: {x: 410, y: 640},
-    output: {x: 730, y: 640},
-  },
-  'error-path': {
-    input: {x: 70, y: 620},
-    ai: {x: 390, y: 620},
-    error: {x: 710, y: 520},
-    check: {x: 710, y: 820},
-  },
-  'context-window': {
-    input: {x: 90, y: 640},
-    ai: {x: 410, y: 640},
-    output: {x: 730, y: 640},
-  },
-  'agent-loop': {
-    input: {x: 90, y: 640},
-    ai: {x: 410, y: 640},
-    output: {x: 730, y: 640},
-  },
-  ranking: {
-    left: {x: 90, y: 780},
-    metric: {x: 410, y: 620},
-    right: {x: 730, y: 470},
-  },
-  'process-chain': {
-    input: {x: 70, y: 640},
-    ai: {x: 410, y: 640},
-    output: {x: 750, y: 640},
-  },
-};
-
-const latestBeat = (storyboard: MotionStoryboard, targetId: string, action: MotionStoryboard['beats'][number]['action']) =>
-  storyboard.beats.filter((beat) => beat.targetId === targetId && beat.action === action).sort((a, b) => b.atFrame - a.atFrame)[0];
+const latestBeat = (
+  storyboard: MotionStoryboard,
+  targetId: string,
+  action: MotionStoryboard['beats'][number]['action'],
+) =>
+  storyboard.beats
+    .filter((beat) => beat.targetId === targetId && beat.action === action)
+    .sort((a, b) => b.atFrame - a.atFrame)[0];
 
 export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
   const parsed = motionStoryboardSchema.parse(storyboard);
   const frame = useCurrentFrame();
-  const positions = positionsByType[parsed.visualType] ?? positionsByType['input-output'];
+  const template = TEMPLATE_REGISTRY[parsed.visualType] ?? TEMPLATE_REGISTRY['input-output'];
+  const positions = template.positions;
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -83,7 +35,7 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
           letterSpacing: -0.8,
         }}
       >
-        Reine Remotion-Visualisierung
+        {template.title}
       </div>
 
       {parsed.beats
