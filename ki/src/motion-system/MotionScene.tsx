@@ -9,6 +9,7 @@ import {ComparisonStage} from './components/ComparisonStage';
 import {ErrorPathStage} from './components/ErrorPathStage';
 import {ContextWindowStage} from './components/ContextWindowStage';
 import {ProcessChainStage} from './components/ProcessChainStage';
+import {RankingStage} from './components/RankingStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -30,7 +31,9 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
   const aiElement = parsed.elements.find((element) => element.id === 'ai');
   const aiPos = positions.ai;
   const byId = (id: string) => parsed.elements.find((element) => element.id === id);
-  const usesDedicatedStage = ['comparison', 'error-path', 'context-window', 'process-chain'].includes(parsed.visualType);
+  const usesDedicatedStage = ['comparison', 'error-path', 'context-window', 'process-chain', 'ranking'].includes(
+    parsed.visualType,
+  );
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -68,12 +71,18 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         />
       ) : null}
 
-      {parsed.visualType === 'context-window' ? (
-        <ContextWindowStage x={160} y={470} startFrame={0} />
-      ) : null}
+      {parsed.visualType === 'context-window' ? <ContextWindowStage x={160} y={470} startFrame={0} /> : null}
 
-      {parsed.visualType === 'process-chain' ? (
-        <ProcessChainStage x={100} y={560} startFrame={0} />
+      {parsed.visualType === 'process-chain' ? <ProcessChainStage x={100} y={560} startFrame={0} /> : null}
+
+      {parsed.visualType === 'ranking' ? (
+        <RankingStage
+          startFrame={0}
+          items={parsed.elements.map((element, index) => ({
+            label: element.label,
+            value: Math.max(1, parsed.elements.length - index),
+          }))}
+        />
       ) : null}
 
       {!usesDedicatedStage ? (
