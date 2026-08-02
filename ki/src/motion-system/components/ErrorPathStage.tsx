@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export type ErrorPathStageTimings = {
   inputFrame?: number;
@@ -38,31 +39,42 @@ export const ErrorPathStage: React.FC<{
     ? Math.sin(shakeAge * 1.4) * 8 * (1 - shakeAge / 18)
     : 0;
   const pulse = 1 + Math.sin(Math.max(0, frame - errorFrame) * 0.18) * 0.035;
+  const inputTypography = getLabelTypography(inputLabel, {maxFontSize: 36, minFontSize: 23});
+  const errorTypography = getLabelTypography(errorLabel, {maxFontSize: 36, minFontSize: 23});
+  const checkTypography = getLabelTypography(checkLabel, {maxFontSize: 36, minFontSize: 23});
+
+  const cardBase = {
+    width: 300,
+    height: 180,
+    borderRadius: 36,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 800,
+    textAlign: 'center' as const,
+    padding: 24,
+    overflowWrap: 'anywhere' as const,
+    boxSizing: 'border-box' as const,
+    overflow: 'hidden' as const,
+  };
 
   return (
     <div style={{position: 'absolute', left: 70, right: 70, top: 430, height: 790}}>
       <div
         style={{
+          ...cardBase,
           position: 'absolute',
           left: 30,
           top: 220,
-          width: 300,
-          height: 180,
-          borderRadius: 36,
           background: '#FFFFFF',
           border: '3px solid #D9D4E7',
           boxShadow: '0 24px 60px rgba(26,26,46,0.09)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 36,
-          fontWeight: 800,
+          fontSize: inputTypography.fontSize,
+          lineHeight: inputTypography.lineHeight,
+          letterSpacing: inputTypography.letterSpacing,
           color: '#1A1A2E',
           transform: `translateX(${interpolate(inputProgress, [0, 1], [-120, 0])}px)`,
-          textAlign: 'center',
-          padding: 24,
           opacity: inputProgress,
-          overflowWrap: 'anywhere',
         }}
       >
         {inputLabel}
@@ -93,26 +105,19 @@ export const ErrorPathStage: React.FC<{
 
       <div
         style={{
+          ...cardBase,
           position: 'absolute',
           right: 20,
           top: 80,
-          width: 300,
-          height: 180,
-          borderRadius: 36,
           background: '#FFF2F3',
           border: '3px solid #EC6A73',
           boxShadow: '0 24px 60px rgba(236,106,115,0.16)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 36,
-          fontWeight: 800,
+          fontSize: errorTypography.fontSize,
+          lineHeight: errorTypography.lineHeight,
+          letterSpacing: errorTypography.letterSpacing,
           color: '#8B2530',
-          textAlign: 'center',
-          padding: 24,
           transform: `translateX(${errorShake}px) scale(${pulse})`,
           opacity: errorProgress,
-          overflowWrap: 'anywhere',
         }}
       >
         {errorLabel}
@@ -120,26 +125,19 @@ export const ErrorPathStage: React.FC<{
 
       <div
         style={{
+          ...cardBase,
           position: 'absolute',
           right: 20,
           top: 410,
-          width: 300,
-          height: 180,
-          borderRadius: 36,
           background: '#F1FFF7',
           border: '3px solid #6FD19C',
           boxShadow: '0 24px 60px rgba(111,209,156,0.15)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 36,
-          fontWeight: 800,
+          fontSize: checkTypography.fontSize,
+          lineHeight: checkTypography.lineHeight,
+          letterSpacing: checkTypography.letterSpacing,
           color: '#1A5C3F',
-          textAlign: 'center',
-          padding: 24,
           opacity: checkProgress,
           transform: `translateY(${interpolate(checkProgress, [0, 1], [24, 0])}px)`,
-          overflowWrap: 'anywhere',
         }}
       >
         {checkLabel}
