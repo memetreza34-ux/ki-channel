@@ -9,6 +9,7 @@ export * from './customization';
 export * from './validation';
 export * from './quality';
 export * from './runtime';
+export * from './layout';
 export * from './textLayout';
 export * from './examples';
 export * from './renderPlan';
