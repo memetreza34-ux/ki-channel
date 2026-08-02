@@ -99,6 +99,20 @@ Format:
 - Titel-Safe-Zone oben
 - Satz-Zone unten
 
+## Render-Verifikationsplan
+
+`MOTION_RENDER_PLAN` liefert für alle zehn Compositions feste Prüfframes:
+
+```ts
+import {MOTION_RENDER_PLAN} from './motion-system';
+
+for (const item of MOTION_RENDER_PLAN) {
+  console.log(item.compositionId, item.checkpoints);
+}
+```
+
+Pro Composition werden Start, 25 %, 50 %, 75 % und letzter Frame geprüft. Damit lässt sich die visuelle Kontrolle reproduzierbar durchführen.
+
 ## Prüfung vor Merge
 
 Im Repository-Root ausführen:
@@ -115,7 +129,7 @@ Besonders kontrollieren:
 - Textüberlauf
 - überlappende Karten
 - Safe-Zones oben und unten
-- Animationen bei Frame 0, 75 und 149
+- alle Frames aus `MOTION_RENDER_PLAN`
 - 1080 × 1920 Render
 
 Der Feature-Branch darf erst nach erfolgreichem Test und Preview-Check in `main` übernommen werden.
