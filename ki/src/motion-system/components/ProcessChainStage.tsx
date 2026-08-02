@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export const PROCESS_CHAIN_LAYOUT = {
   width: 880,
@@ -68,6 +69,7 @@ export const ProcessChainStage: React.FC<{
         const itemLayout = layout[index];
         const isLast = index === normalizedSteps.length - 1;
         const connectorEnd = Math.max(appearAt + 11, nextAppearAt + 6);
+        const typography = getLabelTypography(step, {maxFontSize: 30, minFontSize: 20});
 
         return (
           <React.Fragment key={`${step}-${index}`}>
@@ -97,6 +99,7 @@ export const ProcessChainStage: React.FC<{
                 top: 48,
                 width: PROCESS_CHAIN_LAYOUT.cardWidth,
                 minHeight: 140,
+                maxHeight: 190,
                 borderRadius: 34,
                 border: isLast ? '4px solid #6FD19C' : '4px solid #D9D4E7',
                 background: isLast ? '#F1FFF7' : '#FFFFFF',
@@ -109,13 +112,15 @@ export const ProcessChainStage: React.FC<{
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#1A1A2E',
-                fontSize: step.length > 14 ? 25 : 30,
+                fontSize: typography.fontSize,
+                lineHeight: typography.lineHeight,
+                letterSpacing: typography.letterSpacing,
                 fontWeight: 900,
                 textAlign: 'center',
-                lineHeight: 1.15,
                 padding: 18,
                 boxSizing: 'border-box',
                 overflowWrap: 'anywhere',
+                overflow: 'hidden',
               }}
             >
               {step}
