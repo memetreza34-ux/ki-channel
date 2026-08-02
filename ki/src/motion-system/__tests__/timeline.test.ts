@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
+import {buildMotionScene} from '../runtime';
 import {motionStoryboardSchema} from '../schema';
-import {buildMotionTimeline} from '../timeline';
+import {buildMotionTimeline, MOTION_TIMELINE_LIMITS} from '../timeline';
 
 describe('buildMotionTimeline', () => {
   it('plant mehrere Szenen lückenlos und deterministisch', () => {
@@ -61,6 +62,20 @@ describe('buildMotionTimeline', () => {
     expect(ids[2]).toBe(`${ids[0]}-3`);
   });
 
+  it('reserviert explizite IDs und passt stattdessen kollidierende Auto-IDs an', () => {
+    const sentence = 'Die KI erstellt eine Zusammenfassung.';
+    const reservedId = buildMotionScene({sentence}).storyboard.id;
+    const timeline = buildMotionTimeline({
+      scenes: [
+        {sentence},
+        {sentence: 'Die KI erstellt eine andere Ausgabe.', storyboardId: reservedId},
+      ],
+    });
+
+    expect(timeline.scenes[0].storyboard.id).toBe(`${reservedId}-2`);
+    expect(timeline.scenes[1].storyboard.id).toBe(reservedId);
+  });
+
   it('lehnt doppelte explizite IDs ab', () => {
     expect(() =>
       buildMotionTimeline({
@@ -109,7 +124,7 @@ describe('buildMotionTimeline', () => {
     ).toBe(true);
   });
 
-  it('lehnt leere Timelines und ungültige Abstände ab', () => {
+  it('lehnt leere Timelines, ungültige Abstände und zu viele Szenen ab', () => {
     expect(() => buildMotionTimeline({scenes: []})).toThrow('mindestens eine Szene');
     expect(() =>
       buildMotionTimeline({
@@ -117,5 +132,14 @@ describe('buildMotionTimeline', () => {
         gapFrames: -1,
       }),
     ).toThrow('Timeline-Abstand');
+
+    expect(() =>
+      buildMotionTimeline({
+        scenes: Array.from(
+          {length: MOTION_TIMELINE_LIMITS.maxScenes + 1},
+          (_, index) => ({sentence: `Die KI erstellt Ausgabe ${index}.`}),
+        ),
+      }),
+    ).toThrow('höchstens');
   });
 });
