@@ -1,13 +1,15 @@
 import {describe, expect, it} from 'vitest';
 import {MOTION_EXAMPLES} from '../examples';
+import {MOTION_PREVIEW_TYPES, toMotionCompositionId} from '../MotionPreviewRoot';
 import {motionStoryboardSchema, motionVisualTypeSchema} from '../schema';
 
-const toCompositionId = (type: string) =>
-  `Motion-${type}`.replace(/(^|-)([a-z])/g, (_, prefix: string, letter: string) => `${prefix}${letter.toUpperCase()}`);
-
 describe('Motion-System-Preview', () => {
+  it('registriert exakt alle Visualtypen', () => {
+    expect([...MOTION_PREVIEW_TYPES].sort()).toEqual([...motionVisualTypeSchema.options].sort());
+  });
+
   it('erzeugt eindeutige und gültige Composition-IDs', () => {
-    const ids = motionVisualTypeSchema.options.map(toCompositionId);
+    const ids = MOTION_PREVIEW_TYPES.map(toMotionCompositionId);
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) {
       expect(id).toMatch(/^[A-Za-z0-9-]+$/);
@@ -15,7 +17,7 @@ describe('Motion-System-Preview', () => {
     }
   });
 
-  it('alle Preview-Storyboards sind 9:16-tauglich und innerhalb der Grenzen', () => {
+  it('alle Preview-Storyboards sind valide und innerhalb der Grenzen', () => {
     for (const storyboard of Object.values(MOTION_EXAMPLES)) {
       expect(() => motionStoryboardSchema.parse(storyboard)).not.toThrow();
       expect(storyboard.durationInFrames).toBeGreaterThanOrEqual(30);
