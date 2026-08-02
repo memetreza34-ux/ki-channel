@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export type ComparisonStageTimings = {
   leftFrame?: number;
@@ -31,6 +32,25 @@ export const ComparisonStage: React.FC<{
   const divider = interpolate(metricProgress, [0, 1], [0, 1]);
   const leftOpacity = interpolate(resultProgress, [0, 1], [1, 0.58]);
   const rightScale = interpolate(resultProgress, [0, 1], [1, 1.04]);
+  const leftTypography = getLabelTypography(leftLabel, {maxFontSize: 42, minFontSize: 25});
+  const rightTypography = getLabelTypography(rightLabel, {maxFontSize: 42, minFontSize: 25});
+  const metricTypography = getLabelTypography(metricLabel, {maxFontSize: 28, minFontSize: 20});
+
+  const panelStyle = {
+    width: 390,
+    height: 360,
+    borderRadius: 42,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 800,
+    color: '#1A1A2E',
+    textAlign: 'center' as const,
+    padding: 36,
+    overflowWrap: 'anywhere' as const,
+    boxSizing: 'border-box' as const,
+    overflow: 'hidden' as const,
+  };
 
   return (
     <div style={{position: 'absolute', left: 70, right: 70, top: 430, height: 760}}>
@@ -51,26 +71,18 @@ export const ComparisonStage: React.FC<{
 
       <div
         style={{
+          ...panelStyle,
           position: 'absolute',
           left: 0,
           top: 95,
-          width: 390,
-          height: 360,
           transform: `translateX(${leftX}px)`,
-          borderRadius: 42,
           background: '#F8F7FB',
           border: '3px solid #DED9EA',
           boxShadow: '0 28px 70px rgba(26,26,46,0.10)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 42,
-          fontWeight: 800,
-          color: '#1A1A2E',
-          textAlign: 'center',
-          padding: 36,
+          fontSize: leftTypography.fontSize,
+          lineHeight: leftTypography.lineHeight,
+          letterSpacing: leftTypography.letterSpacing,
           opacity: leftProgress * leftOpacity,
-          overflowWrap: 'anywhere',
         }}
       >
         {leftLabel}
@@ -78,26 +90,18 @@ export const ComparisonStage: React.FC<{
 
       <div
         style={{
+          ...panelStyle,
           position: 'absolute',
           right: 0,
           top: 95,
-          width: 390,
-          height: 360,
           transform: `translateX(${rightX}px) scale(${rightScale})`,
-          borderRadius: 42,
           background: '#F7F1FF',
           border: '3px solid #B98CFF',
           boxShadow: '0 28px 70px rgba(185,140,255,0.18)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 42,
-          fontWeight: 800,
-          color: '#1A1A2E',
-          textAlign: 'center',
-          padding: 36,
+          fontSize: rightTypography.fontSize,
+          lineHeight: rightTypography.lineHeight,
+          letterSpacing: rightTypography.letterSpacing,
           opacity: rightProgress,
-          overflowWrap: 'anywhere',
         }}
       >
         {rightLabel}
@@ -108,15 +112,20 @@ export const ComparisonStage: React.FC<{
           position: 'absolute',
           left: '50%',
           top: 500,
+          maxWidth: 520,
           transform: `translateX(-50%) scale(${interpolate(metricProgress, [0, 1], [0.9, 1])})`,
           padding: '18px 30px',
           borderRadius: 999,
           background: '#1A1A2E',
           color: '#FFFFFF',
           fontWeight: 800,
-          fontSize: 28,
-          letterSpacing: -0.4,
+          fontSize: metricTypography.fontSize,
+          lineHeight: metricTypography.lineHeight,
+          letterSpacing: metricTypography.letterSpacing,
           opacity: metricProgress,
+          textAlign: 'center',
+          overflowWrap: 'anywhere',
+          boxSizing: 'border-box',
         }}
       >
         {metricLabel}
