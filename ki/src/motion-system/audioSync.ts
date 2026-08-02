@@ -6,6 +6,11 @@ export type WordTimestamp = {
   endMs: number;
 };
 
+type TimedToken = {
+  value: string;
+  startMs: number;
+};
+
 const CONNECTOR_LEAD_FRAMES = 6;
 
 const normalize = (value: string) =>
@@ -16,12 +21,15 @@ const normalize = (value: string) =>
     .replace(/[^a-z0-9äöüß]+/gi, ' ')
     .trim();
 
+const tokenize = (value: string): string[] =>
+  normalize(value).split(/\s+/).filter(Boolean);
+
 const isValidTimestamp = (word: WordTimestamp): boolean =>
   Number.isFinite(word.startMs) &&
   Number.isFinite(word.endMs) &&
   word.startMs >= 0 &&
   word.endMs >= word.startMs &&
-  normalize(word.text).length > 0;
+  tokenize(word.text).length > 0;
 
 const tokensMatch = (left: string, right: string): boolean => {
   if (left === right) return true;
@@ -29,21 +37,70 @@ const tokensMatch = (left: string, right: string): boolean => {
   return left.includes(right) || right.includes(left);
 };
 
-const findFirstKeywordTime = (words: WordTimestamp[], keywords: string[]): number | null => {
-  const keywordTokens = keywords
-    .flatMap((keyword) => normalize(keyword).split(/\s+/))
-    .filter(Boolean);
+const createTimedTokens = (words: WordTimestamp[]): TimedToken[] =>
+  words.flatMap((word) =>
+    tokenize(word.text).map((value) => ({value, startMs: word.startMs})),
+  );
 
-  for (const word of words) {
-    const wordTokens = normalize(word.text).split(/\s+/).filter(Boolean);
-    if (
-      wordTokens.some((wordToken) =>
-        keywordTokens.some((keywordToken) => tokensMatch(wordToken, keywordToken)),
-      )
-    ) {
-      return word.startMs;
+const createLabelTokenFrequency = (
+  storyboard: MotionStoryboard,
+): Map<string, number> => {
+  const frequency = new Map<string, number>();
+
+  for (const element of storyboard.elements) {
+    for (const token of new Set(tokenize(element.label))) {
+      frequency.set(token, (frequency.get(token) ?? 0) + 1);
     }
   }
+
+  return frequency;
+};
+
+const findPhraseTime = (
+  timedTokens: TimedToken[],
+  labelTokens: string[],
+): number | null => {
+  if (labelTokens.length < 2 || timedTokens.length < labelTokens.length) return null;
+
+  for (let startIndex = 0; startIndex <= timedTokens.length - labelTokens.length; startIndex += 1) {
+    const matches = labelTokens.every(
+      (labelToken, offset) => timedTokens[startIndex + offset].value === labelToken,
+    );
+    if (matches) return timedTokens[startIndex].startMs;
+  }
+
+  return null;
+};
+
+const findFirstKeywordTime = (
+  timedTokens: TimedToken[],
+  label: string,
+  labelTokenFrequency: Map<string, number>,
+): number | null => {
+  const labelTokens = tokenize(label);
+  if (labelTokens.length === 0) return null;
+
+  const phraseTime = findPhraseTime(timedTokens, labelTokens);
+  if (phraseTime !== null) return phraseTime;
+
+  const rankedTokens = [...labelTokens].sort((left, right) => {
+    const frequencyDifference =
+      (labelTokenFrequency.get(left) ?? 0) - (labelTokenFrequency.get(right) ?? 0);
+    if (frequencyDifference !== 0) return frequencyDifference;
+    return right.length - left.length;
+  });
+
+  for (const labelToken of rankedTokens) {
+    const exactMatch = timedTokens.find((token) => token.value === labelToken);
+    if (exactMatch) return exactMatch.startMs;
+  }
+
+  for (const labelToken of rankedTokens) {
+    if (labelToken.length <= 2) continue;
+    const partialMatch = timedTokens.find((token) => tokensMatch(token.value, labelToken));
+    if (partialMatch) return partialMatch.startMs;
+  }
+
   return null;
 };
 
@@ -68,9 +125,16 @@ export const alignStoryboardToWords = (
   const validWords = words.filter(isValidTimestamp).sort((a, b) => a.startMs - b.startMs);
   if (validWords.length === 0) return storyboard;
 
+  const timedTokens = createTimedTokens(validWords);
+  const labelTokenFrequency = createLabelTokenFrequency(storyboard);
   const targetWordFrames = new Map<string, number>();
+
   for (const element of storyboard.elements) {
-    const matchingTime = findFirstKeywordTime(validWords, [element.label]);
+    const matchingTime = findFirstKeywordTime(
+      timedTokens,
+      element.label,
+      labelTokenFrequency,
+    );
     if (matchingTime !== null) {
       targetWordFrames.set(element.id, Math.max(0, Math.round((matchingTime / 1000) * fps)));
     }
