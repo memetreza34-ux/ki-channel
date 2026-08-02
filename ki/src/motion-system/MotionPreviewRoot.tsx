@@ -1,19 +1,19 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
+import {
+  MOTION_TIMELINE_COMPOSITION_ID,
+  toMotionCompositionId,
+} from './compositionIds';
 import {MOTION_CANVAS} from './layout';
 import {MotionScene} from './MotionScene';
 import {MotionTimelineComposition} from './MotionTimeline';
 import {MOTION_EXAMPLES} from './examples';
 import {motionVisualTypeSchema, type MotionVisualType} from './schema';
-import {
-  MOTION_TIMELINE_COMPOSITION_ID,
-  MOTION_TIMELINE_EXAMPLE,
-} from './timelineExamples';
+import {MOTION_TIMELINE_EXAMPLE} from './timelineExamples';
+
+export {toMotionCompositionId} from './compositionIds';
 
 export const MOTION_PREVIEW_TYPES = [...motionVisualTypeSchema.options] as MotionVisualType[];
-
-export const toMotionCompositionId = (type: MotionVisualType) =>
-  `Motion-${type}`.replace(/(^|-)([a-z])/g, (_, prefix: string, letter: string) => `${prefix}${letter.toUpperCase()}`);
 
 export const MotionPreviewRoot: React.FC = () => (
   <Folder name="Motion-System-Preview">
