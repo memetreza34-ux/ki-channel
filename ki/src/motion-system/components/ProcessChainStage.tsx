@@ -5,8 +5,15 @@ export const ProcessChainStage: React.FC<{
   x: number;
   y: number;
   steps?: string[];
+  stepFrames?: number[];
   startFrame?: number;
-}> = ({x, y, steps = ['Eingabe', 'Analyse', 'Ausführung', 'Ergebnis'], startFrame = 0}) => {
+}> = ({
+  x,
+  y,
+  steps = ['Eingabe', 'Analyse', 'Ausführung', 'Ergebnis'],
+  stepFrames = [],
+  startFrame = 0,
+}) => {
   const frame = useCurrentFrame();
   const normalizedSteps = steps.slice(0, 4);
   const gap = normalizedSteps.length > 1 ? 860 / (normalizedSteps.length - 1) : 0;
@@ -14,7 +21,8 @@ export const ProcessChainStage: React.FC<{
   return (
     <div style={{position: 'absolute', left: x, top: y, width: 880, height: 360}}>
       {normalizedSteps.map((step, index) => {
-        const appearAt = startFrame + index * 18;
+        const appearAt = stepFrames[index] ?? startFrame + index * 18;
+        const nextAppearAt = stepFrames[index + 1] ?? startFrame + (index + 1) * 18;
         const progress = interpolate(frame, [appearAt, appearAt + 16], [0, 1], {
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
@@ -22,6 +30,7 @@ export const ProcessChainStage: React.FC<{
         const left = index * gap;
         const isLast = index === normalizedSteps.length - 1;
         const connectorWidth = Math.max(0, gap - 170);
+        const connectorEnd = Math.max(appearAt + 11, nextAppearAt + 6);
         return (
           <React.Fragment key={`${step}-${index}`}>
             {!isLast ? (
@@ -35,7 +44,7 @@ export const ProcessChainStage: React.FC<{
                   borderRadius: 999,
                   background: '#B98CFF',
                   transformOrigin: 'left center',
-                  transform: `scaleX(${interpolate(frame, [appearAt + 10, appearAt + 28], [0, 1], {
+                  transform: `scaleX(${interpolate(frame, [appearAt + 10, connectorEnd], [0, 1], {
                     extrapolateLeft: 'clamp',
                     extrapolateRight: 'clamp',
                   })})`,
@@ -62,12 +71,13 @@ export const ProcessChainStage: React.FC<{
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#1A1A2E',
-                fontSize: 30,
+                fontSize: step.length > 14 ? 25 : 30,
                 fontWeight: 900,
                 textAlign: 'center',
                 lineHeight: 1.15,
                 padding: 18,
                 boxSizing: 'border-box',
+                overflowWrap: 'anywhere',
               }}
             >
               {step}
