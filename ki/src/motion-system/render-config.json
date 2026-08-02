@@ -1,0 +1,23 @@
+{
+  "visualTypes": [
+    "input-output",
+    "tool-orchestration",
+    "comparison",
+    "before-after",
+    "data-flow",
+    "error-path",
+    "context-window",
+    "agent-loop",
+    "ranking",
+    "process-chain"
+  ],
+  "defaultCheckpoints": [0, 37, 75, 112, 149],
+  "smokeCheckpoints": [75],
+  "timeline": {
+    "targetKey": "timeline-demo",
+    "compositionId": "Motion-Timeline-Demo",
+    "durationInFrames": 624,
+    "smokeCheckpoints": [75, 233, 391, 549],
+    "checkpoints": [75, 233, 391, 549, 623]
+  }
+}
