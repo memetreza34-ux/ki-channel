@@ -53,6 +53,10 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
     .filter((element) => element.kind === 'tool')
     .map((element) => element.label);
 
+  const agentStepLabels = ['plan', 'act', 'check']
+    .map((id) => byId(id)?.label)
+    .filter((label): label is string => Boolean(label));
+
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
       <div
@@ -136,7 +140,14 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         />
       ) : null}
 
-      {parsed.visualType === 'agent-loop' ? <AgentLoopStage startFrame={0} /> : null}
+      {parsed.visualType === 'agent-loop' ? (
+        <AgentLoopStage
+          agentLabel={byId('ai')?.label ?? 'KI-Agent'}
+          stepLabels={agentStepLabels}
+          resultLabel="Selbstständig weiter"
+          startFrame={0}
+        />
+      ) : null}
 
       {!usesDedicatedStage ? (
         <>
