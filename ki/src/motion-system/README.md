@@ -16,9 +16,10 @@ const {storyboard, quality} = buildMotionScene({
 
 1. Satzklassifikation
 2. Default-Storyboard
-3. optionale Audio-Synchronisierung
-4. Schema-Validierung
-5. visuelle Qualitätsprüfung
+3. optionale inhaltsspezifische Labels
+4. optionale Audio-Synchronisierung
+5. Schema-Validierung
+6. visuelle Qualitätsprüfung
 
 Mit Wort-Timestamps:
 
@@ -35,6 +36,40 @@ const result = buildMotionScene({
 ```
 
 Eine gesetzte FPS-Zahl wird auch ohne Wort-Timestamps übernommen und anschließend durch das Storyboard-Schema geprüft.
+
+## Inhaltsspezifische Beschriftungen
+
+Die Default-Storyboards liefern eine sichere Struktur. Für ein konkretes Video können die sichtbaren Elemente direkt über ihre stabilen IDs umbenannt werden:
+
+```ts
+const result = buildMotionScene({
+  sentence: 'Die KI fasst einen langen Bericht zusammen.',
+  elementLabels: {
+    input: 'Langer Bericht',
+    output: 'Kurzfassung',
+  },
+  labels: ['Bericht', 'KI', 'Kurzfassung'],
+});
+```
+
+Die Anpassung passiert vor der Audio-Synchronisierung. Ein Timestamp für `Kurzfassung` verschiebt deshalb den tatsächlichen Output-Beat.
+
+Sicherheitsregeln:
+
+- unbekannte Element-IDs werden abgelehnt
+- leere Labels werden abgelehnt
+- Längenbegrenzungen werden durch das Storyboard-Schema geprüft
+- Elemente, Beats und Visualtyp bleiben unverändert
+
+Die niedrigere API ist ebenfalls exportiert:
+
+```ts
+import {customizeMotionStoryboard} from './motion-system';
+
+const customized = customizeMotionStoryboard(storyboard, {
+  elementLabels: {output: 'Kurzfassung'},
+});
+```
 
 ## Unterstützte Visualtypen
 
@@ -252,7 +287,7 @@ Die CLI verwendet `npx --no-install`. Es wird keine fremde Remotion-Version nach
 
 ## Render-Artefakte kontrollieren
 
-Nach dem Render prüft `scripts/check-motion-renders.mjs`, ob alle erwarteten Dateien vorhanden und nicht leer sind.
+Nach dem Render prüft `scripts/check-motion-renders.mjs`, ob alle erwarteten Dateien vorhanden, nicht leer und technisch plausibel sind.
 
 ```bash
 npm run motion:check-stills
@@ -266,13 +301,18 @@ Erwartet werden:
 - 10 finale MP4-Dateien
 - insgesamt 60 gültige Render-Artefakte
 
-Das Ergebnis wird zusätzlich als maschinenlesbarer Bericht gespeichert:
+Zusätzlich werden die Dateisignaturen kontrolliert:
+
+- PNG-Dateien müssen die offizielle PNG-Signatur besitzen
+- MP4-Dateien müssen einen gültigen `ftyp`-Header besitzen
+
+Das Ergebnis wird als maschinenlesbarer Bericht gespeichert:
 
 ```text
 out/motion-system/release-report.json
 ```
 
-Fehlt eine Datei oder besitzt sie null Bytes, endet der Prüfbefehl mit einem Fehlercode und nennt jeden problematischen Pfad.
+Fehlt eine Datei, ist sie leer oder besitzt sie keine passende Signatur, endet der Prüfbefehl mit einem Fehlercode und nennt jeden problematischen Pfad.
 
 Der vollständige lokale Freigabelauf ist:
 
