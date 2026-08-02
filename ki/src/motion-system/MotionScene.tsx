@@ -11,6 +11,7 @@ import {ContextWindowStage} from './components/ContextWindowStage';
 import {ProcessChainStage} from './components/ProcessChainStage';
 import {RankingStage} from './components/RankingStage';
 import {InputOutputStage} from './components/InputOutputStage';
+import {BeforeAfterStage} from './components/BeforeAfterStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -34,6 +35,7 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
   const byId = (id: string) => parsed.elements.find((element) => element.id === id);
   const usesDedicatedStage = [
     'input-output',
+    'before-after',
     'comparison',
     'error-path',
     'context-window',
@@ -63,6 +65,14 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         <InputOutputStage
           inputLabel={byId('input')?.label ?? 'Eingabe'}
           outputLabel={byId('output')?.label ?? 'Ergebnis'}
+          startFrame={0}
+        />
+      ) : null}
+
+      {parsed.visualType === 'before-after' ? (
+        <BeforeAfterStage
+          beforeLabel={byId('input')?.label ?? 'Vorher'}
+          afterLabel={byId('output')?.label ?? 'Nachher'}
           startFrame={0}
         />
       ) : null}
