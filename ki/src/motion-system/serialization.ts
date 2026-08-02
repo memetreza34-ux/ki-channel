@@ -83,7 +83,7 @@ const motionTimelineDocumentSchema = z
       ids.add(scene.storyboard.id);
     });
 
-    const lastScene = document.scenes.at(-1);
+    const lastScene = document.scenes[document.scenes.length - 1];
     if (
       lastScene &&
       lastScene.endFrameExclusive !== document.totalDurationInFrames
