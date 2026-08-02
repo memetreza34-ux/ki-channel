@@ -7,6 +7,19 @@ export type RankingItem = {
   atFrame?: number;
 };
 
+export const MAX_RANKING_ITEMS = 8;
+
+export const prepareRankingItems = (items: RankingItem[]): RankingItem[] =>
+  [...items]
+    .sort((left, right) => right.value - left.value)
+    .slice(0, MAX_RANKING_ITEMS);
+
+export const getRankingBarWidth = (value: number, maximum: number): string => {
+  const safeMaximum = Math.max(1, maximum);
+  const percentage = Math.max(0, Math.min(100, (value / safeMaximum) * 100));
+  return `${percentage}%`;
+};
+
 export const RankingStage: React.FC<{
   items: RankingItem[];
   startFrame?: number;
@@ -14,7 +27,7 @@ export const RankingStage: React.FC<{
 }> = ({items, startFrame = 0, highlightFrame = startFrame + 80}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const sorted = [...items].sort((a, b) => b.value - a.value);
+  const sorted = prepareRankingItems(items);
   const max = Math.max(...sorted.map((item) => item.value), 1);
   const highlight = spring({
     fps,
@@ -27,7 +40,7 @@ export const RankingStage: React.FC<{
       {sorted.map((item, index) => {
         const appearAt = item.atFrame ?? startFrame + index * 10;
         const progress = spring({fps, frame: frame - appearAt, config: {damping: 18, stiffness: 170}});
-        const width = interpolate(progress, [0, 1], [0, (item.value / max) * 760]);
+        const width = getRankingBarWidth(item.value, max);
         const rank = index + 1;
         const rowScale = rank === 1 ? interpolate(highlight, [0, 1], [1, 1.025]) : 1;
         return (
@@ -35,7 +48,7 @@ export const RankingStage: React.FC<{
             key={`${item.label}-${index}`}
             style={{
               display: 'grid',
-              gridTemplateColumns: '72px 1fr 110px',
+              gridTemplateColumns: '72px minmax(0, 1fr) 110px',
               gap: 20,
               alignItems: 'center',
               marginBottom: 34,
@@ -45,7 +58,7 @@ export const RankingStage: React.FC<{
             }}
           >
             <div style={{fontSize: 34, fontWeight: 900, color: '#6E45C9'}}>{rank}</div>
-            <div>
+            <div style={{minWidth: 0}}>
               <div style={{fontSize: item.label.length > 24 ? 24 : 28, fontWeight: 800, color: '#1A1A2E', marginBottom: 10, overflowWrap: 'anywhere'}}>{item.label}</div>
               <div style={{height: 34, background: '#EEEAF6', borderRadius: 999, overflow: 'hidden'}}>
                 <div
