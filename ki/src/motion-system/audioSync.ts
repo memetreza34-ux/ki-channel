@@ -59,12 +59,7 @@ export const alignStoryboardToWords = (
 
   const timedBeats = storyboard.beats.map((beat) => {
     const target = storyboard.elements.find((element) => element.id === beat.targetId);
-    const source = beat.sourceId
-      ? storyboard.elements.find((element) => element.id === beat.sourceId)
-      : undefined;
-    const candidates = [target?.label, source?.label].filter(
-      (value): value is string => Boolean(value),
-    );
+    const candidates = [target?.label].filter((value): value is string => Boolean(value));
     const ms = findFirstKeywordTime(validWords, candidates);
     if (ms === null) return beat;
     return {
