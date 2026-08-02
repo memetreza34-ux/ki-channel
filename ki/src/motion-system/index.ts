@@ -11,6 +11,7 @@ export * from './quality';
 export * from './runtime';
 export * from './timeline';
 export * from './timelineExamples';
+export * from './compositionIds';
 export * from './layout';
 export * from './textLayout';
 export * from './examples';
