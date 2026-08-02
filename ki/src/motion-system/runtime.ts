@@ -3,6 +3,7 @@ import {
   customizeMotionStoryboard,
   type MotionStoryboardCustomization,
 } from './customization';
+import {retimeMotionStoryboardFps} from './fps';
 import {createDefaultStoryboard} from './router';
 import {inspectMotionStoryboardQuality, type MotionQualityReport} from './quality';
 import {createMotionStoryboardId} from './storyboardId';
@@ -41,9 +42,9 @@ export const buildMotionScene = ({
     id: normalizedCustomId ?? createMotionStoryboardId(base.sentence, base.visualType),
   };
   const customized = customizeMotionStoryboard(identified, {elementLabels, labels});
-  const configured: MotionStoryboard = fps === undefined
+  const configured = fps === undefined
     ? customized
-    : {...customized, fps};
+    : retimeMotionStoryboardFps(customized, fps);
   const aligned = words.length > 0
     ? alignStoryboardToWords(configured, words, configured.fps)
     : configured;
