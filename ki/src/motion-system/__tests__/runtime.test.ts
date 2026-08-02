@@ -11,6 +11,16 @@ describe('buildMotionScene', () => {
     expect(result.quality.passed).toBe(true);
   });
 
+  it('übernimmt FPS auch ohne Wort-Timestamps', () => {
+    const result = buildMotionScene({
+      sentence: 'Die KI erstellt eine Zusammenfassung.',
+      fps: 60,
+    });
+
+    expect(result.storyboard.fps).toBe(60);
+    expect(() => motionStoryboardSchema.parse(result.storyboard)).not.toThrow();
+  });
+
   it('synchronisiert auf Wort-Timestamps und übernimmt FPS', () => {
     const result = buildMotionScene({
       sentence: 'Die KI nutzt Dateien.',
@@ -24,6 +34,15 @@ describe('buildMotionScene', () => {
 
     expect(result.storyboard.fps).toBe(60);
     expect(result.storyboard.beats.find((beat) => beat.targetId === 'files')?.atFrame).toBe(60);
+  });
+
+  it('lehnt FPS außerhalb des Storyboard-Schemas ab', () => {
+    expect(() =>
+      buildMotionScene({
+        sentence: 'Die KI erstellt eine Zusammenfassung.',
+        fps: 120,
+      }),
+    ).toThrow();
   });
 
   it('lehnt leere Sätze ab', () => {
