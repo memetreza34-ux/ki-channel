@@ -6,6 +6,8 @@ export type WordTimestamp = {
   endMs: number;
 };
 
+const CONNECTOR_LEAD_FRAMES = 6;
+
 const normalize = (value: string) =>
   value
     .toLowerCase()
@@ -45,6 +47,15 @@ const findFirstKeywordTime = (words: WordTimestamp[], keywords: string[]): numbe
   return null;
 };
 
+const fitBeatIntoDuration = (
+  atFrame: number,
+  durationFrames: number,
+  sceneDuration: number,
+): number => {
+  const latestStart = Math.max(0, sceneDuration - Math.min(durationFrames, sceneDuration));
+  return Math.min(Math.max(0, Math.round(atFrame)), latestStart);
+};
+
 export const alignStoryboardToWords = (
   storyboard: MotionStoryboard,
   words: WordTimestamp[],
@@ -57,32 +68,79 @@ export const alignStoryboardToWords = (
   const validWords = words.filter(isValidTimestamp).sort((a, b) => a.startMs - b.startMs);
   if (validWords.length === 0) return storyboard;
 
-  const timedBeats = storyboard.beats.map((beat) => {
-    const target = storyboard.elements.find((element) => element.id === beat.targetId);
-    const candidates = [target?.label].filter((value): value is string => Boolean(value));
-    const ms = findFirstKeywordTime(validWords, candidates);
-    if (ms === null) return beat;
-    return {
-      ...beat,
-      atFrame: Math.max(0, Math.round((ms / 1000) * fps)),
-    };
+  const targetWordFrames = new Map<string, number>();
+  for (const element of storyboard.elements) {
+    const matchingTime = findFirstKeywordTime(validWords, [element.label]);
+    if (matchingTime !== null) {
+      targetWordFrames.set(element.id, Math.max(0, Math.round((matchingTime / 1000) * fps)));
+    }
+  }
+
+  const showBeatByTarget = new Map<string, MotionStoryboard['beats'][number]>();
+  for (const beat of storyboard.beats) {
+    if (beat.action !== 'show') continue;
+    const current = showBeatByTarget.get(beat.targetId);
+    if (!current || beat.atFrame < current.atFrame) {
+      showBeatByTarget.set(beat.targetId, beat);
+    }
+  }
+
+  const shiftedShowFrames = new Map<string, number>();
+  const showFrameShifts = new Map<string, number>();
+  for (const [targetId, showBeat] of showBeatByTarget) {
+    const shiftedFrame = targetWordFrames.get(targetId) ?? showBeat.atFrame;
+    shiftedShowFrames.set(targetId, shiftedFrame);
+    showFrameShifts.set(targetId, shiftedFrame - showBeat.atFrame);
+  }
+
+  const remappedBeats = storyboard.beats.map((beat, originalIndex) => {
+    const targetWordFrame = targetWordFrames.get(beat.targetId);
+    let atFrame = beat.atFrame;
+
+    if (beat.action === 'show' && targetWordFrame !== undefined) {
+      atFrame = targetWordFrame;
+    } else if (beat.action === 'connect') {
+      const sourceShowFrame = beat.sourceId ? shiftedShowFrames.get(beat.sourceId) : undefined;
+      const targetShowFrame = shiftedShowFrames.get(beat.targetId);
+      const minimumVisibleFrame =
+        Math.max(sourceShowFrame ?? 0, targetShowFrame ?? 0) + CONNECTOR_LEAD_FRAMES;
+      atFrame = Math.max(targetWordFrame ?? beat.atFrame, minimumVisibleFrame);
+    } else {
+      const showBeat = showBeatByTarget.get(beat.targetId);
+      const shift = showFrameShifts.get(beat.targetId);
+      if (showBeat && shift !== undefined && beat.atFrame >= showBeat.atFrame) {
+        atFrame = beat.atFrame + shift;
+      }
+    }
+
+    return {...beat, atFrame, originalIndex};
   });
 
   const maxEndMs = Math.max(...validWords.map((word) => word.endMs));
+  const maxBeatEnd = Math.max(
+    0,
+    ...remappedBeats.map((beat) => beat.atFrame + beat.durationFrames),
+  );
   const durationInFrames = Math.min(
     900,
-    Math.max(storyboard.durationInFrames, Math.ceil((maxEndMs / 1000) * fps) + fps),
+    Math.max(
+      storyboard.durationInFrames,
+      Math.ceil((maxEndMs / 1000) * fps) + fps,
+      maxBeatEnd + 1,
+    ),
   );
 
   return {
     ...storyboard,
     fps,
     durationInFrames,
-    beats: timedBeats
-      .map((beat) => ({
+    beats: remappedBeats
+      .map(({originalIndex, ...beat}) => ({
         ...beat,
-        atFrame: Math.min(beat.atFrame, durationInFrames - 1),
+        atFrame: fitBeatIntoDuration(beat.atFrame, beat.durationFrames, durationInFrames),
+        originalIndex,
       }))
-      .sort((a, b) => a.atFrame - b.atFrame),
+      .sort((left, right) => left.atFrame - right.atFrame || left.originalIndex - right.originalIndex)
+      .map(({originalIndex: _originalIndex, ...beat}) => beat),
   };
 };
