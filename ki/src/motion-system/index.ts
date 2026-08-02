@@ -12,6 +12,7 @@ export * from './runtime';
 export * from './timeline';
 export * from './timelineExamples';
 export * from './timelineRenderPlan';
+export * from './serialization';
 export * from './compositionIds';
 export * from './layout';
 export * from './textLayout';
