@@ -10,6 +10,7 @@ export type MotionQualityIssue = {
     | 'late-beat'
     | 'missing-labels'
     | 'missing-stage-timing'
+    | 'collapsed-beat-timing'
     | 'short-scene';
   message: string;
 };
@@ -22,8 +23,18 @@ export type MotionQualityReport = {
 export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): MotionQualityReport => {
   const issues: MotionQualityIssue[] = [];
 
-  if (storyboard.sentence.length > 140) {
-    issues.push({severity: 'warning', code: 'sentence-too-long', message: 'Der Satz ist länger als 140 Zeichen.'});
+  if (storyboard.sentence.length > 220) {
+    issues.push({
+      severity: 'error',
+      code: 'sentence-too-long',
+      message: 'Der Satz ist länger als 220 Zeichen und passt nicht sicher in die Satz-Safe-Zone.',
+    });
+  } else if (storyboard.sentence.length > 140) {
+    issues.push({
+      severity: 'warning',
+      code: 'sentence-too-long',
+      message: 'Der Satz ist länger als 140 Zeichen.',
+    });
   }
 
   for (const element of storyboard.elements) {
@@ -55,6 +66,25 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
         severity: 'warning',
         code: 'late-beat',
         message: `Beat ${beat.id} beginnt sehr spät und könnte im Render kaum sichtbar sein.`,
+      });
+    }
+  }
+
+  const beatGroups = new Map<string, Set<string>>();
+  for (const beat of storyboard.beats) {
+    const key = `${beat.targetId}:${beat.atFrame}`;
+    const actions = beatGroups.get(key) ?? new Set<string>();
+    actions.add(beat.action);
+    beatGroups.set(key, actions);
+  }
+
+  for (const [group, actions] of beatGroups) {
+    if (actions.size > 1) {
+      const [targetId, atFrame] = group.split(':');
+      issues.push({
+        severity: 'warning',
+        code: 'collapsed-beat-timing',
+        message: `Mehrere Aktionen für ${targetId} liegen gemeinsam auf Frame ${atFrame}.`,
       });
     }
   }
