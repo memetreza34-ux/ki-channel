@@ -26,6 +26,35 @@ describe('createDefaultStoryboard', () => {
   });
 });
 
+describe('motionStoryboardSchema', () => {
+  it('lehnt doppelte Element-IDs ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const invalid = {
+      ...storyboard,
+      elements: [storyboard.elements[0], {...storyboard.elements[1], id: storyboard.elements[0].id}],
+    };
+    expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it('lehnt Beats mit unbekannten Ziel-IDs ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const invalid = {
+      ...storyboard,
+      beats: [{...storyboard.beats[0], targetId: 'missing-element'}, ...storyboard.beats.slice(1)],
+    };
+    expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it('lehnt Beats außerhalb der Szenendauer ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const invalid = {
+      ...storyboard,
+      beats: [{...storyboard.beats[0], atFrame: storyboard.durationInFrames}, ...storyboard.beats.slice(1)],
+    };
+    expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
+  });
+});
+
 describe('alignStoryboardToWords', () => {
   it('verlängert die Szene bis hinter das Audio', () => {
     const storyboard = createDefaultStoryboard('Die KI nutzt Dateien.');
