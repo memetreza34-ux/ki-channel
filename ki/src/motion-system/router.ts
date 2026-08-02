@@ -102,6 +102,22 @@ export const createDefaultStoryboard = (sentence: string): MotionStoryboard => {
         labels: ['Variante A', 'Variante B', 'Vergleich'],
       };
 
+    case 'before-after':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'input', kind: 'card', label: 'Vorher', emphasis: 'warning'},
+          {id: 'output', kind: 'result', label: 'Nachher', emphasis: 'success'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'input', durationFrames: 20},
+          {id: 'b2', atFrame: 42, action: 'dim', targetId: 'input', durationFrames: 18},
+          {id: 'b3', atFrame: 62, action: 'show', targetId: 'output', durationFrames: 20},
+          {id: 'b4', atFrame: 102, action: 'highlight', targetId: 'output', durationFrames: 18},
+        ],
+        labels: ['Vorher', 'Nachher'],
+      };
+
     case 'error-path':
       return {
         ...storyboard,
@@ -122,6 +138,97 @@ export const createDefaultStoryboard = (sentence: string): MotionStoryboard => {
         labels: ['Eingabe', 'KI', 'Fehler', 'Prüfen'],
       };
 
+    case 'context-window':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'old', kind: 'document', label: 'Alter Kontext', emphasis: 'warning'},
+          {id: 'current', kind: 'document', label: 'Aktueller Kontext', emphasis: 'focus'},
+          {id: 'new', kind: 'document', label: 'Neue Information', emphasis: 'success'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'old', durationFrames: 18},
+          {id: 'b2', atFrame: 18, action: 'show', targetId: 'current', durationFrames: 18},
+          {id: 'b3', atFrame: 52, action: 'dim', targetId: 'old', durationFrames: 20},
+          {id: 'b4', atFrame: 74, action: 'show', targetId: 'new', durationFrames: 20},
+        ],
+        labels: ['Alter Kontext', 'Aktueller Kontext', 'Neue Information'],
+      };
+
+    case 'data-flow':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'input', kind: 'database', label: 'Datenquelle', emphasis: 'normal'},
+          {id: 'ai', kind: 'ai-core', label: 'KI', emphasis: 'focus'},
+          {id: 'output', kind: 'result', label: 'Ergebnis', emphasis: 'success'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'input', durationFrames: 18},
+          {id: 'b2', atFrame: 20, action: 'show', targetId: 'ai', durationFrames: 18},
+          {id: 'b3', atFrame: 38, action: 'connect', sourceId: 'input', targetId: 'ai', durationFrames: 30},
+          {id: 'b4', atFrame: 72, action: 'connect', sourceId: 'ai', targetId: 'output', durationFrames: 30},
+          {id: 'b5', atFrame: 104, action: 'show', targetId: 'output', durationFrames: 20},
+        ],
+        labels: ['Datenquelle', 'KI', 'Ergebnis'],
+      };
+
+    case 'ranking':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'rank-1', kind: 'metric', label: 'Modell A', emphasis: 'success'},
+          {id: 'rank-2', kind: 'metric', label: 'Modell B', emphasis: 'focus'},
+          {id: 'rank-3', kind: 'metric', label: 'Modell C', emphasis: 'normal'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'rank-1', durationFrames: 18},
+          {id: 'b2', atFrame: 12, action: 'show', targetId: 'rank-2', durationFrames: 18},
+          {id: 'b3', atFrame: 24, action: 'show', targetId: 'rank-3', durationFrames: 18},
+          {id: 'b4', atFrame: 80, action: 'highlight', targetId: 'rank-1', durationFrames: 20},
+        ],
+        labels: ['Platz 1', 'Platz 2', 'Platz 3'],
+      };
+
+    case 'process-chain':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'step-1', kind: 'node', label: 'Eingabe', emphasis: 'normal'},
+          {id: 'step-2', kind: 'node', label: 'Analyse', emphasis: 'focus'},
+          {id: 'step-3', kind: 'node', label: 'Ausführung', emphasis: 'normal'},
+          {id: 'step-4', kind: 'result', label: 'Ergebnis', emphasis: 'success'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'step-1', durationFrames: 16},
+          {id: 'b2', atFrame: 28, action: 'show', targetId: 'step-2', durationFrames: 16},
+          {id: 'b3', atFrame: 56, action: 'show', targetId: 'step-3', durationFrames: 16},
+          {id: 'b4', atFrame: 84, action: 'show', targetId: 'step-4', durationFrames: 18},
+          {id: 'b5', atFrame: 112, action: 'complete', targetId: 'step-4', durationFrames: 18},
+        ],
+        labels: ['Eingabe', 'Analyse', 'Ausführung', 'Ergebnis'],
+      };
+
+    case 'agent-loop':
+      return {
+        ...storyboard,
+        elements: [
+          {id: 'ai', kind: 'ai-core', label: 'KI-Agent', emphasis: 'focus'},
+          {id: 'plan', kind: 'node', label: 'Planen', emphasis: 'normal'},
+          {id: 'act', kind: 'node', label: 'Ausführen', emphasis: 'normal'},
+          {id: 'check', kind: 'node', label: 'Prüfen', emphasis: 'success'},
+        ],
+        beats: [
+          {id: 'b1', atFrame: 0, action: 'show', targetId: 'ai', durationFrames: 18},
+          {id: 'b2', atFrame: 24, action: 'show', targetId: 'plan', durationFrames: 16},
+          {id: 'b3', atFrame: 50, action: 'show', targetId: 'act', durationFrames: 16},
+          {id: 'b4', atFrame: 76, action: 'show', targetId: 'check', durationFrames: 16},
+          {id: 'b5', atFrame: 104, action: 'pulse', targetId: 'ai', durationFrames: 24},
+        ],
+        labels: ['Planen', 'Ausführen', 'Prüfen'],
+      };
+
+    case 'input-output':
     default:
       return {
         ...storyboard,
