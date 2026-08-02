@@ -5,14 +5,22 @@ Dieses Modul wandelt kurze deutsche Sätze deterministisch in vertikale Remotion
 ## Einstieg
 
 ```ts
-import {createDefaultStoryboard, MotionScene} from './motion-system';
+import {
+  assertMotionStoryboard,
+  createDefaultStoryboard,
+  inspectMotionStoryboardQuality,
+  MotionScene,
+} from './motion-system';
 
 const storyboard = createDefaultStoryboard(
   'Der KI-Agent nutzt Browser, Dateien und E-Mail für die Aufgabe.',
 );
+
+const validated = assertMotionStoryboard(storyboard);
+const quality = inspectMotionStoryboardQuality(validated);
 ```
 
-`MotionScene` erwartet ein Zod-validiertes `MotionStoryboard`.
+`MotionScene` erwartet ein validiertes `MotionStoryboard`.
 
 ## Unterstützte Visualtypen
 
@@ -26,6 +34,41 @@ const storyboard = createDefaultStoryboard(
 - `data-flow`
 - `tool-orchestration`
 - `agent-loop`
+
+## Validierung
+
+Für importierte oder extern erzeugte Daten stehen zwei Hilfsfunktionen bereit:
+
+```ts
+import {assertMotionStoryboard, validateMotionStoryboard} from './motion-system';
+
+const result = validateMotionStoryboard(input);
+if (!result.ok) {
+  console.error(result.issues);
+}
+
+const storyboard = assertMotionStoryboard(input);
+```
+
+Geprüft werden unter anderem:
+
+- doppelte Element- und Beat-IDs
+- unbekannte Ziel- und Quell-IDs
+- Beats außerhalb der Szenendauer
+- erlaubte FPS-, Dauer-, Label- und Elementgrenzen
+
+## Qualitätsprüfung
+
+`inspectMotionStoryboardQuality()` ergänzt die harte Schema-Validierung um visuelle Warnungen:
+
+- Satz länger als 140 Zeichen
+- Labels länger als 24 Zeichen
+- mehr als acht Elemente
+- fehlende sichtbare Labels
+- sehr kurze Szenen
+- Beats kurz vor Szenenende
+
+Warnungen blockieren den Render nicht. Qualitätsfehler setzen `passed` auf `false`.
 
 ## Preview
 
