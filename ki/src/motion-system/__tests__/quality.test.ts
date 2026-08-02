@@ -32,4 +32,38 @@ describe('Motion-Qualitätsprüfung', () => {
     expect(report.issues.some((issue) => issue.code === 'sentence-too-long')).toBe(true);
     expect(report.issues.some((issue) => issue.code === 'label-too-long')).toBe(true);
   });
+
+  it('blockiert extrem lange Sätze außerhalb der sicheren Caption-Grenze', () => {
+    const storyboard = MOTION_EXAMPLES['input-output'];
+    const report = inspectMotionStoryboardQuality({
+      ...storyboard,
+      sentence: 'x'.repeat(221),
+    });
+
+    expect(report.passed).toBe(false);
+    expect(
+      report.issues.some(
+        (issue) => issue.code === 'sentence-too-long' && issue.severity === 'error',
+      ),
+    ).toBe(true);
+  });
+
+  it('warnt vor zusammengefallenen Folgeaktionen auf demselben Frame', () => {
+    const storyboard = MOTION_EXAMPLES.comparison;
+    const rightShow = storyboard.beats.find(
+      (beat) => beat.targetId === 'right' && beat.action === 'show',
+    );
+    const collapsed = {
+      ...storyboard,
+      beats: storyboard.beats.map((beat) =>
+        beat.targetId === 'right' && beat.action === 'highlight' && rightShow
+          ? {...beat, atFrame: rightShow.atFrame}
+          : beat,
+      ),
+    };
+
+    const report = inspectMotionStoryboardQuality(collapsed);
+    expect(report.passed).toBe(true);
+    expect(report.issues.some((issue) => issue.code === 'collapsed-beat-timing')).toBe(true);
+  });
 });
