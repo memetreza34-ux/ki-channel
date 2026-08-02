@@ -64,11 +64,9 @@ export const getStageTimingRequirements = (
 
     case 'ranking':
       return [
-        ...storyboard.elements
-          .filter((element) => element.kind === 'metric')
-          .map((element) =>
-            requirement(`${element.id}-show`, {targetId: element.id, action: 'show'}),
-          ),
+        ...storyboard.elements.map((element) =>
+          requirement(`${element.id}-show`, {targetId: element.id, action: 'show'}),
+        ),
         requirement('rank-1-highlight', {targetId: 'rank-1', action: 'highlight'}),
       ];
 
