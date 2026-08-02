@@ -165,11 +165,31 @@ export const alignStoryboardToWords = (
     if (beat.action === 'show' && targetWordFrame !== undefined) {
       atFrame = targetWordFrame;
     } else if (beat.action === 'connect') {
+      const sourceWasAligned = Boolean(
+        beat.sourceId && targetWordFrames.has(beat.sourceId),
+      );
+      const targetWasAligned = targetWordFrames.has(beat.targetId);
+      const sourceShift = beat.sourceId ? showFrameShifts.get(beat.sourceId) : undefined;
+      const targetShift = showFrameShifts.get(beat.targetId);
+
+      if (targetWasAligned && targetShift !== undefined) {
+        atFrame = beat.atFrame + targetShift;
+      } else if (sourceWasAligned && sourceShift !== undefined) {
+        atFrame = beat.atFrame + sourceShift;
+      }
+
       const sourceShowFrame = beat.sourceId ? shiftedShowFrames.get(beat.sourceId) : undefined;
-      const targetShowFrame = shiftedShowFrames.get(beat.targetId);
-      const minimumVisibleFrame =
-        Math.max(sourceShowFrame ?? 0, targetShowFrame ?? 0) + connectorLeadFrames;
-      atFrame = Math.max(targetWordFrame ?? beat.atFrame, minimumVisibleFrame);
+      if (sourceShowFrame !== undefined) {
+        atFrame = Math.max(atFrame, sourceShowFrame + connectorLeadFrames);
+      }
+
+      const originalTargetShow = showBeatByTarget.get(beat.targetId)?.atFrame;
+      const shiftedTargetShow = shiftedShowFrames.get(beat.targetId);
+      const originallyStartedAfterTarget =
+        originalTargetShow !== undefined && beat.atFrame >= originalTargetShow;
+      if (originallyStartedAfterTarget && shiftedTargetShow !== undefined) {
+        atFrame = Math.max(atFrame, shiftedTargetShow + connectorLeadFrames);
+      }
     } else {
       const showBeat = showBeatByTarget.get(beat.targetId);
       const shift = showFrameShifts.get(beat.targetId);
