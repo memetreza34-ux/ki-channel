@@ -1,6 +1,36 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 
+export const PROCESS_CHAIN_LAYOUT = {
+  width: 880,
+  cardWidth: 170,
+  maxSteps: 4,
+} as const;
+
+export type ProcessChainLayoutItem = {
+  left: number;
+  connectorWidth: number;
+};
+
+export const createProcessChainLayout = (stepCount: number): ProcessChainLayoutItem[] => {
+  const count = Math.min(
+    PROCESS_CHAIN_LAYOUT.maxSteps,
+    Math.max(0, Math.floor(stepCount)),
+  );
+  if (count === 0) return [];
+
+  const usableWidth = PROCESS_CHAIN_LAYOUT.width - PROCESS_CHAIN_LAYOUT.cardWidth;
+  const gap = count > 1 ? usableWidth / (count - 1) : 0;
+
+  return Array.from({length: count}, (_, index) => ({
+    left: index * gap,
+    connectorWidth:
+      index === count - 1
+        ? 0
+        : Math.max(0, gap - PROCESS_CHAIN_LAYOUT.cardWidth),
+  }));
+};
+
 export const ProcessChainStage: React.FC<{
   x: number;
   y: number;
@@ -15,11 +45,19 @@ export const ProcessChainStage: React.FC<{
   startFrame = 0,
 }) => {
   const frame = useCurrentFrame();
-  const normalizedSteps = steps.slice(0, 4);
-  const gap = normalizedSteps.length > 1 ? 860 / (normalizedSteps.length - 1) : 0;
+  const normalizedSteps = steps.slice(0, PROCESS_CHAIN_LAYOUT.maxSteps);
+  const layout = createProcessChainLayout(normalizedSteps.length);
 
   return (
-    <div style={{position: 'absolute', left: x, top: y, width: 880, height: 360}}>
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: PROCESS_CHAIN_LAYOUT.width,
+        height: 360,
+      }}
+    >
       {normalizedSteps.map((step, index) => {
         const appearAt = stepFrames[index] ?? startFrame + index * 18;
         const nextAppearAt = stepFrames[index + 1] ?? startFrame + (index + 1) * 18;
@@ -27,19 +65,19 @@ export const ProcessChainStage: React.FC<{
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
-        const left = index * gap;
+        const itemLayout = layout[index];
         const isLast = index === normalizedSteps.length - 1;
-        const connectorWidth = Math.max(0, gap - 170);
         const connectorEnd = Math.max(appearAt + 11, nextAppearAt + 6);
+
         return (
           <React.Fragment key={`${step}-${index}`}>
             {!isLast ? (
               <div
                 style={{
                   position: 'absolute',
-                  left: left + 168,
+                  left: itemLayout.left + PROCESS_CHAIN_LAYOUT.cardWidth - 2,
                   top: 114,
-                  width: connectorWidth,
+                  width: itemLayout.connectorWidth,
                   height: 8,
                   borderRadius: 999,
                   background: '#B98CFF',
@@ -55,9 +93,9 @@ export const ProcessChainStage: React.FC<{
             <div
               style={{
                 position: 'absolute',
-                left,
+                left: itemLayout.left,
                 top: 48,
-                width: 170,
+                width: PROCESS_CHAIN_LAYOUT.cardWidth,
                 minHeight: 140,
                 borderRadius: 34,
                 border: isLast ? '4px solid #6FD19C' : '4px solid #D9D4E7',
