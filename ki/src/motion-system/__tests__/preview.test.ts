@@ -1,11 +1,9 @@
 import {describe, expect, it} from 'vitest';
+import {MOTION_TIMELINE_COMPOSITION_ID} from '../compositionIds';
 import {MOTION_EXAMPLES} from '../examples';
 import {MOTION_PREVIEW_TYPES, toMotionCompositionId} from '../MotionPreviewRoot';
 import {motionStoryboardSchema, motionVisualTypeSchema} from '../schema';
-import {
-  MOTION_TIMELINE_COMPOSITION_ID,
-  MOTION_TIMELINE_EXAMPLE,
-} from '../timelineExamples';
+import {MOTION_TIMELINE_EXAMPLE} from '../timelineExamples';
 
 describe('Motion-System-Preview', () => {
   it('registriert exakt alle Visualtypen', () => {
