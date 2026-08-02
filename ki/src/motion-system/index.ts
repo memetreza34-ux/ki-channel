@@ -1,6 +1,7 @@
 export * from './schema';
 export * from './router';
 export * from './audioSync';
+export * from './fps';
 export * from './beatTiming';
 export * from './stageTimingRequirements';
 export * from './storyboardId';
