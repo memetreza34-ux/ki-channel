@@ -1,26 +1,20 @@
 import {access, mkdir, open, stat, writeFile} from 'node:fs/promises';
 import {extname, resolve} from 'node:path';
+import {
+  DEFAULT_CHECKPOINTS,
+  TIMELINE_TARGET,
+  VISUAL_TYPES,
+} from './motion-render-config.mjs';
 
 const OUTPUT_DIR = process.env.MOTION_OUTPUT_DIR ?? 'out/motion-system';
 const MODE = process.argv[2] ?? 'all';
-const VALID_MODES = new Set(['stills', 'videos', 'all']);
-const VISUAL_TYPES = [
-  'input-output',
-  'tool-orchestration',
-  'comparison',
-  'before-after',
-  'data-flow',
-  'error-path',
-  'context-window',
-  'agent-loop',
-  'ranking',
-  'process-chain',
-];
-const CHECKPOINTS = [0, 37, 75, 112, 149];
+const VALID_MODES = new Set(['stills', 'videos', 'all', 'timeline']);
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 if (!VALID_MODES.has(MODE)) {
-  console.error(`Unbekannter Prüfmodus: ${MODE}. Erlaubt: stills, videos, all.`);
+  console.error(
+    `Unbekannter Prüfmodus: ${MODE}. Erlaubt: stills, videos, all, timeline.`,
+  );
   process.exit(1);
 }
 
@@ -76,11 +70,27 @@ const inspectFile = async (relativePath) => {
   }
 };
 
+const targets = MODE === 'timeline'
+  ? [
+      {
+        targetKey: TIMELINE_TARGET.targetKey,
+        checkpoints: TIMELINE_TARGET.checkpoints,
+        includeStills: true,
+        includeVideo: true,
+      },
+    ]
+  : VISUAL_TYPES.map((visualType) => ({
+      targetKey: visualType,
+      checkpoints: DEFAULT_CHECKPOINTS,
+      includeStills: MODE === 'stills' || MODE === 'all',
+      includeVideo: MODE === 'videos' || MODE === 'all',
+    }));
+
 const report = {
   generatedAt: new Date().toISOString(),
   mode: MODE,
   outputDir: OUTPUT_DIR,
-  visualTypes: [],
+  targets: [],
   summary: {
     expectedFiles: 0,
     validFiles: 0,
@@ -89,19 +99,19 @@ const report = {
   },
 };
 
-for (const visualType of VISUAL_TYPES) {
+for (const target of targets) {
   const expectedPaths = [];
 
-  if (MODE === 'stills' || MODE === 'all') {
+  if (target.includeStills) {
     expectedPaths.push(
-      ...CHECKPOINTS.map(
-        (frame) => `${OUTPUT_DIR}/${visualType}/frame-${frame}.png`,
+      ...target.checkpoints.map(
+        (frame) => `${OUTPUT_DIR}/${target.targetKey}/frame-${frame}.png`,
       ),
     );
   }
 
-  if (MODE === 'videos' || MODE === 'all') {
-    expectedPaths.push(`${OUTPUT_DIR}/${visualType}/final.mp4`);
+  if (target.includeVideo) {
+    expectedPaths.push(`${OUTPUT_DIR}/${target.targetKey}/final.mp4`);
   }
 
   const files = [];
@@ -109,21 +119,24 @@ for (const visualType of VISUAL_TYPES) {
     files.push(await inspectFile(expectedPath));
   }
 
-  report.visualTypes.push({
-    visualType,
+  report.targets.push({
+    targetKey: target.targetKey,
     passed: files.every((file) => file.valid),
     files,
   });
 }
 
-const allFiles = report.visualTypes.flatMap((entry) => entry.files);
+const allFiles = report.targets.flatMap((entry) => entry.files);
 report.summary.expectedFiles = allFiles.length;
 report.summary.validFiles = allFiles.filter((file) => file.valid).length;
 report.summary.invalidFiles = allFiles.length - report.summary.validFiles;
 report.summary.passed = report.summary.invalidFiles === 0;
 
 await mkdir(OUTPUT_DIR, {recursive: true});
-const reportPath = resolve(OUTPUT_DIR, 'release-report.json');
+const reportFileName = MODE === 'timeline'
+  ? 'timeline-release-report.json'
+  : 'release-report.json';
+const reportPath = resolve(OUTPUT_DIR, reportFileName);
 await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 
 console.log(
@@ -132,8 +145,8 @@ console.log(
 console.log(`Bericht: ${reportPath}`);
 
 if (!report.summary.passed) {
-  for (const visualType of report.visualTypes) {
-    for (const file of visualType.files.filter((entry) => !entry.valid)) {
+  for (const target of report.targets) {
+    for (const file of target.files.filter((entry) => !entry.valid)) {
       const reason = !file.exists
         ? 'fehlt'
         : file.sizeBytes === 0
