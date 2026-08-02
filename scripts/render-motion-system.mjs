@@ -2,7 +2,7 @@ import {mkdir, writeFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
 import {spawn} from 'node:child_process';
 
-const ENTRY_POINT = process.env.MOTION_ENTRY_POINT ?? 'ki/src/index.ts';
+const ENTRY_POINT = process.env.MOTION_ENTRY_POINT ?? 'ki/src/motion-system/remotion-entry.tsx';
 const OUTPUT_DIR = process.env.MOTION_OUTPUT_DIR ?? 'out/motion-system';
 const MODE = process.argv[2] ?? 'stills';
 const TYPE_FILTER = process.env.MOTION_TYPES
@@ -134,6 +134,8 @@ for (const item of plan) {
   }
 }
 
-console.log(`Starte ${tasks.length} Renderaufgaben mit Parallelität ${CONCURRENCY}.`);
+console.log(
+  `Starte ${tasks.length} Renderaufgaben mit Parallelität ${CONCURRENCY} über ${ENTRY_POINT}.`,
+);
 await runPool(tasks, CONCURRENCY);
 console.log(`Motion-Renderprüfung abgeschlossen: ${resolve(OUTPUT_DIR)}`);
