@@ -1,5 +1,7 @@
 import {buildMotionTimeline} from './timeline';
 
+export {MOTION_TIMELINE_COMPOSITION_ID} from './compositionIds';
+
 export const MOTION_TIMELINE_EXAMPLE = buildMotionTimeline({
   fps: 30,
   gapFrames: 8,
@@ -41,5 +43,3 @@ export const MOTION_TIMELINE_EXAMPLE = buildMotionTimeline({
     },
   ],
 });
-
-export const MOTION_TIMELINE_COMPOSITION_ID = 'Motion-Timeline-Demo';
