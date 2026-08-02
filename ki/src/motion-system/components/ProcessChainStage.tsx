@@ -1,33 +1,36 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 
-const steps = ['Eingabe', 'Analyse', 'Ausführung', 'Ergebnis'];
-
 export const ProcessChainStage: React.FC<{
   x: number;
   y: number;
+  steps?: string[];
   startFrame?: number;
-}> = ({x, y, startFrame = 0}) => {
+}> = ({x, y, steps = ['Eingabe', 'Analyse', 'Ausführung', 'Ergebnis'], startFrame = 0}) => {
   const frame = useCurrentFrame();
+  const normalizedSteps = steps.slice(0, 4);
+  const gap = normalizedSteps.length > 1 ? 860 / (normalizedSteps.length - 1) : 0;
 
   return (
     <div style={{position: 'absolute', left: x, top: y, width: 880, height: 360}}>
-      {steps.map((step, index) => {
+      {normalizedSteps.map((step, index) => {
         const appearAt = startFrame + index * 18;
         const progress = interpolate(frame, [appearAt, appearAt + 16], [0, 1], {
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
-        const left = index * 215;
+        const left = index * gap;
+        const isLast = index === normalizedSteps.length - 1;
+        const connectorWidth = Math.max(0, gap - 170);
         return (
-          <React.Fragment key={step}>
-            {index < steps.length - 1 ? (
+          <React.Fragment key={`${step}-${index}`}>
+            {!isLast ? (
               <div
                 style={{
                   position: 'absolute',
                   left: left + 168,
                   top: 114,
-                  width: 78,
+                  width: connectorWidth,
                   height: 8,
                   borderRadius: 999,
                   background: '#B98CFF',
@@ -46,11 +49,11 @@ export const ProcessChainStage: React.FC<{
                 left,
                 top: 48,
                 width: 170,
-                height: 140,
+                minHeight: 140,
                 borderRadius: 34,
-                border: index === 3 ? '4px solid #6FD19C' : '4px solid #D9D4E7',
-                background: index === 3 ? '#F1FFF7' : '#FFFFFF',
-                boxShadow: index === 3
+                border: isLast ? '4px solid #6FD19C' : '4px solid #D9D4E7',
+                background: isLast ? '#F1FFF7' : '#FFFFFF',
+                boxShadow: isLast
                   ? '0 24px 55px rgba(111,209,156,0.24)'
                   : '0 24px 55px rgba(26,26,46,0.08)',
                 opacity: progress,
@@ -62,7 +65,9 @@ export const ProcessChainStage: React.FC<{
                 fontSize: 30,
                 fontWeight: 900,
                 textAlign: 'center',
+                lineHeight: 1.15,
                 padding: 18,
+                boxSizing: 'border-box',
               }}
             >
               {step}
