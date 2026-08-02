@@ -5,6 +5,7 @@ export * from './validation';
 export * from './quality';
 export * from './runtime';
 export * from './examples';
+export * from './renderPlan';
 export * from './MotionScene';
 export * from './MotionPreviewRoot';
 export * from './templates/TemplateRegistry';
