@@ -42,7 +42,7 @@ describe('Audio-Sync Reihenfolge', () => {
     expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
   });
 
-  it('startet Verbindungen erst nachdem Quelle und Ziel sichtbar sind', () => {
+  it('startet Verbindungen erst nachdem ihre bereits sichtbaren Knoten bereit sind', () => {
     const storyboard = createDefaultStoryboard('Daten fließen durch die KI zum Ergebnis.');
     const aligned = alignStoryboardToWords(storyboard, [
       {text: 'Datenquelle', startMs: 0, endMs: 150},
@@ -57,6 +57,23 @@ describe('Audio-Sync Reihenfolge', () => {
     )?.atFrame ?? 0;
 
     expect(inputConnection).toBeGreaterThanOrEqual(Math.max(inputShow, aiShow) + 6);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
+  it('bewahrt Datenflüsse, die bewusst vor dem Output erscheinen', () => {
+    const storyboard = createDefaultStoryboard('Daten fließen durch die KI zum Ergebnis.');
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'KI', startMs: 200, endMs: 400},
+      {text: 'Ergebnis', startMs: 1000, endMs: 1250},
+    ]);
+
+    const outputShow = beatFrame(aligned, 'output', 'show') ?? 0;
+    const outputConnection = aligned.beats.find(
+      (beat) => beat.sourceId === 'ai' && beat.targetId === 'output' && beat.action === 'connect',
+    )?.atFrame ?? 0;
+
+    expect(outputConnection).toBeLessThan(outputShow);
+    expect(outputConnection).toBeGreaterThanOrEqual((beatFrame(aligned, 'ai', 'show') ?? 0) + 6);
     expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
   });
 
