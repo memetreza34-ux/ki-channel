@@ -2,22 +2,30 @@
 
 Dieses Modul wandelt kurze deutsche Sätze deterministisch in vertikale Remotion-Szenen um.
 
-## Einstieg
+## Schnellster Einstieg
 
 ```ts
-import {
-  assertMotionStoryboard,
-  createDefaultStoryboard,
-  inspectMotionStoryboardQuality,
-  MotionScene,
-} from './motion-system';
+import {buildMotionScene, MotionScene} from './motion-system';
 
-const storyboard = createDefaultStoryboard(
-  'Der KI-Agent nutzt Browser, Dateien und E-Mail für die Aufgabe.',
-);
+const {storyboard, quality} = buildMotionScene({
+  sentence: 'Der KI-Agent nutzt Browser, Dateien und E-Mail für die Aufgabe.',
+});
+```
 
-const validated = assertMotionStoryboard(storyboard);
-const quality = inspectMotionStoryboardQuality(validated);
+`buildMotionScene()` kombiniert Router, optionale Audio-Synchronisierung, Schema-Validierung und Qualitätsprüfung in einem einzigen Aufruf.
+
+Mit Wort-Timestamps:
+
+```ts
+const result = buildMotionScene({
+  sentence: 'Die KI nutzt Dateien.',
+  fps: 30,
+  words: [
+    {text: 'Die', startMs: 0, endMs: 100},
+    {text: 'KI', startMs: 200, endMs: 400},
+    {text: 'Dateien', startMs: 1000, endMs: 1300},
+  ],
+});
 ```
 
 `MotionScene` erwartet ein validiertes `MotionStoryboard`.
@@ -35,19 +43,28 @@ const quality = inspectMotionStoryboardQuality(validated);
 - `tool-orchestration`
 - `agent-loop`
 
-## Validierung
+## Niedrigere APIs
 
-Für importierte oder extern erzeugte Daten stehen zwei Hilfsfunktionen bereit:
+Für eigene Abläufe können Router, Audio-Sync und Validierung einzeln genutzt werden:
 
 ```ts
-import {assertMotionStoryboard, validateMotionStoryboard} from './motion-system';
+import {
+  alignStoryboardToWords,
+  assertMotionStoryboard,
+  createDefaultStoryboard,
+  inspectMotionStoryboardQuality,
+  validateMotionStoryboard,
+} from './motion-system';
 
-const result = validateMotionStoryboard(input);
+const base = createDefaultStoryboard('Die KI erstellt ein Ergebnis.');
+const aligned = alignStoryboardToWords(base, []);
+const validated = assertMotionStoryboard(aligned);
+const quality = inspectMotionStoryboardQuality(validated);
+
+const result = validateMotionStoryboard(validated);
 if (!result.ok) {
   console.error(result.issues);
 }
-
-const storyboard = assertMotionStoryboard(input);
 ```
 
 Geprüft werden unter anderem:
@@ -81,18 +98,6 @@ Format:
 - weiße Fläche mit KI-Kanal-Farben
 - Titel-Safe-Zone oben
 - Satz-Zone unten
-
-## Audio-Synchronisierung
-
-```ts
-import {alignStoryboardToWords} from './motion-system';
-
-const aligned = alignStoryboardToWords(storyboard, [
-  {text: 'Browser', startMs: 900, endMs: 1200},
-]);
-```
-
-Ungültige oder negative Wort-Timestamps werden ignoriert. Die Szene wird maximal auf 900 Frames erweitert.
 
 ## Prüfung vor Merge
 
