@@ -15,8 +15,21 @@ export const motionVisualTypeSchema = z.enum([
 
 export type MotionVisualType = z.infer<typeof motionVisualTypeSchema>;
 
+const REQUIRED_ELEMENT_IDS: Record<MotionVisualType, readonly string[]> = {
+  'input-output': ['input', 'ai', 'output'],
+  'tool-orchestration': ['task', 'ai', 'result'],
+  comparison: ['left', 'right', 'metric'],
+  'before-after': ['input', 'output'],
+  'data-flow': ['input', 'ai', 'output'],
+  'error-path': ['input', 'ai', 'error', 'check'],
+  'context-window': ['old', 'current', 'new'],
+  'agent-loop': ['ai', 'plan', 'act', 'check'],
+  ranking: ['rank-1', 'rank-2'],
+  'process-chain': ['step-1', 'step-2'],
+};
+
 export const motionElementSchema = z.object({
-  id: z.string().min(1),
+  id: z.string().trim().min(1),
   kind: z.enum([
     'card',
     'document',
@@ -28,12 +41,12 @@ export const motionElementSchema = z.object({
     'metric',
     'node',
   ]),
-  label: z.string().min(1).max(32),
+  label: z.string().trim().min(1).max(32),
   emphasis: z.enum(['normal', 'focus', 'success', 'warning', 'danger']).default('normal'),
 });
 
 export const motionBeatSchema = z.object({
-  id: z.string().min(1),
+  id: z.string().trim().min(1),
   atFrame: z.number().int().nonnegative(),
   action: z.enum([
     'show',
@@ -46,20 +59,20 @@ export const motionBeatSchema = z.object({
     'shake',
     'complete',
   ]),
-  targetId: z.string().min(1),
-  sourceId: z.string().min(1).optional(),
+  targetId: z.string().trim().min(1),
+  sourceId: z.string().trim().min(1).optional(),
   durationFrames: z.number().int().positive().default(18),
 });
 
 const motionStoryboardBaseSchema = z.object({
-  id: z.string().min(1),
-  sentence: z.string().min(1),
+  id: z.string().trim().min(1),
+  sentence: z.string().trim().min(1),
   visualType: motionVisualTypeSchema,
   durationInFrames: z.number().int().min(30).max(900),
   fps: z.number().int().min(24).max(60).default(30),
   elements: z.array(motionElementSchema).min(2).max(12),
   beats: z.array(motionBeatSchema).min(1).max(30),
-  labels: z.array(z.string().min(1).max(32)).max(6).default([]),
+  labels: z.array(z.string().trim().min(1).max(32)).max(6).default([]),
 });
 
 export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((storyboard, context) => {
@@ -76,6 +89,38 @@ export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((st
     }
     elementIds.add(element.id);
   });
+
+  for (const requiredId of REQUIRED_ELEMENT_IDS[storyboard.visualType]) {
+    if (!elementIds.has(requiredId)) {
+      context.addIssue({
+        code: 'custom',
+        message: `Visualtyp ${storyboard.visualType} benötigt Element ${requiredId}`,
+        path: ['elements'],
+      });
+    }
+  }
+
+  if (
+    storyboard.visualType === 'tool-orchestration' &&
+    !storyboard.elements.some((element) => element.kind === 'tool')
+  ) {
+    context.addIssue({
+      code: 'custom',
+      message: 'Tool-Orchestrierung benötigt mindestens ein Werkzeug.',
+      path: ['elements'],
+    });
+  }
+
+  if (
+    storyboard.visualType === 'ranking' &&
+    storyboard.elements.filter((element) => element.kind === 'metric').length < 2
+  ) {
+    context.addIssue({
+      code: 'custom',
+      message: 'Ranking benötigt mindestens zwei Metrik-Elemente.',
+      path: ['elements'],
+    });
+  }
 
   storyboard.beats.forEach((beat, index) => {
     if (beatIds.has(beat.id)) {
