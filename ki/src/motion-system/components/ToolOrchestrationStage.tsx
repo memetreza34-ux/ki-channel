@@ -69,6 +69,7 @@ export const ToolOrchestrationStage: React.FC<{
   );
 
   const resultConnectionStart = Math.max(coreFrame + 20, resultFrame - 28);
+  const resultConnectionEnd = Math.max(resultConnectionStart + 1, resultFrame + 8);
 
   return (
     <>
@@ -86,7 +87,7 @@ export const ToolOrchestrationStage: React.FC<{
           const y2 = tool.y + 71;
           return <line key={`${tool.label}-${index}`} x1="640" y1="725" x2={640 + (tool.x - 640) * p} y2={725 + (y2 - 725) * p} stroke="#B98CFF" strokeWidth="8" strokeLinecap="round" />;
         })}
-        <line x1="540" y1="830" x2="540" y2={830 + 290 * interpolate(frame,[resultConnectionStart,resultFrame + 8],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})} stroke="#6FD19C" strokeWidth="10" strokeLinecap="round" />
+        <line x1="540" y1="830" x2="540" y2={830 + 290 * interpolate(frame,[resultConnectionStart,resultConnectionEnd],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})} stroke="#6FD19C" strokeWidth="10" strokeLinecap="round" />
       </svg>
     </>
   );
