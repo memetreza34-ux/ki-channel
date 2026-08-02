@@ -46,6 +46,26 @@ describe('Audio-Sync Wortabgleich', () => {
     expect(aiShowBeat?.atFrame).toBe(30);
   });
 
+  it('bevorzugt bei ähnlichen Labels den unterscheidenden Begriff', () => {
+    const storyboard = createDefaultStoryboard('Modell A ist im Vergleich besser als Modell B.');
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Variante', startMs: 300, endMs: 450},
+      {text: 'A', startMs: 500, endMs: 600},
+      {text: 'B', startMs: 1500, endMs: 1600},
+    ]);
+
+    const leftShow = aligned.beats.find(
+      (beat) => beat.targetId === 'left' && beat.action === 'show',
+    );
+    const rightShow = aligned.beats.find(
+      (beat) => beat.targetId === 'right' && beat.action === 'show',
+    );
+
+    expect(leftShow?.atFrame).toBe(15);
+    expect(rightShow?.atFrame).toBe(45);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
   it('richtet Verbindungen am gesprochenen Ziel statt an der Quelle aus', () => {
     const storyboard = createDefaultStoryboard('Der KI-Agent nutzt Browser und Dateien.');
     const originalBrowserConnection = storyboard.beats.find(
@@ -64,10 +84,14 @@ describe('Audio-Sync Wortabgleich', () => {
     const alignedToBrowser = alignStoryboardToWords(storyboard, [
       {text: 'Browser', startMs: 1000, endMs: 1200},
     ]);
+    const browserShowAfterBrowserWord = alignedToBrowser.beats.find(
+      (beat) => beat.targetId === 'browser' && beat.action === 'show',
+    )?.atFrame;
     const browserConnectionAfterBrowserWord = alignedToBrowser.beats.find(
       (beat) => beat.sourceId === 'ai' && beat.targetId === 'browser' && beat.action === 'connect',
     )?.atFrame;
 
-    expect(browserConnectionAfterBrowserWord).toBe(30);
+    expect(browserShowAfterBrowserWord).toBe(30);
+    expect(browserConnectionAfterBrowserWord).toBe(36);
   });
 });
