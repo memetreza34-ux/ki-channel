@@ -1,4 +1,5 @@
 import type {MotionStoryboard} from './schema';
+import {findMissingStageTimings} from './stageTimingRequirements';
 
 export type MotionQualityIssue = {
   severity: 'warning' | 'error';
@@ -8,6 +9,7 @@ export type MotionQualityIssue = {
     | 'too-many-elements'
     | 'late-beat'
     | 'missing-labels'
+    | 'missing-stage-timing'
     | 'short-scene';
   message: string;
 };
@@ -55,6 +57,14 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
         message: `Beat ${beat.id} beginnt sehr spät und könnte im Render kaum sichtbar sein.`,
       });
     }
+  }
+
+  for (const missingTiming of findMissingStageTimings(storyboard)) {
+    issues.push({
+      severity: 'warning',
+      code: 'missing-stage-timing',
+      message: `Stage-Timing ${missingTiming.key} fehlt; die Animation nutzt dafür einen Fallback-Frame.`,
+    });
   }
 
   return {
