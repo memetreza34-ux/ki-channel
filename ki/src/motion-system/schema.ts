@@ -148,11 +148,35 @@ export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((st
       });
     }
 
+    if (beat.action === 'connect' && !beat.sourceId) {
+      context.addIssue({
+        code: 'custom',
+        message: `Connect-Beat ${beat.id} benötigt eine Quelle`,
+        path: ['beats', index, 'sourceId'],
+      });
+    }
+
+    if (beat.sourceId && beat.sourceId === beat.targetId) {
+      context.addIssue({
+        code: 'custom',
+        message: `Beat ${beat.id} darf Quelle und Ziel nicht identisch setzen`,
+        path: ['beats', index, 'sourceId'],
+      });
+    }
+
     if (beat.atFrame >= storyboard.durationInFrames) {
       context.addIssue({
         code: 'custom',
         message: `Beat ${beat.id} beginnt außerhalb der Szene`,
         path: ['beats', index, 'atFrame'],
+      });
+    }
+
+    if (beat.atFrame + beat.durationFrames > storyboard.durationInFrames) {
+      context.addIssue({
+        code: 'custom',
+        message: `Beat ${beat.id} endet außerhalb der Szene`,
+        path: ['beats', index, 'durationFrames'],
       });
     }
   });
