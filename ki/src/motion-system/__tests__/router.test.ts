@@ -114,9 +114,50 @@ describe('alignStoryboardToWords', () => {
     expect(filesBeat?.atFrame).toBe(30);
   });
 
-  it('lässt das Storyboard ohne Wörter unverändert', () => {
+  it('nutzt standardmäßig die FPS des Storyboards', () => {
+    const storyboard = {...createDefaultStoryboard('Die KI nutzt Dateien.'), fps: 60};
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Dateien', startMs: 1000, endMs: 1200},
+    ]);
+    const filesBeat = aligned.beats.find((beat) => beat.targetId === 'files');
+    expect(filesBeat?.atFrame).toBe(60);
+    expect(aligned.fps).toBe(60);
+  });
+
+  it('ignoriert ungültige Timestamps und sortiert gültige Wörter', () => {
+    const storyboard = createDefaultStoryboard('Die KI nutzt Dateien.');
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Dateien', startMs: 1000, endMs: 1300},
+      {text: '', startMs: 200, endMs: 300},
+      {text: 'KI', startMs: 400, endMs: 200},
+      {text: 'KI', startMs: 200, endMs: 400},
+    ]);
+    const filesBeat = aligned.beats.find((beat) => beat.targetId === 'files');
+    expect(filesBeat?.atFrame).toBe(30);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
+  it('begrenzt extrem lange Audios auf die maximal erlaubte Szenendauer', () => {
+    const storyboard = createDefaultStoryboard('Die KI nutzt Dateien.');
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Dateien', startMs: 40000, endMs: 45000},
+    ]);
+    expect(aligned.durationInFrames).toBe(900);
+    expect(aligned.beats.every((beat) => beat.atFrame < 900)).toBe(true);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
+  it('lehnt ungültige FPS ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt Text.');
+    expect(() => alignStoryboardToWords(storyboard, [{text: 'KI', startMs: 0, endMs: 200}], 0)).toThrow(
+      'FPS muss eine positive Zahl sein.',
+    );
+  });
+
+  it('lässt das Storyboard ohne gültige Wörter unverändert', () => {
     const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
     expect(alignStoryboardToWords(storyboard, [])).toBe(storyboard);
+    expect(alignStoryboardToWords(storyboard, [{text: '', startMs: -1, endMs: -1}])).toBe(storyboard);
   });
 });
 
