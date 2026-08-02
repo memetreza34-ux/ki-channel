@@ -215,7 +215,7 @@ export const alignStoryboardToWords = (
     Math.max(
       configuredStoryboard.durationInFrames,
       Math.ceil((maxEndMs / 1000) * fps) + fps,
-      maxBeatEnd + 1,
+      maxBeatEnd,
     ),
   );
 
