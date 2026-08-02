@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {alignStoryboardToWords} from '../audioSync';
 import {retimeMotionStoryboardFps} from '../fps';
 import {createDefaultStoryboard} from '../router';
 import {motionStoryboardSchema} from '../schema';
@@ -52,6 +53,44 @@ describe('Motion-FPS-Retiming', () => {
     expect(() => motionStoryboardSchema.parse(retimed)).not.toThrow();
   });
 
+  it('retimed beim direkten Audio-Sync auch nicht ausgerichtete Beats', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const originalInput = storyboard.beats.find(
+      (beat) => beat.targetId === 'input' && beat.action === 'show',
+    );
+    const originalOutput = storyboard.beats.find(
+      (beat) => beat.targetId === 'output' && beat.action === 'show',
+    );
+
+    const aligned = alignStoryboardToWords(
+      storyboard,
+      [{text: 'Ergebnis', startMs: 1000, endMs: 1200}],
+      60,
+    );
+    const alignedInput = aligned.beats.find(
+      (beat) => beat.targetId === 'input' && beat.action === 'show',
+    );
+    const alignedOutput = aligned.beats.find(
+      (beat) => beat.targetId === 'output' && beat.action === 'show',
+    );
+
+    expect(aligned.fps).toBe(60);
+    expect(aligned.durationInFrames).toBeGreaterThanOrEqual(300);
+    expect(alignedInput?.atFrame).toBe((originalInput?.atFrame ?? 0) * 2);
+    expect(alignedOutput?.atFrame).toBe(60);
+    expect(originalOutput?.atFrame).not.toBe(alignedOutput?.atFrame);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
+  it('retimed auch ohne gültige Wörter, wenn explizit andere FPS angefordert werden', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const aligned = alignStoryboardToWords(storyboard, [], 60);
+
+    expect(aligned.fps).toBe(60);
+    expect(aligned.durationInFrames).toBe(300);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
   it('lehnt nicht unterstützte oder nicht ganzzahlige FPS ab', () => {
     const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
 
@@ -59,6 +98,9 @@ describe('Motion-FPS-Retiming', () => {
       'FPS muss eine ganze Zahl zwischen 24 und 60 sein.',
     );
     expect(() => retimeMotionStoryboardFps(storyboard, 59.5)).toThrow(
+      'FPS muss eine ganze Zahl zwischen 24 und 60 sein.',
+    );
+    expect(() => alignStoryboardToWords(storyboard, [], 23)).toThrow(
       'FPS muss eine ganze Zahl zwischen 24 und 60 sein.',
     );
   });
