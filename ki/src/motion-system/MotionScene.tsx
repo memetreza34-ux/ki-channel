@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {resolveBeatFrame} from './beatTiming';
+import {MOTION_SAFE_ZONES} from './layout';
 import {motionStoryboardSchema, type MotionStoryboard, type MotionVisualType} from './schema';
 import {getSentenceTypography} from './textLayout';
 import {ComparisonStage} from './components/ComparisonStage';
@@ -231,7 +232,7 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
           position: 'absolute',
           left: 0,
           right: 0,
-          top: 96,
+          top: MOTION_SAFE_ZONES.titleTop,
           textAlign: 'center',
           fontSize: 38,
           fontWeight: 800,
@@ -247,10 +248,10 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
       <div
         style={{
           position: 'absolute',
-          left: 70,
-          right: 70,
-          bottom: 195,
-          minHeight: 120,
+          left: MOTION_SAFE_ZONES.horizontalPadding,
+          right: MOTION_SAFE_ZONES.horizontalPadding,
+          bottom: MOTION_SAFE_ZONES.captionBottom,
+          minHeight: MOTION_SAFE_ZONES.captionMinHeight,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
