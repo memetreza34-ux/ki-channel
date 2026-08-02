@@ -1,24 +1,18 @@
 import {describe, expect, it} from 'vitest';
 import {createDefaultStoryboard} from '../router';
+import {motionVisualTypeSchema} from '../schema';
 import {TEMPLATE_REGISTRY} from '../templates/TemplateRegistry';
 
-const dedicatedTypes = [
-  'input-output',
-  'before-after',
-  'comparison',
-  'error-path',
-  'context-window',
-  'process-chain',
-  'ranking',
-  'data-flow',
-  'tool-orchestration',
-  'agent-loop',
-] as const;
-
 describe('dedicated premium stages', () => {
-  it('deckt alle Visualtypen ab', () => {
-    for (const type of dedicatedTypes) {
-      expect(TEMPLATE_REGISTRY[type]).toBeDefined();
+  it('deckt exakt alle Visualtypen mit verständlichen Metadaten ab', () => {
+    expect(Object.keys(TEMPLATE_REGISTRY).sort()).toEqual(
+      [...motionVisualTypeSchema.options].sort(),
+    );
+
+    for (const type of motionVisualTypeSchema.options) {
+      expect(TEMPLATE_REGISTRY[type].title.trim().length).toBeGreaterThan(0);
+      expect(TEMPLATE_REGISTRY[type].purpose.trim().length).toBeGreaterThan(20);
+      expect(TEMPLATE_REGISTRY[type].title.length).toBeLessThanOrEqual(40);
     }
   });
 
