@@ -4,14 +4,15 @@ on:
   pull_request:
     paths:
       - 'ki/src/motion-system/**'
-      - 'ki/src/Root.tsx'
+      - 'ki/tsconfig.motion.json'
       - 'scripts/render-motion-system.mjs'
       - 'package.json'
+      - 'tsconfig.base.json'
       - '.github/workflows/motion-system-checks.yml'
   workflow_dispatch:
 
 jobs:
-  validate:
+  verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -23,21 +24,45 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+      - name: Install root dependencies without legacy workspaces
+        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
 
-      - name: Run motion tests
-        run: npx --no-install vitest run ki/src/motion-system/__tests__
-
-      - name: Run repository typecheck
-        run: npm run typecheck
-
-      - name: Validate render plan
-        run: npm run motion:render-plan
+      - name: Run focused motion verification
+        run: npm run motion:verify
 
       - name: Upload render plan
         uses: actions/upload-artifact@v4
         with:
           name: motion-render-plan
           path: out/motion-system/render-plan.json
+          if-no-files-found: error
+
+  smoke-render:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install root dependencies without legacy workspaces
+        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
+
+      - name: Render representative middle frame
+        env:
+          MOTION_TYPES: input-output
+          MOTION_FRAMES: '75'
+          MOTION_CONCURRENCY: '1'
+        run: npm run motion:render-stills
+
+      - name: Upload smoke render
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-smoke-render
+          path: out/motion-system/input-output/frame-75.png
           if-no-files-found: error
