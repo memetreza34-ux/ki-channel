@@ -99,28 +99,46 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
           oldLabel={getElementLabel(storyboard, 'old', 'Alter Kontext')}
           currentLabel={getElementLabel(storyboard, 'current', 'Aktueller Kontext')}
           newLabel={getElementLabel(storyboard, 'new', 'Neue Information')}
-          startFrame={0}
+          timings={{
+            oldFrame: resolveBeatFrame(storyboard, {targetId: 'old', action: 'show'}, 0),
+            currentFrame: resolveBeatFrame(storyboard, {targetId: 'current', action: 'show'}, 18),
+            dimOldFrame: resolveBeatFrame(storyboard, {targetId: 'old', action: 'dim'}, 52),
+            newFrame: resolveBeatFrame(storyboard, {targetId: 'new', action: 'show'}, 74),
+          }}
         />
       );
 
-    case 'process-chain':
+    case 'process-chain': {
+      const stepIds = ['step-1', 'step-2', 'step-3', 'step-4'];
       return (
         <ProcessChainStage
           x={100}
           y={560}
-          steps={getElementLabels(storyboard, ['step-1', 'step-2', 'step-3', 'step-4'])}
-          startFrame={0}
+          steps={getElementLabels(storyboard, stepIds)}
+          stepFrames={stepIds.map((targetId, index) =>
+            resolveBeatFrame(storyboard, {targetId, action: 'show'}, index * 28),
+          )}
         />
       );
+    }
 
     case 'ranking':
       return (
         <RankingStage
-          startFrame={0}
           items={storyboard.elements.map((element, index) => ({
             label: element.label,
             value: Math.max(1, storyboard.elements.length - index),
+            atFrame: resolveBeatFrame(
+              storyboard,
+              {targetId: element.id, action: 'show'},
+              index * 12,
+            ),
           }))}
+          highlightFrame={resolveBeatFrame(
+            storyboard,
+            {targetId: 'rank-1', action: 'highlight'},
+            80,
+          )}
         />
       );
 
@@ -129,31 +147,71 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
         <DataFlowStage
           inputLabel={getElementLabel(storyboard, 'input', 'Datenquelle')}
           outputLabel={getElementLabel(storyboard, 'output', 'Ergebnis')}
-          startFrame={0}
+          timings={{
+            inputFrame: resolveBeatFrame(storyboard, {targetId: 'input', action: 'show'}, 0),
+            coreFrame: resolveBeatFrame(storyboard, {targetId: 'ai', action: 'show'}, 20),
+            inputFlowFrame: resolveBeatFrame(
+              storyboard,
+              {sourceId: 'input', targetId: 'ai', action: 'connect'},
+              38,
+            ),
+            outputFlowFrame: resolveBeatFrame(
+              storyboard,
+              {sourceId: 'ai', targetId: 'output', action: 'connect'},
+              72,
+            ),
+            outputFrame: resolveBeatFrame(storyboard, {targetId: 'output', action: 'show'}, 104),
+          }}
         />
       );
 
-    case 'tool-orchestration':
+    case 'tool-orchestration': {
+      const toolElements = storyboard.elements.filter((element) => element.kind === 'tool').slice(0, 3);
       return (
         <ToolOrchestrationStage
           taskLabel={getElementLabel(storyboard, 'task', 'Aufgabe')}
           resultLabel={getElementLabel(storyboard, 'result', 'Ergebnis')}
-          toolLabels={storyboard.elements
-            .filter((element) => element.kind === 'tool')
-            .map((element) => element.label)}
-          startFrame={0}
+          toolLabels={toolElements.map((element) => element.label)}
+          timings={{
+            taskFrame: resolveBeatFrame(storyboard, {targetId: 'task', action: 'show'}, 0),
+            coreFrame: resolveBeatFrame(storyboard, {targetId: 'ai', action: 'show'}, 22),
+            toolFrames: toolElements.map((element, index) =>
+              resolveBeatFrame(
+                storyboard,
+                {targetId: element.id, action: 'show'},
+                45 + index * 13,
+              ),
+            ),
+            connectionFrames: toolElements.map((element, index) =>
+              resolveBeatFrame(
+                storyboard,
+                {sourceId: 'ai', targetId: element.id, action: 'connect'},
+                76 + index * 6,
+              ),
+            ),
+            resultFrame: resolveBeatFrame(storyboard, {targetId: 'result', action: 'show'}, 112),
+          }}
         />
       );
+    }
 
-    case 'agent-loop':
+    case 'agent-loop': {
+      const stepIds = ['plan', 'act', 'check'];
       return (
         <AgentLoopStage
           agentLabel={getElementLabel(storyboard, 'ai', 'KI-Agent')}
-          stepLabels={getElementLabels(storyboard, ['plan', 'act', 'check'])}
+          stepLabels={getElementLabels(storyboard, stepIds)}
           resultLabel="Selbstständig weiter"
-          startFrame={0}
+          timings={{
+            agentFrame: resolveBeatFrame(storyboard, {targetId: 'ai', action: 'show'}, 0),
+            stepFrames: stepIds.map((targetId, index) =>
+              resolveBeatFrame(storyboard, {targetId, action: 'show'}, 24 + index * 26),
+            ),
+            resultFrame: resolveBeatFrame(storyboard, {targetId: 'ai', action: 'pulse'}, 104),
+          }}
         />
       );
+    }
 
     default:
       return assertNever(visualType);
