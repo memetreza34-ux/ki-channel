@@ -28,7 +28,7 @@ const result = buildMotionScene({
 });
 ```
 
-`MotionScene` erwartet ein validiertes `MotionStoryboard`.
+Eine gesetzte FPS-Zahl wird auch ohne Wort-Timestamps übernommen und anschließend durch das Storyboard-Schema geprüft.
 
 ## Unterstützte Visualtypen
 
@@ -42,6 +42,8 @@ const result = buildMotionScene({
 - `data-flow`
 - `tool-orchestration`
 - `agent-loop`
+
+Jeder dieser Typen besitzt eine eigene Stage. `MotionScene` rendert die Typen über eine exhaustive Switch-Zuordnung, sodass ein künftig ergänzter Typ nicht still in einen unpassenden Fallback läuft.
 
 ## Niedrigere APIs
 
@@ -87,9 +89,17 @@ Geprüft werden unter anderem:
 
 Warnungen blockieren den Render nicht. Qualitätsfehler setzen `passed` auf `false`.
 
-## Preview
+## Preview und isolierter Einstiegspunkt
 
 `MotionPreviewRoot` registriert je Visualtyp eine eigene Composition im Ordner `Motion-System-Preview`.
+
+Für Tests und CLI-Render wird bewusst nicht der vollständige Kanal-Einstieg verwendet, sondern:
+
+```text
+ki/src/motion-system/remotion-entry.tsx
+```
+
+Dieser Einstieg registriert ausschließlich die Motion-Preview. Dadurch hängt die Prüfung nicht von anderen Kanal-Compositions oder deren lokalen Paketen ab.
 
 Format:
 
@@ -98,6 +108,28 @@ Format:
 - weiße Fläche mit KI-Kanal-Farben
 - Titel-Safe-Zone oben
 - Satz-Zone unten
+
+## Fokussierte Verifikation
+
+Die komplette codebasierte Motion-Prüfung läuft über:
+
+```bash
+npm run motion:verify
+```
+
+Der Befehl führt nacheinander aus:
+
+1. Motion-System-Tests
+2. isolierten strikten TypeScript-Check über `ki/tsconfig.motion.json`
+3. Erzeugung des Renderplans
+
+Einzelbefehle:
+
+```bash
+npm run motion:test
+npm run motion:typecheck
+npm run motion:render-plan
+```
 
 ## Render-Verifikationsplan
 
@@ -126,11 +158,9 @@ for (const item of MOTION_RENDER_COMMANDS) {
 }
 ```
 
-Die Standardausgabe landet unter `out/motion-system/<visualtyp>/`. Eigene Pfade können mit `createMotionRenderCommands(entryPoint, outputDir)` gesetzt werden.
+Die Befehle nutzen `npx --no-install` und standardmäßig den isolierten Motion-Einstiegspunkt. Dadurch wird keine fremde Remotion-Version nachgeladen.
 
 ## Ausführbare Renderprüfung
-
-Das Repository enthält jetzt ein ausführbares Skript unter `scripts/render-motion-system.mjs`.
 
 ```bash
 npm run motion:render-plan
@@ -152,20 +182,45 @@ Die Ergebnisse landen standardmäßig unter:
 out/motion-system/<visualtyp>/
 ```
 
-Eigene Pfade können über Umgebungsvariablen gesetzt werden:
+### Gezielte Render
+
+Nur ausgewählte Visualtypen:
 
 ```bash
-MOTION_ENTRY_POINT=ki/src/index.ts MOTION_OUTPUT_DIR=out/custom npm run motion:render-all
+MOTION_TYPES=input-output,comparison npm run motion:render-stills
 ```
+
+Nur ausgewählte Frames:
+
+```bash
+MOTION_FRAMES=0,75,149 npm run motion:render-stills
+```
+
+Kontrollierte Parallelität:
+
+```bash
+MOTION_CONCURRENCY=2 npm run motion:render-stills
+```
+
+Erlaubt sind ein bis vier parallele Aufgaben. Eigene Pfade können über `MOTION_ENTRY_POINT` und `MOTION_OUTPUT_DIR` gesetzt werden.
+
+## GitHub Actions
+
+Der Workflow `.github/workflows/motion-system-checks.yml` ist in zwei Stufen aufgeteilt:
+
+1. `verify`: Tests, isolierter Typecheck und Renderplan
+2. `smoke-render`: repräsentativer Still-Render von `input-output` bei Frame 75
+
+Renderplan und Smoke-Bild werden als Workflow-Artefakte gespeichert. Der vollständige Zehn-Typen-Render bleibt bewusst ein lokaler Freigabeschritt.
 
 ## Prüfung vor Merge
 
 Im Repository-Root ausführen:
 
 ```bash
-npm test
-npm run typecheck
+npm run motion:verify
 npm run motion:render-stills
+npm run motion:render-videos
 ```
 
 Danach alle Compositions unter `Motion-System-Preview` im Remotion Studio visuell prüfen.
@@ -176,6 +231,6 @@ Besonders kontrollieren:
 - überlappende Karten
 - Safe-Zones oben und unten
 - alle Frames aus `MOTION_RENDER_PLAN`
-- 1080 × 1920 Render
+- finale 1080 × 1920 Videos
 
-Der Feature-Branch darf erst nach erfolgreichem Test und Preview-Check in `main` übernommen werden.
+Der Feature-Branch darf erst nach erfolgreichem CI-Lauf, lokalem Render und Preview-Check in `main` übernommen werden.
