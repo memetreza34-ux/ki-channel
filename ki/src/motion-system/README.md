@@ -128,6 +128,36 @@ for (const item of MOTION_RENDER_COMMANDS) {
 
 Die Standardausgabe landet unter `out/motion-system/<visualtyp>/`. Eigene Pfade können mit `createMotionRenderCommands(entryPoint, outputDir)` gesetzt werden.
 
+## Ausführbare Renderprüfung
+
+Das Repository enthält jetzt ein ausführbares Skript unter `scripts/render-motion-system.mjs`.
+
+```bash
+npm run motion:render-plan
+npm run motion:render-stills
+npm run motion:render-videos
+npm run motion:render-all
+```
+
+Bedeutung:
+
+- `motion:render-plan`: schreibt und zeigt den Prüfplan
+- `motion:render-stills`: rendert fünf Prüfbilder je Visualtyp
+- `motion:render-videos`: rendert ein finales MP4 je Visualtyp
+- `motion:render-all`: führt Still- und Video-Render vollständig aus
+
+Die Ergebnisse landen standardmäßig unter:
+
+```text
+out/motion-system/<visualtyp>/
+```
+
+Eigene Pfade können über Umgebungsvariablen gesetzt werden:
+
+```bash
+MOTION_ENTRY_POINT=ki/src/index.ts MOTION_OUTPUT_DIR=out/custom npm run motion:render-all
+```
+
 ## Prüfung vor Merge
 
 Im Repository-Root ausführen:
@@ -135,6 +165,7 @@ Im Repository-Root ausführen:
 ```bash
 npm test
 npm run typecheck
+npm run motion:render-stills
 ```
 
 Danach alle Compositions unter `Motion-System-Preview` im Remotion Studio visuell prüfen.
