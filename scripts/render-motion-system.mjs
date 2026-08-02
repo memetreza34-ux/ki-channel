@@ -1,6 +1,13 @@
+import {spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
-import {spawn} from 'node:child_process';
+import {
+  DEFAULT_CHECKPOINTS,
+  SMOKE_CHECKPOINTS,
+  TIMELINE_TARGET,
+  VISUAL_TYPES,
+  toMotionCompositionId,
+} from './motion-render-config.mjs';
 
 const ENTRY_POINT = process.env.MOTION_ENTRY_POINT ?? 'ki/src/motion-system/remotion-entry.tsx';
 const OUTPUT_DIR = process.env.MOTION_OUTPUT_DIR ?? 'out/motion-system';
@@ -12,10 +19,21 @@ const FRAME_FILTER = process.env.MOTION_FRAMES
   ? process.env.MOTION_FRAMES.split(',').map((value) => Number(value.trim()))
   : null;
 const CONCURRENCY = Number(process.env.MOTION_CONCURRENCY ?? '1');
-const VALID_MODES = new Set(['smoke', 'stills', 'videos', 'all', 'plan']);
+const VALID_MODES = new Set([
+  'smoke',
+  'stills',
+  'videos',
+  'all',
+  'plan',
+  'timeline-smoke',
+  'timeline',
+]);
+const IS_TIMELINE_MODE = MODE === 'timeline-smoke' || MODE === 'timeline';
 
 if (!VALID_MODES.has(MODE)) {
-  console.error(`Unbekannter Modus: ${MODE}. Erlaubt: smoke, stills, videos, all, plan.`);
+  console.error(
+    `Unbekannter Modus: ${MODE}. Erlaubt: smoke, stills, videos, all, plan, timeline-smoke, timeline.`,
+  );
   process.exit(1);
 }
 
@@ -24,27 +42,30 @@ if (!Number.isInteger(CONCURRENCY) || CONCURRENCY < 1 || CONCURRENCY > 4) {
   process.exit(1);
 }
 
-if (
-  FRAME_FILTER &&
-  (FRAME_FILTER.length === 0 ||
-    FRAME_FILTER.some((frame) => !Number.isInteger(frame) || frame < 0 || frame > 149))
-) {
-  console.error('MOTION_FRAMES muss ganze Frames zwischen 0 und 149 enthalten.');
+if (IS_TIMELINE_MODE && TYPE_FILTER) {
+  console.error('MOTION_TYPES kann nicht mit einem Timeline-Modus kombiniert werden.');
   process.exit(1);
 }
 
-const VISUAL_TYPES = [
-  'input-output',
-  'tool-orchestration',
-  'comparison',
-  'before-after',
-  'data-flow',
-  'error-path',
-  'context-window',
-  'agent-loop',
-  'ranking',
-  'process-chain',
-];
+const maxAllowedFrame = IS_TIMELINE_MODE
+  ? TIMELINE_TARGET.durationInFrames - 1
+  : DEFAULT_CHECKPOINTS.at(-1);
+
+if (
+  FRAME_FILTER &&
+  (FRAME_FILTER.length === 0 ||
+    FRAME_FILTER.some(
+      (frame) =>
+        !Number.isInteger(frame) ||
+        frame < 0 ||
+        frame > maxAllowedFrame,
+    ))
+) {
+  console.error(
+    `MOTION_FRAMES muss ganze Frames zwischen 0 und ${maxAllowedFrame} enthalten.`,
+  );
+  process.exit(1);
+}
 
 const unknownTypes = TYPE_FILTER
   ? [...TYPE_FILTER].filter((type) => !VISUAL_TYPES.includes(type))
@@ -59,25 +80,27 @@ const selectedTypes = TYPE_FILTER
   ? VISUAL_TYPES.filter((type) => TYPE_FILTER.has(type))
   : VISUAL_TYPES;
 
-if (selectedTypes.length === 0) {
+if (!IS_TIMELINE_MODE && selectedTypes.length === 0) {
   console.error('Es wurde kein Visualtyp für den Render ausgewählt.');
   process.exit(1);
 }
 
-const toCompositionId = (type) =>
-  `Motion-${type}`.replace(/(^|-)([a-z])/g, (_, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
-
-const DEFAULT_CHECKPOINTS = [0, 37, 75, 112, 149];
-const SMOKE_CHECKPOINTS = [75];
-const CHECKPOINTS = FRAME_FILTER
-  ? [...new Set(FRAME_FILTER)].sort((a, b) => a - b)
+const selectedCheckpoints = FRAME_FILTER
+  ? [...new Set(FRAME_FILTER)].sort((left, right) => left - right)
   : MODE === 'smoke'
-    ? SMOKE_CHECKPOINTS
-    : DEFAULT_CHECKPOINTS;
+    ? [...SMOKE_CHECKPOINTS]
+    : MODE === 'timeline-smoke'
+      ? [...TIMELINE_TARGET.smokeCheckpoints]
+      : MODE === 'timeline'
+        ? [...TIMELINE_TARGET.checkpoints]
+        : [...DEFAULT_CHECKPOINTS];
 
 const run = (command, args) =>
   new Promise((resolvePromise, reject) => {
-    const child = spawn(command, args, {stdio: 'inherit', shell: process.platform === 'win32'});
+    const child = spawn(command, args, {
+      stdio: 'inherit',
+      shell: process.platform === 'win32',
+    });
     child.on('error', reject);
     child.on('exit', (code) => {
       if (code === 0) resolvePromise();
@@ -97,27 +120,52 @@ const runPool = async (tasks, concurrency) => {
   await Promise.all(workers);
 };
 
-const plan = selectedTypes.map((visualType) => ({
-  visualType,
-  compositionId: toCompositionId(visualType),
-  checkpoints: CHECKPOINTS,
-  outputDir: `${OUTPUT_DIR}/${visualType}`,
-}));
+const plan = IS_TIMELINE_MODE
+  ? [
+      {
+        targetKey: TIMELINE_TARGET.targetKey,
+        compositionId: TIMELINE_TARGET.compositionId,
+        checkpoints: selectedCheckpoints,
+        outputDir: `${OUTPUT_DIR}/${TIMELINE_TARGET.targetKey}`,
+      },
+    ]
+  : selectedTypes.map((visualType) => ({
+      targetKey: visualType,
+      visualType,
+      compositionId: toMotionCompositionId(visualType),
+      checkpoints: selectedCheckpoints,
+      outputDir: `${OUTPUT_DIR}/${visualType}`,
+    }));
 
 await mkdir(OUTPUT_DIR, {recursive: true});
-await writeFile(resolve(OUTPUT_DIR, 'render-plan.json'), `${JSON.stringify(plan, null, 2)}\n`, 'utf8');
+const planFileName = IS_TIMELINE_MODE
+  ? 'timeline-render-plan.json'
+  : 'render-plan.json';
+await writeFile(
+  resolve(OUTPUT_DIR, planFileName),
+  `${JSON.stringify(plan, null, 2)}\n`,
+  'utf8',
+);
 
 if (MODE === 'plan') {
   console.log(JSON.stringify(plan, null, 2));
   process.exit(0);
 }
 
+const shouldRenderStills = new Set([
+  'smoke',
+  'stills',
+  'all',
+  'timeline-smoke',
+  'timeline',
+]).has(MODE);
+const shouldRenderVideo = new Set(['videos', 'all', 'timeline']).has(MODE);
 const tasks = [];
 
 for (const item of plan) {
   await mkdir(item.outputDir, {recursive: true});
 
-  if (MODE === 'smoke' || MODE === 'stills' || MODE === 'all') {
+  if (shouldRenderStills) {
     for (const frame of item.checkpoints) {
       tasks.push(async () => {
         const output = resolve(item.outputDir, `frame-${frame}.png`);
@@ -136,7 +184,7 @@ for (const item of plan) {
     }
   }
 
-  if (MODE === 'videos' || MODE === 'all') {
+  if (shouldRenderVideo) {
     tasks.push(async () => {
       const output = resolve(item.outputDir, 'final.mp4');
       await run('npx', [
