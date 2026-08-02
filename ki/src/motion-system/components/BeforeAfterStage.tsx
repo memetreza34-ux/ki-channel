@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export type BeforeAfterStageTimings = {
   beforeFrame?: number;
@@ -37,40 +38,59 @@ export const BeforeAfterStage: React.FC<{
     progress: number,
     accent: string,
     dimProgress: number,
-  ) => (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: 560,
-        width: 360,
-        height: 430,
-        borderRadius: 42,
-        background: '#FFFFFF',
-        border: `4px solid ${accent}`,
-        boxShadow: '0 28px 70px rgba(26,26,46,0.11)',
-        opacity: progress * (1 - dimProgress * 0.42),
-        transform: `translateY(${interpolate(progress, [0, 1], [34, 0])}px) scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
-        padding: 34,
-      }}
-    >
-      <div style={{fontSize: 34, fontWeight: 900, color: '#1A1A2E', marginBottom: 28, overflowWrap: 'anywhere'}}>{label}</div>
-      <div style={{display: 'grid', gap: 18}}>
-        {[0, 1, 2].map((item) => (
-          <div
-            key={item}
-            style={{
-              height: 74,
-              borderRadius: 22,
-              background: dimProgress > 0.5 ? '#F0EEF4' : item === 2 ? '#F1FFF7' : '#F7F1FF',
-              border: `2px solid ${dimProgress > 0.5 ? '#DED8E7' : item === 2 ? '#6FD19C' : '#D9C7F6'}`,
-              transform: `translateX(${Math.sin((frame + item * 8) * 0.06) * 4 * dimProgress}px)`,
-            }}
-          />
-        ))}
+  ) => {
+    const typography = getLabelTypography(label, {maxFontSize: 34, minFontSize: 23});
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: x,
+          top: 560,
+          width: 360,
+          height: 430,
+          borderRadius: 42,
+          background: '#FFFFFF',
+          border: `4px solid ${accent}`,
+          boxShadow: '0 28px 70px rgba(26,26,46,0.11)',
+          opacity: progress * (1 - dimProgress * 0.42),
+          transform: `translateY(${interpolate(progress, [0, 1], [34, 0])}px) scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
+          padding: 34,
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            minHeight: 50,
+            fontSize: typography.fontSize,
+            lineHeight: typography.lineHeight,
+            letterSpacing: typography.letterSpacing,
+            fontWeight: 900,
+            color: '#1A1A2E',
+            marginBottom: 28,
+            overflowWrap: 'anywhere',
+          }}
+        >
+          {label}
+        </div>
+        <div style={{display: 'grid', gap: 18}}>
+          {[0, 1, 2].map((item) => (
+            <div
+              key={item}
+              style={{
+                height: 74,
+                borderRadius: 22,
+                background: dimProgress > 0.5 ? '#F0EEF4' : item === 2 ? '#F1FFF7' : '#F7F1FF',
+                border: `2px solid ${dimProgress > 0.5 ? '#DED8E7' : item === 2 ? '#6FD19C' : '#D9C7F6'}`,
+                transform: `translateX(${Math.sin((frame + item * 8) * 0.06) * 4 * dimProgress}px)`,
+              }}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <>
