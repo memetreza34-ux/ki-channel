@@ -168,13 +168,15 @@ npm run motion:verify
 
 Der Befehl führt nacheinander aus:
 
-1. alle Motion-System-Tests
-2. isolierten strikten TypeScript-Check über `ki/tsconfig.motion.json`
-3. Erzeugung des Renderplans
+1. Syntaxprüfung der beiden Node-Render-Skripte
+2. alle Motion-System-Tests
+3. isolierten strikten TypeScript-Check über `ki/tsconfig.motion.json`
+4. Erzeugung des Renderplans
 
 Einzelbefehle:
 
 ```bash
+npm run motion:script-check
 npm run motion:test
 npm run motion:typecheck
 npm run motion:render-plan
@@ -248,6 +250,38 @@ Erlaubt sind ein bis vier parallele Renderaufgaben. Eigene Pfade können über `
 
 Die CLI verwendet `npx --no-install`. Es wird keine fremde Remotion-Version nachgeladen.
 
+## Render-Artefakte kontrollieren
+
+Nach dem Render prüft `scripts/check-motion-renders.mjs`, ob alle erwarteten Dateien vorhanden und nicht leer sind.
+
+```bash
+npm run motion:check-stills
+npm run motion:check-videos
+npm run motion:check-renders
+```
+
+Erwartet werden:
+
+- 50 PNG-Prüfframes: fünf Frames für jeden der zehn Visualtypen
+- 10 finale MP4-Dateien
+- insgesamt 60 gültige Render-Artefakte
+
+Das Ergebnis wird zusätzlich als maschinenlesbarer Bericht gespeichert:
+
+```text
+out/motion-system/release-report.json
+```
+
+Fehlt eine Datei oder besitzt sie null Bytes, endet der Prüfbefehl mit einem Fehlercode und nennt jeden problematischen Pfad.
+
+Der vollständige lokale Freigabelauf ist:
+
+```bash
+npm run motion:full-release-check
+```
+
+Dieser Befehl führt Tests, Typecheck, Renderplan, alle Still-Render, alle Video-Render und die abschließende Artefaktprüfung aus.
+
 ## GitHub Actions
 
 Der Workflow liegt unter:
@@ -272,9 +306,7 @@ Der Workflow ist deshalb vorübergehend nur über `workflow_dispatch` startbar. 
 Im Repository-Root ausführen:
 
 ```bash
-npm run motion:release-check
-npm run motion:render-stills
-npm run motion:render-videos
+npm run motion:full-release-check
 ```
 
 Danach alle Compositions unter `Motion-System-Preview` visuell prüfen:
@@ -285,5 +317,6 @@ Danach alle Compositions unter `Motion-System-Preview` visuell prüfen:
 - alle Frames aus `MOTION_RENDER_PLAN`
 - finale 1080 × 1920-Videos
 - sichtbare Reaktion auf Audio-verschobene Beat-Frames
+- `release-report.json` zeigt 60 von 60 gültigen Dateien
 
 Der Feature-Branch darf erst nach erfolgreichem Laufzeit-, Render- und Preview-Check in `main` übernommen werden.
