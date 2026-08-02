@@ -24,18 +24,54 @@ jobs:
         with:
           node-version: 20
 
+      - name: Prepare diagnostics
+        run: mkdir -p ci-logs
+
+      - name: Record environment
+        if: always()
+        run: |
+          {
+            echo "node=$(node --version)"
+            echo "npm=$(npm --version)"
+            echo "pwd=$(pwd)"
+            echo "root-files:"
+            find . -maxdepth 2 -type f | sort | head -200
+          } | tee ci-logs/environment.log
+
       - name: Install root dependencies without legacy workspaces
-        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
+        id: install
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm install --workspaces=false --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
       - name: Run focused motion verification
-        run: npm run motion:verify
+        id: verify
+        if: always()
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run motion:verify 2>&1 | tee ci-logs/verify.log
 
       - name: Upload render plan
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: motion-render-plan
           path: out/motion-system/render-plan.json
+          if-no-files-found: warn
+
+      - name: Upload verification diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-verification-diagnostics
+          path: ci-logs/
           if-no-files-found: error
+
+      - name: Fail when verification failed
+        if: always() && (steps.install.outcome == 'failure' || steps.verify.outcome == 'failure')
+        run: exit 1
 
   smoke-render:
     needs: verify
