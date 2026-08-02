@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
+import {resolveBeatFrame} from './beatTiming';
 import {motionStoryboardSchema, type MotionStoryboard, type MotionVisualType} from './schema';
 import {ComparisonStage} from './components/ComparisonStage';
 import {ErrorPathStage} from './components/ErrorPathStage';
@@ -34,7 +35,16 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
         <InputOutputStage
           inputLabel={getElementLabel(storyboard, 'input', 'Eingabe')}
           outputLabel={getElementLabel(storyboard, 'output', 'Ergebnis')}
-          startFrame={0}
+          timings={{
+            inputFrame: resolveBeatFrame(storyboard, {targetId: 'input', action: 'show'}, 0),
+            coreFrame: resolveBeatFrame(storyboard, {targetId: 'ai', action: 'show'}, 34),
+            flowFrame: resolveBeatFrame(
+              storyboard,
+              {sourceId: 'input', targetId: 'ai', action: 'connect'},
+              62,
+            ),
+            outputFrame: resolveBeatFrame(storyboard, {targetId: 'output', action: 'show'}, 98),
+          }}
         />
       );
 
@@ -43,7 +53,11 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
         <BeforeAfterStage
           beforeLabel={getElementLabel(storyboard, 'input', 'Vorher')}
           afterLabel={getElementLabel(storyboard, 'output', 'Nachher')}
-          startFrame={0}
+          timings={{
+            beforeFrame: resolveBeatFrame(storyboard, {targetId: 'input', action: 'show'}, 0),
+            transitionFrame: resolveBeatFrame(storyboard, {targetId: 'input', action: 'dim'}, 42),
+            afterFrame: resolveBeatFrame(storyboard, {targetId: 'output', action: 'show'}, 62),
+          }}
         />
       );
 
@@ -53,7 +67,12 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
           leftLabel={getElementLabel(storyboard, 'left', 'Variante A')}
           rightLabel={getElementLabel(storyboard, 'right', 'Variante B')}
           metricLabel={getElementLabel(storyboard, 'metric', 'Vergleich')}
-          startFrame={0}
+          timings={{
+            leftFrame: resolveBeatFrame(storyboard, {targetId: 'left', action: 'show'}, 0),
+            rightFrame: resolveBeatFrame(storyboard, {targetId: 'right', action: 'show'}, 18),
+            metricFrame: resolveBeatFrame(storyboard, {targetId: 'metric', action: 'show'}, 52),
+            resultFrame: resolveBeatFrame(storyboard, {targetId: 'right', action: 'highlight'}, 98),
+          }}
         />
       );
 
@@ -63,7 +82,12 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
           inputLabel={getElementLabel(storyboard, 'input', 'Eingabe')}
           errorLabel={getElementLabel(storyboard, 'error', 'Fehler')}
           checkLabel={getElementLabel(storyboard, 'check', 'Prüfen')}
-          startFrame={0}
+          timings={{
+            inputFrame: resolveBeatFrame(storyboard, {targetId: 'input', action: 'show'}, 0),
+            errorFrame: resolveBeatFrame(storyboard, {targetId: 'error', action: 'show'}, 58),
+            checkFrame: resolveBeatFrame(storyboard, {targetId: 'check', action: 'show'}, 103),
+            shakeFrame: resolveBeatFrame(storyboard, {targetId: 'error', action: 'shake'}, 64),
+          }}
         />
       );
 
