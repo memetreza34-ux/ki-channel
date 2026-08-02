@@ -30,11 +30,8 @@ export type BuildMotionTimelineFromScriptInput = SegmentMotionScriptOptions & {
 };
 
 const ABBREVIATIONS = new Set([
-  'z.',
   'z. b.',
-  'd.',
   'd. h.',
-  'u.',
   'u. a.',
   'bzw.',
   'ca.',
@@ -46,6 +43,7 @@ const ABBREVIATIONS = new Set([
   'abs.',
 ]);
 
+const INITIALISM_PREFIXES = new Set(['z', 'd', 'u']);
 const CLOSING_PUNCTUATION = new Set(['"', "'", '”', '’', ')', ']', '}']);
 
 const normalizeWhitespace = (value: string): string =>
@@ -55,10 +53,22 @@ const tailBefore = (value: string, endIndex: number): string =>
   normalizeWhitespace(value.slice(Math.max(0, endIndex - 14), endIndex + 1))
     .toLowerCase();
 
+const isInitialismPrefixPeriod = (value: string, index: number): boolean => {
+  const beforeMatch = value
+    .slice(0, index)
+    .match(/(?:^|\s)([a-zäöü])$/i);
+  if (!beforeMatch || !INITIALISM_PREFIXES.has(beforeMatch[1].toLowerCase())) {
+    return false;
+  }
+
+  return /^\s*[a-zäöü]\./i.test(value.slice(index + 1));
+};
+
 const isAbbreviationPeriod = (value: string, index: number): boolean => {
   const tail = tailBefore(value, index);
-  return [...ABBREVIATIONS].some(
-    (abbreviation) => tail.endsWith(abbreviation),
+  return (
+    isInitialismPrefixPeriod(value, index) ||
+    [...ABBREVIATIONS].some((abbreviation) => tail.endsWith(abbreviation))
   );
 };
 
