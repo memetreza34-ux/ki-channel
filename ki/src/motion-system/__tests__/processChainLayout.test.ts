@@ -7,7 +7,7 @@ import {
 describe('Process-Chain-Layout', () => {
   it('hält vier Karten vollständig innerhalb des 880-Pixel-Bereichs', () => {
     const layout = createProcessChainLayout(4);
-    const last = layout.at(-1);
+    const last = layout[layout.length - 1];
 
     expect(layout).toHaveLength(4);
     expect(last).toBeDefined();
