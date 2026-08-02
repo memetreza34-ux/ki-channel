@@ -57,6 +57,10 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
     .map((id) => byId(id)?.label)
     .filter((label): label is string => Boolean(label));
 
+  const processStepLabels = ['step-1', 'step-2', 'step-3', 'step-4']
+    .map((id) => byId(id)?.label)
+    .filter((label): label is string => Boolean(label));
+
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
       <div
@@ -113,14 +117,16 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         <ContextWindowStage
           x={160}
           y={470}
-          oldLabel={byId('old')?.label ?? 'Alte Information'}
+          oldLabel={byId('old')?.label ?? 'Alter Kontext'}
           currentLabel={byId('current')?.label ?? 'Aktueller Kontext'}
-          newLabel={byId('new')?.label ?? 'Neue Nachricht'}
+          newLabel={byId('new')?.label ?? 'Neue Information'}
           startFrame={0}
         />
       ) : null}
 
-      {parsed.visualType === 'process-chain' ? <ProcessChainStage x={100} y={560} startFrame={0} /> : null}
+      {parsed.visualType === 'process-chain' ? (
+        <ProcessChainStage x={100} y={560} steps={processStepLabels} startFrame={0} />
+      ) : null}
 
       {parsed.visualType === 'ranking' ? (
         <RankingStage
