@@ -1,5 +1,6 @@
 import {toMotionCompositionId} from './compositionIds';
 import {MOTION_EXAMPLES} from './examples';
+import {MOTION_RENDER_CONFIG} from './renderConfig';
 import type {MotionStoryboard, MotionVisualType} from './schema';
 
 export type MotionRenderPlanItem = {
@@ -13,15 +14,9 @@ const clampFrame = (frame: number, durationInFrames: number) =>
   Math.max(0, Math.min(durationInFrames - 1, Math.round(frame)));
 
 export const createMotionRenderPlan = (): MotionRenderPlanItem[] =>
-  (Object.keys(MOTION_EXAMPLES) as MotionVisualType[]).map((visualType) => {
+  MOTION_RENDER_CONFIG.visualTypes.map((visualType) => {
     const storyboard = MOTION_EXAMPLES[visualType];
-    const checkpoints = [
-      0,
-      storyboard.durationInFrames * 0.25,
-      storyboard.durationInFrames * 0.5,
-      storyboard.durationInFrames * 0.75,
-      storyboard.durationInFrames - 1,
-    ]
+    const checkpoints = MOTION_RENDER_CONFIG.defaultCheckpoints
       .map((frame) => clampFrame(frame, storyboard.durationInFrames))
       .filter((frame, index, frames) => frames.indexOf(frame) === index);
 
