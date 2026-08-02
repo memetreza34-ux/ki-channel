@@ -3,6 +3,7 @@ export * from './router';
 export * from './audioSync';
 export * from './examples';
 export * from './MotionScene';
+export * from './MotionPreviewRoot';
 export * from './templates/TemplateRegistry';
 export * from './components/MotionCard';
 export * from './components/AnimatedConnector';
