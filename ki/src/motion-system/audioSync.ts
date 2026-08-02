@@ -21,11 +21,24 @@ const isValidTimestamp = (word: WordTimestamp): boolean =>
   word.endMs >= word.startMs &&
   normalize(word.text).length > 0;
 
+const tokensMatch = (left: string, right: string): boolean => {
+  if (left === right) return true;
+  if (left.length <= 2 || right.length <= 2) return false;
+  return left.includes(right) || right.includes(left);
+};
+
 const findFirstKeywordTime = (words: WordTimestamp[], keywords: string[]): number | null => {
-  const normalizedKeywords = keywords.map(normalize).filter(Boolean);
+  const keywordTokens = keywords
+    .flatMap((keyword) => normalize(keyword).split(/\s+/))
+    .filter(Boolean);
+
   for (const word of words) {
-    const token = normalize(word.text);
-    if (normalizedKeywords.some((keyword) => token.includes(keyword) || keyword.includes(token))) {
+    const wordTokens = normalize(word.text).split(/\s+/).filter(Boolean);
+    if (
+      wordTokens.some((wordToken) =>
+        keywordTokens.some((keywordToken) => tokensMatch(wordToken, keywordToken)),
+      )
+    ) {
       return word.startMs;
     }
   }
