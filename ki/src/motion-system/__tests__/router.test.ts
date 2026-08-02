@@ -13,6 +13,12 @@ describe('classifySentence', () => {
     expect(classifySentence('Die KI kann eine falsche Antwort halluzinieren.')).toBe('error-path');
   });
 
+  it('erkennt normalisierte Varianten', () => {
+    expect(classifySentence('  MODELL A   VERSUS Modell B! ')).toBe('comparison');
+    expect(classifySentence('Die RAG-Pipeline verbindet mehrere Quellen.')).toBe('data-flow');
+    expect(classifySentence('Der Ablauf besteht aus mehreren Schritten.')).toBe('process-chain');
+  });
+
   it('fällt sicher auf Input-Output zurück', () => {
     expect(classifySentence('Die KI erstellt eine Zusammenfassung.')).toBe('input-output');
   });
@@ -23,6 +29,14 @@ describe('createDefaultStoryboard', () => {
     const storyboard = createDefaultStoryboard('Die KI nutzt mehrere Werkzeuge.');
     expect(() => motionStoryboardSchema.parse(storyboard)).not.toThrow();
     expect(storyboard.durationInFrames).toBeGreaterThanOrEqual(30);
+  });
+
+  it('trimmt den Satz vor der Erstellung', () => {
+    expect(createDefaultStoryboard('  Die KI erstellt Text.  ').sentence).toBe('Die KI erstellt Text.');
+  });
+
+  it('lehnt leere Sätze früh ab', () => {
+    expect(() => createDefaultStoryboard('   ')).toThrow('Der Satz darf nicht leer sein.');
   });
 });
 
@@ -36,11 +50,32 @@ describe('motionStoryboardSchema', () => {
     expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
   });
 
+  it('lehnt doppelte Beat-IDs ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const invalid = {
+      ...storyboard,
+      beats: [storyboard.beats[0], {...storyboard.beats[1], id: storyboard.beats[0].id}],
+    };
+    expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
+  });
+
   it('lehnt Beats mit unbekannten Ziel-IDs ab', () => {
     const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
     const invalid = {
       ...storyboard,
       beats: [{...storyboard.beats[0], targetId: 'missing-element'}, ...storyboard.beats.slice(1)],
+    };
+    expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it('lehnt Beats mit unbekannten Quell-IDs ab', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const connectBeat = storyboard.beats.find((beat) => beat.action === 'connect');
+    const invalid = {
+      ...storyboard,
+      beats: storyboard.beats.map((beat) =>
+        beat.id === connectBeat?.id ? {...beat, sourceId: 'missing-source'} : beat,
+      ),
     };
     expect(motionStoryboardSchema.safeParse(invalid).success).toBe(false);
   });
