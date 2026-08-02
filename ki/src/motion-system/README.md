@@ -5,7 +5,7 @@ Dieses Modul wandelt kurze deutsche Sätze deterministisch in vertikale Remotion
 ## Schnellster Einstieg
 
 ```ts
-import {buildMotionScene, MotionScene} from './motion-system';
+import {buildMotionScene} from './motion-system';
 
 const {storyboard, quality} = buildMotionScene({
   sentence: 'Der KI-Agent nutzt Browser und Dateien für die Aufgabe.',
@@ -16,30 +16,14 @@ const {storyboard, quality} = buildMotionScene({
 
 1. Satzklassifikation
 2. Default-Storyboard
-3. optionale inhaltsspezifische Labels
-4. optionale Audio-Synchronisierung
-5. Schema-Validierung
-6. visuelle Qualitätsprüfung
-
-Mit Wort-Timestamps:
-
-```ts
-const result = buildMotionScene({
-  sentence: 'Die KI nutzt Dateien.',
-  fps: 30,
-  words: [
-    {text: 'Die', startMs: 0, endMs: 100},
-    {text: 'KI', startMs: 200, endMs: 400},
-    {text: 'Dateien', startMs: 1000, endMs: 1300},
-  ],
-});
-```
-
-Eine gesetzte FPS-Zahl wird auch ohne Wort-Timestamps übernommen und anschließend durch das Storyboard-Schema geprüft.
+3. stabile Storyboard-ID
+4. optionale inhaltsspezifische Labels
+5. optionale FPS-Anpassung
+6. optionale Audio-Synchronisierung
+7. Schema-Validierung
+8. visuelle Qualitätsprüfung
 
 ## Inhaltsspezifische Beschriftungen
-
-Die Default-Storyboards liefern eine sichere Struktur. Für ein konkretes Video können die sichtbaren Elemente direkt über ihre stabilen IDs umbenannt werden:
 
 ```ts
 const result = buildMotionScene({
@@ -52,24 +36,13 @@ const result = buildMotionScene({
 });
 ```
 
-Die Anpassung passiert vor der Audio-Synchronisierung. Ein Timestamp für `Kurzfassung` verschiebt deshalb den tatsächlichen Output-Beat.
-
 Sicherheitsregeln:
 
 - unbekannte Element-IDs werden abgelehnt
-- leere Labels werden abgelehnt
-- Längenbegrenzungen werden durch das Storyboard-Schema geprüft
-- Elemente, Beats und Visualtyp bleiben unverändert
-
-Die niedrigere API ist ebenfalls exportiert:
-
-```ts
-import {customizeMotionStoryboard} from './motion-system';
-
-const customized = customizeMotionStoryboard(storyboard, {
-  elementLabels: {output: 'Kurzfassung'},
-});
-```
+- leere Beschriftungen werden abgelehnt
+- Schema-Längenbegrenzungen bleiben aktiv
+- Visualtyp, Elemente und Beats werden nicht still ersetzt
+- Anpassungen passieren vor der Audio-Synchronisierung
 
 ## Unterstützte Visualtypen
 
@@ -84,24 +57,20 @@ const customized = customizeMotionStoryboard(storyboard, {
 - `tool-orchestration`
 - `agent-loop`
 
-Jeder Typ besitzt eine eigene Stage. `MotionScene` verwendet eine exhaustive Switch-Zuordnung. Ein künftig ergänzter Visualtyp kann dadurch nicht unbemerkt in einem unpassenden generischen Fallback landen.
+Jeder Typ besitzt eine eigene Stage. `MotionScene` verwendet eine exhaustive Switch-Zuordnung. Ein neuer Visualtyp kann dadurch nicht unbemerkt in einem unpassenden Fallback landen.
 
 ## Beat-gesteuerte Animationen
 
-Alle zehn spezialisierten Stages verwenden die Frames aus `storyboard.beats`.
+Alle spezialisierten Stages lesen ihre sichtbaren Zeitpunkte aus `storyboard.beats`.
 
-Beispiele:
+- `show`: Element erscheint
+- `connect`: Daten- oder Werkzeugfluss startet
+- `dim`: Element wird zurückgenommen
+- `highlight`: Ergebnis wird hervorgehoben
+- `shake`: Fehlerimpuls
+- `pulse`: Abschluss einer Agenten-Schleife
 
-- `show` bestimmt das Erscheinen einer Karte
-- `connect` bestimmt den Beginn eines Daten- oder Werkzeugflusses
-- `dim` steuert das Zurücknehmen eines Elements
-- `highlight` steuert den hervorgehobenen Gewinner
-- `shake` steuert den Fehlerimpuls
-- `pulse` steuert den Abschluss einer Agenten-Schleife
-
-Damit verändert eine Audio-Synchronisierung nicht nur abstrakte Daten. Die sichtbare Remotion-Animation verschiebt sich tatsächlich mit den Wort-Timestamps.
-
-Die Hilfsfunktionen stehen auch separat zur Verfügung:
+Hilfsfunktionen:
 
 ```ts
 import {
@@ -110,41 +79,86 @@ import {
   getStageTimingRequirements,
   resolveBeatFrame,
 } from './motion-system';
-
-const outputFrame = resolveBeatFrame(
-  storyboard,
-  {targetId: 'output', action: 'show'},
-  98,
-);
-
-const missing = findMissingStageTimings(storyboard);
 ```
 
-Fehlende Stage-Timings blockieren einen Render nicht. Die Stage verwendet einen kontrollierten Fallback-Frame und die Qualitätsprüfung erzeugt eine Warnung mit dem Code `missing-stage-timing`.
+Fehlende Stage-Timings verwenden kontrollierte Fallback-Frames und erzeugen die Qualitätswarnung `missing-stage-timing`.
 
 ## Audio-Synchronisierung
 
-Der Wortabgleich arbeitet tokenbasiert:
+```ts
+const result = buildMotionScene({
+  sentence: 'Die KI nutzt Dateien.',
+  words: [
+    {text: 'KI', startMs: 200, endMs: 400},
+    {text: 'Dateien', startMs: 1000, endMs: 1300},
+  ],
+});
+```
+
+Der Wortabgleich ist tokenbasiert und priorisiert eindeutige Begriffe:
 
 - mehrteilige Labels wie `KI-Agent` können über `KI` oder `Agent` erkannt werden
-- kurze Begriffe wie `KI` müssen exakt übereinstimmen
-- einzelne Buchstaben erzeugen keine falschen Teiltreffer
-- Connection-Beats werden am gesprochenen Ziel ausgerichtet, nicht an der Quelle
+- vollständige Phrasen werden zuerst gesucht
+- bei ähnlichen Labels wie `Variante A` und `Variante B` wird der unterscheidende Token bevorzugt
+- kurze Fachbegriffe wie `KI` müssen exakt übereinstimmen
+- einzelne Buchstaben erzeugen keine zufälligen Teiltreffer
 - ungültige oder negative Timestamps werden ignoriert
-- Wörter werden vor der Verarbeitung zeitlich sortiert
-- die Szenendauer bleibt auf maximal 900 Frames begrenzt
+- Wörter werden zeitlich sortiert
+
+Die Synchronisierung erhält die Animationsreihenfolge:
+
+- Folgeaktionen behalten ihren Abstand zum zugehörigen `show`-Beat
+- `show` und `highlight` fallen nicht automatisch auf denselben Frame
+- Verbindungen starten erst, wenn Quelle und Ziel sichtbar sind
+- der Connector-Abstand entspricht bei jeder FPS ungefähr 0,2 Sekunden
+- Beats werden am Szenenende so begrenzt, dass ihre sichtbare Dauer nicht vollständig verloren geht
+- die maximale Szenendauer bleibt 900 Frames
+
+## FPS korrekt ändern
+
+Eine FPS-Änderung darf nicht nur das Feld `fps` ersetzen, weil sonst das Video in Sekunden kürzer oder länger wird. Die Runtime skaliert deshalb Dauer, Beat-Start und Beat-Dauer gemeinsam.
+
+```ts
+const result = buildMotionScene({
+  sentence: 'Die KI erstellt eine Zusammenfassung.',
+  fps: 60,
+});
+```
+
+Das Standard-Storyboard besitzt 150 Frames bei 30 FPS. Bei 60 FPS entstehen 300 Frames, sodass die Szenendauer weiterhin fünf Sekunden beträgt.
+
+Die niedrigere API:
+
+```ts
+import {retimeMotionStoryboardFps} from './motion-system';
+
+const at60Fps = retimeMotionStoryboardFps(storyboard, 60);
+```
+
+Erlaubt sind ganzzahlige FPS-Werte von 24 bis 60.
+
+## Layout-Sicherheit
+
+### Satz-Safe-Zone
+
+`getSentenceTypography()` passt die Schriftgröße anhand der Satzlänge und sehr langer Einzelwörter an. Kurze Sätze bleiben groß, längere Sätze werden stufenweise verkleinert.
+
+Qualitätsgrenzen:
+
+- über 140 Zeichen: Warnung
+- über 220 Zeichen: Qualitätsfehler
+
+### Prozesskette
+
+`createProcessChainLayout()` verteilt bis zu vier Karten innerhalb eines festen 880-Pixel-Bereichs. Die letzte Karte bleibt vollständig innerhalb der 1080-Pixel-Komposition. Connector-Breiten können nicht negativ werden.
 
 ## Validierung
-
-Für importierte oder extern erzeugte Storyboards:
 
 ```ts
 import {assertMotionStoryboard, validateMotionStoryboard} from './motion-system';
 
 const result = validateMotionStoryboard(input);
-if (!result.ok) {
-  console.error(result.issues);
-}
+if (!result.ok) console.error(result.issues);
 
 const storyboard = assertMotionStoryboard(input);
 ```
@@ -154,123 +168,78 @@ Geprüft werden unter anderem:
 - doppelte Element- und Beat-IDs
 - unbekannte Ziel- und Quell-IDs
 - Beats außerhalb der Szenendauer
-- erlaubte FPS-, Dauer-, Label- und Elementgrenzen
+- FPS-, Dauer-, Label- und Elementgrenzen
 - erforderliche Elemente je Visualtyp
 - mindestens ein Werkzeug bei `tool-orchestration`
 - mindestens zwei Metriken bei `ranking`
 
 ## Qualitätsprüfung
 
-`inspectMotionStoryboardQuality()` ergänzt die harte Schema-Validierung um praktische Render-Hinweise:
+`inspectMotionStoryboardQuality()` meldet praktische Render-Risiken:
 
-- Satz länger als 140 Zeichen
-- Labels länger als 24 Zeichen
-- mehr als acht Elemente
+- zu langer Satz
+- zu lange Elementlabels
+- zu viele Elemente
 - fehlende sichtbare Labels
-- sehr kurze Szenen
-- Beats kurz vor Szenenende
-- fehlende Beat-Timings einer spezialisierten Stage
+- sehr kurze Szene
+- sehr späte Beats
+- fehlende Stage-Timings
+- mehrere unterschiedliche Aktionen desselben Elements auf demselben Frame
 
 Warnungen blockieren den Render nicht. Qualitätsfehler setzen `passed` auf `false`.
 
-## Preview und isolierter Einstiegspunkt
+## Preview
 
-`MotionPreviewRoot` registriert je Visualtyp eine eigene Composition im Ordner `Motion-System-Preview`.
+`MotionPreviewRoot` registriert je Visualtyp eine Composition unter `Motion-System-Preview`.
 
-Für CLI-Render und Smoke-Tests wird bewusst nicht der vollständige Kanal-Einstieg verwendet, sondern:
+Format:
+
+- 1080 × 1920
+- 30 FPS für Standardbeispiele
+- weißer Hintergrund mit KI-Kanal-Farben
+- Titel-Safe-Zone oben
+- Satz-Safe-Zone unten
+
+Der isolierte CLI-Einstieg ist:
 
 ```text
 ki/src/motion-system/remotion-entry.tsx
 ```
 
-Dieser Einstieg registriert ausschließlich die Motion-Preview. Die Prüfung hängt dadurch nicht von anderen Kanal-Compositions oder lokalen Workspace-Paketen ab.
+Damit hängen Motion-Tests und Render nicht von anderen Kanal-Compositions oder Workspace-Paketen ab.
 
-Format:
-
-- 1080 × 1920
-- 30 FPS für die Standardbeispiele
-- weißer Hintergrund mit KI-Kanal-Farben
-- Titel-Safe-Zone oben
-- Satz-Safe-Zone unten
-
-## Fokussierte Verifikation
-
-Die komplette codebasierte Prüfung:
-
-```bash
-npm run motion:verify
-```
-
-Der Befehl führt nacheinander aus:
-
-1. Syntaxprüfung der beiden Node-Render-Skripte
-2. alle Motion-System-Tests
-3. isolierten strikten TypeScript-Check über `ki/tsconfig.motion.json`
-4. Erzeugung des Renderplans
-
-Einzelbefehle:
+## Tests und Typecheck
 
 ```bash
 npm run motion:script-check
 npm run motion:test
 npm run motion:typecheck
-npm run motion:render-plan
+npm run motion:verify
 ```
 
-## Smoke- und Release-Prüfung
+`motion:verify` führt aus:
 
-Ein repräsentatives mittleres Bild für alle zehn Visualtypen:
+1. Syntaxprüfung der Node-Render-Skripte
+2. alle Motion-System-Tests
+3. isolierten TypeScript-Check über `ki/tsconfig.motion.json`
+4. Erzeugung des Renderplans
+
+Die Testmatrix umfasst zusätzlich:
+
+- Audio-Synchronisierung über alle zehn Visualtypen
+- FPS-Retiming bei 24, 30 und 60 FPS
+- vollständige Beat-Dauer innerhalb der Szene
+- deterministische Ergebnisse
+- Prozessketten-Grenzen
+- adaptive Satz-Typografie
+
+## Renderprüfung
 
 ```bash
 npm run motion:smoke
-```
-
-Das erzeugt je Visualtyp Frame 75. Zusammen mit Tests und Typecheck:
-
-```bash
-npm run motion:release-check
-```
-
-`motion:release-check` führt `motion:verify` und danach den Zehn-Typen-Smoke-Render aus.
-
-## Vollständiger Renderplan
-
-`MOTION_RENDER_PLAN` enthält je Composition:
-
-- Startframe
-- 25-Prozent-Frame
-- 50-Prozent-Frame
-- 75-Prozent-Frame
-- letzten Frame
-
-```ts
-import {MOTION_RENDER_PLAN} from './motion-system';
-
-for (const item of MOTION_RENDER_PLAN) {
-  console.log(item.compositionId, item.checkpoints);
-}
-```
-
-## Ausführbare Renderprüfung
-
-```bash
-npm run motion:render-plan
 npm run motion:render-stills
 npm run motion:render-videos
 npm run motion:render-all
-```
-
-Bedeutung:
-
-- `motion:render-plan`: schreibt und zeigt den Prüfplan
-- `motion:render-stills`: rendert fünf Prüfbilder je Visualtyp
-- `motion:render-videos`: rendert ein finales MP4 je Visualtyp
-- `motion:render-all`: rendert Prüfbilder und Videos
-
-Die Ergebnisse landen standardmäßig unter:
-
-```text
-out/motion-system/<visualtyp>/
 ```
 
 Gezielte Render:
@@ -281,13 +250,15 @@ MOTION_FRAMES=0,75,149 npm run motion:render-stills
 MOTION_CONCURRENCY=2 npm run motion:render-stills
 ```
 
-Erlaubt sind ein bis vier parallele Renderaufgaben. Eigene Pfade können über `MOTION_ENTRY_POINT` und `MOTION_OUTPUT_DIR` gesetzt werden.
+Ausgabe:
 
-Die CLI verwendet `npx --no-install`. Es wird keine fremde Remotion-Version nachgeladen.
+```text
+out/motion-system/<visualtyp>/
+```
+
+Die CLI verwendet `npx --no-install` und lädt keine andere Remotion-Version nach.
 
 ## Render-Artefakte kontrollieren
-
-Nach dem Render prüft `scripts/check-motion-renders.mjs`, ob alle erwarteten Dateien vorhanden, nicht leer und technisch plausibel sind.
 
 ```bash
 npm run motion:check-stills
@@ -297,66 +268,36 @@ npm run motion:check-renders
 
 Erwartet werden:
 
-- 50 PNG-Prüfframes: fünf Frames für jeden der zehn Visualtypen
-- 10 finale MP4-Dateien
-- insgesamt 60 gültige Render-Artefakte
+- 50 PNG-Prüfframes
+- 10 MP4-Dateien
+- 60 gültige Render-Artefakte insgesamt
 
-Zusätzlich werden die Dateisignaturen kontrolliert:
-
-- PNG-Dateien müssen die offizielle PNG-Signatur besitzen
-- MP4-Dateien müssen einen gültigen `ftyp`-Header besitzen
-
-Das Ergebnis wird als maschinenlesbarer Bericht gespeichert:
+Geprüft werden Existenz, Dateigröße, PNG-Signatur und MP4-`ftyp`-Header. Der Bericht wird geschrieben nach:
 
 ```text
 out/motion-system/release-report.json
 ```
 
-Fehlt eine Datei, ist sie leer oder besitzt sie keine passende Signatur, endet der Prüfbefehl mit einem Fehlercode und nennt jeden problematischen Pfad.
-
-Der vollständige lokale Freigabelauf ist:
+## Vollständiger Freigabelauf
 
 ```bash
 npm run motion:full-release-check
 ```
 
-Dieser Befehl führt Tests, Typecheck, Renderplan, alle Still-Render, alle Video-Render und die abschließende Artefaktprüfung aus.
+Der Befehl führt Tests, Typecheck, Renderplan, alle Prüfbilder, alle Videos und die Artefaktprüfung aus.
 
 ## GitHub Actions
 
-Der Workflow liegt unter:
+Der Workflow liegt unter `.github/workflows/motion-system-checks.yml` und ist derzeit nur manuell über `workflow_dispatch` startbar.
 
-```text
-.github/workflows/motion-system-checks.yml
-```
-
-Er enthält zwei Stufen:
-
-1. `verify`: Tests, isolierter Typecheck und Renderplan
-2. `smoke-render`: Frame 75 für alle zehn Visualtypen
-
-### Aktueller Runner-Hinweis
-
-Der private GitHub-Actions-Runner beendet Jobs derzeit vor dem ersten Workflow-Schritt. GitHub liefert dabei keine Steps, keine Logs und keine Diagnose-Artefakte. Das deutet auf eine Actions-, Billing- oder Runner-Einstellung des privaten Repositories hin und liefert keinen verwertbaren Codefehler.
-
-Der Workflow ist deshalb vorübergehend nur über `workflow_dispatch` startbar. Sobald die Repository-Einstellung korrigiert ist, muss der Workflow manuell ausgeführt werden. Erst ein tatsächlich erfolgreicher Lauf bestätigt Tests, Typecheck und Smoke-Render in GitHub Actions.
+Der private Repository-Runner hat die bisherigen Jobs vor dem ersten Workflow-Schritt beendet. GitHub lieferte dabei keine Steps, Logs oder Diagnose-Artefakte. Deshalb bestätigt ein roter historischer Lauf keinen konkreten Codefehler. Die Actions-, Billing- oder Runner-Einstellung muss separat geprüft werden.
 
 ## Prüfung vor Merge
 
-Im Repository-Root ausführen:
+1. `npm run motion:full-release-check`
+2. `release-report.json` meldet 60 von 60 gültigen Dateien
+3. alle Compositions visuell auf Textüberlauf, Überschneidungen und Safe-Zones prüfen
+4. Audio-verschobene Beat-Frames sichtbar kontrollieren
+5. erst danach den Draft-Status entfernen und mergen
 
-```bash
-npm run motion:full-release-check
-```
-
-Danach alle Compositions unter `Motion-System-Preview` visuell prüfen:
-
-- Textüberlauf
-- überlappende Karten
-- Safe-Zones oben und unten
-- alle Frames aus `MOTION_RENDER_PLAN`
-- finale 1080 × 1920-Videos
-- sichtbare Reaktion auf Audio-verschobene Beat-Frames
-- `release-report.json` zeigt 60 von 60 gültigen Dateien
-
-Der Feature-Branch darf erst nach erfolgreichem Laufzeit-, Render- und Preview-Check in `main` übernommen werden.
+Der Feature-Branch bleibt bis dahin getrennt von `main`.
