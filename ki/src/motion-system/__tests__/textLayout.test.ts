@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {getSentenceTypography} from '../textLayout';
+import {getLabelTypography, getSentenceTypography} from '../textLayout';
 
 describe('Satz-Typografie', () => {
   it('verwendet für kurze Sätze die größte Schrift', () => {
@@ -32,5 +32,38 @@ describe('Satz-Typografie', () => {
       expect(typography.fontSize).toBeGreaterThan(0);
       expect(typography.lineHeight).toBeGreaterThan(1);
     }
+  });
+});
+
+describe('Element-Label-Typografie', () => {
+  it('verkleinert lange Kartenbeschriftungen', () => {
+    const short = getLabelTypography('KI');
+    const medium = getLabelTypography('Aktueller Kontext');
+    const long = getLabelTypography('Automatisierte Dokumentenanalyse');
+
+    expect(short.fontSize).toBeGreaterThan(medium.fontSize);
+    expect(medium.fontSize).toBeGreaterThanOrEqual(long.fontSize);
+  });
+
+  it('respektiert individuelle Mindest- und Maximalgrößen', () => {
+    const typography = getLabelTypography('Sehr lange Kartenbeschriftung', {
+      maxFontSize: 42,
+      minFontSize: 28,
+    });
+
+    expect(typography.fontSize).toBeGreaterThanOrEqual(28);
+    expect(typography.fontSize).toBeLessThanOrEqual(42);
+  });
+
+  it('reduziert sehr lange Einzelwörter stärker', () => {
+    const normal = getLabelTypography('Dokumenten Analyse');
+    const longToken = getLabelTypography('Dokumentenanalyseautomatisierung');
+
+    expect(longToken.fontSize).toBeLessThan(normal.fontSize);
+  });
+
+  it('lehnt ungültige Schriftgrenzen ab', () => {
+    expect(() => getLabelTypography('Label', {maxFontSize: 20, minFontSize: 24})).toThrow();
+    expect(() => getLabelTypography('Label', {maxFontSize: 0})).toThrow();
   });
 });
