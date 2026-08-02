@@ -45,4 +45,29 @@ describe('Audio-Sync Wortabgleich', () => {
     );
     expect(aiShowBeat?.atFrame).toBe(30);
   });
+
+  it('richtet Verbindungen am gesprochenen Ziel statt an der Quelle aus', () => {
+    const storyboard = createDefaultStoryboard('Der KI-Agent nutzt Browser und Dateien.');
+    const originalBrowserConnection = storyboard.beats.find(
+      (beat) => beat.sourceId === 'ai' && beat.targetId === 'browser' && beat.action === 'connect',
+    )?.atFrame;
+
+    const alignedToAgent = alignStoryboardToWords(storyboard, [
+      {text: 'KI', startMs: 1000, endMs: 1200},
+    ]);
+    const browserConnectionAfterAgentWord = alignedToAgent.beats.find(
+      (beat) => beat.sourceId === 'ai' && beat.targetId === 'browser' && beat.action === 'connect',
+    )?.atFrame;
+
+    expect(browserConnectionAfterAgentWord).toBe(originalBrowserConnection);
+
+    const alignedToBrowser = alignStoryboardToWords(storyboard, [
+      {text: 'Browser', startMs: 1000, endMs: 1200},
+    ]);
+    const browserConnectionAfterBrowserWord = alignedToBrowser.beats.find(
+      (beat) => beat.sourceId === 'ai' && beat.targetId === 'browser' && beat.action === 'connect',
+    )?.atFrame;
+
+    expect(browserConnectionAfterBrowserWord).toBe(30);
+  });
 });
