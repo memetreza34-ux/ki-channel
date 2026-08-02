@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {MotionElement} from '../schema';
+import {getLabelTypography} from '../textLayout';
 
 const emphasisStyles: Record<MotionElement['emphasis'], {border: string; background: string; glow: string}> = {
   normal: {border: '#D9D4E7', background: '#FFFFFF', glow: 'rgba(26,26,46,0.08)'},
@@ -29,6 +30,10 @@ export const MotionCard: React.FC<{
   const rise = interpolate(progress, [0, 1], [28, 0]);
   const shake = shaking && frame >= appearAt ? Math.sin((frame - appearAt) * 1.9) * Math.max(0, 9 - (frame - appearAt) * 0.5) : 0;
   const style = emphasisStyles[element.emphasis];
+  const typography = getLabelTypography(element.label, {
+    maxFontSize: Math.min(34, Math.max(24, Math.round(height * 0.23))),
+    minFontSize: Math.min(22, Math.max(18, Math.round(height * 0.13))),
+  });
 
   return (
     <div
@@ -46,14 +51,17 @@ export const MotionCard: React.FC<{
         background: style.background,
         boxShadow: `0 24px 55px ${style.glow}`,
         color: '#1A1A2E',
-        fontSize: 34,
+        fontSize: typography.fontSize,
+        lineHeight: typography.lineHeight,
         fontWeight: 800,
-        letterSpacing: -0.8,
+        letterSpacing: typography.letterSpacing,
         opacity,
         transform: `translate3d(${shake}px, ${rise}px, 0) scale(${scale})`,
         textAlign: 'center',
         padding: 22,
         boxSizing: 'border-box',
+        overflowWrap: 'anywhere',
+        overflow: 'hidden',
       }}
     >
       {element.label}
