@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export type ContextWindowStageTimings = {
   oldFrame?: number;
@@ -49,6 +50,9 @@ export const ContextWindowStage: React.FC<{
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
+  const currentTypography = getLabelTypography(currentLabel, {maxFontSize: 30, minFontSize: 22});
+  const oldTypography = getLabelTypography(oldLabel, {maxFontSize: 28, minFontSize: 20});
+  const newTypography = getLabelTypography(newLabel, {maxFontSize: 28, minFontSize: 20});
 
   return (
     <div style={{position: 'absolute', left: x, top: y, width: 760, height: 470}}>
@@ -65,21 +69,36 @@ export const ContextWindowStage: React.FC<{
           boxShadow: '0 28px 70px rgba(110,69,201,0.20)',
           opacity: activeOpacity,
           transform: `translateY(${interpolate(activeOpacity, [0, 1], [24, 0])}px)`,
+          boxSizing: 'border-box',
+          overflow: 'hidden',
         }}
       >
-        <div style={{padding: '28px 30px', color: '#1A1A2E', fontSize: 30, fontWeight: 900, overflowWrap: 'anywhere'}}>
+        <div
+          style={{
+            minHeight: 88,
+            padding: '24px 30px 14px',
+            color: '#1A1A2E',
+            fontSize: currentTypography.fontSize,
+            lineHeight: currentTypography.lineHeight,
+            letterSpacing: currentTypography.letterSpacing,
+            fontWeight: 900,
+            overflowWrap: 'anywhere',
+            boxSizing: 'border-box',
+          }}
+        >
           {currentLabel}
         </div>
         {[0, 1, 2].map((index) => (
           <div
             key={index}
             style={{
-              margin: '18px 28px 0',
+              margin: '13px 28px 0',
               height: 54,
               borderRadius: 18,
               background: index === 2 ? '#EBDDFF' : '#FFFFFF',
               border: '2px solid #DDD4ED',
               boxShadow: '0 8px 18px rgba(26,26,46,0.06)',
+              boxSizing: 'border-box',
             }}
           />
         ))}
@@ -98,9 +117,27 @@ export const ContextWindowStage: React.FC<{
           boxShadow: '0 18px 40px rgba(26,26,46,0.08)',
           opacity: oldOpacity,
           transform: `rotate(${interpolate(oldDim, [0, 1], [0, -8])}deg)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 24,
+          boxSizing: 'border-box',
+          overflow: 'hidden',
         }}
       >
-        <div style={{padding: 24, fontSize: 28, fontWeight: 850, color: '#6F6B7B', overflowWrap: 'anywhere'}}>{oldLabel}</div>
+        <div
+          style={{
+            fontSize: oldTypography.fontSize,
+            lineHeight: oldTypography.lineHeight,
+            letterSpacing: oldTypography.letterSpacing,
+            fontWeight: 850,
+            color: '#6F6B7B',
+            textAlign: 'center',
+            overflowWrap: 'anywhere',
+          }}
+        >
+          {oldLabel}
+        </div>
       </div>
 
       <div
@@ -115,7 +152,9 @@ export const ContextWindowStage: React.FC<{
           border: '3px solid #B98CFF',
           background: '#F7F1FF',
           color: '#1A1A2E',
-          fontSize: 28,
+          fontSize: newTypography.fontSize,
+          lineHeight: newTypography.lineHeight,
+          letterSpacing: newTypography.letterSpacing,
           fontWeight: 900,
           display: 'flex',
           alignItems: 'center',
@@ -124,6 +163,8 @@ export const ContextWindowStage: React.FC<{
           opacity: newOpacity,
           transform: `translateX(${interpolate(newOpacity, [0, 1], [24, 0])}px)`,
           overflowWrap: 'anywhere',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
         }}
       >
         {newLabel}
