@@ -71,7 +71,7 @@ jobs:
   smoke-render:
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,16 +84,14 @@ jobs:
       - name: Install root dependencies without legacy workspaces
         run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
 
-      - name: Render representative middle frame
+      - name: Render middle frame for all visual types
         env:
-          MOTION_TYPES: input-output
-          MOTION_FRAMES: '75'
-          MOTION_CONCURRENCY: '1'
-        run: npm run motion:render-stills
+          MOTION_CONCURRENCY: '2'
+        run: npm run motion:smoke
 
-      - name: Upload smoke render
+      - name: Upload all smoke renders
         uses: actions/upload-artifact@v4
         with:
-          name: motion-smoke-render
-          path: out/motion-system/input-output/frame-75.png
+          name: motion-smoke-renders
+          path: out/motion-system/*/frame-75.png
           if-no-files-found: error
