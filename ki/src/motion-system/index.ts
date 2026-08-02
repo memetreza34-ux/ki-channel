@@ -1,6 +1,7 @@
 export * from './schema';
 export * from './router';
 export * from './audioSync';
+export * from './validation';
 export * from './examples';
 export * from './MotionScene';
 export * from './MotionPreviewRoot';
