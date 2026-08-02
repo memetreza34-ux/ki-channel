@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {alignStoryboardToWords} from '../audioSync';
+import {retimeMotionStoryboardFps} from '../fps';
 import {createDefaultStoryboard} from '../router';
 import {motionStoryboardSchema} from '../schema';
 
@@ -56,6 +57,24 @@ describe('Audio-Sync Reihenfolge', () => {
     )?.atFrame ?? 0;
 
     expect(inputConnection).toBeGreaterThanOrEqual(Math.max(inputShow, aiShow) + 6);
+    expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
+  });
+
+  it('skaliert den Sichtbarkeitsabstand bei 60 FPS auf zwölf Frames', () => {
+    const base = createDefaultStoryboard('Daten fließen durch die KI zum Ergebnis.');
+    const storyboard = retimeMotionStoryboardFps(base, 60);
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Datenquelle', startMs: 0, endMs: 150},
+      {text: 'KI', startMs: 200, endMs: 400},
+    ]);
+
+    const inputShow = beatFrame(aligned, 'input', 'show') ?? 0;
+    const aiShow = beatFrame(aligned, 'ai', 'show') ?? 0;
+    const inputConnection = aligned.beats.find(
+      (beat) => beat.sourceId === 'input' && beat.targetId === 'ai' && beat.action === 'connect',
+    )?.atFrame ?? 0;
+
+    expect(inputConnection).toBeGreaterThanOrEqual(Math.max(inputShow, aiShow) + 12);
     expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
   });
 
