@@ -3,6 +3,7 @@ export * from './router';
 export * from './audioSync';
 export * from './validation';
 export * from './quality';
+export * from './runtime';
 export * from './examples';
 export * from './MotionScene';
 export * from './MotionPreviewRoot';
