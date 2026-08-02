@@ -3,7 +3,7 @@ import type {MotionStoryboard, MotionVisualType} from './schema';
 
 const EXAMPLE_SENTENCES: Record<MotionVisualType, string> = {
   'input-output': 'Die KI erstellt aus einer Eingabe ein fertiges Ergebnis.',
-  'tool-orchestration': 'Der KI-Agent nutzt Browser, Dateien und E-Mail für die Aufgabe.',
+  'tool-orchestration': 'Der KI-Agent nutzt Browser und Dateien für die Aufgabe.',
   comparison: 'Modell A ist im Vergleich schneller als Modell B.',
   'before-after': 'Vorher dauerte der Prozess lange, jetzt läuft er automatisch.',
   'data-flow': 'Daten fließen aus mehreren Quellen durch die KI zum Ergebnis.',
