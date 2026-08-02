@@ -17,7 +17,10 @@ export type BuildMotionSceneResult = {
 
 export const buildMotionScene = ({sentence, words = [], fps}: BuildMotionSceneInput): BuildMotionSceneResult => {
   const base = createDefaultStoryboard(sentence);
-  const aligned = words.length > 0 ? alignStoryboardToWords(base, words, fps ?? base.fps) : base;
+  const configured: MotionStoryboard = fps === undefined ? base : {...base, fps};
+  const aligned = words.length > 0
+    ? alignStoryboardToWords(configured, words, configured.fps)
+    : configured;
   const storyboard = assertMotionStoryboard(aligned);
   const quality = inspectMotionStoryboardQuality(storyboard);
 
