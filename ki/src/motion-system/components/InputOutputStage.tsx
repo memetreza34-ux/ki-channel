@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
 export type InputOutputStageTimings = {
@@ -30,34 +31,41 @@ export const InputOutputStage: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  const card = (label: string, x: number, y: number, progress: number, accent: string) => (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width: 250,
-        height: 150,
-        borderRadius: 34,
-        background: '#FFFFFF',
-        border: `4px solid ${accent}`,
-        boxShadow: '0 24px 60px rgba(26,26,46,0.10)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 34,
-        fontWeight: 900,
-        color: '#1A1A2E',
-        opacity: progress,
-        transform: `translateY(${interpolate(progress, [0, 1], [28, 0])}px) scale(${interpolate(progress, [0, 1], [0.9, 1])})`,
-        textAlign: 'center',
-        padding: 20,
-        overflowWrap: 'anywhere',
-      }}
-    >
-      {label}
-    </div>
-  );
+  const card = (label: string, x: number, y: number, progress: number, accent: string) => {
+    const typography = getLabelTypography(label, {maxFontSize: 34, minFontSize: 22});
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+          width: 250,
+          height: 150,
+          borderRadius: 34,
+          background: '#FFFFFF',
+          border: `4px solid ${accent}`,
+          boxShadow: '0 24px 60px rgba(26,26,46,0.10)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: typography.fontSize,
+          lineHeight: typography.lineHeight,
+          letterSpacing: typography.letterSpacing,
+          fontWeight: 900,
+          color: '#1A1A2E',
+          opacity: progress,
+          transform: `translateY(${interpolate(progress, [0, 1], [28, 0])}px) scale(${interpolate(progress, [0, 1], [0.9, 1])})`,
+          textAlign: 'center',
+          padding: 20,
+          overflowWrap: 'anywhere',
+          boxSizing: 'border-box',
+        }}
+      >
+        {label}
+      </div>
+    );
+  };
 
   return (
     <>
