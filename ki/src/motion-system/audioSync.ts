@@ -1,3 +1,4 @@
+import {retimeMotionStoryboardFps} from './fps';
 import type {MotionStoryboard} from './schema';
 
 export type WordTimestamp = {
@@ -122,15 +123,18 @@ export const alignStoryboardToWords = (
     throw new Error('FPS muss eine positive Zahl sein.');
   }
 
+  const configuredStoryboard = fps === storyboard.fps
+    ? storyboard
+    : retimeMotionStoryboardFps(storyboard, fps);
   const connectorLeadFrames = Math.max(1, Math.round(fps * CONNECTOR_LEAD_SECONDS));
   const validWords = words.filter(isValidTimestamp).sort((a, b) => a.startMs - b.startMs);
-  if (validWords.length === 0) return storyboard;
+  if (validWords.length === 0) return configuredStoryboard;
 
   const timedTokens = createTimedTokens(validWords);
-  const labelTokenFrequency = createLabelTokenFrequency(storyboard);
+  const labelTokenFrequency = createLabelTokenFrequency(configuredStoryboard);
   const targetWordFrames = new Map<string, number>();
 
-  for (const element of storyboard.elements) {
+  for (const element of configuredStoryboard.elements) {
     const matchingTime = findFirstKeywordTime(
       timedTokens,
       element.label,
@@ -142,7 +146,7 @@ export const alignStoryboardToWords = (
   }
 
   const showBeatByTarget = new Map<string, MotionStoryboard['beats'][number]>();
-  for (const beat of storyboard.beats) {
+  for (const beat of configuredStoryboard.beats) {
     if (beat.action !== 'show') continue;
     const current = showBeatByTarget.get(beat.targetId);
     if (!current || beat.atFrame < current.atFrame) {
@@ -158,7 +162,7 @@ export const alignStoryboardToWords = (
     showFrameShifts.set(targetId, shiftedFrame - showBeat.atFrame);
   }
 
-  const remappedBeats = storyboard.beats.map((beat, originalIndex) => {
+  const remappedBeats = configuredStoryboard.beats.map((beat, originalIndex) => {
     const targetWordFrame = targetWordFrames.get(beat.targetId);
     let atFrame = beat.atFrame;
 
@@ -209,14 +213,14 @@ export const alignStoryboardToWords = (
   const durationInFrames = Math.min(
     900,
     Math.max(
-      storyboard.durationInFrames,
+      configuredStoryboard.durationInFrames,
       Math.ceil((maxEndMs / 1000) * fps) + fps,
       maxBeatEnd + 1,
     ),
   );
 
   return {
-    ...storyboard,
+    ...configuredStoryboard,
     fps,
     durationInFrames,
     beats: remappedBeats
