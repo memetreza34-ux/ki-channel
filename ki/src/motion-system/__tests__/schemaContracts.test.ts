@@ -58,6 +58,62 @@ describe('Visualtyp-Verträge', () => {
     }
   });
 
+  it('lehnt Connect-Beats ohne Quelle ab', () => {
+    const storyboard = createDefaultStoryboard('Daten fließen durch die KI zum Ergebnis.');
+    const invalid = {
+      ...storyboard,
+      beats: storyboard.beats.map((beat) =>
+        beat.action === 'connect' ? {...beat, sourceId: undefined} : beat,
+      ),
+    };
+
+    const result = motionStoryboardSchema.safeParse(invalid);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.some((issue) => issue.message.includes('benötigt eine Quelle')),
+      ).toBe(true);
+    }
+  });
+
+  it('lehnt identische Beat-Quelle und Ziel ab', () => {
+    const storyboard = createDefaultStoryboard('Daten fließen durch die KI zum Ergebnis.');
+    const invalid = {
+      ...storyboard,
+      beats: storyboard.beats.map((beat) =>
+        beat.action === 'connect' ? {...beat, sourceId: beat.targetId} : beat,
+      ),
+    };
+
+    const result = motionStoryboardSchema.safeParse(invalid);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.some((issue) => issue.message.includes('nicht identisch')),
+      ).toBe(true);
+    }
+  });
+
+  it('lehnt Beats ab, deren sichtbare Dauer über das Szenenende hinausläuft', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    const invalid = {
+      ...storyboard,
+      beats: storyboard.beats.map((beat, index) =>
+        index === 0
+          ? {...beat, atFrame: storyboard.durationInFrames - 1, durationFrames: 18}
+          : beat,
+      ),
+    };
+
+    const result = motionStoryboardSchema.safeParse(invalid);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.some((issue) => issue.message.includes('endet außerhalb')),
+      ).toBe(true);
+    }
+  });
+
   it('alle zehn Standard-Storyboards erfüllen ihre Verträge', () => {
     const sentences = [
       'Die KI erstellt eine Zusammenfassung.',
