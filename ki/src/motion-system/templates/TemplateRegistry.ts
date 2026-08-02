@@ -1,55 +1,52 @@
 import type {MotionStoryboard} from '../schema';
 
-export type TemplateLayout = {
-  positions: Record<string, {x: number; y: number}>;
+export type TemplateMetadata = {
   title: string;
+  purpose: string;
 };
 
-export const TEMPLATE_REGISTRY: Record<MotionStoryboard['visualType'], TemplateLayout> = {
+export const TEMPLATE_REGISTRY: Record<
+  MotionStoryboard['visualType'],
+  TemplateMetadata
+> = {
   'input-output': {
     title: 'Eingabe wird Ergebnis',
-    positions: {input: {x: 70, y: 650}, ai: {x: 410, y: 650}, output: {x: 750, y: 650}},
+    purpose: 'Zeigt eine direkte Verarbeitung von einer Eingabe zu einem Ergebnis.',
   },
   'tool-orchestration': {
     title: 'KI nutzt mehrere Werkzeuge',
-    positions: {
-      task: {x: 70, y: 650},
-      ai: {x: 410, y: 650},
-      browser: {x: 730, y: 420},
-      files: {x: 730, y: 680},
-      result: {x: 410, y: 1040},
-    },
+    purpose: 'Zeigt einen Agenten, der mehrere Werkzeuge für eine Aufgabe koordiniert.',
   },
   comparison: {
     title: 'Direkter Vergleich',
-    positions: {left: {x: 80, y: 660}, right: {x: 740, y: 660}, metric: {x: 410, y: 1030}},
+    purpose: 'Stellt zwei Varianten und ein gemeinsames Vergleichskriterium gegenüber.',
   },
   'before-after': {
     title: 'Vorher und Nachher',
-    positions: {input: {x: 80, y: 650}, ai: {x: 410, y: 650}, output: {x: 740, y: 650}},
+    purpose: 'Visualisiert eine erkennbare Veränderung zwischen zwei Zuständen.',
   },
   'data-flow': {
     title: 'Daten fließen durch die KI',
-    positions: {input: {x: 70, y: 650}, ai: {x: 410, y: 650}, output: {x: 750, y: 650}},
+    purpose: 'Zeigt den Weg von einer Datenquelle durch die Verarbeitung zum Ergebnis.',
   },
   'error-path': {
     title: 'Fehler erkennen und prüfen',
-    positions: {input: {x: 60, y: 650}, ai: {x: 380, y: 650}, error: {x: 720, y: 470}, check: {x: 720, y: 830}},
+    purpose: 'Zeigt einen problematischen Pfad und die anschließende Kontrolle.',
   },
   'context-window': {
     title: 'Nur aktueller Kontext zählt',
-    positions: {input: {x: 80, y: 650}, ai: {x: 410, y: 650}, output: {x: 740, y: 650}},
+    purpose: 'Visualisiert, wie alter, aktueller und neuer Kontext behandelt werden.',
   },
   'agent-loop': {
     title: 'Planen, ausführen, prüfen',
-    positions: {input: {x: 80, y: 650}, ai: {x: 410, y: 650}, output: {x: 740, y: 650}},
+    purpose: 'Zeigt die wiederholte Arbeitsfolge eines autonomen Agenten.',
   },
   ranking: {
     title: 'Ergebnisse werden gerankt',
-    positions: {left: {x: 80, y: 830}, metric: {x: 410, y: 620}, right: {x: 740, y: 430}},
+    purpose: 'Ordnet mehrere Ergebnisse nach einem numerischen Wert.',
   },
   'process-chain': {
     title: 'Schritt für Schritt',
-    positions: {input: {x: 60, y: 650}, ai: {x: 410, y: 650}, output: {x: 760, y: 650}},
+    purpose: 'Zeigt eine geordnete Folge von bis zu vier Prozessschritten.',
   },
 };
