@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
 type AgentLoopStep = {
@@ -47,6 +48,7 @@ export const AgentLoopStage: React.FC<{
     frame: frame - resultFrame,
     config: {damping: 18, stiffness: 175},
   });
+  const resultTypography = getLabelTypography(resultLabel, {maxFontSize: 34, minFontSize: 23});
 
   return (
     <>
@@ -82,6 +84,8 @@ export const AgentLoopStage: React.FC<{
         const rad = (step.angle * Math.PI) / 180;
         const x = 540 + Math.cos(rad) * 255 - 105;
         const y = 775 + Math.sin(rad) * 255 - 55;
+        const typography = getLabelTypography(step.label, {maxFontSize: 30, minFontSize: 21});
+
         return (
           <div
             key={`${step.label}-${index}`}
@@ -98,7 +102,9 @@ export const AgentLoopStage: React.FC<{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: step.label.length > 15 ? 25 : 30,
+              fontSize: typography.fontSize,
+              lineHeight: typography.lineHeight,
+              letterSpacing: typography.letterSpacing,
               fontWeight: 900,
               color: '#1A1A2E',
               opacity: local,
@@ -110,6 +116,8 @@ export const AgentLoopStage: React.FC<{
               textAlign: 'center',
               padding: 14,
               overflowWrap: 'anywhere',
+              boxSizing: 'border-box',
+              overflow: 'hidden',
             }}
           >
             {step.label}
@@ -130,7 +138,9 @@ export const AgentLoopStage: React.FC<{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: resultLabel.length > 22 ? 28 : 34,
+          fontSize: resultTypography.fontSize,
+          lineHeight: resultTypography.lineHeight,
+          letterSpacing: resultTypography.letterSpacing,
           fontWeight: 900,
           color: '#1A1A2E',
           opacity: resultProgress,
@@ -142,6 +152,8 @@ export const AgentLoopStage: React.FC<{
           textAlign: 'center',
           padding: 20,
           overflowWrap: 'anywhere',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
         }}
       >
         {resultLabel}
