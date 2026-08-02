@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {resolveBeatFrame} from './beatTiming';
 import {motionStoryboardSchema, type MotionStoryboard, type MotionVisualType} from './schema';
+import {getSentenceTypography} from './textLayout';
 import {ComparisonStage} from './components/ComparisonStage';
 import {ErrorPathStage} from './components/ErrorPathStage';
 import {ContextWindowStage} from './components/ContextWindowStage';
@@ -221,6 +222,7 @@ const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
 export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
   const parsed = motionStoryboardSchema.parse(storyboard);
   const template = TEMPLATE_REGISTRY[parsed.visualType];
+  const sentenceTypography = getSentenceTypography(parsed.sentence);
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -253,11 +255,15 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          fontSize: 34,
-          lineHeight: 1.25,
+          fontSize: sentenceTypography.fontSize,
+          lineHeight: sentenceTypography.lineHeight,
+          letterSpacing: sentenceTypography.letterSpacing,
           color: '#1A1A2E',
           fontWeight: 700,
           textShadow: '0 2px 10px rgba(255,255,255,0.95)',
+          overflowWrap: 'anywhere',
+          padding: '0 10px',
+          boxSizing: 'border-box',
         }}
       >
         {parsed.sentence}
