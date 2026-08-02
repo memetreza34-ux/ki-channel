@@ -1,4 +1,5 @@
 import {MOTION_TIMELINE_COMPOSITION_ID} from './compositionIds';
+import {MOTION_RENDER_CONFIG} from './renderConfig';
 import type {MotionTimeline} from './timeline';
 import {MOTION_TIMELINE_EXAMPLE} from './timelineExamples';
 
@@ -21,11 +22,29 @@ export const createMotionTimelineRenderPlan = (
     .sort((left, right) => left - right);
 
   return {
-    targetKey: 'timeline-demo',
+    targetKey: MOTION_RENDER_CONFIG.timeline.targetKey,
     compositionId: MOTION_TIMELINE_COMPOSITION_ID,
     timeline,
     checkpoints,
   };
 };
 
-export const MOTION_TIMELINE_RENDER_PLAN = createMotionTimelineRenderPlan();
+const defaultPlan = createMotionTimelineRenderPlan();
+const configuredCheckpoints = MOTION_RENDER_CONFIG.timeline.checkpoints;
+const checkpointsMatchManifest =
+  defaultPlan.checkpoints.length === configuredCheckpoints.length &&
+  defaultPlan.checkpoints.every(
+    (frame, index) => frame === configuredCheckpoints[index],
+  );
+
+if (
+  defaultPlan.timeline.totalDurationInFrames !==
+    MOTION_RENDER_CONFIG.timeline.durationInFrames ||
+  !checkpointsMatchManifest
+) {
+  throw new Error(
+    'Timeline-Demo und gemeinsames Render-Manifest sind nicht synchron.',
+  );
+}
+
+export const MOTION_TIMELINE_RENDER_PLAN = defaultPlan;
