@@ -109,12 +109,9 @@ sofort bei JEDEM Reel-Bau vorab prüfen:
 8. **Zoom/Push-in nicht mechanisch auf jede Szene** — nur wo es wirklich passt, sonst ruhiges Bild.
 9. **Animation ohne erkennbaren Sinn → komplett entfernen, nicht flicken.** Test: "Ist beim Anschauen
    sofort klar was hier passiert und warum?" Wenn nein: raus damit.
-10. **Bild-Prompts: Metapher statt Objekt-Icon** + **volle Editorial-Illustration statt isoliertes
-    Objekt auf Weiß** (siehe `channels/ki/gehirn/BILDSTIL.md` für Details + Beispiele). Vor jedem
-    Prompt: "Versteht jemand die Aussage allein am Bild?"
-11. **Vor Fertigmeldung nochmal `02-bilder/images/` und `01-script-audio/audio/` prüfen** — Arman legt
+10. **Vor Fertigmeldung nochmal `02-bilder/images/` und `01-script-audio/audio/` prüfen** — Arman legt
     Assets oft mitten im Bau ab, nicht nur zu Beginn.
-12. **Erst bauen, wenn echte Bilder + Audio da sind** — nicht mit Platzhaltern vorpreschen, außer
+11. **Erst bauen, wenn echte Bilder + Audio da sind** — nicht mit Platzhaltern vorpreschen, außer
     Arman sagt das explizit.
-13. Bei generierten Bildern: **auf eingebrannten Text/Wasserzeichen/Layout-Debug-Hinweise prüfen**
+12. Bei generierten Bildern: **auf eingebrannten Text/Wasserzeichen/Layout-Debug-Hinweise prüfen**
     (z.B. Prompt-interne Positionsangaben, die versehentlich als sichtbarer Text gerendert wurden).
