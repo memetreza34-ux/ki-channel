@@ -10,6 +10,7 @@ import {ErrorPathStage} from './components/ErrorPathStage';
 import {ContextWindowStage} from './components/ContextWindowStage';
 import {ProcessChainStage} from './components/ProcessChainStage';
 import {RankingStage} from './components/RankingStage';
+import {InputOutputStage} from './components/InputOutputStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -31,9 +32,14 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
   const aiElement = parsed.elements.find((element) => element.id === 'ai');
   const aiPos = positions.ai;
   const byId = (id: string) => parsed.elements.find((element) => element.id === id);
-  const usesDedicatedStage = ['comparison', 'error-path', 'context-window', 'process-chain', 'ranking'].includes(
-    parsed.visualType,
-  );
+  const usesDedicatedStage = [
+    'input-output',
+    'comparison',
+    'error-path',
+    'context-window',
+    'process-chain',
+    'ranking',
+  ].includes(parsed.visualType);
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -52,6 +58,14 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
       >
         {template.title}
       </div>
+
+      {parsed.visualType === 'input-output' ? (
+        <InputOutputStage
+          inputLabel={byId('input')?.label ?? 'Eingabe'}
+          outputLabel={byId('output')?.label ?? 'Ergebnis'}
+          startFrame={0}
+        />
+      ) : null}
 
       {parsed.visualType === 'comparison' ? (
         <ComparisonStage
