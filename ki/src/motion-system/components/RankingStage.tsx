@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export type RankingItem = {
   label: string;
@@ -43,6 +44,8 @@ export const RankingStage: React.FC<{
         const width = getRankingBarWidth(item.value, max);
         const rank = index + 1;
         const rowScale = rank === 1 ? interpolate(highlight, [0, 1], [1, 1.025]) : 1;
+        const typography = getLabelTypography(item.label, {maxFontSize: 28, minFontSize: 20});
+
         return (
           <div
             key={`${item.label}-${index}`}
@@ -59,7 +62,19 @@ export const RankingStage: React.FC<{
           >
             <div style={{fontSize: 34, fontWeight: 900, color: '#6E45C9'}}>{rank}</div>
             <div style={{minWidth: 0}}>
-              <div style={{fontSize: item.label.length > 24 ? 24 : 28, fontWeight: 800, color: '#1A1A2E', marginBottom: 10, overflowWrap: 'anywhere'}}>{item.label}</div>
+              <div
+                style={{
+                  fontSize: typography.fontSize,
+                  lineHeight: typography.lineHeight,
+                  letterSpacing: typography.letterSpacing,
+                  fontWeight: 800,
+                  color: '#1A1A2E',
+                  marginBottom: 10,
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                {item.label}
+              </div>
               <div style={{height: 34, background: '#EEEAF6', borderRadius: 999, overflow: 'hidden'}}>
                 <div
                   style={{
