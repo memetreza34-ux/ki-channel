@@ -1,5 +1,9 @@
 import {describe, expect, it} from 'vitest';
-import {createMotionRenderCommands, MOTION_RENDER_COMMANDS} from '../renderCommands';
+import {
+  createMotionRenderCommands,
+  DEFAULT_MOTION_ENTRY_POINT,
+  MOTION_RENDER_COMMANDS,
+} from '../renderCommands';
 import {MOTION_RENDER_PLAN} from '../renderPlan';
 
 describe('Motion-Render-Kommandos', () => {
@@ -11,6 +15,15 @@ describe('Motion-Render-Kommandos', () => {
     for (const [index, commands] of MOTION_RENDER_COMMANDS.entries()) {
       expect(commands.frameCommands).toHaveLength(MOTION_RENDER_PLAN[index].checkpoints.length);
       expect(commands.frameCommands.every((command) => command.includes('remotion still'))).toBe(true);
+      expect(commands.frameCommands.every((command) => command.includes('--overwrite'))).toBe(true);
+    }
+  });
+
+  it('verwendet standardmäßig den isolierten Motion-Einstiegspunkt', () => {
+    for (const commands of MOTION_RENDER_COMMANDS) {
+      expect(commands.frameCommands.every((command) => command.includes(DEFAULT_MOTION_ENTRY_POINT))).toBe(true);
+      expect(commands.finalRenderCommand).toContain(DEFAULT_MOTION_ENTRY_POINT);
+      expect(commands.frameCommands.every((command) => command.includes('npx --no-install'))).toBe(true);
     }
   });
 
@@ -19,6 +32,7 @@ describe('Motion-Render-Kommandos', () => {
       expect(commands.finalRenderCommand).toContain('remotion render');
       expect(commands.finalRenderCommand).toContain('.mp4');
       expect(commands.finalRenderCommand).toContain(commands.compositionId);
+      expect(commands.finalRenderCommand).toContain('--overwrite');
     }
   });
 
