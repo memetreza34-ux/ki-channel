@@ -10,6 +10,7 @@ export * from './validation';
 export * from './quality';
 export * from './runtime';
 export * from './timeline';
+export * from './timelineNavigation';
 export * from './timelineExamples';
 export * from './timelineRenderPlan';
 export * from './serialization';
