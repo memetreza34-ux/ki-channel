@@ -38,6 +38,22 @@ describe('alignStoryboardToWords', () => {
     expect(aligned.durationInFrames).toBeGreaterThanOrEqual(72);
     expect(() => motionStoryboardSchema.parse(aligned)).not.toThrow();
   });
+
+  it('verschiebt passende Beats auf Wort-Timestamps', () => {
+    const storyboard = createDefaultStoryboard('Die KI nutzt Dateien.');
+    const aligned = alignStoryboardToWords(storyboard, [
+      {text: 'Die', startMs: 0, endMs: 100},
+      {text: 'KI', startMs: 200, endMs: 400},
+      {text: 'Dateien', startMs: 1000, endMs: 1300},
+    ]);
+    const filesBeat = aligned.beats.find((beat) => beat.targetId === 'files');
+    expect(filesBeat?.atFrame).toBe(30);
+  });
+
+  it('lässt das Storyboard ohne Wörter unverändert', () => {
+    const storyboard = createDefaultStoryboard('Die KI erstellt eine Zusammenfassung.');
+    expect(alignStoryboardToWords(storyboard, [])).toBe(storyboard);
+  });
 });
 
 describe('TEMPLATE_REGISTRY', () => {
