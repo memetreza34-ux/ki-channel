@@ -11,7 +11,7 @@ type TimedToken = {
   startMs: number;
 };
 
-const CONNECTOR_LEAD_FRAMES = 6;
+const CONNECTOR_LEAD_SECONDS = 0.2;
 
 const normalize = (value: string) =>
   value
@@ -122,6 +122,7 @@ export const alignStoryboardToWords = (
     throw new Error('FPS muss eine positive Zahl sein.');
   }
 
+  const connectorLeadFrames = Math.max(1, Math.round(fps * CONNECTOR_LEAD_SECONDS));
   const validWords = words.filter(isValidTimestamp).sort((a, b) => a.startMs - b.startMs);
   if (validWords.length === 0) return storyboard;
 
@@ -167,7 +168,7 @@ export const alignStoryboardToWords = (
       const sourceShowFrame = beat.sourceId ? shiftedShowFrames.get(beat.sourceId) : undefined;
       const targetShowFrame = shiftedShowFrames.get(beat.targetId);
       const minimumVisibleFrame =
-        Math.max(sourceShowFrame ?? 0, targetShowFrame ?? 0) + CONNECTOR_LEAD_FRAMES;
+        Math.max(sourceShowFrame ?? 0, targetShowFrame ?? 0) + connectorLeadFrames;
       atFrame = Math.max(targetWordFrame ?? beat.atFrame, minimumVisibleFrame);
     } else {
       const showBeat = showBeatByTarget.get(beat.targetId);
