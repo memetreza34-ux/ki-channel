@@ -2,16 +2,30 @@ import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {ProcessingCore} from './ProcessingCore';
 
+export type InputOutputStageTimings = {
+  inputFrame?: number;
+  coreFrame?: number;
+  flowFrame?: number;
+  outputFrame?: number;
+};
+
 export const InputOutputStage: React.FC<{
   inputLabel?: string;
   outputLabel?: string;
   startFrame?: number;
-}> = ({inputLabel = 'Eingabe', outputLabel = 'Ergebnis', startFrame = 0}) => {
+  timings?: InputOutputStageTimings;
+}> = ({inputLabel = 'Eingabe', outputLabel = 'Ergebnis', startFrame = 0, timings}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const input = spring({fps, frame: frame - startFrame, config: {damping: 18, stiffness: 170}});
-  const output = spring({fps, frame: frame - (startFrame + 52), config: {damping: 18, stiffness: 170}});
-  const flow = interpolate(frame, [startFrame + 18, startFrame + 86], [0, 1], {
+  const inputFrame = timings?.inputFrame ?? startFrame;
+  const coreFrame = timings?.coreFrame ?? startFrame + 18;
+  const flowFrame = timings?.flowFrame ?? startFrame + 18;
+  const outputFrame = timings?.outputFrame ?? startFrame + 52;
+  const flowEndFrame = Math.max(flowFrame + 1, outputFrame + 18);
+
+  const input = spring({fps, frame: frame - inputFrame, config: {damping: 18, stiffness: 170}});
+  const output = spring({fps, frame: frame - outputFrame, config: {damping: 18, stiffness: 170}});
+  const flow = interpolate(frame, [flowFrame, flowEndFrame], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -36,6 +50,9 @@ export const InputOutputStage: React.FC<{
         color: '#1A1A2E',
         opacity: progress,
         transform: `translateY(${interpolate(progress, [0, 1], [28, 0])}px) scale(${interpolate(progress, [0, 1], [0.9, 1])})`,
+        textAlign: 'center',
+        padding: 20,
+        overflowWrap: 'anywhere',
       }}
     >
       {label}
@@ -45,7 +62,7 @@ export const InputOutputStage: React.FC<{
   return (
     <>
       {card(inputLabel, 70, 650, input, '#D9D4E7')}
-      <ProcessingCore x={445} y={605} startFrame={startFrame + 18} label="KI" />
+      <ProcessingCore x={445} y={605} startFrame={coreFrame} label="KI" />
       {card(outputLabel, 760, 650, output, '#6FD19C')}
 
       <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
