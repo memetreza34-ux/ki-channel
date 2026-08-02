@@ -1,6 +1,7 @@
 export * from './schema';
 export * from './router';
 export * from './audioSync';
+export * from './beatTiming';
 export * from './validation';
 export * from './quality';
 export * from './runtime';
