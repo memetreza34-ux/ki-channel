@@ -1,14 +1,9 @@
 name: Motion System Checks
 
+# Der private Repository-Runner beendet Jobs aktuell vor dem ersten Schritt.
+# Bis die Actions-/Billing-Einstellung geklärt ist, wird der Workflow bewusst
+# manuell gestartet, damit neue Commits nicht fortlaufend rote PR-Checks erzeugen.
 on:
-  pull_request:
-    paths:
-      - 'ki/src/motion-system/**'
-      - 'ki/tsconfig.motion.json'
-      - 'scripts/render-motion-system.mjs'
-      - 'package.json'
-      - 'tsconfig.base.json'
-      - '.github/workflows/motion-system-checks.yml'
   workflow_dispatch:
 
 jobs:
