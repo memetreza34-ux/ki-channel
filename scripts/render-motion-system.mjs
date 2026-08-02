@@ -8,6 +8,9 @@ const MODE = process.argv[2] ?? 'stills';
 const TYPE_FILTER = process.env.MOTION_TYPES
   ? new Set(process.env.MOTION_TYPES.split(',').map((value) => value.trim()).filter(Boolean))
   : null;
+const FRAME_FILTER = process.env.MOTION_FRAMES
+  ? process.env.MOTION_FRAMES.split(',').map((value) => Number(value.trim()))
+  : null;
 const CONCURRENCY = Number(process.env.MOTION_CONCURRENCY ?? '1');
 const VALID_MODES = new Set(['stills', 'videos', 'all', 'plan']);
 
@@ -18,6 +21,15 @@ if (!VALID_MODES.has(MODE)) {
 
 if (!Number.isInteger(CONCURRENCY) || CONCURRENCY < 1 || CONCURRENCY > 4) {
   console.error('MOTION_CONCURRENCY muss eine ganze Zahl zwischen 1 und 4 sein.');
+  process.exit(1);
+}
+
+if (
+  FRAME_FILTER &&
+  (FRAME_FILTER.length === 0 ||
+    FRAME_FILTER.some((frame) => !Number.isInteger(frame) || frame < 0 || frame > 149))
+) {
+  console.error('MOTION_FRAMES muss ganze Frames zwischen 0 und 149 enthalten.');
   process.exit(1);
 }
 
@@ -55,7 +67,10 @@ if (selectedTypes.length === 0) {
 const toCompositionId = (type) =>
   `Motion-${type}`.replace(/(^|-)([a-z])/g, (_, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
 
-const CHECKPOINTS = [0, 37, 75, 112, 149];
+const DEFAULT_CHECKPOINTS = [0, 37, 75, 112, 149];
+const CHECKPOINTS = FRAME_FILTER
+  ? [...new Set(FRAME_FILTER)].sort((a, b) => a - b)
+  : DEFAULT_CHECKPOINTS;
 
 const run = (command, args) =>
   new Promise((resolvePromise, reject) => {
