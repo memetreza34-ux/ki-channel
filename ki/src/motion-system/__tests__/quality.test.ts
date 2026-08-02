@@ -66,4 +66,19 @@ describe('Motion-Qualitätsprüfung', () => {
     expect(report.passed).toBe(true);
     expect(report.issues.some((issue) => issue.code === 'collapsed-beat-timing')).toBe(true);
   });
+
+  it('warnt, wenn eine Stage mehr Elemente erhält als sie darstellen kann', () => {
+    const storyboard = MOTION_EXAMPLES['tool-orchestration'];
+    const report = inspectMotionStoryboardQuality({
+      ...storyboard,
+      elements: [
+        ...storyboard.elements,
+        {id: 'email', kind: 'tool' as const, label: 'E-Mail', emphasis: 'normal' as const},
+        {id: 'calendar', kind: 'tool' as const, label: 'Kalender', emphasis: 'normal' as const},
+      ],
+    });
+
+    expect(report.passed).toBe(true);
+    expect(report.issues.some((issue) => issue.code === 'stage-item-limit')).toBe(true);
+  });
 });
