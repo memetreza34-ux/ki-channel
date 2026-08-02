@@ -8,12 +8,12 @@ import {MOTION_CANVAS} from './layout';
 import {MotionScene} from './MotionScene';
 import {MotionTimelineComposition} from './MotionTimeline';
 import {MOTION_EXAMPLES} from './examples';
-import {motionVisualTypeSchema, type MotionVisualType} from './schema';
+import {MOTION_RENDER_CONFIG} from './renderConfig';
 import {MOTION_TIMELINE_EXAMPLE} from './timelineExamples';
 
 export {toMotionCompositionId} from './compositionIds';
 
-export const MOTION_PREVIEW_TYPES = [...motionVisualTypeSchema.options] as MotionVisualType[];
+export const MOTION_PREVIEW_TYPES = [...MOTION_RENDER_CONFIG.visualTypes];
 
 export const MotionPreviewRoot: React.FC = () => (
   <Folder name="Motion-System-Preview">
