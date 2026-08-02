@@ -1,44 +1,53 @@
 import type {MotionStoryboard, MotionVisualType} from './schema';
 
+const normalizeText = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9äöüß]+/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 const includesAny = (text: string, words: readonly string[]): boolean =>
-  words.some((word) => text.includes(word));
+  words.some((word) => text.includes(normalizeText(word)));
 
 export const classifySentence = (sentence: string): MotionVisualType => {
-  const text = sentence.toLowerCase();
+  const text = normalizeText(sentence);
 
-  if (includesAny(text, ['statt', 'vergleich', 'besser als', 'schlechter als', 'gegenüber'])) {
+  if (includesAny(text, ['statt', 'vergleich', 'besser als', 'schlechter als', 'gegenüber', 'vs', 'versus'])) {
     return 'comparison';
   }
 
-  if (includesAny(text, ['vorher', 'nachher', 'früher', 'jetzt'])) {
+  if (includesAny(text, ['vorher', 'nachher', 'früher', 'jetzt', 'zuvor', 'danach besser'])) {
     return 'before-after';
   }
 
-  if (includesAny(text, ['fehler', 'falsch', 'halluzin', 'risiko', 'bricht ab'])) {
+  if (includesAny(text, ['fehler', 'falsch', 'halluzin', 'risiko', 'bricht ab', 'scheitert', 'problem'])) {
     return 'error-path';
   }
 
-  if (includesAny(text, ['kontext', 'erinner', 'verlauf', 'alte information'])) {
+  if (includesAny(text, ['kontext', 'erinner', 'verlauf', 'alte information', 'context window', 'gedächtnis'])) {
     return 'context-window';
   }
 
-  if (includesAny(text, ['werkzeug', 'tools', 'browser', 'e-mail', 'datei', 'kalender'])) {
+  if (includesAny(text, ['werkzeug', 'tools', 'browser', 'e-mail', 'email', 'datei', 'kalender', 'api'])) {
     return 'tool-orchestration';
   }
 
-  if (includesAny(text, ['agent', 'selbstständig', 'autonom', 'plant', 'kontrolliert'])) {
+  if (includesAny(text, ['agent', 'selbstständig', 'autonom', 'plant', 'kontrolliert', 'wiederholt'])) {
     return 'agent-loop';
   }
 
-  if (includesAny(text, ['daten', 'fließen', 'überträgt', 'verbindet', 'quelle'])) {
+  if (includesAny(text, ['daten', 'fließen', 'überträgt', 'verbindet', 'quelle', 'pipeline', 'rag'])) {
     return 'data-flow';
   }
 
-  if (includesAny(text, ['ranking', 'platz', 'top', 'schneller', 'größer', 'mehr'])) {
+  if (includesAny(text, ['ranking', 'platz', 'top', 'schneller', 'größer', 'mehr', 'beste', 'rangliste'])) {
     return 'ranking';
   }
 
-  if (includesAny(text, ['schritt', 'zuerst', 'danach', 'anschließend', 'prozess'])) {
+  if (includesAny(text, ['schritt', 'zuerst', 'danach', 'anschließend', 'prozess', 'ablauf', 'folge'])) {
     return 'process-chain';
   }
 
@@ -47,7 +56,7 @@ export const classifySentence = (sentence: string): MotionVisualType => {
 
 const base = (sentence: string, visualType: MotionVisualType): MotionStoryboard => ({
   id: `motion-${visualType}`,
-  sentence,
+  sentence: sentence.trim(),
   visualType,
   durationInFrames: 150,
   fps: 30,
@@ -57,8 +66,13 @@ const base = (sentence: string, visualType: MotionVisualType): MotionStoryboard 
 });
 
 export const createDefaultStoryboard = (sentence: string): MotionStoryboard => {
-  const visualType = classifySentence(sentence);
-  const storyboard = base(sentence, visualType);
+  const cleanSentence = sentence.trim();
+  if (!cleanSentence) {
+    throw new Error('Der Satz darf nicht leer sein.');
+  }
+
+  const visualType = classifySentence(cleanSentence);
+  const storyboard = base(cleanSentence, visualType);
 
   switch (visualType) {
     case 'tool-orchestration':
