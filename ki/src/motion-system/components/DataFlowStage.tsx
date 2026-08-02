@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
 type FlowNode = {
@@ -17,34 +18,42 @@ export type DataFlowStageTimings = {
   outputFrame?: number;
 };
 
-const FlowNodeCard: React.FC<FlowNode & {progress: number}> = ({label, x, y, accent = '#D9D4E7', progress}) => (
-  <div
-    style={{
-      position: 'absolute',
-      left: x,
-      top: y,
-      width: 230,
-      height: 138,
-      borderRadius: 32,
-      border: `4px solid ${accent}`,
-      background: '#FFFFFF',
-      boxShadow: '0 24px 56px rgba(26,26,46,0.10)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: label.length > 18 ? 26 : 31,
-      fontWeight: 900,
-      color: '#1A1A2E',
-      opacity: progress,
-      transform: `translateY(${interpolate(progress, [0, 1], [24, 0])}px) scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
-      textAlign: 'center',
-      padding: 18,
-      overflowWrap: 'anywhere',
-    }}
-  >
-    {label}
-  </div>
-);
+const FlowNodeCard: React.FC<FlowNode & {progress: number}> = ({label, x, y, accent = '#D9D4E7', progress}) => {
+  const typography = getLabelTypography(label, {maxFontSize: 31, minFontSize: 21});
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: 230,
+        height: 138,
+        borderRadius: 32,
+        border: `4px solid ${accent}`,
+        background: '#FFFFFF',
+        boxShadow: '0 24px 56px rgba(26,26,46,0.10)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: typography.fontSize,
+        lineHeight: typography.lineHeight,
+        letterSpacing: typography.letterSpacing,
+        fontWeight: 900,
+        color: '#1A1A2E',
+        opacity: progress,
+        transform: `translateY(${interpolate(progress, [0, 1], [24, 0])}px) scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
+        textAlign: 'center',
+        padding: 18,
+        overflowWrap: 'anywhere',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}
+    >
+      {label}
+    </div>
+  );
+};
 
 export const DataFlowStage: React.FC<{
   inputLabel?: string;
