@@ -1,5 +1,6 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
+import {MOTION_CANVAS} from './layout';
 import {MotionScene} from './MotionScene';
 import {MOTION_EXAMPLES} from './examples';
 import {motionVisualTypeSchema, type MotionVisualType} from './schema';
@@ -21,8 +22,8 @@ export const MotionPreviewRoot: React.FC = () => (
           defaultProps={{storyboard}}
           durationInFrames={storyboard.durationInFrames}
           fps={storyboard.fps}
-          width={1080}
-          height={1920}
+          width={MOTION_CANVAS.width}
+          height={MOTION_CANVAS.height}
         />
       );
     })}
