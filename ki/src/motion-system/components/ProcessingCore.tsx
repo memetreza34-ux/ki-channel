@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {getLabelTypography} from '../textLayout';
 
 export const ProcessingCore: React.FC<{
   x: number;
@@ -14,6 +15,10 @@ export const ProcessingCore: React.FC<{
   const pulse = interpolate(Math.sin(local / 6), [-1, 1], [0.96, 1.05]);
   const ring = interpolate((local % 36) / 36, [0, 1], [0.55, 1.35]);
   const ringOpacity = interpolate((local % 36) / 36, [0, 1], [0.5, 0]);
+  const typography = getLabelTypography(label, {
+    maxFontSize: Math.max(24, Math.round(size * 0.23)),
+    minFontSize: Math.max(18, Math.round(size * 0.12)),
+  });
 
   return (
     <div style={{position: 'absolute', left: x, top: y, width: size, height: size}}>
@@ -40,9 +45,14 @@ export const ProcessingCore: React.FC<{
           alignItems: 'center',
           justifyContent: 'center',
           color: '#1A1A2E',
-          fontSize: 44,
+          fontSize: typography.fontSize,
+          lineHeight: typography.lineHeight,
           fontWeight: 900,
-          letterSpacing: -1,
+          letterSpacing: typography.letterSpacing,
+          textAlign: 'center',
+          padding: Math.max(12, Math.round(size * 0.09)),
+          boxSizing: 'border-box',
+          overflowWrap: 'anywhere',
         }}
       >
         {label}
