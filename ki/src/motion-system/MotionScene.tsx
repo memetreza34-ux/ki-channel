@@ -109,7 +109,16 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         />
       ) : null}
 
-      {parsed.visualType === 'context-window' ? <ContextWindowStage x={160} y={470} startFrame={0} /> : null}
+      {parsed.visualType === 'context-window' ? (
+        <ContextWindowStage
+          x={160}
+          y={470}
+          oldLabel={byId('old')?.label ?? 'Alte Information'}
+          currentLabel={byId('current')?.label ?? 'Aktueller Kontext'}
+          newLabel={byId('new')?.label ?? 'Neue Nachricht'}
+          startFrame={0}
+        />
+      ) : null}
 
       {parsed.visualType === 'process-chain' ? <ProcessChainStage x={100} y={560} startFrame={0} /> : null}
 
