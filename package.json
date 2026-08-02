@@ -21,6 +21,8 @@
     "motion:test": "vitest run ki/src/motion-system/__tests__",
     "motion:typecheck": "tsc --noEmit -p ki/tsconfig.motion.json",
     "motion:verify": "npm run motion:test && npm run motion:typecheck && npm run motion:render-plan",
+    "motion:smoke": "node scripts/render-motion-system.mjs smoke",
+    "motion:release-check": "npm run motion:verify && npm run motion:smoke",
     "motion:render-plan": "node scripts/render-motion-system.mjs plan",
     "motion:render-stills": "node scripts/render-motion-system.mjs stills",
     "motion:render-videos": "node scripts/render-motion-system.mjs videos",
