@@ -1,6 +1,13 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 
+export type ContextWindowStageTimings = {
+  oldFrame?: number;
+  currentFrame?: number;
+  dimOldFrame?: number;
+  newFrame?: number;
+};
+
 export const ContextWindowStage: React.FC<{
   x: number;
   y: number;
@@ -8,6 +15,7 @@ export const ContextWindowStage: React.FC<{
   currentLabel?: string;
   newLabel?: string;
   startFrame?: number;
+  timings?: ContextWindowStageTimings;
 }> = ({
   x,
   y,
@@ -15,18 +23,29 @@ export const ContextWindowStage: React.FC<{
   currentLabel = 'Aktueller Kontext',
   newLabel = 'Neue Nachricht',
   startFrame = 0,
+  timings,
 }) => {
   const frame = useCurrentFrame();
-  const local = Math.max(0, frame - startFrame);
-  const activeOpacity = interpolate(local, [0, 18], [0, 1], {
+  const oldFrame = timings?.oldFrame ?? startFrame;
+  const currentFrame = timings?.currentFrame ?? startFrame + 18;
+  const dimOldFrame = timings?.dimOldFrame ?? startFrame + 52;
+  const newFrame = timings?.newFrame ?? startFrame + 74;
+
+  const oldEntry = interpolate(frame, [oldFrame, oldFrame + 18], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const oldOpacity = interpolate(local, [18, 70], [1, 0.18], {
+  const activeOpacity = interpolate(frame, [currentFrame, currentFrame + 18], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const oldShift = interpolate(local, [18, 70], [0, -130], {
+  const oldDim = interpolate(frame, [dimOldFrame, dimOldFrame + 22], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const oldOpacity = oldEntry * interpolate(oldDim, [0, 1], [1, 0.18]);
+  const oldShift = interpolate(oldDim, [0, 1], [0, -130]);
+  const newOpacity = interpolate(frame, [newFrame, newFrame + 18], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -45,9 +64,10 @@ export const ContextWindowStage: React.FC<{
           background: 'linear-gradient(180deg,#FCF9FF,#F4ECFF)',
           boxShadow: '0 28px 70px rgba(110,69,201,0.20)',
           opacity: activeOpacity,
+          transform: `translateY(${interpolate(activeOpacity, [0, 1], [24, 0])}px)`,
         }}
       >
-        <div style={{padding: '28px 30px', color: '#1A1A2E', fontSize: 30, fontWeight: 900}}>
+        <div style={{padding: '28px 30px', color: '#1A1A2E', fontSize: 30, fontWeight: 900, overflowWrap: 'anywhere'}}>
           {currentLabel}
         </div>
         {[0, 1, 2].map((index) => (
@@ -77,13 +97,10 @@ export const ContextWindowStage: React.FC<{
           background: '#FFFFFF',
           boxShadow: '0 18px 40px rgba(26,26,46,0.08)',
           opacity: oldOpacity,
-          transform: `rotate(${interpolate(local, [18, 70], [0, -8], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          })}deg)`,
+          transform: `rotate(${interpolate(oldDim, [0, 1], [0, -8])}deg)`,
         }}
       >
-        <div style={{padding: 24, fontSize: 28, fontWeight: 850, color: '#6F6B7B'}}>{oldLabel}</div>
+        <div style={{padding: 24, fontSize: 28, fontWeight: 850, color: '#6F6B7B', overflowWrap: 'anywhere'}}>{oldLabel}</div>
       </div>
 
       <div
@@ -104,7 +121,9 @@ export const ContextWindowStage: React.FC<{
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          opacity: activeOpacity,
+          opacity: newOpacity,
+          transform: `translateX(${interpolate(newOpacity, [0, 1], [24, 0])}px)`,
+          overflowWrap: 'anywhere',
         }}
       >
         {newLabel}
