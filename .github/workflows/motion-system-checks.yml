@@ -1,0 +1,44 @@
+name: Motion System Checks
+
+on:
+  pull_request:
+    paths:
+      - 'ki/src/motion-system/**'
+      - 'ki/src/Root.tsx'
+      - 'scripts/render-motion-system.mjs'
+      - 'package.json'
+      - '.github/workflows/motion-system-checks.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run motion tests
+        run: npx vitest run ki/src/motion-system/__tests__
+
+      - name: Run repository typecheck
+        run: npm run typecheck
+
+      - name: Validate render plan
+        run: npm run motion:render-plan
+
+      - name: Upload render plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-render-plan
+          path: out/motion-system/render-plan.json
+          if-no-files-found: error
