@@ -7,6 +7,7 @@ export type MotionQualityIssue = {
     | 'sentence-too-long'
     | 'label-too-long'
     | 'too-many-elements'
+    | 'stage-item-limit'
     | 'late-beat'
     | 'missing-labels'
     | 'missing-stage-timing'
@@ -51,6 +52,39 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
     issues.push({severity: 'warning', code: 'too-many-elements', message: 'Mehr als acht Elemente können die 9:16-Szene überladen.'});
   }
 
+  if (storyboard.visualType === 'tool-orchestration') {
+    const toolCount = storyboard.elements.filter((element) => element.kind === 'tool').length;
+    if (toolCount > 3) {
+      issues.push({
+        severity: 'warning',
+        code: 'stage-item-limit',
+        message: `Die Tool-Orchestrierung zeigt höchstens drei Werkzeuge; ${toolCount - 3} weitere werden nicht dargestellt.`,
+      });
+    }
+  }
+
+  if (storyboard.visualType === 'ranking') {
+    const metricCount = storyboard.elements.filter((element) => element.kind === 'metric').length;
+    if (metricCount > 8) {
+      issues.push({
+        severity: 'warning',
+        code: 'stage-item-limit',
+        message: `Das Ranking zeigt höchstens acht Einträge; ${metricCount - 8} weitere werden nicht dargestellt.`,
+      });
+    }
+  }
+
+  if (storyboard.visualType === 'process-chain') {
+    const stepCount = storyboard.elements.filter((element) => element.id.startsWith('step-')).length;
+    if (stepCount > 4) {
+      issues.push({
+        severity: 'warning',
+        code: 'stage-item-limit',
+        message: `Die Prozesskette zeigt höchstens vier Schritte; ${stepCount - 4} weitere werden nicht dargestellt.`,
+      });
+    }
+  }
+
   if (storyboard.labels.length === 0) {
     issues.push({severity: 'error', code: 'missing-labels', message: 'Das Storyboard besitzt keine sichtbaren Labels.'});
   }
@@ -70,22 +104,24 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
     }
   }
 
-  const beatGroups = new Map<string, Set<string>>();
+  const beatGroups = new Map<string, Map<number, Set<string>>>();
   for (const beat of storyboard.beats) {
-    const key = `${beat.targetId}:${beat.atFrame}`;
-    const actions = beatGroups.get(key) ?? new Set<string>();
+    const targetFrames = beatGroups.get(beat.targetId) ?? new Map<number, Set<string>>();
+    const actions = targetFrames.get(beat.atFrame) ?? new Set<string>();
     actions.add(beat.action);
-    beatGroups.set(key, actions);
+    targetFrames.set(beat.atFrame, actions);
+    beatGroups.set(beat.targetId, targetFrames);
   }
 
-  for (const [group, actions] of beatGroups) {
-    if (actions.size > 1) {
-      const [targetId, atFrame] = group.split(':');
-      issues.push({
-        severity: 'warning',
-        code: 'collapsed-beat-timing',
-        message: `Mehrere Aktionen für ${targetId} liegen gemeinsam auf Frame ${atFrame}.`,
-      });
+  for (const [targetId, targetFrames] of beatGroups) {
+    for (const [atFrame, actions] of targetFrames) {
+      if (actions.size > 1) {
+        issues.push({
+          severity: 'warning',
+          code: 'collapsed-beat-timing',
+          message: `Mehrere Aktionen für ${targetId} liegen gemeinsam auf Frame ${atFrame}.`,
+        });
+      }
     }
   }
 
