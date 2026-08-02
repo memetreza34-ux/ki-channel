@@ -9,6 +9,14 @@ type FlowNode = {
   accent?: string;
 };
 
+export type DataFlowStageTimings = {
+  inputFrame?: number;
+  coreFrame?: number;
+  inputFlowFrame?: number;
+  outputFlowFrame?: number;
+  outputFrame?: number;
+};
+
 const FlowNodeCard: React.FC<FlowNode & {progress: number}> = ({label, x, y, accent = '#D9D4E7', progress}) => (
   <div
     style={{
@@ -24,11 +32,14 @@ const FlowNodeCard: React.FC<FlowNode & {progress: number}> = ({label, x, y, acc
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 31,
+      fontSize: label.length > 18 ? 26 : 31,
       fontWeight: 900,
       color: '#1A1A2E',
       opacity: progress,
       transform: `translateY(${interpolate(progress, [0, 1], [24, 0])}px) scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
+      textAlign: 'center',
+      padding: 18,
+      overflowWrap: 'anywhere',
     }}
   >
     {label}
@@ -39,12 +50,24 @@ export const DataFlowStage: React.FC<{
   inputLabel?: string;
   outputLabel?: string;
   startFrame?: number;
-}> = ({inputLabel = 'Datenquelle', outputLabel = 'Ergebnis', startFrame = 0}) => {
+  timings?: DataFlowStageTimings;
+}> = ({inputLabel = 'Datenquelle', outputLabel = 'Ergebnis', startFrame = 0, timings}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const input = spring({fps, frame: frame - startFrame, config: {damping: 18, stiffness: 175}});
-  const output = spring({fps, frame: frame - (startFrame + 62), config: {damping: 18, stiffness: 175}});
-  const flow = interpolate(frame, [startFrame + 18, startFrame + 100], [0, 1], {
+  const inputFrame = timings?.inputFrame ?? startFrame;
+  const coreFrame = timings?.coreFrame ?? startFrame + 20;
+  const inputFlowFrame = timings?.inputFlowFrame ?? startFrame + 38;
+  const outputFlowFrame = timings?.outputFlowFrame ?? startFrame + 72;
+  const outputFrame = timings?.outputFrame ?? startFrame + 104;
+  const flowEndFrame = Math.max(inputFlowFrame + 1, outputFrame + 20);
+
+  const input = spring({fps, frame: frame - inputFrame, config: {damping: 18, stiffness: 175}});
+  const output = spring({fps, frame: frame - outputFrame, config: {damping: 18, stiffness: 175}});
+  const flow = interpolate(frame, [inputFlowFrame, flowEndFrame], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const secondHalfActive = interpolate(frame, [outputFlowFrame, outputFlowFrame + 12], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -57,12 +80,12 @@ export const DataFlowStage: React.FC<{
   return (
     <>
       <FlowNodeCard label={inputLabel} x={70} y={670} accent="#D9D4E7" progress={input} />
-      <ProcessingCore x={420} y={600} startFrame={startFrame + 18} label="KI" />
+      <ProcessingCore x={420} y={600} startFrame={coreFrame} label="KI" />
       <FlowNodeCard label={outputLabel} x={780} y={670} accent="#6FD19C" progress={output} />
 
       <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
         <path d="M300 740 C390 650 450 650 540 720" fill="none" stroke="#E6D9F8" strokeWidth="10" strokeLinecap="round" />
-        <path d="M540 720 C625 650 690 650 775 740" fill="none" stroke="#DCEFE4" strokeWidth="10" strokeLinecap="round" />
+        <path d="M540 720 C625 650 690 650 775 740" fill="none" stroke="#DCEFE4" strokeWidth="10" strokeLinecap="round" opacity={0.35 + secondHalfActive * 0.65} />
       </svg>
 
       {Array.from({length: tokenCount}).map((_, index) => {
@@ -73,7 +96,7 @@ export const DataFlowStage: React.FC<{
         const x = leftHalf ? start.x + (mid.x - start.x) * t : mid.x + (end.x - mid.x) * t;
         const baseY = leftHalf ? start.y + (mid.y - start.y) * t : mid.y + (end.y - mid.y) * t;
         const y = baseY - Math.sin(t * Math.PI) * 70;
-        const visible = flow > 0.02 ? 1 : 0;
+        const visible = flow > 0.02 && (leftHalf || secondHalfActive > 0.02) ? 1 : 0;
         return (
           <div
             key={index}
