@@ -1,5 +1,5 @@
+import {toMotionCompositionId} from './compositionIds';
 import {MOTION_EXAMPLES} from './examples';
-import {toMotionCompositionId} from './MotionPreviewRoot';
 import type {MotionStoryboard, MotionVisualType} from './schema';
 
 export type MotionRenderPlanItem = {
