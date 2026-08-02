@@ -65,7 +65,9 @@ inhaltlich echtes Bildmaterial braucht (z.B. ein reales Tool-Screenshot-Motiv, e
 ein Gesicht-freies Symbolbild) — genau wie bei FinanzNeo:
 1. **Sagen, dass Bild gebraucht wird** — nicht stillschweigend durch eine andere Animation ersetzen.
 2. **Kopierbaren Bild-Prompt liefern** (Arman generiert selbst über Flow/Nano Banana).
-3. **Gleiche Ordnerstruktur wie FinanzNeo verwenden**, sobald ein Reel Animation+Bild kombiniert:
+3. **Verbindlichen Bildstil aus [`../BILDSTIL.md`](../BILDSTIL.md) anwenden.** Dort stehen die Regeln für
+   Satz-zu-Bild-Übersetzung, Faceless-Darstellung, Markenfarben, deutsche Beschriftungen und Safe-Zones.
+4. **Gleiche Ordnerstruktur wie FinanzNeo verwenden**, sobald ein Reel Animation+Bild kombiniert:
    `01-script-audio/`, `02-bilder/` (mit `bildprompts.md`, `prompts/*.txt`, `images/`), `03-caption/`,
    `04-pdf/`, `05-export/`, `06-projektdateien/` — pro Reel-Tag im Wochenordner.
 Kein neues/eigenes Muster für den KI-Kanal erfinden — bei Bildbedarf 1:1 das FinanzNeo-Muster übernehmen.
