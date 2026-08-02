@@ -12,6 +12,9 @@ import {ProcessChainStage} from './components/ProcessChainStage';
 import {RankingStage} from './components/RankingStage';
 import {InputOutputStage} from './components/InputOutputStage';
 import {BeforeAfterStage} from './components/BeforeAfterStage';
+import {DataFlowStage} from './components/DataFlowStage';
+import {ToolOrchestrationStage} from './components/ToolOrchestrationStage';
+import {AgentLoopStage} from './components/AgentLoopStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -41,7 +44,14 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
     'context-window',
     'process-chain',
     'ranking',
+    'data-flow',
+    'tool-orchestration',
+    'agent-loop',
   ].includes(parsed.visualType);
+
+  const toolLabels = parsed.elements
+    .filter((element) => element.kind === 'tool')
+    .map((element) => element.label);
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -109,6 +119,25 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         />
       ) : null}
 
+      {parsed.visualType === 'data-flow' ? (
+        <DataFlowStage
+          inputLabel={byId('input')?.label ?? 'Datenquelle'}
+          outputLabel={byId('output')?.label ?? 'Ergebnis'}
+          startFrame={0}
+        />
+      ) : null}
+
+      {parsed.visualType === 'tool-orchestration' ? (
+        <ToolOrchestrationStage
+          taskLabel={byId('task')?.label ?? 'Aufgabe'}
+          resultLabel={byId('result')?.label ?? 'Ergebnis'}
+          toolLabels={toolLabels}
+          startFrame={0}
+        />
+      ) : null}
+
+      {parsed.visualType === 'agent-loop' ? <AgentLoopStage startFrame={0} /> : null}
+
       {!usesDedicatedStage ? (
         <>
           {parsed.beats
@@ -125,14 +154,12 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
                     startFrame={beat.atFrame}
                     durationFrames={beat.durationFrames}
                   />
-                  {parsed.visualType === 'data-flow' || parsed.visualType === 'tool-orchestration' ? (
-                    <TokenFlow
-                      from={cardCenter(from)}
-                      to={cardCenter(to)}
-                      startFrame={beat.atFrame}
-                      durationFrames={Math.max(24, beat.durationFrames)}
-                    />
-                  ) : null}
+                  <TokenFlow
+                    from={cardCenter(from)}
+                    to={cardCenter(to)}
+                    startFrame={beat.atFrame}
+                    durationFrames={Math.max(24, beat.durationFrames)}
+                  />
                 </React.Fragment>
               );
             })}
@@ -171,7 +198,7 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
             );
           })}
 
-          {aiElement && aiPos && parsed.visualType === 'agent-loop' ? (
+          {aiElement && aiPos ? (
             <div
               style={{
                 position: 'absolute',
