@@ -49,7 +49,8 @@ describe('Audio-Sync Wortabgleich', () => {
   it('bevorzugt bei ähnlichen Labels den unterscheidenden Begriff', () => {
     const storyboard = createDefaultStoryboard('Modell A ist im Vergleich besser als Modell B.');
     const aligned = alignStoryboardToWords(storyboard, [
-      {text: 'Variante', startMs: 300, endMs: 450},
+      {text: 'Variante', startMs: 300, endMs: 350},
+      {text: 'ist', startMs: 380, endMs: 450},
       {text: 'A', startMs: 500, endMs: 600},
       {text: 'B', startMs: 1500, endMs: 1600},
     ]);
