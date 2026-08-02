@@ -12,10 +12,10 @@ const FRAME_FILTER = process.env.MOTION_FRAMES
   ? process.env.MOTION_FRAMES.split(',').map((value) => Number(value.trim()))
   : null;
 const CONCURRENCY = Number(process.env.MOTION_CONCURRENCY ?? '1');
-const VALID_MODES = new Set(['stills', 'videos', 'all', 'plan']);
+const VALID_MODES = new Set(['smoke', 'stills', 'videos', 'all', 'plan']);
 
 if (!VALID_MODES.has(MODE)) {
-  console.error(`Unbekannter Modus: ${MODE}. Erlaubt: stills, videos, all, plan.`);
+  console.error(`Unbekannter Modus: ${MODE}. Erlaubt: smoke, stills, videos, all, plan.`);
   process.exit(1);
 }
 
@@ -68,9 +68,12 @@ const toCompositionId = (type) =>
   `Motion-${type}`.replace(/(^|-)([a-z])/g, (_, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
 
 const DEFAULT_CHECKPOINTS = [0, 37, 75, 112, 149];
+const SMOKE_CHECKPOINTS = [75];
 const CHECKPOINTS = FRAME_FILTER
   ? [...new Set(FRAME_FILTER)].sort((a, b) => a - b)
-  : DEFAULT_CHECKPOINTS;
+  : MODE === 'smoke'
+    ? SMOKE_CHECKPOINTS
+    : DEFAULT_CHECKPOINTS;
 
 const run = (command, args) =>
   new Promise((resolvePromise, reject) => {
@@ -114,7 +117,7 @@ const tasks = [];
 for (const item of plan) {
   await mkdir(item.outputDir, {recursive: true});
 
-  if (MODE === 'stills' || MODE === 'all') {
+  if (MODE === 'smoke' || MODE === 'stills' || MODE === 'all') {
     for (const frame of item.checkpoints) {
       tasks.push(async () => {
         const output = resolve(item.outputDir, `frame-${frame}.png`);
@@ -150,7 +153,7 @@ for (const item of plan) {
 }
 
 console.log(
-  `Starte ${tasks.length} Renderaufgaben mit Parallelität ${CONCURRENCY} über ${ENTRY_POINT}.`,
+  `Starte ${tasks.length} Renderaufgaben im Modus ${MODE} mit Parallelität ${CONCURRENCY} über ${ENTRY_POINT}.`,
 );
 await runPool(tasks, CONCURRENCY);
 console.log(`Motion-Renderprüfung abgeschlossen: ${resolve(OUTPUT_DIR)}`);
