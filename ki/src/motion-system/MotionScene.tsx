@@ -3,6 +3,8 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {motionStoryboardSchema, type MotionStoryboard} from './schema';
 import {MotionCard} from './components/MotionCard';
 import {AnimatedConnector} from './components/AnimatedConnector';
+import {TokenFlow} from './components/TokenFlow';
+import {ProcessingCore} from './components/ProcessingCore';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
 const latestBeat = (
@@ -14,11 +16,16 @@ const latestBeat = (
     .filter((beat) => beat.targetId === targetId && beat.action === action)
     .sort((a, b) => b.atFrame - a.atFrame)[0];
 
+const cardCenter = (pos: {x: number; y: number}) => ({x: pos.x + 130, y: pos.y + 75});
+
 export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
   const parsed = motionStoryboardSchema.parse(storyboard);
   const frame = useCurrentFrame();
   const template = TEMPLATE_REGISTRY[parsed.visualType] ?? TEMPLATE_REGISTRY['input-output'];
   const positions = template.positions;
+  const aiElement = parsed.elements.find((element) => element.id === 'ai');
+  const aiPos = positions.ai;
+  const aiShow = aiElement ? latestBeat(parsed, aiElement.id, 'show') : undefined;
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -45,13 +52,22 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
           const to = positions[beat.targetId];
           if (!from || !to) return null;
           return (
-            <AnimatedConnector
-              key={beat.id}
-              from={{x: from.x + 130, y: from.y + 75}}
-              to={{x: to.x + 130, y: to.y + 75}}
-              startFrame={beat.atFrame}
-              durationFrames={beat.durationFrames}
-            />
+            <React.Fragment key={beat.id}>
+              <AnimatedConnector
+                from={cardCenter(from)}
+                to={cardCenter(to)}
+                startFrame={beat.atFrame}
+                durationFrames={beat.durationFrames}
+              />
+              {(parsed.visualType === 'data-flow' || parsed.visualType === 'tool-orchestration') ? (
+                <TokenFlow
+                  from={cardCenter(from)}
+                  to={cardCenter(to)}
+                  startFrame={beat.atFrame}
+                  durationFrames={Math.max(24, beat.durationFrames)}
+                />
+              ) : null}
+            </React.Fragment>
           );
         })}
 
@@ -62,6 +78,19 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         const dim = latestBeat(parsed, element.id, 'dim');
         const highlight = latestBeat(parsed, element.id, 'highlight');
         const shake = latestBeat(parsed, element.id, 'shake');
+
+        if (element.id === 'ai') {
+          return (
+            <ProcessingCore
+              key={element.id}
+              x={pos.x + 35}
+              y={pos.y - 20}
+              startFrame={show?.atFrame ?? 0}
+              label={element.label || 'KI'}
+            />
+          );
+        }
+
         return (
           <MotionCard
             key={element.id}
@@ -75,6 +104,21 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
           />
         );
       })}
+
+      {aiElement && aiPos && parsed.visualType === 'agent-loop' ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: aiPos.x - 60,
+            top: aiPos.y - 95,
+            width: 380,
+            height: 380,
+            borderRadius: '50%',
+            border: '4px dashed rgba(185,140,255,0.55)',
+            transform: `rotate(${frame * 1.4}deg)`,
+          }}
+        />
+      ) : null}
 
       <div
         style={{
