@@ -4,8 +4,18 @@ import {interpolate, useCurrentFrame} from 'remotion';
 export const ContextWindowStage: React.FC<{
   x: number;
   y: number;
+  oldLabel?: string;
+  currentLabel?: string;
+  newLabel?: string;
   startFrame?: number;
-}> = ({x, y, startFrame = 0}) => {
+}> = ({
+  x,
+  y,
+  oldLabel = 'Alte Information',
+  currentLabel = 'Aktueller Kontext',
+  newLabel = 'Neue Nachricht',
+  startFrame = 0,
+}) => {
   const frame = useCurrentFrame();
   const local = Math.max(0, frame - startFrame);
   const activeOpacity = interpolate(local, [0, 18], [0, 1], {
@@ -37,7 +47,9 @@ export const ContextWindowStage: React.FC<{
           opacity: activeOpacity,
         }}
       >
-        <div style={{padding: '28px 30px', color: '#1A1A2E', fontSize: 30, fontWeight: 900}}>Aktueller Kontext</div>
+        <div style={{padding: '28px 30px', color: '#1A1A2E', fontSize: 30, fontWeight: 900}}>
+          {currentLabel}
+        </div>
         {[0, 1, 2].map((index) => (
           <div
             key={index}
@@ -65,10 +77,13 @@ export const ContextWindowStage: React.FC<{
           background: '#FFFFFF',
           boxShadow: '0 18px 40px rgba(26,26,46,0.08)',
           opacity: oldOpacity,
-          transform: `rotate(${interpolate(local, [18, 70], [0, -8], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}deg)`,
+          transform: `rotate(${interpolate(local, [18, 70], [0, -8], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          })}deg)`,
         }}
       >
-        <div style={{padding: 24, fontSize: 28, fontWeight: 850, color: '#6F6B7B'}}>Alte Information</div>
+        <div style={{padding: 24, fontSize: 28, fontWeight: 850, color: '#6F6B7B'}}>{oldLabel}</div>
       </div>
 
       <div
@@ -77,7 +92,8 @@ export const ContextWindowStage: React.FC<{
           right: 16,
           top: 150,
           width: 200,
-          height: 96,
+          minHeight: 96,
+          padding: '12px 16px',
           borderRadius: 28,
           border: '3px solid #B98CFF',
           background: '#F7F1FF',
@@ -87,10 +103,11 @@ export const ContextWindowStage: React.FC<{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          textAlign: 'center',
           opacity: activeOpacity,
         }}
       >
-        Neue Nachricht
+        {newLabel}
       </div>
     </div>
   );
