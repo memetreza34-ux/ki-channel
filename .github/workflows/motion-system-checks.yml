@@ -22,13 +22,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Run motion tests
-        run: npx vitest run ki/src/motion-system/__tests__
+        run: npx --no-install vitest run ki/src/motion-system/__tests__
 
       - name: Run repository typecheck
         run: npm run typecheck
