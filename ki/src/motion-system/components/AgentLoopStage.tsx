@@ -7,16 +7,24 @@ type AgentLoopStep = {
   angle: number;
 };
 
+export type AgentLoopStageTimings = {
+  agentFrame?: number;
+  stepFrames?: number[];
+  resultFrame?: number;
+};
+
 export const AgentLoopStage: React.FC<{
   agentLabel?: string;
   stepLabels?: string[];
   resultLabel?: string;
   startFrame?: number;
+  timings?: AgentLoopStageTimings;
 }> = ({
   agentLabel = 'KI-Agent',
   stepLabels = ['Planen', 'Ausführen', 'Prüfen'],
   resultLabel = 'Selbstständig weiter',
   startFrame = 0,
+  timings,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -25,19 +33,24 @@ export const AgentLoopStage: React.FC<{
     {label: stepLabels[1] ?? 'Ausführen', angle: 30},
     {label: stepLabels[2] ?? 'Prüfen', angle: 150},
   ];
-  const loopProgress = interpolate(frame, [startFrame + 20, startFrame + 120], [0, 1], {
+  const agentFrame = timings?.agentFrame ?? startFrame;
+  const stepFrames = steps.map((_, index) => timings?.stepFrames?.[index] ?? startFrame + 24 + index * 26);
+  const resultFrame = timings?.resultFrame ?? startFrame + 104;
+  const loopStartFrame = Math.min(...stepFrames);
+  const loopEndFrame = Math.max(loopStartFrame + 1, resultFrame + 16);
+  const loopProgress = interpolate(frame, [loopStartFrame, loopEndFrame], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   const resultProgress = spring({
     fps,
-    frame: frame - (startFrame + 92),
+    frame: frame - resultFrame,
     config: {damping: 18, stiffness: 175},
   });
 
   return (
     <>
-      <ProcessingCore x={410} y={650} startFrame={startFrame} label={agentLabel} />
+      <ProcessingCore x={410} y={650} startFrame={agentFrame} label={agentLabel} />
       <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
         <circle
           cx="540"
@@ -63,7 +76,7 @@ export const AgentLoopStage: React.FC<{
       {steps.map((step, index) => {
         const local = spring({
           fps,
-          frame: frame - (startFrame + 18 + index * 18),
+          frame: frame - stepFrames[index],
           config: {damping: 18, stiffness: 175},
         });
         const rad = (step.angle * Math.PI) / 180;
@@ -85,7 +98,7 @@ export const AgentLoopStage: React.FC<{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 30,
+              fontSize: step.label.length > 15 ? 25 : 30,
               fontWeight: 900,
               color: '#1A1A2E',
               opacity: local,
@@ -94,6 +107,9 @@ export const AgentLoopStage: React.FC<{
                 [0, 1],
                 [18, 0],
               )}px)`,
+              textAlign: 'center',
+              padding: 14,
+              overflowWrap: 'anywhere',
             }}
           >
             {step.label}
@@ -106,7 +122,7 @@ export const AgentLoopStage: React.FC<{
           left: 365,
           top: 1125,
           width: 350,
-          height: 130,
+          minHeight: 130,
           borderRadius: 32,
           background: '#F1FFF7',
           border: '4px solid #6FD19C',
@@ -114,7 +130,7 @@ export const AgentLoopStage: React.FC<{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 34,
+          fontSize: resultLabel.length > 22 ? 28 : 34,
           fontWeight: 900,
           color: '#1A1A2E',
           opacity: resultProgress,
@@ -123,6 +139,9 @@ export const AgentLoopStage: React.FC<{
             [0, 1],
             [0.92, 1],
           )})`,
+          textAlign: 'center',
+          padding: 20,
+          overflowWrap: 'anywhere',
         }}
       >
         {resultLabel}
