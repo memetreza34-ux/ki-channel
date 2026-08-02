@@ -111,7 +111,22 @@ for (const item of MOTION_RENDER_PLAN) {
 }
 ```
 
-Pro Composition werden Start, 25 %, 50 %, 75 % und letzter Frame geprüft. Damit lässt sich die visuelle Kontrolle reproduzierbar durchführen.
+Pro Composition werden Start, 25 %, 50 %, 75 % und letzter Frame geprüft.
+
+## Automatische Render-Kommandos
+
+`MOTION_RENDER_COMMANDS` erzeugt reproduzierbare Remotion-Befehle für alle Prüfframes und finalen MP4-Dateien:
+
+```ts
+import {MOTION_RENDER_COMMANDS} from './motion-system';
+
+for (const item of MOTION_RENDER_COMMANDS) {
+  console.log(item.frameCommands);
+  console.log(item.finalRenderCommand);
+}
+```
+
+Die Standardausgabe landet unter `out/motion-system/<visualtyp>/`. Eigene Pfade können mit `createMotionRenderCommands(entryPoint, outputDir)` gesetzt werden.
 
 ## Prüfung vor Merge
 
