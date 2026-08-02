@@ -71,7 +71,7 @@ jobs:
   smoke-render:
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -89,9 +89,25 @@ jobs:
           MOTION_CONCURRENCY: '2'
         run: npm run motion:smoke
 
+      - name: Render middle frame for every timeline scene
+        env:
+          MOTION_CONCURRENCY: '2'
+        run: npm run motion:timeline-smoke
+
       - name: Upload all smoke renders
         uses: actions/upload-artifact@v4
         with:
           name: motion-smoke-renders
-          path: out/motion-system/*/frame-75.png
+          path: |
+            out/motion-system/*/frame-75.png
+            out/motion-system/timeline-demo/frame-233.png
+            out/motion-system/timeline-demo/frame-391.png
+            out/motion-system/timeline-demo/frame-549.png
+          if-no-files-found: error
+
+      - name: Upload timeline render plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-timeline-render-plan
+          path: out/motion-system/timeline-render-plan.json
           if-no-files-found: error
