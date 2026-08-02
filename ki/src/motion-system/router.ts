@@ -9,50 +9,146 @@ const normalizeText = (value: string): string =>
     .replace(/\s+/g, ' ')
     .trim();
 
-const includesAny = (text: string, words: readonly string[]): boolean =>
-  words.some((word) => text.includes(normalizeText(word)));
+const tokenize = (value: string): string[] =>
+  normalizeText(value).split(/\s+/).filter(Boolean);
 
-export const classifySentence = (sentence: string): MotionVisualType => {
-  const text = normalizeText(sentence);
-
-  if (includesAny(text, ['statt', 'vergleich', 'besser als', 'schlechter als', 'gegenüber', 'vs', 'versus'])) {
-    return 'comparison';
-  }
-
-  if (includesAny(text, ['vorher', 'nachher', 'früher', 'jetzt', 'zuvor', 'danach besser'])) {
-    return 'before-after';
-  }
-
-  if (includesAny(text, ['fehler', 'falsch', 'halluzin', 'risiko', 'bricht ab', 'scheitert', 'problem'])) {
-    return 'error-path';
-  }
-
-  if (includesAny(text, ['kontext', 'erinner', 'verlauf', 'alte information', 'context window', 'gedächtnis'])) {
-    return 'context-window';
-  }
-
-  if (includesAny(text, ['werkzeug', 'tools', 'browser', 'e-mail', 'email', 'datei', 'kalender', 'api'])) {
-    return 'tool-orchestration';
-  }
-
-  if (includesAny(text, ['agent', 'selbstständig', 'autonom', 'plant', 'kontrolliert', 'wiederholt'])) {
-    return 'agent-loop';
-  }
-
-  if (includesAny(text, ['daten', 'fließen', 'überträgt', 'verbindet', 'quelle', 'pipeline', 'rag'])) {
-    return 'data-flow';
-  }
-
-  if (includesAny(text, ['ranking', 'platz', 'top', 'schneller', 'größer', 'mehr', 'beste', 'rangliste'])) {
-    return 'ranking';
-  }
-
-  if (includesAny(text, ['schritt', 'zuerst', 'danach', 'anschließend', 'prozess', 'ablauf', 'folge'])) {
-    return 'process-chain';
-  }
-
-  return 'input-output';
+type ClassificationRule = {
+  visualType: Exclude<MotionVisualType, 'input-output'>;
+  patterns: readonly string[];
 };
+
+const CLASSIFICATION_RULES: readonly ClassificationRule[] = [
+  {
+    visualType: 'comparison',
+    patterns: ['statt', 'vergleich*', 'besser als', 'schlechter als', 'gegenuber', 'vs', 'versus'],
+  },
+  {
+    visualType: 'before-after',
+    patterns: ['vorher', 'nachher', 'fruher', 'jetzt', 'zuvor', 'danach besser'],
+  },
+  {
+    visualType: 'error-path',
+    patterns: ['fehler*', 'falsch*', 'halluzin*', 'risiko*', 'bricht ab', 'scheiter*', 'problem*'],
+  },
+  {
+    visualType: 'context-window',
+    patterns: ['kontext*', 'erinner*', 'verlauf*', 'alte information*', 'context window', 'gedachtnis*'],
+  },
+  {
+    visualType: 'tool-orchestration',
+    patterns: ['werkzeug*', 'tool*', 'browser*', 'e mail', 'email*', 'datei*', 'kalender*', 'api'],
+  },
+  {
+    visualType: 'agent-loop',
+    patterns: ['agent*', 'selbststandig', 'autonom*', 'plant', 'planen', 'kontrollier*', 'wiederhol*'],
+  },
+  {
+    visualType: 'data-flow',
+    patterns: ['daten', 'datenfluss*', 'fließ*', 'ubertrag*', 'verbind*', 'quelle*', 'pipeline*', 'rag'],
+  },
+  {
+    visualType: 'ranking',
+    patterns: ['ranking*', 'platz*', 'top', 'schneller', 'großer', 'mehr', 'beste*', 'rangliste*'],
+  },
+  {
+    visualType: 'process-chain',
+    patterns: ['schritt*', 'zuerst', 'danach', 'anschließend', 'prozess*', 'ablauf*', 'folge*'],
+  },
+] as const;
+
+type PatternToken = {
+  value: string;
+  prefix: boolean;
+};
+
+const parsePattern = (pattern: string): PatternToken[] =>
+  pattern
+    .trim()
+    .split(/\s+/)
+    .flatMap((rawToken) => {
+      const prefix = rawToken.endsWith('*');
+      const normalized = normalizeText(prefix ? rawToken.slice(0, -1) : rawToken);
+      const values = normalized.split(/\s+/).filter(Boolean);
+      return values.map((value, index) => ({
+        value,
+        prefix: prefix && index === values.length - 1,
+      }));
+    });
+
+const tokenMatches = (token: string, pattern: PatternToken): boolean =>
+  pattern.prefix ? token.startsWith(pattern.value) : token === pattern.value;
+
+const matchesPattern = (tokens: string[], pattern: string): boolean => {
+  const patternTokens = parsePattern(pattern);
+  if (patternTokens.length === 0 || patternTokens.length > tokens.length) return false;
+
+  for (let start = 0; start <= tokens.length - patternTokens.length; start += 1) {
+    if (
+      patternTokens.every((patternToken, offset) =>
+        tokenMatches(tokens[start + offset], patternToken),
+      )
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const patternScore = (pattern: string): number => {
+  const tokens = parsePattern(pattern);
+  const phraseBonus = tokens.length > 1 ? tokens.length * 2 : 0;
+  const exactBonus = tokens.every((token) => !token.prefix) ? 1 : 0;
+  return tokens.length + phraseBonus + exactBonus;
+};
+
+export type SentenceClassificationCandidate = {
+  visualType: Exclude<MotionVisualType, 'input-output'>;
+  matchedPatterns: string[];
+  score: number;
+};
+
+export type SentenceClassificationExplanation = {
+  visualType: MotionVisualType;
+  normalizedText: string;
+  candidates: SentenceClassificationCandidate[];
+};
+
+export const explainSentenceClassification = (
+  sentence: string,
+): SentenceClassificationExplanation => {
+  const normalizedText = normalizeText(sentence);
+  const tokens = tokenize(sentence);
+  const candidates = CLASSIFICATION_RULES.map((rule, priority) => {
+    const matchedPatterns = rule.patterns.filter((pattern) =>
+      matchesPattern(tokens, pattern),
+    );
+    return {
+      visualType: rule.visualType,
+      matchedPatterns: [...matchedPatterns],
+      score: matchedPatterns.reduce(
+        (total, pattern) => total + patternScore(pattern),
+        0,
+      ),
+      priority,
+    };
+  })
+    .filter((candidate) => candidate.score > 0)
+    .sort(
+      (left, right) =>
+        right.score - left.score || left.priority - right.priority,
+    )
+    .map(({priority: _priority, ...candidate}) => candidate);
+
+  return {
+    visualType: candidates[0]?.visualType ?? 'input-output',
+    normalizedText,
+    candidates,
+  };
+};
+
+export const classifySentence = (sentence: string): MotionVisualType =>
+  explainSentenceClassification(sentence).visualType;
 
 const base = (sentence: string, visualType: MotionVisualType): MotionStoryboard => ({
   id: `motion-${visualType}`,
