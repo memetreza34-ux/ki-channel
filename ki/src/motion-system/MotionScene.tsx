@@ -1,10 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {motionStoryboardSchema, type MotionStoryboard} from './schema';
-import {MotionCard} from './components/MotionCard';
-import {AnimatedConnector} from './components/AnimatedConnector';
-import {TokenFlow} from './components/TokenFlow';
-import {ProcessingCore} from './components/ProcessingCore';
+import {AbsoluteFill} from 'remotion';
+import {motionStoryboardSchema, type MotionStoryboard, type MotionVisualType} from './schema';
 import {ComparisonStage} from './components/ComparisonStage';
 import {ErrorPathStage} from './components/ErrorPathStage';
 import {ContextWindowStage} from './components/ContextWindowStage';
@@ -17,49 +13,132 @@ import {ToolOrchestrationStage} from './components/ToolOrchestrationStage';
 import {AgentLoopStage} from './components/AgentLoopStage';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
-const latestBeat = (
-  storyboard: MotionStoryboard,
-  targetId: string,
-  action: MotionStoryboard['beats'][number]['action'],
-) =>
-  storyboard.beats
-    .filter((beat) => beat.targetId === targetId && beat.action === action)
-    .sort((a, b) => b.atFrame - a.atFrame)[0];
+const assertNever = (visualType: never): never => {
+  throw new Error(`Nicht unterstützter Visualtyp: ${String(visualType)}`);
+};
 
-const cardCenter = (pos: {x: number; y: number}) => ({x: pos.x + 130, y: pos.y + 75});
+const getElementLabel = (storyboard: MotionStoryboard, id: string, fallback: string): string =>
+  storyboard.elements.find((element) => element.id === id)?.label ?? fallback;
+
+const getElementLabels = (storyboard: MotionStoryboard, ids: string[]): string[] =>
+  ids
+    .map((id) => storyboard.elements.find((element) => element.id === id)?.label)
+    .filter((label): label is string => Boolean(label));
+
+const renderStage = (storyboard: MotionStoryboard): React.ReactNode => {
+  const visualType: MotionVisualType = storyboard.visualType;
+
+  switch (visualType) {
+    case 'input-output':
+      return (
+        <InputOutputStage
+          inputLabel={getElementLabel(storyboard, 'input', 'Eingabe')}
+          outputLabel={getElementLabel(storyboard, 'output', 'Ergebnis')}
+          startFrame={0}
+        />
+      );
+
+    case 'before-after':
+      return (
+        <BeforeAfterStage
+          beforeLabel={getElementLabel(storyboard, 'input', 'Vorher')}
+          afterLabel={getElementLabel(storyboard, 'output', 'Nachher')}
+          startFrame={0}
+        />
+      );
+
+    case 'comparison':
+      return (
+        <ComparisonStage
+          leftLabel={getElementLabel(storyboard, 'left', 'Variante A')}
+          rightLabel={getElementLabel(storyboard, 'right', 'Variante B')}
+          metricLabel={getElementLabel(storyboard, 'metric', 'Vergleich')}
+          startFrame={0}
+        />
+      );
+
+    case 'error-path':
+      return (
+        <ErrorPathStage
+          inputLabel={getElementLabel(storyboard, 'input', 'Eingabe')}
+          errorLabel={getElementLabel(storyboard, 'error', 'Fehler')}
+          checkLabel={getElementLabel(storyboard, 'check', 'Prüfen')}
+          startFrame={0}
+        />
+      );
+
+    case 'context-window':
+      return (
+        <ContextWindowStage
+          x={160}
+          y={470}
+          oldLabel={getElementLabel(storyboard, 'old', 'Alter Kontext')}
+          currentLabel={getElementLabel(storyboard, 'current', 'Aktueller Kontext')}
+          newLabel={getElementLabel(storyboard, 'new', 'Neue Information')}
+          startFrame={0}
+        />
+      );
+
+    case 'process-chain':
+      return (
+        <ProcessChainStage
+          x={100}
+          y={560}
+          steps={getElementLabels(storyboard, ['step-1', 'step-2', 'step-3', 'step-4'])}
+          startFrame={0}
+        />
+      );
+
+    case 'ranking':
+      return (
+        <RankingStage
+          startFrame={0}
+          items={storyboard.elements.map((element, index) => ({
+            label: element.label,
+            value: Math.max(1, storyboard.elements.length - index),
+          }))}
+        />
+      );
+
+    case 'data-flow':
+      return (
+        <DataFlowStage
+          inputLabel={getElementLabel(storyboard, 'input', 'Datenquelle')}
+          outputLabel={getElementLabel(storyboard, 'output', 'Ergebnis')}
+          startFrame={0}
+        />
+      );
+
+    case 'tool-orchestration':
+      return (
+        <ToolOrchestrationStage
+          taskLabel={getElementLabel(storyboard, 'task', 'Aufgabe')}
+          resultLabel={getElementLabel(storyboard, 'result', 'Ergebnis')}
+          toolLabels={storyboard.elements
+            .filter((element) => element.kind === 'tool')
+            .map((element) => element.label)}
+          startFrame={0}
+        />
+      );
+
+    case 'agent-loop':
+      return (
+        <AgentLoopStage
+          agentLabel={getElementLabel(storyboard, 'ai', 'KI-Agent')}
+          stepLabels={getElementLabels(storyboard, ['plan', 'act', 'check'])}
+          resultLabel="Selbstständig weiter"
+          startFrame={0}
+        />
+      );
+
+    default:
+      return assertNever(visualType);
+  }
+};
 
 export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
   const parsed = motionStoryboardSchema.parse(storyboard);
-  const frame = useCurrentFrame();
-  const template = TEMPLATE_REGISTRY[parsed.visualType] ?? TEMPLATE_REGISTRY['input-output'];
-  const positions = template.positions;
-  const aiElement = parsed.elements.find((element) => element.id === 'ai');
-  const aiPos = positions.ai;
-  const byId = (id: string) => parsed.elements.find((element) => element.id === id);
-  const usesDedicatedStage = [
-    'input-output',
-    'before-after',
-    'comparison',
-    'error-path',
-    'context-window',
-    'process-chain',
-    'ranking',
-    'data-flow',
-    'tool-orchestration',
-    'agent-loop',
-  ].includes(parsed.visualType);
-
-  const toolLabels = parsed.elements
-    .filter((element) => element.kind === 'tool')
-    .map((element) => element.label);
-
-  const agentStepLabels = ['plan', 'act', 'check']
-    .map((id) => byId(id)?.label)
-    .filter((label): label is string => Boolean(label));
-
-  const processStepLabels = ['step-1', 'step-2', 'step-3', 'step-4']
-    .map((id) => byId(id)?.label)
-    .filter((label): label is string => Boolean(label));
+  const template = TEMPLATE_REGISTRY[parsed.visualType];
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -79,167 +158,7 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
         {template.title}
       </div>
 
-      {parsed.visualType === 'input-output' ? (
-        <InputOutputStage
-          inputLabel={byId('input')?.label ?? 'Eingabe'}
-          outputLabel={byId('output')?.label ?? 'Ergebnis'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'before-after' ? (
-        <BeforeAfterStage
-          beforeLabel={byId('input')?.label ?? 'Vorher'}
-          afterLabel={byId('output')?.label ?? 'Nachher'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'comparison' ? (
-        <ComparisonStage
-          leftLabel={byId('left')?.label ?? 'Variante A'}
-          rightLabel={byId('right')?.label ?? 'Variante B'}
-          metricLabel={byId('metric')?.label ?? 'Vergleich'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'error-path' ? (
-        <ErrorPathStage
-          inputLabel={byId('input')?.label ?? 'Eingabe'}
-          errorLabel={byId('error')?.label ?? 'Fehler'}
-          checkLabel={byId('check')?.label ?? 'Prüfen'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'context-window' ? (
-        <ContextWindowStage
-          x={160}
-          y={470}
-          oldLabel={byId('old')?.label ?? 'Alter Kontext'}
-          currentLabel={byId('current')?.label ?? 'Aktueller Kontext'}
-          newLabel={byId('new')?.label ?? 'Neue Information'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'process-chain' ? (
-        <ProcessChainStage x={100} y={560} steps={processStepLabels} startFrame={0} />
-      ) : null}
-
-      {parsed.visualType === 'ranking' ? (
-        <RankingStage
-          startFrame={0}
-          items={parsed.elements.map((element, index) => ({
-            label: element.label,
-            value: Math.max(1, parsed.elements.length - index),
-          }))}
-        />
-      ) : null}
-
-      {parsed.visualType === 'data-flow' ? (
-        <DataFlowStage
-          inputLabel={byId('input')?.label ?? 'Datenquelle'}
-          outputLabel={byId('output')?.label ?? 'Ergebnis'}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'tool-orchestration' ? (
-        <ToolOrchestrationStage
-          taskLabel={byId('task')?.label ?? 'Aufgabe'}
-          resultLabel={byId('result')?.label ?? 'Ergebnis'}
-          toolLabels={toolLabels}
-          startFrame={0}
-        />
-      ) : null}
-
-      {parsed.visualType === 'agent-loop' ? (
-        <AgentLoopStage
-          agentLabel={byId('ai')?.label ?? 'KI-Agent'}
-          stepLabels={agentStepLabels}
-          resultLabel="Selbstständig weiter"
-          startFrame={0}
-        />
-      ) : null}
-
-      {!usesDedicatedStage ? (
-        <>
-          {parsed.beats
-            .filter((beat) => beat.action === 'connect' && beat.sourceId)
-            .map((beat) => {
-              const from = positions[beat.sourceId as string];
-              const to = positions[beat.targetId];
-              if (!from || !to) return null;
-              return (
-                <React.Fragment key={beat.id}>
-                  <AnimatedConnector
-                    from={cardCenter(from)}
-                    to={cardCenter(to)}
-                    startFrame={beat.atFrame}
-                    durationFrames={beat.durationFrames}
-                  />
-                  <TokenFlow
-                    from={cardCenter(from)}
-                    to={cardCenter(to)}
-                    startFrame={beat.atFrame}
-                    durationFrames={Math.max(24, beat.durationFrames)}
-                  />
-                </React.Fragment>
-              );
-            })}
-
-          {parsed.elements.map((element) => {
-            const pos = positions[element.id];
-            if (!pos) return null;
-            const show = latestBeat(parsed, element.id, 'show');
-            const dim = latestBeat(parsed, element.id, 'dim');
-            const highlight = latestBeat(parsed, element.id, 'highlight');
-            const shake = latestBeat(parsed, element.id, 'shake');
-
-            if (element.id === 'ai') {
-              return (
-                <ProcessingCore
-                  key={element.id}
-                  x={pos.x + 35}
-                  y={pos.y - 20}
-                  startFrame={show?.atFrame ?? 0}
-                  label={element.label || 'KI'}
-                />
-              );
-            }
-
-            return (
-              <MotionCard
-                key={element.id}
-                element={element}
-                x={pos.x}
-                y={pos.y}
-                appearAt={show?.atFrame ?? 0}
-                dimmed={Boolean(dim && frame >= dim.atFrame)}
-                highlighted={Boolean(highlight && frame >= highlight.atFrame)}
-                shaking={Boolean(shake && frame >= shake.atFrame && frame <= shake.atFrame + shake.durationFrames)}
-              />
-            );
-          })}
-
-          {aiElement && aiPos ? (
-            <div
-              style={{
-                position: 'absolute',
-                left: aiPos.x - 60,
-                top: aiPos.y - 95,
-                width: 380,
-                height: 380,
-                borderRadius: '50%',
-                border: '4px dashed rgba(185,140,255,0.55)',
-                transform: `rotate(${frame * 1.4}deg)`,
-              }}
-            />
-          ) : null}
-        </>
-      ) : null}
+      {renderStage(parsed)}
 
       <div
         style={{
