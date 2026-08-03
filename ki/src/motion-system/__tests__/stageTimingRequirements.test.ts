@@ -56,4 +56,18 @@ describe('Stage-Timing-Anforderungen', () => {
     expect(requirements).toContain('files-show');
     expect(requirements).toContain('files-connect');
   });
+
+  it('verlangt den sichtbaren KI-Core im Fehlerpfad', () => {
+    const storyboard = MOTION_EXAMPLES['error-path'];
+    const requirements = getStageTimingRequirements(storyboard).map((entry) => entry.key);
+    expect(requirements).toContain('ai-show');
+
+    const incomplete = {
+      ...storyboard,
+      beats: storyboard.beats.filter(
+        (beat) => !(beat.targetId === 'ai' && beat.action === 'show'),
+      ),
+    };
+    expect(findMissingStageTimings(incomplete).map((entry) => entry.key)).toContain('ai-show');
+  });
 });
