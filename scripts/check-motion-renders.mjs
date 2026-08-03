@@ -10,6 +10,7 @@ import {
   describeMotionArtifactFailure,
   inspectMotionArtifactBuffer,
 } from './motion-artifact-validation.mjs';
+import {MOTION_SOURCE_FINGERPRINT} from './motion-source-fingerprint.mjs';
 
 const OUTPUT_DIR = process.env.MOTION_OUTPUT_DIR ?? 'out/motion-system';
 const MODE = process.argv[2] ?? 'all';
@@ -92,6 +93,7 @@ const targets = MODE === 'timeline'
 const report = {
   generatedAt: new Date().toISOString(),
   renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
+  motionSourceFingerprint: MOTION_SOURCE_FINGERPRINT,
   mode: MODE,
   outputDir: OUTPUT_DIR,
   targets: [],
@@ -147,6 +149,7 @@ console.log(
   `Motion-Renderprüfung: ${report.summary.validFiles}/${report.summary.expectedFiles} Dateien gültig.`,
 );
 console.log(`Manifest: ${RENDER_MANIFEST_FINGERPRINT}`);
+console.log(`Motion-Quellen: ${MOTION_SOURCE_FINGERPRINT}`);
 console.log(`Bericht: ${reportPath}`);
 
 if (!report.summary.passed) {
