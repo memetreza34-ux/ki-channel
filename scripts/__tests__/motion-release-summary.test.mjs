@@ -5,10 +5,12 @@ import {
   combineMotionReleaseReports,
   EXPECTED_MOTION_RELEASE_COUNTS,
 } from '../motion-release-summary.mjs';
+import {MOTION_SOURCE_FINGERPRINT} from '../motion-source-fingerprint.mjs';
 
 const createReport = (expectedFiles, invalidFiles = 0) => ({
   generatedAt: '2026-08-03T00:00:00.000Z',
   renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
+  motionSourceFingerprint: MOTION_SOURCE_FINGERPRINT,
   summary: {
     expectedFiles,
     validFiles: expectedFiles - invalidFiles,
@@ -31,6 +33,7 @@ describe('Kombinierter Motion-Freigabebericht', () => {
     assert.equal(result.summary.invalidFiles, 0);
     assert.equal(result.summary.passed, true);
     assert.equal(result.renderManifestFingerprint, RENDER_MANIFEST_FINGERPRINT);
+    assert.equal(result.motionSourceFingerprint, MOTION_SOURCE_FINGERPRINT);
   });
 
   it('schlägt fehl, sobald ein Teilbericht ungültige Dateien enthält', () => {
@@ -55,6 +58,20 @@ describe('Kombinierter Motion-Freigabebericht', () => {
           timeline: createReport(EXPECTED_MOTION_RELEASE_COUNTS.timeline),
         }),
       /anderen Render-Manifest erzeugt/,
+    );
+  });
+
+  it('lehnt Berichte aus einem anderen Motion-Quellstand ab', () => {
+    const stale = createReport(EXPECTED_MOTION_RELEASE_COUNTS.timeline);
+    stale.motionSourceFingerprint = 'stale-source';
+
+    assert.throws(
+      () =>
+        combineMotionReleaseReports({
+          individual: createReport(EXPECTED_MOTION_RELEASE_COUNTS.individual),
+          timeline: stale,
+        }),
+      /anderen Motion-Quellstand erzeugt/,
     );
   });
 
