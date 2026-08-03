@@ -1,4 +1,8 @@
-import {alignStoryboardToWords, type WordTimestamp} from './audioSync';
+import {
+  alignStoryboardToWords,
+  type MotionElementAudioKeywords,
+  type WordTimestamp,
+} from './audioSync';
 import {
   customizeMotionStoryboard,
   type MotionStoryboardCustomization,
@@ -18,6 +22,7 @@ export type MotionQualityMode = 'report' | 'strict';
 export type BuildMotionSceneInput = MotionStoryboardCustomization & {
   sentence: string;
   words?: WordTimestamp[];
+  audioKeywords?: MotionElementAudioKeywords;
   fps?: number;
   storyboardId?: string;
   qualityMode?: MotionQualityMode;
@@ -49,6 +54,7 @@ export class MotionQualityError extends Error {
 export const buildMotionScene = ({
   sentence,
   words = [],
+  audioKeywords,
   fps,
   storyboardId,
   qualityMode = 'report',
@@ -75,7 +81,12 @@ export const buildMotionScene = ({
     ? customized
     : retimeMotionStoryboardFps(customized, fps);
   const aligned = words.length > 0
-    ? alignStoryboardToWords(configured, words, configured.fps)
+    ? alignStoryboardToWords(
+        configured,
+        words,
+        configured.fps,
+        {elementKeywords: audioKeywords},
+      )
     : configured;
   const storyboard = assertMotionStoryboard(aligned);
   const quality = inspectMotionStoryboardQuality(storyboard);
