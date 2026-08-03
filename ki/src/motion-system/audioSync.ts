@@ -7,12 +7,20 @@ export type WordTimestamp = {
   endMs: number;
 };
 
+export type MotionElementAudioKeywords = Record<string, readonly string[]>;
+
+export type MotionAudioSyncOptions = {
+  elementKeywords?: MotionElementAudioKeywords;
+};
+
 type TimedToken = {
   value: string;
   startMs: number;
 };
 
 const CONNECTOR_LEAD_SECONDS = 0.2;
+const MAX_AUDIO_KEYWORDS_PER_ELEMENT = 8;
+const MAX_AUDIO_KEYWORD_LENGTH = 64;
 
 const normalize = (value: string) =>
   value
@@ -43,13 +51,76 @@ const createTimedTokens = (words: WordTimestamp[]): TimedToken[] =>
     tokenize(word.text).map((value) => ({value, startMs: word.startMs})),
   );
 
-const createLabelTokenFrequency = (
+const prepareElementKeywordCandidates = (
   storyboard: MotionStoryboard,
+  elementKeywords: MotionElementAudioKeywords = {},
+): Map<string, string[]> => {
+  const knownElementIds = new Set(
+    storyboard.elements.map((element) => element.id),
+  );
+  const unknownElementIds = Object.keys(elementKeywords).filter(
+    (elementId) => !knownElementIds.has(elementId),
+  );
+  if (unknownElementIds.length > 0) {
+    throw new Error(
+      `Unbekannte Element-IDs für Audio-Keywords: ${unknownElementIds.join(', ')}`,
+    );
+  }
+
+  const candidates = new Map<string, string[]>();
+  for (const element of storyboard.elements) {
+    const configured = elementKeywords[element.id] ?? [];
+    if (!Array.isArray(configured)) {
+      throw new Error(`Audio-Keywords für ${element.id} müssen als Liste angegeben werden.`);
+    }
+    if (configured.length > MAX_AUDIO_KEYWORDS_PER_ELEMENT) {
+      throw new Error(
+        `Audio-Keywords für ${element.id} dürfen höchstens ${MAX_AUDIO_KEYWORDS_PER_ELEMENT} Einträge enthalten.`,
+      );
+    }
+
+    const normalizedConfigured = configured.map((keyword, index) => {
+      if (typeof keyword !== 'string') {
+        throw new Error(
+          `Audio-Keyword ${index + 1} für ${element.id} muss Text sein.`,
+        );
+      }
+      const trimmed = keyword.trim();
+      if (!trimmed) {
+        throw new Error(`Audio-Keyword ${index + 1} für ${element.id} darf nicht leer sein.`);
+      }
+      if (trimmed.length > MAX_AUDIO_KEYWORD_LENGTH) {
+        throw new Error(
+          `Audio-Keyword ${index + 1} für ${element.id} darf höchstens ${MAX_AUDIO_KEYWORD_LENGTH} Zeichen lang sein.`,
+        );
+      }
+      return trimmed;
+    });
+
+    const orderedCandidates = [
+      ...normalizedConfigured,
+      element.label,
+    ].filter((candidate, index, all) => {
+      const normalizedCandidate = normalize(candidate);
+      return (
+        normalizedCandidate.length > 0 &&
+        all.findIndex((value) => normalize(value) === normalizedCandidate) === index
+      );
+    });
+    candidates.set(element.id, orderedCandidates);
+  }
+
+  return candidates;
+};
+
+const createCandidateTokenFrequency = (
+  candidatesByElement: Map<string, string[]>,
 ): Map<string, number> => {
   const frequency = new Map<string, number>();
 
-  for (const element of storyboard.elements) {
-    for (const token of new Set(tokenize(element.label))) {
+  for (const candidates of candidatesByElement.values()) {
+    const elementTokens = new Set(candidates.flatMap(tokenize));
+    for (const token of elementTokens) {
       frequency.set(token, (frequency.get(token) ?? 0) + 1);
     }
   }
@@ -105,6 +176,22 @@ const findFirstKeywordTime = (
   return null;
 };
 
+const findFirstCandidateTime = (
+  timedTokens: TimedToken[],
+  candidates: string[],
+  tokenFrequency: Map<string, number>,
+): number | null => {
+  for (const candidate of candidates) {
+    const matchingTime = findFirstKeywordTime(
+      timedTokens,
+      candidate,
+      tokenFrequency,
+    );
+    if (matchingTime !== null) return matchingTime;
+  }
+  return null;
+};
+
 const fitBeatIntoDuration = (
   atFrame: number,
   durationFrames: number,
@@ -118,6 +205,7 @@ export const alignStoryboardToWords = (
   storyboard: MotionStoryboard,
   words: WordTimestamp[],
   fps = storyboard.fps,
+  options: MotionAudioSyncOptions = {},
 ): MotionStoryboard => {
   if (!Number.isFinite(fps) || fps <= 0) {
     throw new Error('FPS muss eine positive Zahl sein.');
@@ -126,18 +214,22 @@ export const alignStoryboardToWords = (
   const configuredStoryboard = fps === storyboard.fps
     ? storyboard
     : retimeMotionStoryboardFps(storyboard, fps);
+  const candidatesByElement = prepareElementKeywordCandidates(
+    configuredStoryboard,
+    options.elementKeywords,
+  );
   const connectorLeadFrames = Math.max(1, Math.round(fps * CONNECTOR_LEAD_SECONDS));
   const validWords = words.filter(isValidTimestamp).sort((a, b) => a.startMs - b.startMs);
   if (validWords.length === 0) return configuredStoryboard;
 
   const timedTokens = createTimedTokens(validWords);
-  const labelTokenFrequency = createLabelTokenFrequency(configuredStoryboard);
+  const labelTokenFrequency = createCandidateTokenFrequency(candidatesByElement);
   const targetWordFrames = new Map<string, number>();
 
   for (const element of configuredStoryboard.elements) {
-    const matchingTime = findFirstKeywordTime(
+    const matchingTime = findFirstCandidateTime(
       timedTokens,
-      element.label,
+      candidatesByElement.get(element.id) ?? [element.label],
       labelTokenFrequency,
     );
     if (matchingTime !== null) {
