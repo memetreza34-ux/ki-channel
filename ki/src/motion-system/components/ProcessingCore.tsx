@@ -2,6 +2,28 @@ import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {getLabelTypography} from '../textLayout';
 
+export const PROCESSING_CORE_ENTRY_DURATION = 16;
+
+export const getProcessingCoreEntryProgress = (
+  frame: number,
+  startFrame: number,
+  durationFrames = PROCESSING_CORE_ENTRY_DURATION,
+): number => {
+  if (!Number.isFinite(frame) || !Number.isFinite(startFrame)) {
+    throw new Error('Core-Framewerte müssen endliche Zahlen sein.');
+  }
+  if (!Number.isFinite(durationFrames) || durationFrames <= 0) {
+    throw new Error('Core-Einstiegsdauer muss eine positive Zahl sein.');
+  }
+
+  return interpolate(
+    frame,
+    [startFrame, startFrame + durationFrames],
+    [0, 1],
+    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+  );
+};
+
 export const ProcessingCore: React.FC<{
   x: number;
   y: number;
@@ -12,16 +34,30 @@ export const ProcessingCore: React.FC<{
 }> = ({x, y, startFrame, size = 190, label = 'KI', color = '#B98CFF'}) => {
   const frame = useCurrentFrame();
   const local = Math.max(0, frame - startFrame);
+  const entry = getProcessingCoreEntryProgress(frame, startFrame);
   const pulse = interpolate(Math.sin(local / 6), [-1, 1], [0.96, 1.05]);
   const ring = interpolate((local % 36) / 36, [0, 1], [0.55, 1.35]);
   const ringOpacity = interpolate((local % 36) / 36, [0, 1], [0.5, 0]);
+  const entryScale = interpolate(entry, [0, 1], [0.86, 1]);
+  const entryRise = interpolate(entry, [0, 1], [24, 0]);
   const typography = getLabelTypography(label, {
     maxFontSize: Math.max(24, Math.round(size * 0.23)),
     minFontSize: Math.max(18, Math.round(size * 0.12)),
   });
 
   return (
-    <div style={{position: 'absolute', left: x, top: y, width: size, height: size}}>
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: size,
+        height: size,
+        opacity: entry,
+        transform: `translateY(${entryRise}px) scale(${entryScale})`,
+        transformOrigin: 'center',
+      }}
+    >
       <div
         style={{
           position: 'absolute',
@@ -29,7 +65,7 @@ export const ProcessingCore: React.FC<{
           borderRadius: 48,
           border: `6px solid ${color}`,
           transform: `scale(${ring})`,
-          opacity: ringOpacity,
+          opacity: ringOpacity * entry,
         }}
       />
       <div
