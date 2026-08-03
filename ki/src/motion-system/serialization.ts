@@ -96,6 +96,13 @@ const motionTimelineDocumentSchema = z
     }
   });
 
+export type MotionStoryboardDocument = z.infer<
+  typeof motionStoryboardDocumentSchema
+>;
+export type MotionTimelineDocument = z.infer<
+  typeof motionTimelineDocumentSchema
+>;
+
 const parseJson = (json: string): unknown => {
   try {
     return JSON.parse(json) as unknown;
@@ -112,26 +119,23 @@ const stringifyDocument = (document: unknown, indentation = 2): string => {
   return `${JSON.stringify(document, null, indentation)}\n`;
 };
 
-export const serializeMotionStoryboard = (
+export const createMotionStoryboardDocument = (
   storyboard: MotionStoryboard,
-  indentation = 2,
-): string => {
-  const document = motionStoryboardDocumentSchema.parse({
+): MotionStoryboardDocument =>
+  motionStoryboardDocumentSchema.parse({
     kind: 'motion-storyboard',
     version: MOTION_SERIALIZATION_VERSION,
     storyboard,
   });
-  return stringifyDocument(document, indentation);
-};
 
-export const parseMotionStoryboardJson = (json: string): MotionStoryboard =>
-  motionStoryboardDocumentSchema.parse(parseJson(json)).storyboard;
+export const parseMotionStoryboardDocument = (
+  input: unknown,
+): MotionStoryboard => motionStoryboardDocumentSchema.parse(input).storyboard;
 
-export const serializeMotionTimeline = (
+export const createMotionTimelineDocument = (
   timeline: MotionTimeline,
-  indentation = 2,
-): string => {
-  const document = motionTimelineDocumentSchema.parse({
+): MotionTimelineDocument =>
+  motionTimelineDocumentSchema.parse({
     kind: 'motion-timeline',
     version: MOTION_SERIALIZATION_VERSION,
     fps: timeline.fps,
@@ -144,11 +148,10 @@ export const serializeMotionTimeline = (
       storyboard: scene.storyboard,
     })),
   });
-  return stringifyDocument(document, indentation);
-};
 
-export const parseMotionTimelineJson = (json: string): MotionTimeline => {
-  const document = motionTimelineDocumentSchema.parse(parseJson(json));
+const hydrateMotionTimeline = (
+  document: MotionTimelineDocument,
+): MotionTimeline => {
   const scenes: MotionTimelineScene[] = document.scenes.map((scene) => {
     const quality = inspectMotionStoryboardQuality(scene.storyboard);
     return {
@@ -180,3 +183,23 @@ export const parseMotionTimelineJson = (json: string): MotionTimeline => {
     issues,
   };
 };
+
+export const parseMotionTimelineDocument = (
+  input: unknown,
+): MotionTimeline => hydrateMotionTimeline(motionTimelineDocumentSchema.parse(input));
+
+export const serializeMotionStoryboard = (
+  storyboard: MotionStoryboard,
+  indentation = 2,
+): string => stringifyDocument(createMotionStoryboardDocument(storyboard), indentation);
+
+export const parseMotionStoryboardJson = (json: string): MotionStoryboard =>
+  parseMotionStoryboardDocument(parseJson(json));
+
+export const serializeMotionTimeline = (
+  timeline: MotionTimeline,
+  indentation = 2,
+): string => stringifyDocument(createMotionTimelineDocument(timeline), indentation);
+
+export const parseMotionTimelineJson = (json: string): MotionTimeline =>
+  parseMotionTimelineDocument(parseJson(json));
