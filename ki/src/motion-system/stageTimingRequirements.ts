@@ -42,6 +42,7 @@ export const getStageTimingRequirements = (
     case 'error-path':
       return [
         requirement('input-show', {targetId: 'input', action: 'show'}),
+        requirement('ai-show', {targetId: 'ai', action: 'show'}),
         requirement('error-show', {targetId: 'error', action: 'show'}),
         requirement('error-shake', {targetId: 'error', action: 'shake'}),
         requirement('check-show', {targetId: 'check', action: 'show'}),
