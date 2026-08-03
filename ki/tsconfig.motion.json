@@ -1,10 +1,12 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/motion-system/**/*.ts",
-    "src/motion-system/**/*.tsx"
+    "src/motion-system/**/*.tsx",
+    "src/motion-system/**/*.json"
   ]
 }
