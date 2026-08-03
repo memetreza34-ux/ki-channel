@@ -3,11 +3,12 @@ import {MOTION_EXAMPLES} from '../examples';
 import {inspectMotionStoryboardQuality} from '../quality';
 
 describe('Motion-Qualitätsprüfung', () => {
-  it('alle Standardbeispiele bestehen ohne Qualitätsfehler', () => {
+  it('alle Standardbeispiele bestehen ohne Qualitätsfehler oder versteckte Elemente', () => {
     for (const storyboard of Object.values(MOTION_EXAMPLES)) {
       const report = inspectMotionStoryboardQuality(storyboard);
       expect(report.passed).toBe(true);
       expect(report.issues.filter((issue) => issue.severity === 'error')).toEqual([]);
+      expect(report.issues.some((issue) => issue.code === 'unrendered-element')).toBe(false);
     }
   });
 
@@ -80,5 +81,28 @@ describe('Motion-Qualitätsprüfung', () => {
 
     expect(report.passed).toBe(true);
     expect(report.issues.some((issue) => issue.code === 'stage-item-limit')).toBe(true);
+    expect(
+      report.issues.some(
+        (issue) => issue.code === 'unrendered-element' && issue.message.includes('calendar'),
+      ),
+    ).toBe(true);
+  });
+
+  it('meldet auch zusätzliche Elemente außerhalb dynamischer Stage-Limits', () => {
+    const storyboard = MOTION_EXAMPLES['input-output'];
+    const report = inspectMotionStoryboardQuality({
+      ...storyboard,
+      elements: [
+        ...storyboard.elements,
+        {id: 'note', kind: 'label' as const, label: 'Hinweis', emphasis: 'normal' as const},
+      ],
+    });
+
+    expect(report.passed).toBe(true);
+    expect(
+      report.issues.some(
+        (issue) => issue.code === 'unrendered-element' && issue.message.includes('note'),
+      ),
+    ).toBe(true);
   });
 });
