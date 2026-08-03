@@ -16,6 +16,7 @@
   "timeline": {
     "targetKey": "timeline-demo",
     "compositionId": "Motion-Timeline-Demo",
+    "productionCompositionId": "Motion-Timeline-Production",
     "durationInFrames": 624,
     "smokeCheckpoints": [75, 233, 391, 549],
     "checkpoints": [75, 233, 391, 549, 623]
