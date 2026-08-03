@@ -42,12 +42,7 @@ export const getRenderedStageElementIds = (
       return new Set(storyboard.elements.slice(0, 8).map((element) => element.id));
 
     case 'process-chain':
-      return new Set(
-        storyboard.elements
-          .filter((element) => element.id.startsWith('step-'))
-          .slice(0, 4)
-          .map((element) => element.id),
-      );
+      return fixedIds('step-1', 'step-2', 'step-3', 'step-4');
   }
 };
 
