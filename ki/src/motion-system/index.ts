@@ -10,6 +10,7 @@ export * from './customization';
 export * from './validation';
 export * from './quality';
 export * from './runtime';
+export * from './production';
 export * from './timeline';
 export * from './timelineNavigation';
 export * from './scriptTimeline';
