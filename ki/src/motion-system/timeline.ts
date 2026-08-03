@@ -14,6 +14,7 @@ export type BuildMotionTimelineInput = {
   scenes: BuildMotionSceneInput[];
   fps?: number;
   gapFrames?: number;
+  qualityMode?: BuildMotionSceneInput['qualityMode'];
 };
 
 export type MotionTimelineIssue = MotionQualityIssue & {
@@ -157,6 +158,7 @@ export const buildMotionTimeline = ({
   scenes,
   fps: requestedFps,
   gapFrames = 0,
+  qualityMode,
 }: BuildMotionTimelineInput): MotionTimeline => {
   if (scenes.length === 0) {
     throw new Error('Eine Motion-Timeline benötigt mindestens eine Szene.');
@@ -178,7 +180,11 @@ export const buildMotionTimeline = ({
   let cursor = 0;
 
   scenes.forEach((sceneInput, index) => {
-    const result = buildMotionScene({...sceneInput, fps});
+    const result = buildMotionScene({
+      ...sceneInput,
+      fps,
+      qualityMode: sceneInput.qualityMode ?? qualityMode,
+    });
     const storyboard = reserveStoryboardId({
       storyboard: result.storyboard,
       explicit: sceneInput.storyboardId !== undefined,
