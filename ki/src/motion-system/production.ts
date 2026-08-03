@@ -25,14 +25,16 @@ import {
 } from './transcriptTimeline';
 import {assertMotionStoryboard} from './validation';
 
-export const PRODUCTION_BLOCKING_QUALITY_CODES = new Set<
-  MotionQualityIssue['code']
->([
+export const PRODUCTION_BLOCKING_QUALITY_CODES = [
   'stage-item-limit',
   'unrendered-element',
   'missing-stage-timing',
   'collapsed-beat-timing',
-]);
+] as const satisfies readonly MotionQualityIssue['code'][];
+
+const productionBlockingQualityCodeSet = new Set<MotionQualityIssue['code']>(
+  PRODUCTION_BLOCKING_QUALITY_CODES,
+);
 
 export type MotionProductionBlockingIssue = MotionQualityIssue & {
   sceneIndex?: number;
@@ -80,7 +82,7 @@ export const findProductionBlockingIssues = (
     .filter(
       (issue) =>
         issue.severity === 'error' ||
-        PRODUCTION_BLOCKING_QUALITY_CODES.has(issue.code),
+        productionBlockingQualityCodeSet.has(issue.code),
     )
     .map((issue) => ({
       ...issue,
