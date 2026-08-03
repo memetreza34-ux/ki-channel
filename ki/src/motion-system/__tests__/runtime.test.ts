@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildMotionScene} from '../runtime';
+import {buildMotionScene, MotionQualityError} from '../runtime';
 import {motionStoryboardSchema} from '../schema';
 
 describe('buildMotionScene', () => {
@@ -47,6 +47,43 @@ describe('buildMotionScene', () => {
     expect(() => motionStoryboardSchema.parse(result.storyboard)).not.toThrow();
   });
 
+  it('liefert Qualitätsfehler standardmäßig als Bericht zurück', () => {
+    const result = buildMotionScene({sentence: 'x'.repeat(221)});
+
+    expect(result.quality.passed).toBe(false);
+    expect(
+      result.quality.issues.some(
+        (issue) => issue.code === 'sentence-too-long' && issue.severity === 'error',
+      ),
+    ).toBe(true);
+  });
+
+  it('blockiert Qualitätsfehler im strikten Produktionsmodus', () => {
+    try {
+      buildMotionScene({
+        sentence: 'x'.repeat(221),
+        qualityMode: 'strict',
+      });
+      throw new Error('Strikter Qualitätsmodus hätte fehlschlagen müssen.');
+    } catch (error) {
+      expect(error).toBeInstanceOf(MotionQualityError);
+      const qualityError = error as MotionQualityError;
+      expect(qualityError.storyboard.sentence).toHaveLength(221);
+      expect(qualityError.quality.passed).toBe(false);
+      expect(qualityError.message).toContain('sentence-too-long');
+    }
+  });
+
+  it('lässt reine Warnungen auch im strikten Modus zu', () => {
+    const result = buildMotionScene({
+      sentence: 'x'.repeat(141),
+      qualityMode: 'strict',
+    });
+
+    expect(result.quality.passed).toBe(true);
+    expect(result.quality.issues.some((issue) => issue.severity === 'warning')).toBe(true);
+  });
+
   it('lehnt FPS außerhalb des Storyboard-Schemas früh und verständlich ab', () => {
     expect(() =>
       buildMotionScene({
@@ -54,6 +91,15 @@ describe('buildMotionScene', () => {
         fps: 120,
       }),
     ).toThrow('FPS muss eine ganze Zahl zwischen 24 und 60 sein.');
+  });
+
+  it('lehnt einen unbekannten Qualitätsmodus ab', () => {
+    expect(() =>
+      buildMotionScene({
+        sentence: 'Die KI erstellt eine Zusammenfassung.',
+        qualityMode: 'unknown' as never,
+      }),
+    ).toThrow('qualityMode muss report oder strict sein.');
   });
 
   it('lehnt leere Sätze ab', () => {
