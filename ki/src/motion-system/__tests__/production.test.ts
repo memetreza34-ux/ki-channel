@@ -62,11 +62,11 @@ describe('Strikte Motion-Produktionspipeline', () => {
     expect(timeline.scenes).toHaveLength(3);
   });
 
-  it('blockiert auch überlange Szenen aus der Skript-Pipeline', () => {
+  it('blockiert Qualitätsfehler aus Skript-Standardwerten', () => {
     expect(() =>
       buildProductionMotionTimelineFromScript({
-        script: 'x'.repeat(221),
-        maxCharactersPerScene: 220,
+        script: 'Die KI erstellt eine Zusammenfassung.',
+        sceneDefaults: {labels: []},
       }),
     ).toThrow(MotionQualityError);
   });
