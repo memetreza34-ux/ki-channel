@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {describe, it} from 'node:test';
+import {RENDER_MANIFEST_FINGERPRINT} from '../motion-render-config.mjs';
 import {
   combineMotionReleaseReports,
   EXPECTED_MOTION_RELEASE_COUNTS,
@@ -7,6 +8,7 @@ import {
 
 const createReport = (expectedFiles, invalidFiles = 0) => ({
   generatedAt: '2026-08-03T00:00:00.000Z',
+  renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
   summary: {
     expectedFiles,
     validFiles: expectedFiles - invalidFiles,
@@ -28,6 +30,7 @@ describe('Kombinierter Motion-Freigabebericht', () => {
     assert.equal(result.summary.validFiles, 66);
     assert.equal(result.summary.invalidFiles, 0);
     assert.equal(result.summary.passed, true);
+    assert.equal(result.renderManifestFingerprint, RENDER_MANIFEST_FINGERPRINT);
   });
 
   it('schlägt fehl, sobald ein Teilbericht ungültige Dateien enthält', () => {
@@ -39,6 +42,20 @@ describe('Kombinierter Motion-Freigabebericht', () => {
     assert.equal(result.summary.validFiles, 65);
     assert.equal(result.summary.invalidFiles, 1);
     assert.equal(result.summary.passed, false);
+  });
+
+  it('lehnt veraltete Manifest-Fingerprints ab', () => {
+    const stale = createReport(EXPECTED_MOTION_RELEASE_COUNTS.individual);
+    stale.renderManifestFingerprint = 'stale-manifest';
+
+    assert.throws(
+      () =>
+        combineMotionReleaseReports({
+          individual: stale,
+          timeline: createReport(EXPECTED_MOTION_RELEASE_COUNTS.timeline),
+        }),
+      /anderen Render-Manifest erzeugt/,
+    );
   });
 
   it('lehnt veraltete oder inkonsistente Datei-Zähler ab', () => {
