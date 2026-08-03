@@ -1,7 +1,11 @@
 import {describe, expect, it} from 'vitest';
 import {buildMotionScene} from '../runtime';
 import {
+  createMotionStoryboardDocument,
+  createMotionTimelineDocument,
+  parseMotionStoryboardDocument,
   parseMotionStoryboardJson,
+  parseMotionTimelineDocument,
   parseMotionTimelineJson,
   serializeMotionStoryboard,
   serializeMotionTimeline,
@@ -23,6 +27,19 @@ describe('Motion-JSON-Serialisierung', () => {
     expect(serializeMotionStoryboard(storyboard)).toBe(json);
   });
 
+  it('erstellt und validiert ein Storyboard-Dokument ohne JSON-Zwischenschritt', () => {
+    const storyboard = buildMotionScene({
+      sentence: 'Die KI erstellt eine Zusammenfassung.',
+    }).storyboard;
+    const document = createMotionStoryboardDocument(storyboard);
+
+    expect(document.kind).toBe('motion-storyboard');
+    expect(parseMotionStoryboardDocument(document)).toEqual(storyboard);
+    expect(() =>
+      parseMotionStoryboardDocument({...document, version: 2}),
+    ).toThrow();
+  });
+
   it('serialisiert und lädt eine Timeline mit Qualitätsdaten verlustfrei', () => {
     const timeline = buildMotionTimeline({
       fps: 60,
@@ -39,6 +56,24 @@ describe('Motion-JSON-Serialisierung', () => {
 
     expect(parsed).toEqual(timeline);
     expect(serializeMotionTimeline(parsed)).toBe(json);
+  });
+
+  it('erstellt und validiert ein Timeline-Dokument ohne JSON-Zwischenschritt', () => {
+    const timeline = buildMotionTimeline({
+      gapFrames: 6,
+      scenes: [
+        {sentence: 'Die KI erstellt eine Zusammenfassung.'},
+        {sentence: 'Daten fließen durch die KI zum Ergebnis.'},
+      ],
+    });
+    const document = createMotionTimelineDocument(timeline);
+
+    expect(document.kind).toBe('motion-timeline');
+    expect(parseMotionTimelineDocument(document)).toEqual(timeline);
+
+    const manipulated = structuredClone(document);
+    manipulated.totalDurationInFrames += 1;
+    expect(() => parseMotionTimelineDocument(manipulated)).toThrow();
   });
 
   it('lehnt syntaktisch ungültiges JSON verständlich ab', () => {
