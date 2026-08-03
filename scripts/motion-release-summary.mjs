@@ -4,6 +4,7 @@ import {
   TIMELINE_TARGET,
   VISUAL_TYPES,
 } from './motion-render-config.mjs';
+import {MOTION_SOURCE_FINGERPRINT} from './motion-source-fingerprint.mjs';
 
 export const EXPECTED_MOTION_RELEASE_COUNTS = Object.freeze({
   individual: VISUAL_TYPES.length * (DEFAULT_CHECKPOINTS.length + 1),
@@ -18,6 +19,12 @@ const assertReportSummary = (report, name, expectedFiles) => {
   if (report.renderManifestFingerprint !== RENDER_MANIFEST_FINGERPRINT) {
     throw new Error(
       `${name} wurde mit einem anderen Render-Manifest erzeugt und muss neu erstellt werden.`,
+    );
+  }
+
+  if (report.motionSourceFingerprint !== MOTION_SOURCE_FINGERPRINT) {
+    throw new Error(
+      `${name} wurde mit einem anderen Motion-Quellstand erzeugt und muss neu gerendert werden.`,
     );
   }
 
@@ -67,6 +74,7 @@ export const combineMotionReleaseReports = ({individual, timeline}) => {
   return {
     generatedAt: new Date().toISOString(),
     renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
+    motionSourceFingerprint: MOTION_SOURCE_FINGERPRINT,
     sources: {
       individualGeneratedAt: individual.generatedAt ?? null,
       timelineGeneratedAt: timeline.generatedAt ?? null,
