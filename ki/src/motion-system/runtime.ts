@@ -80,7 +80,7 @@ export const buildMotionScene = ({
   const configured = fps === undefined
     ? customized
     : retimeMotionStoryboardFps(customized, fps);
-  const aligned = words.length > 0
+  const aligned = words.length > 0 || audioKeywords !== undefined
     ? alignStoryboardToWords(
         configured,
         words,
