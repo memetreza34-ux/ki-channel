@@ -99,7 +99,7 @@ MP4-Anforderungen:
 - gültiger `ftyp`-Header
 - mindestens 4096 Bytes
 
-Die Ergebnisse stehen in:
+Die Teilberichte stehen in:
 
 ```text
 out/motion-system/release-report.json
@@ -113,6 +113,20 @@ Jeder Dateieintrag enthält zusätzlich:
 - Signaturstatus
 - Mindestgrößenstatus
 - bei PNG Breite, Höhe und Dimensionsstatus
+
+Nach beiden Teilprüfungen erzeugt `motion:check-release` den gemeinsamen Bericht:
+
+```text
+out/motion-system/combined-release-report.json
+```
+
+Der kombinierte Bericht kontrolliert zusätzlich, dass die Zähler noch zum aktuellen Render-Manifest passen. Erwartet werden exakt:
+
+- 60 Einzeltyp-Artefakte
+- 6 Timeline-Artefakte
+- 66 Artefakte insgesamt
+
+Veraltete Berichte mit abweichenden Zählern oder einem inkonsistenten `passed`-Status werden abgelehnt.
 
 ## Produktionsprüfung
 
@@ -128,7 +142,13 @@ Vollständige Freigabeprüfung:
 npm run motion:full-release-check
 ```
 
-`motion:verify` enthält dabei sowohl die Vitest-Suite als auch die Node-Test-Suite für die Artefaktprüfung.
+Nur die vorhandenen Teilberichte zusammenführen und prüfen:
+
+```bash
+npm run motion:check-release
+```
+
+`motion:verify` enthält sowohl die Vitest-Suite als auch die Node-Test-Suiten für Artefakt- und Freigabeberichte.
 
 Ein Merge ist erst zulässig, wenn:
 
@@ -137,4 +157,5 @@ Ein Merge ist erst zulässig, wenn:
 3. die Timeline-Demo gerendert wurde.
 4. `release-report.json` 60 von 60 Dateien bestätigt.
 5. `timeline-release-report.json` 6 von 6 Dateien bestätigt.
-6. alle elf Compositions visuell geprüft wurden.
+6. `combined-release-report.json` 66 von 66 Dateien bestätigt.
+7. alle elf Compositions visuell geprüft wurden.
