@@ -88,6 +88,21 @@ describe('Explizite Audio-Keywords', () => {
     ).toThrow('höchstens 64 Zeichen');
   });
 
+  it('validiert die Keywordkonfiguration auch ohne Wort-Timestamps', () => {
+    expect(() =>
+      buildMotionScene({
+        sentence: 'Die KI nutzt Dateien.',
+        audioKeywords: {unknown: ['Dateien']},
+      }),
+    ).toThrow('Unbekannte Element-IDs für Audio-Keywords');
+
+    const result = buildMotionScene({
+      sentence: 'Die KI nutzt Dateien.',
+      audioKeywords: {files: ['Dateien']},
+    });
+    expect(result.quality.passed).toBe(true);
+  });
+
   it('verändert Storyboard, Wortliste und Keywordkonfiguration nicht', () => {
     const base = buildMotionScene({sentence: 'Die KI nutzt Dateien.'}).storyboard;
     const words = [{text: 'Dateien', startMs: 1000, endMs: 1200}];
