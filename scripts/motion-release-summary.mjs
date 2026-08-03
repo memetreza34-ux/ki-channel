@@ -1,5 +1,6 @@
 import {
   DEFAULT_CHECKPOINTS,
+  RENDER_MANIFEST_FINGERPRINT,
   TIMELINE_TARGET,
   VISUAL_TYPES,
 } from './motion-render-config.mjs';
@@ -12,6 +13,12 @@ export const EXPECTED_MOTION_RELEASE_COUNTS = Object.freeze({
 const assertReportSummary = (report, name, expectedFiles) => {
   if (!report || typeof report !== 'object' || !report.summary) {
     throw new Error(`${name} enthält keine gültige summary.`);
+  }
+
+  if (report.renderManifestFingerprint !== RENDER_MANIFEST_FINGERPRINT) {
+    throw new Error(
+      `${name} wurde mit einem anderen Render-Manifest erzeugt und muss neu erstellt werden.`,
+    );
   }
 
   const {expectedFiles: reportedExpected, validFiles, invalidFiles, passed} = report.summary;
@@ -59,6 +66,7 @@ export const combineMotionReleaseReports = ({individual, timeline}) => {
 
   return {
     generatedAt: new Date().toISOString(),
+    renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
     sources: {
       individualGeneratedAt: individual.generatedAt ?? null,
       timelineGeneratedAt: timeline.generatedAt ?? null,
