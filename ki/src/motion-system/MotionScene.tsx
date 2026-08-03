@@ -6,7 +6,7 @@ import {motionStoryboardSchema, type MotionStoryboard} from './schema';
 import {getSentenceTypography} from './textLayout';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
-const MotionSceneComponent: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
+export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
   const parsed = React.useMemo(
     () => motionStoryboardSchema.parse(storyboard),
     [storyboard],
@@ -64,5 +64,3 @@ const MotionSceneComponent: React.FC<{storyboard: MotionStoryboard}> = ({storybo
     </AbsoluteFill>
   );
 };
-
-export const MotionScene = React.memo(MotionSceneComponent);
