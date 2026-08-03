@@ -4,6 +4,7 @@ import {
   buildProductionMotionScene,
   buildProductionMotionTimeline,
   buildProductionMotionTimelineFromScript,
+  buildProductionMotionTimelineFromTranscript,
   MotionProductionQualityError,
 } from '../production';
 import {buildMotionScene, MotionQualityError} from '../runtime';
@@ -132,10 +133,45 @@ describe('Strikte Motion-Produktionspipeline', () => {
     expect(timeline.scenes).toHaveLength(3);
   });
 
+  it('baut globale Wort-Timestamps strikt zur Produktions-Timeline', () => {
+    const result = buildProductionMotionTimelineFromTranscript({
+      script: 'Die KI nutzt Dateien. Danach entsteht das Ergebnis.',
+      words: [
+        {text: 'Die', startMs: 0, endMs: 100},
+        {text: 'KI', startMs: 150, endMs: 300},
+        {text: 'nutzt', startMs: 350, endMs: 500},
+        {text: 'Dateien', startMs: 900, endMs: 1150},
+        {text: 'Danach', startMs: 1800, endMs: 2000},
+        {text: 'entsteht', startMs: 2050, endMs: 2250},
+        {text: 'das', startMs: 2300, endMs: 2400},
+        {text: 'Ergebnis', startMs: 2700, endMs: 3000},
+      ],
+      fps: 60,
+    });
+
+    expect(result.timeline.passed).toBe(true);
+    expect(result.timeline.scenes).toHaveLength(2);
+    expect(result.transcriptScenes[1].words[0].startMs).toBe(0);
+  });
+
   it('blockiert Qualitätsfehler aus Skript-Standardwerten', () => {
     expect(() =>
       buildProductionMotionTimelineFromScript({
         script: 'Die KI erstellt eine Zusammenfassung.',
+        sceneDefaults: {labels: []},
+      }),
+    ).toThrow(MotionQualityError);
+
+    expect(() =>
+      buildProductionMotionTimelineFromTranscript({
+        script: 'Die KI erstellt eine Zusammenfassung.',
+        words: [
+          {text: 'Die', startMs: 0, endMs: 100},
+          {text: 'KI', startMs: 120, endMs: 220},
+          {text: 'erstellt', startMs: 250, endMs: 400},
+          {text: 'eine', startMs: 420, endMs: 500},
+          {text: 'Zusammenfassung', startMs: 550, endMs: 850},
+        ],
         sceneDefaults: {labels: []},
       }),
     ).toThrow(MotionQualityError);
