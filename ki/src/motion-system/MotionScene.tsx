@@ -6,10 +6,16 @@ import {motionStoryboardSchema, type MotionStoryboard} from './schema';
 import {getSentenceTypography} from './textLayout';
 import {TEMPLATE_REGISTRY} from './templates/TemplateRegistry';
 
-export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
-  const parsed = motionStoryboardSchema.parse(storyboard);
+const MotionSceneComponent: React.FC<{storyboard: MotionStoryboard}> = ({storyboard}) => {
+  const parsed = React.useMemo(
+    () => motionStoryboardSchema.parse(storyboard),
+    [storyboard],
+  );
   const template = TEMPLATE_REGISTRY[parsed.visualType];
-  const sentenceTypography = getSentenceTypography(parsed.sentence);
+  const sentenceTypography = React.useMemo(
+    () => getSentenceTypography(parsed.sentence),
+    [parsed.sentence],
+  );
 
   return (
     <AbsoluteFill style={{background: '#FFFFFF', overflow: 'hidden'}}>
@@ -58,3 +64,5 @@ export const MotionScene: React.FC<{storyboard: MotionStoryboard}> = ({storyboar
     </AbsoluteFill>
   );
 };
+
+export const MotionScene = React.memo(MotionSceneComponent);
