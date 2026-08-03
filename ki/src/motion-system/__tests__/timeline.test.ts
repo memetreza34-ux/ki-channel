@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildMotionScene} from '../runtime';
+import {buildMotionScene, MotionQualityError} from '../runtime';
 import {motionStoryboardSchema} from '../schema';
 import {buildMotionTimeline, MOTION_TIMELINE_LIMITS} from '../timeline';
 
@@ -122,6 +122,28 @@ describe('buildMotionTimeline', () => {
           issue.severity === 'error',
       ),
     ).toBe(true);
+  });
+
+  it('kann Qualitätsfehler für die gesamte Timeline strikt blockieren', () => {
+    expect(() =>
+      buildMotionTimeline({
+        qualityMode: 'strict',
+        scenes: [
+          {sentence: 'Die KI erstellt eine Zusammenfassung.'},
+          {sentence: 'x'.repeat(221)},
+        ],
+      }),
+    ).toThrow(MotionQualityError);
+  });
+
+  it('lässt Timeline-Warnungen im strikten Modus zu', () => {
+    const timeline = buildMotionTimeline({
+      qualityMode: 'strict',
+      scenes: [{sentence: 'x'.repeat(141)}],
+    });
+
+    expect(timeline.passed).toBe(true);
+    expect(timeline.issues.some((issue) => issue.severity === 'warning')).toBe(true);
   });
 
   it('lehnt leere Timelines, ungültige Abstände und zu viele Szenen ab', () => {
