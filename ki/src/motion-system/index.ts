@@ -28,6 +28,7 @@ export * from './renderCommands';
 export * from './MotionStage';
 export * from './MotionScene';
 export * from './MotionTimeline';
+export * from './MotionTimelineDocumentComposition';
 export * from './MotionPreviewRoot';
 export * from './templates/TemplateRegistry';
 export * from './components/MotionCard';
