@@ -2,6 +2,7 @@ import {access, mkdir, open, stat, writeFile} from 'node:fs/promises';
 import {extname, resolve} from 'node:path';
 import {
   DEFAULT_CHECKPOINTS,
+  RENDER_MANIFEST_FINGERPRINT,
   TIMELINE_TARGET,
   VISUAL_TYPES,
 } from './motion-render-config.mjs';
@@ -90,6 +91,7 @@ const targets = MODE === 'timeline'
 
 const report = {
   generatedAt: new Date().toISOString(),
+  renderManifestFingerprint: RENDER_MANIFEST_FINGERPRINT,
   mode: MODE,
   outputDir: OUTPUT_DIR,
   targets: [],
@@ -144,6 +146,7 @@ await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 console.log(
   `Motion-Renderprüfung: ${report.summary.validFiles}/${report.summary.expectedFiles} Dateien gültig.`,
 );
+console.log(`Manifest: ${RENDER_MANIFEST_FINGERPRINT}`);
 console.log(`Bericht: ${reportPath}`);
 
 if (!report.summary.passed) {
