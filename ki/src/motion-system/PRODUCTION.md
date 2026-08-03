@@ -29,12 +29,13 @@ Sobald der Qualitätsbericht einen Fehler enthält, wird `MotionQualityError` au
 
 ## Empfohlene Produktions-APIs
 
-Damit `strict` nicht versehentlich vergessen oder durch eine Szenenoption überschrieben wird, existieren drei feste Einstiegspunkte:
+Damit `strict` nicht versehentlich vergessen oder durch eine Szenenoption überschrieben wird, existieren vier feste Einstiegspunkte:
 
 ```ts
 buildProductionMotionScene(input);
 buildProductionMotionTimeline(input);
 buildProductionMotionTimelineFromScript(input);
+buildProductionMotionTimelineFromTranscript(input);
 ```
 
 Beispiel für einen vollständigen Sprechtext:
@@ -51,7 +52,34 @@ const timeline = buildProductionMotionTimelineFromScript({
 });
 ```
 
-Diese APIs erzwingen den strikten Qualitätsmodus in jeder erzeugten Szene.
+Für globale Wort-Timestamps:
+
+```ts
+const {timeline, transcriptScenes} =
+  buildProductionMotionTimelineFromTranscript({
+    script,
+    words,
+    fps: 30,
+    gapFrames: 8,
+  });
+```
+
+Die globale Transkript-Zuordnung ist unter `TRANSCRIPT_PIPELINE.md` dokumentiert.
+
+## Produktionsblockierende Warnungen
+
+Der normale strikte Modus blockiert Qualitätsfehler. Die Produktions-APIs blockieren zusätzlich Warnungen, die auf inhaltlich unvollständige oder zeitlich kaputte Render schließen lassen:
+
+```text
+stage-item-limit
+unrendered-element
+missing-stage-timing
+collapsed-beat-timing
+```
+
+Eine normale Längenwarnung für einen Satz zwischen 141 und 220 Zeichen darf weiterhin produziert werden. Das adaptive Caption-Layout bleibt dafür aktiv.
+
+`assertProductionMotionStoryboard()` kann auch ein importiertes oder extern erzeugtes Storyboard gegen diese Regeln prüfen.
 
 ## Sichtbare Stage-Verträge
 
@@ -71,6 +99,13 @@ Aktuelle dynamische Grenzen:
 - Prozesskette: `step-1` bis `step-4`
 - Ranking: höchstens acht Einträge
 
+Zusätzlich erzwingt das Storyboard-Schema semantische Elementtypen. Beispiele:
+
+- `ai` muss ein `ai-core` sein
+- Ranking-Einträge müssen `metric` sein
+- Kontextkarten müssen `document` sein
+- Prozessschritte müssen `node` oder `result` sein
+
 ## Beat-Sichtbarkeit
 
 Der zentrale `ProcessingCore` ist vor seinem `startFrame` vollständig unsichtbar. Erst danach wird er über eine kontrollierte 16-Frame-Animation eingeblendet.
@@ -82,6 +117,17 @@ Eingabe → KI-Core → Fehler oder Prüfung
 ```
 
 Der KI-Core verwendet dabei den echten `ai/show`-Beat des Storyboards. Audio-Synchronisierung und FPS-Retiming wirken deshalb auch auf diesen sichtbaren Schritt.
+
+Sichtbares Label und gesprochenes Wort können getrennt werden:
+
+```ts
+const result = buildProductionMotionScene({
+  sentence: 'Die KI nutzt Dateien.',
+  elementLabels: {files: 'Dokumente'},
+  audioKeywords: {files: ['Dateien']},
+  words,
+});
+```
 
 ## Technische Render-Artefakte
 
@@ -120,13 +166,17 @@ Nach beiden Teilprüfungen erzeugt `motion:check-release` den gemeinsamen Berich
 out/motion-system/combined-release-report.json
 ```
 
-Der kombinierte Bericht kontrolliert zusätzlich, dass die Zähler noch zum aktuellen Render-Manifest passen. Erwartet werden exakt:
+Der kombinierte Bericht kontrolliert:
 
 - 60 Einzeltyp-Artefakte
 - 6 Timeline-Artefakte
 - 66 Artefakte insgesamt
+- aktuellen Render-Manifest-Fingerprint
+- aktuellen Motion-Quellstand-Fingerprint
+- konsistente Datei-Zähler
+- konsistenten `passed`-Status
 
-Veraltete Berichte mit abweichenden Zählern oder einem inkonsistenten `passed`-Status werden abgelehnt.
+Der Quellstand-Fingerprint umfasst die Motion-Runtime, Stages, Tests, Renderkonfiguration, TypeScript-Konfiguration und ausführbaren Render-Skripte. Nach einer relevanten Codeänderung können alte Renderberichte deshalb nicht mehr als Freigabenachweis verwendet werden.
 
 ## Produktionsprüfung
 
@@ -148,7 +198,7 @@ Nur die vorhandenen Teilberichte zusammenführen und prüfen:
 npm run motion:check-release
 ```
 
-`motion:verify` enthält sowohl die Vitest-Suite als auch die Node-Test-Suiten für Artefakt- und Freigabeberichte.
+`motion:verify` enthält sowohl die Vitest-Suite als auch die Node-Test-Suiten für Quellstand, Artefakte und Freigabeberichte.
 
 Ein Merge ist erst zulässig, wenn:
 
@@ -158,4 +208,5 @@ Ein Merge ist erst zulässig, wenn:
 4. `release-report.json` 60 von 60 Dateien bestätigt.
 5. `timeline-release-report.json` 6 von 6 Dateien bestätigt.
 6. `combined-release-report.json` 66 von 66 Dateien bestätigt.
-7. alle elf Compositions visuell geprüft wurden.
+7. beide Fingerprints dem aktuellen Branch entsprechen.
+8. alle elf Compositions visuell geprüft wurden.
