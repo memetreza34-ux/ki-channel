@@ -4,11 +4,17 @@ import {
   MOTION_TIMELINE_COMPOSITION_ID,
   toMotionCompositionId,
 } from './compositionIds';
+import {MOTION_EXAMPLES} from './examples';
 import {MOTION_CANVAS} from './layout';
+import {MOTION_RENDER_CONFIG} from './renderConfig';
 import {MotionScene} from './MotionScene';
 import {MotionTimelineComposition} from './MotionTimeline';
-import {MOTION_EXAMPLES} from './examples';
-import {MOTION_RENDER_CONFIG} from './renderConfig';
+import {
+  calculateMotionTimelineDocumentMetadata,
+  MOTION_PRODUCTION_TIMELINE_COMPOSITION_ID,
+  MOTION_PRODUCTION_TIMELINE_DEFAULT_PROPS,
+  MotionTimelineDocumentComposition,
+} from './MotionTimelineDocumentComposition';
 import {MOTION_TIMELINE_EXAMPLE} from './timelineExamples';
 
 export {toMotionCompositionId} from './compositionIds';
@@ -37,6 +43,17 @@ export const MotionPreviewRoot: React.FC = () => (
       id={MOTION_TIMELINE_COMPOSITION_ID}
       component={MotionTimelineComposition}
       defaultProps={{timeline: MOTION_TIMELINE_EXAMPLE}}
+      durationInFrames={MOTION_TIMELINE_EXAMPLE.totalDurationInFrames}
+      fps={MOTION_TIMELINE_EXAMPLE.fps}
+      width={MOTION_CANVAS.width}
+      height={MOTION_CANVAS.height}
+    />
+
+    <Composition
+      id={MOTION_PRODUCTION_TIMELINE_COMPOSITION_ID}
+      component={MotionTimelineDocumentComposition}
+      defaultProps={MOTION_PRODUCTION_TIMELINE_DEFAULT_PROPS}
+      calculateMetadata={calculateMotionTimelineDocumentMetadata}
       durationInFrames={MOTION_TIMELINE_EXAMPLE.totalDurationInFrames}
       fps={MOTION_TIMELINE_EXAMPLE.fps}
       width={MOTION_CANVAS.width}
