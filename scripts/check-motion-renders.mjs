@@ -5,11 +5,14 @@ import {
   TIMELINE_TARGET,
   VISUAL_TYPES,
 } from './motion-render-config.mjs';
+import {
+  describeMotionArtifactFailure,
+  inspectMotionArtifactBuffer,
+} from './motion-artifact-validation.mjs';
 
 const OUTPUT_DIR = process.env.MOTION_OUTPUT_DIR ?? 'out/motion-system';
 const MODE = process.argv[2] ?? 'all';
 const VALID_MODES = new Set(['stills', 'videos', 'all', 'timeline']);
-const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 if (!VALID_MODES.has(MODE)) {
   console.error(
@@ -18,24 +21,13 @@ if (!VALID_MODES.has(MODE)) {
   process.exit(1);
 }
 
-const inspectSignature = async (absolutePath) => {
-  const extension = extname(absolutePath).toLowerCase();
+const readHeader = async (absolutePath) => {
   const fileHandle = await open(absolutePath, 'r');
 
   try {
-    const header = Buffer.alloc(12);
+    const header = Buffer.alloc(32);
     const {bytesRead} = await fileHandle.read(header, 0, header.length, 0);
-
-    if (extension === '.png') {
-      return bytesRead >= PNG_SIGNATURE.length &&
-        header.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE);
-    }
-
-    if (extension === '.mp4') {
-      return bytesRead >= 8 && header.subarray(4, 8).toString('ascii') === 'ftyp';
-    }
-
-    return false;
+    return header.subarray(0, bytesRead);
   } finally {
     await fileHandle.close();
   }
@@ -47,24 +39,34 @@ const inspectFile = async (relativePath) => {
   try {
     await access(absolutePath);
     const fileStat = await stat(absolutePath);
-    const isNonEmptyFile = fileStat.isFile() && fileStat.size > 0;
-    const signatureValid = isNonEmptyFile
-      ? await inspectSignature(absolutePath)
-      : false;
+    const isFile = fileStat.isFile();
+    const header = isFile ? await readHeader(absolutePath) : Buffer.alloc(0);
+    const inspection = inspectMotionArtifactBuffer({
+      extension: extname(absolutePath),
+      sizeBytes: isFile ? fileStat.size : 0,
+      header,
+    });
 
     return {
       path: relativePath,
       exists: true,
+      isFile,
       sizeBytes: fileStat.size,
-      signatureValid,
-      valid: isNonEmptyFile && signatureValid,
+      ...inspection,
+      valid: isFile && inspection.valid,
     };
   } catch {
     return {
       path: relativePath,
       exists: false,
+      isFile: false,
       sizeBytes: 0,
+      mediaType: 'unknown',
       signatureValid: false,
+      dimensionsValid: null,
+      minimumSizeValid: false,
+      width: null,
+      height: null,
       valid: false,
     };
   }
@@ -149,9 +151,9 @@ if (!report.summary.passed) {
     for (const file of target.files.filter((entry) => !entry.valid)) {
       const reason = !file.exists
         ? 'fehlt'
-        : file.sizeBytes === 0
-          ? 'ist leer'
-          : 'besitzt keine gültige PNG-/MP4-Signatur';
+        : !file.isFile
+          ? 'ist keine reguläre Datei'
+          : describeMotionArtifactFailure(file);
       console.error(`${file.path} ${reason}.`);
     }
   }
