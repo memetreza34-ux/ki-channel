@@ -18,6 +18,11 @@ import {
   type BuildMotionTimelineInput,
   type MotionTimeline,
 } from './timeline';
+import {
+  buildMotionTimelineFromTranscript,
+  type BuildMotionTimelineFromTranscriptInput,
+  type BuildMotionTimelineFromTranscriptResult,
+} from './transcriptTimeline';
 import {assertMotionStoryboard} from './validation';
 
 export const PRODUCTION_BLOCKING_QUALITY_CODES = new Set<
@@ -60,6 +65,11 @@ export type BuildProductionMotionTimelineInput = Omit<
 
 export type BuildProductionMotionTimelineFromScriptInput =
   BuildMotionTimelineFromScriptInput;
+
+export type BuildProductionMotionTimelineFromTranscriptInput = Omit<
+  BuildMotionTimelineFromTranscriptInput,
+  'qualityMode'
+>;
 
 export const findProductionBlockingIssues = (
   storyboard: MotionStoryboard,
@@ -163,4 +173,18 @@ export const buildProductionMotionTimelineFromScript = ({
       qualityMode: 'strict',
     }),
   );
+};
+
+export const buildProductionMotionTimelineFromTranscript = (
+  input: BuildProductionMotionTimelineFromTranscriptInput,
+): BuildMotionTimelineFromTranscriptResult => {
+  const result = buildMotionTimelineFromTranscript({
+    ...input,
+    qualityMode: 'strict',
+  });
+
+  return {
+    ...result,
+    timeline: assertProductionTimeline(result.timeline),
+  };
 };
