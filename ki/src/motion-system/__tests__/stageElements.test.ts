@@ -44,4 +44,22 @@ describe('Stage-Element-Verträge', () => {
       'step-5',
     ]);
   });
+
+  it('erkennt Prozessschritte nach stabiler ID statt nach Array-Reihenfolge', () => {
+    const storyboard = MOTION_EXAMPLES['process-chain'];
+    const reordered = {
+      ...storyboard,
+      elements: [
+        {id: 'step-5', kind: 'node' as const, label: 'Archiv', emphasis: 'normal' as const},
+        ...storyboard.elements.slice().reverse(),
+      ],
+    };
+
+    expect(getRenderedStageElementIds(reordered)).toEqual(
+      new Set(['step-1', 'step-2', 'step-3', 'step-4']),
+    );
+    expect(findUnrenderedStageElements(reordered).map((element) => element.id)).toEqual([
+      'step-5',
+    ]);
+  });
 });
