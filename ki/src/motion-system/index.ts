@@ -14,6 +14,7 @@ export * from './production';
 export * from './timeline';
 export * from './timelineNavigation';
 export * from './scriptTimeline';
+export * from './transcriptTimeline';
 export * from './timelineExamples';
 export * from './timelineRenderPlan';
 export * from './serialization';
