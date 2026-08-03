@@ -22,6 +22,7 @@ export * from './textLayout';
 export * from './examples';
 export * from './renderPlan';
 export * from './renderCommands';
+export * from './MotionStage';
 export * from './MotionScene';
 export * from './MotionTimeline';
 export * from './MotionPreviewRoot';
