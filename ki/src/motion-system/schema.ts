@@ -15,6 +15,20 @@ export const motionVisualTypeSchema = z.enum([
 
 export type MotionVisualType = z.infer<typeof motionVisualTypeSchema>;
 
+export const motionElementKindSchema = z.enum([
+  'card',
+  'document',
+  'tool',
+  'ai-core',
+  'database',
+  'result',
+  'label',
+  'metric',
+  'node',
+]);
+
+export type MotionElementKind = z.infer<typeof motionElementKindSchema>;
+
 const REQUIRED_ELEMENT_IDS: Record<MotionVisualType, readonly string[]> = {
   'input-output': ['input', 'ai', 'output'],
   'tool-orchestration': ['task', 'ai', 'result'],
@@ -28,19 +42,64 @@ const REQUIRED_ELEMENT_IDS: Record<MotionVisualType, readonly string[]> = {
   'process-chain': ['step-1', 'step-2'],
 };
 
+export const MOTION_ELEMENT_KIND_CONTRACTS: Record<
+  MotionVisualType,
+  Readonly<Record<string, readonly MotionElementKind[]>>
+> = {
+  'input-output': {
+    input: ['card', 'document', 'database'],
+    ai: ['ai-core'],
+    output: ['result'],
+  },
+  'tool-orchestration': {
+    task: ['card'],
+    ai: ['ai-core'],
+    result: ['result'],
+  },
+  comparison: {
+    left: ['card'],
+    right: ['card'],
+    metric: ['metric'],
+  },
+  'before-after': {
+    input: ['card'],
+    output: ['result'],
+  },
+  'data-flow': {
+    input: ['database'],
+    ai: ['ai-core'],
+    output: ['result'],
+  },
+  'error-path': {
+    input: ['card'],
+    ai: ['ai-core'],
+    error: ['result'],
+    check: ['result'],
+  },
+  'context-window': {
+    old: ['document'],
+    current: ['document'],
+    new: ['document'],
+  },
+  'agent-loop': {
+    ai: ['ai-core'],
+    plan: ['node'],
+    act: ['node'],
+    check: ['node'],
+  },
+  ranking: {
+    'rank-1': ['metric'],
+    'rank-2': ['metric'],
+  },
+  'process-chain': {
+    'step-1': ['node'],
+    'step-2': ['node'],
+  },
+};
+
 export const motionElementSchema = z.object({
   id: z.string().trim().min(1),
-  kind: z.enum([
-    'card',
-    'document',
-    'tool',
-    'ai-core',
-    'database',
-    'result',
-    'label',
-    'metric',
-    'node',
-  ]),
+  kind: motionElementKindSchema,
   label: z.string().trim().min(1).max(32),
   emphasis: z.enum(['normal', 'focus', 'success', 'warning', 'danger']).default('normal'),
 });
@@ -77,6 +136,7 @@ const motionStoryboardBaseSchema = z.object({
 
 export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((storyboard, context) => {
   const elementIds = new Set<string>();
+  const elementById = new Map<string, {kind: MotionElementKind; index: number}>();
   const beatIds = new Set<string>();
 
   storyboard.elements.forEach((element, index) => {
@@ -88,6 +148,9 @@ export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((st
       });
     }
     elementIds.add(element.id);
+    if (!elementById.has(element.id)) {
+      elementById.set(element.id, {kind: element.kind, index});
+    }
   });
 
   for (const requiredId of REQUIRED_ELEMENT_IDS[storyboard.visualType]) {
@@ -96,6 +159,19 @@ export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((st
         code: 'custom',
         message: `Visualtyp ${storyboard.visualType} benötigt Element ${requiredId}`,
         path: ['elements'],
+      });
+    }
+  }
+
+  for (const [elementId, allowedKinds] of Object.entries(
+    MOTION_ELEMENT_KIND_CONTRACTS[storyboard.visualType],
+  )) {
+    const element = elementById.get(elementId);
+    if (element && !allowedKinds.includes(element.kind)) {
+      context.addIssue({
+        code: 'custom',
+        message: `Element ${elementId} des Visualtyps ${storyboard.visualType} benötigt Kind ${allowedKinds.join(' oder ')}`,
+        path: ['elements', element.index, 'kind'],
       });
     }
   }
@@ -111,14 +187,39 @@ export const motionStoryboardSchema = motionStoryboardBaseSchema.superRefine((st
     });
   }
 
-  if (
-    storyboard.visualType === 'ranking' &&
-    storyboard.elements.filter((element) => element.kind === 'metric').length < 2
-  ) {
-    context.addIssue({
-      code: 'custom',
-      message: 'Ranking benötigt mindestens zwei Metrik-Elemente.',
-      path: ['elements'],
+  if (storyboard.visualType === 'ranking') {
+    const nonMetricIndex = storyboard.elements.findIndex(
+      (element) => element.kind !== 'metric',
+    );
+    if (nonMetricIndex !== -1) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Ranking darf nur Metrik-Elemente enthalten.',
+        path: ['elements', nonMetricIndex, 'kind'],
+      });
+    }
+    if (storyboard.elements.filter((element) => element.kind === 'metric').length < 2) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Ranking benötigt mindestens zwei Metrik-Elemente.',
+        path: ['elements'],
+      });
+    }
+  }
+
+  if (storyboard.visualType === 'process-chain') {
+    storyboard.elements.forEach((element, index) => {
+      if (
+        element.id.startsWith('step-') &&
+        element.kind !== 'node' &&
+        element.kind !== 'result'
+      ) {
+        context.addIssue({
+          code: 'custom',
+          message: `Prozessschritt ${element.id} benötigt Kind node oder result.`,
+          path: ['elements', index, 'kind'],
+        });
+      }
     });
   }
 
