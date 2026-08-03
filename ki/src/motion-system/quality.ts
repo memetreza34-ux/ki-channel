@@ -1,4 +1,5 @@
 import type {MotionStoryboard} from './schema';
+import {findUnrenderedStageElements} from './stageElements';
 import {findMissingStageTimings} from './stageTimingRequirements';
 
 export type MotionQualityIssue = {
@@ -8,6 +9,7 @@ export type MotionQualityIssue = {
     | 'label-too-long'
     | 'too-many-elements'
     | 'stage-item-limit'
+    | 'unrendered-element'
     | 'late-beat'
     | 'missing-labels'
     | 'missing-stage-timing'
@@ -49,7 +51,11 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
   }
 
   if (storyboard.elements.length > 8) {
-    issues.push({severity: 'warning', code: 'too-many-elements', message: 'Mehr als acht Elemente können die 9:16-Szene überladen.'});
+    issues.push({
+      severity: 'warning',
+      code: 'too-many-elements',
+      message: 'Mehr als acht Elemente können die 9:16-Szene überladen.',
+    });
   }
 
   if (storyboard.visualType === 'tool-orchestration') {
@@ -85,15 +91,34 @@ export const inspectMotionStoryboardQuality = (storyboard: MotionStoryboard): Mo
     }
   }
 
+  for (const element of findUnrenderedStageElements(storyboard)) {
+    issues.push({
+      severity: 'warning',
+      code: 'unrendered-element',
+      message: `Element ${element.id} wird von der Stage ${storyboard.visualType} nicht dargestellt.`,
+    });
+  }
+
   if (storyboard.labels.length === 0) {
-    issues.push({severity: 'error', code: 'missing-labels', message: 'Das Storyboard besitzt keine sichtbaren Labels.'});
+    issues.push({
+      severity: 'error',
+      code: 'missing-labels',
+      message: 'Das Storyboard besitzt keine sichtbaren Labels.',
+    });
   }
 
   if (storyboard.durationInFrames < storyboard.fps * 2) {
-    issues.push({severity: 'warning', code: 'short-scene', message: 'Die Szene ist kürzer als zwei Sekunden.'});
+    issues.push({
+      severity: 'warning',
+      code: 'short-scene',
+      message: 'Die Szene ist kürzer als zwei Sekunden.',
+    });
   }
 
-  const lateThreshold = Math.max(0, storyboard.durationInFrames - Math.ceil(storyboard.fps * 0.5));
+  const lateThreshold = Math.max(
+    0,
+    storyboard.durationInFrames - Math.ceil(storyboard.fps * 0.5),
+  );
   for (const beat of storyboard.beats) {
     if (beat.atFrame >= lateThreshold) {
       issues.push({
