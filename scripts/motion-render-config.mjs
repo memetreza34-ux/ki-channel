@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
 const manifestUrl = new URL(
@@ -54,6 +55,9 @@ if (
   throw new Error('Timeline-Prüfframe liegt außerhalb der Timeline-Dauer.');
 }
 
+export const RENDER_MANIFEST_FINGERPRINT = createHash('sha256')
+  .update(JSON.stringify(manifest))
+  .digest('hex');
 export const VISUAL_TYPES = Object.freeze([...manifest.visualTypes]);
 export const DEFAULT_CHECKPOINTS = Object.freeze([...manifest.defaultCheckpoints]);
 export const SMOKE_CHECKPOINTS = Object.freeze([...manifest.smokeCheckpoints]);
