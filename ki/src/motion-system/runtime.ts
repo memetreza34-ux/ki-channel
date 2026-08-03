@@ -5,16 +5,22 @@ import {
 } from './customization';
 import {retimeMotionStoryboardFps} from './fps';
 import {createDefaultStoryboard} from './router';
-import {inspectMotionStoryboardQuality, type MotionQualityReport} from './quality';
+import {
+  inspectMotionStoryboardQuality,
+  type MotionQualityReport,
+} from './quality';
+import type {MotionStoryboard} from './schema';
 import {createMotionStoryboardId} from './storyboardId';
 import {assertMotionStoryboard} from './validation';
-import type {MotionStoryboard} from './schema';
+
+export type MotionQualityMode = 'report' | 'strict';
 
 export type BuildMotionSceneInput = MotionStoryboardCustomization & {
   sentence: string;
   words?: WordTimestamp[];
   fps?: number;
   storyboardId?: string;
+  qualityMode?: MotionQualityMode;
 };
 
 export type BuildMotionSceneResult = {
@@ -22,14 +28,37 @@ export type BuildMotionSceneResult = {
   quality: MotionQualityReport;
 };
 
+export class MotionQualityError extends Error {
+  public readonly storyboard: MotionStoryboard;
+  public readonly quality: MotionQualityReport;
+
+  public constructor(
+    storyboard: MotionStoryboard,
+    quality: MotionQualityReport,
+  ) {
+    const errors = quality.issues
+      .filter((issue) => issue.severity === 'error')
+      .map((issue) => `${issue.code}: ${issue.message}`);
+    super(`Motion-Qualitätsprüfung fehlgeschlagen: ${errors.join(' | ')}`);
+    this.name = 'MotionQualityError';
+    this.storyboard = storyboard;
+    this.quality = quality;
+  }
+}
+
 export const buildMotionScene = ({
   sentence,
   words = [],
   fps,
   storyboardId,
+  qualityMode = 'report',
   elementLabels,
   labels,
 }: BuildMotionSceneInput): BuildMotionSceneResult => {
+  if (qualityMode !== 'report' && qualityMode !== 'strict') {
+    throw new Error('qualityMode muss report oder strict sein.');
+  }
+
   const base = createDefaultStoryboard(sentence);
   const normalizedCustomId = storyboardId?.trim();
 
@@ -50,6 +79,10 @@ export const buildMotionScene = ({
     : configured;
   const storyboard = assertMotionStoryboard(aligned);
   const quality = inspectMotionStoryboardQuality(storyboard);
+
+  if (qualityMode === 'strict' && !quality.passed) {
+    throw new MotionQualityError(storyboard, quality);
+  }
 
   return {storyboard, quality};
 };
