@@ -60,13 +60,13 @@ Fill every planning file before adding final assets.
 Planning validation, without requiring final assets:
 
 ```bash
-npm run codex:reel:prepare -- 2026-08-04-ai-agenten-einfach-erklaert
+node scripts/prepare-codex-reel.mjs 2026-08-04-ai-agenten-einfach-erklaert
 ```
 
 Strict readiness validation after images and audio are present:
 
 ```bash
-npm run codex:reel:prepare -- 2026-08-04-ai-agenten-einfach-erklaert --ready
+node scripts/prepare-codex-reel.mjs 2026-08-04-ai-agenten-einfach-erklaert --ready
 ```
 
 The command writes:
