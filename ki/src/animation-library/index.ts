@@ -9,6 +9,7 @@ export * from './microMotionCatalog';
 export * from './semanticBeatPlanner';
 export * from './importantWordCoverage';
 export * from './universalMotionPlan';
+export * from './channelReelMasterPlan';
 export * from './brain';
 export * from './brainTuning';
 export * from './completePrototypeRegistry';
