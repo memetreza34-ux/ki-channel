@@ -66,14 +66,14 @@ export const seededRange = (
 export const palette = {
   background: '#F8F7FB',
   foreground: '#14121A',
-  accent: '#8757E8',
-  accentSoft: '#C6A8FF',
-  accentPale: '#EEE7FF',
-  success: '#35C58A',
-  warning: '#FFB648',
-  danger: '#FF5D6C',
-  muted: '#777083',
-  line: '#D9D2E8',
+  accent: '#7D49DF',
+  accentSoft: '#B996FA',
+  accentPale: '#ECE4FF',
+  success: '#28B87E',
+  warning: '#F2A83B',
+  danger: '#F25061',
+  muted: '#5E5868',
+  line: '#CEC6DC',
   white: '#FFFFFF',
 } as const;
 
