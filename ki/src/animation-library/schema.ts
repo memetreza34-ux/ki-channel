@@ -26,6 +26,19 @@ export const animationComplexitySchema = z.enum([
   'high',
 ]);
 
+export const animationDirectionSchema = z.enum([
+  'left-to-right',
+  'right-to-left',
+  'top-to-bottom',
+  'bottom-to-top',
+  'center-out',
+  'outside-in',
+  'circular',
+  'depth-forward',
+  'depth-backward',
+  'mixed',
+]);
+
 export const animationLibraryEntrySchema = z.object({
   animationId: z.string().min(3),
   version: z.number().int().positive(),
@@ -43,18 +56,7 @@ export const animationLibraryEntrySchema = z.object({
   transitionInTags: z.array(z.string().min(2)).min(1).max(8),
   transitionOutTags: z.array(z.string().min(2)).min(1).max(8),
   cameraStyle: z.string().min(2),
-  primaryDirection: z.enum([
-    'left-to-right',
-    'right-to-left',
-    'top-to-bottom',
-    'bottom-to-top',
-    'center-out',
-    'outside-in',
-    'circular',
-    'depth-forward',
-    'depth-backward',
-    'mixed',
-  ]),
+  primaryDirection: animationDirectionSchema,
   energy: animationEnergySchema,
   density: animationDensitySchema,
   complexity: animationComplexitySchema,
@@ -107,6 +109,10 @@ export const animationUsageRecordSchema = z.object({
   sceneId: z.string().min(2),
   usedAt: z.string().datetime(),
   semanticTags: z.array(z.string().min(2)).min(1),
+  visualFamily: z.string().min(2).optional(),
+  layoutFamily: z.string().min(2).optional(),
+  motionSignature: z.string().min(3).optional(),
+  primaryDirection: animationDirectionSchema.optional(),
   result: z.enum(['unknown', 'accepted', 'reworked', 'rejected']),
 });
 
