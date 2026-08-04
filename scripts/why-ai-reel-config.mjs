@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {readdirSync, readFileSync, statSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {relative, resolve} from 'node:path';
 
 export const WHY_AI_REEL_CONFIG = Object.freeze({
   reelId: '2026-08-04-warum-ki-text-anders-liest',
@@ -41,7 +41,7 @@ export const WHY_AI_REEL_SOURCE_FILES = Object.freeze([
 
 const hash = createHash('sha256');
 for (const file of WHY_AI_REEL_SOURCE_FILES) {
-  hash.update(file);
+  hash.update(relative(process.cwd(), file).replaceAll('\\', '/'));
   hash.update('\0');
   hash.update(readFileSync(file));
   hash.update('\0');
