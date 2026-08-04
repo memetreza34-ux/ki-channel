@@ -4,21 +4,25 @@ import rawRenderConfig from '../prototype-render-config.json';
 import {getAnimationLibraryEntry} from '../catalog';
 import {AnomalyXRayScannerPrototype} from './AnomalyXRayScannerPrototype';
 import {AnswerLoomPrototype} from './AnswerLoomPrototype';
+import {BenchmarkRacetrackPrototype} from './BenchmarkRacetrackPrototype';
 import {BudgetLeakMeterPrototype} from './BudgetLeakMeterPrototype';
 import {ConfidenceGlassCrackPrototype} from './ConfidenceGlassCrackPrototype';
 import {ContextWindowTrainPrototype} from './ContextWindowTrainPrototype';
 import {DecisionTreeBurstPrototype} from './DecisionTreeBurstPrototype';
 import {DependencyBridgeBuilderPrototype} from './DependencyBridgeBuilderPrototype';
 import {DynamicPodiumRisePrototype} from './DynamicPodiumRisePrototype';
+import {EncryptionVaultLayersPrototype} from './EncryptionVaultLayersPrototype';
 import {FunnelCompressionOutputPrototype} from './FunnelCompressionOutputPrototype';
 import {HumanAIRelayPrototype} from './HumanAIRelayPrototype';
 import {KnowledgeMagnetPrototype} from './KnowledgeMagnetPrototype';
 import {KnowledgeTreeGraftPrototype} from './KnowledgeTreeGraftPrototype';
+import {LatencyTunnelRacePrototype} from './LatencyTunnelRacePrototype';
 import {MagneticPhraseSlicerPrototype} from './MagneticPhraseSlicerPrototype';
 import {MeaningTerrainPrototype} from './MeaningTerrainPrototype';
 import {ProbabilityFluidColumnsPrototype} from './ProbabilityFluidColumnsPrototype';
 import {ResidualRiverPrototype} from './ResidualRiverPrototype';
 import {SubwayWorkflowMapPrototype} from './SubwayWorkflowMapPrototype';
+import {TimelineMicroscopePrototype} from './TimelineMicroscopePrototype';
 import {VectorPrismConverterPrototype} from './VectorPrismConverterPrototype';
 
 const renderConfigSchema = z.object({
@@ -73,6 +77,10 @@ const COMPONENTS: Record<string, ComponentType> = {
   'model-processing-residual-river-v1': ResidualRiverPrototype,
   'generation-answer-loom-v1': AnswerLoomPrototype,
   'risk-contrast-confidence-glass-crack-v1': ConfidenceGlassCrackPrototype,
+  'security-privacy-encryption-vault-layers-v1': EncryptionVaultLayersPrototype,
+  'scale-performance-latency-tunnel-race-v1': LatencyTunnelRacePrototype,
+  'time-change-timeline-microscope-v1': TimelineMicroscopePrototype,
+  'comparison-benchmark-racetrack-v1': BenchmarkRacetrackPrototype,
 };
 
 export const ANIMATION_PROTOTYPE_REGISTRY: AnimationPrototypeRegistration[] =
