@@ -11,6 +11,7 @@ export * from './planner';
 export * from './productionPlanner';
 export * from './proposalCompiler';
 export * from './prototypeCoverage';
+export * from './reelPlanningPipeline';
 export * from './renderReview';
 export * from './sceneAnalyzer';
 export * from './PrototypeGalleryRoot';
