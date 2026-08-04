@@ -108,28 +108,34 @@ export const classifyImportantWords = (
       : [];
   });
 
-const chooseSupportMechanism = ({
+const chooseMechanism = ({
   role,
   usedMechanismIds,
+  recentMechanismIds,
+  allowStrong,
 }: {
   role: SemanticBeatRole;
   usedMechanismIds: ReadonlySet<string>;
+  recentMechanismIds: ReadonlySet<string>;
+  allowStrong: boolean;
 }): MicroMotionMechanism => {
   const candidates = getMicroMotionMechanismsForRole(role);
-  const support = candidates.find(
-    (candidate) =>
-      candidate.intensity !== 'strong' &&
-      !usedMechanismIds.has(candidate.mechanismId),
-  );
-  if (support) return support;
-  const unused = candidates.find(
-    (candidate) => !usedMechanismIds.has(candidate.mechanismId),
-  );
-  if (unused && unused.intensity !== 'strong') return unused;
-  const generic = getMicroMotionMechanismsForRole('emphasis').find(
-    (candidate) => candidate.intensity !== 'strong',
-  );
-  if (!generic) throw new Error('no support micro-motion is available');
+  const ranked = [...candidates].sort((left, right) => {
+    const penalty = (candidate: MicroMotionMechanism): number =>
+      (usedMechanismIds.has(candidate.mechanismId) ? 100 : 0) +
+      (recentMechanismIds.has(candidate.mechanismId) ? 24 : 0) +
+      (!allowStrong && candidate.intensity === 'strong' ? 80 : 0) +
+      (allowStrong && candidate.intensity === 'quiet' ? 8 : 0);
+    return penalty(left) - penalty(right) ||
+      left.maximumDurationFrames - right.maximumDurationFrames ||
+      left.mechanismId.localeCompare(right.mechanismId);
+  });
+  const selected = ranked.find(
+    (candidate) => allowStrong || candidate.intensity !== 'strong',
+  ) ?? ranked[0];
+  if (selected) return selected;
+  const generic = getMicroMotionMechanismsForRole('emphasis')[0];
+  if (!generic) throw new Error('no micro-motion mechanism is available');
   return generic;
 };
 
@@ -151,25 +157,30 @@ export const completeImportantWordCoverage = ({
     recentMechanismIds,
   });
   const important = classifyImportantWords(base.tokens);
-  const coveredTokenIndices = new Set(base.beats.map((beat) => beat.tokenIndex));
-  const usedMechanismIds = new Set(base.beats.map((beat) => beat.mechanismId));
-  const start = base.startHoldFrames;
-  const active = Math.max(1, durationInFrames - start - base.endHoldFrames);
-  const additions: SemanticMotionBeat[] = [];
+  const recent = new Set(recentMechanismIds.slice(-12));
+  const used = new Set<string>();
+  const beats: SemanticMotionBeat[] = [];
+  const activeDuration = Math.max(
+    1,
+    durationInFrames - base.startHoldFrames - base.endHoldFrames,
+  );
+  let strongMotionCount = 0;
 
   for (const classification of important) {
-    if (coveredTokenIndices.has(classification.token.tokenIndex)) continue;
-    const mechanism = chooseSupportMechanism({
+    const allowStrong = strongMotionCount < base.maximumStrongMotions;
+    const mechanism = chooseMechanism({
       role: classification.role,
-      usedMechanismIds,
+      usedMechanismIds: used,
+      recentMechanismIds: recent,
+      allowStrong,
     });
-    usedMechanismIds.add(mechanism.mechanismId);
-    coveredTokenIndices.add(classification.token.tokenIndex);
+    used.add(mechanism.mechanismId);
+    if (mechanism.intensity === 'strong') strongMotionCount += 1;
     const ratio = base.tokens.length <= 1
       ? 0.5
       : classification.token.tokenIndex / (base.tokens.length - 1);
-    additions.push({
-      beatId: `${sceneId}-important-${String(additions.length + 1).padStart(2, '0')}`,
+    beats.push({
+      beatId: `${sceneId}-important-${String(beats.length + 1).padStart(2, '0')}`,
       tokenIndex: classification.token.tokenIndex,
       text: classification.token.text,
       role: classification.role,
@@ -177,7 +188,7 @@ export const completeImportantWordCoverage = ({
       critical: true,
       atFrame: Math.min(
         durationInFrames - base.endHoldFrames - 1,
-        start + Math.round(active * ratio),
+        base.startHoldFrames + Math.round(activeDuration * ratio),
       ),
       mechanismId: mechanism.mechanismId,
       layer: mechanism.layer,
@@ -187,19 +198,37 @@ export const completeImportantWordCoverage = ({
     });
   }
 
-  const beats = [...base.beats, ...additions].sort(
-    (left, right) => left.atFrame - right.atFrame || left.tokenIndex - right.tokenIndex,
-  );
+  if (beats.length === 0 && base.tokens.length > 0) {
+    const fallbackToken = base.tokens[Math.floor(base.tokens.length / 2)];
+    const mechanism = chooseMechanism({
+      role: 'emphasis',
+      usedMechanismIds: used,
+      recentMechanismIds: recent,
+      allowStrong: false,
+    });
+    beats.push({
+      beatId: `${sceneId}-sentence-focus`,
+      tokenIndex: fallbackToken.tokenIndex,
+      text: fallbackToken.text,
+      role: 'emphasis',
+      importance: 65,
+      critical: false,
+      atFrame: base.startHoldFrames + Math.round(activeDuration * 0.5),
+      mechanismId: mechanism.mechanismId,
+      layer: mechanism.layer,
+      intensity: mechanism.intensity,
+      soundCue: mechanism.soundCue,
+      semanticPurpose: 'Provide one restrained sentence focus while the full scene animation carries the explanation.',
+    });
+  }
+
   const coveredImportantCount = important.filter((classification) =>
     beats.some((beat) => beat.tokenIndex === classification.token.tokenIndex),
   ).length;
   const importantBeatCoverage = important.length === 0
     ? 1
     : coveredImportantCount / important.length;
-  const strongMotionCount = beats.filter((beat) => beat.intensity === 'strong').length;
-  const warnings = base.warnings.filter(
-    (warning) => !warning.includes('critical beats are covered'),
-  );
+  const warnings: string[] = [];
   if (importantBeatCoverage < 1) {
     warnings.push(`${coveredImportantCount}/${important.length} important words are animated`);
   }
@@ -215,11 +244,12 @@ export const completeImportantWordCoverage = ({
     criticalBeatCount: important.length,
     coveredCriticalBeatCount: coveredImportantCount,
     importantBeatCoverage,
+    sentenceHasDominantMotion:
+      base.sentenceHasDominantMotion || strongMotionCount > 0,
     strongMotionCount,
     valid:
       importantBeatCoverage === 1 &&
-      base.sentenceHasDominantMotion &&
       strongMotionCount <= base.maximumStrongMotions,
-    warnings: [...new Set(warnings)],
+    warnings,
   };
 };
