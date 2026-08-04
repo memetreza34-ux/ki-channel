@@ -3,6 +3,7 @@ export * from './advancedPrototypeRegistry';
 export * from './advancedRecipes';
 export * from './catalog';
 export * from './catalogExpansion';
+export * from './extendedCatalog';
 export * from './brain';
 export * from './brainTuning';
 export * from './completePrototypeRegistry';
