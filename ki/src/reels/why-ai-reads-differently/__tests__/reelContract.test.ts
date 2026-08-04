@@ -29,8 +29,8 @@ describe('Warum-KI-Text-anders-liest Reel-Vertrag', () => {
       expect(scene.durationInFrames).toBeGreaterThan(0);
     });
 
-    expect(WHY_AI_SCENES.at(-1)?.endFrameExclusive).toBe(
-      WHY_AI_DURATION_IN_FRAMES,
-    );
+    expect(
+      WHY_AI_SCENES[WHY_AI_SCENES.length - 1]?.endFrameExclusive,
+    ).toBe(WHY_AI_DURATION_IN_FRAMES);
   });
 });
