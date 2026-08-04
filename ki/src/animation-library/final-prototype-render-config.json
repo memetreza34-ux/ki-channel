@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "entryPoint": "ki/src/animation-library/ultimate-remotion-entry.tsx",
+  "outputDir": "out/animation-library-ultimate",
+  "defaults": {
+    "durationInFrames": 180,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "checkpoints": [0, 30, 60, 90, 120, 150, 179],
+    "smokeCheckpoints": [0, 90, 179]
+  },
+  "prototypes": [
+    {"compositionId":"Library-Final-Contextual-Token-River","animationId":"tokenization-contextual-token-river-v1"},
+    {"compositionId":"Library-Final-Representation-Morph-Cascade","animationId":"data-transformation-representation-morph-cascade-v1"},
+    {"compositionId":"Library-Final-Concept-Neighborhood-Elevator","animationId":"semantic-space-concept-neighborhood-elevator-v1"},
+    {"compositionId":"Library-Final-Context-Thread-Braider","animationId":"relationship-network-context-thread-braider-v1"},
+    {"compositionId":"Library-Final-Predictive-Domino-Fork","animationId":"probability-predictive-domino-fork-v1"},
+    {"compositionId":"Library-Final-Model-Layer-Book","animationId":"model-processing-model-layer-book-v1"},
+    {"compositionId":"Library-Final-Response-Constellation-Write","animationId":"generation-response-constellation-write-v1"},
+    {"compositionId":"Library-Final-Truth-Shadow-Comparison","animationId":"risk-contrast-truth-shadow-comparison-v1"},
+    {"compositionId":"Library-Final-Parallel-Worlds-Split","animationId":"comparison-parallel-worlds-split-v1"},
+    {"compositionId":"Library-Final-Constellation-Rank-Align","animationId":"ranking-constellation-rank-align-v1"},
+    {"compositionId":"Library-Final-Circular-Feedback-Workshop","animationId":"process-flow-circular-feedback-workshop-v1"},
+    {"compositionId":"Library-Final-Machine-Blueprint-Reveal","animationId":"input-output-machine-blueprint-reveal-v1"},
+    {"compositionId":"Library-Final-Debugger-Time-Scrub","animationId":"error-detection-debugger-time-scrub-v1"},
+    {"compositionId":"Library-Final-Evidence-Fishing-Lines","animationId":"retrieval-search-evidence-fishing-lines-v1"},
+    {"compositionId":"Library-Final-Privacy-Redaction-Wave","animationId":"security-privacy-privacy-redaction-wave-v1"},
+    {"compositionId":"Library-Final-Scaling-Staircase","animationId":"scale-performance-scaling-staircase-v1"},
+    {"compositionId":"Library-Final-Resource-Packing-Puzzle","animationId":"cost-efficiency-resource-packing-puzzle-v1"},
+    {"compositionId":"Library-Final-Decay-Renewal-Cycle","animationId":"time-change-decay-renewal-cycle-v1"},
+    {"compositionId":"Library-Final-Copilot-Dual-Track","animationId":"human-ai-collaboration-copilot-dual-track-v1"},
+    {"compositionId":"Library-Final-Tradeoff-Landscape-Route","animationId":"decision-logic-tradeoff-landscape-route-v1"},
+    {"compositionId":"Library-Final-Attention-Spotlight-Stage","animationId":"context-window-attention-spotlight-stage-v1"},
+    {"compositionId":"Library-Final-Stale-Fact-Renewal-Cycle","animationId":"learning-update-stale-fact-renewal-cycle-v1"}
+  ]
+}
