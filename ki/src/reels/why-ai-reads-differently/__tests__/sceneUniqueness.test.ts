@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {WHY_AI_SCENES} from '../contract';
+import {REEL_TRANSITIONS, WHY_AI_SCENES} from '../contract';
 
 const expectUnique = (values: string[]) => {
   expect(new Set(values).size).toBe(values.length);
@@ -23,5 +23,10 @@ describe('Reel-Abwechslung', () => {
     WHY_AI_SCENES.slice(1).forEach((scene, index) => {
       expect(scene.layoutFamily).not.toBe(WHY_AI_SCENES[index].layoutFamily);
     });
+  });
+
+  it('verbindet alle acht Szenen mit sieben unterschiedlichen Übergängen', () => {
+    expect(REEL_TRANSITIONS).toHaveLength(WHY_AI_SCENES.length - 1);
+    expectUnique(REEL_TRANSITIONS.map((transition) => transition.style));
   });
 });
