@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "entryPoint": "ki/src/animation-library/maximal-remotion-entry.tsx",
+  "outputDir": "out/animation-library-maximal",
+  "defaults": {
+    "durationInFrames": 180,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "checkpoints": [0, 30, 60, 90, 120, 150, 179],
+    "smokeCheckpoints": [0, 90, 179]
+  },
+  "prototypes": [
+    {"compositionId":"Library-Advanced-Character-Mosaic-Collapse","animationId":"tokenization-character-mosaic-collapse-v1"},
+    {"compositionId":"Library-Advanced-Binary-Weave-Loom","animationId":"data-transformation-binary-weave-loom-v1"},
+    {"compositionId":"Library-Advanced-Semantic-Lens-Focus","animationId":"semantic-space-semantic-lens-focus-v1"},
+    {"compositionId":"Library-Advanced-Relevance-Pulse-Map","animationId":"relationship-network-relevance-pulse-map-v1"},
+    {"compositionId":"Library-Advanced-Confidence-Weather-Map","animationId":"probability-confidence-weather-map-v1"},
+    {"compositionId":"Library-Advanced-Expert-Routing-Switchboard","animationId":"model-processing-expert-routing-switchboard-v1"},
+    {"compositionId":"Library-Advanced-Predictive-Type-Orchestra","animationId":"generation-predictive-type-orchestra-v1"},
+    {"compositionId":"Library-Advanced-Source-Checkpoint-Gates","animationId":"risk-contrast-source-checkpoint-gates-v1"},
+    {"compositionId":"Library-Advanced-Tradeoff-Seesaw-Landscape","animationId":"comparison-tradeoff-seesaw-landscape-v1"},
+    {"compositionId":"Library-Advanced-Ranking-Ladder-Climb","animationId":"ranking-ranking-ladder-climb-v1"},
+    {"compositionId":"Library-Advanced-Workflow-Domino-Logic","animationId":"process-flow-workflow-domino-logic-v1"},
+    {"compositionId":"Library-Advanced-Cause-Effect-Bridge","animationId":"input-output-cause-effect-bridge-v1"},
+    {"compositionId":"Library-Advanced-Red-Flag-Cascade","animationId":"error-detection-red-flag-cascade-v1"},
+    {"compositionId":"Library-Advanced-Query-Radar-Sweep","animationId":"retrieval-search-query-radar-sweep-v1"},
+    {"compositionId":"Library-Advanced-Data-Leak-Containment","animationId":"security-privacy-data-leak-containment-v1"},
+    {"compositionId":"Library-Advanced-Throughput-Pipe-Pressure","animationId":"scale-performance-throughput-pipe-pressure-v1"},
+    {"compositionId":"Library-Advanced-Value-Seesaw","animationId":"cost-efficiency-value-seesaw-v1"},
+    {"compositionId":"Library-Advanced-Before-After-Clock-Face","animationId":"time-change-before-after-clock-face-v1"},
+    {"compositionId":"Library-Advanced-Multi-Agent-Roundtable","animationId":"human-ai-collaboration-multi-agent-roundtable-v1"},
+    {"compositionId":"Library-Advanced-Evidence-Jury","animationId":"decision-logic-evidence-jury-v1"},
+    {"compositionId":"Library-Advanced-Context-Capacity-Elevator","animationId":"context-window-context-capacity-elevator-v1"},
+    {"compositionId":"Library-Advanced-Feedback-Weight-Tuning","animationId":"learning-update-feedback-weight-tuning-v1"}
+  ]
+}
