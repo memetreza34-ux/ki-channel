@@ -207,10 +207,12 @@ export const finalizeReelAnimationProduction = ({
     nextEntries = upsertEntry(nextEntries, scene.catalogEntry);
   }
 
-  const latestReviewTime = [...reviews]
+  const sortedReviewTimes = reviews
     .map((review) => review.createdAt)
-    .sort()
-    .at(-1) ?? brain.updatedAt;
+    .sort();
+  const latestReviewTime = sortedReviewTimes.length > 0
+    ? sortedReviewTimes[sortedReviewTimes.length - 1]
+    : brain.updatedAt;
   let nextBrain = reconcileCreativeBrainWithCatalog({
     state: brain,
     entries: nextEntries,
