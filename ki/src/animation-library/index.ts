@@ -12,5 +12,6 @@ export * from './productionPlanner';
 export * from './proposalCompiler';
 export * from './prototypeCoverage';
 export * from './renderReview';
+export * from './sceneAnalyzer';
 export * from './PrototypeGalleryRoot';
 export * from './prototypes/registry';
