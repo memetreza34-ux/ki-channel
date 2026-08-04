@@ -7,6 +7,9 @@
   "include": [
     "src/motion-system/**/*.ts",
     "src/motion-system/**/*.tsx",
-    "src/motion-system/**/*.json"
+    "src/motion-system/**/*.json",
+    "src/reels/**/*.ts",
+    "src/reels/**/*.tsx",
+    "reels/**/*.json"
   ]
 }
