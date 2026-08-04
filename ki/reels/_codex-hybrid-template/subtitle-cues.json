@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "reelId": "REPLACE_ME",
+  "timingSource": "manual-until-final-transcript",
+  "scenes": [
+    {
+      "sceneId": "scene-01",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 20, "importance": "strong", "semanticRole": "subject"}
+      ]
+    },
+    {
+      "sceneId": "scene-02",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 22, "importance": "strong", "semanticRole": "transformation"}
+      ]
+    },
+    {
+      "sceneId": "scene-03",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "strong", "semanticRole": "quantity"}
+      ]
+    },
+    {
+      "sceneId": "scene-04",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "strong", "semanticRole": "action"}
+      ]
+    },
+    {
+      "sceneId": "scene-05",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "strong", "semanticRole": "comparison"}
+      ]
+    },
+    {
+      "sceneId": "scene-06",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "strong", "semanticRole": "cause"}
+      ]
+    },
+    {
+      "sceneId": "scene-07",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "strong", "semanticRole": "result"}
+      ]
+    },
+    {
+      "sceneId": "scene-08",
+      "words": [
+        {"text": "REPLACE_ME", "atFrame": 8, "importance": "normal"},
+        {"text": "REPLACE_ME", "atFrame": 24, "importance": "danger", "semanticRole": "risk"}
+      ]
+    }
+  ]
+}
