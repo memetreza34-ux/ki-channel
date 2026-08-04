@@ -2,6 +2,7 @@ import {ADVANCED_PROTOTYPE_REGISTRY} from './advancedPrototypeRegistry';
 import {ANIMATION_LIBRARY_ENTRIES} from './catalog';
 import {COMPLETE_PROTOTYPE_REGISTRY} from './completePrototypeRegistry';
 import {EXPERIMENTAL_PROTOTYPE_REGISTRY} from './experimentalPrototypeRegistry';
+import {FINAL_PROTOTYPE_REGISTRY} from './finalPrototypeRegistry';
 import type {AnimationLibraryEntry} from './schema';
 
 export type ExecutableFamilyCoverage = {
@@ -29,6 +30,7 @@ export type AnimationExecutionCoverageReport = {
   maximumExecutablePerFamily: number;
   completeForTargetTwoPerFamily: boolean;
   completeForTargetThreePerFamily: boolean;
+  completeForTargetFourPerFamily: boolean;
   completeForEntireCatalog: boolean;
   families: ExecutableFamilyCoverage[];
   nextWaves: AnimationExpansionWave[];
@@ -38,6 +40,7 @@ const executableIds = new Set([
   ...COMPLETE_PROTOTYPE_REGISTRY.map((item) => item.animationId),
   ...EXPERIMENTAL_PROTOTYPE_REGISTRY.map((item) => item.animationId),
   ...ADVANCED_PROTOTYPE_REGISTRY.map((item) => item.animationId),
+  ...FINAL_PROTOTYPE_REGISTRY.map((item) => item.animationId),
 ]);
 
 export const EXECUTABLE_ANIMATION_IDS = Object.freeze(
@@ -149,19 +152,22 @@ export const createAnimationExecutionCoverageReport = (): AnimationExecutionCove
     completeForTargetThreePerFamily: families.every(
       (family) => family.executableCount >= 3,
     ),
+    completeForTargetFourPerFamily: families.every(
+      (family) => family.executableCount >= 4,
+    ),
     completeForEntireCatalog: families.every(
       (family) => family.remainingCount === 0,
     ),
     families,
-    nextWaves: buildExpansionWaves(remainingByFamily, executableCount, 4),
+    nextWaves: buildExpansionWaves(remainingByFamily, executableCount, 5),
   };
 };
 
 export const getAnimationExpansionWave = (
   waveIndex: number,
 ): AnimationExpansionWave => {
-  if (!Number.isInteger(waveIndex) || waveIndex < 4) {
-    throw new Error('animation expansion waveIndex must be an integer of at least 4');
+  if (!Number.isInteger(waveIndex) || waveIndex < 5) {
+    throw new Error('animation expansion waveIndex must be an integer of at least 5');
   }
   const wave = createAnimationExecutionCoverageReport().nextWaves.find(
     (candidate) => candidate.waveIndex === waveIndex,
