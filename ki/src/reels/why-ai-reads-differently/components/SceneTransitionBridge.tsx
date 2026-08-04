@@ -12,7 +12,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
 
   if (style === 'scanner-wipe') {
     return (
-      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80}}>
+      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25}}>
         <div
           style={{
             position: 'absolute',
@@ -31,7 +31,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
 
   if (style === 'point-tunnel') {
     return (
-      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80}}>
+      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25}}>
         {Array.from({length: 18}, (_, index) => {
           const angle = (index / 18) * Math.PI * 2;
           const radius = interpolate(phase, [0, 1], [80, 760]);
@@ -59,7 +59,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
 
   if (style === 'thread-pull') {
     return (
-      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80}}>
+      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25}}>
         <svg width="1080" height="1920" viewBox="0 0 1080 1920">
           {[-220, -110, 0, 110, 220].map((offset, index) => {
             const dash = 1900;
@@ -89,7 +89,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
       <AbsoluteFill
         style={{
           pointerEvents: 'none',
-          zIndex: 80,
+          zIndex: 25,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -111,7 +111,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
 
   if (style === 'layer-lift') {
     return (
-      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80, overflow: 'hidden'}}>
+      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25, overflow: 'hidden'}}>
         {Array.from({length: 5}, (_, index) => (
           <div
             key={index}
@@ -137,7 +137,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
   if (style === 'word-stream') {
     const words = ['MUSTER', 'KONTEXT', 'WORT', 'ANTWORT', 'TOKEN'];
     return (
-      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80, overflow: 'hidden'}}>
+      <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25, overflow: 'hidden'}}>
         {words.map((word, index) => (
           <div
             key={word}
@@ -163,7 +163,7 @@ const TransitionVisual: React.FC<{style: TransitionStyle}> = ({style}) => {
 
   const fold = interpolate(phase, [0, 0.5, 1], [0, 50, 100]);
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', zIndex: 80}}>
+    <AbsoluteFill style={{pointerEvents: 'none', zIndex: 25}}>
       <div
         style={{
           position: 'absolute',

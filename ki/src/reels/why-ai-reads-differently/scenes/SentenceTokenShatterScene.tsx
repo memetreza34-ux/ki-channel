@@ -78,6 +78,7 @@ export const SentenceTokenShatterScene: React.FC = () => {
             gap: interpolate(scatter, [0, 1], [10, 18]),
             transform: `translateZ(${interpolate(entry, [0, 1], [-500, 0])}px) scale(${interpolate(entry, [0, 1], [0.7, 1])})`,
             opacity: entry,
+            zIndex: 5,
           }}
         >
           {WORDS.map((word, index) => {
@@ -137,7 +138,8 @@ export const SentenceTokenShatterScene: React.FC = () => {
             transform: `translateX(-50%) scaleX(${scannerPull})`,
             background: palette.accent,
             boxShadow: '0 0 40px rgba(135,87,232,.75)',
-            opacity: scannerPull,
+            opacity: scannerPull * 0.55,
+            zIndex: 2,
           }}
         />
 
