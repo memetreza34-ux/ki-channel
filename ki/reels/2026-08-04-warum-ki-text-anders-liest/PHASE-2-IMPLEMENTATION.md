@@ -1,141 +1,155 @@
 # Phase 2 – individuelle Remotion-Umsetzung
 
-## Status
+## Aktueller Status
 
-Der vollständige Remotion-Code ist implementiert und als Composition `Reel-WhyAIReadsDifferently` registriert.
+Für die vorherige Codefassung wurden Typecheck, Tests, 32 Prüfframes und ein vollständiges MP4 erfolgreich erzeugt. Dieses MP4 wurde anschließend erneut als echtes Video geprüft.
 
-`npm run reel:why-ai:verify`, `npm run reel:why-ai:smoke`, `npm run reel:why-ai:stills`, `npm run reel:why-ai:video`, `npm run reel:why-ai:check`, `npm run reel:why-ai:full-release-check` und `npm run motion:verify` wurden tatsächlich ausgeführt und sind grün. Details siehe Prüfprotokoll unten und `review-checklist.md`.
+Die erneute Prüfung zeigte:
 
-Bei der Prüfung wurden folgende echte Fehler gefunden und an der Ursache behoben:
+- Die Animationen sind grundsätzlich brauchbar und verständlich.
+- Das synthetische Sounddesign passt stilistisch nicht zum Reel.
+- Mehrere Szenen besitzen zu große leere Flächen oder schwache Zwischenzustände.
+- Die Untertitel reservieren Platz für noch unsichtbare Wörter und wirken deshalb zeitweise leer.
+- Der frühe Zustand der letzten Szene schneidet Kartentext während der Bewegung ab.
 
-- `vitest.config.ts` enthielt `ki/**` nicht im `include`-Pattern, wodurch die drei eigenen Reel-Tests (`reelContract`, `sceneUniqueness`, `wordCueBounds`) von `reel:why-ai:test` nie ausgeführt wurden (0 Tests gefunden, aber Exit-Code Fehler durch leeren Filter).
-- `ki/tsconfig.json` referenzierte `../../tsconfig.base.json` (zwei Ebenen hoch) statt `../tsconfig.base.json` (eine Ebene hoch), was den Vite/Vitest-Transform mit `TSCONFIG_ERROR` abbrechen ließ.
-- `ki/src/motion-system/__tests__/renderPlan.test.ts` nutzte `Array.prototype.at()`, das unter dem in `tsconfig.base.json` konfigurierten `ES2020`-Lib-Target nicht existiert (`tsc --noEmit -p ki/tsconfig.motion.json` schlug fehl).
-- `AttentionThreadWeaveScene.tsx` griff auf `node.accent` zu, obwohl die meisten Einträge des `NODES`-Union-Typs dieses Feld gar nicht deklarieren; strict TypeScript lehnte das ab. Ersetzt durch die bereits vorhandene `isStrong`-Variable, die inhaltlich dasselbe ausdrückt.
-- `SentenceTokenShatterScene.tsx`: Der Scanner-Balken lag laut DOM-Reihenfolge über dem Token-Stack und überdeckte die Wörter „deinen“ und „Satz“ während der Konvergenz um Frame 100–115 fast vollständig. Token-Stack bekam `zIndex: 5`, der Balken wurde zusätzlich abgedunkelt.
-- `SceneTransitionBridge.tsx`: Alle sieben Übergänge rendern mit `zIndex: 80`, höher als Titel (`zIndex: 30`) und kinetischer Untertitel (`zIndex: 40`) in `ReelChrome.tsx`. Am Übergang Szene 5→6 (Layer-Lift, Frame 648) führte das dazu, dass Titel und Untertitel der ankommenden Szene 6 für mehrere Frames komplett leer/unlesbar waren. Fix: Übergangs-Overlays auf `zIndex: 25` gesenkt, damit Titel und Untertitel immer sichtbar bleiben.
+Diese Punkte wurden im Code überarbeitet. **Der neue Post-Review-Stand wurde noch nicht erneut typegecheckt oder gerendert.** Frühere grüne Berichte dürfen deshalb nicht als Freigabe für den aktuellen Quellstand verwendet werden.
 
-## Umgesetzte Choreografie
+## Tatsächlich analysiertes Video
 
-Jede der acht Szenen besitzt eine eigene vollständige Animation:
+```text
+why-ai-reads-differently.mp4
+36.05 Sekunden
+1080 × 1920
+30 FPS
+H.264 + AAC
+```
 
-1. `sentence-token-shatter-v1` – geschlossener Satz, Wortgrenzen, räumliches Zerlegen und Übergabe an den Scanner
-2. `token-vector-scanner-v1` – transparente Scannerkammer, Scanbalken, Token-zu-Vektor-Umwandlung und Punktauflösung
-3. `embedding-cluster-orbit-v1` – deterministische räumliche Begriffscluster mit leichter Kameradrehung
-4. `attention-thread-weave-v1` – gewichtete SVG-Verbindungen, Pfadaufbau und pulsierende starke Beziehungen
-5. `next-token-branch-race-v1` – drei unterschiedliche Pfade, deterministische Prozentverläufe und spätes Gewinner-Signal
-6. `transformer-layer-elevator-v1` – vertikale Modellschichten mit sichtbarer Veränderung pro Ebene
-7. `answer-word-assembly-v1` – Wörter kommen aus verschiedenen Tiefen und rasten ohne Typewriter-Cursor ein
-8. `brilliant-wrong-split-balance-v1` – Antwort teilt sich, Waage kippt und endet mit der Prüfaufforderung
+Die Tonspur enthielt keine Sprachaufnahme, sondern hauptsächlich kurze synthetische Soundeffekte mit langen stillen Zwischenräumen.
 
-## Überschriften und Untertitel
+## Verbesserungen nach der Videoanalyse
 
-- Jede Szene besitzt eine feste obere Überschrift innerhalb der Safe-Zone.
-- Der Sprechtext wird unten als kinetischer Untertitel aufgebaut.
-- Alle Wörter besitzen manuelle Frame-Cues.
-- Inhaltlich wichtige Wörter erhalten stärkere Skalierung, Farbe und Lichtreaktion.
-- Risikowörter wie `falsch` und `versteht` werden separat als Warnung choreografiert.
-- Maximal zwei kompakte Textbereiche sind gleichzeitig aktiv: Szenenüberschrift oben und Sprechtext unten.
+### Sound
 
-## Übergänge
+`SynthSoundtrack.tsx` wurde vollständig reduziert:
 
-Zwischen den acht Szenen werden sieben unterschiedliche Übergänge verwendet:
+- Standard: `soundMode: "off"`
+- keine Noise-Sounds
+- keine hohen Pieptöne
+- keine 21 verteilten Synth-Cues mehr
+- optionaler Modus `minimal` mit nur vier leisen, tiefen Akzenten
+- Voiceover bleibt unabhängig und optional über `voiceoverSrc`
 
-- Scanner-Wipe
-- Punkt-Tunnel
-- Thread-Pull
-- Branch-Flash
-- Layer-Lift
-- Word-Stream
-- Split-Fold
+Die stumme Version ist die Standardfassung. Die minimale Soundfassung darf nur nach einem echten A/B-Vergleich verwendet werden.
 
-Die Übergänge übernehmen jeweils eine Form oder Bewegungsrichtung aus der vorherigen Szene. Es gibt keinen vollständigen visuellen Reset zwischen den Szenen.
+### Untertitel
 
-## Sounddesign
+`ReelChrome.tsx` verwendet nun ein kompaktes rollendes Untertitelfenster:
 
-`SynthSoundtrack.tsx` erzeugt kurze deterministische WAV-Soundeffekte direkt aus Code. Dadurch sind keine externen Binärdateien oder fremden Soundbibliotheken nötig.
+- nur bereits gesprochene Wörter werden dargestellt
+- maximal neun Wörter gleichzeitig
+- zukünftige unsichtbare Wörter belegen keinen Platz mehr
+- kleinere Untertitelbox
+- weniger Licht- und Skalierungseffekt
+- aktuelles Schlüsselwort bleibt deutlich, ohne den gesamten Satz hektisch zu animieren
 
-Enthalten sind unter anderem:
+### Kontrast
 
-- tiefer Hook-Impact
-- Token-Bruch und magnetische Klicks
-- Scanner-Sweeps
-- räumliche Datenbewegungen
-- Attention-Pulse
-- Probability-Ticks
-- Layer-Hums
-- Wort-Klicks
-- Warn- und Abschlussakzente
+`visualUtils.ts` verwendet dunklere Sekundärtexte, sichtbarere Linien und etwas klarere Akzentfarben für mobile Anzeige.
 
-Eine echte Voiceover-Datei ist noch nicht eingecheckt. Die Composition akzeptiert optional `voiceoverSrc`, damit eine finale Sprachspur später synchron ergänzt werden kann.
+### Szene 1
 
-## Zusätzliche erklärende Animationen
+Die zufällige Streuung wurde entfernt. Neuer Ablauf:
 
-Neben den direkt gesprochenen Aussagen wurden bewusst unterstützende Animationen ergänzt:
+```text
+Satz als geordnete Wortfolge
+→ Token-Grenzen werden sichtbar
+→ kontrollierter Fächer
+→ vertikaler Token-Stack für den Scanner
+```
 
-- Mensch-gegen-Maschine-Leselogik in Szene 1
-- Token-Indizes und feste Beispielvektoren
-- Nähe-Legende im Bedeutungsraum
-- sichtbare Attention-Gewichte
-- Alternativkandidaten bei der Wortauswahl
-- Hinweis `Muster – kein menschliches Verständnis`
-- transparente Ausgabealternativen
-- Quellenwarnung und Wahrheit-vs.-Sicherheit-Kontrast
+Dadurch ist die Bewegung nachvollziehbarer und die Bildmitte besser genutzt.
 
-Diese Elemente sollen den Inhalt verständlicher machen, ohne dekorative B-Roll oder unpassende Standardanimationen einzusetzen.
+### Szene 5
 
-## Codepfad
+- Wahrscheinlichkeiten summieren sich in allen Phasen zu 100 Prozent.
+- Der spätere Gewinner liegt nicht mehr zunächst sichtbar hinter einem anderen Kandidaten.
+- Die Anzeige ist als `LIVE-ZWISCHENSTAND` gekennzeichnet.
+- Der Gewinnerzustand erhält einen längeren lesbaren Hold.
+
+### Szene 6
+
+- Alle vier Modellschichten sind bereits im Anfangszustand sichtbar.
+- Die fast leere Phase zu Beginn wurde entfernt.
+- Der aktive Verarbeitungsschritt wird stärker markiert.
+- Abgeschlossene Schichten erhalten einen sichtbaren Status.
+- Der Ausgang `Muster → nächstes Wort` ist klarer.
+
+### Szene 7
+
+Die bisherige räumliche Wortstreuung wurde vollständig ersetzt:
+
+```text
+mögliche nächste Wörter
+→ Prozentwerte verändern sich
+→ Gewinner wird übernommen
+→ Satz wächst sichtbar
+→ stabiler vollständiger Endzustand
+```
+
+Damit erklärt die Szene tatsächlich das autoregressive Prinzip und nutzt die verfügbare Fläche besser.
+
+### Szene 8
+
+- Karten werden nicht mehr über Clip-Paths innerhalb einer gedrehten Fläche enthüllt.
+- Beide Karten bleiben während der gesamten Bewegung innerhalb der Safe-Zone.
+- `95 % sicher formuliert` wird sichtbar von `Quelle fehlt` getrennt.
+- Die Waage kippt kontrollierter.
+- Der Abschluss zeigt die drei Prüfanker `Quelle`, `Datum`, `Beleg`.
+
+## Zusammensetzung
 
 ```text
 ki/src/reels/why-ai-reads-differently/
 ├── contract.ts
 ├── visualUtils.ts
 ├── ReelWhyAIReadsDifferently.tsx
-├── index.ts
 ├── components/
 ├── scenes/
 └── __tests__/
 ```
 
-## Prüfkommandos
-
-Zuerst nur Syntax, Reel-Verträge und TypeScript prüfen:
+## Verbindliche erneute Prüfung
 
 ```bash
 npm run reel:why-ai:verify
-```
-
-Danach schnelle Testbilder:
-
-```bash
 npm run reel:why-ai:smoke
+npm run reel:why-ai:stills
+npm run reel:why-ai:video
+npm run reel:why-ai:check
+npm run motion:verify
 ```
 
-Vollständige 32 Prüfbilder, MP4 und technischer Bericht:
+Danach visuell prüfen:
 
-```bash
-npm run reel:why-ai:full-release-check
-```
+- Frame 0–115: Token-Fächer und Scanner-Übergabe
+- Szene 5: alle Zwischenstände und Gewinner-Hold
+- Szene 6: erster Frame, Layer-Aktivierung und Ausgang
+- Szene 7: jede Kandidatenphase und vollständiger Satz
+- Szene 8: Karten während des Einfliegens, Waage und CTA
+- Untertitelbox bei kurzen und langen Sätzen
 
-Erwartetes technisches Endergebnis:
+## Freigaberegel
+
+Der aktuelle Stand gilt erst als freigegeben, wenn:
+
+- TypeScript erfolgreich ist
+- alle Reel-Tests erfolgreich sind
+- 32 aktuelle PNG-Prüfframes existieren
+- das aktuelle MP4 gerendert wurde
+- `release-report.json` den aktuellen Quellfingerprint enthält
+- die stumme Version in normaler Geschwindigkeit visuell geprüft wurde
+- eine optionale Minimal-SFX-Version nur bei eindeutig besserem Ergebnis gewählt wird
 
 ```text
-out/reels/why-ai-reads-differently/release-report.json
-33/33 gültige Artefakte
+Status: VERBESSERT, ERNEUTE PRÜFUNG UND NEUER RENDER AUSSTEHEND
 ```
-
-Die technische Prüfung ersetzt nicht die visuelle Kontrolle von Textüberlauf, Choreografie, Rhythmus, Lautstärke und inhaltlicher Verständlichkeit.
-
-## Tatsächlich durchgeführte Prüfung (dieser Durchlauf)
-
-- Alle 10 Smoke-Frames und alle 32 Stills wurden mit dem Read-Tool visuell geöffnet und geprüft.
-- Ergebnis: `out/reels/why-ai-reads-differently/release-report.json` → `passed: true`, 33/33 Artefakte gültig, aktueller `sourceFingerprint`.
-- Volles MP4 (`out/reels/why-ai-reads-differently/why-ai-reads-differently.mp4`, 7.9 MB) via `ffprobe` geprüft: H.264 1080×1920 30fps 1080 Frames / 36.0s, AAC-Stereo-Audiospur 36.05s vorhanden.
-- Stichproben-Frames direkt aus dem finalen MP4 per `ffmpeg -ss ... -frames:v 1` gezogen (Frame 0, 15, 113, 200, 400, 654, 700, 938, 1000, 1079) und visuell mit den Stills abgeglichen — Fixes sind im finalen Render sichtbar.
-- `npm run motion:verify` lief grün durch (0 fehlgeschlagene Tests) — das bestehende allgemeine Motion-System ist durch die Reel-Änderungen nicht beschädigt.
-
-## Offene / nicht vollständig geprüfte Punkte
-
-- Die Übergänge decken beim Scannen der Einzel-Stills teils kurzzeitig Hauptinhalt (nicht Titel/Untertitel) ab, z. B. Word-Stream über Szene 6 kurz vor Szene 7, sowie Branch-Flash am Ende von Szene 4. Das ist als bewusster, kurzer (12 Frames / 0.4 s) Übergangs-Effekt eingeordnet und nicht weiter verändert worden — bei Bedarf für spätere Politur vermerkt.
-- Keine millisekundengenaue Voiceover-Synchronisierung behauptet; `voiceoverSrc` bleibt optional und wurde nicht mit echtem Audio getestet.
-- Lautstärkeverhältnisse der `SynthSoundtrack.tsx`-Effekte wurden nur über die MP4-Audiospur (Vorhandensein, Dauer, Codec) geprüft, nicht per Lautheitsmessung/Waveform-Analyse einzelner Cues.
