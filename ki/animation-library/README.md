@@ -2,15 +2,15 @@
 
 ## Ziel
 
-Dieses System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet inzwischen sieben Ebenen:
+Das System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet:
 
-1. eine große semantisch beschriebene Animationsbibliothek,
-2. einen Reel-Planer mit Abwechslungs- und Wiederholungsschutz,
-3. einen Produktionsplaner für bestehende und neu zu bauende Animationen,
-4. einen Proposal-Compiler für wirklich neue Szenen,
-5. ein versioniertes Creative Brain mit Lern- und Tuning-Pipeline,
-6. ein Render-Review-System mit Status-Promotion,
-7. ein eigenes Render-, Prüf- und Bibliotheks-Auditsystem.
+1. einen Katalog mit semantisch beschriebenen Animationen,
+2. einen Reel-Planer mit Anti-Wiederholungslogik,
+3. einen Produktionsplaner für vorhandene und neue Animationen,
+4. einen Proposal-Compiler für fehlende Visualisierungen,
+5. ein versioniertes Creative Brain,
+6. Lern-, Tuning-, Audit- und Render-Review-Pipelines,
+7. ein eigenes Remotion-Render- und Freigabesystem.
 
 ## Sicherer Parallelbetrieb
 
@@ -20,46 +20,42 @@ Die Entwicklung liegt auf:
 feature/animation-library-brain
 ```
 
-Der Branch wurde vom Stand von `feature/sentence-to-motion-system` abgezweigt. Dadurch kann Claude Code das Referenz-Reel auf dem ursprünglichen Branch testen, ohne dass beide Agenten gleichzeitig dieselben Dateien verändern.
+Der Branch wurde von `feature/sentence-to-motion-system` abgezweigt. Claude Code kann deshalb das Referenz-Reel auf dem ursprünglichen Branch testen, ohne dass zwei Agenten dieselben Dateien verändern.
 
-`main` wird nicht verändert. Es existiert noch kein Merge und kein zusätzlicher PR.
+`main` bleibt unverändert. Es existiert kein Merge und kein zusätzlicher PR.
 
-## Aktueller Umfang
-
-### Katalog
+## Bibliotheksumfang
 
 ```text
 88 Animationskonzepte
 22 visuelle Familien
 4 eigenständige Varianten pro Familie
+22 ausführbare Remotion-Prototypen
+22/22 Familien mit ausführbarem Prototyp
 ```
 
-Jeder Bibliothekseintrag besitzt unter anderem:
+Jeder Eintrag besitzt unter anderem:
 
 - stabile `animationId`
-- visuellen Typ
+- visuelle Familie
 - Layoutfamilie
 - eindeutige Bewegungssignatur
-- semantische Schlagwörter
-- Erklärmuster
-- ungeeignete Einsatzfälle
-- verwendbare Grundbausteine
-- mögliche Übergänge hinein und hinaus
-- Kamerastil
-- Hauptbewegungsrichtung
+- semantische Tags und Erklärmuster
+- Ausschlussfälle
+- Grundbausteine
+- Übergangsverträge
+- Kamerastil und Bewegungsrichtung
 - Energie, Dichte und Komplexität
-- empfohlene Szenendauer
+- empfohlene Dauer
 - Startwerte für Verständlichkeit, Neuheit und Produktionssicherheit
 
-Der Katalog befindet sich in:
+Der Katalog liegt unter:
 
 ```text
 ki/src/animation-library/catalog.ts
 ```
 
-### Bereits als Remotion-Code umgesetzt
-
-18 eigenständige Prototypen aus 18 verschiedenen Familien sind als ausführbare Remotion-Compositions vorhanden:
+## Ausführbare Prototypen
 
 | Composition | Animation | Familie |
 |---|---|---|
@@ -77,233 +73,137 @@ ki/src/animation-library/catalog.ts
 | `Library-Anomaly-XRay-Scanner` | Anomaly X-Ray Scanner | Fehlererkennung |
 | `Library-Meaning-Terrain` | Meaning Terrain | Bedeutungsraum |
 | `Library-Dependency-Bridge-Builder` | Dependency Bridge Builder | Beziehungen/Attention |
-| `Library-Probability-Fluid-Columns` | Probability Fluid Columns | Wahrscheinlichkeiten |
+| `Library-Probability-Fluid-Columns` | Probability Fluid Columns | Wahrscheinlichkeit |
 | `Library-Residual-River` | Residual River | Modellverarbeitung |
 | `Library-Answer-Loom` | Answer Loom | Antwortgenerierung |
 | `Library-Confidence-Glass-Crack` | Confidence Glass Crack | Risiko/Wahrheit |
+| `Library-Encryption-Vault-Layers` | Encryption Vault Layers | Sicherheit/Datenschutz |
+| `Library-Latency-Tunnel-Race` | Latency Tunnel Race | Performance/Skalierung |
+| `Library-Timeline-Microscope` | Timeline Microscope | Zeit/Veränderung |
+| `Library-Benchmark-Racetrack` | Benchmark Racetrack | Vergleich |
 
-Die Prototypen liegen unter:
+Code und eigener Remotion-Einstieg:
 
 ```text
 ki/src/animation-library/prototypes/
-```
-
-Sie verwenden einen eigenen Remotion-Einstieg und greifen nicht in die Composition des gerade von Claude Code geprüften Reels ein:
-
-```text
 ki/src/animation-library/remotion-entry.tsx
 ```
 
-## Reel-Planer
+## Reel- und Produktionsplanung
 
-`planner.ts` bewertet nicht nur, welche Animation grundsätzlich zum Satz passt. Die Auswahl berücksichtigt:
+`planner.ts` verwendet eine begrenzte Beam Search und bewertet für das gesamte Reel:
 
 - semantische Passung
-- Erklärmuster
-- erlernte Neuheit
-- Abwechslung im gesamten Reel
+- Neuheit
+- Abwechslung der visuellen Familien
+- unterschiedliche Layouts und Bewegungssignaturen
 - Produktionssicherheit
-- Anschlussfähigkeit an den vorherigen Übergang
-- bereits verwendete visuelle Familien
-- bereits verwendete Layouts
-- bereits verwendete Bewegungssignaturen
-- Energie und Bewegungsrichtung
-- Komplexitätsgrenzen
-- Kartenlimit
-- Cooldown vorheriger Reels
+- Anschlussfähigkeit der Übergänge
+- Energie, Richtung und Komplexität
+- Cooldowns und Kartenlimit
 
-Die Planung erfolgt mit einer begrenzten Beam Search. Dadurch wird nicht jede Szene isoliert und gierig entschieden. Der Planer betrachtet mehrere mögliche Gesamtfolgen und bevorzugt eine abwechslungsreiche Choreografie für das komplette Reel.
+`productionPlanner.ts` erzeugt für jede Szene entweder:
 
-## Produktionsplaner
+- eine konkrete Bibliotheksauswahl oder
+- einen neuen Build-Vertrag.
 
-`productionPlanner.ts` verbindet den Choreografieplaner mit der tatsächlichen Umsetzung.
+Der Ausgabeplan enthält Auswahlquelle, Animation-ID, Bewertung, Gründe, Build-Spezifikation, Gesamtchoreografie und Qualitätswarnungen.
 
-Für jede Szene entsteht entweder:
+## Neue Animationen
 
-- eine konkrete Auswahl aus der vorhandenen Bibliothek oder
-- eine vollständige neue Build-Spezifikation.
+Unterschreitet die beste vorhandene Animation den Qualitätswert, erstellt der Planer einen `NewAnimationProposal` statt eine unpassende Vorlage zu erzwingen.
 
-Der Produktionsplan enthält:
+`proposalCompiler.ts` übersetzt ihn in einen Bauvertrag mit:
 
-- Quelle `library` oder `new-build`
-- endgültige Animation-ID
-- Katalogeintrag
-- Bewertungsgründe
-- Build-Spezifikation für neue Animationen
-- visuelle Familien, Layouts und Bewegungssignaturen des gesamten Reels
-- Qualitätswarnungen
-- eindeutigen Status `readyForImplementation`
-
-## Neue Animation statt unpassender Wiederholung
-
-Erreicht keine vorhandene Animation den Mindestwert, liefert der Planer keine schlechte Notlösung. Er erstellt einen `NewAnimationProposal` mit:
-
-- benötigten semantischen Schlagwörtern
-- vorgeschlagener visueller Familie
-- verbotenen, bereits verwendeten Layouts
-- verbotenen Bewegungssignaturen
-- vorgeschlagener neuer Bewegungsrichtung
-- vorgeschlagener Energie
-
-`proposalCompiler.ts` übersetzt diesen Vorschlag in einen echten Bauvertrag mit:
-
-- neuer stabiler Animation-ID
+- neuer Animation-ID
 - garantiert nicht verbotener Layoutfamilie
 - garantiert nicht verbotener Bewegungssignatur
 - passenden Grundbausteinen
 - Übergangsverträgen
 - Kamerastil
-- Energie, Dichte und Komplexität
-- vier Choreografiephasen `establish`, `explain`, `contrast`, `resolve`
-- verpflichtenden Implementierungsregeln
+- vier Phasen: `establish`, `explain`, `contrast`, `resolve`
+- verbindlichen Determinismus-, Safe-Zone- und Renderregeln
 
-Eine neue Animation gilt ausdrücklich als nicht bestanden, wenn sie nur aus bestehenden Karten mit anderen Texten besteht.
+Eine neue Animation gilt als nicht bestanden, wenn sie nur aus bekannten Karten mit anderen Texten besteht.
 
 ## Creative Brain
 
-Das Creative Brain speichert:
+Das Brain speichert:
 
-- Lerngewichte
-- globale Anti-Wiederholungsregeln
-- Nutzungszahlen pro Animation
-- angenommene, überarbeitete und abgelehnte Varianten
+- Auswahlgewichte
+- Anti-Wiederholungsregeln
+- Nutzung und Cooldowns
+- akzeptierte, überarbeitete und abgelehnte Animationen
 - erlernte Werte für Verständlichkeit, Neuheit und Produktionssicherheit
-- Cooldowns
-- vollständige Nutzungshistorie
-- Beobachtungen
-- versionierte Fakten
+- Nutzerfeedback, Renderreviews und Leistungsdaten
+- versionierte Fakten und neue Informationen
 
-### Neue Informationen aktualisieren
+Neue Informationen ersetzen ältere Fakten nur, wenn sie mindestens genauso aktuell und ausreichend zuverlässig sind. Der alte Verlauf bleibt erhalten.
 
-Neue Informationen überschreiben bestehendes Wissen nicht blind.
+### Lernpipeline
 
-Eine Information ersetzt einen vorhandenen Fakt nur, wenn sie:
+`learningPipeline.ts` verarbeitet Beobachtungen und Nutzungsdaten chronologisch und idempotent. Doppelte Ereignisse werden nicht erneut gelernt.
 
-1. mindestens genauso aktuell ist und
-2. eine ausreichend hohe Vertrauenswürdigkeit besitzt.
+`brainTuning.ts` verändert Gewichte nur bei wiederholter Evidenz:
 
-Eine schwache neue Behauptung darf einen älteren, stark belegten Fakt nicht verdrängen. Alle Beobachtungen bleiben im Verlauf erhalten.
+- Wiederholungsbeschwerden erhöhen Neuheit und Reel-Abwechslung
+- Verständlichkeitsprobleme erhöhen semantische Passung
+- Renderfehler erhöhen Produktionssicherheit
+- einzelne Rückmeldungen lösen keine großen Regeländerungen aus
 
-### Lernquellen
-
-Das Brain akzeptiert vier Ereignistypen:
-
-- `render-review`
-- `user-feedback`
-- `performance-metric`
-- `new-knowledge`
-
-Direktes Nutzerfeedback erhält die stärkste Lernrate. Ein einzelner unsicherer Messwert verändert das System deutlich vorsichtiger.
-
-### Batch-Lernen
-
-`learningPipeline.ts` verarbeitet Beobachtungen und Animationsnutzung chronologisch und idempotent:
-
-- doppelte Beobachtungen werden nicht erneut gelernt
-- doppelte Reel-/Szenen-/Animationsnutzung wird übersprungen
-- neue Katalogeinträge werden vorher mit dem Brain abgeglichen
-- Fakten und Qualitätswerte werden in einer reproduzierbaren Reihenfolge aktualisiert
-
-### Automatisches Tuning
-
-`brainTuning.ts` verändert Regeln nur bei wiederholter Evidenz:
-
-- mehrere Beschwerden über Wiederholung erhöhen Neuheits- und Abwechslungsgewicht
-- mehrere Verständlichkeitsprobleme erhöhen semantische Passung
-- mehrere Render- oder Produktionsfehler erhöhen Produktionssicherheit
-- wenige oder einzelne Rückmeldungen verändern die Gewichte nicht sofort
-- alle Gewichte bleiben normalisiert und Änderungen sind begrenzt
-
-## Render-Review und Freigabe
-
-`renderReview.ts` verbindet technische Artefakte mit der manuellen Sichtprüfung.
-
-Eine Animation darf nur `verified` werden, wenn:
-
-- alle erwarteten PNGs und das MP4 technisch gültig sind
-- der Quellfingerprint aktuell ist
-- die Szene ohne Ton verständlich bleibt
-- mobile Lesbarkeit bestätigt ist
-- keine Überläufe vorhanden sind
-- die Bewegung deterministisch ist
-- keine vollständige Animation wiederholt wird
-- Mindestwerte für Verständlichkeit, Neuheit und Produktionssicherheit erreicht werden
-
-Nicht bestandene Animationen bleiben `prototype` oder `concept`. Eine ausgemusterte Animation wird niemals automatisch wieder aktiviert.
-
-## Bibliotheks-Audit
+## Qualität und Freigabe
 
 `libraryAudit.ts` prüft unter anderem:
 
-- doppelte Animation-IDs
+- doppelte IDs
 - doppelte Layout-/Bewegungssignaturen
-- unter- oder überfüllte Familien
-- fehlende Prototype-Abdeckung
-- zu schwache semantische Tags
-- unvollständige Übergangsverträge
-- zu hohe Kartenkonzentration
-- zu niedrige Produktionssicherheit bei Prototypen
+- fehlende oder überfüllte Familien
+- schwache semantische Tags
+- unvollständige Übergänge
+- Kartenkonzentration
+- niedrige Produktionssicherheit
 
-Der aktuelle Zielvertrag bleibt:
+`prototypeCoverage.ts` prüft getrennt vom Katalogstatus, ob tatsächlich eine ausführbare Komponente pro Familie registriert ist. Der aktuelle Zielzustand ist `22/22`.
 
-```text
-22 Familien × 4 Varianten = 88 eindeutige Konzepte
-```
+`renderReview.ts` darf den Status nur auf `verified` setzen, wenn:
 
-## Bestehende Animationshistorie
+- alle PNGs und das MP4 technisch gültig sind
+- der Quellfingerprint aktuell ist
+- die Animation ohne Ton verständlich bleibt
+- mobile Lesbarkeit und Safe-Zones stimmen
+- kein Überlauf vorliegt
+- die Bewegung deterministisch ist
+- Mindestwerte für Verständlichkeit, Neuheit und Produktionssicherheit erreicht werden
 
-`historyAdapter.ts` importiert die bereits verwendeten acht Szenen des ersten Referenz-Reels aus:
-
-```text
-ki/reels/animation-history.json
-```
-
-Dabei werden auch visuelle Familie, Layout und Bewegungssignatur berücksichtigt. Neue Bibliothekseinträge aus derselben Familie bleiben erlaubt, erhalten aber einen niedrigeren Neuheitswert. Exakte Wiederholungen werden deutlich stärker blockiert.
+Eine ausgemusterte Animation wird nicht automatisch reaktiviert.
 
 ## Persistenz
 
-Creative-Brain-Zustände können als versionierte JSON-Snapshots gespeichert werden. Jeder Snapshot besitzt einen portablen Fingerprint. Nachträglich veränderte oder beschädigte Snapshots werden beim Laden abgelehnt.
+Creative-Brain-Zustände werden als versionierte JSON-Snapshots mit portablem Fingerprint gespeichert. Beschädigte oder nachträglich veränderte Snapshots werden abgelehnt.
 
-```text
-ki/src/animation-library/persistence.ts
-```
-
-## Prüfungen
-
-### Syntax, TypeScript, Tests und Renderplan
+## Befehle
 
 ```bash
-node scripts/verify-animation-library.mjs
+npm run animation-library:verify
+npm run animation-library:plan
+npm run animation-library:smoke
+npm run animation-library:stills
+npm run animation-library:videos
+npm run animation-library:render
+npm run animation-library:check
+npm run animation-library:full-release-check
 ```
 
-### Schnelle Testbilder
-
-```bash
-node scripts/render-animation-library.mjs smoke
-```
-
-Erwartung:
+Erwarteter Renderumfang:
 
 ```text
-18 Prototypen × 3 Smoke-Frames = 54 PNG-Dateien
+Smoke: 22 × 3 = 66 PNG-Dateien
+Voll: 22 × 7 = 154 PNG-Dateien
+Videos: 22 MP4-Dateien
+Gesamt: 176/176 technisch gültige Artefakte
 ```
 
-### Vollständige Prototyp-Prüfung
-
-```bash
-node scripts/render-animation-library.mjs all
-node scripts/check-animation-library-renders.mjs
-```
-
-Erwartung:
-
-```text
-18 Prototypen × 7 PNG-Dateien = 126 PNG-Dateien
-18 Prototypen × 1 MP4-Datei = 18 MP4-Dateien
-144/144 technisch gültige Artefakte
-```
-
-Der technische Bericht liegt anschließend unter:
+Bericht:
 
 ```text
 out/animation-library/release-report.json
@@ -311,14 +211,14 @@ out/animation-library/release-report.json
 
 ## Ehrlicher Status
 
-Der Katalog, beide Planerebenen, der Proposal-Compiler, das Creative Brain, Batch-Lernen, automatisches Tuning, Persistenz, Audit, Render-Review, Tests, Render-System und 18 ausführbare Remotion-Prototypen sind als Code vorhanden.
+Katalog, Planer, Proposal-Compiler, Creative Brain, Lernpipeline, automatisches Tuning, Persistenz, Audit, Coverage-Report, Render-Review, Tests, Render-System und 22 Remotion-Prototypen sind als Code vorhanden.
 
 Noch nicht bestätigt sind:
 
-- TypeScript-Erfolg in einer echten lokalen Umgebung
+- erfolgreicher TypeScript-Lauf
 - bestandene Vitest-Tests
 - erfolgreiche Remotion-Render
-- visuelle Qualität der 126 Prüfbilder
-- Bewegungsqualität der 18 MP4-Dateien
+- visuelle Qualität der 154 Prüfbilder
+- Bewegungsqualität der 22 MP4-Dateien
 
 Diese Punkte dürfen erst nach dem tatsächlichen Lauf als bestanden markiert werden.
