@@ -1,55 +1,66 @@
 import React from 'react';
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {SceneShell, TokenCapsule} from '../components/SceneShell';
-import {fadeWindow, palette, progress, seededRange, springProgress} from '../visualUtils';
+import {fadeWindow, palette, progress, springProgress} from '../visualUtils';
 
-const WORDS = ['KI', 'liest', 'deinen', 'Satz', 'nicht', 'wie', 'du'];
+const WORDS = ['KI', 'liest', 'deinen', 'Satz', 'nicht', 'wie', 'du'] as const;
+
+const FAN_POSITIONS = [
+  {x: -305, y: 155, rotate: -8},
+  {x: -205, y: 12, rotate: 5},
+  {x: -92, y: 118, rotate: -3},
+  {x: 20, y: -18, rotate: 6},
+  {x: 155, y: 122, rotate: -5},
+  {x: 268, y: 24, rotate: 7},
+  {x: 332, y: 172, rotate: -4},
+] as const;
 
 export const SentenceTokenShatterScene: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const entry = springProgress({frame, fps, delay: 0, damping: 15, stiffness: 165});
-  const boundaryReveal = progress(frame, 17, 15);
-  const scatter = progress(frame, 38, 34);
-  const scannerPull = progress(frame, 76, 36);
-  const humanRead = progress(frame, 8, 28) * (1 - progress(frame, 34, 12));
+  const entry = springProgress({frame, fps, delay: 0, damping: 17, stiffness: 160});
+  const boundaryReveal = progress(frame, 15, 16);
+  const fanOut = progress(frame, 34, 30);
+  const scannerPull = progress(frame, 74, 32);
+  const humanRead = progress(frame, 6, 24) * (1 - progress(frame, 32, 11));
+  const machineLabel = progress(frame, 58, 20);
 
   return (
     <SceneShell sceneId="scene-01">
       <div
         style={{
           position: 'absolute',
-          left: 90,
-          right: 90,
-          top: 420,
-          height: 900,
+          left: 82,
+          right: 82,
+          top: 390,
+          height: 990,
           perspective: 1200,
         }}
       >
         <div
           style={{
             position: 'absolute',
-            top: 30,
+            top: 16,
             left: 0,
             right: 0,
             textAlign: 'center',
             fontFamily: 'Arial, sans-serif',
-            fontWeight: 800,
-            fontSize: 25,
+            fontWeight: 850,
+            fontSize: 24,
             letterSpacing: 4,
             color: palette.muted,
-            opacity: fadeWindow(frame, 2, 12, 36, 49),
+            opacity: fadeWindow(frame, 1, 10, 35, 47),
           }}
         >
-          MENSCH: EINE BEDEUTUNG
+          MENSCH · EIN SATZ, EINE BEDEUTUNG
         </div>
 
         <div
           style={{
             position: 'absolute',
-            top: 112,
-            left: 40,
-            right: 40,
+            top: 92,
+            left: 62,
+            right: 62,
             height: 8,
             borderRadius: 999,
             background: palette.line,
@@ -62,7 +73,7 @@ export const SentenceTokenShatterScene: React.FC = () => {
               height: '100%',
               width: `${humanRead * 100}%`,
               background: `linear-gradient(90deg, ${palette.accentSoft}, ${palette.accent})`,
-              boxShadow: '0 0 24px rgba(135,87,232,.5)',
+              boxShadow: '0 0 20px rgba(125,73,223,.38)',
             }}
           />
         </div>
@@ -70,52 +81,54 @@ export const SentenceTokenShatterScene: React.FC = () => {
         <div
           style={{
             position: 'absolute',
-            top: 220,
+            top: 180,
             left: 0,
             right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            gap: interpolate(scatter, [0, 1], [10, 18]),
-            transform: `translateZ(${interpolate(entry, [0, 1], [-500, 0])}px) scale(${interpolate(entry, [0, 1], [0.7, 1])})`,
+            height: 470,
+            transform: `translateZ(${interpolate(entry, [0, 1], [-380, 0])}px) scale(${interpolate(entry, [0, 1], [0.76, 1])})`,
             opacity: entry,
-            zIndex: 5,
           }}
         >
           {WORDS.map((word, index) => {
-            const x = seededRange(index + 10, -290, 290) * scatter * (1 - scannerPull) +
-              (index - 3) * -34 * scannerPull;
-            const y = seededRange(index + 40, -170, 210) * scatter * (1 - scannerPull) +
-              (index - 3) * 92 * scannerPull;
-            const rotate = seededRange(index + 80, -18, 18) * scatter * (1 - scannerPull);
-            const depth = seededRange(index + 120, -180, 180) * scatter * (1 - scannerPull);
-            const tokenIndexOpacity = boundaryReveal * (1 - scannerPull * 0.55);
+            const fan = FAN_POSITIONS[index];
+            const rowX = (index - 3) * 116;
+            const rowY = 80;
+            const stackX = 0;
+            const stackY = (index - 3) * 82;
+            const xBeforeStack = interpolate(fanOut, [0, 1], [rowX, fan.x]);
+            const yBeforeStack = interpolate(fanOut, [0, 1], [rowY, fan.y]);
+            const rotationBeforeStack = interpolate(fanOut, [0, 1], [0, fan.rotate]);
+            const x = interpolate(scannerPull, [0, 1], [xBeforeStack, stackX]);
+            const y = interpolate(scannerPull, [0, 1], [yBeforeStack, stackY]);
+            const rotation = interpolate(scannerPull, [0, 1], [rotationBeforeStack, 0]);
+            const tokenIndexOpacity = boundaryReveal * (1 - scannerPull * 0.5);
+
             return (
               <div
                 key={word}
                 style={{
-                  position: scatter > 0.01 ? 'absolute' : 'relative',
-                  left: scatter > 0.01 ? '50%' : undefined,
-                  top: scatter > 0.01 ? 80 : undefined,
-                  transform: scatter > 0.01
-                    ? `translate3d(${x - 70}px, ${y}px, ${depth}px) rotate(${rotate}deg) scale(${1 - scatter * 0.05})`
-                    : 'none',
+                  position: 'absolute',
+                  left: '50%',
+                  top: 150,
+                  transform: `translate3d(${x - 62}px, ${y}px, ${fanOut * (index % 2 === 0 ? 36 : -28)}px) rotate(${rotation}deg) scale(${1 - scannerPull * 0.06})`,
+                  zIndex: index === 3 ? 6 : 4,
                 }}
               >
                 <TokenCapsule
                   text={word}
                   accent={word === 'KI' || word === 'Satz'}
                   style={{
-                    minWidth: word.length > 5 ? 150 : 94,
-                    borderRadius: interpolate(boundaryReveal, [0, 1], [12, 24]),
+                    minWidth: word.length > 5 ? 146 : 92,
+                    borderRadius: interpolate(boundaryReveal, [0, 1], [13, 22]),
                   }}
                 />
                 <div
                   style={{
-                    marginTop: 8,
+                    marginTop: 7,
                     textAlign: 'center',
                     fontFamily: 'monospace',
-                    fontWeight: 700,
-                    fontSize: 18,
+                    fontWeight: 800,
+                    fontSize: 17,
                     color: palette.accent,
                     opacity: tokenIndexOpacity,
                   }}
@@ -125,20 +138,34 @@ export const SentenceTokenShatterScene: React.FC = () => {
               </div>
             );
           })}
+
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: 150,
+              width: 650,
+              height: 210,
+              borderRadius: '50%',
+              border: '2px dashed rgba(125,73,223,.20)',
+              transform: `translate(-50%, 5px) scale(${fanOut * (1 - scannerPull)})`,
+              opacity: fanOut * (1 - scannerPull),
+            }}
+          />
         </div>
 
         <div
           style={{
             position: 'absolute',
             left: '50%',
-            top: interpolate(scannerPull, [0, 1], [760, 230]),
-            width: 180,
-            height: 18,
+            top: interpolate(scannerPull, [0, 1], [745, 240]),
+            width: 170,
+            height: 13,
             borderRadius: 999,
             transform: `translateX(-50%) scaleX(${scannerPull})`,
             background: palette.accent,
-            boxShadow: '0 0 40px rgba(135,87,232,.75)',
-            opacity: scannerPull * 0.55,
+            boxShadow: '0 0 30px rgba(125,73,223,.46)',
+            opacity: scannerPull * 0.62,
             zIndex: 2,
           }}
         />
@@ -147,17 +174,19 @@ export const SentenceTokenShatterScene: React.FC = () => {
           style={{
             position: 'absolute',
             left: '50%',
-            top: 780,
-            transform: `translateX(-50%) translateY(${(1 - scannerPull) * 80}px)`,
-            fontFamily: 'Arial, sans-serif',
-            fontSize: 28,
-            fontWeight: 900,
-            letterSpacing: 5,
-            color: palette.accent,
-            opacity: scannerPull,
+            top: 730,
+            minWidth: 620,
+            padding: '20px 28px',
+            borderRadius: 24,
+            background: 'rgba(255,255,255,.80)',
+            border: '1px solid rgba(125,73,223,.17)',
+            transform: `translateX(-50%) translateY(${(1 - machineLabel) * 35}px)`,
+            textAlign: 'center',
+            opacity: machineLabel,
           }}
         >
-          MASCHINE: EINZELNE TOKENS
+          <div style={{fontFamily: 'Arial, sans-serif', fontSize: 24, fontWeight: 900, letterSpacing: 3.2, color: palette.accent}}>MASCHINE · EINZELNE TOKENS</div>
+          <div style={{fontFamily: 'Arial, sans-serif', fontSize: 20, fontWeight: 760, color: palette.muted, marginTop: 8}}>Die Wortfolge wird in getrennte Recheneinheiten zerlegt.</div>
         </div>
       </div>
     </SceneShell>
