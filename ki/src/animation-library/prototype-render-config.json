@@ -11,53 +11,23 @@
     "smokeCheckpoints": [0, 90, 179]
   },
   "prototypes": [
-    {
-      "compositionId": "Library-Knowledge-Magnet",
-      "animationId": "retrieval-search-knowledge-magnet-v1"
-    },
-    {
-      "compositionId": "Library-Budget-Leak-Meter",
-      "animationId": "cost-efficiency-budget-leak-meter-v1"
-    },
-    {
-      "compositionId": "Library-Context-Window-Train",
-      "animationId": "context-window-context-window-train-v1"
-    },
-    {
-      "compositionId": "Library-Decision-Tree-Burst",
-      "animationId": "decision-logic-decision-tree-burst-v1"
-    },
-    {
-      "compositionId": "Library-Human-AI-Relay",
-      "animationId": "human-ai-collaboration-human-ai-relay-v1"
-    },
-    {
-      "compositionId": "Library-Knowledge-Tree-Graft",
-      "animationId": "learning-update-knowledge-tree-graft-v1"
-    },
-    {
-      "compositionId": "Library-Magnetic-Phrase-Slicer",
-      "animationId": "tokenization-magnetic-phrase-slicer-v1"
-    },
-    {
-      "compositionId": "Library-Vector-Prism-Converter",
-      "animationId": "data-transformation-vector-prism-converter-v1"
-    },
-    {
-      "compositionId": "Library-Dynamic-Podium-Rise",
-      "animationId": "ranking-dynamic-podium-rise-v1"
-    },
-    {
-      "compositionId": "Library-Subway-Workflow-Map",
-      "animationId": "process-flow-subway-workflow-map-v1"
-    },
-    {
-      "compositionId": "Library-Funnel-Compression-Output",
-      "animationId": "input-output-funnel-compression-output-v1"
-    },
-    {
-      "compositionId": "Library-Anomaly-XRay-Scanner",
-      "animationId": "error-detection-anomaly-xray-scanner-v1"
-    }
+    {"compositionId": "Library-Knowledge-Magnet", "animationId": "retrieval-search-knowledge-magnet-v1"},
+    {"compositionId": "Library-Budget-Leak-Meter", "animationId": "cost-efficiency-budget-leak-meter-v1"},
+    {"compositionId": "Library-Context-Window-Train", "animationId": "context-window-context-window-train-v1"},
+    {"compositionId": "Library-Decision-Tree-Burst", "animationId": "decision-logic-decision-tree-burst-v1"},
+    {"compositionId": "Library-Human-AI-Relay", "animationId": "human-ai-collaboration-human-ai-relay-v1"},
+    {"compositionId": "Library-Knowledge-Tree-Graft", "animationId": "learning-update-knowledge-tree-graft-v1"},
+    {"compositionId": "Library-Magnetic-Phrase-Slicer", "animationId": "tokenization-magnetic-phrase-slicer-v1"},
+    {"compositionId": "Library-Vector-Prism-Converter", "animationId": "data-transformation-vector-prism-converter-v1"},
+    {"compositionId": "Library-Dynamic-Podium-Rise", "animationId": "ranking-dynamic-podium-rise-v1"},
+    {"compositionId": "Library-Subway-Workflow-Map", "animationId": "process-flow-subway-workflow-map-v1"},
+    {"compositionId": "Library-Funnel-Compression-Output", "animationId": "input-output-funnel-compression-output-v1"},
+    {"compositionId": "Library-Anomaly-XRay-Scanner", "animationId": "error-detection-anomaly-xray-scanner-v1"},
+    {"compositionId": "Library-Meaning-Terrain", "animationId": "semantic-space-meaning-terrain-v1"},
+    {"compositionId": "Library-Dependency-Bridge-Builder", "animationId": "relationship-network-dependency-bridge-builder-v1"},
+    {"compositionId": "Library-Probability-Fluid-Columns", "animationId": "probability-probability-fluid-columns-v1"},
+    {"compositionId": "Library-Residual-River", "animationId": "model-processing-residual-river-v1"},
+    {"compositionId": "Library-Answer-Loom", "animationId": "generation-answer-loom-v1"},
+    {"compositionId": "Library-Confidence-Glass-Crack", "animationId": "risk-contrast-confidence-glass-crack-v1"}
   ]
 }
