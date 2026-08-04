@@ -6,12 +6,12 @@ import {
 } from '../prototypes/registry';
 
 describe('animation prototype registry', () => {
-  it('registers twelve executable prototypes from twelve distinct families', () => {
-    expect(ANIMATION_PROTOTYPE_REGISTRY).toHaveLength(12);
+  it('registers eighteen executable prototypes from eighteen distinct families', () => {
+    expect(ANIMATION_PROTOTYPE_REGISTRY).toHaveLength(18);
     const families = ANIMATION_PROTOTYPE_REGISTRY.map((registration) =>
       getAnimationLibraryEntry(registration.animationId)?.visualFamily,
     );
-    expect(new Set(families).size).toBe(12);
+    expect(new Set(families).size).toBe(18);
   });
 
   it('keeps every prototype linked to an existing catalog entry', () => {
