@@ -2,14 +2,15 @@
 
 ## Ziel
 
-Dieses System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet inzwischen sechs Ebenen:
+Dieses System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet inzwischen sieben Ebenen:
 
 1. eine große semantisch beschriebene Animationsbibliothek,
 2. einen Reel-Planer mit Abwechslungs- und Wiederholungsschutz,
 3. einen Produktionsplaner für bestehende und neu zu bauende Animationen,
 4. einen Proposal-Compiler für wirklich neue Szenen,
 5. ein versioniertes Creative Brain mit Lern- und Tuning-Pipeline,
-6. ein eigenes Render-, Prüf- und Bibliotheks-Auditsystem.
+6. ein Render-Review-System mit Status-Promotion,
+7. ein eigenes Render-, Prüf- und Bibliotheks-Auditsystem.
 
 ## Sicherer Parallelbetrieb
 
@@ -58,7 +59,7 @@ ki/src/animation-library/catalog.ts
 
 ### Bereits als Remotion-Code umgesetzt
 
-Zwölf eigenständige Prototypen aus zwölf verschiedenen Familien sind als ausführbare Remotion-Compositions vorhanden:
+18 eigenständige Prototypen aus 18 verschiedenen Familien sind als ausführbare Remotion-Compositions vorhanden:
 
 | Composition | Animation | Familie |
 |---|---|---|
@@ -74,6 +75,12 @@ Zwölf eigenständige Prototypen aus zwölf verschiedenen Familien sind als ausf
 | `Library-Subway-Workflow-Map` | Subway Workflow Map | Prozessfluss |
 | `Library-Funnel-Compression-Output` | Funnel Compression Output | Input/Output |
 | `Library-Anomaly-XRay-Scanner` | Anomaly X-Ray Scanner | Fehlererkennung |
+| `Library-Meaning-Terrain` | Meaning Terrain | Bedeutungsraum |
+| `Library-Dependency-Bridge-Builder` | Dependency Bridge Builder | Beziehungen/Attention |
+| `Library-Probability-Fluid-Columns` | Probability Fluid Columns | Wahrscheinlichkeiten |
+| `Library-Residual-River` | Residual River | Modellverarbeitung |
+| `Library-Answer-Loom` | Answer Loom | Antwortgenerierung |
+| `Library-Confidence-Glass-Crack` | Confidence Glass Crack | Risiko/Wahrheit |
 
 Die Prototypen liegen unter:
 
@@ -207,6 +214,23 @@ Direktes Nutzerfeedback erhält die stärkste Lernrate. Ein einzelner unsicherer
 - wenige oder einzelne Rückmeldungen verändern die Gewichte nicht sofort
 - alle Gewichte bleiben normalisiert und Änderungen sind begrenzt
 
+## Render-Review und Freigabe
+
+`renderReview.ts` verbindet technische Artefakte mit der manuellen Sichtprüfung.
+
+Eine Animation darf nur `verified` werden, wenn:
+
+- alle erwarteten PNGs und das MP4 technisch gültig sind
+- der Quellfingerprint aktuell ist
+- die Szene ohne Ton verständlich bleibt
+- mobile Lesbarkeit bestätigt ist
+- keine Überläufe vorhanden sind
+- die Bewegung deterministisch ist
+- keine vollständige Animation wiederholt wird
+- Mindestwerte für Verständlichkeit, Neuheit und Produktionssicherheit erreicht werden
+
+Nicht bestandene Animationen bleiben `prototype` oder `concept`. Eine ausgemusterte Animation wird niemals automatisch wieder aktiviert.
+
 ## Bibliotheks-Audit
 
 `libraryAudit.ts` prüft unter anderem:
@@ -261,7 +285,7 @@ node scripts/render-animation-library.mjs smoke
 Erwartung:
 
 ```text
-12 Prototypen × 3 Smoke-Frames = 36 PNG-Dateien
+18 Prototypen × 3 Smoke-Frames = 54 PNG-Dateien
 ```
 
 ### Vollständige Prototyp-Prüfung
@@ -274,9 +298,9 @@ node scripts/check-animation-library-renders.mjs
 Erwartung:
 
 ```text
-12 Prototypen × 7 PNG-Dateien = 84 PNG-Dateien
-12 Prototypen × 1 MP4-Datei = 12 MP4-Dateien
-96/96 technisch gültige Artefakte
+18 Prototypen × 7 PNG-Dateien = 126 PNG-Dateien
+18 Prototypen × 1 MP4-Datei = 18 MP4-Dateien
+144/144 technisch gültige Artefakte
 ```
 
 Der technische Bericht liegt anschließend unter:
@@ -287,14 +311,14 @@ out/animation-library/release-report.json
 
 ## Ehrlicher Status
 
-Der Katalog, beide Planerebenen, der Proposal-Compiler, das Creative Brain, Batch-Lernen, automatisches Tuning, Persistenz, Audit, Tests, Render-System und zwölf ausführbare Remotion-Prototypen sind als Code vorhanden.
+Der Katalog, beide Planerebenen, der Proposal-Compiler, das Creative Brain, Batch-Lernen, automatisches Tuning, Persistenz, Audit, Render-Review, Tests, Render-System und 18 ausführbare Remotion-Prototypen sind als Code vorhanden.
 
 Noch nicht bestätigt sind:
 
 - TypeScript-Erfolg in einer echten lokalen Umgebung
 - bestandene Vitest-Tests
 - erfolgreiche Remotion-Render
-- visuelle Qualität der 84 Prüfbilder
-- Bewegungsqualität der zwölf MP4-Dateien
+- visuelle Qualität der 126 Prüfbilder
+- Bewegungsqualität der 18 MP4-Dateien
 
 Diese Punkte dürfen erst nach dem tatsächlichen Lauf als bestanden markiert werden.
