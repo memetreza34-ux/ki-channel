@@ -4,22 +4,22 @@ import {GlassPanel, SceneShell, TokenCapsule} from '../components/SceneShell';
 import {palette, progress} from '../visualUtils';
 
 const CANDIDATES = [
-  {word: 'Text', color: '#8757E8', path: 'M 150 470 C 300 300, 540 300, 760 220'},
-  {word: 'Daten', color: '#35C58A', path: 'M 150 470 C 340 470, 560 470, 760 470'},
-  {word: 'Gedanken', color: '#FFB648', path: 'M 150 470 C 310 650, 560 650, 760 720'},
+  {word: 'Text', color: palette.accent, path: 'M 150 470 C 300 300, 540 300, 760 220'},
+  {word: 'Daten', color: palette.success, path: 'M 150 470 C 340 470, 560 470, 760 470'},
+  {word: 'Gedanken', color: palette.warning, path: 'M 150 470 C 310 650, 560 650, 760 720'},
 ] as const;
 
 const probabilityAt = (frame: number, index: number): number => {
-  const first = [34, 39, 27][index];
-  const middle = [38, 35, 29][index];
-  const end = [57, 26, 13][index];
-  if (frame < 90) {
-    return interpolate(frame, [20, 90], [first, middle], {
+  const first = [42, 34, 24][index];
+  const middle = [47, 32, 21][index];
+  const end = [57, 26, 17][index];
+  if (frame < 88) {
+    return interpolate(frame, [18, 88], [first, middle], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
   }
-  return interpolate(frame, [90, 146], [middle, end], {
+  return interpolate(frame, [88, 142], [middle, end], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -27,10 +27,10 @@ const probabilityAt = (frame: number, index: number): number => {
 
 export const NextTokenBranchRaceScene: React.FC = () => {
   const frame = useCurrentFrame();
-  const promptEnter = progress(frame, 0, 22);
-  const pathsReveal = progress(frame, 14, 32);
-  const raceProgress = progress(frame, 34, 104);
-  const winner = progress(frame, 132, 28);
+  const promptEnter = progress(frame, 0, 20);
+  const pathsReveal = progress(frame, 12, 30);
+  const raceProgress = progress(frame, 30, 100);
+  const winner = progress(frame, 124, 24);
 
   return (
     <SceneShell sceneId="scene-05" background="radial-gradient(circle at 50% 47%, #FFFFFF 0%, #F5F1FC 52%, #EAE3F6 100%)">
@@ -50,18 +50,36 @@ export const NextTokenBranchRaceScene: React.FC = () => {
           >
             NEXT TOKEN · TOP CANDIDATES
           </div>
+          <div
+            style={{
+              position: 'absolute',
+              right: 42,
+              top: 30,
+              padding: '8px 13px',
+              borderRadius: 12,
+              background: 'rgba(125,73,223,.08)',
+              color: palette.accent,
+              fontFamily: 'monospace',
+              fontSize: 16,
+              fontWeight: 900,
+              letterSpacing: 1.4,
+              opacity: progress(frame, 24, 14),
+            }}
+          >
+            LIVE-ZWISCHENSTAND
+          </div>
 
           <div
             style={{
               position: 'absolute',
               left: 52,
-              top: 164,
+              top: 154,
               right: 52,
               display: 'flex',
               alignItems: 'center',
               gap: 14,
               opacity: promptEnter,
-              transform: `translateX(${(1 - promptEnter) * -80}px)`,
+              transform: `translateX(${(1 - promptEnter) * -70}px)`,
             }}
           >
             <TokenCapsule text="Die" />
@@ -100,8 +118,8 @@ export const NextTokenBranchRaceScene: React.FC = () => {
                   strokeLinecap="round"
                   strokeDasharray={dash}
                   strokeDashoffset={dash * (1 - pathsReveal)}
-                  opacity={0.45 + pathsReveal * 0.45}
-                  style={{filter: index === 0 ? 'drop-shadow(0 0 12px rgba(135,87,232,.3))' : undefined}}
+                  opacity={0.42 + pathsReveal * 0.48}
+                  style={{filter: index === 0 ? 'drop-shadow(0 0 11px rgba(125,73,223,.28))' : undefined}}
                 />
               );
             })}
@@ -125,7 +143,7 @@ export const NextTokenBranchRaceScene: React.FC = () => {
                     position: 'absolute',
                     left: x,
                     top: y,
-                    transform: `translate(-50%, -50%) scale(${1 + (isWinner ? winner * 0.28 : 0)})`,
+                    transform: `translate(-50%, -50%) scale(${1 + (isWinner ? winner * 0.22 : 0)})`,
                     zIndex: 5,
                   }}
                 >
@@ -136,7 +154,7 @@ export const NextTokenBranchRaceScene: React.FC = () => {
                       borderRadius: 999,
                       background: candidate.color,
                       border: '7px solid white',
-                      boxShadow: `0 0 36px ${candidate.color}88`,
+                      boxShadow: `0 0 30px ${candidate.color}70`,
                     }}
                   />
                 </div>
@@ -150,11 +168,11 @@ export const NextTokenBranchRaceScene: React.FC = () => {
                     gridTemplateColumns: '1fr auto',
                     gap: 14,
                     alignItems: 'center',
-                    opacity: progress(frame, 38 + index * 8, 18),
-                    transform: `translateX(${isWinner ? winner * -22 : 0}px)`,
+                    opacity: progress(frame, 34 + index * 8, 16),
+                    transform: `translateX(${isWinner ? winner * -18 : 0}px)`,
                   }}
                 >
-                  <TokenCapsule text={candidate.word} accent={isWinner && winner > 0.3} />
+                  <TokenCapsule text={candidate.word} accent={isWinner && winner > 0.25} />
                   <div
                     style={{
                       minWidth: 82,
@@ -175,23 +193,27 @@ export const NextTokenBranchRaceScene: React.FC = () => {
           <div
             style={{
               position: 'absolute',
-              left: 84,
-              bottom: 44,
-              right: 84,
+              left: 80,
+              bottom: 38,
+              right: 80,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: 14,
+              gap: 13,
+              padding: '16px 20px',
+              borderRadius: 20,
+              background: 'rgba(125,73,223,.075)',
+              border: '1px solid rgba(125,73,223,.18)',
               opacity: winner,
-              transform: `translateY(${(1 - winner) * 26}px)`,
+              transform: `translateY(${(1 - winner) * 22}px)`,
               fontFamily: 'Arial, sans-serif',
-              fontSize: 28,
+              fontSize: 26,
               fontWeight: 900,
               color: palette.foreground,
             }}
           >
             <span style={{color: palette.accent}}>GEWÄHLT:</span>
-            <span>„Text“ wird weiterverarbeitet</span>
+            <span>„Text“ wird als nächstes Wort übernommen</span>
           </div>
         </GlassPanel>
       </div>
