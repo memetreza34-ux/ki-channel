@@ -34,6 +34,30 @@
     {
       "compositionId": "Library-Knowledge-Tree-Graft",
       "animationId": "learning-update-knowledge-tree-graft-v1"
+    },
+    {
+      "compositionId": "Library-Magnetic-Phrase-Slicer",
+      "animationId": "tokenization-magnetic-phrase-slicer-v1"
+    },
+    {
+      "compositionId": "Library-Vector-Prism-Converter",
+      "animationId": "data-transformation-vector-prism-converter-v1"
+    },
+    {
+      "compositionId": "Library-Dynamic-Podium-Rise",
+      "animationId": "ranking-dynamic-podium-rise-v1"
+    },
+    {
+      "compositionId": "Library-Subway-Workflow-Map",
+      "animationId": "process-flow-subway-workflow-map-v1"
+    },
+    {
+      "compositionId": "Library-Funnel-Compression-Output",
+      "animationId": "input-output-funnel-compression-output-v1"
+    },
+    {
+      "compositionId": "Library-Anomaly-XRay-Scanner",
+      "animationId": "error-detection-anomaly-xray-scanner-v1"
     }
   ]
 }
