@@ -23,7 +23,7 @@ Erforderlich:
 node scripts/render-animation-library.mjs smoke
 ```
 
-Pro Prototyp werden Frame 0, 90 und 179 geprüft.
+Pro Prototyp werden Frame 0, 90 und 179 geprüft. Bei zwölf Prototypen entstehen 36 Smoke-PNGs.
 
 ### 3. Vollständige Prüfframes
 
@@ -54,7 +54,9 @@ node scripts/check-animation-library-renders.mjs
 Erwartung:
 
 ```text
-48/48 technisch gültige Artefakte
+84 PNG-Dateien
+12 MP4-Dateien
+96/96 technisch gültige Artefakte
 ```
 
 ## Allgemeine Abnahme
@@ -121,6 +123,54 @@ Erwartung:
 - [ ] Die alte Aussage wird markiert und nicht einfach gelöscht.
 - [ ] Revisionserhöhung erscheint erst nach erfolgreicher Aktualisierung.
 
+## Magnetic Phrase Slicer
+
+- [ ] Der Satz ist vor dem Schnitt als zusammenhängende Aussage lesbar.
+- [ ] Die Schnittlinien treffen verständliche Wortgrenzen.
+- [ ] Einzelne Tokens bleiben während der räumlichen Trennung lesbar.
+- [ ] Die drei Ziellanes unterscheiden sich visuell.
+- [ ] Das magnetische Einrasten wirkt kontrolliert und nicht zufällig.
+
+## Vector Prism Converter
+
+- [ ] Der Begriff erreicht das Prisma sichtbar als ein Input.
+- [ ] Die drei Ausgabedimensionen entstehen aus dem Prisma und nicht unabhängig davon.
+- [ ] Farbcodierung bleibt vom Strahl bis zum Zahlenwert konsistent.
+- [ ] Beispielzahlen werden als Illustration und nicht als echte Modellrechnung verstanden.
+- [ ] Das finale Vektorformat bleibt mindestens 25 Frames stabil.
+
+## Dynamic Podium Rise
+
+- [ ] Kriterien werden nacheinander aktiviert und beeinflussen sichtbar die Werte.
+- [ ] Podiumhöhen stimmen ungefähr mit den gezeigten Scores überein.
+- [ ] Positionswechsel sind im Bewegungsablauf nachvollziehbar.
+- [ ] Gewinner wird erst nach dem letzten Kriterium festgelegt.
+- [ ] Die Animation wirkt nicht wie ein gewöhnliches statisches Balkendiagramm.
+
+## Subway Workflow Map
+
+- [ ] Die Strecke ist als zusammenhängender Workflow erkennbar.
+- [ ] Das Paket folgt der Linie ohne sichtbare Sprünge.
+- [ ] Jede Station wird erst nach tatsächlicher Ankunft als aktiv markiert.
+- [ ] Die Alternativroute ist als Fehlerpfad und nicht als zweites Ziel verständlich.
+- [ ] Das Ergebnis erscheint erst nach der letzten Station.
+
+## Funnel Compression Output
+
+- [ ] Mindestens sechs unterschiedliche Quellen sind am Anfang lesbar.
+- [ ] Quellen bewegen sich kausal in den Trichter.
+- [ ] Filterebenen sind sichtbar, aber überladen die Szene nicht.
+- [ ] Viele Elemente werden tatsächlich zu einem Ergebnis verdichtet.
+- [ ] Das Resultat wirkt wie eine Zusammenfassung und nicht wie ein beliebiger Textblock.
+
+## Anomaly X-Ray Scanner
+
+- [ ] Der Prozess sieht vor dem Scan zunächst plausibel und stabil aus.
+- [ ] Die Scannerfläche bewegt sich kontinuierlich durch alle Schritte.
+- [ ] Die Fehlerquelle wird erst beim Erreichen des betroffenen Schritts sichtbar.
+- [ ] Downstream-Auswirkung ist vom Ursprungsfehler unterscheidbar.
+- [ ] Die Reparatur ändert Ursache, Route und Status sichtbar.
+
 ## Ergebnisdokumentation
 
 Für jeden Prototyp werden gespeichert:
@@ -135,4 +185,4 @@ Für jeden Prototyp werden gespeichert:
 - Produktionssicherheitswert 0–100
 - Status `prototype`, `verified` oder `retired`
 
-Diese Werte werden anschließend als `render-review`-Beobachtung an das Creative Brain übergeben.
+Diese Werte werden anschließend als `render-review`-Beobachtung an das Creative Brain übergeben. Mehrere Ergebnisse können über `learningPipeline.ts` chronologisch und ohne doppelte Anwendung eingespielt werden. Wiederholte Evidenz kann danach kontrolliert über `brainTuning.ts` die Auswahlgewichte und den Schwellenwert für neue Animationen anpassen.
