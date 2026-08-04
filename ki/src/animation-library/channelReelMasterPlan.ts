@@ -1,7 +1,5 @@
-import {
-  planChannelContentMode,
-  type ChannelContentModePlan,
-} from './channelContentModes';
+import type {ChannelContentModePlan} from './channelContentModes';
+import {resolveChannelContentMode} from './channelContentModeResolver';
 import {
   compileReelImplementationBrief,
   type ReelImplementationBrief,
@@ -89,7 +87,7 @@ export const createChannelReelMasterPlan = ({
   const scenes = prepared.plan.productionPlan.scenes.map((scene) => {
     const analysis = analysisByScene.get(scene.sceneId)!;
     const motion = universalByScene.get(scene.sceneId)!;
-    const contentMode = planChannelContentMode(analysis.spokenText);
+    const contentMode = resolveChannelContentMode(analysis.spokenText);
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
