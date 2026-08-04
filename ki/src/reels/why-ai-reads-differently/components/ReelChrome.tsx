@@ -33,7 +33,7 @@ const Title: React.FC<{sceneId: ReelSceneId}> = ({sceneId}) => {
           background: palette.accent,
           transform: `scaleY(${Math.max(0.12, lineProgress)})`,
           transformOrigin: 'top',
-          boxShadow: '0 0 26px rgba(135, 87, 232, 0.45)',
+          boxShadow: '0 0 26px rgba(135, 87, 232, 0.34)',
         }}
       />
       <div>
@@ -52,12 +52,12 @@ const Title: React.FC<{sceneId: ReelSceneId}> = ({sceneId}) => {
         <div
           style={{
             fontFamily: 'Arial Narrow, Arial, Helvetica, sans-serif',
-            fontSize: sceneId === 'scene-08' ? 48 : 54,
+            fontSize: sceneId === 'scene-08' ? 46 : 54,
             lineHeight: 0.96,
             fontWeight: 900,
             letterSpacing: -1.8,
             color: palette.foreground,
-            maxWidth: 850,
+            maxWidth: 860,
           }}
         >
           {SCENE_TITLES[sceneId]}
@@ -67,22 +67,33 @@ const Title: React.FC<{sceneId: ReelSceneId}> = ({sceneId}) => {
   );
 };
 
+const MAX_VISIBLE_WORDS = 9;
+
 const KineticSubtitle: React.FC<{words: readonly SubtitleWordCue[]}> = ({words}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const revealedWords = words
+    .map((word, index) => ({word, index}))
+    .filter(({word}) => frame >= word.atFrame);
+  const visibleWords = revealedWords.slice(-MAX_VISIBLE_WORDS);
+  const currentWordIndex = revealedWords.length > 0
+    ? revealedWords[revealedWords.length - 1].index
+    : -1;
+  const containerEnter = progress(frame, 0, 8);
 
   return (
     <div
       style={{
         position: 'absolute',
-        left: 86,
-        right: 86,
-        bottom: 126,
-        minHeight: 150,
+        left: 70,
+        right: 70,
+        bottom: 104,
+        minHeight: 106,
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
         zIndex: 40,
+        pointerEvents: 'none',
       }}
     >
       <div
@@ -91,33 +102,41 @@ const KineticSubtitle: React.FC<{words: readonly SubtitleWordCue[]}> = ({words})
           flexWrap: 'wrap',
           justifyContent: 'center',
           alignItems: 'baseline',
-          columnGap: 13,
-          rowGap: 8,
-          padding: '24px 30px 26px',
-          borderRadius: 32,
-          background: 'rgba(255,255,255,0.88)',
-          border: '1px solid rgba(135,87,232,0.15)',
-          boxShadow: '0 18px 60px rgba(34, 22, 56, 0.11)',
-          backdropFilter: 'blur(18px)',
+          columnGap: 11,
+          rowGap: 6,
+          minWidth: 260,
+          maxWidth: 900,
+          minHeight: 66,
+          padding: '17px 24px 19px',
+          borderRadius: 27,
+          background: 'rgba(255,255,255,0.94)',
+          border: '1px solid rgba(135,87,232,0.16)',
+          boxShadow: '0 16px 48px rgba(34, 22, 56, 0.10)',
+          backdropFilter: 'blur(16px)',
+          opacity: containerEnter,
+          transform: `translateY(${(1 - containerEnter) * 16}px)`,
         }}
       >
-        {words.map((word, index) => {
+        {visibleWords.map(({word, index}) => {
           const reveal = springProgress({
             frame,
             fps,
             delay: word.atFrame,
-            damping: 20,
-            stiffness: 190,
-            mass: 0.55,
+            damping: 22,
+            stiffness: 185,
+            mass: 0.58,
           });
-          const active = progress(frame, word.atFrame, 8) *
-            (1 - progress(frame, word.atFrame + 14, 12));
+          const active = index === currentWordIndex
+            ? progress(frame, word.atFrame, 7) *
+              (1 - progress(frame, word.atFrame + 15, 10))
+            : 0;
           const color = word.danger
             ? palette.danger
             : word.accent
               ? palette.accent
               : palette.foreground;
-          const scale = interpolate(active, [0, 1], [1, word.accent || word.danger ? 1.09 : 1.03]);
+          const emphasisScale = word.accent || word.danger ? 1.07 : 1.025;
+          const scale = interpolate(active, [0, 1], [1, emphasisScale]);
 
           return (
             <span
@@ -125,15 +144,16 @@ const KineticSubtitle: React.FC<{words: readonly SubtitleWordCue[]}> = ({words})
               style={{
                 display: 'inline-block',
                 fontFamily: 'Arial, Helvetica, sans-serif',
-                fontSize: 42,
+                fontSize: 38,
                 lineHeight: 1.08,
-                fontWeight: word.accent || word.danger ? 900 : 720,
-                letterSpacing: -1.2,
+                fontWeight: word.accent || word.danger ? 900 : 760,
+                letterSpacing: -1,
                 color,
                 opacity: reveal,
-                transform: `translateY(${(1 - reveal) * 18}px) scale(${scale})`,
-                textShadow: active > 0.15
-                  ? `0 0 ${18 * active}px ${word.danger ? 'rgba(255,93,108,.34)' : 'rgba(135,87,232,.30)'}`
+                transform: `translateY(${(1 - reveal) * 14}px) scale(${scale})`,
+                transformOrigin: 'center bottom',
+                textShadow: active > 0.18
+                  ? `0 0 ${12 * active}px ${word.danger ? 'rgba(255,93,108,.24)' : 'rgba(135,87,232,.22)'}`
                   : 'none',
               }}
             >
