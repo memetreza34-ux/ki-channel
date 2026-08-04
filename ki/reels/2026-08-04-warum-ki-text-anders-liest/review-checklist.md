@@ -6,7 +6,9 @@ Die vorherige Fassung wurde technisch erfolgreich gerendert. Danach wurde das ec
 
 - [ ] Hook ist innerhalb der ersten Sekunde verständlich.
 - [ ] Tokenisierung ist einfach und korrekt dargestellt.
-- [ ] Beispielvektoren werden nicht als echte interne Modellwerte missverstanden.
+- [ ] Szene 2 zeigt eindeutig `Token → Zahlen-Koordinaten → Punkt`.
+- [ ] Beispielvektoren werden als vereinfachte Beispiele und nicht als echte interne Modellwerte verstanden.
+- [ ] Szene 3 erklärt kleine und große semantische Distanz mit konkreten Beispielen.
 - [ ] Bedeutungsnähe ist ohne Ton verständlich.
 - [ ] Attention wird als gewichtete Beziehung dargestellt.
 - [ ] Wahrscheinlichkeiten sind als Beispiel-Zwischenstand erkennbar.
@@ -21,6 +23,10 @@ Die vorherige Fassung wurde technisch erfolgreich gerendert. Danach wurde das ec
 - [ ] Keine zwei aufeinanderfolgenden Szenen verwenden dieselbe Layoutfamilie.
 - [ ] Keine zwei aufeinanderfolgenden Szenen verwenden dieselbe Hauptbewegung.
 - [ ] Szene 1 wirkt geordnet und nicht zufällig verstreut.
+- [ ] Szene 2 besitzt keine anonymen Platzhalterboxen oder lange leere Phase.
+- [ ] Scanner, Koordinaten und Punktdarstellung reagieren in der richtigen Reihenfolge.
+- [ ] Szene 3 besitzt früh erkennbare Cluster und keinen unlesbaren Kamerawinkel.
+- [ ] Distanzlinien und Distanzkarten erscheinen ohne Überladung.
 - [ ] Szene 5 besitzt einen klaren Gewinner und einen lesbaren End-Hold.
 - [ ] Szene 6 besitzt keinen fast leeren Startzustand.
 - [ ] Szene 7 nutzt die Bildfläche und erklärt Kandidatenauswahl statt nur Wortkarten einzufliegen.
@@ -45,7 +51,7 @@ Die vorherige Fassung wurde technisch erfolgreich gerendert. Danach wurde das ec
 
 - [ ] Übergänge verdecken weder Überschrift noch Untertitel.
 - [ ] Szene 1 → 2 übernimmt den Token-Stack sinnvoll.
-- [ ] Szene 2 → 3 übernimmt Vektorpunkte sinnvoll.
+- [ ] Szene 2 → 3 übernimmt die vier Punktdarstellungen sinnvoll.
 - [ ] Szene 3 → 4 übernimmt Beziehungen sinnvoll.
 - [ ] Szene 4 → 5 führt logisch zur Kandidatenauswahl.
 - [ ] Szene 5 → 6 übergibt das gewählte Wort verständlich.
@@ -94,14 +100,14 @@ Die vorherige Fassung wurde technisch erfolgreich gerendert. Danach wurde das ec
 - [ ] Neue Fassung auf Smartphone-Größe geprüft.
 - [ ] Keine Szene wirkt leer oder unnötig lang.
 - [ ] Untertitelrhythmus wirkt nicht hektisch.
-- [ ] Szene 1, 6, 7 und 8 wurden besonders auf Zwischenzustände geprüft.
+- [ ] Szene 1, 2, 3, 6, 7 und 8 wurden besonders auf Zwischenzustände geprüft.
 - [ ] Optionaler Minimal-SFX-Render wurde direkt gegen die stumme Fassung verglichen.
 - [ ] Finale redaktionelle Freigabe ausdrücklich dokumentiert.
 
 ## Abnahmestatus
 
 ```text
-Status: POST-REVIEW-VERBESSERUNGEN IMPLEMENTIERT, ERNEUTE PRÜFUNG AUSSTEHEND
+Status: ZWEITE VISUELLE POLITUR IMPLEMENTIERT, ERNEUTE PRÜFUNG AUSSTEHEND
 
 Vorherige grüne Tests und Render gehören zur alten Fassung.
 Der aktuelle Quellstand enthält neue Sound-, Untertitel-, Kontrast- und Szenenänderungen
