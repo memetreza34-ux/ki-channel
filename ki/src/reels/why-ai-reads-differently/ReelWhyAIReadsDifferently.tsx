@@ -1,7 +1,10 @@
 import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {SceneTransitionBridge} from './components/SceneTransitionBridge';
-import {SynthSoundtrack} from './components/SynthSoundtrack';
+import {
+  SynthSoundtrack,
+  type ReelSoundMode,
+} from './components/SynthSoundtrack';
 import {WHY_AI_DURATION_IN_FRAMES, WHY_AI_SCENES} from './contract';
 import {AnswerWordAssemblyScene} from './scenes/AnswerWordAssemblyScene';
 import {AttentionThreadWeaveScene} from './scenes/AttentionThreadWeaveScene';
@@ -15,6 +18,7 @@ import {palette} from './visualUtils';
 
 export type ReelWhyAIReadsDifferentlyProps = {
   voiceoverSrc?: string;
+  soundMode?: ReelSoundMode;
   showDebugTimeline?: boolean;
 };
 
@@ -85,6 +89,7 @@ const GlobalProgress: React.FC<{debug: boolean}> = ({debug}) => {
 
 export const ReelWhyAIReadsDifferently: React.FC<ReelWhyAIReadsDifferentlyProps> = ({
   voiceoverSrc,
+  soundMode = 'off',
   showDebugTimeline = false,
 }) => (
   <AbsoluteFill style={{background: palette.background}}>
@@ -102,7 +107,7 @@ export const ReelWhyAIReadsDifferently: React.FC<ReelWhyAIReadsDifferentlyProps>
       );
     })}
     <SceneTransitionBridge />
-    <SynthSoundtrack voiceoverSrc={voiceoverSrc} />
+    <SynthSoundtrack voiceoverSrc={voiceoverSrc} soundMode={soundMode} />
     <GlobalProgress debug={showDebugTimeline} />
   </AbsoluteFill>
 );
