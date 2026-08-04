@@ -5,12 +5,26 @@ import {
   type AnimationLibraryEntry,
 } from './schema';
 
+const FAMILY_ALIASES: Readonly<Record<string, string>> = Object.freeze({
+  'answer-generation': 'generation',
+  'risk-truth': 'risk-contrast',
+  'performance-scaling': 'scale-performance',
+  'learning-updates': 'learning-update',
+});
+
+const normalizedExpansionEntries = ANIMATION_LIBRARY_EXPANSION_ENTRIES.map(
+  (entry) => ({
+    ...entry,
+    visualFamily: FAMILY_ALIASES[entry.visualFamily] ?? entry.visualFamily,
+  }),
+);
+
 export const EXTENDED_ANIMATION_LIBRARY = animationLibraryDocumentSchema.parse({
   version: 1,
   updatedAt: '2026-08-04T15:14:00.000Z',
   entries: [
     ...ANIMATION_LIBRARY_ENTRIES,
-    ...ANIMATION_LIBRARY_EXPANSION_ENTRIES,
+    ...normalizedExpansionEntries,
   ],
 });
 
