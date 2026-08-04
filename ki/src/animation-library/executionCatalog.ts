@@ -1,3 +1,4 @@
+import {ADVANCED_PROTOTYPE_REGISTRY} from './advancedPrototypeRegistry';
 import {ANIMATION_LIBRARY_ENTRIES} from './catalog';
 import {COMPLETE_PROTOTYPE_REGISTRY} from './completePrototypeRegistry';
 import {EXPERIMENTAL_PROTOTYPE_REGISTRY} from './experimentalPrototypeRegistry';
@@ -27,6 +28,7 @@ export type AnimationExecutionCoverageReport = {
   minimumExecutablePerFamily: number;
   maximumExecutablePerFamily: number;
   completeForTargetTwoPerFamily: boolean;
+  completeForTargetThreePerFamily: boolean;
   completeForEntireCatalog: boolean;
   families: ExecutableFamilyCoverage[];
   nextWaves: AnimationExpansionWave[];
@@ -35,6 +37,7 @@ export type AnimationExecutionCoverageReport = {
 const executableIds = new Set([
   ...COMPLETE_PROTOTYPE_REGISTRY.map((item) => item.animationId),
   ...EXPERIMENTAL_PROTOTYPE_REGISTRY.map((item) => item.animationId),
+  ...ADVANCED_PROTOTYPE_REGISTRY.map((item) => item.animationId),
 ]);
 
 export const EXECUTABLE_ANIMATION_IDS = Object.freeze(
@@ -65,6 +68,7 @@ const byPriority = (
 const buildExpansionWaves = (
   remainingByFamily: Map<string, AnimationLibraryEntry[]>,
   executableCount: number,
+  firstWaveIndex: number,
 ): AnimationExpansionWave[] => {
   const familyNames = [...remainingByFamily.keys()].sort();
   const maximumDepth = Math.max(
@@ -81,7 +85,7 @@ const buildExpansionWaves = (
     if (entries.length === 0) continue;
     total += entries.length;
     waves.push({
-      waveIndex: depth + 3,
+      waveIndex: firstWaveIndex + depth,
       animationIds: entries.map((entry) => entry.animationId),
       visualFamilies: entries.map((entry) => entry.visualFamily),
       expectedExecutableTotal: total,
@@ -142,19 +146,22 @@ export const createAnimationExecutionCoverageReport = (): AnimationExecutionCove
     completeForTargetTwoPerFamily: families.every(
       (family) => family.executableCount >= 2,
     ),
+    completeForTargetThreePerFamily: families.every(
+      (family) => family.executableCount >= 3,
+    ),
     completeForEntireCatalog: families.every(
       (family) => family.remainingCount === 0,
     ),
     families,
-    nextWaves: buildExpansionWaves(remainingByFamily, executableCount),
+    nextWaves: buildExpansionWaves(remainingByFamily, executableCount, 4),
   };
 };
 
 export const getAnimationExpansionWave = (
   waveIndex: number,
 ): AnimationExpansionWave => {
-  if (!Number.isInteger(waveIndex) || waveIndex < 3) {
-    throw new Error('animation expansion waveIndex must be an integer of at least 3');
+  if (!Number.isInteger(waveIndex) || waveIndex < 4) {
+    throw new Error('animation expansion waveIndex must be an integer of at least 4');
   }
   const wave = createAnimationExecutionCoverageReport().nextWaves.find(
     (candidate) => candidate.waveIndex === waveIndex,
