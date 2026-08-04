@@ -2,6 +2,7 @@ export * from './schema';
 export * from './advancedPrototypeRegistry';
 export * from './advancedRecipes';
 export * from './catalog';
+export * from './catalogExpansion';
 export * from './brain';
 export * from './brainTuning';
 export * from './completePrototypeRegistry';
