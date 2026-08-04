@@ -17,6 +17,7 @@ export * from './prototypeCoverage';
 export * from './reelLifecycle';
 export * from './reelPlanningPipeline';
 export * from './renderReview';
+export * from './rotationReport';
 export * from './sceneAnalyzer';
 export * from './PrototypeGalleryRoot';
 export * from './prototypes/registry';
