@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 // Eigene Core-, Kanal- und Script-Tests bleiben vollständig aktiv.
 export default defineConfig({
   test: {
-    include: ['core/**/*.{test,spec}.{ts,tsx}', 'channels/**/*.{test,spec}.{ts,tsx}', 'scripts/**/*.{test,spec}.{ts,tsx}'],
+    include: ['core/**/*.{test,spec}.{ts,tsx}', 'channels/**/*.{test,spec}.{ts,tsx}', 'scripts/**/*.{test,spec}.{ts,tsx}', 'ki/**/*.{test,spec}.{ts,tsx}'],
     exclude: [
       '**/node_modules/**',
       '**/whisper.cpp/**',
