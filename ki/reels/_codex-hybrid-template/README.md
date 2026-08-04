@@ -7,7 +7,7 @@ Copy this directory to a dated reel slug and replace every `REPLACE_ME` value be
 1. Complete all planning files.
 2. Generate the images from `image-prompts.md`.
 3. Place images, layers, masks, and voiceover at paths in `asset-manifest.json`.
-4. Run `npm run codex:reel:prepare -- <slug> --ready`.
+4. Run `node scripts/prepare-codex-reel.mjs <slug> --ready`.
 5. Give Codex the generated `CODEX-BRIEF.generated.md` and the short task from `CODEX_ASSEMBLY_TASK.md`.
 
 ## Default production standard
