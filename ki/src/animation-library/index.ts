@@ -5,6 +5,7 @@ export * from './catalog';
 export * from './catalogExpansion';
 export * from './extendedCatalog';
 export * from './channelContentModes';
+export * from './channelContentModeResolver';
 export * from './microMotionCatalog';
 export * from './semanticBeatPlanner';
 export * from './importantWordCoverage';
