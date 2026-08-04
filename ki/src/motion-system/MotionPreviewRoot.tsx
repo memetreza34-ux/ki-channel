@@ -74,7 +74,7 @@ export const MotionPreviewRoot: React.FC = () => (
       <Composition
         id={WHY_AI_COMPOSITION_ID}
         component={ReelWhyAIReadsDifferently}
-        defaultProps={{showDebugTimeline: false}}
+        defaultProps={{soundMode: 'off', showDebugTimeline: false}}
         durationInFrames={WHY_AI_DURATION_IN_FRAMES}
         fps={WHY_AI_FPS}
         width={WHY_AI_WIDTH}
