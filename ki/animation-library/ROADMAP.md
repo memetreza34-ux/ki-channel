@@ -18,13 +18,17 @@ Die Bibliothek wächst nicht durch wahlloses Kopieren von Szenen. Jede neue Anim
 | visuelle Familien | 22 | Code vorhanden |
 | Varianten pro Familie | 4 | Code vorhanden |
 | priorisierte Prototyp-Ideen | 22 | im Katalog markiert |
-| ausführbare Remotion-Prototypen | 6 | Code vorhanden, nicht gerendert |
-| Planer | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| ausführbare Remotion-Prototypen | 18 | Code vorhanden, nicht gerendert |
+| Choreografieplaner | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| Produktionsplaner | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| Proposal-Compiler | 1 | Code vorhanden, nicht ausgeführt geprüft |
 | Creative Brain | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| Batch-Lernpipeline | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| automatisches Brain-Tuning | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| Bibliotheks-Audit | 1 | Code vorhanden, nicht ausgeführt geprüft |
+| Render-Review-Promotion | 1 | Code vorhanden, nicht ausgeführt geprüft |
 
-## Batch 1 – aktuelle sechs Prototypen prüfen
-
-Vor weiteren Komponenten werden diese sechs Animationen gerendert und visuell bewertet:
+## Batch 1 – sechs Basisprototypen
 
 1. Knowledge Magnet
 2. Budget Leak Meter
@@ -32,6 +36,26 @@ Vor weiteren Komponenten werden diese sechs Animationen gerendert und visuell be
 4. Decision Tree Burst
 5. Human AI Relay
 6. Knowledge Tree Graft
+
+## Batch 2 – allgemeine Erklär- und Businessanimationen
+
+1. Magnetic Phrase Slicer
+2. Vector Prism Converter
+3. Dynamic Podium Rise
+4. Subway Workflow Map
+5. Funnel Compression Output
+6. Anomaly X-Ray Scanner
+
+## Batch 3 – zentrale KI-Erkläranimationen
+
+1. Meaning Terrain
+2. Dependency Bridge Builder
+3. Probability Fluid Columns
+4. Residual River
+5. Answer Loom
+6. Confidence Glass Crack
+
+Alle drei Batches sind als Remotion-Code vorhanden. Vor einer Freigabe müssen sie gemeinsam geprüft werden.
 
 ### Freigabekriterien je Prototyp
 
@@ -43,30 +67,23 @@ Vor weiteren Komponenten werden diese sechs Animationen gerendert und visuell be
 - keine rein dekorative Dauerbewegung
 - Anfang, Wendepunkt und Abschluss sind sichtbar choreografiert
 - mindestens ein sinnvoller Ein- und Ausgang für Übergänge
+- aktueller Quellfingerprint
+- Render-Review ohne Blocker
 
-## Batch 2 – sechs stark benötigte KI-Erkläranimationen
+## Batch 4 – noch fehlende Familienabdeckung
 
-Nach Batch 1 werden priorisiert:
+Als Nächstes werden die vier noch nicht als ausführbarer Code vertretenen visuellen Familien priorisiert und um zwei zusätzliche Premium-Metaphern ergänzt:
 
-1. `probability-probability-fluid-columns-v1`
-2. `model-processing-residual-river-v1`
-3. `generation-answer-loom-v1`
-4. `risk-contrast-confidence-glass-crack-v1`
-5. `relationship-network-dependency-bridge-builder-v1`
-6. `semantic-space-meaning-terrain-v1`
+1. Performance/Scaling – `throughput-pipe-pressure`
+2. Time/Change – `timeline-microscope`
+3. Comparison – `benchmark-racetrack`
+4. Security/Privacy – bevorzugte neue Sicherheitsmetapher
+5. Automation – `automation-conveyor-cells`
+6. Verification – `source-checkpoint-gates`
 
-Diese sechs decken typische KI-Reel-Sätze ab, ohne die Animationen des ersten Referenz-Reels zu kopieren.
+Danach wären mindestens 22 Familien durch ausführbare Prototypen abgedeckt.
 
-## Batch 3 – Alltag, Business und Technik
-
-1. Latency Tunnel Race
-2. Load Balancing City
-3. Token Cost Conveyor
-4. Automation Conveyor Cells
-5. Source Checkpoint Gates
-6. Version Evolution Tree
-
-## Batch 4 – besondere Metaphern
+## Batch 5 – besondere Metaphern
 
 1. Hallucination Mirage
 2. Evidence Jury
@@ -75,7 +92,7 @@ Diese sechs decken typische KI-Reel-Sätze ab, ohne die Animationen des ersten R
 5. Confidence Weather Map
 6. Tradeoff Landscape Route
 
-Diese Animationen besitzen höhere Komplexität. Sie werden erst gebaut, wenn die einfacheren Prototypen ein stabiles Komponentenfundament geliefert haben.
+Diese Animationen besitzen höhere Komplexität. Sie werden erst gebaut, wenn die ersten 18 Prototypen Typecheck, Prüfframes und Bewegungsprüfung bestanden haben.
 
 ## Produktionsstatus
 
@@ -105,6 +122,7 @@ concept
 - MP4 erfolgreich
 - manuelle visuelle Abnahme erfolgreich
 - Verwendung in mindestens einer echten Reel-Szene geprüft
+- `renderReview.ts` meldet keine Blocker
 
 ### retired
 
@@ -117,7 +135,7 @@ Eine ausgemusterte Animation wird nicht gelöscht. Sie bleibt für Historie und 
 
 ## Auswahl für neue Reels
 
-Der Planer folgt dieser Reihenfolge:
+Der Produktionsplaner folgt dieser Reihenfolge:
 
 1. Aussage und Erklärziel verstehen
 2. passende Familien bestimmen
@@ -126,6 +144,10 @@ Der Planer folgt dieser Reihenfolge:
 5. mehrere Gesamtchoreografien bewerten
 6. besten abwechslungsreichen Plan wählen
 7. bei zu niedrigem Wert eine neue Animation fordern
+8. Proposal in einen vollständigen Build-Vertrag übersetzen
+9. Animation implementieren und rendern
+10. Render-Review ins Brain zurückführen
+11. Gewichte nur bei wiederholter Evidenz kontrolliert anpassen
 
 ## Bibliothekswachstum
 
@@ -148,14 +170,26 @@ Ein neues Konzept wird nur aufgenommen, wenn folgende Felder vollständig sind:
 - Komplexität
 - empfohlene Dauer
 - Startbewertung
+- Build-Phasen
+- Implementierungsregeln
 
-## Ziel nach den ersten vier Batches
+## Aktuelles Renderziel
+
+```text
+18 Prototypen × 7 PNGs = 126 PNG-Dateien
+18 Prototypen × 1 MP4 = 18 MP4-Dateien
+144/144 technisch gültige Artefakte
+```
+
+## Ziel nach den ersten fünf Batches
 
 ```text
 88 dokumentierte Konzepte
-24 tatsächlich ausführbare Prototypen
+mindestens 24 tatsächlich ausführbare Prototypen
+mindestens 22 vertretene visuelle Familien
 mindestens 12 visuell verifizierte Animationen
 keine exakte Wiederholung innerhalb eines Reels
 mindestens 4 visuelle Familien pro Reel
 neue Animation bei unzureichender Passung statt erzwungener Vorlage
+Brain-Updates nur auf Basis nachvollziehbarer Beobachtungen
 ```
