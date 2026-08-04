@@ -44,7 +44,7 @@ Do not silently resolve conflicts by choosing whichever file is easiest. Report 
 Before coding, run:
 
 ```bash
-npm run codex:reel:prepare -- <slug> --ready
+node scripts/prepare-codex-reel.mjs <slug> --ready
 ```
 
 Stop when required assets are missing, unreadable, duplicated, or declared outside the reel package. Do not make placeholder images and do not use unrelated repository images.
