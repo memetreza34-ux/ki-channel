@@ -6,6 +6,7 @@ export * from './initialBrain';
 export * from './learningPipeline';
 export * from './persistence';
 export * from './planner';
+export * from './productionPlanner';
 export * from './proposalCompiler';
 export * from './PrototypeGalleryRoot';
 export * from './prototypes/registry';
