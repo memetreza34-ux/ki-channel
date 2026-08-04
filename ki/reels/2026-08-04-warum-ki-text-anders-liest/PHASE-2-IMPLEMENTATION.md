@@ -2,17 +2,19 @@
 
 ## Aktueller Status
 
-Für die vorherige Codefassung wurden Typecheck, Tests, 32 Prüfframes und ein vollständiges MP4 erfolgreich erzeugt. Dieses MP4 wurde anschließend erneut als echtes Video geprüft.
+Für eine frühere Codefassung wurden Typecheck, Tests, 32 Prüfframes und ein vollständiges MP4 erfolgreich erzeugt. Dieses MP4 wurde anschließend als echtes Video und als Kontaktbogen geprüft.
 
-Die erneute Prüfung zeigte:
+Die Prüfung zeigte:
 
 - Die Animationen sind grundsätzlich brauchbar und verständlich.
 - Das synthetische Sounddesign passt stilistisch nicht zum Reel.
-- Mehrere Szenen besitzen zu große leere Flächen oder schwache Zwischenzustände.
-- Die Untertitel reservieren Platz für noch unsichtbare Wörter und wirken deshalb zeitweise leer.
-- Der frühe Zustand der letzten Szene schneidet Kartentext während der Bewegung ab.
+- Mehrere Szenen besaßen zu große leere Flächen oder schwache Zwischenzustände.
+- Die Untertitel reservierten Platz für noch unsichtbare Wörter.
+- Der frühe Zustand der letzten Szene schnitt Kartentext während der Bewegung ab.
+- Szene 2 erklärte zwar Zahlenvektoren, aber die Umwandlung `Token → Vektor → Punkt` war visuell nicht deutlich genug.
+- Szene 3 zeigte Cluster, erklärte aber den Unterschied zwischen kleiner und großer semantischer Distanz zu wenig konkret.
 
-Diese Punkte wurden im Code überarbeitet. **Der neue Post-Review-Stand wurde noch nicht erneut typegecheckt oder gerendert.** Frühere grüne Berichte dürfen deshalb nicht als Freigabe für den aktuellen Quellstand verwendet werden.
+Diese Punkte wurden im Code überarbeitet. **Der aktuelle Post-Review-Stand wurde noch nicht erneut typegecheckt oder gerendert.** Frühere grüne Berichte dürfen deshalb nicht als Freigabe für den aktuellen Quellstand verwendet werden.
 
 ## Tatsächlich analysiertes Video
 
@@ -54,7 +56,7 @@ Die stumme Version ist die Standardfassung. Die minimale Soundfassung darf nur n
 
 ### Kontrast
 
-`visualUtils.ts` verwendet dunklere Sekundärtexte, sichtbarere Linien und etwas klarere Akzentfarben für mobile Anzeige.
+`visualUtils.ts` verwendet dunklere Sekundärtexte, sichtbarere Linien und klarere Akzentfarben für mobile Anzeige.
 
 ### Szene 1
 
@@ -68,6 +70,38 @@ Satz als geordnete Wortfolge
 ```
 
 Dadurch ist die Bewegung nachvollziehbarer und die Bildmitte besser genutzt.
+
+### Szene 2
+
+Die Scanner-Szene wurde als klarer Transformationsprozess neu organisiert:
+
+```text
+TOKEN
+→ drei sichtbare Zahlen-Koordinaten
+→ räumlicher Punkt
+```
+
+Verbesserungen:
+
+- alle vier Zeilen sind bereits als schwache Struktur sichtbar
+- der Scanner aktiviert die Zeilen nacheinander
+- jede Zahl erhält ein eigenes lesbares Koordinatenfeld
+- jede Zeile endet mit einer eindeutigen Punktdarstellung
+- `TOKEN → VEKTOR → PUNKT` bleibt als stabile Erklärung sichtbar
+- deutlich weniger ungenutzte Fläche und keine anonymen Platzhalterboxen
+
+### Szene 3
+
+Der Bedeutungsraum wurde stärker auf Verständnis statt 3D-Dekoration ausgerichtet:
+
+- Clusterflächen sind bereits früh als Orientierung sichtbar
+- Begriffe kommen kontrolliert aus einem gemeinsamen Datenstrom
+- Verbindungen innerhalb der Cluster werden sichtbar gezeichnet
+- die Kameradrehung wurde entfernt, damit mobile Lesbarkeit stabil bleibt
+- konkrete Distanzbeispiele erklären das Prinzip:
+  - `Hund ↔ Katze = 0,18`
+  - `Hund ↔ Zug = 0,82`
+- der feste Hinweis `kleine Distanz = ähnliche Bedeutung` erklärt die Aussage ohne Ton
 
 ### Szene 5
 
@@ -131,7 +165,9 @@ npm run motion:verify
 
 Danach visuell prüfen:
 
-- Frame 0–115: Token-Fächer und Scanner-Übergabe
+- Szene 1: Token-Fächer und Scanner-Übergabe
+- Szene 2: alle vier Zeilen, Koordinatenfelder, Scanbalken und Punkt-Handoff
+- Szene 3: Clusterverbindungen, Distanzkarten und mobile Lesbarkeit
 - Szene 5: alle Zwischenstände und Gewinner-Hold
 - Szene 6: erster Frame, Layer-Aktivierung und Ausgang
 - Szene 7: jede Kandidatenphase und vollständiger Satz
@@ -151,5 +187,5 @@ Der aktuelle Stand gilt erst als freigegeben, wenn:
 - eine optionale Minimal-SFX-Version nur bei eindeutig besserem Ergebnis gewählt wird
 
 ```text
-Status: VERBESSERT, ERNEUTE PRÜFUNG UND NEUER RENDER AUSSTEHEND
+Status: ZWEITE VISUELLE POLITUR UMGESETZT, ERNEUTE PRÜFUNG UND NEUER RENDER AUSSTEHEND
 ```
