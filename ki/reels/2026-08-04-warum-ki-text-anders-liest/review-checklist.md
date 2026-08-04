@@ -12,6 +12,7 @@ Die Checkliste wird erst nach echten Tests und Rendern ausgefüllt. Nicht geprü
 - [ ] Wahrscheinlichkeiten werden als Beispielwerte erkennbar.
 - [ ] Das Reel behauptet nicht, dass ein Modell menschlich versteht.
 - [ ] Schlussaussage `KI-ANTWORTEN PRÜFEN` ist klar sichtbar.
+- [ ] Ergänzende Animationen erklären den Inhalt und sind nicht rein dekorativ.
 
 ## 2. Abwechslung
 
@@ -21,16 +22,20 @@ Die Checkliste wird erst nach echten Tests und Rendern ausgefüllt. Nicht geprü
 - [ ] Mindestens acht visuelle Familien sind sichtbar unterscheidbar.
 - [ ] Nicht mehr als zwei Szenen verwenden Kartenformen als Hauptelement.
 - [ ] Bewegungsrichtungen wechseln sinnvoll.
+- [ ] Alle sieben Übergangsstile sind visuell unterscheidbar.
 - [ ] Übergänge entstehen aus dem vorherigen Inhalt und nicht aus einem universellen Effekt.
 - [ ] Keine Szene wirkt wie eine bloße Variante der vorhandenen zehn Standard-Stages.
 
-## 3. Layout und Typografie
+## 3. Überschriften, Untertitel und Layout
 
+- [ ] Jede Szene besitzt eine klar lesbare obere Überschrift.
+- [ ] Alle Sätze werden durch kinetische Untertitel begleitet.
+- [ ] Wichtige Wörter reagieren nahe am gesprochenen Zeitpunkt sichtbar stärker.
+- [ ] Warnwörter verwenden die Gefahr-Hervorhebung nur inhaltlich begründet.
 - [ ] Alle wichtigen Inhalte liegen innerhalb der Safe-Zone.
 - [ ] Kein Text wird abgeschnitten.
-- [ ] Maximal zwei Textzeilen gleichzeitig.
+- [ ] Überschrift, Hauptanimation und Untertitel überlagern sich nicht.
 - [ ] Hook und Schluss sind auf einem Mobiltelefon sofort lesbar.
-- [ ] Erklärtexte sind nicht kleiner als die festgelegte Mindestgröße.
 - [ ] Texte kollidieren nicht mit animierten Objekten.
 - [ ] Keine unbeabsichtigte leere Fläche dominiert länger als 12 Frames.
 - [ ] Kontrast ist auf hellem Hintergrund ausreichend.
@@ -49,37 +54,38 @@ Die Checkliste wird erst nach echten Tests und Rendern ausgefüllt. Nicht geprü
 
 ## 5. Übergänge
 
-- [ ] Szene 1 → 2: Tokens werden logisch in den Scanner übernommen.
-- [ ] Szene 2 → 3: Vektoren werden logisch zu Punkten.
-- [ ] Szene 3 → 4: Clusterpunkte werden logisch zu Wortknoten.
-- [ ] Szene 4 → 5: Attention-Verbindung wird logisch zum Pfad.
-- [ ] Szene 5 → 6: Gewinnerkapsel wird logisch in die Schichten übernommen.
-- [ ] Szene 6 → 7: Schichten geben logisch die Wortkapseln frei.
-- [ ] Szene 7 → 8: Satz wird logisch in zwei Wahrheitsvarianten geteilt.
+- [ ] Szene 1 → 2: Scanner-Wipe übernimmt die Tokens.
+- [ ] Szene 2 → 3: Punkt-Tunnel übernimmt die Vektorpunkte.
+- [ ] Szene 3 → 4: Thread-Pull übernimmt die Beziehungen.
+- [ ] Szene 4 → 5: Branch-Flash öffnet die Wahrscheinlichkeitswege.
+- [ ] Szene 5 → 6: Layer-Lift übernimmt den Gewinner.
+- [ ] Szene 6 → 7: Word-Stream übernimmt die Ausgabe.
+- [ ] Szene 7 → 8: Split-Fold teilt die fertige Antwort.
 - [ ] Kein Übergang benötigt eine Schwarzblende.
 
 ## 6. Audio
 
-- [ ] Voiceover ist vollständig und ohne Clipping.
-- [ ] Musik überdeckt keine Silben.
+- [ ] Synthetischer Hook-Impact ist sauber und nicht zu laut.
+- [ ] Scanner-, Attention-, Layer-, Wort- und Warnakzente liegen auf den vorgesehenen Bewegungen.
 - [ ] Soundeffekte unterstützen Bewegungen statt sie zu überladen.
-- [ ] Keine identische Whoosh-Datei zwischen allen Szenen.
-- [ ] Wort-Timestamps wurden erzeugt und validiert.
-- [ ] Audio-Keywords lösen die vorgesehenen Kernaktionen aus.
+- [ ] Die unterschiedlichen Szenen verwenden nicht denselben universellen Whoosh.
+- [ ] Data-URI-WAV-Sounds rendern zuverlässig im finalen MP4.
+- [ ] Finale Voiceover-Datei wurde über `voiceoverSrc` eingebunden.
+- [ ] Voiceover ist vollständig und ohne Clipping.
+- [ ] Voiceover überdeckt die Soundeffekte nicht und wird nicht von ihnen überdeckt.
 - [ ] Letzter Satz ist langsamer und verständlich.
 
 ## 7. Technische Tests
 
-- [ ] `npm run motion:verify`
-- [ ] `npm run reel:why-ai:stills`
-- [ ] `npm run reel:why-ai:video`
-- [ ] `npm run reel:why-ai:check`
-- [ ] `npm run motion:full-release-check`
+- [ ] `npm run reel:why-ai:verify`
+- [ ] `npm run reel:why-ai:smoke`
+- [ ] `npm run reel:why-ai:full-release-check`
 - [ ] Composition besitzt exakt 1080 Frames.
 - [ ] MP4 besitzt exakt 1080 × 1920 Pixel.
 - [ ] MP4 läuft mit 30 FPS.
-- [ ] Alle geplanten Testframes wurden gerendert.
-- [ ] Release-Bericht enthält keine fehlenden oder ungültigen Dateien.
+- [ ] Alle 32 geplanten Testframes wurden gerendert.
+- [ ] `release-report.json` meldet 33 von 33 gültigen Artefakten.
+- [ ] Renderplan und Release-Bericht besitzen den aktuellen Reel-Quellfingerprint.
 
 ## 8. Manuelle Endabnahme
 
@@ -94,6 +100,6 @@ Die Checkliste wird erst nach echten Tests und Rendern ausgefüllt. Nicht geprü
 ## Abnahmestatus
 
 ```text
-Status: NICHT GETESTET
-Grund: Planung abgeschlossen; Remotion-Umsetzung und echter Render stehen aus.
+Status: PHASE 2 IMPLEMENTIERT, NOCH NICHT GETESTET
+Grund: Remotion-Code, Überschriften, Untertitel, Übergänge und Sounddesign sind vorhanden; Typecheck, echte Render und visuelle Abnahme stehen aus.
 ```
