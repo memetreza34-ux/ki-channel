@@ -3,6 +3,7 @@ export * from './catalog';
 export * from './brain';
 export * from './brainTuning';
 export * from './completePrototypeRegistry';
+export * from './executionCatalog';
 export * from './experimentalRecipes';
 export * from './experimentalPrototypeRegistry';
 export * from './historyAdapter';
