@@ -1,113 +1,109 @@
 # Review-Checkliste
 
-Stand nach echten Tests und Rendern in diesem Durchlauf. Nur tatsächlich visuell/technisch geprüfte Punkte sind abgehakt. Nicht bestandene oder nicht ausgeführte Punkte bleiben offen.
+Die vorherige Fassung wurde technisch erfolgreich gerendert. Danach wurde das echte MP4 visuell und akustisch analysiert und der Code erneut verändert. Alle technischen und visuellen Prüfungen für den **aktuellen** Quellstand sind deshalb wieder offen.
 
 ## 1. Inhalt
 
-- [ ] Hook ist innerhalb der ersten Sekunde verständlich. (nicht mit Zielgruppe/Ton geprüft)
-- [x] Tokenisierung wird korrekt und einfach dargestellt. (Frame 38/113, Stills + MP4-Stichprobe)
-- [ ] Zahlen- beziehungsweise Vektordarstellung wird nicht als echte lesbare Modellrechnung ausgegeben. (nicht separat geprüft)
-- [x] Bedeutungsnähe wird verständlich visualisiert. (Frame 353, Cluster-Szene)
-- [x] Attention wird als Gewichtung von Beziehungen und nicht als menschliche Aufmerksamkeit dargestellt. (Frame 399/488)
-- [x] Wahrscheinlichkeiten werden als Beispielwerte (%) erkennbar. (Frame 653/938)
-- [x] Das Reel behauptet nicht, dass ein Modell menschlich versteht. (Frame 1079: "kein menschliches Verständnis")
-- [x] Schlussaussage `KI-ANTWORTEN PRÜFEN` ist klar sichtbar. (Frame 1079)
-- [ ] Ergänzende Animationen erklären den Inhalt und sind nicht rein dekorativ. (subjektiv, nicht abschließend bewertet)
+- [ ] Hook ist innerhalb der ersten Sekunde verständlich.
+- [ ] Tokenisierung ist einfach und korrekt dargestellt.
+- [ ] Beispielvektoren werden nicht als echte interne Modellwerte missverstanden.
+- [ ] Bedeutungsnähe ist ohne Ton verständlich.
+- [ ] Attention wird als gewichtete Beziehung dargestellt.
+- [ ] Wahrscheinlichkeiten sind als Beispiel-Zwischenstand erkennbar.
+- [ ] Modellschichten zeigen Musterverarbeitung, nicht menschliches Verständnis.
+- [ ] Wort-für-Wort-Auswahl wird in Szene 7 tatsächlich sichtbar.
+- [ ] Schlussaussage `KI-ANTWORTEN PRÜFEN` bleibt mindestens 40 Frames stabil.
+- [ ] Quelle, Datum und Beleg sind im Schlussbild lesbar.
 
-## 2. Abwechslung
+## 2. Abwechslung und Choreografie
 
-- [ ] Alle acht `animationId`s sind eindeutig.
-- [ ] Keine vollständige Szenenkomposition wird wiederholt.
-- [ ] Keine zwei aufeinanderfolgenden Szenen besitzen dieselbe Layoutfamilie.
-- [ ] Mindestens acht visuelle Familien sind sichtbar unterscheidbar.
-- [ ] Nicht mehr als zwei Szenen verwenden Kartenformen als Hauptelement.
-- [ ] Bewegungsrichtungen wechseln sinnvoll.
-- [ ] Alle sieben Übergangsstile sind visuell unterscheidbar.
-- [ ] Übergänge entstehen aus dem vorherigen Inhalt und nicht aus einem universellen Effekt.
-- [ ] Keine Szene wirkt wie eine bloße Variante der vorhandenen zehn Standard-Stages.
+- [ ] Alle acht vollständigen Animationen sind eindeutig.
+- [ ] Keine zwei aufeinanderfolgenden Szenen verwenden dieselbe Layoutfamilie.
+- [ ] Keine zwei aufeinanderfolgenden Szenen verwenden dieselbe Hauptbewegung.
+- [ ] Szene 1 wirkt geordnet und nicht zufällig verstreut.
+- [ ] Szene 5 besitzt einen klaren Gewinner und einen lesbaren End-Hold.
+- [ ] Szene 6 besitzt keinen fast leeren Startzustand.
+- [ ] Szene 7 nutzt die Bildfläche und erklärt Kandidatenauswahl statt nur Wortkarten einzufliegen.
+- [ ] Szene 8 schneidet während der Einflugphase keinen Kartentext ab.
+- [ ] Keine Szene zeigt mehr als drei gleichzeitig starke Bewegungen.
+- [ ] Keine Szene wird durch dekorative Bewegung unruhig.
 
-## 3. Überschriften, Untertitel und Layout
+## 3. Überschriften und Untertitel
 
-- [ ] Jede Szene besitzt eine klar lesbare obere Überschrift.
-- [ ] Alle Sätze werden durch kinetische Untertitel begleitet.
-- [ ] Wichtige Wörter reagieren nahe am gesprochenen Zeitpunkt sichtbar stärker.
-- [ ] Warnwörter verwenden die Gefahr-Hervorhebung nur inhaltlich begründet.
-- [ ] Alle wichtigen Inhalte liegen innerhalb der Safe-Zone. (stichprobenartig ok, nicht für alle 32 Frames einzeln vermessen)
-- [x] Kein Text wird abgeschnitten. (in allen geprüften Stills)
-- [x] Überschrift, Hauptanimation und Untertitel überlagern sich nicht mehr. (Bug gefunden und behoben: Layer-Lift-Übergang lag vorher mit zIndex 80 über Titel/Untertitel und verdeckte beide am Übergang Szene 5→6; jetzt zIndex 25, unter Titel/Untertitel)
-- [ ] Hook und Schluss sind auf einem Mobiltelefon sofort lesbar. (nicht auf echtem Gerät getestet)
-- [x] Texte kollidieren nicht mit animierten Objekten in den geprüften Stichproben. (Bug gefunden und behoben: Scanner-Balken in Szene 1 überdeckte "deinen"/"Satz")
-- [ ] Keine unbeabsichtigte leere Fläche dominiert länger als 12 Frames. (nicht frameweise vermessen; einzelne Szenenstart-Frames wirken bewusst leer durch Fade-in, nicht als Fehler eingestuft)
-- [x] Kontrast ist auf hellem Hintergrund ausreichend. (in allen geprüften Stills)
+- [ ] Jede Szene besitzt eine lesbare Überschrift innerhalb der Safe-Zone.
+- [ ] Untertitel zeigen nur bereits gesprochene Wörter.
+- [ ] Das rollende Untertitelfenster zeigt maximal neun Wörter.
+- [ ] Kurze Satzanfänge erzeugen keine große leere Untertitelbox.
+- [ ] Wichtige Wörter werden deutlich, aber nicht übertrieben hervorgehoben.
+- [ ] Warnwörter verwenden die rote Hervorhebung nur inhaltlich begründet.
+- [ ] Untertitel kollidieren nicht mit der Hauptanimation.
+- [ ] Alle Texte sind auf Smartphone-Größe lesbar.
+- [ ] Kein Text wird abgeschnitten.
+- [ ] Sekundärtexte und Linien besitzen ausreichenden Kontrast.
 
-## 4. Animation
+## 4. Übergänge
 
-- [ ] Bewegungen sind deterministisch.
-- [ ] Kein `Math.random()` während des Renderns.
-- [ ] Keine CSS-Transition hängt von Echtzeit ab.
-- [ ] Start-, Mittel- und Endframe jeder Szene sehen bewusst gestaltet aus.
-- [ ] Keine Bewegung startet oder stoppt ohne visuelle Ursache.
-- [ ] Wichtige Aktionen liegen nahe am gesprochenen Schlüsselwort.
-- [ ] Keine unnötige Dauerrotation oder Dauerpulsation.
-- [ ] Kameraillusionen verursachen keine Unruhe.
-- [ ] Abschlussframe bleibt mindestens 40 Frames stabil.
+- [ ] Übergänge verdecken weder Überschrift noch Untertitel.
+- [ ] Szene 1 → 2 übernimmt den Token-Stack sinnvoll.
+- [ ] Szene 2 → 3 übernimmt Vektorpunkte sinnvoll.
+- [ ] Szene 3 → 4 übernimmt Beziehungen sinnvoll.
+- [ ] Szene 4 → 5 führt logisch zur Kandidatenauswahl.
+- [ ] Szene 5 → 6 übergibt das gewählte Wort verständlich.
+- [ ] Szene 6 → 7 übergibt die Ausgabe ohne visuellen Reset.
+- [ ] Szene 7 → 8 teilt die fertige Antwort nachvollziehbar.
+- [ ] Kein Fade-to-black.
+- [ ] Ein Hard Cut wird bevorzugt, falls ein Übergang keinen semantischen Mehrwert besitzt.
 
-## 5. Übergänge
+## 5. Audio
 
-- [ ] Szene 1 → 2: Scanner-Wipe übernimmt die Tokens.
-- [ ] Szene 2 → 3: Punkt-Tunnel übernimmt die Vektorpunkte.
-- [ ] Szene 3 → 4: Thread-Pull übernimmt die Beziehungen.
-- [ ] Szene 4 → 5: Branch-Flash öffnet die Wahrscheinlichkeitswege.
-- [ ] Szene 5 → 6: Layer-Lift übernimmt den Gewinner.
-- [ ] Szene 6 → 7: Word-Stream übernimmt die Ausgabe.
-- [ ] Szene 7 → 8: Split-Fold teilt die fertige Antwort.
-- [ ] Kein Übergang benötigt eine Schwarzblende.
+### Standardfassung
 
-## 6. Audio
+- [ ] `soundMode: "off"` erzeugt ausschließlich Voiceover, falls `voiceoverSrc` gesetzt ist.
+- [ ] Ohne Voiceover und mit `soundMode: "off"` ist das MP4 vollständig stumm.
+- [ ] Die alte Tonfolge mit 21 Synth-/Noise-Cues ist nicht mehr vorhanden.
 
-- [ ] Synthetischer Hook-Impact ist sauber und nicht zu laut.
-- [ ] Scanner-, Attention-, Layer-, Wort- und Warnakzente liegen auf den vorgesehenen Bewegungen.
-- [ ] Soundeffekte unterstützen Bewegungen statt sie zu überladen.
-- [ ] Die unterschiedlichen Szenen verwenden nicht denselben universellen Whoosh.
-- [ ] Data-URI-WAV-Sounds rendern zuverlässig im finalen MP4.
-- [ ] Finale Voiceover-Datei wurde über `voiceoverSrc` eingebunden.
-- [ ] Voiceover ist vollständig und ohne Clipping.
-- [ ] Voiceover überdeckt die Soundeffekte nicht und wird nicht von ihnen überdeckt.
-- [ ] Letzter Satz ist langsamer und verständlich.
+### Optionale Minimalfassung
 
-## 7. Technische Tests
+- [ ] `soundMode: "minimal"` rendert höchstens vier Soundereignisse.
+- [ ] Keine Noise-Sounds oder hohen Pieptöne.
+- [ ] Alle vier Sounds sind deutlich leiser als ein späteres Voiceover.
+- [ ] Jeder Sound ist an eine sichtbare Hauptaktion gekoppelt.
+- [ ] Die Minimalfassung wirkt im direkten A/B-Vergleich besser als die stumme Fassung.
+- [ ] Falls nicht eindeutig besser: finale Fassung bleibt `soundMode: "off"`.
 
-- [x] `npm run reel:why-ai:verify` (grün nach Fixes an vitest.config.ts, ki/tsconfig.json, renderPlan.test.ts, AttentionThreadWeaveScene.tsx)
-- [x] `npm run reel:why-ai:smoke` (10 Testbilder erzeugt und geprüft)
-- [x] `npm run reel:why-ai:stills` (32 Prüfbilder erzeugt und geprüft)
-- [x] `npm run reel:why-ai:video`
-- [x] `npm run reel:why-ai:check` (33/33 gültig)
-- [x] `npm run reel:why-ai:full-release-check`
-- [x] `npm run motion:verify` (bestehendes Motion-System weiterhin grün, 0 Fehler)
-- [x] Composition besitzt exakt 1080 Frames. (ffprobe: nb_frames=1080, duration=36.000000)
-- [x] MP4 besitzt exakt 1080 × 1920 Pixel. (ffprobe: width=1080, height=1920)
-- [x] MP4 läuft mit 30 FPS. (ffprobe: r_frame_rate=30/1)
-- [x] Alle 32 geplanten Testframes wurden gerendert.
-- [x] `release-report.json` meldet 33 von 33 gültigen Artefakten.
-- [x] Renderplan und Release-Bericht besitzen den aktuellen Reel-Quellfingerprint. (sourceFingerprint stimmt in plan- und release-report.json überein)
+## 6. Technische Prüfung des aktuellen Quellstands
 
-## 8. Manuelle Endabnahme
+- [ ] `npm run reel:why-ai:verify`
+- [ ] `npm run reel:why-ai:smoke`
+- [ ] `npm run reel:why-ai:stills`
+- [ ] `npm run reel:why-ai:video`
+- [ ] `npm run reel:why-ai:check`
+- [ ] `npm run reel:why-ai:full-release-check`
+- [ ] `npm run motion:verify`
+- [ ] Composition besitzt exakt 1080 Frames.
+- [ ] MP4 besitzt exakt 1080 × 1920 Pixel.
+- [ ] MP4 läuft mit 30 FPS.
+- [ ] Alle 32 aktuellen Prüfframes wurden erzeugt.
+- [ ] `release-report.json` meldet 33/33 gültige aktuelle Artefakte.
+- [ ] Renderplan und Release-Bericht besitzen den aktuellen Quellfingerprint.
 
-- [ ] Reel einmal ohne Ton angesehen: Kernaussage bleibt verständlich. (nur Stichproben-Frames geprüft, nicht vollständig frameweise/als Video abgespielt)
-- [ ] Reel einmal nur mit Ton angehört: Erklärung bleibt vollständig. (Audiospur technisch vorhanden/geprüft per ffprobe, nicht angehört)
-- [ ] Reel auf normaler Smartphone-Größe geprüft. (nicht auf echtem Gerät)
-- [ ] Reel in voller Geschwindigkeit geprüft, nicht nur frameweise. (kein Player verfügbar; stattdessen Stichproben-Frames per ffmpeg aus dem MP4 gezogen und geprüft)
-- [ ] Keine Szene wirkt langweilig oder unnötig lang. (nicht abschließend beurteilt)
-- [ ] Keine Szene muss wegen Wiederholung ersetzt werden. (nicht abschließend beurteilt)
-- [x] Finale technische Freigabe dokumentiert (release-report.json, passed: true).
+## 7. Manuelle Endabnahme
+
+- [ ] Neue stumme Fassung vollständig in normaler Geschwindigkeit angesehen.
+- [ ] Kernaussage bleibt ohne Ton verständlich.
+- [ ] Neue Fassung auf Smartphone-Größe geprüft.
+- [ ] Keine Szene wirkt leer oder unnötig lang.
+- [ ] Untertitelrhythmus wirkt nicht hektisch.
+- [ ] Szene 1, 6, 7 und 8 wurden besonders auf Zwischenzustände geprüft.
+- [ ] Optionaler Minimal-SFX-Render wurde direkt gegen die stumme Fassung verglichen.
+- [ ] Finale redaktionelle Freigabe ausdrücklich dokumentiert.
 
 ## Abnahmestatus
 
 ```text
-Status: TECHNISCH VERIFIZIERT, VISUELL STICHPROBENARTIG GEPRÜFT UND KORRIGIERT
-Technische Prüfung (verify, smoke, stills, video, check, full-release-check, motion:verify) ist grün.
-Gefundene und behobene Fehler: TS/Test-Konfigurationsfehler (Abschnitt Phase-2-Implementation),
-Scanner-Balken-Überlagerung in Szene 1, Übergangs-Overlay über Titel/Untertitel bei allen 7 Übergängen.
-Nicht möglich in dieser Umgebung: Abspielen des MP4 in Echtzeit/mit Ton, Test auf echtem Smartphone,
-abschließende redaktionelle Bewertung von Tempo/Langeweile/Wiederholungsgefühl.
+Status: POST-REVIEW-VERBESSERUNGEN IMPLEMENTIERT, ERNEUTE PRÜFUNG AUSSTEHEND
+
+Vorherige grüne Tests und Render gehören zur alten Fassung.
+Der aktuelle Quellstand enthält neue Sound-, Untertitel-, Kontrast- und Szenenänderungen
+und darf erst nach neuem Typecheck, Render und visueller Prüfung freigegeben werden.
 ```
