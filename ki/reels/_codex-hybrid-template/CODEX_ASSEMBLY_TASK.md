@@ -22,7 +22,7 @@ Implement the approved hybrid reel exactly as specified.
 git status
 git branch --show-current
 git log -5 --oneline
-npm run codex:reel:prepare -- <slug> --ready
+node scripts/prepare-codex-reel.mjs <slug> --ready
 ```
 
 Then:
