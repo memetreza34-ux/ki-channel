@@ -5,6 +5,7 @@ export * from './brainTuning';
 export * from './historyAdapter';
 export * from './implementationBrief';
 export * from './initialBrain';
+export * from './knowledgeGovernance';
 export * from './learningPipeline';
 export * from './libraryAudit';
 export * from './persistence';
