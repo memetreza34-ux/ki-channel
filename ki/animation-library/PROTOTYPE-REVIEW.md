@@ -23,7 +23,7 @@ Erforderlich:
 node scripts/render-animation-library.mjs smoke
 ```
 
-Pro Prototyp werden Frame 0, 90 und 179 geprüft. Bei zwölf Prototypen entstehen 36 Smoke-PNGs.
+Pro Prototyp werden Frame 0, 90 und 179 geprüft. Bei 18 Prototypen entstehen 54 Smoke-PNGs.
 
 ### 3. Vollständige Prüfframes
 
@@ -54,9 +54,9 @@ node scripts/check-animation-library-renders.mjs
 Erwartung:
 
 ```text
-84 PNG-Dateien
-12 MP4-Dateien
-96/96 technisch gültige Artefakte
+126 PNG-Dateien
+18 MP4-Dateien
+144/144 technisch gültige Artefakte
 ```
 
 ## Allgemeine Abnahme
@@ -171,6 +171,54 @@ Erwartung:
 - [ ] Downstream-Auswirkung ist vom Ursprungsfehler unterscheidbar.
 - [ ] Die Reparatur ändert Ursache, Route und Status sichtbar.
 
+## Meaning Terrain
+
+- [ ] Zwei klar getrennte Bedeutungsregionen sind erkennbar.
+- [ ] Verwandte Begriffe stehen innerhalb derselben Region näher zusammen.
+- [ ] Höhen und Konturlinien stören die Lesbarkeit nicht.
+- [ ] Die Landschaft baut sich sichtbar auf und ist nicht nur ein statischer Hintergrund.
+- [ ] Der Schluss erklärt, dass Abstand Bedeutung und nicht Ort darstellt.
+
+## Dependency Bridge Builder
+
+- [ ] Wortinseln sind vor den Brücken einzeln verständlich.
+- [ ] Starke Beziehungen bauen breitere und stabilere Brücken.
+- [ ] Die schwache Direktverbindung verschwindet erst nach dem Lasttest.
+- [ ] Pulssignale bewegen sich entlang der tatsächlichen Brücken.
+- [ ] Die Animation erklärt Beziehungen und wirkt nicht wie ein dekoratives Netzwerk.
+
+## Probability Fluid Columns
+
+- [ ] Kandidaten und Prozentwerte sind jederzeit zuordenbar.
+- [ ] Kontextsignale verändern sichtbar die Füllstände.
+- [ ] Füllhöhe und Prozentzahl widersprechen sich nicht.
+- [ ] Flüssigkeitsbewegung bleibt kontrolliert und verursacht kein Flackern.
+- [ ] Gewinner wird erst nach der letzten Wahrscheinlichkeitsverschiebung markiert.
+
+## Residual River
+
+- [ ] Hauptstrom und Seitenkanäle unterscheiden sich sofort.
+- [ ] Jeder Verarbeitungsschritt verändert den sichtbaren Strom.
+- [ ] Seiteninformation wird erkennbar zurück in den Hauptstrom geführt.
+- [ ] Datenpunkte folgen dem Fluss ohne Sprünge.
+- [ ] Das Endergebnis zeigt Hauptsignal plus Ergänzungen.
+
+## Answer Loom
+
+- [ ] Kontextfäden erreichen den Webstuhl sichtbar.
+- [ ] Jede Shuttle-Bewegung erzeugt genau einen weiteren Wortbaustein.
+- [ ] Wörter bleiben während des Webens lesbar.
+- [ ] Das Ergebnis entsteht kausal aus den Fäden und nicht unabhängig davon.
+- [ ] Der vollständige Satz bleibt mindestens 25 Frames stabil.
+
+## Confidence Glass Crack
+
+- [ ] Die Aussage wirkt vor der Prüfung bewusst überzeugend.
+- [ ] Quellen-, Datums- und Belegfragen erzeugen sichtbaren Druck.
+- [ ] Risse beginnen an einer nachvollziehbaren Stelle und breiten sich kontrolliert aus.
+- [ ] Confidence-Anzeige wird nicht als Wahrheitswert dargestellt.
+- [ ] Der Schluss trennt sprachliche Sicherheit klar von Wahrheit.
+
 ## Ergebnisdokumentation
 
 Für jeden Prototyp werden gespeichert:
@@ -185,4 +233,6 @@ Für jeden Prototyp werden gespeichert:
 - Produktionssicherheitswert 0–100
 - Status `prototype`, `verified` oder `retired`
 
-Diese Werte werden anschließend als `render-review`-Beobachtung an das Creative Brain übergeben. Mehrere Ergebnisse können über `learningPipeline.ts` chronologisch und ohne doppelte Anwendung eingespielt werden. Wiederholte Evidenz kann danach kontrolliert über `brainTuning.ts` die Auswahlgewichte und den Schwellenwert für neue Animationen anpassen.
+`renderReview.ts` prüft technische Artefakte, Quellfingerprint und manuelle Mindestwerte. Nur eine blockerfreie Animation darf als `verified` empfohlen werden.
+
+Die Review-Werte werden als `render-review`-Beobachtung an das Creative Brain übergeben. Mehrere Ergebnisse können über `learningPipeline.ts` chronologisch und ohne doppelte Anwendung eingespielt werden. Wiederholte Evidenz kann danach kontrolliert über `brainTuning.ts` die Auswahlgewichte und den Schwellenwert für neue Animationen anpassen.
