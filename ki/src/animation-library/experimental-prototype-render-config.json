@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "entryPoint": "ki/src/animation-library/expanded-remotion-entry.tsx",
+  "outputDir": "out/animation-library-expanded",
+  "defaults": {
+    "durationInFrames": 180,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "checkpoints": [0, 30, 60, 90, 120, 150, 179],
+    "smokeCheckpoints": [0, 90, 179]
+  },
+  "prototypes": [
+    {"compositionId":"Library-Experimental-Syllable-Conveyor","animationId":"tokenization-syllable-conveyor-v1"},
+    {"compositionId":"Library-Experimental-Matrix-Waterfall-Encoder","animationId":"data-transformation-matrix-waterfall-encoder-v1"},
+    {"compositionId":"Library-Experimental-Magnetic-Concept-Constellation","animationId":"semantic-space-magnetic-concept-constellation-v1"},
+    {"compositionId":"Library-Experimental-Graph-Bloom","animationId":"relationship-network-graph-bloom-v1"},
+    {"compositionId":"Library-Experimental-Candidate-Orbit-Selection","animationId":"probability-candidate-orbit-selection-v1"},
+    {"compositionId":"Library-Experimental-Transformer-Tunnel","animationId":"model-processing-transformer-tunnel-v1"},
+    {"compositionId":"Library-Experimental-Sentence-Ribbon-Fold","animationId":"generation-sentence-ribbon-fold-v1"},
+    {"compositionId":"Library-Experimental-Hallucination-Mirage","animationId":"risk-contrast-hallucination-mirage-v1"},
+    {"compositionId":"Library-Experimental-Difference-Magnifier","animationId":"comparison-difference-magnifier-v1"},
+    {"compositionId":"Library-Experimental-Priority-Orbit-Stack","animationId":"ranking-priority-orbit-stack-v1"},
+    {"compositionId":"Library-Experimental-Automation-Conveyor-Cells","animationId":"process-flow-automation-conveyor-cells-v1"},
+    {"compositionId":"Library-Experimental-Transformation-Portal","animationId":"input-output-transformation-portal-v1"},
+    {"compositionId":"Library-Experimental-Broken-Path-Repair","animationId":"error-detection-broken-path-repair-v1"},
+    {"compositionId":"Library-Experimental-Archive-Spotlight-Search","animationId":"retrieval-search-archive-spotlight-search-v1"},
+    {"compositionId":"Library-Experimental-Permission-Gate-City","animationId":"security-privacy-permission-gate-city-v1"},
+    {"compositionId":"Library-Experimental-Load-Balancing-City","animationId":"scale-performance-load-balancing-city-v1"},
+    {"compositionId":"Library-Experimental-Token-Cost-Conveyor","animationId":"cost-efficiency-token-cost-conveyor-v1"},
+    {"compositionId":"Library-Experimental-Version-Evolution-Tree","animationId":"time-change-version-evolution-tree-v1"},
+    {"compositionId":"Library-Experimental-Feedback-Sculpting","animationId":"human-ai-collaboration-feedback-sculpting-v1"},
+    {"compositionId":"Library-Experimental-If-Then-Gate-Array","animationId":"decision-logic-if-then-gate-array-v1"},
+    {"compositionId":"Library-Experimental-Memory-Shelf-Carousel","animationId":"context-window-memory-shelf-carousel-v1"},
+    {"compositionId":"Library-Experimental-Belief-Ledger-Revision","animationId":"learning-update-belief-ledger-revision-v1"}
+  ]
+}
