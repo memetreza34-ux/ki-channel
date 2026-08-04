@@ -2,7 +2,18 @@
 
 ## Status
 
-Der vollständige Remotion-Code ist implementiert und als Composition `Reel-WhyAIReadsDifferently` registriert. Ein echter Typecheck, Testlauf und Render wurden in dieser Umgebung noch nicht ausgeführt. Die Composition bleibt deshalb im Prüfstatus.
+Der vollständige Remotion-Code ist implementiert und als Composition `Reel-WhyAIReadsDifferently` registriert.
+
+`npm run reel:why-ai:verify`, `npm run reel:why-ai:smoke`, `npm run reel:why-ai:stills`, `npm run reel:why-ai:video`, `npm run reel:why-ai:check`, `npm run reel:why-ai:full-release-check` und `npm run motion:verify` wurden tatsächlich ausgeführt und sind grün. Details siehe Prüfprotokoll unten und `review-checklist.md`.
+
+Bei der Prüfung wurden folgende echte Fehler gefunden und an der Ursache behoben:
+
+- `vitest.config.ts` enthielt `ki/**` nicht im `include`-Pattern, wodurch die drei eigenen Reel-Tests (`reelContract`, `sceneUniqueness`, `wordCueBounds`) von `reel:why-ai:test` nie ausgeführt wurden (0 Tests gefunden, aber Exit-Code Fehler durch leeren Filter).
+- `ki/tsconfig.json` referenzierte `../../tsconfig.base.json` (zwei Ebenen hoch) statt `../tsconfig.base.json` (eine Ebene hoch), was den Vite/Vitest-Transform mit `TSCONFIG_ERROR` abbrechen ließ.
+- `ki/src/motion-system/__tests__/renderPlan.test.ts` nutzte `Array.prototype.at()`, das unter dem in `tsconfig.base.json` konfigurierten `ES2020`-Lib-Target nicht existiert (`tsc --noEmit -p ki/tsconfig.motion.json` schlug fehl).
+- `AttentionThreadWeaveScene.tsx` griff auf `node.accent` zu, obwohl die meisten Einträge des `NODES`-Union-Typs dieses Feld gar nicht deklarieren; strict TypeScript lehnte das ab. Ersetzt durch die bereits vorhandene `isStrong`-Variable, die inhaltlich dasselbe ausdrückt.
+- `SentenceTokenShatterScene.tsx`: Der Scanner-Balken lag laut DOM-Reihenfolge über dem Token-Stack und überdeckte die Wörter „deinen“ und „Satz“ während der Konvergenz um Frame 100–115 fast vollständig. Token-Stack bekam `zIndex: 5`, der Balken wurde zusätzlich abgedunkelt.
+- `SceneTransitionBridge.tsx`: Alle sieben Übergänge rendern mit `zIndex: 80`, höher als Titel (`zIndex: 30`) und kinetischer Untertitel (`zIndex: 40`) in `ReelChrome.tsx`. Am Übergang Szene 5→6 (Layer-Lift, Frame 648) führte das dazu, dass Titel und Untertitel der ankommenden Szene 6 für mehrere Frames komplett leer/unlesbar waren. Fix: Übergangs-Overlays auf `zIndex: 25` gesenkt, damit Titel und Untertitel immer sichtbar bleiben.
 
 ## Umgesetzte Choreografie
 
@@ -114,3 +125,17 @@ out/reels/why-ai-reads-differently/release-report.json
 ```
 
 Die technische Prüfung ersetzt nicht die visuelle Kontrolle von Textüberlauf, Choreografie, Rhythmus, Lautstärke und inhaltlicher Verständlichkeit.
+
+## Tatsächlich durchgeführte Prüfung (dieser Durchlauf)
+
+- Alle 10 Smoke-Frames und alle 32 Stills wurden mit dem Read-Tool visuell geöffnet und geprüft.
+- Ergebnis: `out/reels/why-ai-reads-differently/release-report.json` → `passed: true`, 33/33 Artefakte gültig, aktueller `sourceFingerprint`.
+- Volles MP4 (`out/reels/why-ai-reads-differently/why-ai-reads-differently.mp4`, 7.9 MB) via `ffprobe` geprüft: H.264 1080×1920 30fps 1080 Frames / 36.0s, AAC-Stereo-Audiospur 36.05s vorhanden.
+- Stichproben-Frames direkt aus dem finalen MP4 per `ffmpeg -ss ... -frames:v 1` gezogen (Frame 0, 15, 113, 200, 400, 654, 700, 938, 1000, 1079) und visuell mit den Stills abgeglichen — Fixes sind im finalen Render sichtbar.
+- `npm run motion:verify` lief grün durch (0 fehlgeschlagene Tests) — das bestehende allgemeine Motion-System ist durch die Reel-Änderungen nicht beschädigt.
+
+## Offene / nicht vollständig geprüfte Punkte
+
+- Die Übergänge decken beim Scannen der Einzel-Stills teils kurzzeitig Hauptinhalt (nicht Titel/Untertitel) ab, z. B. Word-Stream über Szene 6 kurz vor Szene 7, sowie Branch-Flash am Ende von Szene 4. Das ist als bewusster, kurzer (12 Frames / 0.4 s) Übergangs-Effekt eingeordnet und nicht weiter verändert worden — bei Bedarf für spätere Politur vermerkt.
+- Keine millisekundengenaue Voiceover-Synchronisierung behauptet; `voiceoverSrc` bleibt optional und wurde nicht mit echtem Audio getestet.
+- Lautstärkeverhältnisse der `SynthSoundtrack.tsx`-Effekte wurden nur über die MP4-Audiospur (Vorhandensein, Dauer, Codec) geprüft, nicht per Lautheitsmessung/Waveform-Analyse einzelner Cues.
