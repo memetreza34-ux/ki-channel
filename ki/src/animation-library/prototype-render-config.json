@@ -28,6 +28,10 @@
     {"compositionId": "Library-Probability-Fluid-Columns", "animationId": "probability-probability-fluid-columns-v1"},
     {"compositionId": "Library-Residual-River", "animationId": "model-processing-residual-river-v1"},
     {"compositionId": "Library-Answer-Loom", "animationId": "generation-answer-loom-v1"},
-    {"compositionId": "Library-Confidence-Glass-Crack", "animationId": "risk-contrast-confidence-glass-crack-v1"}
+    {"compositionId": "Library-Confidence-Glass-Crack", "animationId": "risk-contrast-confidence-glass-crack-v1"},
+    {"compositionId": "Library-Encryption-Vault-Layers", "animationId": "security-privacy-encryption-vault-layers-v1"},
+    {"compositionId": "Library-Latency-Tunnel-Race", "animationId": "scale-performance-latency-tunnel-race-v1"},
+    {"compositionId": "Library-Timeline-Microscope", "animationId": "time-change-timeline-microscope-v1"},
+    {"compositionId": "Library-Benchmark-Racetrack", "animationId": "comparison-benchmark-racetrack-v1"}
   ]
 }
