@@ -2,11 +2,14 @@
 
 ## Ziel
 
-Dieses System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet drei Ebenen:
+Dieses System verhindert, dass neue Reels immer wieder dieselben vollständigen Animationen verwenden. Es verbindet inzwischen sechs Ebenen:
 
 1. eine große semantisch beschriebene Animationsbibliothek,
 2. einen Reel-Planer mit Abwechslungs- und Wiederholungsschutz,
-3. ein versioniertes Creative Brain, das aus Renderprüfungen, Nutzerfeedback, Leistungsdaten und neuen Informationen lernt.
+3. einen Produktionsplaner für bestehende und neu zu bauende Animationen,
+4. einen Proposal-Compiler für wirklich neue Szenen,
+5. ein versioniertes Creative Brain mit Lern- und Tuning-Pipeline,
+6. ein eigenes Render-, Prüf- und Bibliotheks-Auditsystem.
 
 ## Sicherer Parallelbetrieb
 
@@ -16,9 +19,9 @@ Die Entwicklung liegt auf:
 feature/animation-library-brain
 ```
 
-Der Branch wurde vom aktuellen Stand von `feature/sentence-to-motion-system` abgezweigt. Dadurch kann Claude Code das Referenz-Reel auf dem ursprünglichen Branch testen, ohne dass beide Agenten gleichzeitig dieselben Dateien verändern.
+Der Branch wurde vom Stand von `feature/sentence-to-motion-system` abgezweigt. Dadurch kann Claude Code das Referenz-Reel auf dem ursprünglichen Branch testen, ohne dass beide Agenten gleichzeitig dieselben Dateien verändern.
 
-`main` wird nicht verändert. Es existiert noch kein Merge und kein neuer PR.
+`main` wird nicht verändert. Es existiert noch kein Merge und kein zusätzlicher PR.
 
 ## Aktueller Umfang
 
@@ -55,7 +58,7 @@ ki/src/animation-library/catalog.ts
 
 ### Bereits als Remotion-Code umgesetzt
 
-Sechs neue Prototypen sind ausführbar:
+Zwölf eigenständige Prototypen aus zwölf verschiedenen Familien sind als ausführbare Remotion-Compositions vorhanden:
 
 | Composition | Animation | Familie |
 |---|---|---|
@@ -65,8 +68,14 @@ Sechs neue Prototypen sind ausführbar:
 | `Library-Decision-Tree-Burst` | Decision Tree Burst | Entscheidungslogik |
 | `Library-Human-AI-Relay` | Human AI Relay | Mensch-KI-Zusammenarbeit |
 | `Library-Knowledge-Tree-Graft` | Knowledge Tree Graft | Lernen/Aktualisierung |
+| `Library-Magnetic-Phrase-Slicer` | Magnetic Phrase Slicer | Tokenisierung |
+| `Library-Vector-Prism-Converter` | Vector Prism Converter | Datenumwandlung |
+| `Library-Dynamic-Podium-Rise` | Dynamic Podium Rise | Ranking |
+| `Library-Subway-Workflow-Map` | Subway Workflow Map | Prozessfluss |
+| `Library-Funnel-Compression-Output` | Funnel Compression Output | Input/Output |
+| `Library-Anomaly-XRay-Scanner` | Anomaly X-Ray Scanner | Fehlererkennung |
 
-Diese Prototypen liegen unter:
+Die Prototypen liegen unter:
 
 ```text
 ki/src/animation-library/prototypes/
@@ -98,7 +107,27 @@ ki/src/animation-library/remotion-entry.tsx
 
 Die Planung erfolgt mit einer begrenzten Beam Search. Dadurch wird nicht jede Szene isoliert und gierig entschieden. Der Planer betrachtet mehrere mögliche Gesamtfolgen und bevorzugt eine abwechslungsreiche Choreografie für das komplette Reel.
 
-### Neue Animation statt unpassender Wiederholung
+## Produktionsplaner
+
+`productionPlanner.ts` verbindet den Choreografieplaner mit der tatsächlichen Umsetzung.
+
+Für jede Szene entsteht entweder:
+
+- eine konkrete Auswahl aus der vorhandenen Bibliothek oder
+- eine vollständige neue Build-Spezifikation.
+
+Der Produktionsplan enthält:
+
+- Quelle `library` oder `new-build`
+- endgültige Animation-ID
+- Katalogeintrag
+- Bewertungsgründe
+- Build-Spezifikation für neue Animationen
+- visuelle Familien, Layouts und Bewegungssignaturen des gesamten Reels
+- Qualitätswarnungen
+- eindeutigen Status `readyForImplementation`
+
+## Neue Animation statt unpassender Wiederholung
 
 Erreicht keine vorhandene Animation den Mindestwert, liefert der Planer keine schlechte Notlösung. Er erstellt einen `NewAnimationProposal` mit:
 
@@ -109,7 +138,19 @@ Erreicht keine vorhandene Animation den Mindestwert, liefert der Planer keine sc
 - vorgeschlagener neuer Bewegungsrichtung
 - vorgeschlagener Energie
 
-Damit wächst die Bibliothek genau dort, wo ein neues Reel eine bisher fehlende Visualisierung benötigt.
+`proposalCompiler.ts` übersetzt diesen Vorschlag in einen echten Bauvertrag mit:
+
+- neuer stabiler Animation-ID
+- garantiert nicht verbotener Layoutfamilie
+- garantiert nicht verbotener Bewegungssignatur
+- passenden Grundbausteinen
+- Übergangsverträgen
+- Kamerastil
+- Energie, Dichte und Komplexität
+- vier Choreografiephasen `establish`, `explain`, `contrast`, `resolve`
+- verpflichtenden Implementierungsregeln
+
+Eine neue Animation gilt ausdrücklich als nicht bestanden, wenn sie nur aus bestehenden Karten mit anderen Texten besteht.
 
 ## Creative Brain
 
@@ -147,6 +188,44 @@ Das Brain akzeptiert vier Ereignistypen:
 
 Direktes Nutzerfeedback erhält die stärkste Lernrate. Ein einzelner unsicherer Messwert verändert das System deutlich vorsichtiger.
 
+### Batch-Lernen
+
+`learningPipeline.ts` verarbeitet Beobachtungen und Animationsnutzung chronologisch und idempotent:
+
+- doppelte Beobachtungen werden nicht erneut gelernt
+- doppelte Reel-/Szenen-/Animationsnutzung wird übersprungen
+- neue Katalogeinträge werden vorher mit dem Brain abgeglichen
+- Fakten und Qualitätswerte werden in einer reproduzierbaren Reihenfolge aktualisiert
+
+### Automatisches Tuning
+
+`brainTuning.ts` verändert Regeln nur bei wiederholter Evidenz:
+
+- mehrere Beschwerden über Wiederholung erhöhen Neuheits- und Abwechslungsgewicht
+- mehrere Verständlichkeitsprobleme erhöhen semantische Passung
+- mehrere Render- oder Produktionsfehler erhöhen Produktionssicherheit
+- wenige oder einzelne Rückmeldungen verändern die Gewichte nicht sofort
+- alle Gewichte bleiben normalisiert und Änderungen sind begrenzt
+
+## Bibliotheks-Audit
+
+`libraryAudit.ts` prüft unter anderem:
+
+- doppelte Animation-IDs
+- doppelte Layout-/Bewegungssignaturen
+- unter- oder überfüllte Familien
+- fehlende Prototype-Abdeckung
+- zu schwache semantische Tags
+- unvollständige Übergangsverträge
+- zu hohe Kartenkonzentration
+- zu niedrige Produktionssicherheit bei Prototypen
+
+Der aktuelle Zielvertrag bleibt:
+
+```text
+22 Familien × 4 Varianten = 88 eindeutige Konzepte
+```
+
 ## Bestehende Animationshistorie
 
 `historyAdapter.ts` importiert die bereits verwendeten acht Szenen des ersten Referenz-Reels aus:
@@ -182,7 +261,7 @@ node scripts/render-animation-library.mjs smoke
 Erwartung:
 
 ```text
-6 Prototypen × 3 Smoke-Frames = 18 PNG-Dateien
+12 Prototypen × 3 Smoke-Frames = 36 PNG-Dateien
 ```
 
 ### Vollständige Prototyp-Prüfung
@@ -195,9 +274,9 @@ node scripts/check-animation-library-renders.mjs
 Erwartung:
 
 ```text
-6 Prototypen × 7 PNG-Dateien = 42 PNG-Dateien
-6 Prototypen × 1 MP4-Datei = 6 MP4-Dateien
-48/48 technisch gültige Artefakte
+12 Prototypen × 7 PNG-Dateien = 84 PNG-Dateien
+12 Prototypen × 1 MP4-Datei = 12 MP4-Dateien
+96/96 technisch gültige Artefakte
 ```
 
 Der technische Bericht liegt anschließend unter:
@@ -208,14 +287,14 @@ out/animation-library/release-report.json
 
 ## Ehrlicher Status
 
-Der Katalog, der Planer, das Creative Brain, die Persistenz, die Tests, das Render-System und sechs ausführbare Remotion-Prototypen sind als Code vorhanden.
+Der Katalog, beide Planerebenen, der Proposal-Compiler, das Creative Brain, Batch-Lernen, automatisches Tuning, Persistenz, Audit, Tests, Render-System und zwölf ausführbare Remotion-Prototypen sind als Code vorhanden.
 
 Noch nicht bestätigt sind:
 
 - TypeScript-Erfolg in einer echten lokalen Umgebung
 - bestandene Vitest-Tests
 - erfolgreiche Remotion-Render
-- visuelle Qualität der 42 Prüfbilder
-- Bewegungsqualität der sechs MP4-Dateien
+- visuelle Qualität der 84 Prüfbilder
+- Bewegungsqualität der zwölf MP4-Dateien
 
 Diese Punkte dürfen erst nach dem tatsächlichen Lauf als bestanden markiert werden.
