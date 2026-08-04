@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "reelId": "REPLACE_ME",
+  "assets": [
+    {
+      "assetId": "voiceover-main",
+      "path": "assets/audio/voiceover.wav",
+      "type": "audio",
+      "required": true,
+      "sceneIds": ["scene-01", "scene-02", "scene-03", "scene-04", "scene-05", "scene-06", "scene-07", "scene-08"],
+      "role": "voiceover",
+      "notes": "Final German voiceover. Do not replace with generated placeholder audio."
+    },
+    {
+      "assetId": "scene-01-background",
+      "path": "assets/images/scene-01-background.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-01"],
+      "role": "background",
+      "cropMode": "cover",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "animationSupport": ["parallax", "masked-focus", "light-emphasis"]
+    },
+    {
+      "assetId": "scene-01-main-object",
+      "path": "assets/layers/scene-01-main-object.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-01"],
+      "role": "foreground-object",
+      "cropMode": "contain",
+      "anchor": {"x": 0.5, "y": 0.55},
+      "animationSupport": ["translate", "scale", "depth", "transition-carry"]
+    },
+    {
+      "assetId": "scene-03-main",
+      "path": "assets/images/scene-03-main.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-03"],
+      "role": "main-illustration",
+      "cropMode": "contain",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "animationSupport": ["masked-region-focus", "callouts", "data-overlays"]
+    },
+    {
+      "assetId": "scene-06-background",
+      "path": "assets/images/scene-06-background.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-06"],
+      "role": "background",
+      "cropMode": "cover",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "animationSupport": ["parallax", "color-emphasis"]
+    },
+    {
+      "assetId": "scene-06-subject",
+      "path": "assets/layers/scene-06-subject.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-06"],
+      "role": "foreground-object",
+      "cropMode": "contain",
+      "anchor": {"x": 0.5, "y": 0.6},
+      "animationSupport": ["translate", "scale", "mask-reveal"]
+    },
+    {
+      "assetId": "scene-08-background",
+      "path": "assets/images/scene-08-background.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-08"],
+      "role": "background",
+      "cropMode": "cover",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "animationSupport": ["subtle-push", "contrast-change"]
+    },
+    {
+      "assetId": "brand-logo",
+      "path": "assets/images/brand-logo.png",
+      "type": "image",
+      "required": false,
+      "sceneIds": ["scene-08"],
+      "role": "brand-mark",
+      "cropMode": "contain",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "animationSupport": ["fade-in"]
+    }
+  ]
+}
