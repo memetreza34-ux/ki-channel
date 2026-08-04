@@ -2,12 +2,18 @@ import type {ComponentType} from 'react';
 import {z} from 'zod';
 import rawRenderConfig from '../prototype-render-config.json';
 import {getAnimationLibraryEntry} from '../catalog';
+import {AnomalyXRayScannerPrototype} from './AnomalyXRayScannerPrototype';
 import {BudgetLeakMeterPrototype} from './BudgetLeakMeterPrototype';
 import {ContextWindowTrainPrototype} from './ContextWindowTrainPrototype';
 import {DecisionTreeBurstPrototype} from './DecisionTreeBurstPrototype';
+import {DynamicPodiumRisePrototype} from './DynamicPodiumRisePrototype';
+import {FunnelCompressionOutputPrototype} from './FunnelCompressionOutputPrototype';
 import {HumanAIRelayPrototype} from './HumanAIRelayPrototype';
 import {KnowledgeMagnetPrototype} from './KnowledgeMagnetPrototype';
 import {KnowledgeTreeGraftPrototype} from './KnowledgeTreeGraftPrototype';
+import {MagneticPhraseSlicerPrototype} from './MagneticPhraseSlicerPrototype';
+import {SubwayWorkflowMapPrototype} from './SubwayWorkflowMapPrototype';
+import {VectorPrismConverterPrototype} from './VectorPrismConverterPrototype';
 
 const renderConfigSchema = z.object({
   version: z.literal(1),
@@ -49,6 +55,12 @@ const COMPONENTS: Record<string, ComponentType> = {
   'decision-logic-decision-tree-burst-v1': DecisionTreeBurstPrototype,
   'human-ai-collaboration-human-ai-relay-v1': HumanAIRelayPrototype,
   'learning-update-knowledge-tree-graft-v1': KnowledgeTreeGraftPrototype,
+  'tokenization-magnetic-phrase-slicer-v1': MagneticPhraseSlicerPrototype,
+  'data-transformation-vector-prism-converter-v1': VectorPrismConverterPrototype,
+  'ranking-dynamic-podium-rise-v1': DynamicPodiumRisePrototype,
+  'process-flow-subway-workflow-map-v1': SubwayWorkflowMapPrototype,
+  'input-output-funnel-compression-output-v1': FunnelCompressionOutputPrototype,
+  'error-detection-anomaly-xray-scanner-v1': AnomalyXRayScannerPrototype,
 };
 
 export const ANIMATION_PROTOTYPE_REGISTRY: AnimationPrototypeRegistration[] =
