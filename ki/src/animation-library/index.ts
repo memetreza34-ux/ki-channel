@@ -1,4 +1,6 @@
 export * from './schema';
+export * from './advancedPrototypeRegistry';
+export * from './advancedRecipes';
 export * from './catalog';
 export * from './brain';
 export * from './brainTuning';
@@ -25,5 +27,6 @@ export * from './rotationReport';
 export * from './sceneAnalyzer';
 export * from './CompletePrototypeGalleryRoot';
 export * from './ExpandedPrototypeGalleryRoot';
+export * from './MaximalPrototypeGalleryRoot';
 export * from './PrototypeGalleryRoot';
 export * from './prototypes/registry';
