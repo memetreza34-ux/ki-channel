@@ -3,15 +3,21 @@ import {z} from 'zod';
 import rawRenderConfig from '../prototype-render-config.json';
 import {getAnimationLibraryEntry} from '../catalog';
 import {AnomalyXRayScannerPrototype} from './AnomalyXRayScannerPrototype';
+import {AnswerLoomPrototype} from './AnswerLoomPrototype';
 import {BudgetLeakMeterPrototype} from './BudgetLeakMeterPrototype';
+import {ConfidenceGlassCrackPrototype} from './ConfidenceGlassCrackPrototype';
 import {ContextWindowTrainPrototype} from './ContextWindowTrainPrototype';
 import {DecisionTreeBurstPrototype} from './DecisionTreeBurstPrototype';
+import {DependencyBridgeBuilderPrototype} from './DependencyBridgeBuilderPrototype';
 import {DynamicPodiumRisePrototype} from './DynamicPodiumRisePrototype';
 import {FunnelCompressionOutputPrototype} from './FunnelCompressionOutputPrototype';
 import {HumanAIRelayPrototype} from './HumanAIRelayPrototype';
 import {KnowledgeMagnetPrototype} from './KnowledgeMagnetPrototype';
 import {KnowledgeTreeGraftPrototype} from './KnowledgeTreeGraftPrototype';
 import {MagneticPhraseSlicerPrototype} from './MagneticPhraseSlicerPrototype';
+import {MeaningTerrainPrototype} from './MeaningTerrainPrototype';
+import {ProbabilityFluidColumnsPrototype} from './ProbabilityFluidColumnsPrototype';
+import {ResidualRiverPrototype} from './ResidualRiverPrototype';
 import {SubwayWorkflowMapPrototype} from './SubwayWorkflowMapPrototype';
 import {VectorPrismConverterPrototype} from './VectorPrismConverterPrototype';
 
@@ -61,6 +67,12 @@ const COMPONENTS: Record<string, ComponentType> = {
   'process-flow-subway-workflow-map-v1': SubwayWorkflowMapPrototype,
   'input-output-funnel-compression-output-v1': FunnelCompressionOutputPrototype,
   'error-detection-anomaly-xray-scanner-v1': AnomalyXRayScannerPrototype,
+  'semantic-space-meaning-terrain-v1': MeaningTerrainPrototype,
+  'relationship-network-dependency-bridge-builder-v1': DependencyBridgeBuilderPrototype,
+  'probability-probability-fluid-columns-v1': ProbabilityFluidColumnsPrototype,
+  'model-processing-residual-river-v1': ResidualRiverPrototype,
+  'generation-answer-loom-v1': AnswerLoomPrototype,
+  'risk-contrast-confidence-glass-crack-v1': ConfidenceGlassCrackPrototype,
 };
 
 export const ANIMATION_PROTOTYPE_REGISTRY: AnimationPrototypeRegistration[] =
