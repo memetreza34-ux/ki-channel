@@ -4,7 +4,13 @@
   "title": "Warum KI halluziniert – und wie du es erkennst",
   "compositionId": "Reel-WhyAIHallucinates",
   "format": {"width": 1080, "height": 1920, "fps": 30, "durationInFrames": 1080},
-  "audio": {"path": "../02-audio/voiceover.wav", "soundMode": "off", "music": false},
+  "audio": {
+    "path": "../02-audio/voiceover.wav",
+    "soundMode": "off",
+    "music": false,
+    "playbackRate": 1.1,
+    "preservePitch": true
+  },
   "scenes": [
     {"id":"scene-01","start":0,"end":126,"heading":"Klingt sicher. Ist es wahr?","animationId":"confidence-glass-fracture-v2","layout":"single-glass-answer-stage","motion":"answer-form-confidence-lock-crack-reveal"},
     {"id":"scene-02","start":126,"end":258,"heading":"KI berechnet Fortsetzungen","animationId":"next-word-probability-rail-v2","layout":"horizontal-candidate-rail-yard","motion":"context-arrive-candidates-score-winner-lock"},
