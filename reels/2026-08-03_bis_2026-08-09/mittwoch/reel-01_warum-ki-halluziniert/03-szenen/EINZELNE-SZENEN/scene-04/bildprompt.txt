@@ -1,0 +1,3 @@
+A premium simplified 3D editorial illustration of four distinct floating document objects arranged in an open square formation on a near-white studio background. Top left: abstract identity record card without real data. Top right: numerical report sheet with abstract bars and no readable numbers. Bottom left: research paper object without logo. Bottom right: current-news card with a blank date area. Objects clearly separated, graphite and soft white materials with restrained violet details, generous negative space for animated labels, vertical 9:16, no people, no hands, no readable text, no logos.
+
+NEGATIVE: overlapping documents, real personal data, readable text, brands, humans, hands, robots, neon overload, busy background, watermark, subtitles.
