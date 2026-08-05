@@ -1,5 +1,0 @@
-Lege die finale Audiodatei exakt hier ab:
-
-voiceover.wav
-
-Empfohlen: WAV, 48 kHz, ohne Musik und ohne eingebaute Soundeffekte.
