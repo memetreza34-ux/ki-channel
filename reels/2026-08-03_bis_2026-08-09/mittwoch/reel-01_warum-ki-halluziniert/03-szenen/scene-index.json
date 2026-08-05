@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "scenes": [
+    {"id":"scene-01","type":"image","imageRequired":true,"folder":"EINZELNE-SZENEN/scene-01"},
+    {"id":"scene-02","type":"remotion","imageRequired":false,"folder":"EINZELNE-SZENEN/scene-02"},
+    {"id":"scene-03","type":"image","imageRequired":true,"folder":"EINZELNE-SZENEN/scene-03"},
+    {"id":"scene-04","type":"image","imageRequired":true,"folder":"EINZELNE-SZENEN/scene-04"},
+    {"id":"scene-05","type":"remotion","imageRequired":false,"folder":"EINZELNE-SZENEN/scene-05"},
+    {"id":"scene-06","type":"remotion","imageRequired":false,"folder":"EINZELNE-SZENEN/scene-06"},
+    {"id":"scene-07","type":"remotion","imageRequired":false,"folder":"EINZELNE-SZENEN/scene-07"},
+    {"id":"scene-08","type":"image","imageRequired":true,"folder":"EINZELNE-SZENEN/scene-08"}
+  ]
+}
