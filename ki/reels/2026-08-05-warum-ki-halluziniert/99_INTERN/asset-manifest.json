@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "reelId": "2026-08-05-warum-ki-halluziniert",
+  "assets": [
+    {
+      "assetId": "scene-01-confident-answer",
+      "path": "04_BILDER/scene-01-confident-answer.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-01"],
+      "treatment": "flat-image-with-remotion-mask-and-overlays",
+      "crop": "cover",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "notes": "No readable text, people, baked crack, headline, or subtitles."
+    },
+    {
+      "assetId": "scene-03-pattern-gap-machine",
+      "path": "04_BILDER/scene-03-pattern-gap-machine.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-03"],
+      "treatment": "transparent-cutout-with-remotion-input-output",
+      "crop": "contain",
+      "anchor": {"x": 0.5, "y": 0.52},
+      "notes": "Transparent PNG preferred; input, central gap, feeders, and output must be distinct."
+    },
+    {
+      "assetId": "scene-04-risk-documents",
+      "path": "04_BILDER/scene-04-risk-documents.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-04"],
+      "treatment": "flat-image-with-regional-focus-and-label-overlays",
+      "crop": "cover",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "notes": "Four document objects must be fully visible and separated."
+    },
+    {
+      "assetId": "scene-08-verification-desk",
+      "path": "04_BILDER/scene-08-verification-desk.png",
+      "type": "image",
+      "required": true,
+      "sceneIds": ["scene-08"],
+      "treatment": "flat-image-with-masked-source-window-and-remotion-gates",
+      "crop": "cover",
+      "anchor": {"x": 0.5, "y": 0.52},
+      "notes": "Three stations must remain visually separated."
+    },
+    {
+      "assetId": "voiceover-final",
+      "path": "05_AUDIO/voiceover.wav",
+      "type": "audio",
+      "required": true,
+      "sceneIds": ["scene-01", "scene-02", "scene-03", "scene-04", "scene-05", "scene-06", "scene-07", "scene-08"],
+      "treatment": "primary-voiceover",
+      "crop": "none",
+      "anchor": {"x": 0.5, "y": 0.5},
+      "notes": "Final German voiceover with no music and no baked SFX."
+    }
+  ]
+}
