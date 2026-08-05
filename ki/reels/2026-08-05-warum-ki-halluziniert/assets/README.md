@@ -1,18 +1,30 @@
 # Assets einfügen
 
-Erzeuge die vier Bilder exakt anhand von `../image-prompts.md` und speichere sie unter:
+Die Bildprompts liegen hier:
 
 ```text
-assets/images/scene-01-confident-answer.png
-assets/images/scene-03-pattern-gap-machine.png
-assets/images/scene-04-risk-documents.png
-assets/images/scene-08-verification-desk.png
+../visuals/image-prompts.md
+```
+
+Erzeuge die vier Bilder und speichere sie exakt unter:
+
+```text
+images/scene-01-confident-answer.png
+images/scene-03-pattern-gap-machine.png
+images/scene-04-risk-documents.png
+images/scene-08-verification-desk.png
 ```
 
 Speichere das finale deutsche Voiceover unter:
 
 ```text
-assets/audio/voiceover.wav
+audio/voiceover.wav
+```
+
+Die vollständige Maschinenliste liegt in:
+
+```text
+asset-manifest.json
 ```
 
 Keine Datei umbenennen. Keine Platzhalter, fremden Repository-Bilder oder eingebauten Untertitel verwenden.
@@ -20,7 +32,11 @@ Keine Datei umbenennen. Keine Platzhalter, fremden Repository-Bilder oder eingeb
 Danach aus dem Repository-Root ausführen:
 
 ```bash
-node scripts/prepare-codex-reel.mjs 2026-08-05-warum-ki-halluziniert --ready
+npm run codex:reel:prepare -- 2026-08-05-warum-ki-halluziniert --ready
 ```
 
-Codex beginnt erst, wenn diese Prüfung erfolgreich ist.
+Der generierte Codex-Brief erscheint anschließend unter:
+
+```text
+../codex/CODEX-BRIEF.generated.md
+```
