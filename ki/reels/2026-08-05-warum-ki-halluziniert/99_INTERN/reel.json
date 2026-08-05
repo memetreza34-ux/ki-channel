@@ -1,0 +1,149 @@
+{
+  "version": 3,
+  "reelId": "2026-08-05-warum-ki-halluziniert",
+  "title": "Warum KI halluziniert – und wie du es erkennst",
+  "compositionId": "Reel-WhyAIHallucinates",
+  "language": "de-DE",
+  "files": {
+    "start": "01_START-HIER.md",
+    "voiceover": "02_VOICEOVER.md",
+    "scenes": "03_SZENEN.md",
+    "imagePrompts": "04_BILDER/PROMPTS.md",
+    "audio": "05_AUDIO/voiceover.wav",
+    "codexTask": "06_CODEX.md",
+    "subtitleCues": "99_INTERN/subtitle-cues.json",
+    "animationPlan": "99_INTERN/animation-plan.md",
+    "assetManifest": "99_INTERN/asset-manifest.json",
+    "reviewChecklist": "99_INTERN/review-checklist.md",
+    "generatedBrief": "99_INTERN/CODEX-BRIEF.generated.md",
+    "packageReport": "99_INTERN/codex-package-report.json"
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 1080
+  },
+  "audio": {
+    "voiceoverAssetId": "voiceover-final",
+    "soundMode": "off",
+    "music": false
+  },
+  "style": {
+    "background": "near-white editorial",
+    "foreground": "#17121F",
+    "accent": "#7D49DF",
+    "danger": "#F25061",
+    "success": "#28B87E",
+    "imageStyle": "premium simplified 3D editorial illustration",
+    "humanFigures": false
+  },
+  "scenes": [
+    {
+      "sceneId": "scene-01",
+      "startFrame": 0,
+      "endFrameExclusive": 126,
+      "durationInFrames": 126,
+      "heading": "Klingt sicher. Ist es wahr?",
+      "mode": "hybrid-image",
+      "fullAnimationId": "confidence-glass-fracture-v2",
+      "visualFamily": "risk-contrast",
+      "layoutFamily": "single-glass-answer-stage",
+      "motionSignature": "answer-form-confidence-lock-crack-reveal"
+    },
+    {
+      "sceneId": "scene-02",
+      "startFrame": 126,
+      "endFrameExclusive": 258,
+      "durationInFrames": 132,
+      "heading": "KI berechnet Fortsetzungen",
+      "mode": "remotion-only",
+      "fullAnimationId": "next-word-probability-rail-v2",
+      "visualFamily": "probability",
+      "layoutFamily": "horizontal-candidate-rail-yard",
+      "motionSignature": "context-arrive-candidates-score-winner-lock"
+    },
+    {
+      "sceneId": "scene-03",
+      "startFrame": 258,
+      "endFrameExclusive": 396,
+      "durationInFrames": 138,
+      "heading": "Fehlende Quellen werden gefüllt",
+      "mode": "hybrid-cutout",
+      "fullAnimationId": "missing-source-pattern-filler-v1",
+      "visualFamily": "data-transformation",
+      "layoutFamily": "central-gap-filler-machine",
+      "motionSignature": "source-gap-open-patterns-feed-plausible-output"
+    },
+    {
+      "sceneId": "scene-04",
+      "startFrame": 396,
+      "endFrameExclusive": 528,
+      "durationInFrames": 132,
+      "heading": "Hier wird es besonders riskant",
+      "mode": "hybrid-image",
+      "fullAnimationId": "risk-category-document-orbit-v1",
+      "visualFamily": "ranking",
+      "layoutFamily": "four-quadrant-risk-orbit",
+      "motionSignature": "documents-orbit-category-lock-warning-rank"
+    },
+    {
+      "sceneId": "scene-05",
+      "startFrame": 528,
+      "endFrameExclusive": 666,
+      "durationInFrames": 138,
+      "heading": "Warnzeichen 1: vage Antworten",
+      "mode": "ui-reconstruction",
+      "fullAnimationId": "vague-answer-focus-collapse-v1",
+      "visualFamily": "error-detection",
+      "layoutFamily": "single-chat-answer-focus-grid",
+      "motionSignature": "answer-reveal-vague-phrases-highlight-detail-collapse"
+    },
+    {
+      "sceneId": "scene-06",
+      "startFrame": 666,
+      "endFrameExclusive": 798,
+      "durationInFrames": 132,
+      "heading": "Warnzeichen 2: tote Quellen",
+      "mode": "ui-reconstruction",
+      "fullAnimationId": "dead-source-link-check-v1",
+      "visualFamily": "retrieval-search",
+      "layoutFamily": "browser-link-verification-lane",
+      "motionSignature": "links-arrive-open-check-fail-mark"
+    },
+    {
+      "sceneId": "scene-07",
+      "startFrame": 798,
+      "endFrameExclusive": 936,
+      "durationInFrames": 138,
+      "heading": "Warnzeichen 3: Details wechseln",
+      "mode": "ui-comparison",
+      "fullAnimationId": "followup-detail-contradiction-v1",
+      "visualFamily": "comparison",
+      "layoutFamily": "mirrored-chat-contradiction-stage",
+      "motionSignature": "answer-a-lock-followup-answer-b-align-delta-flash"
+    },
+    {
+      "sceneId": "scene-08",
+      "startFrame": 936,
+      "endFrameExclusive": 1080,
+      "durationInFrames": 144,
+      "heading": "Prüfen statt vertrauen",
+      "mode": "hybrid-image",
+      "fullAnimationId": "verification-triple-gate-v1",
+      "visualFamily": "process-flow",
+      "layoutFamily": "three-gate-verification-desk",
+      "motionSignature": "claim-enter-source-open-date-check-verified-lock"
+    }
+  ],
+  "checkpoints": [
+    0, 34, 78, 125,
+    126, 164, 214, 257,
+    258, 300, 350, 395,
+    396, 434, 484, 527,
+    528, 572, 620, 665,
+    666, 704, 754, 797,
+    798, 842, 890, 935,
+    936, 980, 1030, 1079
+  ]
+}
