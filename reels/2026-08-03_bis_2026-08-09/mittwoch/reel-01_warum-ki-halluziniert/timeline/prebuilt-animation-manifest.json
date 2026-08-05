@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "compositionId": "Reel-WhyAIHallucinates",
+  "sourceRoot": "alles/ki/src/reels/why-ai-hallucinates",
+  "codexAnimationCodingRequired": false,
+  "animations": [
+    {"sceneId":"scene-01","id":"confidence-glass-fracture-v2","source":"scenes/Scene01ConfidenceGlass.tsx"},
+    {"sceneId":"scene-02","id":"next-word-probability-rail-v2","source":"scenes/Scene02ProbabilityRail.tsx"},
+    {"sceneId":"scene-03","id":"missing-source-pattern-filler-v1","source":"scenes/Scene03PatternFiller.tsx"},
+    {"sceneId":"scene-04","id":"risk-category-document-orbit-v1","source":"scenes/Scene04RiskDocuments.tsx"},
+    {"sceneId":"scene-05","id":"vague-answer-focus-collapse-v1","source":"scenes/Scene05VagueAnswer.tsx"},
+    {"sceneId":"scene-06","id":"dead-source-link-check-v1","source":"scenes/Scene06DeadSources.tsx"},
+    {"sceneId":"scene-07","id":"followup-detail-contradiction-v1","source":"scenes/Scene07Contradiction.tsx"},
+    {"sceneId":"scene-08","id":"verification-triple-gate-v1","source":"scenes/Scene08Verification.tsx"}
+  ]
+}
