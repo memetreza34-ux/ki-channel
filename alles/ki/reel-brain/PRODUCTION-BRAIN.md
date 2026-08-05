@@ -2,76 +2,191 @@
 
 ## Zweck
 
-Dieses Dokument ist die dauerhafte Wahrheit für den gesamten KI-Reel-Workflow. Es verhindert, dass bei jedem Reel erneut geklärt werden muss, wer plant, wer Assets erzeugt, wer programmiert und wann ein Reel wirklich fertig ist.
+Dieses Dokument ist die dauerhafte Wahrheit für den gesamten KI-Reel-Workflow. Es legt fest, wie das Repository sichtbar aufgebaut ist, was vorab programmiert wird, welche Medien der Nutzer einfügt und welche Aufgaben Codex anschließend ausführt.
 
-## Klare Aufgabenverteilung
+## Kanäle bleiben vollständig getrennt
+
+- Dieses Repository ist ausschließlich für den KI-Kanal.
+- FinanzNeo bleibt ein eigenständiges Repository.
+- Keine FinanzNeo-Dateien, FinanzNeo-Workspaces oder FinanzNeo-Kanalordner hier anlegen.
+- Übernommen wird nur die bewährte Ordner- und Produktionslogik.
+
+## Verbindliche sichtbare Repository-Struktur
+
+```text
+KI-Channel/
+├── AGENTS.md
+├── CLAUDE.md
+├── README.md
+├── reels/
+├── youtube/
+└── alles/
+```
+
+Bedeutung:
+
+- `reels/` enthält ausschließlich aktive Reel-Projekte.
+- `youtube/` bleibt für spätere längere Videos reserviert.
+- `alles/` enthält den gesamten technischen Unterbau: Remotion-Code, Bibliotheken, Skripte, Tests, Regeln und interne Dokumentation.
+
+Keine zusätzlichen sichtbaren Technikordner am Repository-Root anlegen.
+
+## Verbindliche Reel-Struktur
+
+Jedes Reel liegt unter:
+
+```text
+reels/<woche>/<wochentag>/<reel-thema>/
+```
+
+Jeder Reel-Ordner verwendet genau diese Struktur:
+
+```text
+reel-thema/
+├── 00-cover/
+├── 01-voice-script/
+├── 02-audio/
+├── 03-szenen/
+│   └── EINZELNE-SZENEN/
+│       ├── scene-01/
+│       ├── scene-02/
+│       └── ...
+├── 04-caption/
+├── 05-review/
+├── 06-video/
+├── AGENTS.md
+├── README.md
+├── render/
+└── timeline/
+```
+
+### Sichtbare Inhalte
+
+- `00-cover/`: Cover und Hook.
+- `01-voice-script/`: kopierfertiger Fließtext, Szenenzuordnung und Voice-Anweisung.
+- `02-audio/`: genau eine vom Nutzer eingefügte Audio- oder Mediendatei.
+- `03-szenen/`: alle Prompts, Szenenindex und ein eigener Ordner pro Szene.
+- `04-caption/`: Social-Caption und Hinweise zum Video-Untertitel.
+- `05-review/`: Status, Quellenprüfung, Timing, QA-Berichte und Codex-Ausführung.
+- `06-video/`: finales MP4.
+- `render/`: automatisch erzeugte Prüf-Frames.
+- `timeline/`: technischer Reel-Vertrag, Storyboard, Motion-Design und Animationsmanifest.
+
+Keine alten Parallelstrukturen, doppelten Planungsdateien oder zusätzliche Sammelordner innerhalb eines Reel-Projekts behalten.
+
+## Aufgabenverteilung
 
 ### Planung und Vorbau
 
-Vor dem Einfügen externer Assets werden vollständig erstellt:
+Vor dem Einfügen externer Medien werden vollständig erstellt:
 
 - Thema, Hook und redaktionelle Struktur
 - finaler deutscher Voiceover-Text
 - Szenenreihenfolge und Kernaussage jeder Szene
-- Bildentscheidung pro Szene
-- vollständige Bildprompts und exakte Dateinamen
+- Entscheidung, welche Szenen Bilder benötigen
+- vollständige Bildprompts
 - Überschriften, Untertitelregeln und wichtige Wortreaktionen
 - individuelle Hauptanimationen und Übergänge
 - ausführbarer Remotion-Code für sämtliche Szenen
-- Audiovertrag, Assetvertrag, Tests und Render-Checkpoints
-- fertiger Auftrag für Codex
+- Composition-Registrierung
+- Audiovertrag und Medienvertrag
+- Tests, Checkpoints und Renderpipeline
+- Reel-lokaler Codex-Auftrag
 
-Die Planung ist kein loses Konzept. Der Remotion-Code muss bereits existieren, bevor der Nutzer Bilder und Audio einfügt.
+Die Planung ist kein loses Konzept. Der Remotion-Code muss vor dem Einfügen der Nutzer-Medien existieren.
 
 ### Nutzer
 
 Der Nutzer muss nur:
 
-1. die freigegebenen Bildprompts verwenden
-2. die Bilder unter den exakt vorgegebenen Dateinamen ablegen
-3. das Voiceover aus dem finalen Text in normaler Quellgeschwindigkeit erzeugen
-4. `voiceover.wav` in den Audioordner legen
-5. Codex mit dem vorhandenen Auftrag starten
-6. das finale MP4 persönlich freigeben
+1. den fertigen Voiceover-Text in einem Voice-Tool bei normaler Quellgeschwindigkeit erzeugen
+2. genau eine unterstützte Audio- oder Mediendatei direkt in `02-audio/` ablegen
+3. die freigegebenen Bildprompts verwenden
+4. bei jeder als Bildszene markierten Szene genau eine unterstützte Bilddatei direkt in den jeweiligen Szenenordner legen
+5. den vorhandenen Gesamtbuild mit Codex starten
+6. das finale MP4 persönlich ansehen und freigeben
 
-Der Nutzer muss keine Frames planen, keine Animationen erfinden und keine Remotion-Komponenten schreiben.
+Der Dateiname der eingefügten Medien ist egal. Der Ordner bestimmt die Funktion.
+
+### Medienregeln
+
+Audio:
+
+```text
+02-audio/<beliebiger-dateiname>.wav|mp3|m4a|aac|ogg|mp4|mov|webm
+```
+
+Bildszene:
+
+```text
+03-szenen/EINZELNE-SZENEN/scene-XX/<beliebiger-dateiname>.png|jpg|jpeg|webp
+```
+
+Regeln:
+
+- In `02-audio/` liegt genau eine unterstützte Medien-Datei.
+- In jeder benötigten Bildszene liegt genau eine unterstützte Bilddatei.
+- In Remotion-only-Szenen liegt keine Bilddatei.
+- Fehlende, leere oder doppelte Medien stoppen den Build.
+- Codex darf fehlende Medien nicht durch Platzhalter oder fremde Bilder ersetzen.
 
 ### Codex
 
-Codex ist nach dem Einfügen der Assets Produktionsingenieur, nicht Creative Director. Codex:
+Codex ist nach dem Einfügen der Medien Produktionsingenieur, nicht Creative Director.
+
+Codex:
 
 1. prüft Branch und Arbeitsbaum
-2. liest dieses Gehirn und den Reel-Auftrag
-3. prüft alle realen Assets
-4. kopiert sie in den Remotion-Public-Ordner
-5. transkribiert das finale Voiceover mit Wortzeiten
-6. rechnet die Wortzeiten auf die tatsächliche Wiedergabe bei 1,10x um
-7. ersetzt die vorläufigen Cues durch echte Cues
-8. richtet Hauptanimationen, Wortreaktionen und Szenenwechsel an den echten Zeiten aus
-9. führt TypeScript und fokussierte Tests aus
-10. rendert Smoke- und Checkpoint-Frames
-11. prüft jeden Frame groß und in Smartphone-Größe
-12. korrigiert Überlappungen, leere Starts, schlechte Holds und schwache Synchronität
-13. rendert das vollständige MP4
-14. sieht das gesamte MP4 in normaler Videogeschwindigkeit an
-15. führt technische Artefaktprüfung aus
-16. markiert nur tatsächlich bestandene Review-Punkte
+2. liest Root- und Reel-lokale `AGENTS.md`
+3. liest dieses Produktionsgehirn
+4. führt ausschließlich den reel-spezifischen Gesamtbuild aus
+5. erkennt die Nutzer-Medien anhand ihrer Ordner
+6. normalisiert Audio und Bilder für Remotion
+7. verwendet den bereits programmierten Remotion-Code
+8. führt TypeScript und fokussierte Tests aus
+9. rendert alle Checkpoint-Frames
+10. führt technische Artefaktprüfung aus
+11. rendert Cover und vollständiges MP4
+12. erzeugt Kontaktbogen und Build-Bericht
+13. behebt nur konkret nachgewiesene technische Fehler
+14. führt nach einer Korrektur denselben Gesamtbuild erneut aus
+15. behauptet keine manuelle visuelle Freigabe
+
+Codex darf nicht:
+
+- das Storyboard neu erfinden
+- das Voiceover umschreiben
+- neue Vollanimationen entwerfen, obwohl sie bereits programmiert sind
+- Dateien nur aus Geschmacksgründen refaktorieren
+- Musik oder Soundeffekte ergänzen
+- mergen oder einen Pull Request auf „Ready“ setzen
+
+## Ein-Befehl-Prinzip
+
+Jedes vorprogrammierte Reel besitzt einen einzigen normalen Build-Befehl. Für das Halluzinations-Reel lautet er aus `alles/`:
+
+```bash
+node scripts/build-why-ai-hallucinates.mjs \
+../reels/2026-08-03_bis_2026-08-09/mittwoch/reel-01_warum-ki-halluziniert
+```
+
+Ein Gesamtbuild soll Medienprüfung, Staging, Tests, TypeScript, Checkpoint-Render, MP4, Cover, technische QA, Kontaktbogen und Build-Bericht bündeln.
 
 ## Audiovertrag
 
 ```text
-Quelldatei: voiceover.wav bei 1,00x erzeugen
+Quelldatei: bei 1,00x erzeugen
 Remotion playbackRate: 1.10
 Tonhöhe: natürlich erhalten
 Musik: aus
 Soundeffekte: aus
 ```
 
-Das Audio darf nicht vorab extern auf 1,10x beschleunigt werden, sonst entsteht doppelte Beschleunigung. Der endgültige Taktgeber ist immer die reale Audiodatei.
+Das Audio darf nicht vorab extern auf 1,10x beschleunigt werden, sonst entsteht doppelte Beschleunigung.
 
 ### Transcript-Synchronisierung
 
-Vorläufige Untertitel-Cues dienen nur dem Vorbau. Nach Einfügen von `voiceover.wav` muss Codex echte Wortzeiten ermitteln.
+Vorläufige Cues dienen nur dem Vorbau. Exakte Synchronität darf erst nach Verarbeitung des echten Voiceovers behauptet werden.
 
 Für einen Wortzeitpunkt `t` in der 1,00x-Quelldatei gilt:
 
@@ -80,24 +195,13 @@ Videosekunde = t / 1.10
 Videoframe = round(Videosekunde × 30)
 ```
 
-Untertitel, wichtige Wortreaktionen und erklärende Zustandswechsel verwenden dieselben berechneten Zeitpunkte. Keine getrennten Schätzsysteme.
+Untertitel, wichtige Wortreaktionen und erklärende Zustandswechsel müssen dieselben finalen Zeitpunkte verwenden. Keine getrennten Schätzsysteme.
 
-### Wenn das Audio nicht in die geplante Dauer passt
-
-Inhalt und Szenenreihenfolge bleiben gesperrt. Framegrenzen dürfen technisch angepasst werden, wenn die finale 1,10x-Tonspur sonst abgeschnitten wäre oder unnatürlich gequetscht werden müsste. Dabei:
-
-- keinen Satz abschneiden
-- keine Wörter entfernen
-- keine künstlichen Sprechpausen ergänzen
-- Ergebnis-Holds erhalten
-- `reel.json`, Checkpoints, Tests und Renderplan gemeinsam aktualisieren
-- Abweichung im Abschlussbericht nennen
+Falls die automatische Wortzeit-Ermittlung für ein Reel noch nicht technisch ausgeführt wurde, muss dieser Punkt ausdrücklich als offen gemeldet werden. Vorläufige Cues dürfen nicht als exakte Transkriptsynchronisierung bezeichnet werden.
 
 ## Bildvertrag
 
-Bilder werden ausschließlich anhand der freigegebenen Prompts erzeugt. Codex darf kein fehlendes Bild ersetzen.
-
-Ein Bild ist nur ein visueller Anker. Remotion übernimmt:
+Ein Bild ist ein visueller Anker. Remotion übernimmt:
 
 - Überschriften und Untertitel
 - Zahlen, Diagramme und Labels
@@ -140,11 +244,12 @@ Regeln:
 
 - korrekte Auflösung, FPS und Dauer
 - fortlaufende Szenengrenzen
-- gültige Assetpfade
+- gültige Medien und Assetpfade
 - geordnete Cues innerhalb der Szenen
-- TypeScript bestanden
-- fokussierte Tests bestanden
+- TypeScript wirklich ausgeführt und bestanden
+- fokussierte Tests wirklich ausgeführt und bestanden
 - gültige PNG- und MP4-Artefakte
+- aktueller Build-Bericht vorhanden
 
 ### Visuell
 
@@ -155,6 +260,7 @@ Regeln:
 - maximal drei konkurrierende starke Bewegungen
 - Bildszenen enthalten echte Erklärung statt bloßem Zoom
 - Smartphone-Kontrast und Lesbarkeit bestätigt
+- vollständiges aktuelles MP4 angesehen
 
 ### Redaktionell
 
@@ -173,28 +279,11 @@ Diese Begriffe dürfen nicht vermischt werden:
 - `typechecked`: TypeScript wurde wirklich ausgeführt
 - `tested`: Tests wurden wirklich ausgeführt
 - `rendered`: aktueller Code wurde wirklich gerendert
+- `technically-validated`: aktuelle Artefakte wurden technisch geprüft
 - `visually-reviewed`: aktueller Render wurde wirklich angesehen
 - `approved`: Nutzer hat die Endfassung freigegeben
 
-Eine implementierte Szene ist nicht automatisch getestet oder gerendert.
-
-## Reel-spezifischer Ablauf
-
-```text
-Planung + Prompts + Remotion-Vorbau
-→ Nutzer fügt Bilder und 1,00x-Audio ein
-→ Asset-Staging
-→ finales Transcript
-→ 1,10x-Zeitumrechnung
-→ Synchronisierung
-→ Typecheck + Tests
-→ Checkpoint-Render
-→ visuelle Korrektur
-→ MP4-Render
-→ vollständige Ansicht
-→ technische Prüfung
-→ Nutzerfreigabe
-```
+Eine implementierte Szene ist nicht automatisch getestet, gerendert oder freigegeben.
 
 ## Lernregel
 
