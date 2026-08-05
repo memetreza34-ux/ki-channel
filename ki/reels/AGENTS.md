@@ -1,81 +1,74 @@
 # Codex instructions for `ki/reels/`
 
-## Production package is the contract
+## Minimal visible reel structure
 
-Every real hybrid reel uses this structure:
+Real reels keep only the files a human normally needs at the top level:
 
 ```text
 ki/reels/<slug>/
-├── README.md
-├── reel.json
-├── script/
-│   ├── voiceover.md
-│   └── subtitle-cues.json
-├── scenes/
-│   ├── README.md
-│   └── scene-XX.md
-├── visuals/
-│   ├── image-prompts.md
-│   └── animation-plan.md
-├── assets/
-│   ├── asset-manifest.json
-│   ├── README.md
-│   ├── images/
-│   └── audio/
-└── codex/
-    ├── CODEX_ASSEMBLY_TASK.md
+├── 01_START-HIER.md
+├── 02_VOICEOVER.md
+├── 03_SZENEN.md
+├── 04_BILDER/
+│   ├── PROMPTS.md
+│   └── generated PNG files
+├── 05_AUDIO/
+│   └── voiceover.wav
+├── 06_CODEX.md
+└── 99_INTERN/
+    ├── reel.json
+    ├── subtitle-cues.json
+    ├── animation-plan.md
+    ├── asset-manifest.json
+    ├── review-checklist.md
     ├── CODEX-BRIEF.generated.md
-    ├── codex-package-report.json
-    └── review-checklist.md
+    └── codex-package-report.json
 ```
 
-Read only the named reel package. Do not scan every historical reel unless comparison is explicitly requested.
+Do not create additional planning folders or duplicate scene documents unless the user explicitly asks for them.
 
 ## Authority order
 
-1. `reel.json` — format, duration, composition ID, scene order, frame ranges, file map
-2. `script/voiceover.md` — approved narration
-3. `scenes/scene-XX.md` — scene-specific explanation, image, choreography, important words, transition
-4. `visuals/animation-plan.md` — global motion, layering, color and transition rules
-5. `visuals/image-prompts.md` — intended design of supplied images
-6. `script/subtitle-cues.json` — approximate or final word timing
-7. `assets/asset-manifest.json` — exact paths, ownership, crop, anchors, roles and requirements
-8. `codex/CODEX_ASSEMBLY_TASK.md` — implementation sequence and commands
-9. `codex/review-checklist.md` — actual verification only
+1. `99_INTERN/reel.json` — format, duration, scene order and frame ranges
+2. `02_VOICEOVER.md` — approved narration
+3. `03_SZENEN.md` — all scene content, visuals, choreography and transitions
+4. `99_INTERN/animation-plan.md` — technical motion rules
+5. `04_BILDER/PROMPTS.md` — design intent for supplied images
+6. `99_INTERN/subtitle-cues.json` — approximate or final word timings
+7. `99_INTERN/asset-manifest.json` — exact required asset paths
+8. `06_CODEX.md` — implementation task
+9. `99_INTERN/review-checklist.md` — actual verification only
 
-Do not silently resolve contradictions. Report them and stop when they affect implementation.
+Do not silently resolve contradictions. Report implementation-blocking conflicts.
 
-## Asset readiness
+## Before coding
 
-Before coding, run:
+Run:
 
 ```bash
 npm run codex:reel:prepare -- <slug> --ready
 ```
 
-Stop when required assets are missing, unreadable, duplicated or outside the reel package. Never create placeholders or substitute unrelated repository images.
+Stop when required images or audio are missing. Never generate placeholders or use unrelated repository assets.
 
-## Token-efficient work
-
-After successful validation, read:
+After validation, use this as the compact technical context:
 
 ```text
-ki/reels/<slug>/codex/CODEX-BRIEF.generated.md
+ki/reels/<slug>/99_INTERN/CODEX-BRIEF.generated.md
 ```
-
-Use it as primary context. Open original files only to resolve a specific ambiguity.
 
 ## Assembly behavior
 
-- implement exactly the declared scenes and frame ranges
-- use supplied images and audio without redesigning approved content
-- reuse low-level primitives, not a complete unrelated reel
-- respect image treatment: flat, masked, cutout or Remotion-only
+- implement exactly the declared eight scenes and frame ranges
+- preserve the approved voiceover
+- use the supplied images and audio
 - use `staticFile()` and centralized asset helpers
-- never bake subtitles or headings into images
-- default to `soundMode: "off"`
-- do not change the approved voiceover to make implementation easier
+- animate image regions through masks, overlays, local focus or meaningful state changes
+- never use only a generic image zoom
+- render every spoken word but emphasize only important words
+- keep `soundMode: "off"` unless explicitly changed later
+- do not modify `main`
 
 ## Completion
 
-A reel is not complete until current-source typecheck, focused tests, checkpoint renders, current MP4, technical validation and manual visual review have genuinely been completed. Old renders are invalid after source changes.
+A reel is not complete until current-source typecheck, focused tests, checkpoint renders, current MP4, technical artifact validation and manual visual review have genuinely passed. Old renders do not count after source changes.
