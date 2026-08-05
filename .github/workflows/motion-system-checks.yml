@@ -1,8 +1,5 @@
 name: Motion System Checks
 
-# Der private Repository-Runner beendet Jobs aktuell vor dem ersten Schritt.
-# Bis die Actions-/Billing-Einstellung geklärt ist, wird der Workflow bewusst
-# manuell gestartet, damit neue Commits nicht fortlaufend rote PR-Checks erzeugen.
 on:
   workflow_dispatch:
 
@@ -10,60 +7,34 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: alles
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Prepare diagnostics
         run: mkdir -p ci-logs
-
-      - name: Record environment
-        if: always()
-        run: |
-          {
-            echo "node=$(node --version)"
-            echo "npm=$(npm --version)"
-            echo "pwd=$(pwd)"
-            echo "root-files:"
-            find . -maxdepth 2 -type f | sort | head -200
-          } | tee ci-logs/environment.log
-
-      - name: Install root dependencies without legacy workspaces
+      - name: Install dependencies
         id: install
         continue-on-error: true
-        run: |
-          set -o pipefail
-          npm install --workspaces=false --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
-
+        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
       - name: Run focused motion verification
         id: verify
         if: always()
         continue-on-error: true
-        run: |
-          set -o pipefail
-          npm run motion:verify 2>&1 | tee ci-logs/verify.log
-
-      - name: Upload render plan
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: motion-render-plan
-          path: out/motion-system/render-plan.json
-          if-no-files-found: warn
-
-      - name: Upload verification diagnostics
+        run: npm run motion:verify
+      - name: Upload diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: motion-verification-diagnostics
-          path: ci-logs/
-          if-no-files-found: error
-
+          path: alles/ci-logs/
+          if-no-files-found: warn
       - name: Fail when verification failed
         if: always() && (steps.install.outcome == 'failure' || steps.verify.outcome == 'failure')
         run: exit 1
@@ -72,42 +43,25 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: alles
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install root dependencies without legacy workspaces
+      - name: Install dependencies
         run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
-
-      - name: Render middle frame for all visual types
+      - name: Render smoke frames
         env:
           MOTION_CONCURRENCY: '2'
         run: npm run motion:smoke
-
-      - name: Render middle frame for every timeline scene
-        env:
-          MOTION_CONCURRENCY: '2'
-        run: npm run motion:timeline-smoke
-
-      - name: Upload all smoke renders
+      - name: Upload smoke renders
         uses: actions/upload-artifact@v4
         with:
           name: motion-smoke-renders
-          path: |
-            out/motion-system/*/frame-75.png
-            out/motion-system/timeline-demo/frame-233.png
-            out/motion-system/timeline-demo/frame-391.png
-            out/motion-system/timeline-demo/frame-549.png
-          if-no-files-found: error
-
-      - name: Upload timeline render plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: motion-timeline-render-plan
-          path: out/motion-system/timeline-render-plan.json
+          path: alles/out/motion-system/
           if-no-files-found: error

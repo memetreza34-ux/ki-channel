@@ -1,0 +1,29 @@
+GEMEINSAMER STIL
+premium simplified 3D editorial illustration, sophisticated technology explainer aesthetic, near-white studio background, dark graphite materials, restrained violet accent light, subtle warm gray shadows, clean geometric forms, high-end product visualization, realistic soft global illumination, crisp edges, controlled depth, uncluttered composition, vertical 9:16 framing, free space above for headline and below for subtitles, no people, no hands, no faces, no robots, no readable text, no logos, no watermark
+
+NEGATIVE PROMPT FÜR ALLE
+humans, hands, faces, body parts, android, humanoid robot, glowing brain, cyberpunk city, blue neon overload, random particles, illegible text, gibberish letters, logos, brands, watermark, subtitles, flat clipart, childish cartoon, busy background, lens flare, extreme bloom, black background
+
+BILD 1
+DATEI: scene-01-confident-answer.png
+A premium simplified 3D editorial illustration of a single elegant transparent glass answer panel floating in a clean near-white studio. The panel looks authoritative and highly polished, with subtle layered abstract lines inside suggesting a fluent AI answer, but no readable text. A refined violet confidence halo surrounds the panel. The lower third contains only a nearly invisible structural tension line, leaving room for a later animated crack. Dark graphite support geometry, soft realistic shadow, centered composition, generous empty space above and below, vertical 9:16, no people, no logos, no readable text.
+
+BILD 3
+DATEI: scene-03-pattern-gap-machine.png
+A premium simplified 3D editorial cutout of an abstract AI pattern-filling machine, isolated on a transparent background. The machine has one clearly visible empty central slot, a left input channel, a clean right output tray, and three smaller side feeders containing distinct geometric pattern tiles. Matte graphite, frosted white and restrained violet materials, crisp silhouette, separated components suitable for masking, no readable text, no logos, no people, no hands, transparent background, vertical composition.
+
+BILD 4
+DATEI: scene-04-risk-documents.png
+A premium simplified 3D editorial illustration of four distinct floating document objects arranged in an open square formation on a near-white studio background. Top left: abstract identity record card without real data. Top right: numerical report sheet with abstract bars and no readable numbers. Bottom left: research paper object without logo. Bottom right: current-news card with a blank date area. Objects clearly separated, graphite and soft white materials with restrained violet details, generous negative space for animated labels, vertical 9:16, no people, no readable text, no logos.
+
+BILD 8
+DATEI: scene-08-verification-desk.png
+A premium simplified 3D editorial verification desk without people in a clean near-white studio. Three separated stations from left to right: a floating answer-card holder, a central source-document inspection window with layered paper and blank date strip, and a right-side verified-result tray. Subtle rails connect the stations, no labels or readable text. Graphite, frosted white and restrained violet materials, strong layer separation, plenty of empty space above and below, vertical 9:16, no people, no hands, no logos.
+
+ABLEHNEN WENN
+- Text oder Fantasieschrift eingebaut ist
+- Hände, Menschen oder Roboter sichtbar sind
+- wichtige Teile am Rand abgeschnitten sind
+- Überschrift- oder Untertitelzone blockiert wird
+- das Motiv nur dekorativ statt erklärend wirkt
+- die vier Bilder sichtbar unterschiedliche Stile haben

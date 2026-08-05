@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "reelId": "2026-08-05-warum-ki-halluziniert",
+  "timingStatus": "approximate-until-final-voiceover-transcript",
+  "windowSize": 9,
+  "scenes": [
+    {
+      "sceneId": "scene-01",
+      "words": [
+        {"text": "KI", "atFrame": 8, "emphasis": "accent"},
+        {"text": "kann", "atFrame": 20, "emphasis": "none"},
+        {"text": "völlig", "atFrame": 32, "emphasis": "none"},
+        {"text": "überzeugend", "atFrame": 44, "emphasis": "accent"},
+        {"text": "klingen", "atFrame": 58, "emphasis": "none"},
+        {"text": "und", "atFrame": 70, "emphasis": "none"},
+        {"text": "trotzdem", "atFrame": 84, "emphasis": "danger"},
+        {"text": "etwas", "atFrame": 98, "emphasis": "none"},
+        {"text": "erfinden.", "atFrame": 110, "emphasis": "danger"}
+      ]
+    },
+    {
+      "sceneId": "scene-02",
+      "words": [
+        {"text": "Das", "atFrame": 5, "emphasis": "none"},
+        {"text": "passiert,", "atFrame": 13, "emphasis": "none"},
+        {"text": "weil", "atFrame": 21, "emphasis": "none"},
+        {"text": "sie", "atFrame": 29, "emphasis": "none"},
+        {"text": "keine", "atFrame": 37, "emphasis": "danger"},
+        {"text": "Wahrheit", "atFrame": 45, "emphasis": "danger"},
+        {"text": "nachschlägt,", "atFrame": 53, "emphasis": "none"},
+        {"text": "sondern", "atFrame": 61, "emphasis": "none"},
+        {"text": "Wort", "atFrame": 69, "emphasis": "accent"},
+        {"text": "für", "atFrame": 77, "emphasis": "none"},
+        {"text": "Wort", "atFrame": 85, "emphasis": "accent"},
+        {"text": "die", "atFrame": 93, "emphasis": "none"},
+        {"text": "wahrscheinlichste", "atFrame": 101, "emphasis": "accent"},
+        {"text": "Fortsetzung", "atFrame": 114, "emphasis": "accent"},
+        {"text": "berechnet.", "atFrame": 124, "emphasis": "accent"}
+      ]
+    },
+    {
+      "sceneId": "scene-03",
+      "words": [
+        {"text": "Fehlen", "atFrame": 8, "emphasis": "danger"},
+        {"text": "klare", "atFrame": 20, "emphasis": "none"},
+        {"text": "Quellen,", "atFrame": 32, "emphasis": "danger"},
+        {"text": "füllt", "atFrame": 44, "emphasis": "accent"},
+        {"text": "sie", "atFrame": 56, "emphasis": "none"},
+        {"text": "Lücken", "atFrame": 68, "emphasis": "danger"},
+        {"text": "mit", "atFrame": 80, "emphasis": "none"},
+        {"text": "Mustern", "atFrame": 92, "emphasis": "accent"},
+        {"text": "aus", "atFrame": 104, "emphasis": "none"},
+        {"text": "ihren", "atFrame": 116, "emphasis": "none"},
+        {"text": "Trainingsdaten.", "atFrame": 128, "emphasis": "accent"}
+      ]
+    },
+    {
+      "sceneId": "scene-04",
+      "words": [
+        {"text": "Besonders", "atFrame": 8, "emphasis": "none"},
+        {"text": "gefährlich", "atFrame": 20, "emphasis": "danger"},
+        {"text": "wird", "atFrame": 32, "emphasis": "none"},
+        {"text": "es", "atFrame": 44, "emphasis": "none"},
+        {"text": "bei", "atFrame": 56, "emphasis": "none"},
+        {"text": "Namen,", "atFrame": 68, "emphasis": "accent"},
+        {"text": "Zahlen,", "atFrame": 80, "emphasis": "accent"},
+        {"text": "Studien", "atFrame": 92, "emphasis": "accent"},
+        {"text": "und", "atFrame": 104, "emphasis": "none"},
+        {"text": "aktuellen", "atFrame": 114, "emphasis": "danger"},
+        {"text": "Ereignissen.", "atFrame": 124, "emphasis": "danger"}
+      ]
+    },
+    {
+      "sceneId": "scene-05",
+      "words": [
+        {"text": "Drei", "atFrame": 10, "emphasis": "accent"},
+        {"text": "Warnzeichen", "atFrame": 26, "emphasis": "danger"},
+        {"text": "helfen", "atFrame": 42, "emphasis": "none"},
+        {"text": "dir:", "atFrame": 58, "emphasis": "none"},
+        {"text": "Die", "atFrame": 74, "emphasis": "none"},
+        {"text": "Antwort", "atFrame": 90, "emphasis": "accent"},
+        {"text": "bleibt", "atFrame": 106, "emphasis": "none"},
+        {"text": "vage,", "atFrame": 122, "emphasis": "danger"}
+      ]
+    },
+    {
+      "sceneId": "scene-06",
+      "words": [
+        {"text": "Quellen", "atFrame": 12, "emphasis": "accent"},
+        {"text": "lassen", "atFrame": 36, "emphasis": "none"},
+        {"text": "sich", "atFrame": 60, "emphasis": "none"},
+        {"text": "nicht", "atFrame": 84, "emphasis": "danger"},
+        {"text": "öffnen,", "atFrame": 108, "emphasis": "danger"}
+      ]
+    },
+    {
+      "sceneId": "scene-07",
+      "words": [
+        {"text": "oder", "atFrame": 10, "emphasis": "none"},
+        {"text": "konkrete", "atFrame": 28, "emphasis": "accent"},
+        {"text": "Details", "atFrame": 46, "emphasis": "accent"},
+        {"text": "wechseln", "atFrame": 64, "emphasis": "danger"},
+        {"text": "nach", "atFrame": 82, "emphasis": "none"},
+        {"text": "einer", "atFrame": 100, "emphasis": "none"},
+        {"text": "Nachfrage.", "atFrame": 118, "emphasis": "accent"}
+      ]
+    },
+    {
+      "sceneId": "scene-08",
+      "words": [
+        {"text": "Deshalb", "atFrame": 4, "emphasis": "none"},
+        {"text": "gilt:", "atFrame": 9, "emphasis": "none"},
+        {"text": "wichtige", "atFrame": 14, "emphasis": "accent"},
+        {"text": "Aussagen", "atFrame": 19, "emphasis": "accent"},
+        {"text": "gegenprüfen,", "atFrame": 25, "emphasis": "success"},
+        {"text": "Originalquellen", "atFrame": 32, "emphasis": "success"},
+        {"text": "öffnen", "atFrame": 39, "emphasis": "success"},
+        {"text": "und", "atFrame": 45, "emphasis": "none"},
+        {"text": "bei", "atFrame": 50, "emphasis": "none"},
+        {"text": "Unsicherheit", "atFrame": 56, "emphasis": "danger"},
+        {"text": "ausdrücklich", "atFrame": 63, "emphasis": "none"},
+        {"text": "nach", "atFrame": 69, "emphasis": "none"},
+        {"text": "Belegen", "atFrame": 75, "emphasis": "success"},
+        {"text": "fragen.", "atFrame": 81, "emphasis": "none"},
+        {"text": "Klingt", "atFrame": 88, "emphasis": "none"},
+        {"text": "eine", "atFrame": 93, "emphasis": "none"},
+        {"text": "Antwort", "atFrame": 98, "emphasis": "accent"},
+        {"text": "sicher,", "atFrame": 104, "emphasis": "accent"},
+        {"text": "ist", "atFrame": 109, "emphasis": "none"},
+        {"text": "sie", "atFrame": 114, "emphasis": "none"},
+        {"text": "noch", "atFrame": 119, "emphasis": "none"},
+        {"text": "lange", "atFrame": 124, "emphasis": "none"},
+        {"text": "nicht", "atFrame": 129, "emphasis": "danger"},
+        {"text": "wahr.", "atFrame": 135, "emphasis": "danger"}
+      ]
+    }
+  ]
+}
