@@ -1,0 +1,3 @@
+KEIN EXTERNES BILD ERZEUGEN.
+
+Diese Szene ist als neutraler Chat-UI-Nachbau vollständig in Remotion programmiert. Keine Bilddatei in diesen Ordner legen.
