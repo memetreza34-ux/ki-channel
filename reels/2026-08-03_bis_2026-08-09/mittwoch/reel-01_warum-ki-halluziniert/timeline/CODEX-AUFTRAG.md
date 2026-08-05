@@ -5,14 +5,25 @@ Arbeite ausschließlich auf dem aktuellen Branch und verändere `main` nicht.
 ## Zuerst lesen
 
 1. `alles/AGENTS.md`
-2. diesen Reel-Ordner
-3. `01-voice-script/voiceover.txt`
-4. `03-szenen/szenenplan.md`
-5. `03-szenen/alle-bildprompts.txt`
-6. `04-caption/subtitle-cues.json`
-7. alle Dateien in `timeline/`
+2. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
+3. diesen Reel-Ordner
+4. `01-voice-script/voiceover.txt`
+5. `03-szenen/szenenplan.md`
+6. `03-szenen/alle-bildprompts.txt`
+7. `04-caption/subtitle-cues.json`
+8. alle Dateien in `timeline/`
 
-## Assets prüfen
+## Vorhandener Remotion-Code
+
+Die acht Szenen sind bereits vollständig vorgebaut unter:
+
+```text
+alles/ki/src/reels/why-ai-hallucinates/
+```
+
+Codex erfindet die Szenen nicht neu. Codex integriert die realen Assets, ersetzt die vorläufigen Wortzeiten durch das finale Transcript, synchronisiert die vorhandenen Bewegungen und korrigiert den aktuellen Render.
+
+## Assets prüfen und bereitstellen
 
 Beginne erst, wenn diese Dateien real vorhanden und nicht leer sind:
 
@@ -22,19 +33,24 @@ Beginne erst, wenn diese Dateien real vorhanden und nicht leer sind:
 - `03-szenen/BILDER-HIER-EINFUEGEN/scene-04-risk-documents.png`
 - `03-szenen/BILDER-HIER-EINFUEGEN/scene-08-verification-desk.png`
 
-Keine Platzhalter oder fremden Bilder einsetzen.
+Keine Platzhalter oder fremden Bilder einsetzen. Aus `alles/` ausführen:
 
-## Implementierung
+```bash
+node scripts/stage-why-ai-hallucinates-assets.mjs
+```
 
-Der technische Code liegt unter `alles/`. Führe npm-Befehle aus `alles/` aus. Erstelle die Composition `Reel-WhyAIHallucinates` im bestehenden Remotion-System. Schreibe Voiceover, Szenenreihenfolge, Frames, Überschriften und Bildkonzepte nicht um.
+## Transcript und Synchronisierung
 
-Baue alle acht individuellen Szenen exakt nach `03-szenen/szenenplan.md`. Nutze ausschließlich die deklarierten Assets. Bilder erhalten erklärende Masken, Zustandsänderungen und Overlays; kein generischer Dauerzoom. Untertitel zeigen nur bereits gesprochene Wörter und maximal neun gleichzeitig.
+1. Transkribiere die finale 1,00x-Quelldatei mit Wortzeiten.
+2. Ordne jedes Wort der richtigen Szene zu.
+3. Schreibe die echten Quell-Cues in `04-caption/subtitle-cues.json`.
+4. Der vorhandene Code teilt die Cue-Frames durch `playbackRate = 1.10`.
+5. Richte wichtige Wortreaktionen und Hauptzustände an denselben Zeiten aus.
+6. Prüfe Satzenden und Szenenwechsel gegen die echte Tonspur.
+
+Wenn die beschleunigte Tonspur nicht sauber in 1080 Frames passt, darfst du ausschließlich die Framegrenzen technisch anpassen. Inhalt, Szenenreihenfolge und Voiceover bleiben unverändert. Aktualisiere dann gemeinsam `timeline/reel.json`, Checkpoints, Tests und Renderplan.
 
 ## Audio
-
-Audio besteht ausschließlich aus `02-audio/voiceover.wav`.
-
-Verbindliche Wiedergabe:
 
 ```text
 playbackRate = 1.10
@@ -43,19 +59,32 @@ soundMode = off
 music = false
 ```
 
-Die Stimme muss mit **1,10x** abgespielt werden, ohne künstlich höhere Tonlage. Untertitel, wichtige Wortreaktionen, Szenenbewegungen und Übergänge müssen anhand der tatsächlich beschleunigten Tonspur synchronisiert werden. Keine Timings von der ursprünglichen 1,00x-Datei ungeprüft übernehmen.
+Keine Musik, Beeps, Noise-Sweeps, Übergangssounds oder Wort-SFX.
 
-Keine Musik, Beeps, Noise-Sweeps, Übergangssounds oder Wort-SFX hinzufügen.
+## Technische Prüfung
 
-## Prüfung
+Aus `alles/`:
 
-1. TypeScript und fokussierte Tests ausführen.
-2. Test hinzufügen, der `playbackRate === 1.1`, `preservePitch === true`, `soundMode === "off"` und `music === false` prüft.
-3. Alle 32 Frames aus `timeline/reel.json` nach `render/` rendern.
-4. Jeden Frame groß und in Smartphone-Größe visuell prüfen.
-5. Fehler korrigieren.
-6. Vollständiges MP4 nach `06-video/` rendern.
-7. MP4 in normaler Videogeschwindigkeit vollständig ansehen und prüfen, ob die Stimme hörbar bei 1,10x läuft, aber natürlich bleibt.
-8. `05-review/checkliste.md` nur für tatsächlich bestandene Punkte aktualisieren.
+```bash
+npx tsc --noEmit -p ki/tsconfig.json
+npx vitest run ki/src/reels/why-ai-hallucinates/__tests__/contract.test.ts
+node scripts/render-why-ai-hallucinates.mjs smoke
+node scripts/render-why-ai-hallucinates.mjs stills
+node scripts/render-why-ai-hallucinates.mjs video
+node scripts/check-why-ai-hallucinates.mjs
+```
 
-Keinen Erfolg behaupten, der nicht wirklich getestet, gerendert und angesehen wurde.
+Prüfe alle 32 Frames aus `timeline/reel.json` groß und in Smartphone-Größe. Sieh das vollständige MP4 in normaler Videogeschwindigkeit an. Behebe Fehler im Code und rendere danach erneut.
+
+## Abschluss
+
+Aktualisiere `05-review/checkliste.md` nur für wirklich bestandene Punkte. Melde getrennt:
+
+- implementiert
+- typechecked
+- getestet
+- gerendert
+- visuell geprüft
+- vom Nutzer freigegeben
+
+Keinen Erfolg behaupten, der nicht wirklich ausgeführt und angesehen wurde.

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "mission": "Premium German vertical AI explainer reels built from approved scripts, generated assets and deterministic Remotion code.",
+  "responsibilities": {
+    "planner": ["topic", "hook", "final voiceover", "scene order", "image prompts", "animation choreography", "Remotion prebuild", "tests", "Codex task"],
+    "user": ["generate approved images", "generate final voiceover at normal source speed", "place files at exact paths", "approve final MP4"],
+    "codex": ["validate assets", "stage assets", "transcribe final audio", "synchronize cues", "integrate assets into prebuilt code", "run tests", "render", "inspect", "fix", "report honestly"]
+  },
+  "audio": {
+    "sourceGenerationSpeed": 1,
+    "playbackRate": 1.1,
+    "preservePitch": true,
+    "music": false,
+    "soundEffects": "off",
+    "timingSource": "final voiceover transcript"
+  },
+  "visual": {
+    "format": {"width": 1080, "height": 1920, "fps": 30},
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 3,
+    "subtitleWindowWords": 9,
+    "hardCutsDefault": true,
+    "genericImageZoomAllowed": false,
+    "peopleAllowedByDefault": false
+  },
+  "statusVocabulary": ["planned", "implemented", "typechecked", "tested", "rendered", "visually-reviewed", "approved"],
+  "releaseRequires": ["real assets", "final transcript", "typecheck", "focused tests", "all checkpoints", "full MP4", "normal-speed watch", "phone-size review", "technical artifact validation", "user approval"]
+}
