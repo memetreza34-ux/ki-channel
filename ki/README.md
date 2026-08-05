@@ -1,56 +1,86 @@
-# KI-Kanal — direkter Einstieg
+# KI-Kanal
 
-Der KI-Faceless-Kanal ist über diesen Ordner auf `main` direkt auffindbar.
+Dieses Repository gehört ausschließlich zum deutschen KI-Faceless-Kanal.
 
-## Aktueller Produktionsstand
+**FinanzNeo ist ein eigenes Repository und besitzt keine gemeinsame Reel-, Asset-, Code- oder Produktionsstruktur mit diesem Projekt.** Ein gleichnamiger Ordner neben `Ki-channel` im Finder ist lediglich ein Schwesterordner im lokalen Oberordner und kein Bestandteil dieses Repositories.
 
-Die aktive Entwicklung des vollständigen KI Auto-Reel Builders läuft derzeit auf:
-
-```text
-Branch: agent/ki-reel-builder-v1
-Draft-PR: #2
-Kanalpfad: channels/ki
-```
-
-Der Produktionsbranch bleibt bis zum bestandenen echten Test-Reel getrennt. Auf `main` dient diese Datei als stabiler Einstiegspunkt.
-
-## Zum aktuellen KI-Builder wechseln
-
-```bash
-git fetch origin
-git switch agent/ki-reel-builder-v1
-git pull
-```
-
-Danach zuerst lesen:
+## Hauptstruktur
 
 ```text
-CHATGPT_START_HIER.md
-channels/ki/CHATGPT_GEHIRN.md
-channels/ki/SCHEDULING_POLICY.md
+ki/
+├── AGENTS.md                 # Regeln für Codex im KI-Bereich
+├── README.md                 # dieser Einstieg
+├── animation-library/        # Animationskatalog und Produktionsdokumentation
+├── bausteine/                # wiederverwendbare visuelle Grundbausteine
+├── brand/                    # Farben, Typografie und Designregeln
+├── gehirn/                   # Kanalwissen und redaktionelle Regeln
+├── reels/                    # jedes echte Reel als eigenes Produktionspaket
+├── src/                      # Remotion- und TypeScript-Quellcode
+├── package.json
+└── remotion.config.ts
 ```
 
-## Schnellbefehle im Produktionsbranch
+## Reel-Struktur
+
+Jedes echte Reel liegt vollständig in einem eigenen Ordner:
+
+```text
+ki/reels/<datum-und-slug>/
+├── README.md
+├── reel.json
+├── script/
+│   ├── voiceover.md
+│   └── subtitle-cues.json
+├── scenes/
+│   ├── README.md
+│   ├── scene-01.md
+│   ├── scene-02.md
+│   └── ...
+├── visuals/
+│   ├── image-prompts.md
+│   └── animation-plan.md
+├── assets/
+│   ├── asset-manifest.json
+│   ├── README.md
+│   ├── images/
+│   └── audio/
+└── codex/
+    ├── CODEX_ASSEMBLY_TASK.md
+    ├── CODEX-BRIEF.generated.md
+    ├── codex-package-report.json
+    └── review-checklist.md
+```
+
+Damit sind Sprechtext, Szenen, Bilder, Animationen, Assets und Codex-Auftrag sofort getrennt auffindbar.
+
+## Aktuelles Reel
+
+```text
+ki/reels/2026-08-05-warum-ki-halluziniert/
+```
+
+Titel:
+
+```text
+Warum KI halluziniert – und wie du es erkennst
+```
+
+## Codex-Vorbereitung
+
+Planung prüfen:
 
 ```bash
-cd channels/ki
-npm run builder:status
-npm run reel:new -- <vollständige Themenparameter>
-npm run week:new -- --plan="/pfad/week-plan.json"
-npm run test:auto-reel
+npm run codex:reel:prepare -- 2026-08-05-warum-ki-halluziniert
 ```
 
-## Terminlogik
+Nach Einfügen aller Bilder und des Voiceovers:
 
-- `Mach ein Reel` → nächster freier Produktionstag.
-- `Plane eine ganze Woche` → sieben unterschiedliche Reels von Montag bis Sonntag.
-- Maximal ein Reel pro Wochentag.
-- Keine vorsorglich leeren Tagesordner.
+```bash
+npm run codex:reel:prepare -- 2026-08-05-warum-ki-halluziniert --ready
+```
 
-## Kanalprofil
+Codex verwendet anschließend primär:
 
-- Thema: Künstliche Intelligenz verständlich erklärt
-- Inhalte: KI-Tools, Agenten, Automatisierung, Konzepte, Sicherheit und relevante Neuigkeiten
-- Sprache: Deutsch
-- Format: hochwertige Faceless-Reels mit 3D-Illustrationen und Meaning-first-Remotion
-- Bildwelt: helle Premium Editorial-Tech-Illustrationen mit Graphit, Lila und Cyan
+```text
+ki/reels/2026-08-05-warum-ki-halluziniert/codex/CODEX-BRIEF.generated.md
+```
