@@ -1,0 +1,17 @@
+SPRACHE
+Deutsch, klar und natürlich.
+
+STIMME
+Ruhig, kompetent, leicht energisch. Keine Werbestimme, keine übertriebene Dramatik.
+
+QUELLGESCHWINDIGKEIT
+Die Audiodatei bei normaler Geschwindigkeit 1,00x erzeugen. Nicht vorher beschleunigen.
+
+VERARBEITUNG IM REEL
+Remotion verwendet playbackRate 1.10. Die Tonhöhe muss natürlich bleiben. Untertitel und Wortreaktionen werden an die tatsächlich verwendete Audiodatei angepasst.
+
+DATEI
+Lege genau eine Audio- oder Mediendatei direkt in 02-audio/. Der Dateiname ist egal.
+
+VERBOTEN
+Keine Musik, keine Soundeffekte, keine langen Pausen, keine eingesprochenen Szenennummern und keine zusätzlichen Sätze.
