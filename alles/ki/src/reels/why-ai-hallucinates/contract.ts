@@ -1,5 +1,5 @@
-import rawReel from '../../../../../reels/2026-08-03_bis_2026-08-09/mittwoch/reel-01_warum-ki-halluziniert/timeline/reel.json';
-import rawSubtitleCues from '../../../../../reels/2026-08-03_bis_2026-08-09/mittwoch/reel-01_warum-ki-halluziniert/04-caption/subtitle-cues.json';
+import rawPackage from '../../../../../reels/2026-08-03_bis_2026-08-09/mittwoch/reel-01_warum-ki-halluziniert/timeline/codex-reel-package.json';
+import {FALLBACK_SUBTITLE_CUES} from './fallbackSubtitleCues';
 
 export type HallucinationSceneId =
   | 'scene-01'
@@ -21,6 +21,7 @@ export type SubtitleCue = {
 
 export type HallucinationScene = {
   id: HallucinationSceneId;
+  type: 'image' | 'remotion';
   start: number;
   end: number;
   heading: string;
@@ -29,30 +30,23 @@ export type HallucinationScene = {
   motion: string;
 };
 
-export const HALLUCINATION_REEL = rawReel;
-export const HALLUCINATION_REEL_ID = rawReel.reelId;
-export const HALLUCINATION_COMPOSITION_ID = rawReel.compositionId;
-export const HALLUCINATION_WIDTH = rawReel.format.width;
-export const HALLUCINATION_HEIGHT = rawReel.format.height;
-export const HALLUCINATION_FPS = rawReel.format.fps;
-export const HALLUCINATION_DURATION = rawReel.format.durationInFrames;
-export const HALLUCINATION_SCENES = rawReel.scenes as HallucinationScene[];
-export const HALLUCINATION_CHECKPOINTS = rawReel.checkpoints;
-export const HALLUCINATION_AUDIO = rawReel.audio;
-
-export const SOURCE_CUE_PLAYBACK_RATE = 1;
+export const HALLUCINATION_REEL = rawPackage;
+export const HALLUCINATION_REEL_ID = rawPackage.slug;
+export const HALLUCINATION_COMPOSITION_ID = rawPackage.composition.id;
+export const HALLUCINATION_WIDTH = rawPackage.composition.width;
+export const HALLUCINATION_HEIGHT = rawPackage.composition.height;
+export const HALLUCINATION_FPS = rawPackage.composition.fps;
+export const HALLUCINATION_DURATION = rawPackage.composition.durationInFrames;
+export const HALLUCINATION_SCENES = rawPackage.scenes as HallucinationScene[];
+export const HALLUCINATION_CHECKPOINTS = rawPackage.checkpoints;
+export const HALLUCINATION_AUDIO = rawPackage.audio;
 export const TARGET_PLAYBACK_RATE = HALLUCINATION_AUDIO.playbackRate;
-
-const subtitleSource = rawSubtitleCues.scenes as Array<{
-  sceneId: HallucinationSceneId;
-  words: SubtitleCue[];
-}>;
 
 export const SUBTITLE_CUES: Record<HallucinationSceneId, readonly SubtitleCue[]> =
   Object.fromEntries(
-    subtitleSource.map((scene) => [
-      scene.sceneId,
-      scene.words.map((word) => ({
+    Object.entries(FALLBACK_SUBTITLE_CUES).map(([sceneId, words]) => [
+      sceneId,
+      words.map((word) => ({
         ...word,
         atFrame: Math.round(word.atFrame / TARGET_PLAYBACK_RATE),
       })),
