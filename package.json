@@ -1,11 +1,11 @@
 {
-  "name": "studio",
+  "name": "ki-channel-studio",
   "version": "0.1.0",
   "private": true,
-  "description": "Content-Studio mit 1 Kanal: KI-Kanal (FinanzNeo wurde nach memetreza34-ux/finanzneo extrahiert)",
+  "description": "Eigenständiges Produktionsstudio für den deutschen KI-Faceless-Kanal",
   "workspaces": [
     "core",
-    "channels/*"
+    "ki"
   ],
   "scripts": {
     "validate:worktrees": "node scripts/validate-worktree-rules.mjs",
@@ -86,6 +86,7 @@
     "micro-motion:render": "node scripts/render-micro-motions.mjs all",
     "micro-motion:check": "node scripts/check-micro-motion-renders.mjs",
     "micro-motion:full-release-check": "npm run micro-motion:verify && npm run micro-motion:render && npm run micro-motion:check",
+    "codex:reel:prepare": "node scripts/prepare-codex-reel.mjs",
     "bits:find": "npx -y remotion-bits find",
     "bits:fetch": "npx -y remotion-bits fetch",
     "bits:mcp": "npx -y remotion-bits mcp",
