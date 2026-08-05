@@ -1,143 +1,100 @@
 # Codex-first hybrid reel workflow
 
-## Goal
+## Ziel
 
-Codex should spend context on implementation, testing and visual correction—not on rediscovering the reel concept. Every reel therefore arrives as a structured production contract.
+Der Nutzer soll im Reel-Ordner nur die Dateien sehen, mit denen er wirklich arbeitet. Technische Verträge und Prüfdateien liegen gesammelt in `99_INTERN/`.
 
-## Reel structure
+## Reel-Struktur
 
 ```text
 ki/reels/<slug>/
-├── README.md
-├── reel.json
-├── script/
-│   ├── voiceover.md
-│   └── subtitle-cues.json
-├── scenes/
-│   ├── README.md
-│   └── scene-XX.md
-├── visuals/
-│   ├── image-prompts.md
-│   └── animation-plan.md
-├── assets/
-│   ├── asset-manifest.json
-│   ├── README.md
-│   ├── images/
-│   └── audio/
-└── codex/
-    ├── CODEX_ASSEMBLY_TASK.md
+├── 01_START-HIER.md
+├── 02_VOICEOVER.md
+├── 03_SZENEN.md
+├── 04_BILDER/
+│   ├── PROMPTS.md
+│   └── fertige PNGs
+├── 05_AUDIO/
+│   └── voiceover.wav
+├── 06_CODEX.md
+└── 99_INTERN/
+    ├── reel.json
+    ├── subtitle-cues.json
+    ├── animation-plan.md
+    ├── asset-manifest.json
+    ├── review-checklist.md
     ├── CODEX-BRIEF.generated.md
-    ├── codex-package-report.json
-    └── review-checklist.md
+    └── codex-package-report.json
 ```
 
-This separates narration, scene planning, visual design, assets and Codex execution.
+## Sichtbare Arbeitsdateien
 
-## Responsibilities
+- `01_START-HIER.md` erklärt den Ablauf.
+- `02_VOICEOVER.md` enthält den finalen Sprechtext.
+- `03_SZENEN.md` enthält alle Szenen, Bilder, Animationen und Übergänge.
+- `04_BILDER/PROMPTS.md` enthält die Bildprompts.
+- `04_BILDER/` nimmt die fertigen Bilder auf.
+- `05_AUDIO/` nimmt das finale Voiceover auf.
+- `06_CODEX.md` ist der einzige Auftrag, der an Codex übergeben wird.
 
-### Creative planning before Codex
+## Technische Dateien
 
-- topic, hook and final voiceover
-- scene order and exact frame ranges
-- one scene file per scene
-- image or Remotion decision per scene
-- image prompts and exact asset paths
-- important-word reactions and transitions
-- subtitle cues or transcript timestamps
-- review gates
+Alles, was der Nutzer normalerweise nicht manuell bearbeiten muss, liegt in `99_INTERN/`:
 
-### Asset step
+- Format, Dauer und Framebereiche
+- ungefähre oder finale Wortzeiten
+- technischer Animationsvertrag
+- Asset-Manifest
+- Review-Checkliste
+- automatisch erzeugter Codex-Brief
+- Paketbericht
 
-Place generated images and final voiceover at the paths declared by:
+## Vorbereitung
 
-```text
-assets/asset-manifest.json
-```
-
-### Codex step
-
-- validate package and assets
-- read the generated compact brief
-- implement the Remotion composition
-- add focused tests
-- run typecheck and tests
-- render and visually inspect checkpoints
-- fix layout and choreography issues
-- render and watch the current MP4
-- run technical artifact validation
-- update only genuinely completed review items
-
-## Prepare for Codex
-
-Planning validation:
+Planung ohne Pflichtassets prüfen:
 
 ```bash
 npm run codex:reel:prepare -- <slug>
 ```
 
-Strict readiness validation after assets are present:
+Nach Einfügen aller Bilder und des Voiceovers:
 
 ```bash
 npm run codex:reel:prepare -- <slug> --ready
 ```
 
-The command writes:
+Der Befehl erzeugt:
 
 ```text
-ki/reels/<slug>/codex/CODEX-BRIEF.generated.md
-ki/reels/<slug>/codex/codex-package-report.json
+ki/reels/<slug>/99_INTERN/CODEX-BRIEF.generated.md
+ki/reels/<slug>/99_INTERN/codex-package-report.json
 ```
 
-## Short Codex task
+## Codex-Ablauf
 
-```text
-Read all applicable AGENTS.md files.
-Implement the reel package at ki/reels/<slug>/.
-Use codex/CODEX-BRIEF.generated.md as primary context.
-Work only on the current branch and do not redesign approved content.
-Run required tests and renders, inspect outputs visually, fix issues,
-and report exact results honestly.
-```
+Codex erhält nur den Auftrag aus `06_CODEX.md`. Danach soll Codex:
 
-## Token-saving design
+1. das Paket mit `--ready` prüfen
+2. den generierten Brief aus `99_INTERN/` lesen
+3. die Remotion-Composition implementieren
+4. fokussierte Tests und Typecheck ausführen
+5. Checkpoints rendern und visuell prüfen
+6. Fehler korrigieren
+7. das aktuelle MP4 rendern und ansehen
+8. technische Artefaktprüfungen ausführen
+9. nur tatsächlich bestandene Punkte abhaken
 
-The generated brief contains:
+## Bildregel
 
-- format and scene timing
-- final narration
-- every individual scene file
-- asset inventory
-- image prompts
-- global animation rules
-- subtitle cues
-- Codex execution scope
-- review checklist
+Ein Bild darf niemals nur mit einem generischen Dauerzoom gezeigt werden. Remotion ergänzt stattdessen inhaltliche Masken, lokale Fokusse, Labels, Zustandsänderungen, Diagramme, Übergangsobjekte oder UI-Reaktionen.
 
-Codex should not repeatedly load unrelated repository history or other reels.
+## Audio
 
-## Image strategy
+- Voiceover zuerst
+- keine Musik
+- SFX standardmäßig aus
+- keine Beeps, Noise-Sweeps oder Sounds pro Wort
 
-Use generated images for complex editorial objects or environments. Use Remotion for headings, subtitles, arrows, labels, charts, counters, UI focus, masks, reveals, semantic transitions and important-word reactions.
+## Definition of Done
 
-A flat image never receives only a generic zoom. Every image scene needs a meaningful state change or explanatory overlay.
-
-## Audio standard
-
-- final voiceover first
-- SFX off by default
-- no generated beeps or noise sweeps
-- no sound for every word
-- SFX only through an explicit later request and A/B comparison
-
-## Definition of done
-
-A reel is complete only when:
-
-- readiness validation passes with real assets
-- TypeScript passes
-- focused tests pass
-- all declared checkpoints render and are inspected
-- current MP4 renders and is watched at normal speed
-- mobile readability is checked
-- technical artifact validation passes
-- remaining issues are documented
+Ein Reel ist erst fertig, wenn Readiness, TypeScript, Tests, aktuelle Checkpoint-Render, aktuelles MP4, technische Artefaktprüfung und manuelle visuelle Prüfung tatsächlich bestanden wurden.
