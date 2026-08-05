@@ -6,26 +6,42 @@ dist/
 whisper.cpp/
 *.16k.wav
 
-# ---- Renders (groß, regenerierbar) ----
+# ---- Große Renderdateien ----
 out/
 frames/
 *.mp4
 *.mov
 *.mkv
 
-# ---- Audio (kommt pro Video von Arman) ----
+# ---- Benutzer-Audio ----
 *.wav
 *.mp3
 *.m4a
+*.aac
 *.aiff
+*.ogg
+*.webm
 
-# ---- Bilder und Renderdateien der sichtbaren Reel-Projekte ----
-reels/**/03-szenen/BILDER-HIER-EINFUEGEN/*
-!reels/**/03-szenen/BILDER-HIER-EINFUEGEN/.gitkeep
-reels/**/render/*
-!reels/**/render/.gitkeep
+# ---- Benutzerbilder in den einzelnen Szenen ----
+reels/**/03-szenen/EINZELNE-SZENEN/**/*.png
+reels/**/03-szenen/EINZELNE-SZENEN/**/*.jpg
+reels/**/03-szenen/EINZELNE-SZENEN/**/*.jpeg
+reels/**/03-szenen/EINZELNE-SZENEN/**/*.webp
 
-# ---- Alte öffentliche Reel-Bilder ----
+# ---- Automatisch erzeugte Reel-Ausgaben ----
+reels/**/00-cover/cover.png
+reels/**/06-video/final-reel.mp4
+reels/**/render/*.png
+reels/**/render/*.json
+reels/**/05-review/contact-sheet.png
+reels/**/05-review/codex-render-qa.json
+reels/**/05-review/build-report.json
+reels/**/05-review/asset-stage-report.json
+reels/**/timeline/render-plan.json
+
+# ---- Runtime-Assets ----
+alles/ki/public/reels/**/images/
+alles/ki/public/reels/**/audio/
 public/reels/**/images/
 public/reels/**/*.jpeg
 public/reels/**/*.jpg
