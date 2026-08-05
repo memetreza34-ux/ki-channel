@@ -1,0 +1,3 @@
+A premium simplified 3D editorial cutout of an abstract AI pattern-filling machine, isolated on a transparent background. The machine has one clearly visible empty central slot, a left input channel, a clean right output tray, and three smaller side feeders containing distinct geometric pattern tiles. Matte graphite, frosted white and restrained violet materials, crisp silhouette, separated components suitable for masking, no readable text, no logos, no people, no hands, transparent background, vertical composition.
+
+NEGATIVE: humans, hands, faces, robots, factory character, readable text, logos, watermark, subtitles, tangled cables, busy silhouette, cyberpunk, dark background.
