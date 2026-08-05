@@ -7,10 +7,11 @@ This repository produces premium German vertical AI explainer reels with Remotio
 ## Instruction order
 
 1. Read this file.
-2. Read the nearest nested `AGENTS.md` for the files you will edit.
-3. Read only the reel package named in the task.
-4. Read `docs/CODEX_REEL_WORKFLOW.md` when assembling a hybrid reel.
-5. Use existing components and animation-library entries before inventing infrastructure.
+2. Read `ki/reel-brain/PRODUCTION-BRAIN.md` before any reel production work.
+3. Read the nearest nested `AGENTS.md` for the files you will edit.
+4. Read only the reel package named in the task.
+5. Read `docs/CODEX_REEL_WORKFLOW.md` when assembling a hybrid reel.
+6. Use existing reel-specific code, components, and animation-library entries before inventing infrastructure.
 
 Do not repeatedly reread the whole repository. Build a short working index of relevant files, commands, assets, and unresolved blockers.
 
@@ -34,19 +35,19 @@ Do not repeatedly reread the whole repository. Build a short working index of re
 
 ## Reel production contract
 
-For a named reel, treat these files as authoritative when present:
+For a named reel, treat the visible reel folder, its timeline contract, and the permanent production brain as authoritative. Typical files include:
 
 - `reel.json`
-- `voiceover.md`
-- `scene-plan.md`
-- `image-prompts.md`
-- `animation-plan.md`
-- `subtitle-cues.json`
-- `asset-manifest.json`
-- `CODEX_ASSEMBLY_TASK.md`
-- `review-checklist.md`
+- voiceover script
+- scene plan
+- image prompts
+- animation plan
+- subtitle cues
+- asset manifest
+- Codex task
+- review checklist
 
-Do not rewrite approved voiceover, scene order, image prompts, or semantic timing unless a contradiction makes implementation impossible. Document the contradiction before changing it.
+Do not rewrite approved voiceover, scene order, image prompts, or semantic intent unless a contradiction makes implementation impossible. Document the contradiction before changing it. Frame boundaries may be adjusted after the final transcript only when required for clean synchronization, and every dependent contract must then be updated together.
 
 ## Remotion rules
 
@@ -75,37 +76,39 @@ Do not rewrite approved voiceover, scene order, image prompts, or semantic timin
 ## Images and assets
 
 - Never invent a missing asset or silently substitute an unrelated image.
-- Validate all required files from `asset-manifest.json` before implementation.
+- Validate all required files from the asset manifest before implementation or render.
 - Respect declared crop mode, anchor point, safe area, layer role, and scene ownership.
 - Do not bake long headings, subtitles, arrows, diagrams, or statistics into generated images; Remotion should render them.
-- If an image needs independent object motion, use the declared layered assets or masks. Do not pretend a flat image contains separable layers.
+- If an image needs independent object motion, use declared layered assets or masks. Do not pretend a flat image contains separable layers.
 
 ## Audio
 
 - Voiceover is the primary audio track.
+- Generate the source voice at 1.00x unless the reel contract explicitly says otherwise.
+- The standard KI reel playback rate is 1.10x with natural pitch preserved.
+- Final word synchronization must come from the real voiceover transcript, not estimates.
 - Default SFX mode is off.
-- Do not generate synthetic beeps, noise sweeps, or a sound for every word.
-- Add SFX only when explicitly requested in the reel package and only for a visible major action.
-- Keep the final version without SFX unless an A/B comparison clearly improves it.
-- Never claim voice synchronization is exact without the final audio file or word timestamps.
+- Do not generate synthetic beeps, noise sweeps, music, or a sound for every word.
+- Never claim voice synchronization is exact without the final audio file and word timestamps.
 
 ## Required implementation sequence
 
 1. Validate branch and working tree.
-2. Read the reel package and nearest `AGENTS.md` files.
-3. Run the Codex reel package validator.
+2. Read the permanent production brain, reel package, and nearest `AGENTS.md` files.
+3. Confirm reel-specific Remotion code already exists; prebuild missing approved code before asking the user for assets.
 4. Confirm every required image and audio asset exists.
-5. Create the reel-specific Remotion source under `ki/src/reels/<slug>/`.
-6. Register exactly one production composition without breaking existing previews.
-7. Add contract tests for format, duration, unique scene IDs, continuous frame ranges, asset paths, cue bounds, and animation uniqueness.
-8. Run typecheck and focused tests.
-9. Render smoke frames.
-10. Inspect every smoke frame visually.
-11. Fix layout and choreography issues at their cause.
-12. Render all checkpoints and the full MP4.
-13. Watch the MP4 at normal speed and inspect it at phone size.
-14. Run technical artifact validation.
-15. Update only genuinely completed checklist items.
+5. Stage assets into the Remotion public directory.
+6. Transcribe final audio and replace estimated word cues.
+7. Synchronize existing scene choreography with the final 1.10x timeline.
+8. Register exactly one production composition without breaking existing previews.
+9. Run typecheck and focused tests.
+10. Render smoke frames.
+11. Inspect every smoke frame visually.
+12. Fix layout and choreography issues at their cause.
+13. Render all checkpoints and the full MP4.
+14. Watch the MP4 at normal speed and inspect it at phone size.
+15. Run technical artifact validation.
+16. Update only genuinely completed checklist items.
 
 ## Visual review gates
 
@@ -133,7 +136,7 @@ Report:
 4. assets found and assets missing
 5. implementation summary per scene
 6. visual issues found and fixes applied
-7. audio status
+7. audio and transcript status
 8. rendered artifact paths
 9. technical validation result
 10. remaining known issues
