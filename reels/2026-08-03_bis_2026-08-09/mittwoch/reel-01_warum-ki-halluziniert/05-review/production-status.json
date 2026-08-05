@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "reel": "warum-ki-halluziniert",
+  "stage": "prebuilt-awaiting-user-media",
+  "planning": {
+    "scriptApproved": true,
+    "imagePromptsCompleted": true,
+    "storyboardCompleted": true,
+    "animationsPrebuilt": true,
+    "compositionPrebuilt": true
+  },
+  "media": {
+    "audioReceived": false,
+    "requiredImagesReceived": false,
+    "runtimeVoiceoverCreated": false,
+    "finalWordTimingCreated": false
+  },
+  "implementation": {
+    "codexAnimationCodingRequired": false,
+    "automaticAssemblyImplemented": true,
+    "typecheckPassed": false,
+    "testsPassed": false,
+    "renderCompleted": false,
+    "automatedRenderQaPassed": false,
+    "contactSheetCreated": false,
+    "manualVisualQaCompleted": false,
+    "merged": false
+  },
+  "outputs": {
+    "video": "06-video/final-reel.mp4",
+    "cover": "00-cover/cover.png",
+    "contactSheet": "05-review/contact-sheet.png",
+    "qaReport": "05-review/codex-render-qa.json",
+    "buildReport": "05-review/build-report.json"
+  }
+}
