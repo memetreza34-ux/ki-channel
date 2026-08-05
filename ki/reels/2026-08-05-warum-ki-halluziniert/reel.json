@@ -1,9 +1,21 @@
 {
-  "version": 1,
+  "version": 2,
   "reelId": "2026-08-05-warum-ki-halluziniert",
   "title": "Warum KI halluziniert – und wie du es erkennst",
   "compositionId": "Reel-WhyAIHallucinates",
   "language": "de-DE",
+  "files": {
+    "voiceover": "script/voiceover.md",
+    "subtitleCues": "script/subtitle-cues.json",
+    "sceneIndex": "scenes/README.md",
+    "imagePrompts": "visuals/image-prompts.md",
+    "animationPlan": "visuals/animation-plan.md",
+    "assetManifest": "assets/asset-manifest.json",
+    "codexTask": "codex/CODEX_ASSEMBLY_TASK.md",
+    "reviewChecklist": "codex/review-checklist.md",
+    "generatedBrief": "codex/CODEX-BRIEF.generated.md",
+    "packageReport": "codex/codex-package-report.json"
+  },
   "format": {
     "width": 1080,
     "height": 1920,
@@ -27,6 +39,7 @@
   "scenes": [
     {
       "sceneId": "scene-01",
+      "planFile": "scenes/scene-01.md",
       "startFrame": 0,
       "endFrameExclusive": 126,
       "durationInFrames": 126,
@@ -39,6 +52,7 @@
     },
     {
       "sceneId": "scene-02",
+      "planFile": "scenes/scene-02.md",
       "startFrame": 126,
       "endFrameExclusive": 258,
       "durationInFrames": 132,
@@ -51,6 +65,7 @@
     },
     {
       "sceneId": "scene-03",
+      "planFile": "scenes/scene-03.md",
       "startFrame": 258,
       "endFrameExclusive": 396,
       "durationInFrames": 138,
@@ -63,6 +78,7 @@
     },
     {
       "sceneId": "scene-04",
+      "planFile": "scenes/scene-04.md",
       "startFrame": 396,
       "endFrameExclusive": 528,
       "durationInFrames": 132,
@@ -75,6 +91,7 @@
     },
     {
       "sceneId": "scene-05",
+      "planFile": "scenes/scene-05.md",
       "startFrame": 528,
       "endFrameExclusive": 666,
       "durationInFrames": 138,
@@ -87,6 +104,7 @@
     },
     {
       "sceneId": "scene-06",
+      "planFile": "scenes/scene-06.md",
       "startFrame": 666,
       "endFrameExclusive": 798,
       "durationInFrames": 132,
@@ -99,6 +117,7 @@
     },
     {
       "sceneId": "scene-07",
+      "planFile": "scenes/scene-07.md",
       "startFrame": 798,
       "endFrameExclusive": 936,
       "durationInFrames": 138,
@@ -111,6 +130,7 @@
     },
     {
       "sceneId": "scene-08",
+      "planFile": "scenes/scene-08.md",
       "startFrame": 936,
       "endFrameExclusive": 1080,
       "durationInFrames": 144,
