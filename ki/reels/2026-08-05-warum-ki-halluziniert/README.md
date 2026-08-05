@@ -1,6 +1,53 @@
 # Warum KI halluziniert – und wie du es erkennst
 
-Vollständiges Codex-Produktionspaket für ein hybrides KI-Erklärreel aus generierten Editorial-Bildern, UI-Nachbauten und individuellen Remotion-Animationen.
+Vollständiges Produktionspaket für ein 36-sekündiges Hybrid-Reel aus generierten Editorial-Bildern, UI-Nachbauten und individuellen Remotion-Animationen.
+
+## Sofort finden
+
+```text
+Sprechtext       → script/voiceover.md
+Untertitelzeiten → script/subtitle-cues.json
+Szenen           → scenes/scene-01.md bis scene-08.md
+Bildprompts      → visuals/image-prompts.md
+Animationsregeln → visuals/animation-plan.md
+Assetliste       → assets/asset-manifest.json
+Codex-Auftrag    → codex/CODEX_ASSEMBLY_TASK.md
+Qualitätsprüfung → codex/review-checklist.md
+```
+
+## Ordnerstruktur
+
+```text
+2026-08-05-warum-ki-halluziniert/
+├── README.md
+├── reel.json
+├── script/
+│   ├── voiceover.md
+│   └── subtitle-cues.json
+├── scenes/
+│   ├── README.md
+│   ├── scene-01.md
+│   ├── scene-02.md
+│   ├── scene-03.md
+│   ├── scene-04.md
+│   ├── scene-05.md
+│   ├── scene-06.md
+│   ├── scene-07.md
+│   └── scene-08.md
+├── visuals/
+│   ├── image-prompts.md
+│   └── animation-plan.md
+├── assets/
+│   ├── asset-manifest.json
+│   ├── README.md
+│   ├── images/
+│   └── audio/
+└── codex/
+    ├── CODEX_ASSEMBLY_TASK.md
+    ├── CODEX-BRIEF.generated.md
+    ├── codex-package-report.json
+    └── review-checklist.md
+```
 
 ## Produktionsdaten
 
@@ -10,61 +57,48 @@ Vollständiges Codex-Produktionspaket für ein hybrides KI-Erklärreel aus gener
 - Sprache: Deutsch
 - Szenen: 8
 - Composition-ID: `Reel-WhyAIHallucinates`
-- Audio: finales Voiceover, SFX standardmäßig aus
-- Stil: hochwertige vereinfachte 3D-Editorial-Illustration, fast weißer Hintergrund, dunkle Typografie, violetter Akzent
+- Audio: Voiceover, SFX standardmäßig aus
+- Stil: hochwertige vereinfachte 3D-Editorial-Illustration
 
-## Thema
+## Inhalt
 
-Das Reel erklärt:
+1. überzeugende KI-Antwort ist nicht automatisch wahr
+2. Sprachmodelle berechnen Fortsetzungen
+3. fehlende Quellen können durch plausible Muster ersetzt werden
+4. Namen, Zahlen, Studien und aktuelle Ereignisse sind besonders riskant
+5. Warnzeichen: vage Antwort
+6. Warnzeichen: unprüfbare Quelle
+7. Warnzeichen: wechselnde Details
+8. Prüfworkflow aus Gegenprüfung, Originalquelle und Beleg
 
-1. warum KI überzeugend klingen und trotzdem Fakten erfinden kann
-2. dass Sprachmodelle Fortsetzungen berechnen statt Wahrheit automatisch nachzuschlagen
-3. warum fehlende Quellen zu plausiblen Lückenfüllern führen
-4. welche Inhalte besonders riskant sind
-5. drei konkrete Warnzeichen
-6. einen einfachen Prüfworkflow
+## Noch einzufügen
 
-## Zuständigkeiten
+```text
+assets/images/scene-01-confident-answer.png
+assets/images/scene-03-pattern-gap-machine.png
+assets/images/scene-04-risk-documents.png
+assets/images/scene-08-verification-desk.png
+assets/audio/voiceover.wav
+```
 
-### Bereits fest geplant
-
-- finaler Voiceover-Text
-- acht Szenen und exakte Framebereiche
-- vier Bildmotive
-- vier Remotion-/UI-Szenen
-- Bildprompts
-- Hauptanimationen
-- wichtige Wortreaktionen
-- Untertitel-Cues
-- Übergänge
-- Asset-Dateinamen
-- Codex-Auftrag
-- Review-Gates
-
-### Noch einzufügen
-
-Die folgenden Pflichtassets müssen anhand von `image-prompts.md` erzeugt und exakt unter den Pfaden aus `asset-manifest.json` gespeichert werden:
-
-- `assets/images/scene-01-confident-answer.png`
-- `assets/images/scene-03-pattern-gap-machine.png`
-- `assets/images/scene-04-risk-documents.png`
-- `assets/images/scene-08-verification-desk.png`
-- `assets/audio/voiceover.wav`
-
-Codex darf fehlende Assets nicht durch Platzhalter oder fremde Repository-Bilder ersetzen.
+Die Bilder werden anhand von `visuals/image-prompts.md` erstellt. Fehlende Assets dürfen nicht durch Platzhalter ersetzt werden.
 
 ## Vorbereitung
 
 Planung prüfen:
 
 ```bash
-node scripts/prepare-codex-reel.mjs 2026-08-05-warum-ki-halluziniert
+npm run codex:reel:prepare -- 2026-08-05-warum-ki-halluziniert
 ```
 
 Nach Einfügen aller Pflichtassets:
 
 ```bash
-node scripts/prepare-codex-reel.mjs 2026-08-05-warum-ki-halluziniert --ready
+npm run codex:reel:prepare -- 2026-08-05-warum-ki-halluziniert --ready
 ```
 
-Danach dient `CODEX-BRIEF.generated.md` als primärer Codex-Kontext.
+Danach verwendet Codex primär:
+
+```text
+codex/CODEX-BRIEF.generated.md
+```
