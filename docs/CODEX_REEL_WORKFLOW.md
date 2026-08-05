@@ -2,138 +2,142 @@
 
 ## Goal
 
-Codex should spend its context on implementation, testing, and visual correction—not on rediscovering the reel concept. Each reel therefore arrives as a complete production contract with fixed narration, assets, scene timing, motion intent, and review gates.
+Codex should spend context on implementation, testing and visual correction—not on rediscovering the reel concept. Every reel therefore arrives as a structured production contract.
 
-Codex is guided by repository and nested `AGENTS.md` files. The generated `CODEX-BRIEF.generated.md` condenses the named reel package into one implementation document.
+## Reel structure
+
+```text
+ki/reels/<slug>/
+├── README.md
+├── reel.json
+├── script/
+│   ├── voiceover.md
+│   └── subtitle-cues.json
+├── scenes/
+│   ├── README.md
+│   └── scene-XX.md
+├── visuals/
+│   ├── image-prompts.md
+│   └── animation-plan.md
+├── assets/
+│   ├── asset-manifest.json
+│   ├── README.md
+│   ├── images/
+│   └── audio/
+└── codex/
+    ├── CODEX_ASSEMBLY_TASK.md
+    ├── CODEX-BRIEF.generated.md
+    ├── codex-package-report.json
+    └── review-checklist.md
+```
+
+This separates narration, scene planning, visual design, assets and Codex execution.
 
 ## Responsibilities
 
-### Creative planning, completed before Codex
+### Creative planning before Codex
 
-- topic and target audience
-- hook and final voiceover
+- topic, hook and final voiceover
 - scene order and exact frame ranges
-- decision per scene: image, layered image, UI reconstruction, chart, or Remotion-only animation
-- image prompts and required generated assets
-- important-word animation plan
+- one scene file per scene
+- image or Remotion decision per scene
+- image prompts and exact asset paths
+- important-word reactions and transitions
 - subtitle cues or transcript timestamps
-- transitions and image treatment
-- asset filenames and roles
-- visual and technical checklist
+- review gates
 
-### User asset step
+### Asset step
 
-Place final generated assets in the exact paths declared by `asset-manifest.json`, including the final voiceover file.
+Place generated images and final voiceover at the paths declared by:
+
+```text
+assets/asset-manifest.json
+```
 
 ### Codex step
 
-- validate the package and assets
-- implement the declared Remotion composition
-- use supplied assets without creative redesign
+- validate package and assets
+- read the generated compact brief
+- implement the Remotion composition
 - add focused tests
 - run typecheck and tests
-- render smoke frames and inspect them
-- fix layout and choreography
-- render all checkpoints and the MP4
-- inspect at phone size and normal speed
+- render and visually inspect checkpoints
+- fix layout and choreography issues
+- render and watch the current MP4
 - run technical artifact validation
-- update only completed checklist items
-
-## Create a package
-
-Copy:
-
-```text
-ki/reels/_codex-hybrid-template/
-```
-
-Rename it to a dated slug, for example:
-
-```text
-ki/reels/2026-08-04-ai-agenten-einfach-erklaert/
-```
-
-Fill every planning file before adding final assets.
+- update only genuinely completed review items
 
 ## Prepare for Codex
 
-Planning validation, without requiring final assets:
+Planning validation:
 
 ```bash
-node scripts/prepare-codex-reel.mjs 2026-08-04-ai-agenten-einfach-erklaert
+npm run codex:reel:prepare -- <slug>
 ```
 
-Strict readiness validation after images and audio are present:
+Strict readiness validation after assets are present:
 
 ```bash
-node scripts/prepare-codex-reel.mjs 2026-08-04-ai-agenten-einfach-erklaert --ready
+npm run codex:reel:prepare -- <slug> --ready
 ```
 
 The command writes:
 
 ```text
-ki/reels/<slug>/CODEX-BRIEF.generated.md
-ki/reels/<slug>/codex-package-report.json
+ki/reels/<slug>/codex/CODEX-BRIEF.generated.md
+ki/reels/<slug>/codex/codex-package-report.json
 ```
 
-Give Codex this task:
+## Short Codex task
 
 ```text
-Read the repository AGENTS.md files and implement the reel package at
-ki/reels/<slug>/ using its CODEX-BRIEF.generated.md.
-Work only on the current branch. Do not redesign approved content.
-Run the package's required tests and renders, visually inspect outputs,
-fix issues, and report honestly using the required final format.
+Read all applicable AGENTS.md files.
+Implement the reel package at ki/reels/<slug>/.
+Use codex/CODEX-BRIEF.generated.md as primary context.
+Work only on the current branch and do not redesign approved content.
+Run required tests and renders, inspect outputs visually, fix issues,
+and report exact results honestly.
 ```
 
 ## Token-saving design
 
 The generated brief contains:
 
-- immutable format and scene timing
-- voiceover
+- format and scene timing
+- final narration
+- every individual scene file
 - asset inventory
-- image prompts for context
-- animation instructions
+- image prompts
+- global animation rules
 - subtitle cues
-- implementation scope
-- review gates
+- Codex execution scope
+- review checklist
 
-Codex should not repeatedly load the same source documents. It opens originals only when the generated brief points to a contradiction.
+Codex should not repeatedly load unrelated repository history or other reels.
 
 ## Image strategy
 
-Use a generated image when it provides a complex editorial environment or object that would be inefficient to construct in SVG/CSS. Use Remotion for:
+Use generated images for complex editorial objects or environments. Use Remotion for headings, subtitles, arrows, labels, charts, counters, UI focus, masks, reveals, semantic transitions and important-word reactions.
 
-- headlines and subtitles
-- arrows, labels, and callouts
-- charts and counters
-- UI focus and cursor actions
-- masks and reveals
-- parallax between declared layers
-- semantic transitions
-- important-word reactions
-
-A flat image never receives only a generic zoom. Every image scene needs at least one meaningful state change or explanatory overlay.
+A flat image never receives only a generic zoom. Every image scene needs a meaningful state change or explanatory overlay.
 
 ## Audio standard
 
 - final voiceover first
 - SFX off by default
 - no generated beeps or noise sweeps
-- optional SFX only for a small number of visible major actions
-- final SFX version must be A/B compared against the voiceover-only version
+- no sound for every word
+- SFX only through an explicit later request and A/B comparison
 
 ## Definition of done
 
-A reel is complete only when all current-source checks are real:
+A reel is complete only when:
 
-- package readiness passes
+- readiness validation passes with real assets
 - TypeScript passes
 - focused tests pass
-- smoke frames rendered and visually inspected
-- full checkpoint set rendered
-- MP4 rendered and watched at normal speed
-- mobile readability checked
-- technical artifact report passes
+- all declared checkpoints render and are inspected
+- current MP4 renders and is watched at normal speed
+- mobile readability is checked
+- technical artifact validation passes
 - remaining issues are documented
