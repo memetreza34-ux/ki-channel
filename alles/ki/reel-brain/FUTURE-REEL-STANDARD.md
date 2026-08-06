@@ -6,6 +6,8 @@ Neue Reels verwenden `ki-animation-only-reel-v4`.
 
 - immer nur der aktuell gesprochene Satz sichtbar
 - vollständiger Satz erscheint sofort
+- erster Satz bleibt bis zum Beginn des zweiten Satzes sichtbar
+- zweiter Satz bleibt bis zum Szenenende sichtbar
 - nur das aktuell gesprochene Wort wird violett
 - in Sprechpausen kein Wort markiert
 - Satzwechsel an natürlicher Satzpause
@@ -40,6 +42,19 @@ Jede Szene benötigt neben der Überschrift ein eigenes semantisches Vektor-Icon
 - keine rein dekorative Dauerbewegung
 - acht Szenen benötigen acht unterscheidbare Mechaniken
 
+## Anti-Wiederholung
+
+Zusätzlich gilt `ANTI-REPETITION-CONTRACT.md`.
+
+- mindestens die letzten zwei vergleichbaren Reels vor dem Coding prüfen
+- für jede Szene eine neue Silhouette, Raumlogik, Hauptbewegung und ein neuer Endzustand
+- alle `primaryMotion`-Werte innerhalb eines Reels eindeutig
+- alle `headingIcon`-Werte innerhalb eines Reels eindeutig
+- null zentrale Hauptmechaniken aus dem unmittelbar vorherigen Reel wiederverwenden
+- neue Texte, Farben, Richtungen oder Geschwindigkeiten zählen allein nicht als neue Animation
+- `05-review/anti-repetition-matrix.md` ist verpflichtend
+- konkrete frühere Nutzerkritik wird zum Freigabeblocker
+
 ## Produktion
 
 - 1080 × 1920, 30 FPS
@@ -50,11 +65,13 @@ Jede Szene benötigt neben der Überschrift ein eigenes semantisches Vektor-Icon
 - keine Musik, SFX oder generierten Szenenbilder
 - finale Dauer = Sprachende + 1,2 bis 2,2 Sekunden
 - finale Zeitquelle ausschließlich `timeline/final-sync.json`
+- Platzhalter-Timing darf nur für stumme Vorschauen verwendet werden
 
 ## Pflichtprüfung
 
 ```bash
 node scripts/validate-reel-v4.mjs <reel-ordner> --final
+node scripts/validate-reel-animation-novelty.mjs <reel-ordner> --final
 ```
 
 Danach TypeScript, fokussierte Tests, Smoke-Frames, Animation-Director-Prüfung, Icon-Prüfung, alle Checkpoints, Kontaktbogen, MP4 und Smartphone-Prüfung. Keine Freigabe ohne Nutzerzustimmung.
