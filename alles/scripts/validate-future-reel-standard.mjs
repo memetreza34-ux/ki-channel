@@ -26,6 +26,20 @@ const addWarning = (message) => warnings.push(message);
 const finite = (value) => Number.isFinite(Number(value));
 const number = (value) => Number(value);
 
+const collectSourceFiles = (root) => {
+  if (!fs.existsSync(root)) return [];
+  const files = [];
+  const visit = (current) => {
+    for (const entry of fs.readdirSync(current, {withFileTypes: true})) {
+      const target = path.join(current, entry.name);
+      if (entry.isDirectory()) visit(target);
+      else if (/\.(?:ts|tsx|js|jsx)$/.test(entry.name) && !entry.name.endsWith('.test.ts') && !entry.name.endsWith('.test.tsx')) files.push(target);
+    }
+  };
+  visit(root);
+  return files;
+};
+
 if (!fs.existsSync(projectRoot) || !fs.statSync(projectRoot).isDirectory()) {
   console.error(`Reel-Ordner fehlt: ${projectRoot}`);
   process.exit(1);
@@ -71,13 +85,12 @@ const beatFile = firstExisting([
   path.join(projectRoot, '03-szenen', 'semantic-beats.json'),
 ]);
 
-let beatDocument = null;
 let semanticBeatCount = null;
 if (!beatFile) {
   addError('Semantische Beat-Map fehlt.');
 } else {
   try {
-    beatDocument = readJson(beatFile);
+    const beatDocument = readJson(beatFile);
     const sceneBeats = Array.isArray(beatDocument.scenes) ? beatDocument.scenes : [];
     semanticBeatCount = sceneBeats.reduce((sum, scene) => sum + (Array.isArray(scene.beats) ? scene.beats.length : 0), 0);
     if (sceneBeats.length < 8 || sceneBeats.length > 9) addError(`Beat-Map enthält ${sceneBeats.length} Szenen; erlaubt sind 8 bis 9.`);
@@ -150,10 +163,8 @@ if (reel) {
   if (reel.media?.generatedSceneImagesAllowed === true) addError('generatedSceneImagesAllowed muss false sein.');
   if (reel.media?.stockSceneImagesAllowed === true) addError('stockSceneImagesAllowed muss false sein.');
 
-  const maximumMotions = number(reel.motion?.maximumStrongSimultaneousMotions ?? 2);
-  if (maximumMotions > 2) addError('Maximal zwei starke gleichzeitige Bewegungen sind erlaubt.');
-  const maximumBeats = number(reel.motion?.maximumSemanticBeatsPerScene ?? (isV2 ? 3 : 4));
-  if (maximumBeats > (isV2 ? 3 : 4)) addError(`Maximal ${isV2 ? 3 : 4} Bedeutungsbeats pro Szene sind erlaubt.`);
+  if (number(reel.motion?.maximumStrongSimultaneousMotions ?? 2) > 2) addError('Maximal zwei starke gleichzeitige Bewegungen sind erlaubt.');
+  if (number(reel.motion?.maximumSemanticBeatsPerScene ?? (isV2 ? 3 : 4)) > (isV2 ? 3 : 4)) addError(`Maximal ${isV2 ? 3 : 4} Bedeutungsbeats pro Szene sind erlaubt.`);
   if (number(reel.motion?.minimumResultHoldSeconds ?? 1) < 1) addError('Ergebnis-Hold muss mindestens eine Sekunde betragen.');
 
   if (isV2) {
@@ -165,8 +176,8 @@ if (reel) {
     if (reel.captions?.wordHighlightAllowed !== false) addError('Einzelne Wortmarkierung muss deaktiviert sein.');
     if (number(reel.captions?.bottomPx ?? 220) < 210 || number(reel.captions?.bottomPx ?? 220) > 235) addError('Untertitel-Unterkante muss zwischen 210 und 235 px liegen.');
     if (number(reel.captions?.minimumFontSizePx ?? 42) < 42) addError('Untertitel dürfen nicht kleiner als 42 px werden.');
-  } else {
-    if (reel.captions?.rapidTwoToFourWordChunksAllowed === true) addError('Hektische Untertitelblöcke sind nicht erlaubt.');
+  } else if (reel.captions?.rapidTwoToFourWordChunksAllowed === true) {
+    addError('Hektische Untertitelblöcke sind nicht erlaubt.');
   }
 }
 
@@ -189,9 +200,8 @@ if (finalMode) {
 
   if (reel?.standardId === 'ki-animation-only-reel-v2') {
     finalSyncFile = path.join(projectRoot, 'timeline', 'final-sync.json');
-    if (!exists(finalSyncFile)) {
-      addError('timeline/final-sync.json fehlt.');
-    } else {
+    if (!exists(finalSyncFile)) addError('timeline/final-sync.json fehlt.');
+    else {
       try {
         finalSync = readJson(finalSyncFile);
       } catch (error) {
@@ -288,6 +298,27 @@ if (finalMode && finalSync && reel?.standardId === 'ki-animation-only-reel-v2') 
 
   if (finalSync.timingSource !== 'final-voiceover-transcript') addError('timingSource muss final-voiceover-transcript sein.');
   if (finalSync.fallbackTimingActive !== false) addError('fallbackTimingActive muss false sein.');
+
+  const sourceDirValue = reel.implementation?.sourceDir;
+  if (typeof sourceDirValue !== 'string' || sourceDirValue.trim() === '' || sourceDirValue === 'REPLACE_ME') {
+    addError('implementation.sourceDir fehlt im Reel-Vertrag.');
+  } else {
+    const sourceRoot = path.resolve(technicalRoot, sourceDirValue);
+    const sourceFiles = collectSourceFiles(sourceRoot);
+    if (sourceFiles.length === 0) addError(`Kein Produktionscode unter ${sourceDirValue} gefunden.`);
+    else {
+      const combinedSource = sourceFiles.map((file) => readText(file)).join('\n');
+      const forbiddenPatterns = [
+        {pattern: /visibleCount/g, label: 'visibleCount-Wortreveal'},
+        {pattern: /slice\s*\(\s*0\s*,\s*visibleCount/g, label: 'slice(0, visibleCount)-Wortreveal'},
+        {pattern: /word[- ]?by[- ]?word/gi, label: 'Wort-für-Wort-Implementierung'},
+        {pattern: /karaoke/gi, label: 'Karaoke-Untertitel'}
+      ];
+      for (const item of forbiddenPatterns) if (item.pattern.test(combinedSource)) addError(`Produktionscode enthält verbotene ${item.label}.`);
+      if (!/StableSentenceCaption/.test(combinedSource)) addError('Produktionscode muss StableSentenceCaption verwenden.');
+      if (!/(final-sync\.json|finalSync)/.test(combinedSource)) addError('Produktionscode verweist nicht erkennbar auf finale Sync-Daten.');
+    }
+  }
 }
 
 const report = {
