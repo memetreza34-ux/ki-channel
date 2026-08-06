@@ -1,0 +1,74 @@
+{
+  "version": 2,
+  "standardId": "ki-animation-only-reel-v2",
+  "timingStatus": "estimated-until-final-sync",
+  "scenes": [
+    {
+      "id": "scene-01",
+      "beats": [
+        {"expression":"vergisst","visualReaction":"Eine ältere Nachricht fällt aus dem sichtbaren Kontextfenster.","transcriptTrigger":"vergisst","resultState":"Die vorher sichtbare Nachricht liegt außerhalb des Rahmens.","importance":"primary"},
+        {"expression":"Kontextfenster","visualReaction":"Der begrenzte transparente Rahmen wird klar hervorgehoben.","transcriptTrigger":"Kontextfenster","resultState":"Nur der Inhalt innerhalb des Rahmens bleibt aktiv.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-02",
+      "beats": [
+        {"expression":"langes Band","visualReaction":"Die gesamte Chat-Spur entfaltet sich weit über den Rahmen hinaus.","transcriptTrigger":"langes Band","resultState":"Der Chat ist sichtbar länger als das Fenster.","importance":"primary"},
+        {"expression":"begrenzten Ausschnitt","visualReaction":"Alles außerhalb des Fensters wird entsättigt und abgedunkelt.","transcriptTrigger":"begrenzten Ausschnitt","resultState":"Nur ein kurzer violetter Abschnitt bleibt lesbar aktiv.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-03",
+      "beats": [
+        {"expression":"neuen Nachricht","visualReaction":"Eine neue Nachrichtenkarte dockt rechts an die Chat-Spur an.","transcriptTrigger":"neuen Nachricht","resultState":"Die Spur ist um eine Karte länger.","importance":"primary"},
+        {"expression":"wandert","visualReaction":"Das Kontextfenster gleitet kontrolliert nach rechts.","transcriptTrigger":"wandert","resultState":"Der aktuelle Ausschnitt liegt weiter rechts als zuvor.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-04",
+      "beats": [
+        {"expression":"Ältere Teile","visualReaction":"Alte Nachrichtenkarten nähern sich der linken Fensterkante.","transcriptTrigger":"Ältere Teile","resultState":"Die ältesten Inhalte stehen kurz vor dem Ausschluss.","importance":"primary"},
+        {"expression":"hinaus","visualReaction":"Die älteste Karte überschreitet die Grenze und verliert Farbe sowie Schärfe.","transcriptTrigger":"hinaus","resultState":"Die Karte ist nicht mehr aktiv verfügbar.","importance":"primary"},
+        {"expression":"nicht mehr vollständig","visualReaction":"Eine Antwortabfrage erreicht nur den verbleibenden Ausschnitt.","transcriptTrigger":"nicht mehr vollständig","resultState":"Die frühere Information fehlt sichtbar im Antwortweg.","importance":"secondary"}
+      ]
+    },
+    {
+      "id": "scene-05",
+      "beats": [
+        {"expression":"langen Texten","visualReaction":"Eine überlange Textkarte belegt einen großen Teil des Fensters.","transcriptTrigger":"langen Texten","resultState":"Der freie Kontextbereich schrumpft.","importance":"primary"},
+        {"expression":"vielen Dateien","visualReaction":"Zwei kompakte Dateiblöcke belegen den nächsten Abschnitt.","transcriptTrigger":"vielen Dateien","resultState":"Das Fenster wird fast vollständig gefüllt.","importance":"primary"},
+        {"expression":"ausführlichen Antworten","visualReaction":"Eine lange Antwortkarte drückt die ältesten Inhalte über die linke Grenze.","transcriptTrigger":"ausführlichen Antworten","resultState":"Der Kontext ist voll und ältere Karten liegen außerhalb.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-06",
+      "beats": [
+        {"expression":"Namen","visualReaction":"Eine Namensmarke außerhalb des Fensters wird bei einer Abfrage nicht gefunden.","transcriptTrigger":"Namen","resultState":"NAME FEHLT ist als einzelner klarer Zustand sichtbar.","importance":"primary"},
+        {"expression":"Regeln","visualReaction":"Eine Regelkarte außerhalb des Fensters bleibt vom Suchstrahl unberührt.","transcriptTrigger":"Regeln","resultState":"Die aktive Antwort enthält die Regel nicht.","importance":"primary"},
+        {"expression":"Entscheidungen","visualReaction":"Eine frühere Entscheidungsmarke verblasst links, während rechts ein unvollständiges Ergebnis entsteht.","transcriptTrigger":"Entscheidungen","resultState":"Frühere Entscheidung ist nicht im sichtbaren Ausschnitt.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-07",
+      "beats": [
+        {"expression":"kurz zusammen","visualReaction":"Mehrere alte Karten werden zu einer einzigen kompakten Zusammenfassung verdichtet.","transcriptTrigger":"kurz zusammen","resultState":"Die Zusammenfassung passt sichtbar in das Fenster.","importance":"primary"},
+        {"expression":"Wiederhole zentrale Vorgaben","visualReaction":"Eine violette Regelkarte wird gezielt in den aktuellen Ausschnitt kopiert.","transcriptTrigger":"Wiederhole zentrale Vorgaben","resultState":"Die wichtigste Vorgabe ist wieder aktiv sichtbar.","importance":"primary"},
+        {"expression":"klare Abschnitte","visualReaction":"Die lange Spur wird in drei sauber getrennte Projektabschnitte geteilt und eine Entscheidungsnotiz wird extern abgelegt.","transcriptTrigger":"klare Abschnitte","resultState":"Nur der aktive Abschnitt liegt im Fenster; Entscheidungen bleiben außerhalb gespeichert.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-08",
+      "beats": [
+        {"expression":"genau den Kontext","visualReaction":"Die kompakte Zusammenfassung, Vorgabe und aktive Aufgabe rasten gemeinsam in das Fenster ein.","transcriptTrigger":"genau den Kontext","resultState":"Das Fenster enthält nur die aktuell benötigten Informationen.","importance":"primary"},
+        {"expression":"nicht absichtlich vergessen","visualReaction":"Ein rotes Absichts-Symbol wird ausgeschlossen; stattdessen wird die technische Fenstergrenze hervorgehoben.","transcriptTrigger":"nicht absichtlich vergessen","resultState":"Die Ursache ist klar als begrenzter Ausschnitt markiert.","importance":"secondary"},
+        {"expression":"sichtbaren Fenster","visualReaction":"Der Rahmen schließt ruhig um den relevanten aktuellen Kontext.","transcriptTrigger":"sichtbaren Fenster","resultState":"MERKSATZ: NUR DER SICHTBARE KONTEXT ZÄHLT.","importance":"primary"}
+      ]
+    }
+  ],
+  "rules": {
+    "importantMeaningWithoutVisualReactionAllowed": false,
+    "fillerWordsReceiveStrongAnimation": false,
+    "maximumBeatsPerScene": 3,
+    "finalTimingSource": "timeline/final-sync.json"
+  }
+}
