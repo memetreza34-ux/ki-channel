@@ -16,6 +16,7 @@ Arbeite ausschließlich auf `feature/reel-kontextfenster-vergisst`. Verändere `
 - 128 Wörter
 - acht Szenen
 - genau zwei kurze Sätze pro Szene
+- beide Sätze bleiben während der kompletten Szene sichtbar
 - vollständig neu choreografierte Remotion-Szenen
 - größere Hauptobjekte und kräftigerer Kontrast
 - `DualSentenceKaraokeCaption`
@@ -36,14 +37,25 @@ node scripts/prepare-why-ai-forgets-final-sync.mjs \
 ```
 
 5. Prüfe, dass jedes Caption-Paar exakt zwei Sätze und jedes Wort echte Frames besitzt.
-6. Prüfe, dass das violette Wort exakt der Stimme folgt.
-7. Prüfe semantische Trigger innerhalb ±5 Frames.
-8. Führe den v3-Validator aus.
-9. Führe TypeScript und fokussierte Tests aus.
-10. Rendere Smoke-Frames und prüfe sie mit dem Animation Director.
-11. Rendere alle Checkpoints, Kontaktbogen, Cover und MP4.
-12. Sieh das MP4 normal und in Smartphone-Größe an.
-13. Erzeuge den Visual-QA-Bericht.
+6. Prüfe, dass jedes Paar exakt vom ersten bis zum letzten Frame seiner Szene sichtbar ist.
+7. Prüfe, dass das violette Wort exakt der Stimme folgt und in Pausen kein Wort markiert ist.
+8. Prüfe semantische Trigger innerhalb ±5 Frames.
+9. Führe aus:
+
+```bash
+node scripts/validate-reel-v3.mjs \
+../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst \
+--final
+
+node scripts/validate-v3-caption-coverage.mjs \
+../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst
+```
+
+10. Führe TypeScript und fokussierte Tests aus.
+11. Rendere Smoke-Frames und prüfe sie mit dem Animation Director.
+12. Rendere alle Checkpoints, Kontaktbogen, Cover und MP4.
+13. Sieh das MP4 normal und in Smartphone-Größe an.
+14. Erzeuge den Visual-QA-Bericht.
 
 ## Gesamtbuild
 
@@ -58,6 +70,7 @@ node scripts/build-why-ai-forgets-earlier-messages.mjs \
 - `final-sync.json` bleibt Platzhalter
 - Fortschrittslinie ist sichtbar
 - weniger oder mehr als zwei Untertitelsätze
+- Satzpaar verschwindet vor dem Szenenende
 - falsches violettes Wort
 - kleine oder blasse Hauptvisuals
 - wiederholte schwache Kartenbewegung
