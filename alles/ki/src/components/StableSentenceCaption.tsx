@@ -1,5 +1,5 @@
 import React from 'react';
-import {interpolate, useCurrentFrame} from 'remotion';
+import {useCurrentFrame} from 'remotion';
 
 export type StableSentenceCaptionCue = {
   id: string;
@@ -21,11 +21,10 @@ export type StableSentenceCaptionProps = {
   progressLineHeightPx?: number;
 };
 
-const clamp = (frame: number, start: number, end: number): number =>
-  interpolate(frame, [start, end], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+export const getSentenceProgress = (frame: number, startFrame: number, endFrame: number): number => {
+  if (endFrame <= startFrame) return 1;
+  return Math.max(0, Math.min(1, (frame - startFrame) / (endFrame - startFrame)));
+};
 
 export const StableSentenceCaption: React.FC<StableSentenceCaptionProps> = ({
   cues,
@@ -39,7 +38,7 @@ export const StableSentenceCaption: React.FC<StableSentenceCaptionProps> = ({
 
   if (!cue) return null;
 
-  const progress = clamp(frame, cue.startFrame, cue.endFrame);
+  const progress = getSentenceProgress(frame, cue.startFrame, cue.endFrame);
 
   return (
     <div
