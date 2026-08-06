@@ -1,6 +1,8 @@
 # Neues Reel anlegen
 
-Neue Reels werden nicht mehr aus dem alten Hybrid-Template kopiert. Verwende aus `alles/`:
+Neue Reels verwenden `ki-animation-only-reel-v2`.
+
+Aus `alles/`:
 
 ```bash
 node scripts/create-future-reel.mjs \
@@ -10,40 +12,56 @@ node scripts/create-future-reel.mjs \
 --title "Titel des Reels" \
 --hook "Direkter Hook" \
 --scenes 8 \
---seconds 65
+--seconds 64
 ```
 
-Beispiel:
+Optional kann der technische Remotion-Ordner angegeben werden:
 
 ```bash
-node scripts/create-future-reel.mjs \
-2026-08-10_bis_2026-08-16 \
-montag \
-reel-01_warum-ki-dich-missversteht \
---title "Warum KI dich manchmal missversteht" \
---hook "Warum versteht deine KI manchmal genau das Gegenteil?" \
---scenes 8 \
---seconds 65
+--source-dir ki/src/reels/<technischer-slug>
 ```
 
-Das Skript erzeugt automatisch:
+Das Skript erzeugt:
 
-- die sichtbare FinanzNeo-artige Reel-Ordnerstruktur
+- die sichtbare Reel-Ordnerstruktur
 - 8 oder 9 Szenenordner
-- einen 60- bis 70-sekündigen Timeline-Vertrag
-- leere semantische Beat-Maps
+- einen ausdrücklich als Platzhalter markierten Timeline-Vertrag
+- ein Hauptobjekt, eine Hauptbewegung und ein Ergebnis als Pflichtfelder
+- semantische Beat-Maps mit maximal drei Beats pro Szene
 - Cover-Vertrag
 - Voiceover-Dateien
-- Untertitelvertrag
+- Untertitelvertrag für vollständige Sätze
+- `timeline/final-sync.template.json`
 - Review-Checkliste
-- Checkpoint-Frames
 - Produktionsstatus
 
-Danach müssen Script, Szenen und Bedeutungsbeats vollständig ausgefüllt werden. Anschließend:
+## Planung prüfen
 
 ```bash
 node scripts/validate-future-reel-standard.mjs \
 ../reels/<woche>/<wochentag>/<reel-thema>
 ```
 
-Das Scaffold-Skript überschreibt niemals einen vorhandenen Reel-Ordner.
+## Nach dem finalen Voiceover
+
+Codex muss:
+
+```text
+Audio transkribieren
+→ timeline/final-sync.json erzeugen
+→ Platzhalter-Szenenframes ersetzen
+→ Trigger aus echten Wortzeiten setzen
+→ vollständige Satzuntertitel einbauen
+→ violette Fortschrittslinie synchronisieren
+→ finale Videolänge aus Sprachende berechnen
+```
+
+Danach:
+
+```bash
+node scripts/validate-future-reel-standard.mjs \
+../reels/<woche>/<wochentag>/<reel-thema> \
+--final
+```
+
+Das Scaffold-Skript überschreibt niemals einen vorhandenen Reel-Ordner. Ein v2-Reel darf nicht final gerendert werden, solange `final-sync.json` fehlt oder Fallback-Timing aktiv ist.
