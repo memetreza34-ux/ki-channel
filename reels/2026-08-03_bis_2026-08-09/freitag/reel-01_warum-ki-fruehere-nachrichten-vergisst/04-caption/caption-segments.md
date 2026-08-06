@@ -1,6 +1,6 @@
 # Untertitelpaare
 
-Jede Szene zeigt exakt zwei kurze Sätze gleichzeitig. Beide Sätze sind sofort vollständig sichtbar. Nur das aktuell gesprochene Wort wird violett.
+Jede Szene zeigt exakt zwei kurze Sätze gleichzeitig. Beide Sätze stehen vom ersten bis zum letzten Frame der Szene vollständig sichtbar. Nur das aktuell gesprochene Wort wird violett; während einer Pause ist kein Wort markiert.
 
 ## Szene 1
 
@@ -40,12 +40,13 @@ Jede Szene zeigt exakt zwei kurze Sätze gleichzeitig. Beide Sätze sind sofort 
 ## Szene 8
 
 1. So bleibt der entscheidende Kontext im aktiven Fenster.
-2. Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.
+2. Die KI vergisst dich nicht absichtlich, der Teil ist nur unsichtbar.
 
 ## Darstellung
 
-- beide Sätze vollständig von Beginn des Paars sichtbar
+- beide Sätze während der kompletten Szene sichtbar
 - aktives Wort exakt nach echten Wortzeiten violett
+- in Sprechpausen kein aktives Wort
 - keine Fortschrittslinie
 - keine Wort-für-Wort-Enthüllung
 - keine Größenänderung
