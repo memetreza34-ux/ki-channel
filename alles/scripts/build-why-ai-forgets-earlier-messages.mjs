@@ -15,6 +15,7 @@ if (config.syncStatus !== 'final-transcript-aligned') {
   throw new Error('Gesamtbuild blockiert: timeline/final-sync.json muss zuerst aus dem echten Voiceover erzeugt werden.');
 }
 
+await run(process.execPath, ['scripts/finalize-why-ai-forgets-sync.mjs', config.reelRoot]);
 await run(process.execPath, ['scripts/validate-reel-v3.mjs', config.reelRoot, '--final']);
 await run(process.execPath, ['scripts/validate-v3-caption-coverage.mjs', config.reelRoot]);
 await run(process.execPath, ['scripts/stage-why-ai-forgets-audio.mjs', config.reelRoot]);
