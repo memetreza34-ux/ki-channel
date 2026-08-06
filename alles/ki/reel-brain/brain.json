@@ -1,16 +1,13 @@
 {
-  "version": 5,
-  "standardId": "ki-animation-only-reel-v3",
-  "mission": "Premium German AI reels whose final scene timing, semantic motion and two-sentence karaoke captions are driven by the real voiceover transcript.",
-  "appliesTo": "all newly created reels",
-  "historicalStandardIds": ["ki-animation-only-reel-v1", "ki-animation-only-reel-v2"],
-  "requiredAgents": ["reel-animation-director", "reel-sync-auditor", "reel-visual-qa-agent"],
-  "editorial": {"targetDurationSeconds":{"min":58,"max":70},"targetScriptWords":{"min":125,"max":145},"targetSceneCount":{"min":8,"max":9},"sentencesPerScene":2,"finalDurationRule":"speech end plus 1.2 to 2.2 seconds","maximumLeadInSeconds":0.6,"forbidArtificialPadding":true},
-  "audio": {"sourceGenerationSpeed":1,"defaultPlaybackRate":1,"maximumPlaybackRateWithoutExplicitApproval":1.05,"preservePitch":true,"music":false,"soundEffects":"off","timingSource":"timeline/final-sync.json generated from final voiceover","estimatedTimingMayBeUsedInFinalRender":false},
-  "sync": {"requiredFinalFile":"timeline/final-sync.json","singleSourceOfTruth":true,"wordTimingsRequired":true,"maximumSemanticTriggerOffsetFrames":5,"maximumSceneBoundaryOffsetFrames":6,"maximumCaptionStartDelayFrames":3,"fallbackTimingAllowedAfterFinalAudio":false,"compositionDurationDerivedFromSpeech":true},
-  "captions": {"mode":"dual-sentence-active-word","sentencesVisible":2,"fullTextVisibleImmediately":true,"activeWordColor":"violet","inactiveWordColor":"white","wordByWordRevealAllowed":false,"wordSizeChangeAllowed":false,"progressIndicatorAllowed":false,"defaultFontSizePx":44,"minimumFontSizePx":42,"bottomPx":{"min":245,"max":285},"largeBackgroundBoxAllowed":false,"timingSource":"real word start and end frames"},
-  "visual": {"format":{"width":1080,"height":1920,"fps":30},"reelSceneStrategy":"100-percent deterministic Remotion animation","generatedSceneImagesAllowed":false,"stockSceneImagesAllowed":false,"primaryObjectsPerScene":1,"maximumSupportingElementsPerScene":2,"primaryVisualAreaPercent":{"min":60,"max":78},"dominantMotionsPerScene":1,"maximumStrongSimultaneousMotions":2,"maximumSemanticBeatsPerScene":3,"minimumReadableResultHoldSeconds":1,"miniDashboardsAllowed":false,"tinyLabelsAsPrimaryExplanationAllowed":false,"repeatedFullChoreographyAllowed":false,"persistentSceneNumbersAllowed":false,"persistentKickersAllowed":false,"decorativeConstantMotionAllowed":false,"phoneReadabilityRequired":true},
-  "semanticCoverage": {"requireBeatMapBeforeCoding":true,"beatMapShape":"meaning phrase -> visual reaction -> transcript trigger -> result state","importantMeaningWithoutVisualReactionAllowed":false,"fillerWordsReceiveStrongAnimation":false,"maximumBeatsPerScene":3},
-  "releaseRequires": ["final audio","real word transcript","valid timeline/final-sync.json","two caption sentences per scene","violet active-word tracking","no progress line","no active fallback timing","trigger offset validation","scene boundary validation","typecheck","focused tests","animation director review","visual QA agent review","current checkpoints","contact sheet review","full current MP4","normal-speed phone-size watch","technical artifact validation","user approval"],
-  "canonicalHumanStandard": "FUTURE-REEL-STANDARD.md"
+  "version": 6,
+  "standardId": "ki-animation-only-reel-v4",
+  "mission": "Premium German AI reels with audio-driven semantic animation, one current sentence, violet active-word tracking and meaningful heading icons.",
+  "historicalStandardIds": ["ki-animation-only-reel-v1", "ki-animation-only-reel-v2", "ki-animation-only-reel-v3"],
+  "requiredAgents": ["reel-animation-director", "reel-scene-icon-designer", "reel-sync-auditor", "reel-visual-qa-agent"],
+  "editorial": {"targetDurationSeconds":{"min":58,"max":70},"targetScriptWords":{"min":125,"max":145},"targetSceneCount":{"min":8,"max":9},"plannedSentencesPerScene":2,"visibleSentencesAtOnce":1,"finalDurationRule":"speech end plus 1.2 to 2.2 seconds"},
+  "audio": {"defaultPlaybackRate":1,"maximumPlaybackRateWithoutApproval":1.05,"music":false,"soundEffects":false,"timingSource":"timeline/final-sync.json"},
+  "captions": {"mode":"single-sentence-active-word","sentencesVisible":1,"fullTextVisibleImmediately":true,"activeWordColor":"violet","progressIndicatorAllowed":false,"largeBackgroundBoxAllowed":false,"wordRevealAllowed":false,"wordSizeChangeAllowed":false,"defaultFontSizePx":48,"minimumFontSizePx":44,"bottomPx":{"min":300,"max":350,"default":320}},
+  "visual": {"headingIconRequired":true,"headingIconType":"semantic-vector","iconMicroMotionRequired":true,"primaryObjectsPerScene":1,"maximumSupportingElementsPerScene":2,"primaryVisualAreaPercent":{"min":68,"max":82},"dominantMotionsPerScene":1,"maximumStrongSimultaneousMotions":2,"maximumSemanticBeatsPerScene":3,"repeatedStageFrameAllowed":false,"miniDashboardsAllowed":false,"generatedSceneImagesAllowed":false},
+  "sync": {"realWordTimingsRequired":true,"maximumSemanticTriggerOffsetFrames":5,"maximumSceneBoundaryOffsetFrames":6,"outroHoldSeconds":{"min":1.2,"max":2.2},"fallbackTimingAllowedInFinal":false},
+  "releaseRequires": ["final audio","real word transcript","valid final-sync.json","v4 validation","typecheck","focused tests","animation director review","icon review","current checkpoints","contact sheet","full MP4","phone-size watch","visual QA","user approval"]
 }

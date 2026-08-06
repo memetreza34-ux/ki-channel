@@ -1,14 +1,48 @@
-# Codex-Auftrag
+# Codex-Auftrag – Unterschiedliche Antworten v4
 
-Arbeite nur auf `feature/reel-gleiche-frage-andere-antwort`. Lies Root- und `alles/AGENTS.md` sowie Animation Director, Sync Auditor und Visual QA.
+Arbeite ausschließlich auf `feature/reel-gleiche-frage-andere-antwort`. Verändere `main` nicht und merge nichts.
 
-1. Genau eine neue Audiodatei aus dem 130-Wörter-Script bei 1,00x prüfen.
-2. Echtes Wort-Transcript erzeugen.
-3. `prepare-why-ai-answers-differently-final-sync.mjs` ausführen.
-4. `validate-reel-v3.mjs --final` und `validate-v3-caption-coverage.mjs` ausführen.
-5. TypeScript und fokussierte Tests ausführen.
-6. Smoke-Frames prüfen, dann Checkpoints, Cover und MP4 rendern.
-7. MP4 normal und in Smartphone-Größe ansehen.
-8. Keine Freigabe ohne Nutzerzustimmung.
+## Produktionsziel
 
-Altes Audio, Platzhalter-Sync, falsches violettes Wort, Fortschrittslinie, schwache Mini-Dashboards oder alte Render blockieren den Build.
+- ein aktueller Untertitelsatz
+- vollständiger Satz sofort sichtbar
+- aktives Wort violett
+- keine Fortschrittslinie oder große Untertitelbox
+- Untertitel bei 320 px
+- passendes animiertes Vektor-Icon je Überschrift
+- acht große, unterschiedliche Ursache-Wirkung-Animationen
+
+## Nach dem finalen Voiceover
+
+1. Genau eine Audiodatei in `02-audio/` prüfen.
+2. Audio bei 1,00x normalisieren.
+3. echtes Wort-Transcript erzeugen.
+4. ausführen:
+
+```bash
+node scripts/prepare-why-ai-answers-differently-final-sync.mjs \
+../reels/2026-08-03_bis_2026-08-09/samstag/reel-01_warum-ki-unterschiedlich-antwortet \
+<Pfad-zum-Transcript.json>
+```
+
+5. `final-sync.json` und alle Schlüsselwort-Trigger prüfen.
+6. ausführen:
+
+```bash
+node scripts/validate-reel-v4.mjs \
+../reels/2026-08-03_bis_2026-08-09/samstag/reel-01_warum-ki-unterschiedlich-antwortet \
+--final
+```
+
+7. TypeScript und fokussierte Tests ausführen.
+8. Smoke-Frames mit Animation Director und Icon-Prüfung ansehen.
+9. alle Checkpoints, Kontaktbogen, Cover und MP4 neu rendern.
+10. MP4 normal und in Smartphone-Größe ansehen.
+11. nur tatsächlich bestandene Prüfungen dokumentieren.
+
+## Gesamtbuild
+
+```bash
+node scripts/build-why-ai-answers-differently.mjs \
+../reels/2026-08-03_bis_2026-08-09/samstag/reel-01_warum-ki-unterschiedlich-antwortet
+```

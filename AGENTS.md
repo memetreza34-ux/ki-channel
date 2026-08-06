@@ -1,76 +1,31 @@
 # KI-Channel – Arbeitsregeln
 
-Die sichtbare Hauptstruktur bleibt:
+Neue Reels verwenden `ki-animation-only-reel-v4`.
 
-- `reels/` für Reel-Projekte
-- `youtube/` für spätere YouTube-Projekte
-- `alles/` für den technischen Unterbau
-
-Vor jeder Reel-Arbeit lesen:
+Vor Reel-Arbeit lesen:
 
 1. `alles/AGENTS.md`
 2. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
 3. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
 4. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
-5. `alles/ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
-6. `alles/ki/reel-brain/REEL-SYNC-AUDITOR.md`
-7. `alles/ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
-8. `alles/ki/reel-brain/brain.json`
-9. die nächste reel-lokale `AGENTS.md`
+5. Animation Director, Sync Auditor und Visual QA
+6. `.agents/skills/reel-scene-icon-designer/SKILL.md`
+7. die reel-lokale `AGENTS.md`
 
-Zusätzlich für neue oder überarbeitete Reels verwenden:
+## V4-Kernregeln
 
-```text
-.agents/skills/reel-animation-director/SKILL.md
-.agents/skills/reel-sync-auditor/SKILL.md
-.agents/skills/reel-visual-qa/SKILL.md
-```
-
-## Standard für neue Reels
-
-- `standardId: ki-animation-only-reel-v3`
-- ungefähr 58 bis 70 Sekunden
-- 125 bis 145 Wörter
-- 8 bis 9 Szenen
-- genau zwei kurze Sätze pro Szene
-- das Satzpaar bleibt während der kompletten Szene sichtbar
-- 100 Prozent Remotion-Animation
-- keine generierten Szenenbilder
-- Voiceover und Wiedergabe bei 1,00x
-- keine Musik und keine Soundeffekte
-- ein großes Hauptobjekt und eine dominante Bewegung pro Szene
-- maximal drei Sinnbeats und zwei starke Bewegungen
+- 1080 × 1920, 30 FPS
+- 125 bis 145 Wörter, 8 bis 9 Szenen
+- pro Szene ungefähr zwei kurze Voiceover-Sätze, aber immer nur ein Satz sichtbar
+- aktueller Satz vollständig sofort anzeigen
 - aktuelles gesprochenes Wort violett
-- in Sprechpausen kein markiertes Wort
-- keine Fortschrittslinie
-- Untertitel-Unterkante 245 bis 285 px, Standard 260 px
+- keine Fortschrittslinie, keine große Untertitelbox
+- Untertitel-Unterkante 300 bis 350 px, Standard 320 px
+- passendes semantisches Vektor-Icon neben jeder Überschrift
+- ein großes Hauptobjekt, eine dominante Bewegung und ein klarer Ergebniszustand
+- Hauptvisual ungefähr 68 bis 82 Prozent der Animationsfläche
+- keine wiederholte Rahmenbühne, Mini-Dashboards oder kleine blasse Kartenansammlungen
+- echtes Audio ist die einzige finale Zeitquelle
+- keine Musik, SFX oder generierten Szenenbilder
 
-## Audio-first
-
-```text
-Audio transkribieren
-→ timeline/final-sync.json erzeugen
-→ Wortzeiten für beide Untertitelsätze speichern
-→ Satzpaar an vollständige Szenengrenzen binden
-→ Szenengrenzen aus Pausen ableiten
-→ Animations-Trigger aus echten Wortzeiten ableiten
-→ finale Dauer aus Sprachende + 1,2 bis 2,2 Sekunden ableiten
-```
-
-Finale Toleranzen:
-
-- Bedeutungs-Trigger maximal ±5 Frames
-- Szenenwechsel maximal ±6 Frames
-- erster Untertitel spätestens 3 Frames nach Sprachbeginn
-- keine Fallback-Zeitquelle im finalen Render
-
-## Prüfung
-
-```bash
-cd alles
-node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema>
-node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
-node scripts/validate-v3-caption-coverage.mjs ../reels/<woche>/<wochentag>/<reel-thema>
-```
-
-`main` nicht verändern, nichts ohne ausdrückliche Freigabe mergen und keinen Pull Request als bereit markieren.
+Finale Triggerabweichung maximal ±5 Frames. Schluss-Hold 1,2 bis 2,2 Sekunden. `main` nicht verändern, nichts ohne Freigabe mergen.

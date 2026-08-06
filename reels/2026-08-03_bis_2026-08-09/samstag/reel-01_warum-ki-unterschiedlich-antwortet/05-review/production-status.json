@@ -1,1 +1,19 @@
-{"version":1,"standardId":"ki-animation-only-reel-v3","stage":"implemented-awaiting-final-audio","scriptApproved":false,"wordCount":130,"sentenceCount":16,"sceneCount":8,"remotionImplemented":true,"audioReceived":false,"transcriptAligned":false,"typecheckPassed":false,"testsPassed":false,"renderCompleted":false,"visualQaReviewed":false,"approved":false}
+{
+  "version": 4,
+  "standardId": "ki-animation-only-reel-v4",
+  "stage": "premium-redesign-implemented-awaiting-audio-sync-and-render",
+  "scriptWordCount": 130,
+  "sentenceCount": 16,
+  "sceneCount": 8,
+  "singleSentenceCaptionImplemented": true,
+  "headingIconsImplemented": true,
+  "sceneChoreographyRedesigned": true,
+  "finalAudioPresentInRepository": false,
+  "transcriptAligned": false,
+  "v4ValidationPassed": false,
+  "typecheckPassed": false,
+  "testsPassed": false,
+  "renderCompleted": false,
+  "visualQaReviewed": false,
+  "approved": false
+}

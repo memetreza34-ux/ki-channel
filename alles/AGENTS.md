@@ -2,105 +2,36 @@
 
 ## Mission
 
-Produce premium German vertical AI reels with deterministic Remotion animation. The real voiceover is the only final clock. Work as a production engineer together with the Animation Director, Sync Auditor and Visual QA Agent.
+Build premium German vertical AI reels with deterministic Remotion animation, single-sentence active-word captions and semantic heading icons. The final voiceover is the only production clock.
 
-## Read first
+## V4 requirements
 
-1. this file
-2. `ki/reel-brain/PRODUCTION-BRAIN.md`
-3. `ki/reel-brain/FUTURE-REEL-STANDARD.md`
-4. `ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
-5. `ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
-6. `ki/reel-brain/REEL-SYNC-AUDITOR.md`
-7. `ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
-8. repository-root `.agents/skills/reel-animation-director/SKILL.md`
-9. repository-root `.agents/skills/reel-sync-auditor/SKILL.md`
-10. repository-root `.agents/skills/reel-visual-qa/SKILL.md`
-11. nearest reel-local `AGENTS.md`
+- `ki-animation-only-reel-v4`
+- 1080 × 1920 at 30 FPS
+- 125 to 145 words, 8 to 9 scenes
+- show only the current sentence
+- show the complete sentence immediately
+- highlight only the active spoken word in violet
+- no progress line, large caption box, bounce or word reveal
+- caption bottom 300 to 350 px
+- every heading has a semantic animated SVG icon
+- one large primary object and one dominant cause-effect motion per scene
+- primary visual roughly 68 to 82 percent of available animation area
+- maximum two strong simultaneous motions and three semantic beats
+- no repeated stage frame, mini-dashboard, tiny washed-out cards, music, SFX or generated scene images
 
-## Git safety
+## Required workflow
 
-- never modify `main`
-- work only on the named branch
-- do not merge or mark a PR ready without explicit approval
-- preserve unrelated files
-- report final branch and commit SHA
+1. Animation Director defines meaning → object → motion → result.
+2. Icon Designer defines heading → icon → trigger → micro-motion.
+3. Build Remotion preview with placeholder timings only.
+4. Generate final voiceover at 1.00x and real word transcript.
+5. Generate `timeline/final-sync.json`.
+6. Validate with `validate-reel-v4.mjs --final`.
+7. Run typecheck and focused tests.
+8. Render smoke frames and inspect every heading icon and primary visual.
+9. Render current checkpoints, contact sheet, cover and MP4.
+10. Watch full MP4 normally and at phone size.
+11. Never report a check as passed unless it actually ran on the current commit.
 
-## Truthfulness
-
-Never claim transcript alignment, tests, typecheck, renders, phone review or visual approval unless they actually ran on the current commit.
-
-## New reel standard
-
-New reels use `ki-animation-only-reel-v3`:
-
-- 1080 × 1920, 30 FPS
-- 125 to 145 words
-- 8 to 9 scenes
-- exactly two short caption sentences per scene
-- each caption pair covers the complete scene from first to last frame
-- both sentences fully visible immediately and during pauses
-- active spoken word violet from real word timings
-- no active word during speech pauses
-- no progress line, word reveal, bounce or size change
-- caption bottom 245 to 285 px
-- one large primary object per scene
-- one dominant explanatory motion
-- maximum two strong simultaneous motions
-- maximum three semantic beats
-- primary visual roughly 60 to 78 percent of the animation area
-- no generated scene images, music or SFX
-
-## Final synchronization
-
-After final audio:
-
-1. normalize audio
-2. generate real word timestamps
-3. create `timeline/final-sync.json`
-4. create one caption pair per scene with exactly two sentences and word timings
-5. set each caption pair to the complete matching scene boundaries
-6. derive scene boundaries from pauses
-7. align semantic triggers within five frames
-8. derive final duration from speech end plus 1.2 to 2.2 seconds
-9. ensure production code uses only final sync data
-10. regenerate checkpoints after every code or sync change
-
-## Choreography review
-
-Before implementation, the Animation Director must define per scene:
-
-```text
-spoken meaning → primary object → dominant motion → stable result
-```
-
-Reject mini-dashboards, repetitive card slides, weak contrast, small visuals and topic-only decoration.
-
-## Required execution
-
-1. planning validation with `validate-reel-v3.mjs`
-2. final audio transcript and sync generation
-3. final v3 validation
-4. `validate-v3-caption-coverage.mjs`
-5. typecheck and focused tests
-6. smoke frames
-7. Animation Director review
-8. all checkpoints and contact sheet
-9. full MP4 at normal speed and phone size
-10. Visual QA Agent report
-11. technical artifact validation
-12. user approval
-
-## Release blockers
-
-- missing or placeholder final sync
-- fewer or more than two caption sentences
-- caption pair does not cover the full scene
-- wrong active word
-- progress line present
-- trigger offset above five frames
-- scene boundary offset above six frames
-- outro hold outside 1.2 to 2.2 seconds
-- repeated weak card choreography
-- tiny or washed-out primary visual
-- stale render after changes
+Never modify `main`, merge or mark a PR ready without explicit approval.
