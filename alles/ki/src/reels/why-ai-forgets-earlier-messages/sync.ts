@@ -1,6 +1,6 @@
 import rawSync from '../../../../../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst/timeline/final-sync.json';
 import rawPackage from '../../../../../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst/timeline/codex-reel-package.json';
-import type {StableSentenceCaptionCue} from '../../components/StableSentenceCaption';
+import type {DualSentenceCaptionCue} from '../../components/DualSentenceKaraokeCaption';
 
 export type ContextSceneId =
   | 'scene-01'
@@ -41,7 +41,7 @@ export const CONTEXT_HEIGHT = rawPackage.composition.height;
 export const CONTEXT_FPS = rawSync.fps;
 export const CONTEXT_DURATION = rawSync.composition.durationInFrames;
 export const CONTEXT_SCENES = rawSync.scenes as ContextSceneSync[];
-export const CONTEXT_CAPTIONS = rawSync.captions as StableSentenceCaptionCue[];
+export const CONTEXT_CAPTION_PAIRS = rawSync.captionPairs as unknown as DualSentenceCaptionCue[];
 export const CONTEXT_BEATS = rawSync.beats as ContextBeatSync[];
 export const CONTEXT_SYNC_STATUS = rawSync.status;
 

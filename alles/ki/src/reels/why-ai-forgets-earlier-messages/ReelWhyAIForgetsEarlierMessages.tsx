@@ -1,15 +1,15 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence} from 'remotion';
-import {StableSentenceCaption} from '../../components/StableSentenceCaption';
+import {DualSentenceKaraokeCaption} from '../../components/DualSentenceKaraokeCaption';
 import {contextWindowAsset} from './assets';
 import {CONTEXT_SCENE_COMPONENTS} from './scenes';
 import {
-  CONTEXT_CAPTIONS,
+  CONTEXT_CAPTION_PAIRS,
   CONTEXT_SCENES,
   CONTEXT_SYNC_STATUS,
   type ContextSceneId,
 } from './sync';
-import {contextPalette} from './style';
+import {contextFont, contextPalette} from './style';
 
 export type ReelWhyAIForgetsEarlierMessagesProps = {
   voiceoverSrc?: string;
@@ -38,7 +38,12 @@ export const ReelWhyAIForgetsEarlierMessages: React.FC<ReelWhyAIForgetsEarlierMe
         );
       })}
 
-      <StableSentenceCaption cues={CONTEXT_CAPTIONS} accentColor={contextPalette.accent} fontSizePx={50} />
+      <DualSentenceKaraokeCaption
+        cues={CONTEXT_CAPTION_PAIRS}
+        accentColor={contextPalette.accentBright}
+        fontFamily={contextFont}
+        fontSizePx={44}
+      />
 
       {playFinalVoiceover ? (
         <Audio src={voiceoverSrc ?? contextWindowAsset('voiceover')} playbackRate={1} volume={1} />
