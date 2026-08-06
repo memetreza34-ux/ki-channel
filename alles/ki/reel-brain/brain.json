@@ -1,13 +1,89 @@
 {
-  "version": 6,
+  "version": 7,
   "standardId": "ki-animation-only-reel-v4",
-  "mission": "Premium German AI reels with audio-driven semantic animation, one current sentence, violet active-word tracking and meaningful heading icons.",
+  "mission": "Premium German AI reels with audio-driven semantic animation, one current sentence, violet active-word tracking, meaningful heading icons and no repeated core choreography.",
   "historicalStandardIds": ["ki-animation-only-reel-v1", "ki-animation-only-reel-v2", "ki-animation-only-reel-v3"],
   "requiredAgents": ["reel-animation-director", "reel-scene-icon-designer", "reel-sync-auditor", "reel-visual-qa-agent"],
-  "editorial": {"targetDurationSeconds":{"min":58,"max":70},"targetScriptWords":{"min":125,"max":145},"targetSceneCount":{"min":8,"max":9},"plannedSentencesPerScene":2,"visibleSentencesAtOnce":1,"finalDurationRule":"speech end plus 1.2 to 2.2 seconds"},
-  "audio": {"defaultPlaybackRate":1,"maximumPlaybackRateWithoutApproval":1.05,"music":false,"soundEffects":false,"timingSource":"timeline/final-sync.json"},
-  "captions": {"mode":"single-sentence-active-word","sentencesVisible":1,"fullTextVisibleImmediately":true,"activeWordColor":"violet","progressIndicatorAllowed":false,"largeBackgroundBoxAllowed":false,"wordRevealAllowed":false,"wordSizeChangeAllowed":false,"defaultFontSizePx":48,"minimumFontSizePx":44,"bottomPx":{"min":300,"max":350,"default":320}},
-  "visual": {"headingIconRequired":true,"headingIconType":"semantic-vector","iconMicroMotionRequired":true,"primaryObjectsPerScene":1,"maximumSupportingElementsPerScene":2,"primaryVisualAreaPercent":{"min":68,"max":82},"dominantMotionsPerScene":1,"maximumStrongSimultaneousMotions":2,"maximumSemanticBeatsPerScene":3,"repeatedStageFrameAllowed":false,"miniDashboardsAllowed":false,"generatedSceneImagesAllowed":false},
-  "sync": {"realWordTimingsRequired":true,"maximumSemanticTriggerOffsetFrames":5,"maximumSceneBoundaryOffsetFrames":6,"outroHoldSeconds":{"min":1.2,"max":2.2},"fallbackTimingAllowedInFinal":false},
-  "releaseRequires": ["final audio","real word transcript","valid final-sync.json","v4 validation","typecheck","focused tests","animation director review","icon review","current checkpoints","contact sheet","full MP4","phone-size watch","visual QA","user approval"]
+  "editorial": {
+    "targetDurationSeconds": {"min": 58, "max": 70},
+    "targetScriptWords": {"min": 125, "max": 145},
+    "targetSceneCount": {"min": 8, "max": 9},
+    "plannedSentencesPerScene": 2,
+    "visibleSentencesAtOnce": 1,
+    "finalDurationRule": "speech end plus 1.2 to 2.2 seconds"
+  },
+  "audio": {
+    "defaultPlaybackRate": 1,
+    "maximumPlaybackRateWithoutApproval": 1.05,
+    "music": false,
+    "soundEffects": false,
+    "timingSource": "timeline/final-sync.json"
+  },
+  "captions": {
+    "mode": "single-sentence-active-word",
+    "sentencesVisible": 1,
+    "fullTextVisibleImmediately": true,
+    "firstSentenceVisibleUntilSecondStarts": true,
+    "secondSentenceVisibleUntilSceneEnds": true,
+    "activeWordColor": "violet",
+    "progressIndicatorAllowed": false,
+    "largeBackgroundBoxAllowed": false,
+    "wordRevealAllowed": false,
+    "wordSizeChangeAllowed": false,
+    "defaultFontSizePx": 48,
+    "minimumFontSizePx": 44,
+    "bottomPx": {"min": 300, "max": 350, "default": 320}
+  },
+  "visual": {
+    "headingIconRequired": true,
+    "headingIconType": "semantic-vector",
+    "iconMicroMotionRequired": true,
+    "uniqueHeadingIconPerScene": true,
+    "primaryObjectsPerScene": 1,
+    "maximumSupportingElementsPerScene": 2,
+    "primaryVisualAreaPercent": {"min": 68, "max": 82},
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 2,
+    "maximumSemanticBeatsPerScene": 3,
+    "repeatedStageFrameAllowed": false,
+    "miniDashboardsAllowed": false,
+    "generatedSceneImagesAllowed": false
+  },
+  "antiRepetition": {
+    "contract": "ANTI-REPETITION-CONTRACT.md",
+    "comparePreviousComparableReels": 2,
+    "matrixRequired": "05-review/anti-repetition-matrix.md",
+    "uniquePrimaryMotionPerScene": true,
+    "uniqueHeadingIconPerScene": true,
+    "reusedPrimaryMechanismsFromImmediatelyPreviousReel": 0,
+    "textColorDirectionOrSpeedChangeCountsAsNewMechanism": false,
+    "previousUserCriticismBecomesReleaseBlocker": true,
+    "validator": "scripts/validate-reel-animation-novelty.mjs"
+  },
+  "sync": {
+    "realWordTimingsRequired": true,
+    "maximumSemanticTriggerOffsetFrames": 5,
+    "maximumSceneBoundaryOffsetFrames": 6,
+    "outroHoldSeconds": {"min": 1.2, "max": 2.2},
+    "fallbackTimingAllowedInFinal": false,
+    "placeholderTimingAllowedForMutedPreviewOnly": true
+  },
+  "releaseRequires": [
+    "final audio",
+    "real word transcript",
+    "valid final-sync.json",
+    "v4 validation",
+    "animation novelty validation",
+    "anti-repetition matrix",
+    "typecheck",
+    "focused tests",
+    "animation director review",
+    "icon review",
+    "current checkpoints",
+    "contact sheet",
+    "full MP4",
+    "phone-size watch",
+    "visual QA",
+    "user approval"
+  ]
 }
