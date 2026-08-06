@@ -1,0 +1,14 @@
+SPRACHE
+Deutsch
+
+STIMME
+Natürlich, ruhig, klar und kompetent. Nicht hektisch, nicht werblich und nicht übertrieben dramatisch.
+
+TEMPO
+Quellgeschwindigkeit 1,00x. Keine künstliche Beschleunigung. Kurze natürliche Pause nach der Hook-Frage, nach „begrenzten Ausschnitt“, vor den Lösungen und vor dem letzten Merksatz.
+
+BETONUNG
+Leicht betonen: vergisst, Kontextfenster, begrenzten Ausschnitt, wandert, hinaus, lange Texte, viele Dateien, Namen, Regeln, Entscheidungen, zusammen, Vorgaben, Abschnitte, Kontext, sichtbaren Fenster.
+
+AUDIO
+Eine saubere Datei ohne Musik, Hall oder Soundeffekte. Bevorzugt WAV, 48 kHz.
