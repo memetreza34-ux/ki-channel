@@ -51,9 +51,13 @@ describe('why-ai-forgets-earlier-messages v3 contract', () => {
     expect(script.match(/[.!?](?:\s|$)/g)?.length).toBe(16);
   });
 
-  it('shows exactly two full sentences with active-word timing', () => {
+  it('shows exactly two full sentences during every complete scene', () => {
     expect(CONTEXT_CAPTION_PAIRS).toHaveLength(8);
-    for (const pair of CONTEXT_CAPTION_PAIRS) {
+    CONTEXT_CAPTION_PAIRS.forEach((pair, pairIndex) => {
+      const scene = CONTEXT_SCENES[pairIndex];
+      expect(pair.sceneId).toBe(scene.id);
+      expect(pair.startFrame).toBe(scene.startFrame);
+      expect(pair.endFrame).toBe(scene.endFrame);
       expect(pair.mode).toBe('dual-sentence-active-word');
       expect(pair.sentences).toHaveLength(2);
       expect(pair.bottomPx).toBeGreaterThanOrEqual(245);
@@ -70,7 +74,7 @@ describe('why-ai-forgets-earlier-messages v3 contract', () => {
           cursor = word.endFrame;
         }
       }
-    }
+    });
   });
 
   it('keeps every semantic trigger within five frames', () => {
