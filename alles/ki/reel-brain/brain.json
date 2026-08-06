@@ -1,10 +1,51 @@
 {
-  "version": 2,
-  "mission": "Premium German vertical AI explainer reels built from approved scripts and deterministic Remotion animation, with one separate static cover image.",
+  "version": 3,
+  "standardId": "ki-animation-only-reel-v1",
+  "mission": "Premium German vertical AI explainer reels built from approved scripts, real transcript timing and deterministic Remotion animation, with one separate static cover image.",
+  "appliesTo": "all newly created reels",
   "responsibilities": {
-    "planner": ["topic", "direct hook", "final voiceover", "scene order", "cover prompt", "semantic animation choreography", "Remotion prebuild", "tests", "Codex task"],
-    "user": ["generate one approved cover image", "generate final voiceover at normal source speed", "place files in the reel project", "approve final MP4"],
-    "codex": ["validate media", "transcribe final audio", "synchronize cues", "integrate audio into prebuilt code", "run tests", "render", "inspect", "fix", "report honestly"]
+    "planner": [
+      "topic",
+      "direct hook",
+      "125-to-145-word final voiceover",
+      "8-to-9-scene argument structure",
+      "one-sentence cover concept",
+      "semantic beat map",
+      "complete Remotion prebuild",
+      "tests",
+      "checkpoints",
+      "Codex task"
+    ],
+    "user": [
+      "generate or provide one approved cover visual",
+      "generate final voiceover at normal source speed",
+      "place the audio in the reel project",
+      "approve final cover and MP4"
+    ],
+    "codex": [
+      "validate media",
+      "transcribe final audio",
+      "synchronize scene boundaries captions and semantic beats from the same timestamps",
+      "use prebuilt Remotion code",
+      "run tests and typecheck",
+      "render all checkpoints cover and MP4",
+      "inspect at normal speed and phone size",
+      "fix evidenced issues",
+      "report honestly"
+    ]
+  },
+  "editorial": {
+    "targetDurationSeconds": {"min": 60, "max": 70},
+    "minimumAcceptableDurationSeconds": 55,
+    "targetScriptWords": {"min": 125, "max": 145},
+    "targetSceneCount": {"min": 8, "max": 9},
+    "normalSceneSeconds": {"min": 6, "max": 8},
+    "absoluteMinimumSceneSeconds": 5.5,
+    "hookPattern": "direct viewer question, direct contradiction or surprising claim",
+    "exampleHook": "Warum halluziniert deine KI, obwohl sie so sicher klingt?",
+    "simplicityRule": "one clear claim and one dominant visual explanation per scene",
+    "forbidArtificialFiller": true,
+    "requireProblemCauseMechanismRiskSolution": true
   },
   "audio": {
     "sourceGenerationSpeed": 1,
@@ -13,30 +54,86 @@
     "preservePitch": true,
     "music": false,
     "soundEffects": "off",
-    "timingSource": "final voiceover transcript"
-  },
-  "editorial": {
-    "targetDurationSeconds": {"min": 60, "max": 70},
-    "targetScriptWords": {"min": 125, "max": 145},
-    "targetSceneCount": {"min": 8, "max": 9},
-    "hookPattern": "direct viewer question or direct contradiction",
-    "exampleHook": "Warum halluziniert deine KI, obwohl sie so sicher klingt?",
-    "simplicityRule": "one clear claim and one dominant visual explanation per scene"
+    "timingSource": "final voiceover word transcript",
+    "estimatedTimingMayBeCalledExact": false
   },
   "visual": {
     "format": {"width": 1080, "height": 1920, "fps": 30},
-    "reelImageAssets": "none by default",
-    "coverImageAssets": 1,
+    "reelSceneStrategy": "100-percent deterministic Remotion animation",
+    "generatedSceneImagesAllowed": false,
+    "stockSceneImagesAllowed": false,
+    "cover": {
+      "finalAssetCount": 1,
+      "type": "static image",
+      "sentenceCount": 1,
+      "singleMainMotif": true,
+      "additionalLabelsAllowed": false,
+      "aiGeneratedReadableTextAllowed": false,
+      "sentenceMustBeTypesetDeterministically": true
+    },
     "dominantMotionsPerScene": 1,
     "maximumStrongSimultaneousMotions": 2,
-    "subtitleWindowWords": 7,
+    "maximumSemanticBeatsPerScene": 4,
+    "minimumReadableResultHoldSeconds": 1,
     "hardCutsDefault": true,
+    "decorativeConstantMotionAllowed": false,
     "genericImageZoomAllowed": false,
     "peopleAllowedByDefault": false,
-    "minimumSceneSeconds": 6,
-    "minimumReadableResultHoldSeconds": 1,
-    "semanticAnimationRule": "animate every important meaning beat; filler words receive subtitle timing only"
+    "semanticAnimationRule": "animate every important meaning beat; filler words receive subtitle timing only",
+    "emptySpaceRule": "unused space must support focus, not make the scene look unfinished",
+    "phoneReadabilityRequired": true
   },
-  "statusVocabulary": ["planned", "implemented", "typechecked", "tested", "rendered", "visually-reviewed", "approved", "rejected"],
-  "releaseRequires": ["final transcript", "typecheck", "focused tests", "all checkpoints", "full MP4", "normal-speed watch", "phone-size review", "technical artifact validation", "user approval"]
+  "captions": {
+    "mode": "sentence-based transcript-aligned subtitles",
+    "twoToFourWordChunkingAllowed": false,
+    "maximumLines": 2,
+    "defaultFontSizePx": 50,
+    "minimumFontSizePx": 40,
+    "baseText": "white with dark outline or strong shadow",
+    "largeBackgroundBoxAllowed": false,
+    "wholeSentenceBounceAllowed": false,
+    "currentImportantWordHighlight": "subtle",
+    "showFutureWords": false
+  },
+  "sceneRhythm": {
+    "readableOpeningSeconds": {"min": 0.4, "max": 0.8},
+    "causeOrConceptEntrySeconds": {"min": 0.6, "max": 2},
+    "mainExplanationSeconds": {"min": 2, "max": 4.8},
+    "resultHoldSeconds": {"min": 1},
+    "fastEffectChainsAllowed": false
+  },
+  "semanticCoverage": {
+    "requireBeatMapBeforeCoding": true,
+    "beatMapShape": "important expression -> visual reaction -> transcript trigger -> result state",
+    "importantMeaningWithoutVisualReactionAllowed": false,
+    "fillerWordsReceiveStrongAnimation": false
+  },
+  "statusVocabulary": [
+    "planned",
+    "implemented",
+    "transcript-aligned",
+    "typechecked",
+    "tested",
+    "rendered",
+    "technically-validated",
+    "visually-reviewed",
+    "approved",
+    "rejected"
+  ],
+  "releaseRequires": [
+    "script word count check",
+    "real final transcript",
+    "semantic coverage check",
+    "typecheck",
+    "focused tests",
+    "all current checkpoints",
+    "contact sheet review",
+    "full current MP4",
+    "normal-speed watch",
+    "phone-size review",
+    "cover review",
+    "technical artifact validation",
+    "user approval"
+  ],
+  "canonicalHumanStandard": "FUTURE-REEL-STANDARD.md"
 }
