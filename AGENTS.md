@@ -1,37 +1,66 @@
 # KI-Channel – Arbeitsregeln
 
-Die sichtbare Hauptstruktur ist absichtlich einfach:
+Die sichtbare Hauptstruktur bleibt:
 
 - `reels/` für Reel-Projekte
 - `youtube/` für spätere YouTube-Projekte
-- `alles/` für den gesamten technischen Unterbau
+- `alles/` für den technischen Unterbau
 
-Vor jeder technischen Reel-Arbeit zuerst lesen:
+Vor jeder Reel-Arbeit lesen:
 
 1. `alles/AGENTS.md`
 2. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
-3. bei jedem neuen Reel `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
-4. `alles/ki/reel-brain/brain.json`
-5. `alles/ki/reel-brain/VALIDATION.md`
-6. die nächste reel-lokale `AGENTS.md`
+3. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
+4. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
+5. `alles/ki/reel-brain/brain.json`
+6. `alles/ki/reel-brain/VALIDATION.md`
+7. die nächste reel-lokale `AGENTS.md`
 
-Neue Reel-Projekte werden ausschließlich unter `reels/<woche>/<wochentag>/<reel-thema>/` angelegt. Technische Befehle werden aus `alles/` ausgeführt.
+Neue Reel-Projekte werden nur unter `reels/<woche>/<wochentag>/<reel-thema>/` angelegt. Technische Befehle werden aus `alles/` ausgeführt.
 
-Für alle neu erstellten Reels gilt standardmäßig:
+## Standard für alle neu erstellten Reels
 
-- 60 bis 70 Sekunden
+- `standardId: ki-animation-only-reel-v2`
+- ungefähr 58 bis 70 Sekunden
 - 125 bis 145 Wörter
 - 8 bis 9 Szenen
-- 100 Prozent Remotion-Animation im Reel
+- 100 Prozent Remotion-Animation
 - keine generierten Szenenbilder
-- genau ein separates statisches Cover mit einem Satz
+- genau ein statisches Cover mit einem Satz
 - Stimme und Wiedergabe bei 1,00x
-- höchstens 1,05x nach ausdrücklicher Freigabe
+- keine Musik und keine Soundeffekte
+- ein Hauptobjekt, eine Hauptbewegung und ein Ergebnis pro Szene
+- ein bis drei Bedeutungsbeats pro Szene
 - maximal zwei starke Bewegungen gleichzeitig
-- mindestens eine Sekunde Ergebnis-Hold
-- normale Satzuntertitel statt hektischer Wortblöcke
+- Untertitel erscheinen als vollständiger Satz sofort
+- keine Wort-für-Wort-Einblendung
+- genau eine violette Fortschrittslinie synchron zur echten Satzdauer
+- Untertitel-Unterkante zwischen 210 und 235 px
 
-Vor dem Coding und erneut vor der finalen Freigabe muss der neue Reel-Standard geprüft werden:
+## Audio-first ist verpflichtend
+
+Vor der finalen Audiodatei sind alle Frames nur Platzhalter. Nach dem Audio muss Codex:
+
+```text
+Audio transkribieren
+→ timeline/final-sync.json erzeugen
+→ Szenengrenzen aus Satz- und Sinnpausen ableiten
+→ Animationstrigger aus echten Wortzeiten ableiten
+→ Untertitel und violette Linie aus echten Satzzeiten ableiten
+→ Composition-Dauer auf Sprachende + 1,2 bis 2,2 Sekunden setzen
+```
+
+Ein Audio darf niemals nur in eine vorher festgelegte 60- oder 65-Sekunden-Timeline gelegt werden.
+
+Finale Toleranzen:
+
+- Bedeutungs-Trigger maximal ±5 Frames
+- Szenenwechsel maximal ±6 Frames von der Sinnpause
+- erster Untertitel spätestens 3 Frames nach Sprachbeginn
+- Schluss-Hold 1,2 bis 2,2 Sekunden
+- keine Fallback-Zeitquelle im finalen Render
+
+## Prüfung
 
 ```bash
 cd alles
@@ -39,6 +68,4 @@ node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<ree
 node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
 ```
 
-Historische Reels dürfen ältere Werte besitzen. Diese Werte nicht in neue Reels kopieren.
-
-Keine zusätzlichen Kanalordner am Repository-Root anlegen. FinanzNeo gehört nicht in dieses Repository. Keine Pull Requests mergen oder als bereit markieren, ohne ausdrückliche Freigabe.
+Historische Reels mit `ki-animation-only-reel-v1` dürfen bestehen bleiben, sind aber keine Vorlage. `main` nicht verändern, nichts ohne ausdrückliche Freigabe mergen und keinen Pull Request als bereit markieren.
