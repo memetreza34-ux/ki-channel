@@ -13,9 +13,10 @@ Vor jeder Reel-Arbeit lesen:
 3. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
 4. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
 5. `alles/ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
-6. `alles/ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
-7. `alles/ki/reel-brain/brain.json`
-8. die nächste reel-lokale `AGENTS.md`
+6. `alles/ki/reel-brain/REEL-SYNC-AUDITOR.md`
+7. `alles/ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
+8. `alles/ki/reel-brain/brain.json`
+9. die nächste reel-lokale `AGENTS.md`
 
 Zusätzlich für neue oder überarbeitete Reels verwenden:
 
@@ -32,14 +33,15 @@ Zusätzlich für neue oder überarbeitete Reels verwenden:
 - 125 bis 145 Wörter
 - 8 bis 9 Szenen
 - genau zwei kurze Sätze pro Szene
+- das Satzpaar bleibt während der kompletten Szene sichtbar
 - 100 Prozent Remotion-Animation
 - keine generierten Szenenbilder
 - Voiceover und Wiedergabe bei 1,00x
 - keine Musik und keine Soundeffekte
 - ein großes Hauptobjekt und eine dominante Bewegung pro Szene
 - maximal drei Sinnbeats und zwei starke Bewegungen
-- beide Untertitelsätze vollständig sofort sichtbar
 - aktuelles gesprochenes Wort violett
+- in Sprechpausen kein markiertes Wort
 - keine Fortschrittslinie
 - Untertitel-Unterkante 245 bis 285 px, Standard 260 px
 
@@ -49,6 +51,7 @@ Zusätzlich für neue oder überarbeitete Reels verwenden:
 Audio transkribieren
 → timeline/final-sync.json erzeugen
 → Wortzeiten für beide Untertitelsätze speichern
+→ Satzpaar an vollständige Szenengrenzen binden
 → Szenengrenzen aus Pausen ableiten
 → Animations-Trigger aus echten Wortzeiten ableiten
 → finale Dauer aus Sprachende + 1,2 bis 2,2 Sekunden ableiten
@@ -67,6 +70,7 @@ Finale Toleranzen:
 cd alles
 node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema>
 node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
+node scripts/validate-v3-caption-coverage.mjs ../reels/<woche>/<wochentag>/<reel-thema>
 ```
 
 `main` nicht verändern, nichts ohne ausdrückliche Freigabe mergen und keinen Pull Request als bereit markieren.
