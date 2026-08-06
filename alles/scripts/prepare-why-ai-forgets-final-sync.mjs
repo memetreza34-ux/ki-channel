@@ -26,136 +26,158 @@ const normalizedWords = words.map((word, index) => {
 
 const fps = 30;
 const sentenceTexts = [
-  'Warum vergisst deine KI plötzlich etwas, das du ihr vorher geschrieben hast?',
-  'Der Grund ist meistens ihr Kontextfenster.',
-  'Stell dir den Chat wie ein langes Band vor.',
-  'Die KI sieht nicht automatisch das gesamte Band, sondern nur einen begrenzten Ausschnitt.',
+  'Warum vergisst deine KI plötzlich frühere Nachrichten?',
+  'Dahinter steckt meistens ihr begrenztes Kontextfenster.',
+  'Stell dir den Chat als sehr langes Band vor.',
+  'Die KI sieht davon immer nur einen Ausschnitt.',
   'Mit jeder neuen Nachricht wandert dieses Fenster weiter.',
-  'Ältere Teile rutschen irgendwann hinaus und stehen für die nächste Antwort nicht mehr vollständig zur Verfügung.',
-  'Besonders schnell passiert das bei langen Texten, vielen Dateien oder sehr ausführlichen Antworten.',
-  'Dann fehlen plötzlich Namen, Regeln oder Entscheidungen vom Anfang.',
-  'Du kannst das vermeiden: Fasse wichtige Punkte regelmäßig kurz zusammen.',
-  'Wiederhole zentrale Vorgaben vor einer neuen Aufgabe.',
-  'Teile große Projekte in klare Abschnitte und speichere Entscheidungen außerhalb des Chats.',
-  'So gibst du der KI genau den Kontext, den sie gerade braucht.',
-  'Sie hat dich nicht absichtlich vergessen.',
-  'Der relevante Teil war nur nicht mehr im sichtbaren Fenster.',
+  'Neue Inhalte schieben den sichtbaren Bereich nach vorn.',
+  'Ältere Nachrichten rutschen dadurch irgendwann hinaus.',
+  'Für die nächste Antwort sind sie nicht vollständig verfügbar.',
+  'Lange Texte füllen den verfügbaren Platz besonders schnell.',
+  'Dateien und ausführliche Antworten verbrauchen zusätzlich viel Raum.',
+  'Dann fehlen Namen, Regeln oder Entscheidungen vom Anfang.',
+  'Die KI kann nur mit dem sichtbaren Teil arbeiten.',
+  'Fasse wichtige Punkte deshalb regelmäßig kurz zusammen.',
+  'Wiederhole zentrale Vorgaben und gliedere große Projekte klar.',
+  'So bleibt der entscheidende Kontext im aktiven Fenster.',
+  'Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.',
 ];
 
 const normalize = (value) => value.toLocaleLowerCase('de-DE').replace(/[^a-zäöüß0-9]/gi, '');
-const scriptTokens = sentenceTexts.map((sentence) => sentence.split(/\s+/).map(normalize).filter(Boolean));
+const scriptWords = sentenceTexts.map((sentence) => sentence.split(/\s+/).filter(Boolean));
 const transcriptTokens = normalizedWords.map((word) => normalize(word.text));
 
 let cursor = 0;
-const captions = [];
-for (const [sentenceIndex, tokens] of scriptTokens.entries()) {
-  const startIndex = cursor;
+const sentences = [];
+
+for (const [sentenceIndex, tokens] of scriptWords.entries()) {
+  const alignedWords = [];
   for (const token of tokens) {
-    while (cursor < transcriptTokens.length && transcriptTokens[cursor] !== token) cursor += 1;
-    if (cursor >= transcriptTokens.length) {
-      throw new Error(`Transcript kann Satz ${sentenceIndex + 1} nicht eindeutig zuordnen; Token fehlt: ${token}`);
+    const normalizedToken = normalize(token);
+    let matchIndex = -1;
+    for (let lookahead = cursor; lookahead < Math.min(transcriptTokens.length, cursor + 5); lookahead += 1) {
+      if (transcriptTokens[lookahead] === normalizedToken) {
+        matchIndex = lookahead;
+        break;
+      }
     }
-    cursor += 1;
+    if (matchIndex < 0) {
+      throw new Error(`Transcript stimmt bei Satz ${sentenceIndex + 1} nicht mit dem Script überein. Erwartet: ${token}`);
+    }
+    if (matchIndex > cursor + 1) {
+      throw new Error(`Zu große Transcript-Lücke vor „${token}“ in Satz ${sentenceIndex + 1}.`);
+    }
+    const matched = normalizedWords[matchIndex];
+    alignedWords.push({
+      text: token,
+      startFrame: Math.round(matched.start * fps),
+      endFrame: Math.max(Math.round(matched.end * fps), Math.round(matched.start * fps) + 1),
+    });
+    cursor = matchIndex + 1;
   }
-  const endIndex = cursor - 1;
-  captions.push({
-    id: `caption-${String(sentenceIndex + 1).padStart(2, '0')}`,
+
+  sentences.push({
+    id: `sentence-${String(sentenceIndex + 1).padStart(2, '0')}`,
     text: sentenceTexts[sentenceIndex],
-    startFrame: Math.round(normalizedWords[startIndex].start * fps),
-    endFrame: Math.round(normalizedWords[endIndex].end * fps),
-    lineCount: sentenceTexts[sentenceIndex].length > 58 ? 2 : 1,
-    bottomPx: 220,
-    revealMode: 'instant',
-    wordHighlight: false,
-    progressIndicator: 'single-violet-line',
+    startFrame: alignedWords[0].startFrame,
+    endFrame: alignedWords.at(-1).endFrame,
+    words: alignedWords,
   });
 }
 
-const sceneCaptionRanges = [
-  [0, 1],
-  [2, 3],
-  [4, 4],
-  [5, 5],
-  [6, 6],
-  [7, 7],
-  [8, 10],
-  [11, 13],
-];
+if (sentences.length !== 16) throw new Error(`Erwartet 16 Untertitelsätze, gefunden: ${sentences.length}.`);
+
+const captionPairs = Array.from({length: 8}, (_, index) => {
+  const first = sentences[index * 2];
+  const second = sentences[index * 2 + 1];
+  return {
+    id: `pair-${String(index + 1).padStart(2, '0')}`,
+    sceneId: `scene-${String(index + 1).padStart(2, '0')}`,
+    startFrame: first.startFrame,
+    endFrame: second.endFrame,
+    bottomPx: 260,
+    mode: 'dual-sentence-active-word',
+    sentences: [first, second],
+  };
+});
 
 const speechStartSeconds = normalizedWords[0].start;
 const speechEndSeconds = normalizedWords.at(-1).end;
 const outroHoldSeconds = 1.8;
 const durationInFrames = Math.ceil((speechEndSeconds + outroHoldSeconds) * fps);
 
-const scenes = sceneCaptionRanges.map(([firstCaption, lastCaption], index) => {
-  const previousEnd = index === 0 ? 0 : Math.round((captions[firstCaption].startFrame + captions[firstCaption - 1].endFrame) / 2);
-  const nextStart = index === sceneCaptionRanges.length - 1
+const scenes = captionPairs.map((pair, index) => {
+  const previousEnd = index === 0
+    ? 0
+    : Math.round((pair.startFrame + captionPairs[index - 1].endFrame) / 2);
+  const nextStart = index === captionPairs.length - 1
     ? durationInFrames
-    : Math.round((captions[lastCaption].endFrame + captions[lastCaption + 1].startFrame) / 2);
+    : Math.round((pair.endFrame + captionPairs[index + 1].startFrame) / 2);
   return {
-    id: `scene-${String(index + 1).padStart(2, '0')}`,
+    id: pair.sceneId,
     startFrame: previousEnd,
     endFrame: nextStart,
-    speechStartFrame: captions[firstCaption].startFrame,
-    speechEndFrame: captions[lastCaption].endFrame,
-    resultHoldFrames: Math.max(30, nextStart - captions[lastCaption].endFrame),
+    speechStartFrame: pair.startFrame,
+    speechEndFrame: pair.endFrame,
+    resultHoldFrames: Math.max(30, nextStart - pair.endFrame),
     boundaryReferenceFrame: nextStart,
     boundaryOffsetFrames: 0,
   };
 });
 
-for (const [index, caption] of captions.entries()) {
-  const sceneIndex = sceneCaptionRanges.findIndex(([first, last]) => index >= first && index <= last);
-  caption.sceneId = `scene-${String(sceneIndex + 1).padStart(2, '0')}`;
-}
-
 const triggerDefinitions = [
   ['s1-forgets', 'scene-01', 'vergisst'],
   ['s1-window', 'scene-01', 'Kontextfenster'],
-  ['s2-rail', 'scene-02', 'Band'],
-  ['s2-limited', 'scene-02', 'Ausschnitt'],
-  ['s3-new', 'scene-03', 'Nachricht'],
+  ['s2-band', 'scene-02', 'Band'],
+  ['s2-slice', 'scene-02', 'Ausschnitt'],
+  ['s3-message', 'scene-03', 'Nachricht'],
   ['s3-shift', 'scene-03', 'wandert'],
-  ['s4-old', 'scene-04', 'Ältere'],
   ['s4-out', 'scene-04', 'hinaus'],
-  ['s4-unavailable', 'scene-04', 'vollständig'],
-  ['s5-text', 'scene-05', 'Texten'],
+  ['s4-unavailable', 'scene-04', 'verfügbar'],
+  ['s5-text', 'scene-05', 'Texte'],
   ['s5-files', 'scene-05', 'Dateien'],
   ['s5-answer', 'scene-05', 'Antworten'],
-  ['s6-name', 'scene-06', 'Namen'],
-  ['s6-rules', 'scene-06', 'Regeln'],
-  ['s6-decisions', 'scene-06', 'Entscheidungen'],
+  ['s6-details', 'scene-06', 'Namen'],
+  ['s6-visible', 'scene-06', 'sichtbaren'],
   ['s7-summary', 'scene-07', 'zusammen'],
   ['s7-repeat', 'scene-07', 'Wiederhole'],
-  ['s7-sections', 'scene-07', 'Abschnitte'],
+  ['s7-sections', 'scene-07', 'gliedere'],
   ['s8-context', 'scene-08', 'Kontext'],
   ['s8-intent', 'scene-08', 'absichtlich'],
-  ['s8-visible', 'scene-08', 'Fenster'],
+  ['s8-visible', 'scene-08', 'unsichtbar'],
 ];
 
 const usedWordIndexes = new Set();
 const beats = triggerDefinitions.map(([id, sceneId, token]) => {
-  const normalizedToken = normalize(token);
   const scene = scenes.find((item) => item.id === sceneId);
-  const candidates = normalizedWords
+  if (!scene) throw new Error(`Szene fehlt: ${sceneId}`);
+  const normalizedToken = normalize(token);
+  const candidate = normalizedWords
     .map((word, index) => ({word, index}))
-    .filter(({word, index}) => normalize(word.text) === normalizedToken && !usedWordIndexes.has(index) && Math.round(word.start * fps) >= scene.startFrame && Math.round(word.start * fps) < scene.endFrame);
-  const candidate = candidates[0];
+    .find(({word, index}) => {
+      const frame = Math.round(word.start * fps);
+      return normalize(word.text) === normalizedToken
+        && !usedWordIndexes.has(index)
+        && frame >= scene.startFrame
+        && frame < scene.endFrame;
+    });
   if (!candidate) throw new Error(`Triggerwort nicht gefunden: ${sceneId}/${token}`);
   usedWordIndexes.add(candidate.index);
   const transcriptStartFrame = Math.round(candidate.word.start * fps);
+  const transcriptEndFrame = Math.max(Math.round(candidate.word.end * fps), transcriptStartFrame + 1);
   return {
     id,
     sceneId,
     expression: token,
     transcriptStartFrame,
     animationStartFrame: transcriptStartFrame,
-    resultFrame: Math.min(scene.endFrame - 30, transcriptStartFrame + Math.round(1.4 * fps)),
+    resultFrame: Math.min(scene.endFrame - 30, transcriptEndFrame + Math.round(1.15 * fps)),
   };
 });
 
 const finalSync = {
-  version: 1,
+  version: 3,
   status: 'final-transcript-aligned',
   fps,
   audio: {
@@ -167,7 +189,7 @@ const finalSync = {
     durationInFrames,
     outroHoldFrames: durationInFrames - Math.round(speechEndSeconds * fps),
   },
-  captions,
+  captionPairs,
   scenes,
   beats,
 };
