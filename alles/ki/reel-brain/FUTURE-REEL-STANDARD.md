@@ -32,8 +32,12 @@ Vorgeplante Frames sind nur Platzhalter. Sie dürfen nie unverändert in den fin
 
 Jede Szene zeigt immer zwei kurze Sätze gleichzeitig.
 
+- das Untertitelpaar beginnt exakt am ersten Szenenframe
+- das Untertitelpaar endet exakt am letzten Szenenframe
 - beide Sätze erscheinen vollständig sofort
+- beide Sätze bleiben auch während kurzer Pausen und des Ergebnis-Holds sichtbar
 - nur das aktuell gesprochene Wort wird violett
+- während einer Sprechpause ist kein Wort markiert
 - alle anderen Wörter bleiben stabil weiß
 - keine Wort-für-Wort-Enthüllung
 - keine Größenänderung, kein Bounce und kein Verschieben
@@ -43,7 +47,7 @@ Jede Szene zeigt immer zwei kurze Sätze gleichzeitig.
 - Unterkante 245 bis 285 px, Standard 260 px
 - keine große Hintergrundbox
 
-Die finale Sync-Datei enthält für jedes Wort `text`, `startFrame` und `endFrame`.
+Die finale Sync-Datei enthält für jedes Wort `text`, `startFrame` und `endFrame`. Zusätzlich müssen `captionPair.startFrame` und `captionPair.endFrame` exakt den Grenzen der zugehörigen Szene entsprechen.
 
 ## Choreografie
 
@@ -72,12 +76,19 @@ höchstens 2 unterstützende Elemente
 ## Pflichtrollen
 
 1. **Animation Director** – entwirft einfache, starke und semantisch passende Choreografie.
-2. **Sync Auditor** – prüft Wortzeiten, Trigger, Szenengrenzen und Schluss-Hold.
+2. **Sync Auditor** – prüft Wortzeiten, vollständige Szenenabdeckung, Trigger, Szenengrenzen und Schluss-Hold.
 3. **Visual QA Agent** – prüft Kontaktbogen und MP4 in normaler Geschwindigkeit und Smartphone-Größe.
 
 ## Finale Zeitquelle
 
 Jedes finale Reel benötigt `timeline/final-sync.json` mit Audiozeiten, Szenengrenzen, einem Untertitelpaar pro Szene, exakt zwei Sätzen pro Paar, Wortzeiten, semantischen Triggern und Ergebnis-Holds. Finaler Produktionscode darf keine geschätzten Caption- oder Beat-Frames verwenden.
+
+## Pflichtprüfungen
+
+```bash
+node scripts/validate-reel-v3.mjs <reel-ordner> --final
+node scripts/validate-v3-caption-coverage.mjs <reel-ordner>
+```
 
 ## Toleranzen
 
@@ -88,8 +99,8 @@ Jedes finale Reel benötigt `timeline/final-sync.json` mit Audiozeiten, Szenengr
 
 ## Freigabeblocker
 
-Nicht freigeben bei fehlendem Wort-Transcript, fehlender finaler Sync-Datei, falscher Satzzahl, Fortschrittslinie, Wortaufbau, fehlendem violetten Wort-Tracking, falscher Untertitelposition, Triggerabweichung, kleinen oder blassen Hauptvisuals, wiederholter Kartenbewegung, rein dekorativer Animation, altem Render oder fehlender Smartphone-Prüfung.
+Nicht freigeben bei fehlendem Wort-Transcript, fehlender finaler Sync-Datei, falscher Satzzahl, unvollständiger Szenenabdeckung, Fortschrittslinie, Wortaufbau, fehlendem violetten Wort-Tracking, falscher Untertitelposition, Triggerabweichung, kleinen oder blassen Hauptvisuals, wiederholter Kartenbewegung, rein dekorativer Animation, altem Render oder fehlender Smartphone-Prüfung.
 
 ## Definition of Done
 
-Ein Reel ist erst fertig, wenn reales Audio und Wort-Transcript vorhanden sind, der v3-Validator besteht, TypeScript und Tests bestehen, aktuelle Checkpoints gerendert wurden, Animation Director und Visual QA Agent dokumentiert geprüft haben, Kontaktbogen und aktuelles MP4 angesehen wurden und der Nutzer freigegeben hat.
+Ein Reel ist erst fertig, wenn reales Audio und Wort-Transcript vorhanden sind, beide v3-Validatoren bestehen, TypeScript und Tests bestehen, aktuelle Checkpoints gerendert wurden, Animation Director und Visual QA Agent dokumentiert geprüft haben, Kontaktbogen und aktuelles MP4 angesehen wurden und der Nutzer freigegeben hat.
