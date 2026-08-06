@@ -1,0 +1,3 @@
+export const answerPalette={background:'#F4F1F8',surface:'#FFFFFF',surfaceSoft:'#ECE6F5',foreground:'#17111F',muted:'#655D70',line:'#CBBFDC',accent:'#6D3ADB',accentBright:'#A97CFF',accentSoft:'#E9DEFF',danger:'#E04458',dangerSoft:'#FCE5EA',warning:'#DF862A',warningSoft:'#FFF0DD',success:'#15835D',successSoft:'#DDF4EA'} as const;
+export const answerFont='Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+export const answerShadows={card:'0 26px 72px rgba(35,23,50,.18)',accent:'0 28px 86px rgba(109,58,219,.3)',danger:'0 28px 84px rgba(224,68,88,.28)',success:'0 28px 84px rgba(21,131,93,.24)'} as const;

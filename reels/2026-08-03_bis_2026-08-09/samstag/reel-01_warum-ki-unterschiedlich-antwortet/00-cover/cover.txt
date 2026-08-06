@@ -1,0 +1,5 @@
+EXAKTER TEXT: WARUM ANTWORTET DEINE KI IMMER ANDERS?
+
+Bildprompt: Premium vertical 9:16 editorial key visual, warm near-white background, one large dark prompt card labeled DIESELBE FRAGE entering a luminous violet probability prism, splitting into two large answer cards, one green and one violet, strong geometric depth, crisp vector-like 3D forms, high contrast, centered composition, no people, no hands, no faces, no tiny UI, no logos, exact German headline at the top, sophisticated AI education brand style.
+
+Negative Prompt: people, hands, faces, photorealistic humans, clutter, tiny dashboard, illegible text, extra headline, random symbols, watermark, logo.
