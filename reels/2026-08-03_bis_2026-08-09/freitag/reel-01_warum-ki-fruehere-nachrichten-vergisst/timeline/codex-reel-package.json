@@ -1,0 +1,81 @@
+{
+  "version": 4,
+  "standardId": "ki-animation-only-reel-v2",
+  "timelineStatus": "planned-placeholder-until-final-audio",
+  "slug": "warum-ki-fruehere-nachrichten-vergisst",
+  "title": "Warum vergisst deine KI frühere Nachrichten?",
+  "composition": {
+    "id": "Reel-WhyAIForgetsEarlierMessages",
+    "coverId": "Cover-WhyAIForgetsEarlierMessages",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetDurationSeconds": 64,
+    "durationInFrames": 1920,
+    "durationSource": "planned-placeholder"
+  },
+  "editorial": {
+    "wordCount": 143,
+    "targetWordsMin": 125,
+    "targetWordsMax": 145,
+    "targetScenesMin": 8,
+    "targetScenesMax": 9
+  },
+  "audio": {
+    "sourceFolder": "02-audio",
+    "playbackRate": 1,
+    "maximumPlaybackRateWithoutExplicitApproval": 1.05,
+    "preservePitch": true,
+    "soundMode": "off",
+    "music": false,
+    "finalTimingSource": "timeline/final-sync.json"
+  },
+  "media": {
+    "generatedSceneImagesAllowed": false,
+    "stockSceneImagesAllowed": false,
+    "requiredImageScenes": [],
+    "coverAssetCount": 1,
+    "coverCanRenderWithoutExternalImage": true
+  },
+  "visual": {
+    "primaryObjectsPerScene": 1,
+    "maximumSupportingElementsPerScene": 2,
+    "miniDashboardsAllowed": false,
+    "persistentSceneNumbersAllowed": false,
+    "persistentKickersAllowed": false,
+    "emojiAsPrimaryVisualAllowed": false,
+    "primaryVisualAreaPercentMin": 55,
+    "primaryVisualAreaPercentMax": 72,
+    "recurringPrimaryObject": "conversation-rail-through-context-window"
+  },
+  "captions": {
+    "mode": "instant-full-sentence-with-violet-progress-line",
+    "maximumLines": 2,
+    "defaultFontSizePx": 50,
+    "minimumFontSizePx": 42,
+    "bottomPx": 220,
+    "wordByWordRevealAllowed": false,
+    "wordHighlightAllowed": false,
+    "progressIndicator": "single-violet-line",
+    "timingSource": "timeline/final-sync.json"
+  },
+  "motion": {
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 2,
+    "maximumSemanticBeatsPerScene": 3,
+    "minimumResultHoldSeconds": 1,
+    "hardCutsDefault": true,
+    "timingSource": "timeline/final-sync.json"
+  },
+  "scenes": [
+    {"id":"scene-01","type":"remotion","start":0,"end":240,"purpose":"Scheinbares Vergessen als begrenztes Kontextfenster erklären.","primaryObject":"conversation-rail-window","primaryMotion":"old-message-exits-window","resultState":"only-window-content-active"},
+    {"id":"scene-02","type":"remotion","start":240,"end":480,"purpose":"Gesamten Chat und begrenzten Ausschnitt unterscheiden.","primaryObject":"long-conversation-rail","primaryMotion":"rail-unfolds-through-fixed-window","resultState":"limited-visible-segment"},
+    {"id":"scene-03","type":"remotion","start":480,"end":720,"purpose":"Wanderndes Fenster durch neue Nachrichten zeigen.","primaryObject":"conversation-rail-window","primaryMotion":"new-message-arrives-window-shifts-right","resultState":"new-current-context"},
+    {"id":"scene-04","type":"remotion","start":720,"end":960,"purpose":"Alte Inhalte verlassen den verfügbaren Kontext.","primaryObject":"left-context-boundary","primaryMotion":"old-card-crosses-boundary-and-fades","resultState":"earlier-information-unavailable"},
+    {"id":"scene-05","type":"remotion","start":960,"end":1200,"purpose":"Platzverbrauch durch Texte, Dateien und Antworten zeigen.","primaryObject":"context-capacity-window","primaryMotion":"large-content-blocks-fill-window","resultState":"capacity-full-old-content-pushed-out"},
+    {"id":"scene-06","type":"remotion","start":1200,"end":1440,"purpose":"Fehlende Namen, Regeln und Entscheidungen sichtbar machen.","primaryObject":"context-search-beam","primaryMotion":"search-stops-at-window-boundary","resultState":"missing-early-details"},
+    {"id":"scene-07","type":"remotion","start":1440,"end":1680,"purpose":"Zusammenfassen, Wiederholen und Strukturieren als Lösung zeigen.","primaryObject":"conversation-rail-window","primaryMotion":"old-content-compresses-into-current-context","resultState":"important-context-fits"},
+    {"id":"scene-08","type":"remotion","start":1680,"end":1920,"purpose":"Technischen Merksatz ruhig abschließen.","primaryObject":"clean-context-window","primaryMotion":"needed-context-locks-into-window","resultState":"only-visible-context-counts"}
+  ],
+  "checkpoints": [0,80,160,239,240,320,400,479,480,560,640,719,720,800,880,959,960,1040,1120,1199,1200,1280,1360,1439,1440,1520,1600,1679,1680,1760,1840,1919]
+}
