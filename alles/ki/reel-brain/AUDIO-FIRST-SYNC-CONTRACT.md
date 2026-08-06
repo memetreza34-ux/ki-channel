@@ -16,6 +16,8 @@ Sobald finales Audio vorhanden ist, dürfen geschätzte Frames, Fallback-Unterti
 {
   "version": 1,
   "status": "final-transcript-aligned",
+  "timingSource": "final-voiceover-transcript",
+  "fallbackTimingActive": false,
   "fps": 30,
   "audio": {
     "durationSeconds": 60.12,
@@ -45,6 +47,7 @@ Sobald finales Audio vorhanden ist, dürfen geschätzte Frames, Fallback-Unterti
       "id": "scene-01",
       "startFrame": 0,
       "endFrame": 194,
+      "boundaryReferenceFrame": 192,
       "speechStartFrame": 8,
       "speechEndFrame": 160,
       "resultHoldFrames": 34
@@ -75,7 +78,8 @@ Sobald finales Audio vorhanden ist, dürfen geschätzte Frames, Fallback-Unterti
 
 - lückenlos ab Frame 0
 - Szenenwechsel an Satz- oder Sinnpausen
-- maximal 6 Frames Abstand zur zugehörigen Pause
+- `boundaryReferenceFrame` markiert die echte Pause aus dem Transcript
+- `endFrame` liegt höchstens 6 Frames vom `boundaryReferenceFrame` entfernt
 - `resultHoldFrames` mindestens 30 bei 30 FPS
 - Szene endet nicht vor ihrem gesprochenen Inhalt
 
@@ -100,7 +104,13 @@ Sobald finales Audio vorhanden ist, dürfen geschätzte Frames, Fallback-Unterti
 
 ## Produktionscode
 
-Der Remotion-Code muss finale Daten importieren oder als Props erhalten. Nicht erlaubt:
+Der Remotion-Code muss finale Daten importieren oder als Props erhalten. Neue Reels verwenden dafür die zentrale Komponente:
+
+```text
+ki/src/components/StableSentenceCaption.tsx
+```
+
+Nicht erlaubt:
 
 - lokale hart codierte Untertitelframes im finalen Build
 - gleichmäßig auf 60 oder 65 Sekunden verteilte Szenen
