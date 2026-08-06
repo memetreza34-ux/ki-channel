@@ -1,214 +1,307 @@
 # Verbindlicher Standard für zukünftige KI-Reels
 
-Dieses Dokument gilt für jedes neu geplante Reel nach dem Halluzinations-Reel. Es ersetzt die frühere Hybrid-Strategie mit generierten Szenenbildern.
+Dieses Dokument gilt für jedes neu geplante KI-Reel. Neue Projekte verwenden `ki-animation-only-reel-v2`.
 
-## 1. Format und Länge
+Der zentrale Unterschied zu älteren Reels:
+
+> Das echte Voiceover bestimmt die Timeline. Vorgeplante Sekunden und Frames sind nur Platzhalter und dürfen niemals unverändert in den finalen Render übernommen werden.
+
+Historische Reels mit `ki-animation-only-reel-v1` bleiben reproduzierbar, sind aber keine Vorlage für neue Produktionen.
+
+## 1. Format und redaktioneller Rahmen
 
 - 1080 × 1920
 - 30 FPS
-- Ziel: 60 bis 70 Sekunden
+- Ziel: ungefähr 58 bis 70 Sekunden
 - Ziel: 125 bis 145 gesprochene Wörter
 - 8 bis 9 Szenen
-- normalerweise 6 bis 8 Sekunden pro Szene
-- keine Szene unter 5,5 Sekunden, außer ein bewusster kurzer Abschlussbeat
-- mindestens 1,0 Sekunde ruhiger Ergebnis-Hold pro Szene
+- ein Hauptgedanke pro Szene
+- keine künstliche Verlängerung auf eine feste Zielzeit
+- finale Dauer = echtes Sprachende + 1,2 bis 2,2 Sekunden ruhiger Abschluss-Hold
+- maximal 0,6 Sekunden vor dem ersten gesprochenen Wort
+- keine unnötige Stille zwischen Szenen
 
 ## 2. Medienstrategie
 
 ### Reel
 
-- 100 Prozent Remotion-Animation
+- 100 Prozent deterministische Remotion-Animation
 - keine generierten Szenenbilder
 - keine dekorativen Stockbilder
-- keine flachen Bildflächen mit Zoom
+- keine flachen Bildflächen mit generischem Zoom
 - keine Menschen, Hände, Körperteile oder Roboter als visuelle Abkürzung
 
 ### Cover
 
 - genau ein separates statisches Cover-Bild
-- ein klarer deutscher Satz, der das Reel-Thema direkt benennt
-- nur ein Hauptmotiv
-- keine weiteren Labels, Untertitel oder Nebenbotschaften
-- das Motiv muss auch ohne Text zum Thema passen
+- genau ein kurzer deutscher Satz
+- genau ein Hauptmotiv
+- keine Nebenbotschaft, Unterzeile oder zusätzliche Labels
 - der finale Satz wird kontrolliert gesetzt; keine KI-Fantasieschrift
 
-## 3. Script-Standard
-
-Der Text soll einfach, direkt und verständlich sein.
+## 3. Script und Dramaturgie
 
 ### Hook
 
 Die erste Zeile ist eine direkte Frage, ein klarer Widerspruch oder eine überraschende Behauptung. Sie spricht den Zuschauer oder seine KI direkt an.
 
-Beispiel:
-
-> Warum halluziniert deine KI, obwohl sie so sicher klingt?
-
 ### Dramaturgie
 
-1. direkte Hook-Frage
-2. Problem klar benennen
-3. Ursache erklären
-4. Mechanismus sichtbar machen
-5. Folge oder Risiko zeigen
-6. konkrete Warnzeichen oder Beispiele
-7. einfache Handlungsempfehlung
-8. klare Abschlussaussage
+1. direkte Hook
+2. Problem
+3. Ursache
+4. Mechanismus
+5. sichtbare Folge
+6. Beispiel oder Warnzeichen
+7. konkrete Lösung
+8. klare Schlussaussage
 
 ### Textregeln
 
 - ein Hauptgedanke pro Szene
-- keine künstlichen Füllsätze
+- einfache Sprache
 - keine unnötigen Fachwörter
-- keine Wiederholung derselben Aussage in anderer Form
-- Beispiele müssen klar als Beispiele erkennbar sein
-- Hook, Erklärung und Lösung müssen im Voiceover vollständig vorkommen
+- keine künstlichen Füllsätze
+- keine Wiederholung derselben Aussage
+- Hook, Erklärung, Beispiel und Lösung vollständig im Voiceover
 
-## 4. Audio und Timing
+## 4. Audio-first-Timeline
 
-- Voiceover wird bei 1,00x erzeugt
-- Standard-Playback im Reel: 1,00x
-- höchstens 1,05x nach echter Hörprobe und ausdrücklicher Entscheidung
-- keine automatische 1,10x-Beschleunigung
-- Tonhöhe natürlich erhalten
-- keine Musik
-- keine Soundeffekte
+### Feste Regel
 
-Die finale Audiodatei ist der Taktgeber. Exakte Wortzeiten kommen aus dem realen Transcript.
+Vor dem Voiceover dürfen Szenen nur mit groben Platzhalter-Zeiten geplant werden. Nach dem Einfügen der finalen Audiodatei muss Codex eine neue finale Timeline erzeugen.
+
+Reihenfolge:
 
 ```text
-Wortzeit in Sekunden × 30 = Ziel-Frame bei 1,00x
+finales Audio
+→ echtes Wort- und Satz-Transcript
+→ Sprachbeginn und Sprachende
+→ Satzblöcke
+→ Szenengrenzen
+→ Bedeutungs-Auslöser
+→ Untertitel
+→ Composition-Dauer
+→ Checkpoints
 ```
 
-Bei einer freigegebenen anderen Playback-Rate:
+Nicht erlaubt:
 
 ```text
-Videosekunde = Quellzeit / Playback-Rate
-Videoframe = round(Videosekunde × 30)
+feste 65-Sekunden-Timeline
+→ Audio nachträglich hineinlegen
 ```
 
-Untertitel, wichtige Wortreaktionen, Szenengrenzen und Ergebnis-Holds verwenden dieselbe finale Zeitbasis.
+### Finale Synchronisationsdatei
 
-## 5. Animationsrhythmus
-
-Jede Szene folgt grundsätzlich diesem Rhythmus:
+Jedes finale Reel benötigt:
 
 ```text
-0,0–0,6 s   klarer lesbarer Startzustand
-0,6–2,0 s   Begriff oder Ursache erscheint
-2,0–4,8 s   dominante Hauptanimation erklärt den Inhalt
-4,8–6,0+ s  Ergebnis wird sichtbar und ruhig gehalten
+timeline/final-sync.json
 ```
 
-Die Werte sind Richtlinien, keine starre Schablone. Der gesprochene Inhalt bestimmt das echte Timing.
+Diese Datei ist die einzige finale Zeitquelle. Sie enthält:
+
+- Audio-Dauer
+- Sprachbeginn und Sprachende
+- finale Composition-Dauer
+- finale Szenengrenzen
+- vollständige Untertitelsätze
+- violette Fortschrittslinie pro Untertitelsatz
+- semantische Trigger-Frames
+- Ergebnis-Holds
+
+Fallback-Cues und geschätzte Frames dürfen nach Vorliegen des Audios nicht mehr vom Produktionscode verwendet werden.
+
+### Toleranzen
+
+- Animationstrigger höchstens 5 Frames vor oder nach dem passenden gesprochenen Ausdruck
+- Szenenwechsel höchstens 6 Frames von der zugehörigen Satz- oder Sinnpause entfernt
+- erster Untertitel höchstens 3 Frames nach Sprachbeginn sichtbar
+- letzter visueller Inhalt endet 1,2 bis 2,2 Sekunden nach dem letzten gesprochenen Wort
+- keine Schlussstille über 2,2 Sekunden
+
+## 5. Einfache Choreografie
+
+Jede Szene besitzt:
+
+```text
+1 Hauptobjekt
+1 Hauptbewegung
+1 klaren Ergebniszustand
+```
+
+Zusätzlich sind höchstens zwei kleine unterstützende Elemente erlaubt.
 
 ### Bewegungsbudget
 
-- eine dominante Hauptanimation pro Szene
+- eine dominante Hauptanimation
 - maximal zwei starke Bewegungen gleichzeitig
-- höchstens vier klar unterscheidbare Bedeutungsbeats pro Szene
-- keine Kette aus schnellen Effekten
-- keine Bewegung nur, damit etwas ständig in Bewegung bleibt
-- keine schnellen Kamerawechsel
+- ein bis drei semantische Beats pro Szene
+- keine Kette aus schnellen Einzeleffekten
+- keine Bewegung nur zur Dekoration
+- kein Dauerpuls
+- kein Zufallswackeln
+- kein Partikelteppich
+- keine unnötigen Kamerawechsel
 - Hard Cut als Standard
-- Übergänge nur, wenn Objekt, Richtung, Zustand oder Form sinnvoll weitergeführt werden
 
-## 6. Semantische Animation
+### Animationsrhythmus
 
-Jeder wichtige Bedeutungsinhalt erhält eine passende sichtbare Reaktion.
-
-Beispiele:
-
-- `Wahrheit` → Prüfmechanismus oder blockiertes Wahrheitssignal
-- `wahrscheinlich` → Ranking, Prozentwerte oder Auswahlprozess
-- `Lücke` → sichtbar fehlender Baustein
-- `Muster` → wiederkehrende Formen füllen eine Lücke
-- `Quelle` → überprüfbarer Herkunftspfad
-- `wechseln` → widersprüchliche Werte tauschen sich
-- `gegenprüfen` → Vergleich oder Prüfgate wird aktiviert
-
-Füllwörter wie `und`, `die`, `weil`, `eine`, `sich` erhalten keine große Einzelanimation. Sie werden nur sauber im Untertitel synchronisiert.
-
-Vor dem Coding muss jede Szene eine Beat-Liste enthalten:
+Die echte Sprache bestimmt die genauen Frames. Innerhalb einer Szene gilt ungefähr:
 
 ```text
-wichtiger Ausdruck → visuelle Reaktion → Startwort → Ergebniszustand
+0,0–0,4 s   Hauptobjekt sofort verständlich
+0,4–1,5 s   Ursache oder Begriff wird sichtbar
+1,5–4,5 s   eine Hauptbewegung erklärt den Satz
+letzte 1,0+ s Ergebnis bleibt ruhig lesbar
 ```
 
-Kein wichtiger Inhalt darf nur im Voiceover vorkommen, ohne visuell erklärt zu werden.
+Eine Animation darf nicht vor dem dazugehörigen gesprochenen Inhalt passieren.
 
-## 7. Layout und Lesbarkeit
+## 6. Semantische Zuordnung
 
-- Hauptvisual groß und zentral
-- keine unnötig leeren Flächen
-- keine überfüllten Mini-Dashboards
-- keine dünnen Linien oder winzigen Labels als Kerninformation
-- Headline, Hauptvisual und Untertitel besitzen getrennte Safe-Zones
-- alle Kerninformationen müssen auf Smartphone-Größe lesbar sein
-- Ergebniszustand muss ohne Voiceover verständlich sein
+Nicht jedes einzelne Wort wird animiert. Animiert werden ein bis drei zentrale Sinnabschnitte pro Szene.
 
-### Untertitel
+Beispiel:
 
-- normale lesbare Satzuntertitel, keine hektischen Zwei- bis Vier-Wort-Blöcke
+```text
+„fehlendes Ziel“
+→ Ziel-Steckplatz bleibt leer
+
+„muss sie raten“
+→ Auswahl zeigt mehrere mögliche Wege
+```
+
+Füllwörter erhalten keine eigene Bewegung.
+
+Vor dem Coding enthält jede Szene:
+
+```text
+Sinnabschnitt → sichtbare Reaktion → Transcript-Auslöser → Ergebniszustand
+```
+
+Die visuelle Reaktion muss den gesprochenen Inhalt direkt erklären und nicht nur dasselbe Thema dekorieren.
+
+## 7. Visuelles Design
+
+- Hauptvisual nutzt ungefähr 55 bis 72 Prozent der verfügbaren Animationsfläche
+- Hauptobjekt groß und zentral
+- bevorzugt ein wiederkehrendes Hauptobjekt über mehrere Szenen, sofern es zum Thema passt
+- keine Mini-Dashboards
+- keine Ansammlung kleiner Karten
+- keine dünnen Linien als Hauptinformation
+- keine winzigen Labels
+- höchstens zwei kurze erklärende Labels gleichzeitig
+- keine dauerhaft sichtbare Szenennummer
+- kein unnötiger Kicker über jeder Szene
+- keine Emojis als zentrale Erklärung
+- freie Fläche dient Fokus und darf nicht unfertig wirken
+- Ergebnis muss auch ohne Ton verständlich sein
+
+## 8. Untertitel-System
+
+Der Text erscheint nicht mehr Wort für Wort.
+
+### Verbindliche Darstellung
+
+- kompletter aktueller Satz oder Sinnabschnitt erscheint sofort
+- Text bleibt während seiner gesamten Sprachdauer stabil
 - maximal zwei Zeilen
-- ungefähr 50 px, bei langen Sätzen mindestens 40 px
-- weiß mit dunkler Kontur oder starkem Schatten
-- kein großer Untertitelkasten
-- aktuelles wichtiges Wort darf dezent hervorgehoben werden
-- kein Bounce oder Springen des gesamten Satzes
-- nur bereits gesprochene Wörter anzeigen
-- Timing aus echten Wortzeiten
+- 46 bis 52 px, niemals unter 42 px
+- weiß mit klarer dunkler Kontur oder starkem Schatten
+- kein großer Hintergrundkasten
+- keine springenden Wörter
+- keine wechselnden Wortgrößen
+- keine Wort-für-Wort-Enthüllung
+- keine einzelne Wortmarkierung
 
-## 8. Animationsvielfalt
+### Position
 
-- keine vollständige Szene oder Vollanimation innerhalb eines Reels wiederholen
-- direkt aufeinanderfolgende Szenen dürfen nicht dieselbe Layoutfamilie verwenden
-- nicht jede Szene als Karte in der Mitte aufbauen
-- Diagramm, Prozess, Vergleich, Raum, Textmetapher, UI und Objektmechanik bewusst abwechseln
-- wiederverwendet werden nur kleine Primitive, nicht die komplette Choreografie
+- Untertitel-Unterkante standardmäßig 210 bis 235 px über dem unteren Rand
+- Plattform-Safe-Zone beachten
+- Hauptvisual darf nicht mit dem Untertitel kollidieren
 
-## 9. Qualitätskontrolle
+### Violette Synchronisationslinie
 
-Ein neues Reel ist erst freigabefähig, wenn:
+Unter dem vollständigen Satz befindet sich genau eine dünne violette Linie:
 
-- Script zwischen 125 und 145 Wörtern liegt
-- echte Dauer zwischen 60 und 70 Sekunden liegt oder eine begründete Abweichung dokumentiert ist
-- alle Szenen eine klare Aussage besitzen
-- alle wichtigen Bedeutungsbeats visuell abgedeckt sind
-- keine generierten Szenenbilder eingebaut sind
-- Cover genau ein statisches Bild mit einem klaren Satz ist
-- Voiceover mit 1,00x oder bewusst freigegebenen maximal 1,05x läuft
+```text
+Satz erscheint sofort
+→ Linie startet bei 0 Prozent
+→ Linie läuft gleichmäßig mit der echten Satzdauer
+→ Linie erreicht bei Satzende 100 Prozent
+→ nächster Satz ersetzt den vorherigen
+```
+
+- Linienhöhe: 6 bis 10 px
+- keine zusätzlichen Karaoke-Effekte
+- keine Wortmarkierung
+- Progress ausschließlich aus realen Satzzeiten
+
+## 9. Finale Länge
+
+Die geplante Zielzeit ist nur redaktionell. Die finale Composition wird aus dem echten Audio berechnet:
+
+```text
+finale Dauer = letztes gesprochenes Wort + 1,2 bis 2,2 Sekunden Hold
+```
+
+Ein Reel darf nicht auf 65 Sekunden gestreckt werden, wenn die Sprache bereits bei 58 Sekunden endet.
+
+## 10. Qualitätskontrolle
+
+Ein Reel ist erst freigabefähig, wenn:
+
+- finales Audio vorhanden ist
+- echtes Wort- und Satz-Transcript vorhanden ist
+- `timeline/final-sync.json` vorhanden und gültig ist
+- Produktionscode ausschließlich finale Sync-Daten verwendet
+- Szenengrenzen aus dem Audio abgeleitet sind
+- Animationstrigger innerhalb der Toleranz liegen
+- kein Fallback-Timing im finalen Render aktiv ist
+- Untertitel vollständig sofort erscheinen
+- nur die violette Linie synchron läuft
+- Untertitel 210 bis 235 px über dem unteren Rand liegen
+- keine Wort-für-Wort-Einblendung vorhanden ist
+- finale Dauer höchstens 2,2 Sekunden nach Sprachende liegt
+- alle Szenen ein großes Hauptvisual besitzen
+- jede Szene nur eine dominante Hauptbewegung nutzt
+- keine Szene visuell zu klein, kompliziert oder leer wirkt
 - TypeScript und fokussierte Tests bestanden sind
-- alle Checkpoint-Frames aktuell gerendert wurden
-- Kontaktbogen geprüft wurde
-- vollständiges MP4 in normaler Geschwindigkeit angesehen wurde
-- Smartphone-Lesbarkeit geprüft wurde
-- keine Szene als zu schnell, zu klein, zu leer oder unklar bewertet wurde
-- technische Artefaktprüfung bestanden ist
-- Nutzer die Endfassung persönlich freigegeben hat
+- aktuelle Checkpoints und Kontaktbogen geprüft wurden
+- vollständiges MP4 in normaler Geschwindigkeit und Smartphone-Größe angesehen wurde
+- Nutzer die Endfassung freigegeben hat
 
-## 10. Abbruchregeln
+## 11. Abbruchregeln
 
-Der Build oder die Freigabe stoppt, wenn:
+Build oder Freigabe stoppen, wenn:
 
-- das Voiceover kürzer als 55 Sekunden ist und der Inhalt dadurch gequetscht wird
-- mehr als zwei starke Bewegungen gleichzeitig konkurrieren
-- ein wichtiger Satzteil keine passende Visualisierung besitzt
-- eine Szene weniger als eine Sekunde Ergebnis-Hold bietet
-- Text auf Smartphone-Größe nicht lesbar ist
-- die Szene nur aus dekorativer Bewegung besteht
-- die finale Audiodatei nicht transkribiert wurde
-- alte Render nach einer Codeänderung verwendet werden
+- `final-sync.json` fehlt
+- Audio, Untertitel, Szenen und Animationen unterschiedliche Zeitquellen verwenden
+- ein Trigger mehr als 5 Frames vom gesprochenen Ausdruck abweicht
+- ein Szenenwechsel mehr als 6 Frames von der Sinnpause abweicht
+- mehr als 2,2 Sekunden Stille nach Sprachende verbleiben
+- Untertitel Wort für Wort aufgebaut werden
+- Untertitel tiefer als 190 px über dem unteren Rand liegen
+- mehr als drei Bedeutungsbeats in einer Szene vorkommen
+- mehr als zwei starke Bewegungen konkurrieren
+- mehrere kleine UI-Karten die Hauptaussage tragen
+- ein wichtiger Satz visuell nur dekoriert statt erklärt wird
+- alte Render nach einer Code- oder Sync-Änderung verwendet werden
 
-## 11. Lernschleife
+## 12. Lernschleife
 
-Nach jedem final geprüften Reel wird eine kurze Analyse unter `05-review/` gespeichert:
+Nach jedem geprüften Reel wird unter `05-review/` dokumentiert:
 
-- tatsächliche Dauer und Wortzahl
-- zu schnelle oder zu langsame Stellen
-- unklare oder besonders verständliche Visualisierungen
-- Probleme bei Untertiteln und Safe-Zones
-- bewährte Animationen
-- Regeln, die für zukünftige Reels angepasst werden sollten
+- echte Audio- und Videodauer
+- Sprachbeginn und Sprachende
+- Schluss-Hold
+- größte Trigger-Abweichung in Frames
+- größte Szenenwechsel-Abweichung in Frames
+- Untertitelposition
+- zu komplizierte oder zu leere Szenen
+- bewährte Hauptobjekte und Bewegungen
+- Nutzerfeedback
 
-Nur beobachtete Ergebnisse werden in den globalen Standard übernommen.
+Nur beobachtete Ergebnisse dürfen den globalen Standard verändern.
