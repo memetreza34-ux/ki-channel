@@ -1,0 +1,87 @@
+{
+  "version": 4,
+  "standardId": "ki-animation-only-reel-v4",
+  "timingStatus": "placeholder-until-final-transcript",
+  "scenes": [
+    {
+      "id": "scene-01",
+      "headingIcon": "broken-live-clock",
+      "primaryObject": "Archivkern und Live-Welt",
+      "beats": [
+        {"id": "s1-today", "expression": "heute", "visualReaction": "Live-Uhr beschleunigt und HEUTE wird aktiv", "resultState": "Live-Welt sichtbar"},
+        {"id": "s1-live-gap", "expression": "live", "visualReaction": "Datenkabel stoppt kurz vor der Live-Welt", "resultState": "rote Verbindungslücke"}
+      ]
+    },
+    {
+      "id": "scene-02",
+      "headingIcon": "frozen-archive",
+      "primaryObject": "Datenkristall",
+      "beats": [
+        {"id": "s2-training", "expression": "Training", "visualReaction": "Datenblöcke strömen in den Kristall", "resultState": "verdichteter Wissenskern"},
+        {"id": "s2-freeze", "expression": "Datenstand", "visualReaction": "Kristall vereist und Risse erscheinen", "resultState": "fester Datenstand"}
+      ]
+    },
+    {
+      "id": "scene-03",
+      "headingIcon": "future-gate",
+      "primaryObject": "Zeitlinie mit Wissensgrenze",
+      "beats": [
+        {"id": "s3-updates", "expression": "Updates", "visualReaction": "Update-, Preis- und Ereigniswege wachsen hinter die Grenze", "resultState": "neue Ereignisse sichtbar"},
+        {"id": "s3-blocked", "expression": "Webzugriff", "visualReaction": "KI-Signal prallt an der Grenze ab", "resultState": "Welt außerhalb des Wissens"}
+      ]
+    },
+    {
+      "id": "scene-04",
+      "headingIcon": "pattern-gap",
+      "primaryObject": "Antwortmosaik",
+      "beats": [
+        {"id": "s4-gap", "expression": "Lücken", "visualReaction": "altes Musterelement fliegt in das fehlende Feld", "resultState": "Lücke scheinbar geschlossen"},
+        {"id": "s4-confident", "expression": "überzeugend", "visualReaction": "violetter Sicherheitsring wächst und reißt rot", "resultState": "plausibel aber veraltet"}
+      ]
+    },
+    {
+      "id": "scene-05",
+      "headingIcon": "web-retrieval",
+      "primaryObject": "Suchlinse und Live-Globus",
+      "beats": [
+        {"id": "s5-web", "expression": "Webzugriff", "visualReaction": "Suchstrahl erreicht den Live-Globus", "resultState": "Webverbindung aktiv"},
+        {"id": "s5-retrieve", "expression": "Quellen", "visualReaction": "zwei Quellen werden aus dem Globus gezogen", "resultState": "Quellen im Kontext"},
+        {"id": "s5-fresh", "expression": "frisch", "visualReaction": "aktuellste Quelle wird grün verriegelt", "resultState": "frische Quelle gewählt"}
+      ]
+    },
+    {
+      "id": "scene-06",
+      "headingIcon": "original-source",
+      "primaryObject": "Originalseite",
+      "beats": [
+        {"id": "s6-date", "expression": "Datum", "visualReaction": "Datum-, Quelle- und Zeit-Pins docken an", "resultState": "Prüfdaten sichtbar"},
+        {"id": "s6-original", "expression": "Originalseite", "visualReaction": "komprimierte Seite entfaltet sich vollständig", "resultState": "Originalquelle geöffnet"}
+      ]
+    },
+    {
+      "id": "scene-07",
+      "headingIcon": "cross-check",
+      "primaryObject": "zwei Quellen und Prüfprisma",
+      "beats": [
+        {"id": "s7-compare", "expression": "Vergleiche", "visualReaction": "Quellen fahren von beiden Seiten zum Prisma", "resultState": "Vergleich aktiv"},
+        {"id": "s7-check", "expression": "Prüfe", "visualReaction": "identische Fakten verriegeln grün", "resultState": "Fakt doppelt bestätigt"}
+      ]
+    },
+    {
+      "id": "scene-08",
+      "headingIcon": "freshness-scanner",
+      "primaryObject": "Sicherheitsblock und Prüfweg",
+      "beats": [
+        {"id": "s8-source", "expression": "Quelle", "visualReaction": "Sicherheitsblock wird mit Fragezeichen markiert", "resultState": "Behauptung angezweifelt"},
+        {"id": "s8-proof", "expression": "Beweis", "visualReaction": "rote Beweislinie entwertet den Tonfall", "resultState": "Tonfall ist kein Beweis"},
+        {"id": "s8-original", "expression": "Originalquelle", "visualReaction": "SUCHEN, DATUM und ORIGINAL bauen sich als Prüfpfad auf", "resultState": "vollständige Prüfregel"}
+      ]
+    }
+  ],
+  "rules": {
+    "maximumBeatsPerScene": 3,
+    "maximumStrongSimultaneousMotions": 2,
+    "triggerToleranceFrames": 5,
+    "finalTimingSource": "timeline/final-sync.json"
+  }
+}
