@@ -1,9 +1,9 @@
 # KI-Channel
 
-## Die drei Hauptordner
+## Hauptordner
 
-- `reels` – alle aktiven Reel-Projekte
-- `youtube` – spätere längere YouTube-Projekte
+- `reels` – aktive Reel-Projekte
+- `youtube` – spätere Longform-Projekte
 - `alles` – Technik, Code, Regeln, Skripte und Archiv
 
 Reel-Struktur:
@@ -14,21 +14,40 @@ Woche → Wochentag → Reel-Thema
 
 ## Standard für neue Reels
 
-Neue Reels werden vollständig mit Remotion animiert:
+Neue Reels verwenden `ki-animation-only-reel-v2`:
 
-- 60 bis 70 Sekunden
+- ungefähr 58 bis 70 Sekunden
 - 125 bis 145 Wörter
 - 8 bis 9 Szenen
+- 100 Prozent Remotion-Animation
 - keine generierten Szenenbilder
-- ein separates statisches Cover mit einem Satz
+- ein statisches Cover mit einem Satz
 - Voiceover und Wiedergabe bei 1,00x
-- maximal zwei starke Bewegungen gleichzeitig
-- mindestens eine Sekunde Ergebnis-Hold
-- normale Satzuntertitel
+- ein Hauptobjekt und eine Hauptbewegung pro Szene
+- maximal drei Bedeutungsbeats pro Szene
+- vollständige Satzuntertitel erscheinen sofort
+- genau eine violette Linie läuft synchron zur echten Satzdauer
+- Untertitel-Unterkante 210 bis 235 px
 
-Technische Befehle werden aus `alles/` ausgeführt.
+## Audio-first
 
-Neues Reel anlegen:
+Die anfänglichen Frames sind nur Planungsplatzhalter. Nach dem finalen Voiceover wird die komplette Timeline neu aus der Sprache erzeugt:
+
+```text
+Audio
+→ Transcript
+→ timeline/final-sync.json
+→ Szenengrenzen
+→ Animationstrigger
+→ Untertitel
+→ finale Videolänge
+```
+
+Der finale Render endet 1,2 bis 2,2 Sekunden nach dem letzten gesprochenen Wort. Fallback-Timing ist im finalen Build verboten.
+
+## Neues Reel
+
+Aus `alles/`:
 
 ```bash
 node scripts/create-future-reel.mjs \
@@ -36,14 +55,22 @@ node scripts/create-future-reel.mjs \
 --title "Titel" \
 --hook "Direkter Hook" \
 --scenes 8 \
---seconds 65
+--seconds 64
 ```
 
-Standard prüfen:
+Planung prüfen:
 
 ```bash
 node scripts/validate-future-reel-standard.mjs \
 ../reels/<woche>/<wochentag>/<reel-thema>
+```
+
+Final prüfen:
+
+```bash
+node scripts/validate-future-reel-standard.mjs \
+../reels/<woche>/<wochentag>/<reel-thema> \
+--final
 ```
 
 Verbindliche Regeln:
@@ -51,5 +78,6 @@ Verbindliche Regeln:
 ```text
 alles/ki/reel-brain/PRODUCTION-BRAIN.md
 alles/ki/reel-brain/FUTURE-REEL-STANDARD.md
+alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md
 alles/ki/reel-brain/brain.json
 ```
