@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "mode": "instant-full-sentence-with-violet-progress-line",
+  "timingSource": "timeline/final-sync.json",
+  "bottomPx": 220,
+  "minimumBottomPx": 210,
+  "maximumBottomPx": 235,
+  "fontSizePx": 50,
+  "minimumFontSizePx": 42,
+  "maximumLines": 2,
+  "revealMode": "instant",
+  "wordHighlight": false,
+  "wordByWordReveal": false,
+  "progressIndicator": "single-violet-line",
+  "progressLineHeightPx": 8,
+  "largeBackgroundBox": false
+}
