@@ -1,9 +1,10 @@
 {
-  "version": 1,
-  "timingStatus": "estimated-until-final-transcript",
+  "version": 2,
+  "timingStatus": "placeholder-until-final-transcript",
   "scenes": [
     {
       "id": "scene-01",
+      "primaryObject": "REPLACE_ME",
       "beats": [
         {
           "expression": "REPLACE_ME",
@@ -18,7 +19,7 @@
   "rules": {
     "importantMeaningWithoutVisualReactionAllowed": false,
     "fillerWordsReceiveStrongAnimation": false,
-    "maximumBeatsPerScene": 4,
-    "finalTimingSource": "real-word-transcript"
+    "maximumBeatsPerScene": 3,
+    "finalTimingSource": "timeline/final-sync.json"
   }
 }
