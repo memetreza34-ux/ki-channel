@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "pending-final-audio",
+  "speechStartSeconds": null,
+  "speechEndSeconds": null,
+  "compositionEndSeconds": null,
+  "outroHoldSeconds": null,
+  "maximumTriggerOffsetFrames": null,
+  "maximumBoundaryOffsetFrames": null,
+  "captionBottomPx": 220,
+  "wordByWordRevealActive": false,
+  "singleVioletProgressLineActive": true,
+  "fallbackTimingActive": true,
+  "notes": "After final audio, fallbackTimingActive must become false and all null values must be measured."
+}
