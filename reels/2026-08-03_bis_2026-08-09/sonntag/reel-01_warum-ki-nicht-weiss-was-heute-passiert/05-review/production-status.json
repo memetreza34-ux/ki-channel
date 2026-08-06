@@ -1,0 +1,24 @@
+{
+  "version": 4,
+  "standardId": "ki-animation-only-reel-v4",
+  "stage": "remotion-preview-built",
+  "scriptComplete": true,
+  "coverPromptComplete": true,
+  "sceneCodeComplete": true,
+  "headingIconsComplete": true,
+  "antiRepetitionReviewComplete": true,
+  "audioReceived": false,
+  "wordTranscriptCreated": false,
+  "finalSyncCreated": false,
+  "typecheckPassedOnRepository": false,
+  "testsPassedOnRepository": false,
+  "previewRendered": false,
+  "finalRenderCompleted": false,
+  "smartphoneReviewCompleted": false,
+  "userApproved": false,
+  "notes": [
+    "timeline/final-sync.json ist nur ein geplanter Vorschauplatzhalter.",
+    "Finaler Build bleibt ohne echtes Audio und Wort-Transcript gesperrt.",
+    "Keine technische oder visuelle Prüfung darf ohne tatsächliche Ausführung als bestanden markiert werden."
+  ]
+}
