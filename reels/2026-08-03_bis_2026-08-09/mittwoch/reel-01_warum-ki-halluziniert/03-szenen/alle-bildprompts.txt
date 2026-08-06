@@ -4,6 +4,10 @@ premium simplified 3D editorial illustration, sophisticated technology explainer
 NEGATIVE PROMPT FÜR ALLE
 humans, hands, faces, body parts, android, humanoid robot, glowing brain, cyberpunk city, blue neon overload, random particles, illegible text, gibberish letters, logos, brands, watermark, subtitles, flat clipart, childish cartoon, busy background, lens flare, extreme bloom, black background
 
+COVER
+DATEI: cover-visual.png
+A premium simplified 3D editorial reel cover visual about AI hallucinations. In the center, a single elegant transparent glass answer card floats in a clean near-white studio and initially appears polished, authoritative and trustworthy. A restrained violet confidence halo surrounds the card, but the halo breaks into an asymmetric warning arc while one sharp red fracture cuts through the lower-right area of the glass. Behind the fracture, reveal a clearly empty source slot and a suspended blank evidence document, showing that the confident answer has no verified foundation. Add one small graphite inspection frame and one subtle verified-result tray in the background depth, separated and uncluttered. Strong centered composition, crisp silhouette, dramatic visual contrast without darkness, graphite and frosted-white materials, restrained violet accents and only one controlled red danger detail, realistic soft global illumination, premium technology explainer aesthetic. Keep the upper 28 percent intentionally calm and empty for a later German title overlay, keep the lower caption-safe area clear, vertical 9:16, no people, no hands, no faces, no robots, no readable text, no logos, no watermark.
+
 BILD 1
 DATEI: scene-01-confident-answer.png
 A premium simplified 3D editorial illustration of a single elegant transparent glass answer panel floating in a clean near-white studio. The panel looks authoritative and highly polished, with subtle layered abstract lines inside suggesting a fluent AI answer, but no readable text. A refined violet confidence halo surrounds the panel. The lower third contains only a nearly invisible structural tension line, leaving room for a later animated crack. Dark graphite support geometry, soft realistic shadow, centered composition, generous empty space above and below, vertical 9:16, no people, no logos, no readable text.
@@ -26,4 +30,4 @@ ABLEHNEN WENN
 - wichtige Teile am Rand abgeschnitten sind
 - Überschrift- oder Untertitelzone blockiert wird
 - das Motiv nur dekorativ statt erklärend wirkt
-- die vier Bilder sichtbar unterschiedliche Stile haben
+- Cover und vier Szenenbilder sichtbar unterschiedliche Stile haben
