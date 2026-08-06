@@ -1,0 +1,49 @@
+{
+  "version": 3,
+  "standardId": "ki-animation-only-reel-v1",
+  "slug": "REPLACE_ME",
+  "title": "REPLACE_ME",
+  "composition": {
+    "id": "REPLACE_ME",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetDurationSeconds": 65,
+    "durationInFrames": 1950
+  },
+  "editorial": {
+    "targetWordsMin": 125,
+    "targetWordsMax": 145,
+    "targetScenesMin": 8,
+    "targetScenesMax": 9
+  },
+  "audio": {
+    "sourceFolder": "02-audio",
+    "playbackRate": 1,
+    "maximumPlaybackRateWithoutExplicitApproval": 1.05,
+    "preservePitch": true,
+    "soundMode": "off",
+    "music": false
+  },
+  "media": {
+    "generatedSceneImagesAllowed": false,
+    "stockSceneImagesAllowed": false,
+    "coverAssetCount": 1
+  },
+  "captions": {
+    "mode": "sentence-based-transcript-aligned",
+    "maximumLines": 2,
+    "defaultFontSizePx": 50,
+    "minimumFontSizePx": 40,
+    "rapidTwoToFourWordChunksAllowed": false
+  },
+  "motion": {
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 2,
+    "maximumSemanticBeatsPerScene": 4,
+    "minimumResultHoldSeconds": 1,
+    "hardCutsDefault": true
+  },
+  "scenes": [],
+  "checkpoints": []
+}

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "timingStatus": "estimated-until-final-transcript",
+  "scenes": [
+    {
+      "id": "scene-01",
+      "beats": [
+        {
+          "expression": "REPLACE_ME",
+          "visualReaction": "REPLACE_ME",
+          "transcriptTrigger": "REPLACE_ME",
+          "resultState": "REPLACE_ME",
+          "importance": "primary"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "importantMeaningWithoutVisualReactionAllowed": false,
+    "fillerWordsReceiveStrongAnimation": false,
+    "maximumBeatsPerScene": 4,
+    "finalTimingSource": "real-word-transcript"
+  }
+}
