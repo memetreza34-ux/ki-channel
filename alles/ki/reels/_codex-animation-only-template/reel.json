@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "standardId": "ki-animation-only-reel-v1",
+  "version": 4,
+  "standardId": "ki-animation-only-reel-v2",
   "slug": "REPLACE_ME",
   "title": "REPLACE_ME",
   "composition": {
@@ -8,8 +8,9 @@
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "targetDurationSeconds": 65,
-    "durationInFrames": 1950
+    "targetDurationSeconds": 64,
+    "durationInFrames": 1920,
+    "durationStatus": "placeholder-until-final-audio"
   },
   "editorial": {
     "targetWordsMin": 125,
@@ -23,26 +24,57 @@
     "maximumPlaybackRateWithoutExplicitApproval": 1.05,
     "preservePitch": true,
     "soundMode": "off",
-    "music": false
+    "music": false,
+    "finalTimingSource": "timeline/final-sync.json"
+  },
+  "sync": {
+    "requiredFinalFile": "timeline/final-sync.json",
+    "singleSourceOfTruth": true,
+    "maximumSemanticTriggerOffsetFrames": 5,
+    "maximumSceneBoundaryOffsetFrames": 6,
+    "maximumCaptionStartDelayFrames": 3,
+    "minimumOutroHoldSeconds": 1.2,
+    "maximumOutroHoldSeconds": 2.2,
+    "fallbackTimingAllowedInFinal": false
   },
   "media": {
     "generatedSceneImagesAllowed": false,
     "stockSceneImagesAllowed": false,
+    "requiredImageScenes": [],
     "coverAssetCount": 1
   },
+  "visual": {
+    "primaryObjectsPerScene": 1,
+    "maximumSupportingElementsPerScene": 2,
+    "primaryVisualAreaPercentMin": 55,
+    "primaryVisualAreaPercentMax": 72,
+    "miniDashboardsAllowed": false,
+    "persistentSceneNumbersAllowed": false,
+    "persistentKickersAllowed": false,
+    "emojiAsPrimaryExplanationAllowed": false
+  },
   "captions": {
-    "mode": "sentence-based-transcript-aligned",
+    "mode": "instant-full-sentence-with-violet-progress-line",
     "maximumLines": 2,
     "defaultFontSizePx": 50,
-    "minimumFontSizePx": 40,
-    "rapidTwoToFourWordChunksAllowed": false
+    "minimumFontSizePx": 42,
+    "bottomPx": 220,
+    "wordByWordRevealAllowed": false,
+    "wordHighlightAllowed": false,
+    "progressIndicator": "single-violet-line",
+    "progressLineHeightPx": 8
   },
   "motion": {
     "dominantMotionsPerScene": 1,
     "maximumStrongSimultaneousMotions": 2,
-    "maximumSemanticBeatsPerScene": 4,
+    "maximumSemanticBeatsPerScene": 3,
     "minimumResultHoldSeconds": 1,
     "hardCutsDefault": true
+  },
+  "implementation": {
+    "sourceDir": "REPLACE_ME",
+    "fallbackTimingPreviewOnly": true,
+    "finalBuildRequiresFinalSync": true
   },
   "scenes": [],
   "checkpoints": []
