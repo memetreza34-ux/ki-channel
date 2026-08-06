@@ -11,11 +11,12 @@ Produce premium German vertical AI reels with deterministic Remotion animation. 
 3. `ki/reel-brain/FUTURE-REEL-STANDARD.md`
 4. `ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
 5. `ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
-6. `ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
-7. `.agents/skills/reel-animation-director/SKILL.md`
-8. `.agents/skills/reel-sync-auditor/SKILL.md`
-9. `.agents/skills/reel-visual-qa/SKILL.md`
-10. nearest reel-local `AGENTS.md`
+6. `ki/reel-brain/REEL-SYNC-AUDITOR.md`
+7. `ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
+8. repository-root `.agents/skills/reel-animation-director/SKILL.md`
+9. repository-root `.agents/skills/reel-sync-auditor/SKILL.md`
+10. repository-root `.agents/skills/reel-visual-qa/SKILL.md`
+11. nearest reel-local `AGENTS.md`
 
 ## Git safety
 
@@ -37,8 +38,10 @@ New reels use `ki-animation-only-reel-v3`:
 - 125 to 145 words
 - 8 to 9 scenes
 - exactly two short caption sentences per scene
-- both sentences fully visible immediately
+- each caption pair covers the complete scene from first to last frame
+- both sentences fully visible immediately and during pauses
 - active spoken word violet from real word timings
+- no active word during speech pauses
 - no progress line, word reveal, bounce or size change
 - caption bottom 245 to 285 px
 - one large primary object per scene
@@ -56,11 +59,12 @@ After final audio:
 2. generate real word timestamps
 3. create `timeline/final-sync.json`
 4. create one caption pair per scene with exactly two sentences and word timings
-5. derive scene boundaries from pauses
-6. align semantic triggers within five frames
-7. derive final duration from speech end plus 1.2 to 2.2 seconds
-8. ensure production code uses only final sync data
-9. regenerate checkpoints after every code or sync change
+5. set each caption pair to the complete matching scene boundaries
+6. derive scene boundaries from pauses
+7. align semantic triggers within five frames
+8. derive final duration from speech end plus 1.2 to 2.2 seconds
+9. ensure production code uses only final sync data
+10. regenerate checkpoints after every code or sync change
 
 ## Choreography review
 
@@ -77,19 +81,21 @@ Reject mini-dashboards, repetitive card slides, weak contrast, small visuals and
 1. planning validation with `validate-reel-v3.mjs`
 2. final audio transcript and sync generation
 3. final v3 validation
-4. typecheck and focused tests
-5. smoke frames
-6. Animation Director review
-7. all checkpoints and contact sheet
-8. full MP4 at normal speed and phone size
-9. Visual QA Agent report
-10. technical artifact validation
-11. user approval
+4. `validate-v3-caption-coverage.mjs`
+5. typecheck and focused tests
+6. smoke frames
+7. Animation Director review
+8. all checkpoints and contact sheet
+9. full MP4 at normal speed and phone size
+10. Visual QA Agent report
+11. technical artifact validation
+12. user approval
 
 ## Release blockers
 
 - missing or placeholder final sync
 - fewer or more than two caption sentences
+- caption pair does not cover the full scene
 - wrong active word
 - progress line present
 - trigger offset above five frames
