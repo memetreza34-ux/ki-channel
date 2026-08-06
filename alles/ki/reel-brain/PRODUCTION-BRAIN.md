@@ -2,36 +2,38 @@
 
 ## Zweck
 
-Dieses Dokument ist die dauerhafte Wahrheit für den KI-Reel-Workflow. Für alle neu erstellten Reels gilt zusätzlich der detaillierte Standard in `FUTURE-REEL-STANDARD.md` und die maschinenlesbare Version in `brain.json`.
+Dieses Dokument beschreibt den dauerhaften Produktionsablauf. Für alle neuen Reels sind zusätzlich verbindlich:
 
-Bei Widersprüchen gilt für neue Reels diese Reihenfolge:
+1. `FUTURE-REEL-STANDARD.md`
+2. `AUDIO-FIRST-SYNC-CONTRACT.md`
+3. `brain.json`
 
-1. reel-spezifische, ausdrücklich vom Nutzer freigegebene Entscheidung
-2. `FUTURE-REEL-STANDARD.md`
-3. dieses Produktionsgehirn
-4. `brain.json`
-5. ältere Templates und historische Reel-Dateien
+Neue Reels verwenden `standardId: ki-animation-only-reel-v2`. Historische v1-Reels bleiben bestehen, dürfen aber nicht als Vorlage kopiert werden.
 
-Historische Reels dürfen von den neuen Standardwerten abweichen. Ihre alten Werte dürfen nicht als Vorlage für neue Reels kopiert werden.
+## Wichtigste Lernregel
+
+Ein vorab geplanter Zeitplan ist niemals die finale Timeline.
+
+```text
+falsch:
+feste Szenenframes → Audio hineinlegen
+
+richtig:
+finales Audio → Transcript → Szenen → Animationen → Untertitel → Dauer
+```
+
+Das echte Voiceover ist die einzige finale Zeitquelle.
 
 ## Repository-Struktur
 
 ```text
 KI-Channel/
-├── AGENTS.md
-├── CLAUDE.md
-├── README.md
 ├── reels/
 ├── youtube/
 └── alles/
 ```
 
-- `reels/`: aktive Reel-Projekte
-- `youtube/`: spätere Longform-Videos
-- `alles/`: Remotion-Code, Bibliotheken, Skripte, Tests und interne Regeln
-- FinanzNeo bleibt ein getrenntes Repository; übernommen wird nur die Produktionslogik.
-
-## Reel-Struktur
+Ein Reel liegt unter:
 
 ```text
 reels/<woche>/<wochentag>/<reel-thema>/
@@ -39,313 +41,236 @@ reels/<woche>/<wochentag>/<reel-thema>/
 ├── 01-voice-script/
 ├── 02-audio/
 ├── 03-szenen/
-│   └── EINZELNE-SZENEN/
 ├── 04-caption/
 ├── 05-review/
 ├── 06-video/
-├── AGENTS.md
-├── README.md
 ├── render/
 └── timeline/
 ```
 
-## Verbindliche Standardrichtung für neue Reels
+## Standard für neue Reels
 
-Der erste vollständige Halluzinations-Render war technisch brauchbar, aber visuell zu schnell, zu kurz und durch externe Szenenbilder inkonsistent. Deshalb gelten für alle zukünftigen Reels diese Standardwerte:
+- 1080 × 1920, 30 FPS
+- ungefähr 58 bis 70 Sekunden
+- 125 bis 145 Wörter
+- 8 bis 9 Szenen
+- 100 Prozent Remotion-Animation
+- keine generierten Szenenbilder
+- ein separates statisches Cover mit einem Satz
+- Voiceover und Playback bei 1,00x
+- keine Musik und keine Soundeffekte
+- finales Video endet 1,2 bis 2,2 Sekunden nach dem letzten gesprochenen Wort
 
-- Reel-Länge: **60 bis 70 Sekunden**
-- Voiceover: **125 bis 145 Wörter**
-- Szenen: **8 bis 9**
-- normale Szenenlänge: **6 bis 8 Sekunden**
-- absolute Mindestlänge einer normalen Szene: **5,5 Sekunden**
-- Audio: standardmäßig **1,00x**
-- maximal **1,05x** nur nach echter Hörprobe und bewusster Freigabe
-- Reel selbst: **100 Prozent Remotion-Animation**
-- keine generierten Szenenbilder und keine Stockbilder im Reel
-- Cover: genau **ein separates statisches Bild** mit einem klaren Satz
-- pro Szene genau eine klare Aussage und eine dominante visuelle Erklärung
-- maximal zwei starke Bewegungen gleichzeitig
-- höchstens vier klar unterscheidbare Bedeutungsbeats pro Szene
-- mindestens eine Sekunde ruhiger Ergebnis-Hold
-- keine hektischen Effektketten
+## Verantwortlichkeiten
 
-## Aufgabenverteilung
+### Planung
 
-### Planung und Vorbau
-
-Vor dem Nutzer-Audio müssen vollständig vorliegen:
+Vor dem Audio werden erstellt:
 
 - Thema und direkter Hook
-- finaler deutscher Voiceover-Text mit 125 bis 145 Wörtern
-- 8 bis 9 Szenen mit klarer Argumentationsfolge
-- ein Cover-Konzept mit einem Satz und einem Hauptmotiv
-- semantische Beat-Liste pro Szene
-- vollständiger ausführbarer Remotion-Code
-- Composition-Registrierung
-- Tests, Checkpoints und Build-Pipeline
-- Reel-lokaler Codex-Auftrag
+- finaler Voiceover-Text
+- 8 bis 9 Hauptgedanken
+- ein Cover-Satz und ein Hauptmotiv
+- einfache Choreografie pro Szene
+- ein bis drei semantische Sinnabschnitte pro Szene
+- vollständiger Remotion-Vorbau
+- Tests und Codex-Auftrag
 
-Die Beat-Liste verwendet dieses Format:
-
-```text
-wichtiger Ausdruck → visuelle Reaktion → Transcript-Auslöser → Ergebniszustand
-```
-
-Kein wichtiger Bedeutungsinhalt darf nur gesprochen werden, ohne visuell erklärt zu werden.
+Vorab verwendete Frames sind ausdrücklich als Platzhalter markiert.
 
 ### Nutzer
 
-Der Nutzer muss nur:
+Der Nutzer:
 
-1. das freigegebene Cover-Bild beziehungsweise Cover-Motiv erzeugen
-2. das Voiceover bei 1,00x Quellgeschwindigkeit erzeugen
-3. genau eine unterstützte Audio- oder Mediendatei in `02-audio/` ablegen
-4. Codex den vorhandenen Gesamtbuild ausführen lassen
-5. Cover und finales MP4 persönlich ansehen und freigeben
-
-Für das Reel selbst werden keine generierten Szenenbilder benötigt.
+1. erzeugt das Voiceover bei 1,00x
+2. legt genau eine Audiodatei in `02-audio/`
+3. erzeugt oder genehmigt das Cover
+4. prüft das finale MP4 persönlich
 
 ### Codex
 
-Codex ist Produktionsingenieur, nicht Creative Director. Codex:
+Codex:
 
-1. prüft Branch und Arbeitsbaum
-2. liest Root- und Reel-`AGENTS.md`
-3. liest `PRODUCTION-BRAIN.md`, `FUTURE-REEL-STANDARD.md` und `brain.json`
-4. prüft Scriptlänge, Szenenzahl und geplante Dauer
-5. erkennt und normalisiert das Audio
-6. transkribiert das finale Voiceover mit echten Wortzeiten
-7. richtet Szenengrenzen, Untertitel und semantische Animationen an derselben Zeitbasis aus
-8. verwendet den bereits programmierten Remotion-Code
-9. führt TypeScript und fokussierte Tests aus
-10. rendert alle Checkpoints, das Cover und das vollständige MP4
-11. erzeugt Kontaktbogen und technische Berichte
-12. prüft das MP4 in normaler Geschwindigkeit und Smartphone-Größe
-13. korrigiert belegte technische oder visuelle Fehler
-14. führt nach Änderungen denselben vollständigen Build erneut aus
-15. behauptet keine Prüfung oder Freigabe, die nicht wirklich erfolgt ist
+1. liest alle globalen und lokalen Regeln
+2. normalisiert das Audio
+3. transkribiert Wörter, Sätze und Sinnpausen
+4. misst Sprachbeginn und Sprachende
+5. erstellt `timeline/final-sync.json`
+6. ersetzt alle Platzhalter-Zeiten
+7. leitet Szenengrenzen aus der Sprache ab
+8. leitet Animationstrigger aus echten Wortzeiten ab
+9. leitet Untertitel und violette Linie aus echten Satzzeiten ab
+10. berechnet die Composition-Dauer aus dem Sprachende
+11. führt Validator, TypeScript und Tests aus
+12. rendert und prüft Checkpoints, Kontaktbogen, Cover und MP4
+13. meldet nur tatsächlich geprüfte Ergebnisse
 
-Codex darf Storyboard und Voiceover nicht eigenmächtig neu erfinden, keine generierten Szenenbilder, Musik oder SFX ergänzen und nicht mergen.
+Codex darf weder Story noch Script eigenmächtig neu erfinden und nicht mergen.
 
-## Script-Vertrag
+## Audio-first-Vertrag
 
-### Hook
-
-Die erste Aussage ist eine direkte Frage, ein klarer Widerspruch oder eine überraschende Behauptung. Sie spricht den Zuschauer oder seine KI direkt an.
-
-Beispiel:
+Final erforderlich:
 
 ```text
-Warum halluziniert deine KI, obwohl sie so sicher klingt?
+timeline/final-sync.json
 ```
 
-### Dramaturgie
+Diese Datei enthält:
 
-Ein typisches Reel folgt:
+- Audio-Dauer
+- Sprachbeginn
+- Sprachende
+- finale Composition-Dauer
+- finale Szenengrenzen
+- vollständige Satz-Untertitel
+- violette Fortschrittslinie
+- semantische Trigger
+- Ergebnis-Holds
 
-```text
-Hook
-→ Problem
-→ Ursache
-→ Mechanismus
-→ Folge oder Risiko
-→ Warnzeichen oder Beispiel
-→ einfache Lösung
-→ klare Schlussaussage
-```
+Toleranzen:
 
-Regeln:
+- Trigger maximal ±5 Frames
+- Szenengrenze maximal ±6 Frames von der Sinnpause
+- erster Untertitel spätestens 3 Frames nach Sprachbeginn
+- Schluss-Hold 1,2 bis 2,2 Sekunden
+- keine aktive Fallback-Zeitquelle
 
-- ein Hauptgedanke pro Szene
-- einfache Sprache
-- keine künstlichen Füllsätze
-- keine unnötigen Fachwörter
-- keine Wiederholung derselben Aussage
-- Beispiele eindeutig als Beispiele kennzeichnen
-- Hook, Erklärung und Lösung vollständig im Voiceover abdecken
-
-## Audiovertrag
-
-```text
-Quelldatei: 1,00x
-Standard-Wiedergabe: 1,00x
-Maximal ohne neue ausdrückliche Entscheidung: 1,05x
-Tonhöhe: natürlich erhalten
-Musik: aus
-Soundeffekte: aus
-```
-
-Die reale Audiodatei ist der endgültige Taktgeber. Untertitel, Szenengrenzen, wichtige Wortreaktionen und Ergebnis-Holds verwenden dieselben transkriptbasierten Wortzeiten.
-
-Bei 1,00x:
-
-```text
-Videoframe = round(Wortzeit in Sekunden × 30)
-```
-
-Bei einer ausdrücklich freigegebenen anderen Playback-Rate:
-
-```text
-Videosekunde = Quellzeit / Playback-Rate
-Videoframe = round(Videosekunde × 30)
-```
-
-Vorläufige Cues dürfen nicht als exakte Synchronisierung bezeichnet werden.
-
-## Cover-Vertrag
-
-Das Cover ist ein separates statisches Bild und nicht Teil der Reel-Animation.
-
-Es enthält:
-
-- genau ein starkes Hauptmotiv
-- genau einen kurzen, direkten deutschen Satz zum Thema
-- keine zusätzlichen Labels, Untertitel oder Nebenbotschaften
-- klare Smartphone-Lesbarkeit
-- denselben Markenstil wie das Reel
-- keine unnötigen Details
-
-Der Satz wird deterministisch gesetzt. Ein Bildgenerator darf keine lesbare Schrift erfinden. Das finale Cover bleibt trotzdem genau eine Bilddatei.
-
-## Animationsvertrag
+## Einfache visuelle Choreografie
 
 Jede Szene folgt:
 
 ```text
-klarer Startzustand
-→ verständliche Ursache oder Begriff
-→ eine dominante Hauptbewegung
-→ sichtbare Wirkung
-→ ruhiger Ergebnis-Hold
+1 Hauptobjekt
+→ 1 gesprochener Sinnabschnitt
+→ 1 dominante Hauptbewegung
+→ 1 klares Ergebnis
 ```
 
-### Standardrhythmus
+Regeln:
+
+- höchstens zwei kleine unterstützende Elemente
+- maximal zwei starke Bewegungen gleichzeitig
+- maximal drei Bedeutungsbeats
+- Hauptvisual nutzt ungefähr 55 bis 72 Prozent der Animationsfläche
+- keine Mini-Dashboards
+- keine Ansammlung kleiner Karten
+- keine dauerhaft sichtbare Szenennummer
+- kein dauerhaft wiederholter Kicker
+- keine Emojis als Hauptvisual
+- keine dünnen Linien oder kleinen Labels als Kerninformation
+- keine dekorative Dauerbewegung
+- keine schnelle Effektkette
+- wichtige Bewegung beginnt auf oder unmittelbar nach dem gesprochenen Sinnabschnitt
+- Ergebnis bleibt mindestens eine Sekunde ruhig sichtbar
+
+Ein wiederkehrendes Hauptobjekt wird bevorzugt, wenn es die Geschichte verständlicher macht.
+
+## Semantische Animation
+
+Nicht jedes Wort wird animiert. Pro Szene werden ein bis drei zentrale Sinnabschnitte ausgewählt.
 
 ```text
-0,0–0,6 s   klarer Startzustand
-0,6–2,0 s   Ursache oder Begriff erscheint
-2,0–4,8 s   Hauptanimation erklärt den Inhalt
-4,8–6,0+ s  Ergebnis wird sichtbar und gehalten
+Sinnabschnitt
+→ passende visuelle Reaktion
+→ echter Transcript-Auslöser
+→ sichtbarer Ergebniszustand
 ```
 
-Die echte Audiodatei bestimmt die genauen Zeitpunkte.
-
-### Bewegungsregeln
-
-- Animation erklärt Inhalt und dekoriert ihn nicht nur
-- wichtige Begriffe reagieren exakt beim gesprochenen Ausdruck
-- Füllwörter erhalten keine große Einzelanimation
-- maximal zwei starke Bewegungen gleichzeitig
-- höchstens vier Bedeutungsbeats pro Szene
-- kein Dauerzoom
-- kein Dauerpuls
-- kein Partikelteppich
-- keine zufällige Bewegung
-- keine schnellen Kamerawechsel
-- Hard Cut als Standard
-- Übergang nur bei echtem inhaltlichem Zusammenhang
-- keine vollständige Choreografie innerhalb eines Reels wiederholen
-- aufeinanderfolgende Szenen verwenden unterschiedliche Layout- oder Bewegungssignaturen
-
-## Layout-Vertrag
-
-- Hauptvisual groß und zentral
-- keine unnötig leeren Flächen
-- keine überfüllten Mini-Dashboards
-- keine dünnen Linien oder winzigen Labels als Kerninformation
-- Headline, Hauptvisual und Untertitel besitzen getrennte Safe-Zones
-- zentrale Informationen müssen auf Smartphone-Größe sofort lesbar sein
-- Ergebniszustand muss auch ohne Ton verständlich sein
+Eine Bewegung muss die Aussage erklären. Eine thematisch passende, aber inhaltlich unklare Bewegung ist nicht ausreichend.
 
 ## Untertitel-Vertrag
 
-- normale Satzuntertitel, keine hektischen Zwei- bis Vier-Wort-Blöcke
+Neue Reels verwenden die zentrale Komponente:
+
+```text
+ki/src/components/StableSentenceCaption.tsx
+```
+
+Darstellung:
+
+- vollständiger Satz oder Sinnabschnitt erscheint sofort
+- Text bleibt vollständig stabil
 - maximal zwei Zeilen
-- ungefähr 50 px, bei langen Sätzen mindestens 40 px
+- 46 bis 52 px, mindestens 42 px
+- Unterkante 210 bis 235 px, Standard 220 px
 - weiß mit dunkler Kontur oder starkem Schatten
-- kein großer Untertitelkasten
-- nur bereits gesprochene Wörter anzeigen
-- aktuelles wichtiges Wort nur dezent hervorheben
-- kein Bounce oder Springen des gesamten Satzes
-- Timing ausschließlich aus echten Wortzeiten
+- kein großer Kasten
+- keine Wort-für-Wort-Einblendung
+- keine Einzelwort-Markierung
+- kein Bounce oder Skalieren
 
-## Qualitätsgates
+Unter dem Satz bewegt sich genau eine violette Linie von 0 auf 100 Prozent. Ihre Dauer entspricht exakt der echten Satzdauer.
 
-### Redaktionell
+## Cover-Vertrag
 
-- Hook ist direkt und verständlich
-- Script liegt zwischen 125 und 145 Wörtern oder eine begründete Ausnahme ist dokumentiert
-- Reel erreicht mindestens ungefähr eine Minute ohne künstliche Füllung
-- jede Szene erklärt genau einen Hauptgedanken
-- Visualisierung entspricht exakt dem gesprochenen Inhalt
-- alle wichtigen Bedeutungsbeats sind visuell abgedeckt
-- Kernaussage bleibt auch ohne Ton verständlich
+Das Cover ist eine einzelne statische Bilddatei mit:
 
-### Technisch
+- einem Hauptmotiv
+- genau einem kurzen deutschen Satz
+- keiner Unterzeile
+- keinen zusätzlichen Labels
+- kontrolliert gesetzter Schrift
+- Smartphone-Lesbarkeit
 
-- 1080 × 1920, 30 FPS
-- lückenlose Szenen
-- finales Transcript vorhanden
-- TypeScript und fokussierte Tests bestanden
-- aktuelle Checkpoints, Cover und MP4 gerendert
-- technische Artefaktprüfung bestanden
-- alte Render werden nach einer Codeänderung nicht wiederverwendet
+## Pflichtprüfungen
 
-### Visuell
+Vor finalem Render:
 
-- keine hektische Bewegungskette
-- maximal zwei starke gleichzeitige Bewegungen
-- keine leere oder unfertig wirkende Szene
-- Headline, Hauptvisual und Untertitel überlappen nicht
-- Ergebniszustand mindestens eine Sekunde lesbar
-- Text und UI funktionieren in Smartphone-Größe
-- Kontaktbogen wurde geprüft
-- vollständiges aktuelles MP4 wurde in normaler Geschwindigkeit angesehen
-- keine generierten Szenenbilder im Reel
-- Cover enthält genau einen Satz und ein Hauptmotiv
+```bash
+node scripts/validate-future-reel-standard.mjs <reel-ordner> --final
+```
 
-## Abbruchregeln
+Der Build stoppt bei:
 
-Build oder Freigabe stoppen, wenn:
+- fehlendem `final-sync.json`
+- aktiver Fallback-Zeitquelle
+- falscher Schlusslänge
+- unsynchronen Triggern oder Szenengrenzen
+- Wort-für-Wort-Untertiteln
+- zu tiefen Untertiteln
+- mehr als drei Beats pro Szene
+- Mini-Dashboards oder unklarer Kartenansammlung
+- nicht ausreichend großem Hauptvisual
+- veraltetem Render nach Code- oder Sync-Änderung
 
-- Voiceover unter 55 Sekunden liegt und der Inhalt gequetscht wirkt
-- mehr als zwei starke Bewegungen gleichzeitig konkurrieren
-- ein wichtiger Satzteil keine passende Visualisierung besitzt
-- eine Szene weniger als eine Sekunde Ergebnis-Hold bietet
-- Kerntext auf Smartphone-Größe nicht lesbar ist
-- die Szene nur aus dekorativer Bewegung besteht
-- finale Audiodatei nicht transkribiert wurde
-- alte Render nach einer Codeänderung verwendet werden
+## Definition of Done
+
+Ein Reel ist erst fertig, wenn:
+
+- finales Audio und echtes Transcript vorhanden sind
+- `final-sync.json` gültig ist
+- Produktionscode nur finale Sync-Daten nutzt
+- Trigger und Szenengrenzen innerhalb der Toleranzen liegen
+- Untertitel stabil und richtig positioniert sind
+- finale Dauer am echten Sprachende ausgerichtet ist
+- TypeScript und Tests bestanden sind
+- aktuelle Checkpoints und Kontaktbogen geprüft wurden
+- vollständiges MP4 bei normaler Geschwindigkeit und Smartphone-Größe angesehen wurde
+- technische Artefaktprüfung bestanden ist
+- Nutzer freigegeben hat
 
 ## Statussprache
 
-- `planned`: Inhalt und Choreografie stehen
-- `implemented`: Code existiert
-- `transcript-aligned`: echte Wortzeiten wurden eingebaut
-- `typechecked`: TypeScript wurde wirklich ausgeführt
-- `tested`: Tests wurden wirklich ausgeführt
-- `rendered`: aktueller Code wurde wirklich gerendert
-- `technically-validated`: aktuelle Artefakte wurden technisch geprüft
-- `visually-reviewed`: aktueller Render wurde wirklich angesehen
-- `approved`: Nutzer hat freigegeben
-- `rejected`: Nutzer hat die visuelle oder redaktionelle Richtung abgelehnt
+- `planned`
+- `implemented-placeholder-timing`
+- `final-sync-created`
+- `transcript-aligned`
+- `typechecked`
+- `tested`
+- `rendered`
+- `technically-validated`
+- `visually-reviewed`
+- `approved`
+- `rejected`
 
-## Lernregel
+## Neue belegte Erkenntnisse
 
-Nach jedem geprüften Reel wird unter `05-review/` eine kurze Analyse gespeichert:
+Aus den bisherigen Rendern gelten dauerhaft:
 
-- tatsächliche Dauer und Wortzahl
-- zu schnelle oder zu langsame Stellen
-- unklare oder besonders verständliche Visualisierungen
-- Probleme bei Untertiteln und Safe-Zones
-- bewährte Animationen
-- mögliche Regeländerungen
-
-Belegte Nutzerkritik aus einem echten Render darf zur Produktionsregel werden. Der Halluzinations-Render hat diese belegten Erkenntnisse geliefert:
-
-- 36 Sekunden waren zu kurz
-- 1,10x verstärkte den hektischen Eindruck
-- durchschnittlich rund 4,5 Sekunden pro Szene waren für mehrere Teilaktionen zu knapp
-- generierte Szenenbilder passten stilistisch und inhaltlich nicht zuverlässig
-- kleine UI-Details und schnelle Zustandswechsel minderten die Lesbarkeit
-- zukünftige Reels müssen einfacher, länger und vollständig in Remotion animiert sein
+- feste Szenenlängen führen ohne nachträglichen Audio-Umbau zu deutlicher Desynchronisation
+- künstliche Videolänge erzeugt unnötige Schlussstille
+- Wort-für-Wort-Untertitel wirken hektisch und unsynchron
+- Untertitel nahe dem unteren Rand sind für Plattformen ungeeignet
+- mehrere kleine Karten und Messwerte wirken kompliziert und gleichzeitig leer
+- eine einfache Hauptmetapher pro Szene ist verständlicher als ein Mini-Dashboard
+- Animationen müssen an Sinnabschnitte gekoppelt sein, nicht nur thematisch passen
