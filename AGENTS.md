@@ -12,7 +12,8 @@ Vor jeder technischen Reel-Arbeit zuerst lesen:
 2. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
 3. bei jedem neuen Reel `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
 4. `alles/ki/reel-brain/brain.json`
-5. die nächste reel-lokale `AGENTS.md`
+5. `alles/ki/reel-brain/VALIDATION.md`
+6. die nächste reel-lokale `AGENTS.md`
 
 Neue Reel-Projekte werden ausschließlich unter `reels/<woche>/<wochentag>/<reel-thema>/` angelegt. Technische Befehle werden aus `alles/` ausgeführt.
 
@@ -29,6 +30,14 @@ Für alle neu erstellten Reels gilt standardmäßig:
 - maximal zwei starke Bewegungen gleichzeitig
 - mindestens eine Sekunde Ergebnis-Hold
 - normale Satzuntertitel statt hektischer Wortblöcke
+
+Vor dem Coding und erneut vor der finalen Freigabe muss der neue Reel-Standard geprüft werden:
+
+```bash
+cd alles
+node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<reel-thema>
+node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
+```
 
 Historische Reels dürfen ältere Werte besitzen. Diese Werte nicht in neue Reels kopieren.
 
