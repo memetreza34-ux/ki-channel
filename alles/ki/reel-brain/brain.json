@@ -1,28 +1,42 @@
 {
-  "version": 1,
-  "mission": "Premium German vertical AI explainer reels built from approved scripts, generated assets and deterministic Remotion code.",
+  "version": 2,
+  "mission": "Premium German vertical AI explainer reels built from approved scripts and deterministic Remotion animation, with one separate static cover image.",
   "responsibilities": {
-    "planner": ["topic", "hook", "final voiceover", "scene order", "image prompts", "animation choreography", "Remotion prebuild", "tests", "Codex task"],
-    "user": ["generate approved images", "generate final voiceover at normal source speed", "place files at exact paths", "approve final MP4"],
-    "codex": ["validate assets", "stage assets", "transcribe final audio", "synchronize cues", "integrate assets into prebuilt code", "run tests", "render", "inspect", "fix", "report honestly"]
+    "planner": ["topic", "direct hook", "final voiceover", "scene order", "cover prompt", "semantic animation choreography", "Remotion prebuild", "tests", "Codex task"],
+    "user": ["generate one approved cover image", "generate final voiceover at normal source speed", "place files in the reel project", "approve final MP4"],
+    "codex": ["validate media", "transcribe final audio", "synchronize cues", "integrate audio into prebuilt code", "run tests", "render", "inspect", "fix", "report honestly"]
   },
   "audio": {
     "sourceGenerationSpeed": 1,
-    "playbackRate": 1.1,
+    "defaultPlaybackRate": 1,
+    "maximumPlaybackRateWithoutExplicitApproval": 1.05,
     "preservePitch": true,
     "music": false,
     "soundEffects": "off",
     "timingSource": "final voiceover transcript"
   },
+  "editorial": {
+    "targetDurationSeconds": {"min": 60, "max": 70},
+    "targetScriptWords": {"min": 125, "max": 145},
+    "targetSceneCount": {"min": 8, "max": 9},
+    "hookPattern": "direct viewer question or direct contradiction",
+    "exampleHook": "Warum halluziniert deine KI, obwohl sie so sicher klingt?",
+    "simplicityRule": "one clear claim and one dominant visual explanation per scene"
+  },
   "visual": {
     "format": {"width": 1080, "height": 1920, "fps": 30},
+    "reelImageAssets": "none by default",
+    "coverImageAssets": 1,
     "dominantMotionsPerScene": 1,
-    "maximumStrongSimultaneousMotions": 3,
-    "subtitleWindowWords": 9,
+    "maximumStrongSimultaneousMotions": 2,
+    "subtitleWindowWords": 7,
     "hardCutsDefault": true,
     "genericImageZoomAllowed": false,
-    "peopleAllowedByDefault": false
+    "peopleAllowedByDefault": false,
+    "minimumSceneSeconds": 6,
+    "minimumReadableResultHoldSeconds": 1,
+    "semanticAnimationRule": "animate every important meaning beat; filler words receive subtitle timing only"
   },
-  "statusVocabulary": ["planned", "implemented", "typechecked", "tested", "rendered", "visually-reviewed", "approved"],
-  "releaseRequires": ["real assets", "final transcript", "typecheck", "focused tests", "all checkpoints", "full MP4", "normal-speed watch", "phone-size review", "technical artifact validation", "user approval"]
+  "statusVocabulary": ["planned", "implemented", "typechecked", "tested", "rendered", "visually-reviewed", "approved", "rejected"],
+  "releaseRequires": ["final transcript", "typecheck", "focused tests", "all checkpoints", "full MP4", "normal-speed watch", "phone-size review", "technical artifact validation", "user approval"]
 }
