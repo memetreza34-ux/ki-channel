@@ -2,129 +2,185 @@
 
 ## Mission
 
-This repository produces premium German vertical AI explainer reels with Remotion. Work as a production engineer, not as an unconstrained creative writer. Planning files define the content; Codex turns the approved plan and supplied assets into deterministic code, tests, renders, and an honest report.
+This repository produces premium German vertical AI explainer reels with deterministic Remotion animation. Work as a production engineer, not as an unconstrained creative writer. Planning files define the approved content; Codex synchronizes the prebuilt code to the real voiceover, tests it, renders it, inspects it and reports honestly.
 
 ## Instruction order
 
 1. Read this file.
-2. Read `ki/reel-brain/PRODUCTION-BRAIN.md` before any reel production work.
-3. Read the nearest nested `AGENTS.md` for the files you will edit.
-4. Read only the reel package named in the task.
-5. Read `docs/CODEX_REEL_WORKFLOW.md` when assembling a hybrid reel.
-6. Use existing reel-specific code, components, and animation-library entries before inventing infrastructure.
+2. Read `ki/reel-brain/PRODUCTION-BRAIN.md`.
+3. Read `ki/reel-brain/FUTURE-REEL-STANDARD.md` for every newly created reel.
+4. Read `ki/reel-brain/brain.json` for machine-readable defaults.
+5. Read the nearest nested `AGENTS.md` for the files you will edit.
+6. Read only the named reel package and its reel-local task.
+7. Use existing low-level components and animation primitives before inventing infrastructure.
 
-Do not repeatedly reread the whole repository. Build a short working index of relevant files, commands, assets, and unresolved blockers.
+Do not repeatedly reread the whole repository. Build a compact index of the relevant files, commands, media and blockers.
 
 ## Git safety
 
 - Never modify `main`.
 - Work only on the branch named by the user or task.
-- Do not create, merge, close, or mark a pull request ready unless explicitly requested.
+- Do not create, merge, close or mark a pull request ready unless explicitly requested.
 - Do not rewrite unrelated files.
 - Keep commits focused and descriptive.
-- Before editing, run `git status`, `git branch --show-current`, and `git log -5 --oneline`.
+- Before editing, run `git status`, `git branch --show-current` and `git log -5 --oneline`.
 - Report the current branch and final commit SHA.
 
 ## Truthfulness
 
-- Never claim tests, typecheck, screenshots, audio checks, renders, or visual review succeeded unless you actually ran and inspected them.
+- Never claim tests, typecheck, transcript alignment, screenshots, audio checks, renders or visual review succeeded unless they actually ran and were inspected.
 - A generated file is not a verified file.
 - A technically valid MP4 is not visually approved.
-- When blocked, include the exact failing command, relevant error, affected file, and next action.
-- Do not hide failures with `any`, `@ts-ignore`, disabled tests, placeholder assets, fake reports, or weakened validators.
+- Estimated cues are not final transcript timing.
+- When blocked, report the exact command, error, affected file and next action.
+- Do not hide failures with `any`, `@ts-ignore`, disabled tests, fake reports or weakened validators.
+
+## New reel production defaults
+
+Every newly created reel defaults to:
+
+- 1080 × 1920, 30 FPS
+- 60 to 70 seconds
+- 125 to 145 spoken words
+- 8 to 9 scenes
+- normally 6 to 8 seconds per scene
+- 100 percent Remotion animation inside the reel
+- no generated scene images and no stock scene images
+- one separate static cover image with one clear German sentence
+- source voice and playback at 1.00x
+- at most 1.05x only after explicit approval based on a real listening check
+- no music and no sound effects
+- one dominant explanatory motion per scene
+- at most two strong simultaneous motions
+- at least one second of readable result hold
+
+Historical reels may use older contracts. Never copy their shorter duration, 1.10x playback or hybrid image strategy into a new reel.
 
 ## Reel production contract
 
-For a named reel, treat the visible reel folder, its timeline contract, and the permanent production brain as authoritative. Typical files include:
+For a named reel, treat the visible reel folder, its timeline contract and the permanent production brain as authoritative. Do not rewrite approved voiceover, scene order or semantic intent unless an implementation-blocking contradiction exists. Document the contradiction before changing it.
 
-- `reel.json`
-- voiceover script
-- scene plan
-- image prompts
-- animation plan
-- subtitle cues
-- asset manifest
-- Codex task
-- review checklist
+Before coding a new reel, confirm that every scene has a semantic beat map:
 
-Do not rewrite approved voiceover, scene order, image prompts, or semantic intent unless a contradiction makes implementation impossible. Document the contradiction before changing it. Frame boundaries may be adjusted after the final transcript only when required for clean synchronization, and every dependent contract must then be updated together.
+```text
+important expression -> visual reaction -> transcript trigger -> result state
+```
+
+Every important meaning beat must be visible. Filler words receive caption timing only.
 
 ## Remotion rules
 
-- Use `useCurrentFrame()`, `interpolate()`, `spring()`, `Sequence`, and deterministic helpers.
+- Use `useCurrentFrame()`, `interpolate()`, `spring()`, `Sequence` and deterministic helpers.
 - No `Math.random()` during rendering.
-- No real-time timers, CSS transitions, network calls, external APIs, or render-time downloads.
-- Use `staticFile()` for repository assets.
+- No real-time timers, CSS transitions, network calls, external APIs or render-time downloads.
+- Use `staticFile()` only for declared local assets such as audio and the separate cover visual.
 - Every composition must render correctly when seeking directly to any frame.
 - Keep all event times within their scene duration.
-- Default reel format is 1080 × 1920, 30 FPS.
 - Preserve readable opening and result holds.
-- Hard cuts are the default. Use a transition only when an object, shape, direction, or state can continue meaningfully.
+- Hard cuts are the default.
+- Use a transition only when an object, shape, direction or state continues meaningfully.
+- Do not repeat a full scene choreography within one reel.
+- Adjacent scenes must not reuse the same layout and motion signature.
 
-## Hybrid image and animation quality
+## Animation pacing
 
-- A supplied image must not be presented with only a generic slow zoom.
-- Animate meaningful regions using masks, parallax, depth separation, object cutouts, light changes, connectors, callouts, charts, counters, or state changes.
-- One dominant explanatory motion per sentence.
-- Maximum three strong simultaneous motions per scene.
-- Every spoken word appears in subtitles, but only important words receive strong emphasis.
-- Keep headline, main visual, annotations, and subtitles in separate safe zones.
-- Avoid repeated center cards, repeated fade-and-scale entrances, decorative particles, continuous glow, and unnecessary camera movement.
-- Reuse low-level primitives, not complete scene compositions.
-- Do not use the same full animation twice in one reel.
+Each normal scene should contain:
 
-## Images and assets
+1. a clear opening state
+2. a concept or cause entering
+3. one dominant explanatory action
+4. a visible consequence
+5. a stable result hold of at least one second
 
-- Never invent a missing asset or silently substitute an unrelated image.
-- Validate all required files from the asset manifest before implementation or render.
-- Respect declared crop mode, anchor point, safe area, layer role, and scene ownership.
-- Do not bake long headings, subtitles, arrows, diagrams, or statistics into generated images; Remotion should render them.
-- If an image needs independent object motion, use declared layered assets or masks. Do not pretend a flat image contains separable layers.
+Rules:
+
+- Maximum two strong simultaneous motions.
+- Maximum four clearly distinguishable semantic beats per scene.
+- No rapid chains of unrelated effects.
+- No continuous pulse, random wobble, particle carpet or unnecessary camera motion.
+- Do not keep elements moving merely to avoid stillness.
+- Important actions begin on or immediately after the matching spoken expression, not before it.
+- Scene boundaries, captions and semantic actions must use the same final transcript timeline.
+
+## Layout and readability
+
+- Main visual must be large and central.
+- Empty space must support focus and must not make the scene look unfinished.
+- Avoid tiny dashboards, thin lines and small labels as core information.
+- Headline, main visual and subtitles must use separate safe zones.
+- Core information must remain readable on a phone.
+- The result state must communicate the point without audio.
+
+## Captions
+
+- Use normal sentence-based subtitles, not rapid two-to-four-word chunks.
+- Maximum two lines.
+- Default about 50 px; never below 40 px for long sentences.
+- White text with dark outline or strong shadow.
+- No large subtitle box.
+- Show only words that have already been spoken.
+- A current important word may receive subtle emphasis.
+- Do not bounce or spring the whole sentence.
+- Final timing must come from the real word transcript.
+
+## Cover
+
+- The cover is a separate static image, not an animated reel scene.
+- It contains one main motif and exactly one short German sentence.
+- Do not add secondary labels, subtitles or multiple messages.
+- Do not rely on an image generator for readable text; typeset the exact sentence deterministically.
+- The final cover must be reviewed at phone size.
 
 ## Audio
 
-- Voiceover is the primary audio track.
-- Generate the source voice at 1.00x unless the reel contract explicitly says otherwise.
-- The standard KI reel playback rate is 1.10x with natural pitch preserved.
-- Final word synchronization must come from the real voiceover transcript, not estimates.
-- Default SFX mode is off.
-- Do not generate synthetic beeps, noise sweeps, music, or a sound for every word.
-- Never claim voice synchronization is exact without the final audio file and word timestamps.
+- Voiceover is the only audio track by default.
+- Generate and play the source at 1.00x.
+- Do not use 1.10x as a default.
+- A playback rate above 1.00x requires a real listening check and explicit approval; never exceed 1.05x without a new user decision.
+- Preserve natural pitch.
+- Do not add music, beeps, noise sweeps or sounds for individual words.
+- Never claim exact synchronization without the final audio file and real word timestamps.
 
 ## Required implementation sequence
 
 1. Validate branch and working tree.
-2. Read the permanent production brain, reel package, and nearest `AGENTS.md` files.
-3. Confirm reel-specific Remotion code already exists; prebuild missing approved code before asking the user for assets.
-4. Confirm every required image and audio asset exists.
-5. Stage assets into the Remotion public directory.
-6. Transcribe final audio and replace estimated word cues.
-7. Synchronize existing scene choreography with the final 1.10x timeline.
-8. Register exactly one production composition without breaking existing previews.
+2. Read the permanent production brain, future standard and reel-local instructions.
+3. Check script word count, planned duration, scene count and semantic coverage.
+4. Confirm all approved Remotion scene code exists before asking for user media.
+5. Confirm the final audio and cover input exist when required.
+6. Transcribe the final audio.
+7. Use one timestamp source for captions, scene boundaries and semantic actions.
+8. Register exactly one production composition without breaking previews.
 9. Run typecheck and focused tests.
 10. Render smoke frames.
-11. Inspect every smoke frame visually.
-12. Fix layout and choreography issues at their cause.
-13. Render all checkpoints and the full MP4.
-14. Watch the MP4 at normal speed and inspect it at phone size.
-15. Run technical artifact validation.
-16. Update only genuinely completed checklist items.
+11. Inspect smoke frames at full and phone size.
+12. Fix pacing, layout and synchronization at their cause.
+13. Render all checkpoints, cover and full MP4.
+14. Create and inspect the contact sheet.
+15. Watch the full MP4 at normal speed and phone size.
+16. Run technical artifact validation.
+17. Update only genuinely completed review items.
 
-## Visual review gates
+## Visual review blockers
 
-Do not approve a scene when any of these are present:
+Do not approve a scene or reel when any of these are present:
 
 - clipped or unreadable text
-- headline, animation, or subtitles overlapping
-- empty opening state
+- headline, animation or subtitles overlapping
+- empty or unfinished opening state
 - unfinished final frame
-- static image with generic zoom only
-- more than three competing strong motions
-- unclear relationship between narration and movement
-- repeated layout or complete animation
-- low contrast on phone size
-- transition covering an important word
+- less than one second of readable result hold
+- more than two competing strong motions
+- important narration without a matching visual reaction
+- important action appearing before the spoken trigger
+- rapid effect chains that cannot be read
+- repeated full layout or choreography
+- tiny UI details carrying the main message
+- low contrast at phone size
+- transition covering an important expression
 - fake or misleading data presentation
+- generated scene images in a newly created reel
+- cover containing more than one sentence or more than one message
 
 ## Final response format
 
@@ -133,12 +189,14 @@ Report:
 1. branch and commit SHA
 2. files changed
 3. commands run and exact results
-4. assets found and assets missing
-5. implementation summary per scene
-6. visual issues found and fixes applied
-7. audio and transcript status
-8. rendered artifact paths
-9. technical validation result
-10. remaining known issues
-11. confirmation that `main` was not modified
-12. pull request state, only when a PR is part of the task
+4. media found and media missing
+5. script duration and word-count status
+6. semantic coverage status
+7. implementation summary per scene
+8. pacing or visual issues found and fixes applied
+9. audio and transcript status
+10. rendered artifact paths
+11. technical validation result
+12. remaining known issues
+13. confirmation that `main` was not modified
+14. pull request state only when a PR is part of the task
