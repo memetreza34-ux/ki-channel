@@ -36,14 +36,16 @@ const normalize = (word: string): string => word.toLocaleLowerCase('de-DE').repl
 const SentenceSubtitle: React.FC<{chunks: readonly CaptionChunk[]}> = ({chunks}) => {
   const frame = useCurrentFrame();
   if (chunks.length === 0 || frame < chunks[0].start) return null;
-  const activeIndex = chunks.findIndex((chunk) => frame >= chunk.start && frame < chunk.end);
-  const index = activeIndex >= 0 ? activeIndex : chunks.findLastIndex((chunk) => frame >= chunk.start);
-  const chunk = chunks[Math.max(0, index)];
+  let index = 0;
+  for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
+    if (frame >= chunks[chunkIndex].start) index = chunkIndex;
+  }
+  const chunk = chunks[index];
   const words = chunk.text.split(/\s+/);
   const reveal = progress(frame, chunk.start, Math.max(chunk.start + 1, chunk.end - 8));
   const visibleCount = frame >= chunk.end ? words.length : Math.max(1, Math.ceil(reveal * words.length));
   const emphasis = new Set(chunk.emphasis.map(normalize));
-  return <div style={{position:'absolute',left:64,right:64,bottom:76,zIndex:100,minHeight:142,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{maxWidth:950,fontFamily,fontSize:50,lineHeight:1.16,fontWeight:820,color:'white',textShadow:'0 3px 5px rgba(20,15,28,.9), 0 0 2px rgba(20,15,28,1)'}}>{words.slice(0,visibleCount).map((word,wordIndex)=>{const active=wordIndex===visibleCount-1;const highlighted=emphasis.has(normalize(word));return <React.Fragment key={`${word}-${wordIndex}`}><span style={{color:highlighted?palette.accentSoft:'white',fontWeight:highlighted?950:820,transform:active?'translateY(-1px)':'none',display:'inline-block'}}>{word}</span>{wordIndex<visibleCount-1?' ':null}</React.Fragment>;})}</div></div>;
+  return <div style={{position:'absolute',left:64,right:64,bottom:76,zIndex:100,minHeight:142,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{maxWidth:950,fontFamily,fontSize:50,lineHeight:1.16,fontWeight:820,color:'white',textShadow:'0 3px 5px rgba(20,15,28,.9), 0 0 2px rgba(20,15,28,1)'}}>{words.slice(0,visibleCount).map((word,wordIndex)=>{const highlighted=emphasis.has(normalize(word));return <React.Fragment key={`${word}-${wordIndex}`}><span style={{color:highlighted?palette.accentSoft:'white',fontWeight:highlighted?950:820,display:'inline-block'}}>{word}</span>{wordIndex<visibleCount-1?' ':null}</React.Fragment>;})}</div></div>;
 };
 
 export const SceneFrame: React.FC<React.PropsWithChildren<{
