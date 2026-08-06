@@ -1,19 +1,10 @@
 {
-  "version": 1,
+  "version": 3,
   "status": "replace-with-final-transcript-aligned",
-  "timingSource": "final-voiceover-transcript",
-  "fallbackTimingActive": false,
   "fps": 30,
-  "audio": {
-    "durationSeconds": 0,
-    "speechStartSeconds": 0,
-    "speechEndSeconds": 0
-  },
-  "composition": {
-    "durationInFrames": 0,
-    "outroHoldFrames": 0
-  },
-  "captions": [],
+  "audio": {},
+  "composition": {},
+  "captionPairs": [],
   "scenes": [],
   "beats": []
 }
