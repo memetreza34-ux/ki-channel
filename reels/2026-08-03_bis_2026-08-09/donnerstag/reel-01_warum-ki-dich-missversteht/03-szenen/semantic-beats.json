@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "timingStatus": "estimated-until-final-transcript",
+  "scenes": [
+    {
+      "id": "scene-01",
+      "beats": [
+        {"expression":"Gegenteil","visualReaction":"Ein Bedeutungsprisma teilt eine Prompt-Karte in zwei entgegengesetzte Wege.","transcriptTrigger":"Gegenteil","resultState":"GEMEINT und VERSTANDEN enden sichtbar verschieden.","importance":"primary"},
+        {"expression":"meinst","visualReaction":"Der violette Zielweg verriegelt sich als gewünschte Bedeutung.","transcriptTrigger":"meinst","resultState":"Ein großes Ungleichheitszeichen bleibt stehen.","importance":"secondary"}
+      ]
+    },
+    {
+      "id": "scene-02",
+      "beats": [
+        {"expression":"unklaren Signalen","visualReaction":"Ungeordnete Signalmarken stören die Prompt-Schiene.","transcriptTrigger":"unklaren Signalen","resultState":"Der Eingang wirkt mehrdeutig.","importance":"primary"},
+        {"expression":"Wörter","visualReaction":"Ein Scanner erfasst ausschließlich sichtbare Wortkacheln.","transcriptTrigger":"Wörter","resultState":"WÖRTER werden als sichtbarer Eingang markiert.","importance":"primary"},
+        {"expression":"Absicht","visualReaction":"Eine violette Absichtskugel bleibt hinter einer matten Barriere verborgen.","transcriptTrigger":"Absicht","resultState":"ABSICHT bleibt für das System unsichtbar.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-03",
+      "beats": [
+        {"expression":"Ziel","visualReaction":"Der zentrale Ziel-Steckplatz bleibt leer.","transcriptTrigger":"Ziel","resultState":"ZIEL FEHLT erscheint.","importance":"primary"},
+        {"expression":"raten","visualReaction":"Ein Auswahlzeiger schwankt zwischen drei möglichen Ausgaben und landet zufällig.","transcriptTrigger":"raten","resultState":"Die KI wählt ohne eindeutige Richtung.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-04",
+      "beats": [
+        {"expression":"Kontext","visualReaction":"In einem Faktenrahmen öffnen sich drei sichtbare Lücken.","transcriptTrigger":"Kontext","resultState":"KONTEXT FEHLT bleibt markiert.","importance":"primary"},
+        {"expression":"Annahmen","visualReaction":"Drei orangefarbene Annahme-Bausteine füllen die offenen Lücken nacheinander.","transcriptTrigger":"Annahmen","resultState":"Der Anteil Annahmen überwiegt die Fakten.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-05",
+      "beats": [
+        {"expression":"mehrere Aufgaben","visualReaction":"Vier widersprüchliche Aufgaben-Chips fahren gleichzeitig in eine enge Spur.","transcriptTrigger":"mehrere Aufgaben","resultState":"Die Chips blockieren sich gegenseitig.","importance":"primary"},
+        {"expression":"konkurrieren","visualReaction":"Prioritätslinien kreuzen sich und ein Konfliktindikator wird rot.","transcriptTrigger":"konkurrieren","resultState":"AUFGABEN-KONFLIKT bleibt sichtbar.","importance":"primary"},
+        {"expression":"Reihenfolge","visualReaction":"Die kollidierenden Chips ordnen sich zu einer einzigen klaren vertikalen Sequenz.","transcriptTrigger":"Reihenfolge","resultState":"Eine geordnete Spur ersetzt den Konflikt.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-06",
+      "beats": [
+        {"expression":"entstehen soll","visualReaction":"Das Modul ZIEL rastet oben in eine Prompt-Säule ein.","transcriptTrigger":"entstehen soll","resultState":"ZIEL ist festgelegt.","importance":"primary"},
+        {"expression":"Kontext","visualReaction":"Das Modul KONTEXT dockt unter dem Ziel an.","transcriptTrigger":"Kontext","resultState":"Hintergrundinformationen sind verbunden.","importance":"primary"},
+        {"expression":"Format","visualReaction":"Das Modul FORMAT definiert die Ausgabestruktur.","transcriptTrigger":"Format","resultState":"Die Form der Antwort ist sichtbar.","importance":"primary"},
+        {"expression":"Grenzen","visualReaction":"Das Modul GRENZEN schließt die Säule mit einem kontrollierten Rahmen ab.","transcriptTrigger":"Grenzen","resultState":"KLARER AUFTRAG wird ausgegeben.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-07",
+      "beats": [
+        {"expression":"Mach das besser","visualReaction":"Eine kleine vage Karte erzeugt drei unscharfe mögliche Richtungen.","transcriptTrigger":"Mach das besser","resultState":"MEHRDEUTIG bleibt rot markiert.","importance":"primary"},
+        {"expression":"verständlicher","visualReaction":"Die erste konkrete Anforderung rastet in die strukturierte Prompt-Karte ein.","transcriptTrigger":"verständlicher","resultState":"Ziel der Überarbeitung ist klar.","importance":"primary"},
+        {"expression":"alle Fakten","visualReaction":"Ein Fakten-Siegel verriegelt die zweite Anforderung.","transcriptTrigger":"alle Fakten","resultState":"Inhalte bleiben geschützt.","importance":"primary"},
+        {"expression":"fünf Sätze","visualReaction":"Ein sichtbarer Fünf-Satz-Rahmen begrenzt die Ausgabe.","transcriptTrigger":"fünf Sätze","resultState":"Die klare Karte erreicht hohe Eindeutigkeit.","importance":"primary"}
+      ]
+    },
+    {
+      "id": "scene-08",
+      "beats": [
+        {"expression":"Prüfe","visualReaction":"Die erste Antwort fährt durch einen Vergleichsrahmen.","transcriptTrigger":"Prüfe","resultState":"Eine konkrete Abweichung wird markiert.","importance":"primary"},
+        {"expression":"eine Sache","visualReaction":"Genau ein Korrektur-Chip darf durch das Feedback-Gate passieren.","transcriptTrigger":"eine Sache","resultState":"Nur eine Änderung wird aktiv.","importance":"primary"},
+        {"expression":"Nachfrage","visualReaction":"Die Antwortbahn konvergiert nach einer einzelnen Feedback-Schleife.","transcriptTrigger":"Nachfrage","resultState":"Die zweite Antwort ist gezielt verbessert.","importance":"secondary"}
+      ]
+    },
+    {
+      "id": "scene-09",
+      "beats": [
+        {"expression":"klarer Auftrag","visualReaction":"Mehrdeutigkeitsnebel zieht sich aus der Prompt-Schiene zurück.","transcriptTrigger":"klarer Auftrag","resultState":"Eine einzige klare Bahn bleibt übrig.","importance":"primary"},
+        {"expression":"weniger","visualReaction":"Der Interpretationsmesser fällt sichtbar von hoch auf niedrig.","transcriptTrigger":"weniger","resultState":"WENIGER INTERPRETATION wird bestätigt.","importance":"primary"},
+        {"expression":"keine Zaubersprüche","visualReaction":"Ein dekorativer Zauberstab wird durchgestrichen und verschwindet.","transcriptTrigger":"keine Zaubersprüche","resultState":"Mythos wird entfernt.","importance":"secondary"},
+        {"expression":"Arbeitsanweisungen","visualReaction":"Die finale Prompt-Karte verriegelt sich als strukturierte Arbeitsanweisung.","transcriptTrigger":"Arbeitsanweisungen","resultState":"GUTE PROMPTS = KLARE ARBEITSANWEISUNGEN bleibt bis zum Ende stehen.","importance":"primary"}
+      ]
+    }
+  ],
+  "rules": {
+    "importantMeaningWithoutVisualReactionAllowed": false,
+    "fillerWordsReceiveStrongAnimation": false,
+    "maximumBeatsPerScene": 4,
+    "finalTimingSource": "real-word-transcript"
+  }
+}

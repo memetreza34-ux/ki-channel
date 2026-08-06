@@ -1,0 +1,64 @@
+{
+  "version": 3,
+  "standardId": "ki-animation-only-reel-v1",
+  "slug": "warum-ki-dich-missversteht",
+  "title": "Warum versteht deine KI dich manchmal falsch?",
+  "composition": {
+    "id": "Reel-WhyAIMisunderstandsYou",
+    "coverId": "Cover-WhyAIMisunderstandsYou",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetDurationSeconds": 65,
+    "durationInFrames": 1950
+  },
+  "editorial": {
+    "wordCount": 131,
+    "targetWordsMin": 125,
+    "targetWordsMax": 145,
+    "targetScenesMin": 8,
+    "targetScenesMax": 9
+  },
+  "audio": {
+    "sourceFolder": "02-audio",
+    "playbackRate": 1,
+    "maximumPlaybackRateWithoutExplicitApproval": 1.05,
+    "preservePitch": true,
+    "soundMode": "off",
+    "music": false
+  },
+  "media": {
+    "generatedSceneImagesAllowed": false,
+    "stockSceneImagesAllowed": false,
+    "requiredImageScenes": [],
+    "coverAssetCount": 1,
+    "coverCanRenderWithoutExternalImage": true
+  },
+  "captions": {
+    "mode": "sentence-based-transcript-aligned",
+    "fallbackFile": "04-caption/fallback-captions.json",
+    "maximumLines": 2,
+    "defaultFontSizePx": 50,
+    "minimumFontSizePx": 40,
+    "rapidTwoToFourWordChunksAllowed": false
+  },
+  "motion": {
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 2,
+    "maximumSemanticBeatsPerScene": 4,
+    "minimumResultHoldSeconds": 1,
+    "hardCutsDefault": true
+  },
+  "scenes": [
+    {"id":"scene-01","type":"remotion","start":0,"end":195,"heading":"Warum versteht die KI etwas anderes?","purpose":"Gemeinte und verstandene Bedeutung sichtbar trennen.","animationId":"meaning-prism-split-v1","layout":"central-meaning-prism","motion":"prompt-enter-path-split-mismatch-lock","minimumResultHoldSeconds":1},
+    {"id":"scene-02","type":"remotion","start":195,"end":435,"heading":"Die KI sieht Wörter, nicht Absicht","purpose":"Sichtbare Wörter und unsichtbare Absicht unterscheiden.","animationId":"word-scanner-hidden-intent-v1","layout":"scanner-depth-lane","motion":"signals-enter-scan-words-intent-remains-hidden","minimumResultHoldSeconds":1},
+    {"id":"scene-03","type":"remotion","start":435,"end":630,"heading":"Ohne Ziel muss sie raten","purpose":"Fehlendes Ziel als ungerichtete Auswahl zeigen.","animationId":"empty-goal-router-v1","layout":"three-destination-router","motion":"goal-slot-empty-selector-wanders-random-lock","minimumResultHoldSeconds":1},
+    {"id":"scene-04","type":"remotion","start":630,"end":825,"heading":"Fehlender Kontext wird ersetzt","purpose":"Annahmen füllen sichtbare Kontextlücken.","animationId":"context-gap-assumption-fill-v1","layout":"modular-context-grid","motion":"gaps-open-assumption-tiles-fill-ratio-shifts","minimumResultHoldSeconds":1},
+    {"id":"scene-05","type":"remotion","start":825,"end":1050,"heading":"Mehrere Aufgaben konkurrieren","purpose":"Widersprüchliche Aufgaben kollidieren und werden geordnet.","animationId":"task-collision-to-order-v1","layout":"crossroads-to-vertical-queue","motion":"chips-converge-collide-conflict-resolve-order","minimumResultHoldSeconds":1},
+    {"id":"scene-06","type":"remotion","start":1050,"end":1290,"heading":"Baue den Prompt in vier Schritten","purpose":"Ziel, Kontext, Format und Grenzen als klare Reihenfolge zeigen.","animationId":"four-layer-prompt-stack-v1","layout":"vertical-prompt-module-stack","motion":"goal-context-format-limits-lock-output","minimumResultHoldSeconds":1},
+    {"id":"scene-07","type":"remotion","start":1290,"end":1530,"heading":"Vage gegen konkret","purpose":"Eine vage Aufforderung in konkrete Anforderungen übersetzen.","animationId":"vague-to-specific-prompt-v1","layout":"asymmetric-before-after-stage","motion":"vague-card-branches-specific-lines-lock-clarity-rises","minimumResultHoldSeconds":1},
+    {"id":"scene-08","type":"remotion","start":1530,"end":1725,"heading":"Korrigiere nur eine Sache","purpose":"Eine kontrollierte Ein-Schritt-Feedbackschleife zeigen.","animationId":"single-correction-loop-v1","layout":"one-gate-feedback-loop","motion":"answer-check-one-token-pass-loop-converge","minimumResultHoldSeconds":1},
+    {"id":"scene-09","type":"remotion","start":1725,"end":1950,"heading":"Klare Anweisung, weniger Interpretation","purpose":"Die Hauptregel als dauerhaften Abschluss verriegeln.","animationId":"ambiguity-collapse-instruction-lock-v1","layout":"converging-instruction-rail","motion":"fog-clears-interpretation-drops-myth-removes-rule-locks","minimumResultHoldSeconds":1}
+  ],
+  "checkpoints": [0,64,129,194,195,274,353,434,435,499,564,629,630,694,759,824,825,899,973,1049,1050,1129,1208,1289,1290,1369,1448,1529,1530,1594,1659,1724,1725,1799,1873,1949]
+}

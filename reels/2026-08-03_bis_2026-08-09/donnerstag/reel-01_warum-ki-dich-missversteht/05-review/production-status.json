@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "standardId": "ki-animation-only-reel-v1",
+  "stage": "implemented-not-verified",
+  "scriptApproved": true,
+  "wordCount": 131,
+  "plannedDurationSeconds": 65,
+  "sceneCount": 9,
+  "remotionPrebuilt": true,
+  "audioReceived": false,
+  "transcriptAligned": false,
+  "typecheckPassed": false,
+  "testsPassed": false,
+  "renderCompleted": false,
+  "coverRendered": false,
+  "visuallyReviewed": false,
+  "approved": false
+}

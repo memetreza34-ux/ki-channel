@@ -1,0 +1,14 @@
+SPRACHE
+Deutsch
+
+STIMME
+Natürlich, klar, ruhig und kompetent. Nicht werblich und nicht übertrieben dramatisch.
+
+TEMPO
+Quellgeschwindigkeit 1,00x. Keine künstliche Beschleunigung. Kurze natürliche Pausen nach dem Hook, nach „muss sie raten“, vor dem Beispiel und vor der Schlussaussage.
+
+BETONUNG
+Leicht betonen: Gegenteil, unklaren Signalen, Wörter, Absicht, Ziel, raten, Kontext, Annahmen, konkurrieren, Reihenfolge, Format, Grenzen, eine Sache, klarer Auftrag, Arbeitsanweisungen.
+
+AUDIO
+Eine saubere Datei ohne Musik, Hall oder Soundeffekte. Bevorzugt WAV, 48 kHz.

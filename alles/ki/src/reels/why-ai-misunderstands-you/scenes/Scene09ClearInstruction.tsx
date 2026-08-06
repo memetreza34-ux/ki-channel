@@ -1,0 +1,15 @@
+import React from 'react';
+import {useCurrentFrame} from 'remotion';
+import {REEL_COPY} from '../copy';
+import {Badge, Panel, ResultStrip, SceneFrame, progress, useEnter} from '../components/ReelChrome';
+import {palette} from '../style';
+
+export const Scene09ClearInstruction: React.FC = () => {
+  const frame=useCurrentFrame();
+  const copy=REEL_COPY['scene-09'];
+  const clear=progress(frame,28,110);
+  const meter=progress(frame,78,138);
+  const myth=progress(frame,130,174);
+  const lock=useEnter(frame,166);
+  return <SceneFrame sceneNumber={9} kicker={copy.kicker} heading={copy.heading} captions={copy.captions}><div style={{position:'absolute',inset:0}}><div style={{position:'absolute',left:80,right:80,top:44,height:270}}>{[0,1,2].map((lane)=><div key={lane} style={{position:'absolute',left:90+lane*230,right:90+(2-lane)*230,top:lane*72,height:30,borderRadius:99,background:lane===1?palette.accent:palette.line,opacity:lane===1?.35+.65*clear:(1-clear)*.7}}/>)}{[0,1,2,3,4].map((cloud)=><div key={cloud} style={{position:'absolute',left:80+cloud*160,top:38+(cloud%2)*80,width:180,height:120,borderRadius:'50%',background:'rgba(116,109,126,.16)',filter:'blur(16px)',opacity:1-clear}}/>)}</div><Panel style={{position:'absolute',left:160,right:160,top:330,height:130,padding:'24px 30px'}}><div style={{display:'flex',justifyContent:'space-between',fontSize:23,fontWeight:950,marginBottom:16}}><span>INTERPRETATION</span><span style={{color:palette.success}}>{Math.round(82-66*meter)}%</span></div><div style={{height:26,borderRadius:99,background:palette.line,overflow:'hidden'}}><div style={{height:'100%',width:`${82-66*meter}%`,background:meter>.7?palette.success:palette.warning,borderRadius:99}}/></div></Panel><div style={{position:'absolute',left:190,top:510,display:'flex',alignItems:'center',gap:28,opacity:1-myth}}><div style={{fontSize:72}}>🪄</div><div style={{fontSize:48,fontWeight:950,color:palette.danger}}>ZAUBERSPRUCH</div><div style={{position:'absolute',left:-10,right:-10,top:'50%',height:8,background:palette.danger,transform:`rotate(-8deg) scaleX(${myth})`,transformOrigin:'left'}}/></div><Panel tone="success" style={{position:'absolute',left:120,right:120,top:500,height:170,display:'flex',alignItems:'center',justifyContent:'center',fontSize:35,fontWeight:950,opacity:lock,transform:`scale(${.9+.1*lock})`}}>KLARE ARBEITSANWEISUNG</Panel><Badge tone="success" style={{position:'absolute',left:320,top:696,opacity:lock}}>WENIGER INTERPRETATION</Badge><ResultStrip text="GUTE PROMPTS = KLARE ARBEITSANWEISUNGEN" visible={progress(frame,186,204)} tone="success"/></div></SceneFrame>;
+};

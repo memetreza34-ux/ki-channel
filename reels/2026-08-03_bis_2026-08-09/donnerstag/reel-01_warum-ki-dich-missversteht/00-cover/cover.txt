@@ -1,0 +1,22 @@
+REEL-COVER
+
+EXAKTER COVER-TEXT
+WARUM VERSTEHT DEINE KI DICH FALSCH?
+
+HAUPTMOTIV
+Eine einzelne transparente Prompt-Karte läuft durch ein präzises Interpretations-Prisma und teilt sich sichtbar in zwei Bedeutungswege. Der violette Weg zeigt die gemeinte Aussage, der kontrollierte rote Weg zeigt die falsch verstandene Aussage. Ein klares Ungleichheitszeichen verbindet beide Ergebnisse.
+
+BILDPROMPT FÜR DAS MOTIV
+A premium simplified 3D editorial cover visual about an AI misunderstanding a prompt. In the center, one elegant transparent prompt card enters a precise graphite interpretation prism. The prism splits the card into two clearly separated meaning paths: one clean violet path representing the intended meaning and one restrained red path representing the misunderstood meaning. At the end of the paths, show two distinct abstract result cards with a strong visual mismatch between them, but no readable text. Use a near-white studio background, dark graphite materials, frosted glass, controlled violet accent lighting and only one red warning accent. Strong centered silhouette, high-end technology explainer aesthetic, realistic soft global illumination, crisp edges, generous negative space, vertical 9:16. Keep the upper 34 percent calm and empty for the exact German title. No people, no hands, no faces, no robots, no logos, no watermark, no readable text, no gibberish writing.
+
+NEGATIVE PROMPT
+humans, hands, faces, body parts, humanoid robot, android, glowing brain, cyberpunk city, excessive blue neon, random particles, multiple unrelated objects, illegible text, gibberish letters, logos, brands, watermark, subtitles, childish cartoon, flat clipart, busy background, black background, lens flare, extreme bloom, cropped central object
+
+TEXTREGEL
+Der Bildgenerator erzeugt ausschließlich das Motiv. Der exakte deutsche Cover-Text wird anschließend kontrolliert und gut lesbar gesetzt. Keine KI-Fantasieschrift akzeptieren.
+
+DATEINAME OPTIONALER EXTERNER VISUAL-INPUT
+cover-visual.png
+
+PROGRAMMIERTES FALLBACK-COVER
+Die Remotion-Composition `Cover-WhyAIMisunderstandsYou` erzeugt bereits ein vollständiges statisches Cover mit exakt gesetztem Text und demselben Motiv als Vektorgrafik.
