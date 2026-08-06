@@ -130,16 +130,6 @@ export const Scene04OldContentLeaves: React.FC = () => {
     <SceneShell title="Alte Nachrichten rutschen über die Grenze">
       <div style={{position: 'absolute', inset: 0}}>
         <BoundaryGate left={420} top={64} height={700} progress={1} label="GRENZE" />
-        <MessageCard
-          width={390}
-          height={230}
-          tone="danger"
-          label="FRÜHERE REGEL"
-          sublabel="für die nächste Antwort wichtig"
-          opacity={1 - out * 0.62}
-          blurPx={out * 4}
-          style={{position: 'absolute', left: oldX, top: 250, transform: `scale(${1 - out * 0.08})`}}
-        />
         <ContextWindow left={430} top={54} width={554} height={720} emphasis={unavailable} label="AKTUELLER KONTEXT">
           <MessageCard width={370} height={220} tone="active" label="AKTUELLE FRAGE" style={{position: 'absolute', left: 90, top: 155}} />
           <div style={{position: 'absolute', left: 105, right: 105, top: 455, display: 'flex', flexDirection: 'column', gap: 24}}>
@@ -148,7 +138,17 @@ export const Scene04OldContentLeaves: React.FC = () => {
           </div>
           <StateBadge text="NICHT MEHR VERFÜGBAR" tone="danger" visible={unavailable} style={{position: 'absolute', left: 105, bottom: 62}} />
         </ContextWindow>
-        <div style={{position: 'absolute', left: 342, top: 348, width: 82, height: 18, background: contextPalette.danger, transform: `scaleX(${out})`, transformOrigin: 'right', borderRadius: 99}} />
+        <MessageCard
+          width={390}
+          height={230}
+          tone="danger"
+          label="FRÜHERE REGEL"
+          sublabel="für die nächste Antwort wichtig"
+          opacity={1 - out * 0.62}
+          blurPx={out * 4}
+          style={{position: 'absolute', zIndex: 30, left: oldX, top: 250, transform: `scale(${1 - out * 0.08})`}}
+        />
+        <div style={{position: 'absolute', zIndex: 35, left: 342, top: 348, width: 82, height: 18, background: contextPalette.danger, transform: `scaleX(${out})`, transformOrigin: 'right', borderRadius: 99}} />
       </div>
     </SceneShell>
   );
