@@ -200,7 +200,9 @@ export const ContextWindow: React.FC<React.PropsWithChildren<{
       height,
       borderRadius: 54,
       border: `6px solid rgba(109,58,219,${0.55 + emphasis * 0.45})`,
-      background: 'linear-gradient(180deg, rgba(255,255,255,0.97), rgba(250,247,255,0.92))',
+      background: overflowHidden
+        ? 'linear-gradient(180deg, rgba(255,255,255,0.97), rgba(250,247,255,0.92))'
+        : 'linear-gradient(180deg, rgba(255,255,255,0.30), rgba(250,247,255,0.18))',
       boxShadow: `0 34px 100px rgba(109,58,219,${0.18 + emphasis * 0.18})`,
       overflow: overflowHidden ? 'hidden' : 'visible',
       boxSizing: 'border-box',
@@ -228,7 +230,9 @@ export const ContextWindow: React.FC<React.PropsWithChildren<{
       style={{
         position: 'absolute',
         inset: 0,
-        background: 'radial-gradient(circle at 50% 50%, rgba(169,124,255,0.12), transparent 54%)',
+        background: overflowHidden
+          ? 'radial-gradient(circle at 50% 50%, rgba(169,124,255,0.12), transparent 54%)'
+          : 'radial-gradient(circle at 50% 50%, rgba(169,124,255,0.07), transparent 60%)',
         pointerEvents: 'none',
       }}
     />
