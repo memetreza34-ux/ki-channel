@@ -9,12 +9,11 @@ if (!transcriptArg) {
   throw new Error('Nutzung: node scripts/prepare-why-ai-forgets-final-sync.mjs <reel-ordner> <transcript-json>');
 }
 
-const transcriptPath = resolve(transcriptArg);
-const transcript = JSON.parse(readFileSync(transcriptPath, 'utf8'));
-const words = Array.isArray(transcript.words) ? transcript.words : [];
-if (words.length === 0) throw new Error('Transcript enthält keine words-Einträge.');
+const transcript = JSON.parse(readFileSync(resolve(transcriptArg), 'utf8'));
+const rawWords = Array.isArray(transcript.words) ? transcript.words : [];
+if (rawWords.length === 0) throw new Error('Transcript enthält keine words-Einträge.');
 
-const normalizedWords = words.map((word, index) => {
+const words = rawWords.map((word, index) => {
   const text = String(word.word ?? word.text ?? '').trim();
   const start = Number(word.start ?? word.startSeconds);
   const end = Number(word.end ?? word.endSeconds);
@@ -41,36 +40,37 @@ const sentenceTexts = [
   'Fasse wichtige Punkte deshalb regelmäßig kurz zusammen.',
   'Wiederhole zentrale Vorgaben und gliedere große Projekte klar.',
   'So bleibt der entscheidende Kontext im aktiven Fenster.',
-  'Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.',
+  'Die KI vergisst dich nicht absichtlich, der Teil ist nur unsichtbar.',
 ];
 
 const normalize = (value) => value.toLocaleLowerCase('de-DE').replace(/[^a-zäöüß0-9]/gi, '');
-const scriptWords = sentenceTexts.map((sentence) => sentence.split(/\s+/).filter(Boolean));
-const transcriptTokens = normalizedWords.map((word) => normalize(word.text));
-
+const transcriptTokens = words.map((word) => normalize(word.text));
 let cursor = 0;
 const sentences = [];
 
-for (const [sentenceIndex, tokens] of scriptWords.entries()) {
+for (const [sentenceIndex, sentenceText] of sentenceTexts.entries()) {
+  const visibleTokens = sentenceText.split(/\s+/).filter(Boolean);
   const alignedWords = [];
-  for (const token of tokens) {
-    const normalizedToken = normalize(token);
+
+  for (const visibleText of visibleTokens) {
+    const token = normalize(visibleText);
     let matchIndex = -1;
-    for (let lookahead = cursor; lookahead < Math.min(transcriptTokens.length, cursor + 5); lookahead += 1) {
-      if (transcriptTokens[lookahead] === normalizedToken) {
+    for (let lookahead = cursor; lookahead < Math.min(words.length, cursor + 5); lookahead += 1) {
+      if (transcriptTokens[lookahead] === token) {
         matchIndex = lookahead;
         break;
       }
     }
     if (matchIndex < 0) {
-      throw new Error(`Transcript stimmt bei Satz ${sentenceIndex + 1} nicht mit dem Script überein. Erwartet: ${token}`);
+      throw new Error(`Transcript stimmt bei Satz ${sentenceIndex + 1} nicht mit dem Script überein. Erwartet: ${visibleText}`);
     }
     if (matchIndex > cursor + 1) {
-      throw new Error(`Zu große Transcript-Lücke vor „${token}“ in Satz ${sentenceIndex + 1}.`);
+      throw new Error(`Zu große Transcript-Lücke vor „${visibleText}“ in Satz ${sentenceIndex + 1}.`);
     }
-    const matched = normalizedWords[matchIndex];
+
+    const matched = words[matchIndex];
     alignedWords.push({
-      text: token,
+      text: visibleText,
       startFrame: Math.round(matched.start * fps),
       endFrame: Math.max(Math.round(matched.end * fps), Math.round(matched.start * fps) + 1),
     });
@@ -79,7 +79,7 @@ for (const [sentenceIndex, tokens] of scriptWords.entries()) {
 
   sentences.push({
     id: `sentence-${String(sentenceIndex + 1).padStart(2, '0')}`,
-    text: sentenceTexts[sentenceIndex],
+    text: sentenceText,
     startFrame: alignedWords[0].startFrame,
     endFrame: alignedWords.at(-1).endFrame,
     words: alignedWords,
@@ -88,43 +88,46 @@ for (const [sentenceIndex, tokens] of scriptWords.entries()) {
 
 if (sentences.length !== 16) throw new Error(`Erwartet 16 Untertitelsätze, gefunden: ${sentences.length}.`);
 
-const captionPairs = Array.from({length: 8}, (_, index) => {
-  const first = sentences[index * 2];
-  const second = sentences[index * 2 + 1];
-  return {
-    id: `pair-${String(index + 1).padStart(2, '0')}`,
-    sceneId: `scene-${String(index + 1).padStart(2, '0')}`,
-    startFrame: first.startFrame,
-    endFrame: second.endFrame,
-    bottomPx: 260,
-    mode: 'dual-sentence-active-word',
-    sentences: [first, second],
-  };
-});
+const speechPairs = Array.from({length: 8}, (_, index) => ({
+  id: `pair-${String(index + 1).padStart(2, '0')}`,
+  sceneId: `scene-${String(index + 1).padStart(2, '0')}`,
+  speechStartFrame: sentences[index * 2].startFrame,
+  speechEndFrame: sentences[index * 2 + 1].endFrame,
+  sentences: [sentences[index * 2], sentences[index * 2 + 1]],
+}));
 
-const speechStartSeconds = normalizedWords[0].start;
-const speechEndSeconds = normalizedWords.at(-1).end;
-const outroHoldSeconds = 1.8;
-const durationInFrames = Math.ceil((speechEndSeconds + outroHoldSeconds) * fps);
+const speechStartSeconds = words[0].start;
+const speechEndSeconds = words.at(-1).end;
+const durationInFrames = Math.ceil((speechEndSeconds + 1.8) * fps);
 
-const scenes = captionPairs.map((pair, index) => {
-  const previousEnd = index === 0
+const scenes = speechPairs.map((pair, index) => {
+  const startFrame = index === 0
     ? 0
-    : Math.round((pair.startFrame + captionPairs[index - 1].endFrame) / 2);
-  const nextStart = index === captionPairs.length - 1
+    : Math.round((pair.speechStartFrame + speechPairs[index - 1].speechEndFrame) / 2);
+  const endFrame = index === speechPairs.length - 1
     ? durationInFrames
-    : Math.round((pair.endFrame + captionPairs[index + 1].startFrame) / 2);
+    : Math.round((pair.speechEndFrame + speechPairs[index + 1].speechStartFrame) / 2);
   return {
     id: pair.sceneId,
-    startFrame: previousEnd,
-    endFrame: nextStart,
-    speechStartFrame: pair.startFrame,
-    speechEndFrame: pair.endFrame,
-    resultHoldFrames: Math.max(30, nextStart - pair.endFrame),
-    boundaryReferenceFrame: nextStart,
+    startFrame,
+    endFrame,
+    speechStartFrame: pair.speechStartFrame,
+    speechEndFrame: pair.speechEndFrame,
+    resultHoldFrames: 30,
+    boundaryReferenceFrame: endFrame,
     boundaryOffsetFrames: 0,
   };
 });
+
+const captionPairs = speechPairs.map((pair, index) => ({
+  id: pair.id,
+  sceneId: pair.sceneId,
+  startFrame: scenes[index].startFrame,
+  endFrame: scenes[index].endFrame,
+  bottomPx: 260,
+  mode: 'dual-sentence-active-word',
+  sentences: pair.sentences,
+}));
 
 const triggerDefinitions = [
   ['s1-forgets', 'scene-01', 'vergisst'],
@@ -148,22 +151,21 @@ const triggerDefinitions = [
   ['s8-visible', 'scene-08', 'unsichtbar'],
 ];
 
-const usedWordIndexes = new Set();
+const usedIndexes = new Set();
 const beats = triggerDefinitions.map(([id, sceneId, token]) => {
   const scene = scenes.find((item) => item.id === sceneId);
-  if (!scene) throw new Error(`Szene fehlt: ${sceneId}`);
   const normalizedToken = normalize(token);
-  const candidate = normalizedWords
+  const candidate = words
     .map((word, index) => ({word, index}))
     .find(({word, index}) => {
       const frame = Math.round(word.start * fps);
       return normalize(word.text) === normalizedToken
-        && !usedWordIndexes.has(index)
+        && !usedIndexes.has(index)
         && frame >= scene.startFrame
         && frame < scene.endFrame;
     });
   if (!candidate) throw new Error(`Triggerwort nicht gefunden: ${sceneId}/${token}`);
-  usedWordIndexes.add(candidate.index);
+  usedIndexes.add(candidate.index);
   const transcriptStartFrame = Math.round(candidate.word.start * fps);
   const transcriptEndFrame = Math.max(Math.round(candidate.word.end * fps), transcriptStartFrame + 1);
   return {
