@@ -1,82 +1,92 @@
 # Codex instructions for internal reel templates
 
-This directory contains internal planning templates and must follow the permanent reel brain.
+This directory contains internal templates for new KI reels.
 
-Before creating or changing a new reel template, read:
+Before changing a template, read:
 
 1. `../reel-brain/PRODUCTION-BRAIN.md`
 2. `../reel-brain/FUTURE-REEL-STANDARD.md`
-3. `../reel-brain/brain.json`
+3. `../reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
+4. `../reel-brain/brain.json`
 
-## New reel defaults
+## Mandatory v2 defaults
 
-Every newly created reel template must use:
+Every new template must use `ki-animation-only-reel-v2`:
 
 - 1080 × 1920 at 30 FPS
-- 60 to 70 seconds
-- 125 to 145 spoken words
+- approximately 58 to 70 seconds
+- 125 to 145 words
 - 8 to 9 scenes
-- normally 6 to 8 seconds per scene
-- 100 percent Remotion animation inside the reel
-- no generated scene images
-- no stock scene images
-- one separate static cover image with one short German sentence
-- source and playback at 1.00x
-- at most 1.05x only after explicit approval based on a listening check
-- voiceover only; no music or sound effects
-- one dominant explanatory motion per scene
-- at most two strong simultaneous motions
-- at most four semantic beats per scene
-- at least one second of readable result hold
+- 100 percent Remotion animation
+- no generated or stock scene images
+- one separate static cover with one German sentence
+- voiceover and playback at 1.00x
+- no music or sound effects
+- final composition duration derived from speech end
+- one primary object and one dominant motion per scene
+- maximum two supporting elements
+- maximum two strong simultaneous motions
+- one to three semantic beats per scene
+- at least one second of result hold
 
-## Required planning information
+## Timing
 
-A future template must include:
-
-- direct hook
-- final voiceover
-- scene order and scene purpose
-- semantic beat map for every scene
-- exact cover sentence and cover motif
-- deterministic Remotion implementation contract
-- final transcript synchronization contract
-- sentence-based subtitle rules
-- checkpoints and review gates
-- Codex execution task
-
-Each semantic beat uses:
+All initial frames are placeholders. Every final reel must create and use:
 
 ```text
-important expression -> visual reaction -> transcript trigger -> result state
+timeline/final-sync.json
 ```
 
-Important meaning may not exist only in the voiceover. Filler words receive caption timing only.
+It must define:
+
+- real speech start and end
+- final scene boundaries
+- semantic trigger frames
+- full-sentence caption cues
+- violet progress-line timing
+- final composition duration
+
+No fixed 60- or 65-second timeline may survive after final audio is available.
 
 ## Captions
 
-- Use normal sentence-based subtitles.
-- Do not use rapid two-to-four-word chunks.
-- Maximum two lines.
-- Default about 50 px and never below 40 px.
-- White with dark outline or strong shadow.
-- No large subtitle box.
-- Show only already spoken words.
-- Do not bounce the whole sentence.
-- Use real transcript timing before final approval.
+Templates must use `ki/src/components/StableSentenceCaption.tsx`.
+
+- complete sentence or meaning unit appears instantly
+- no word-by-word reveal
+- no individual word highlight
+- maximum two lines
+- 46 to 52 px, minimum 42 px
+- bottom position 210 to 235 px
+- exactly one violet progress line
+- only the line moves
+- real sentence timestamps from `final-sync.json`
+
+## Visual simplicity
+
+- one large primary visual
+- no mini-dashboard
+- no cluster of small cards
+- no persistent scene-number badge
+- no repeated kicker on every scene
+- no emoji as primary explanation
+- maximum three meaning beats
+- motion begins on or immediately after the spoken phrase
 
 ## Prohibited legacy defaults
 
-Do not copy these historical values into a new reel:
+Do not copy:
 
-- 30 to 40 second target duration
-- 1.10x default playback
-- required generated scene images
-- hybrid image scenes as the normal strategy
-- maximum three strong simultaneous motions
-- captions based only on estimated local frame positions
+- v1 fixed scene durations
+- 1.10x playback
+- generated scene images
+- word-by-word captions
+- `visibleCount`
+- estimated local caption frames in final builds
+- long silence used to reach a planned duration
 
-Historical reel packages may remain unchanged for reproducibility.
+Historical packages may remain unchanged for reproducibility.
 
 ## Completion
 
-A new reel is not complete until current-source typecheck, focused tests, real transcript alignment, current checkpoint renders, contact-sheet review, current cover, current MP4, technical artifact validation and normal-speed phone-size visual review have genuinely passed.
+A new reel is not complete until final audio, real transcript, valid `final-sync.json`, strict sync validation, current-source typecheck, focused tests, current renders, contact-sheet review, normal-speed phone-size MP4 review and user approval have genuinely passed.
