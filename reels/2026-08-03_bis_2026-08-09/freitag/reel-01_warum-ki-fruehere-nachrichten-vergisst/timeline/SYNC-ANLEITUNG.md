@@ -1,57 +1,49 @@
-# Audio-first-Sync ausführen
+# Audio-first-Sync-Anleitung v3
 
-## 1. Audio einfügen
+## 1. Neues Voiceover erzeugen
 
-Genau eine finale Datei direkt in `02-audio/` ablegen.
+Verwende exakt `01-voice-script/script-fliesstext.txt` bei 1,00x. Das frühere Voiceover passt nicht mehr zum überarbeiteten 128-Wörter-Script.
 
-## 2. Audio normalisieren
+## 2. Wort-Transcript erzeugen
 
-Aus `alles/`:
-
-```bash
-node scripts/stage-why-ai-forgets-audio.mjs \
-../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst
-```
-
-## 3. Wort-Transcript erzeugen
-
-Das Transcript muss mindestens diese Struktur besitzen:
+Das Transcript benötigt für jedes Wort:
 
 ```json
-{
-  "duration": 60.1,
-  "words": [
-    {"word":"Warum","start":0.28,"end":0.61}
-  ]
-}
+{"word":"Kontextfenster","start":4.12,"end":4.58}
 ```
 
-## 4. Finale Timeline erzeugen
+## 3. Finale Timeline erzeugen
 
 ```bash
+cd alles
 node scripts/prepare-why-ai-forgets-final-sync.mjs \
 ../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst \
 <Pfad-zum-Transcript.json>
 ```
 
-Das Skript ersetzt den Planplatzhalter durch eine echte `final-transcript-aligned`-Timeline. Es berechnet:
+Das Skript erzeugt:
 
-- vollständige Satzuntertitel
-- Szenengrenzen aus Sinnpausen
-- Animationstrigger
-- Ergebnis-Holds
-- Composition-Dauer
+- acht Szenengrenzen
+- acht Caption-Paare
+- exakt zwei Sätze pro Paar
+- Wortzeiten für jedes sichtbare Wort
+- semantische Animationstrigger
+- finale Composition-Dauer
 - 1,8 Sekunden Schluss-Hold
 
-## 5. Final prüfen und bauen
+## 4. Validieren
 
 ```bash
-node scripts/validate-future-reel-standard.mjs \
+node scripts/validate-reel-v3.mjs \
 ../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst \
 --final
-
-node scripts/build-why-ai-forgets-earlier-messages.mjs \
-../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst
 ```
 
-Ein finaler Video-Render ist blockiert, solange `final-sync.json` noch `planned-placeholder` enthält.
+## 5. Prüfen
+
+- beide Sätze stehen vollständig
+- nur das aktive Wort wird violett
+- keine Fortschrittslinie
+- Untertitel stehen bei 260 px
+- jede Hauptbewegung startet am passenden Sinnwort
+- keine Szene wirkt klein, blass oder wie ein Mini-Dashboard

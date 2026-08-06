@@ -1,4 +1,4 @@
-# Auftrag für Codex
+# Auftrag für Codex – Kontextfenster-Reel v3
 
 Arbeite ausschließlich auf `feature/reel-kontextfenster-vergisst`. Verändere `main` nicht und merge nichts.
 
@@ -6,61 +6,61 @@ Arbeite ausschließlich auf `feature/reel-kontextfenster-vergisst`. Verändere `
 
 1. Root-`AGENTS.md`
 2. `alles/AGENTS.md`
-3. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
-4. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
-5. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
-6. dieses Reel-Paket
-7. `alles/ki/src/reels/why-ai-forgets-earlier-messages/`
+3. v3-Zukunftsstandard und Audio-first-Vertrag
+4. Animation-Director-, Sync-Auditor- und Visual-QA-Skills
+5. dieses Reel-Paket
+6. `alles/ki/src/reels/why-ai-forgets-earlier-messages/`
 
-## Bestehender Vorbau
+## Neuer Vorbau
 
-- 143-Wörter-Script
+- 128 Wörter
 - acht Szenen
-- vollständige semantische Beat-Map
-- acht programmierte Remotion-Szenen
-- zentrale stabile Satzuntertitel-Komponente
-- statische Cover-Composition
-- v2-Timeline-Vertrag
-- Render- und Prüfpipeline
+- genau zwei kurze Sätze pro Szene
+- vollständig neu choreografierte Remotion-Szenen
+- größere Hauptobjekte und kräftigerer Kontrast
+- `DualSentenceKaraokeCaption`
+- keine Fortschrittslinie
+- Untertitel-Unterkante 260 px
 
-Die aktuelle `timeline/final-sync.json` ist nur ein markierter Planplatzhalter. Sie darf nicht als echter Sync ausgegeben werden.
+## Nach dem neuen Voiceover
 
-## Nach Einfügen des Voiceovers
-
-1. Prüfe, dass `02-audio/` genau eine nicht leere Mediendatei enthält.
-2. Normalisiere sie als WAV 48 kHz Mono.
-3. Transkribiere echte Wort- und Satzzeiten.
-4. Ermittle Sprachbeginn, Sprachende und Sinnpausen.
-5. Erzeuge `timeline/final-sync.json` vollständig neu mit `status: final-transcript-aligned`.
-6. Berechne finale Composition-Dauer als Sprachende plus 1,2 bis 2,2 Sekunden Hold.
-7. Leite alle Szenengrenzen aus Satz- oder Sinnpausen ab.
-8. Aktualisiere Beat-Trigger auf höchstens ±5 Frames zum gesprochenen Sinnabschnitt.
-9. Aktualisiere Untertitel: kompletter Satz sofort, Unterkante 220 px, nur violette Linie bewegt sich.
-10. Entferne jede aktive Platzhalter- oder Fallback-Zeitquelle aus dem finalen Build.
-
-## Pflichtprüfungen
+1. Prüfe genau eine Audiodatei in `02-audio/`.
+2. Normalisiere das Audio.
+3. Erzeuge ein echtes Wort-Transcript.
+4. Führe aus:
 
 ```bash
-cd alles
-
-node scripts/validate-future-reel-standard.mjs \
+node scripts/prepare-why-ai-forgets-final-sync.mjs \
 ../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst \
---final
+<Pfad-zum-Wort-Transcript.json>
+```
 
+5. Prüfe, dass jedes Caption-Paar exakt zwei Sätze und jedes Wort echte Frames besitzt.
+6. Prüfe, dass das violette Wort exakt der Stimme folgt.
+7. Prüfe semantische Trigger innerhalb ±5 Frames.
+8. Führe den v3-Validator aus.
+9. Führe TypeScript und fokussierte Tests aus.
+10. Rendere Smoke-Frames und prüfe sie mit dem Animation Director.
+11. Rendere alle Checkpoints, Kontaktbogen, Cover und MP4.
+12. Sieh das MP4 normal und in Smartphone-Größe an.
+13. Erzeuge den Visual-QA-Bericht.
+
+## Gesamtbuild
+
+```bash
 node scripts/build-why-ai-forgets-earlier-messages.mjs \
 ../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst
 ```
 
-## Visuelle Prüfung
+## Blocker
 
-- Hauptvisual groß und zentral
-- keine Mini-Dashboards
-- maximal eine dominante Bewegung
-- keine Animation vor dem zugehörigen gesprochenen Inhalt
-- Ergebnis mindestens eine Sekunde ruhig
-- Untertitel zwischen 210 und 235 px
-- kein Wort-für-Wort-Reveal
-- nur eine violette Fortschrittslinie
-- vollständiges MP4 normal und in Smartphone-Größe ansehen
+- alte Audiodatei passt nicht zum neuen 128-Wörter-Script
+- `final-sync.json` bleibt Platzhalter
+- Fortschrittslinie ist sichtbar
+- weniger oder mehr als zwei Untertitelsätze
+- falsches violettes Wort
+- kleine oder blasse Hauptvisuals
+- wiederholte schwache Kartenbewegung
+- TypeScript, Tests, Render oder visuelle Prüfung fehlen
 
-Nur wirklich ausgeführte Prüfungen als bestanden markieren. Nutzerfreigabe niemals selbst setzen.
+Nur tatsächlich ausgeführte Prüfungen als bestanden markieren.

@@ -1,33 +1,40 @@
 # Voiceover nach Szenen
 
-## Szene 1 · Hook
+## Szene 1
 
-Warum vergisst deine KI plötzlich etwas, das du ihr vorher geschrieben hast? Der Grund ist meistens ihr Kontextfenster.
+Warum vergisst deine KI plötzlich frühere Nachrichten? Dahinter steckt meistens ihr begrenztes Kontextfenster.
 
-## Szene 2 · Begrenzter Ausschnitt
+## Szene 2
 
-Stell dir den Chat wie ein langes Band vor. Die KI sieht nicht automatisch das gesamte Band, sondern nur einen begrenzten Ausschnitt.
+Stell dir den Chat als sehr langes Band vor. Die KI sieht davon immer nur einen Ausschnitt.
 
-## Szene 3 · Das Fenster wandert
+## Szene 3
 
-Mit jeder neuen Nachricht wandert dieses Fenster weiter.
+Mit jeder neuen Nachricht wandert dieses Fenster weiter. Neue Inhalte schieben den sichtbaren Bereich nach vorn.
 
-## Szene 4 · Alte Inhalte verschwinden
+## Szene 4
 
-Ältere Teile rutschen irgendwann hinaus und stehen für die nächste Antwort nicht mehr vollständig zur Verfügung.
+Ältere Nachrichten rutschen dadurch irgendwann hinaus. Für die nächste Antwort sind sie nicht vollständig verfügbar.
 
-## Szene 5 · Was das Fenster schnell füllt
+## Szene 5
 
-Besonders schnell passiert das bei langen Texten, vielen Dateien oder sehr ausführlichen Antworten.
+Lange Texte füllen den verfügbaren Platz besonders schnell. Dateien und ausführliche Antworten verbrauchen zusätzlich viel Raum.
 
-## Szene 6 · Woran du es bemerkst
+## Szene 6
 
-Dann fehlen plötzlich Namen, Regeln oder Entscheidungen vom Anfang.
+Dann fehlen Namen, Regeln oder Entscheidungen vom Anfang. Die KI kann nur mit dem sichtbaren Teil arbeiten.
 
-## Szene 7 · So verhinderst du es
+## Szene 7
 
-Du kannst das vermeiden: Fasse wichtige Punkte regelmäßig kurz zusammen. Wiederhole zentrale Vorgaben vor einer neuen Aufgabe. Teile große Projekte in klare Abschnitte und speichere Entscheidungen außerhalb des Chats.
+Fasse wichtige Punkte deshalb regelmäßig kurz zusammen. Wiederhole zentrale Vorgaben und gliedere große Projekte klar.
 
-## Szene 8 · Merksatz
+## Szene 8
 
-So gibst du der KI genau den Kontext, den sie gerade braucht. Sie hat dich nicht absichtlich vergessen. Der relevante Teil war nur nicht mehr im sichtbaren Fenster.
+So bleibt der entscheidende Kontext im aktiven Fenster. Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.
+
+## Kennzahlen
+
+- 128 Wörter
+- 16 kurze Sätze
+- immer zwei Sätze pro Szene
+- Voiceover bei 1,00x

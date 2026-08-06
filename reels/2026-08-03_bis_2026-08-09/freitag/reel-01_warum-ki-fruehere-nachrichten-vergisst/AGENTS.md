@@ -1,23 +1,28 @@
-# Reel-lokale Arbeitsregeln
+# Reel-lokale Regeln
+
+Branch: `feature/reel-kontextfenster-vergisst`
 
 Vor jeder Arbeit lesen:
 
 1. Root-`AGENTS.md`
 2. `alles/AGENTS.md`
-3. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
-4. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
-5. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
+3. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
+4. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
+5. Animation-Director-, Sync-Auditor- und Visual-QA-Skills
 6. dieses Reel-Paket
 
 ## Verbindlich
 
-- Alle acht Szenen bleiben vollständig in Remotion gebaut.
-- Keine generierten Szenenbilder, Stockbilder, Musik oder SFX ergänzen.
-- Playback bleibt bei 1,00x.
-- Planframes sind nur Platzhalter.
-- Nach dem Audio ist `timeline/final-sync.json` die einzige Zeitquelle.
-- Untertitel erscheinen als vollständiger Satz sofort; nur die violette Linie bewegt sich.
-- Untertitel-Unterkante bleibt zwischen 210 und 235 px.
-- Pro Szene: ein Hauptobjekt, eine Hauptbewegung, ein klares Ergebnis.
-- Maximal drei Bedeutungsbeats und maximal zwei starke Bewegungen gleichzeitig.
-- Nicht mergen und keinen Pull Request als bereit markieren.
+- Standard `ki-animation-only-reel-v3`
+- acht Szenen und genau zwei kurze Sätze pro Szene
+- beide Sätze vollständig sofort sichtbar
+- aktuelles gesprochenes Wort violett
+- keine Fortschrittslinie
+- Untertitel-Unterkante 260 px
+- ein großes Hauptobjekt und eine dominante Bewegung pro Szene
+- keine Mini-Dashboards und keine wiederholte Kartenbewegung
+- alle Wortmarkierungen und Animations-Trigger aus dem echten Transcript
+- Voiceover und Playback 1,00x
+- keine Musik, SFX, generierten Szenenbilder oder B-Roll
+- finales MP4 erst nach `status: final-transcript-aligned`
+- nicht mergen und keinen Pull Request als bereit markieren

@@ -1,25 +1,53 @@
-# Geplante Untertitel-Segmente
+# Untertitelpaare
 
-Die finalen Zeiten kommen aus dem echten Transcript. Diese Segmentierung verhindert zu lange Drei-Zeilen-Untertitel.
+Jede Szene zeigt exakt zwei kurze Sätze gleichzeitig. Beide Sätze sind sofort vollständig sichtbar. Nur das aktuell gesprochene Wort wird violett.
 
-1. Warum vergisst deine KI plötzlich etwas, das du ihr vorher geschrieben hast?
-2. Der Grund ist meistens ihr Kontextfenster.
-3. Stell dir den Chat wie ein langes Band vor.
-4. Die KI sieht nicht automatisch das gesamte Band,
-5. sondern nur einen begrenzten Ausschnitt.
-6. Mit jeder neuen Nachricht wandert dieses Fenster weiter.
-7. Ältere Teile rutschen irgendwann hinaus
-8. und stehen für die nächste Antwort nicht mehr vollständig zur Verfügung.
-9. Besonders schnell passiert das bei langen Texten,
-10. vielen Dateien oder sehr ausführlichen Antworten.
-11. Dann fehlen plötzlich Namen, Regeln oder Entscheidungen vom Anfang.
-12. Du kannst das vermeiden:
-13. Fasse wichtige Punkte regelmäßig kurz zusammen.
-14. Wiederhole zentrale Vorgaben vor einer neuen Aufgabe.
-15. Teile große Projekte in klare Abschnitte
-16. und speichere Entscheidungen außerhalb des Chats.
-17. So gibst du der KI genau den Kontext, den sie gerade braucht.
-18. Sie hat dich nicht absichtlich vergessen.
-19. Der relevante Teil war nur nicht mehr im sichtbaren Fenster.
+## Szene 1
 
-Jedes Segment erscheint vollständig sofort. Nur die violette Linie bewegt sich.
+1. Warum vergisst deine KI plötzlich frühere Nachrichten?
+2. Dahinter steckt meistens ihr begrenztes Kontextfenster.
+
+## Szene 2
+
+1. Stell dir den Chat als sehr langes Band vor.
+2. Die KI sieht davon immer nur einen Ausschnitt.
+
+## Szene 3
+
+1. Mit jeder neuen Nachricht wandert dieses Fenster weiter.
+2. Neue Inhalte schieben den sichtbaren Bereich nach vorn.
+
+## Szene 4
+
+1. Ältere Nachrichten rutschen dadurch irgendwann hinaus.
+2. Für die nächste Antwort sind sie nicht vollständig verfügbar.
+
+## Szene 5
+
+1. Lange Texte füllen den verfügbaren Platz besonders schnell.
+2. Dateien und ausführliche Antworten verbrauchen zusätzlich viel Raum.
+
+## Szene 6
+
+1. Dann fehlen Namen, Regeln oder Entscheidungen vom Anfang.
+2. Die KI kann nur mit dem sichtbaren Teil arbeiten.
+
+## Szene 7
+
+1. Fasse wichtige Punkte deshalb regelmäßig kurz zusammen.
+2. Wiederhole zentrale Vorgaben und gliedere große Projekte klar.
+
+## Szene 8
+
+1. So bleibt der entscheidende Kontext im aktiven Fenster.
+2. Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.
+
+## Darstellung
+
+- beide Sätze vollständig von Beginn des Paars sichtbar
+- aktives Wort exakt nach echten Wortzeiten violett
+- keine Fortschrittslinie
+- keine Wort-für-Wort-Enthüllung
+- keine Größenänderung
+- Unterkante 260 px
+- 44 px Standardschrift, mindestens 42 px
