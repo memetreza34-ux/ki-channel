@@ -1,74 +1,82 @@
-# Codex instructions for `ki/reels/`
+# Codex instructions for internal reel templates
 
-## Minimal visible reel structure
+This directory contains internal planning templates and must follow the permanent reel brain.
 
-Real reels keep only the files a human normally needs at the top level:
+Before creating or changing a new reel template, read:
 
-```text
-ki/reels/<slug>/
-├── 01_START-HIER.md
-├── 02_VOICEOVER.md
-├── 03_SZENEN.md
-├── 04_BILDER/
-│   ├── PROMPTS.md
-│   └── generated PNG files
-├── 05_AUDIO/
-│   └── voiceover.wav
-├── 06_CODEX.md
-└── 99_INTERN/
-    ├── reel.json
-    ├── subtitle-cues.json
-    ├── animation-plan.md
-    ├── asset-manifest.json
-    ├── review-checklist.md
-    ├── CODEX-BRIEF.generated.md
-    └── codex-package-report.json
-```
+1. `../reel-brain/PRODUCTION-BRAIN.md`
+2. `../reel-brain/FUTURE-REEL-STANDARD.md`
+3. `../reel-brain/brain.json`
 
-Do not create additional planning folders or duplicate scene documents unless the user explicitly asks for them.
+## New reel defaults
 
-## Authority order
+Every newly created reel template must use:
 
-1. `99_INTERN/reel.json` — format, duration, scene order and frame ranges
-2. `02_VOICEOVER.md` — approved narration
-3. `03_SZENEN.md` — all scene content, visuals, choreography and transitions
-4. `99_INTERN/animation-plan.md` — technical motion rules
-5. `04_BILDER/PROMPTS.md` — design intent for supplied images
-6. `99_INTERN/subtitle-cues.json` — approximate or final word timings
-7. `99_INTERN/asset-manifest.json` — exact required asset paths
-8. `06_CODEX.md` — implementation task
-9. `99_INTERN/review-checklist.md` — actual verification only
+- 1080 × 1920 at 30 FPS
+- 60 to 70 seconds
+- 125 to 145 spoken words
+- 8 to 9 scenes
+- normally 6 to 8 seconds per scene
+- 100 percent Remotion animation inside the reel
+- no generated scene images
+- no stock scene images
+- one separate static cover image with one short German sentence
+- source and playback at 1.00x
+- at most 1.05x only after explicit approval based on a listening check
+- voiceover only; no music or sound effects
+- one dominant explanatory motion per scene
+- at most two strong simultaneous motions
+- at most four semantic beats per scene
+- at least one second of readable result hold
 
-Do not silently resolve contradictions. Report implementation-blocking conflicts.
+## Required planning information
 
-## Before coding
+A future template must include:
 
-Run:
+- direct hook
+- final voiceover
+- scene order and scene purpose
+- semantic beat map for every scene
+- exact cover sentence and cover motif
+- deterministic Remotion implementation contract
+- final transcript synchronization contract
+- sentence-based subtitle rules
+- checkpoints and review gates
+- Codex execution task
 
-```bash
-npm run codex:reel:prepare -- <slug> --ready
-```
-
-Stop when required images or audio are missing. Never generate placeholders or use unrelated repository assets.
-
-After validation, use this as the compact technical context:
+Each semantic beat uses:
 
 ```text
-ki/reels/<slug>/99_INTERN/CODEX-BRIEF.generated.md
+important expression -> visual reaction -> transcript trigger -> result state
 ```
 
-## Assembly behavior
+Important meaning may not exist only in the voiceover. Filler words receive caption timing only.
 
-- implement exactly the declared eight scenes and frame ranges
-- preserve the approved voiceover
-- use the supplied images and audio
-- use `staticFile()` and centralized asset helpers
-- animate image regions through masks, overlays, local focus or meaningful state changes
-- never use only a generic image zoom
-- render every spoken word but emphasize only important words
-- keep `soundMode: "off"` unless explicitly changed later
-- do not modify `main`
+## Captions
+
+- Use normal sentence-based subtitles.
+- Do not use rapid two-to-four-word chunks.
+- Maximum two lines.
+- Default about 50 px and never below 40 px.
+- White with dark outline or strong shadow.
+- No large subtitle box.
+- Show only already spoken words.
+- Do not bounce the whole sentence.
+- Use real transcript timing before final approval.
+
+## Prohibited legacy defaults
+
+Do not copy these historical values into a new reel:
+
+- 30 to 40 second target duration
+- 1.10x default playback
+- required generated scene images
+- hybrid image scenes as the normal strategy
+- maximum three strong simultaneous motions
+- captions based only on estimated local frame positions
+
+Historical reel packages may remain unchanged for reproducibility.
 
 ## Completion
 
-A reel is not complete until current-source typecheck, focused tests, checkpoint renders, current MP4, technical artifact validation and manual visual review have genuinely passed. Old renders do not count after source changes.
+A new reel is not complete until current-source typecheck, focused tests, real transcript alignment, current checkpoint renders, contact-sheet review, current cover, current MP4, technical artifact validation and normal-speed phone-size visual review have genuinely passed.
