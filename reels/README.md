@@ -1,32 +1,49 @@
 # Reels
 
-Die Ordnerfolge ist immer:
+Ordnerfolge:
 
-`Woche / Wochentag / Reel-Thema`
-
-Ein Reel nutzt dieselbe einfache Produktionsstruktur von `00-cover` bis `06-video` sowie `render` und `timeline`.
+```text
+Woche / Wochentag / Reel-Thema
+```
 
 ## Standard für jedes neue Reel
 
-- 60 bis 70 Sekunden
+Neue Reels verwenden `ki-animation-only-reel-v2`:
+
+- ungefähr 58 bis 70 Sekunden
 - 125 bis 145 Wörter
 - 8 bis 9 Szenen
-- normalerweise 6 bis 8 Sekunden pro Szene
-- Reel vollständig mit Remotion animiert
+- vollständig in Remotion animiert
 - keine generierten Szenenbilder
-- genau ein separates statisches Cover-Bild
-- Cover enthält genau einen klaren deutschen Satz
-- Voiceover und Wiedergabe standardmäßig 1,00x
-- maximal 1,05x nur nach ausdrücklicher Freigabe
-- maximal zwei starke Bewegungen gleichzeitig
-- mindestens eine Sekunde ruhiger Ergebnis-Hold
-- wichtige Bedeutungsinhalte werden passend animiert
-- Füllwörter erhalten keine großen Einzelanimationen
-- normale Satzuntertitel mit maximal zwei Zeilen
+- ein separates statisches Cover mit einem Satz
+- Voiceover und Wiedergabe bei 1,00x
+- keine Musik und keine Soundeffekte
+- ein Hauptobjekt und eine Hauptbewegung pro Szene
+- maximal drei Bedeutungsbeats pro Szene
+- vollständige Satzuntertitel erscheinen sofort
+- genau eine violette Linie läuft synchron zur Satzdauer
+- Untertitel-Unterkante 210 bis 235 px
+
+## Wichtig: Audio bestimmt die Timeline
+
+Die beim Anlegen erzeugten Frames sind nur Platzhalter.
+
+Nach dem finalen Voiceover muss Codex:
+
+```text
+Audio transkribieren
+→ timeline/final-sync.json erzeugen
+→ Szenengrenzen ersetzen
+→ Animationstrigger ersetzen
+→ Untertitel ersetzen
+→ finale Videolänge berechnen
+```
+
+Die finale Composition endet 1,2 bis 2,2 Sekunden nach dem letzten gesprochenen Wort. Sie wird nicht künstlich auf eine alte Zielzeit verlängert.
 
 ## Neues Reel anlegen
 
-Technische Befehle aus `alles/` ausführen:
+Aus `alles/`:
 
 ```bash
 node scripts/create-future-reel.mjs \
@@ -34,14 +51,22 @@ node scripts/create-future-reel.mjs \
 --title "Titel" \
 --hook "Direkter Hook" \
 --scenes 8 \
---seconds 65
+--seconds 64
 ```
 
-Danach den Standard prüfen:
+Planung prüfen:
 
 ```bash
 node scripts/validate-future-reel-standard.mjs \
 ../reels/<woche>/<wochentag>/<reel-thema>
+```
+
+Nach Audio und `final-sync.json`:
+
+```bash
+node scripts/validate-future-reel-standard.mjs \
+../reels/<woche>/<wochentag>/<reel-thema> \
+--final
 ```
 
 ## Verbindliche Dokumente
@@ -49,9 +74,9 @@ node scripts/validate-future-reel-standard.mjs \
 ```text
 alles/ki/reel-brain/PRODUCTION-BRAIN.md
 alles/ki/reel-brain/FUTURE-REEL-STANDARD.md
+alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md
 alles/ki/reel-brain/brain.json
-alles/ki/reel-brain/NEW-REEL.md
 alles/ki/reel-brain/VALIDATION.md
 ```
 
-Ältere Reels können noch eine frühere Bild- oder Geschwindigkeitsstrategie verwenden. Diese historischen Werte nicht als Vorlage kopieren.
+Historische v1-Reels bleiben bestehen, dürfen aber nicht als Vorlage für neue Produktionen kopiert werden.
