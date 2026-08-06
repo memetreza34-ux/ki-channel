@@ -24,12 +24,34 @@ Ein Reel nutzt dieselbe einfache Produktionsstruktur von `00-cover` bis `06-vide
 - Füllwörter erhalten keine großen Einzelanimationen
 - normale Satzuntertitel mit maximal zwei Zeilen
 
-Die verbindlichen Details stehen unter:
+## Neues Reel anlegen
+
+Technische Befehle aus `alles/` ausführen:
+
+```bash
+node scripts/create-future-reel.mjs \
+<woche> <wochentag> <slug> \
+--title "Titel" \
+--hook "Direkter Hook" \
+--scenes 8 \
+--seconds 65
+```
+
+Danach den Standard prüfen:
+
+```bash
+node scripts/validate-future-reel-standard.mjs \
+../reels/<woche>/<wochentag>/<reel-thema>
+```
+
+## Verbindliche Dokumente
 
 ```text
 alles/ki/reel-brain/PRODUCTION-BRAIN.md
 alles/ki/reel-brain/FUTURE-REEL-STANDARD.md
 alles/ki/reel-brain/brain.json
+alles/ki/reel-brain/NEW-REEL.md
+alles/ki/reel-brain/VALIDATION.md
 ```
 
 Ältere Reels können noch eine frühere Bild- oder Geschwindigkeitsstrategie verwenden. Diese historischen Werte nicht als Vorlage kopieren.
