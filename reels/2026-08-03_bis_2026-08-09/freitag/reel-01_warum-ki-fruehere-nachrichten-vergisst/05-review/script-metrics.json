@@ -1,0 +1,8 @@
+{
+  "wordCount": 143,
+  "sceneCount": 8,
+  "playbackRate": 1,
+  "targetDurationSeconds": "derived from final audio",
+  "plannedPlaceholderSeconds": 64,
+  "finalOutroHoldSeconds": 1.8
+}
