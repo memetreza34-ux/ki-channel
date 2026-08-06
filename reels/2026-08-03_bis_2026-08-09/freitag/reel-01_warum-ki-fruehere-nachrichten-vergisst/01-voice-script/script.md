@@ -30,7 +30,7 @@ Fasse wichtige Punkte deshalb regelmäßig kurz zusammen. Wiederhole zentrale Vo
 
 ## Szene 8
 
-So bleibt der entscheidende Kontext im aktiven Fenster. Die KI vergisst dich nicht absichtlich – der Teil ist nur unsichtbar.
+So bleibt der entscheidende Kontext im aktiven Fenster. Die KI vergisst dich nicht absichtlich, der Teil ist nur unsichtbar.
 
 ## Kennzahlen
 
