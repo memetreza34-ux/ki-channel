@@ -34,12 +34,15 @@ Arbeite ausschließlich auf `feature/reel-kontextfenster-vergisst`. Verändere `
 node scripts/prepare-why-ai-forgets-final-sync.mjs \
 ../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst \
 <Pfad-zum-Wort-Transcript.json>
+
+node scripts/finalize-why-ai-forgets-sync.mjs \
+../reels/2026-08-03_bis_2026-08-09/freitag/reel-01_warum-ki-fruehere-nachrichten-vergisst
 ```
 
 5. Prüfe, dass jedes Caption-Paar exakt zwei Sätze und jedes Wort echte Frames besitzt.
 6. Prüfe, dass jedes Paar exakt vom ersten bis zum letzten Frame seiner Szene sichtbar ist.
 7. Prüfe, dass das violette Wort exakt der Stimme folgt und in Pausen kein Wort markiert ist.
-8. Prüfe semantische Trigger innerhalb ±5 Frames.
+8. Prüfe semantische Trigger innerhalb ±5 Frames und gültige Ergebnisframes.
 9. Führe aus:
 
 ```bash
@@ -72,6 +75,7 @@ node scripts/build-why-ai-forgets-earlier-messages.mjs \
 - weniger oder mehr als zwei Untertitelsätze
 - Satzpaar verschwindet vor dem Szenenende
 - falsches violettes Wort
+- ungültiger Result-Frame vor einem späten Trigger
 - kleine oder blasse Hauptvisuals
 - wiederholte schwache Kartenbewegung
 - TypeScript, Tests, Render oder visuelle Prüfung fehlen
