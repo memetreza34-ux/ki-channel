@@ -3,7 +3,7 @@ import {resolve} from 'node:path';
 import {describe, expect, it} from 'vitest';
 import {
   CONTEXT_BEATS,
-  CONTEXT_CAPTIONS,
+  CONTEXT_CAPTION_PAIRS,
   CONTEXT_DURATION,
   CONTEXT_PACKAGE,
   CONTEXT_SCENES,
@@ -22,9 +22,9 @@ const reelRoot = resolve(
 const countWords = (text: string): number =>
   text.match(/[A-Za-zÄÖÜäöüß0-9]+(?:[’'-][A-Za-zÄÖÜäöüß0-9]+)*/g)?.length ?? 0;
 
-describe('why-ai-forgets-earlier-messages v2 contract', () => {
-  it('uses the audio-first v2 standard', () => {
-    expect(CONTEXT_PACKAGE.standardId).toBe('ki-animation-only-reel-v2');
+describe('why-ai-forgets-earlier-messages v3 contract', () => {
+  it('uses the audio-first v3 standard', () => {
+    expect(CONTEXT_PACKAGE.standardId).toBe('ki-animation-only-reel-v3');
     expect(CONTEXT_PACKAGE.timelineStatus).toBe('planned-placeholder-until-final-audio');
     expect(['planned-placeholder', 'final-transcript-aligned']).toContain(CONTEXT_SYNC_STATUS);
     expect(CONTEXT_PACKAGE.audio.playbackRate).toBe(1);
@@ -45,34 +45,45 @@ describe('why-ai-forgets-earlier-messages v2 contract', () => {
     expect(CONTEXT_PACKAGE.scenes.every((scene) => scene.type === 'remotion')).toBe(true);
   });
 
-  it('contains the approved 143-word script', () => {
+  it('contains the approved 128-word and 16-sentence script', () => {
     const script = readFileSync(resolve(reelRoot, '01-voice-script', 'script-fliesstext.txt'), 'utf8');
-    expect(countWords(script)).toBe(143);
+    expect(countWords(script)).toBe(128);
+    expect(script.match(/[.!?](?:\s|$)/g)?.length).toBe(16);
   });
 
-  it('uses stable full-sentence captions with one violet progress line', () => {
-    expect(CONTEXT_CAPTIONS.length).toBeGreaterThan(8);
-    for (const cue of CONTEXT_CAPTIONS) {
-      expect(cue.revealMode).toBe('instant');
-      expect(cue.wordHighlight).toBe(false);
-      expect(cue.progressIndicator).toBe('single-violet-line');
-      expect(cue.bottomPx).toBeGreaterThanOrEqual(210);
-      expect(cue.bottomPx).toBeLessThanOrEqual(235);
-      expect(cue.lineCount).toBeLessThanOrEqual(2);
-      expect(cue.endFrame).toBeGreaterThan(cue.startFrame);
+  it('shows exactly two full sentences with active-word timing', () => {
+    expect(CONTEXT_CAPTION_PAIRS).toHaveLength(8);
+    for (const pair of CONTEXT_CAPTION_PAIRS) {
+      expect(pair.mode).toBe('dual-sentence-active-word');
+      expect(pair.sentences).toHaveLength(2);
+      expect(pair.bottomPx).toBeGreaterThanOrEqual(245);
+      expect(pair.bottomPx).toBeLessThanOrEqual(285);
+      for (const sentence of pair.sentences) {
+        expect(sentence.words.length).toBeGreaterThan(0);
+        expect(sentence.endFrame).toBeGreaterThan(sentence.startFrame);
+        let cursor = sentence.startFrame;
+        for (const word of sentence.words) {
+          expect(word.startFrame).toBeGreaterThanOrEqual(cursor);
+          expect(word.endFrame).toBeGreaterThan(word.startFrame);
+          expect(word.startFrame).toBeGreaterThanOrEqual(sentence.startFrame);
+          expect(word.endFrame).toBeLessThanOrEqual(sentence.endFrame);
+          cursor = word.endFrame;
+        }
+      }
     }
   });
 
-  it('keeps every planned semantic trigger within five frames', () => {
+  it('keeps every semantic trigger within five frames', () => {
     for (const beat of CONTEXT_BEATS) {
       expect(Math.abs(beat.animationStartFrame - beat.transcriptStartFrame)).toBeLessThanOrEqual(5);
       expect(beat.resultFrame).toBeGreaterThanOrEqual(beat.animationStartFrame);
     }
   });
 
-  it('contains no word-by-word subtitle implementation in the production composition', () => {
+  it('uses the new dual-sentence caption component without a progress line', () => {
     const source = readFileSync(resolve(process.cwd(), 'ki', 'src', 'reels', 'why-ai-forgets-earlier-messages', 'ReelWhyAIForgetsEarlierMessages.tsx'), 'utf8');
-    expect(source).toContain('StableSentenceCaption');
-    expect(source).not.toMatch(/visibleCount|slice\(0\s*,\s*visibleCount|word-by-word|karaoke/i);
+    expect(source).toContain('DualSentenceKaraokeCaption');
+    expect(source).not.toContain('StableSentenceCaption');
+    expect(source).not.toMatch(/single-violet-line|progressIndicator|visibleCount|slice\(0\s*,/i);
   });
 });
