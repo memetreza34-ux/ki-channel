@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "status": "planned-placeholder",
+  "fps": 30,
+  "audio": {
+    "durationSeconds": 62,
+    "speechStartSeconds": 0.27,
+    "speechEndSeconds": 62
+  },
+  "composition": {
+    "durationInFrames": 1920,
+    "outroHoldFrames": 60
+  },
+  "captions": [
+    {"id":"c01","sceneId":"scene-01","text":"Warum vergisst deine KI plötzlich etwas, das du ihr vorher geschrieben hast?","startFrame":8,"endFrame":150,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c02","sceneId":"scene-01","text":"Der Grund ist meistens ihr Kontextfenster.","startFrame":150,"endFrame":220,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c03","sceneId":"scene-02","text":"Stell dir den Chat wie ein langes Band vor.","startFrame":245,"endFrame":330,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c04","sceneId":"scene-02","text":"Die KI sieht nicht das gesamte Band, sondern nur einen begrenzten Ausschnitt.","startFrame":330,"endFrame":465,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c05","sceneId":"scene-03","text":"Mit jeder neuen Nachricht wandert dieses Fenster weiter.","startFrame":488,"endFrame":700,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c06","sceneId":"scene-04","text":"Ältere Teile rutschen irgendwann hinaus.","startFrame":728,"endFrame":830,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c07","sceneId":"scene-04","text":"Für die nächste Antwort stehen sie nicht mehr vollständig zur Verfügung.","startFrame":830,"endFrame":945,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c08","sceneId":"scene-05","text":"Besonders schnell passiert das bei langen Texten und vielen Dateien.","startFrame":968,"endFrame":1080,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c09","sceneId":"scene-05","text":"Auch sehr ausführliche Antworten füllen das Fenster schnell.","startFrame":1080,"endFrame":1185,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c10","sceneId":"scene-06","text":"Dann fehlen plötzlich Namen, Regeln oder Entscheidungen vom Anfang.","startFrame":1208,"endFrame":1420,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c11","sceneId":"scene-07","text":"Fasse wichtige Punkte regelmäßig kurz zusammen und wiederhole zentrale Vorgaben.","startFrame":1448,"endFrame":1555,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c12","sceneId":"scene-07","text":"Teile große Projekte in klare Abschnitte und speichere Entscheidungen außerhalb des Chats.","startFrame":1555,"endFrame":1665,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c13","sceneId":"scene-08","text":"So gibst du der KI genau den Kontext, den sie gerade braucht.","startFrame":1688,"endFrame":1768,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c14","sceneId":"scene-08","text":"Sie hat dich nicht absichtlich vergessen.","startFrame":1768,"endFrame":1818,"lineCount":1,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"},
+    {"id":"c15","sceneId":"scene-08","text":"Der relevante Teil war nur nicht mehr im sichtbaren Fenster.","startFrame":1818,"endFrame":1860,"lineCount":2,"bottomPx":220,"revealMode":"instant","wordHighlight":false,"progressIndicator":"single-violet-line"}
+  ],
+  "scenes": [
+    {"id":"scene-01","startFrame":0,"endFrame":240,"speechStartFrame":8,"speechEndFrame":220,"resultHoldFrames":30,"boundaryReferenceFrame":240,"boundaryOffsetFrames":0},
+    {"id":"scene-02","startFrame":240,"endFrame":480,"speechStartFrame":245,"speechEndFrame":465,"resultHoldFrames":30,"boundaryReferenceFrame":480,"boundaryOffsetFrames":0},
+    {"id":"scene-03","startFrame":480,"endFrame":720,"speechStartFrame":488,"speechEndFrame":700,"resultHoldFrames":30,"boundaryReferenceFrame":720,"boundaryOffsetFrames":0},
+    {"id":"scene-04","startFrame":720,"endFrame":960,"speechStartFrame":728,"speechEndFrame":945,"resultHoldFrames":30,"boundaryReferenceFrame":960,"boundaryOffsetFrames":0},
+    {"id":"scene-05","startFrame":960,"endFrame":1200,"speechStartFrame":968,"speechEndFrame":1185,"resultHoldFrames":30,"boundaryReferenceFrame":1200,"boundaryOffsetFrames":0},
+    {"id":"scene-06","startFrame":1200,"endFrame":1440,"speechStartFrame":1208,"speechEndFrame":1420,"resultHoldFrames":30,"boundaryReferenceFrame":1440,"boundaryOffsetFrames":0},
+    {"id":"scene-07","startFrame":1440,"endFrame":1680,"speechStartFrame":1448,"speechEndFrame":1665,"resultHoldFrames":30,"boundaryReferenceFrame":1680,"boundaryOffsetFrames":0},
+    {"id":"scene-08","startFrame":1680,"endFrame":1920,"speechStartFrame":1688,"speechEndFrame":1860,"resultHoldFrames":60,"boundaryReferenceFrame":1920,"boundaryOffsetFrames":0}
+  ],
+  "beats": [
+    {"id":"s1-forgets","sceneId":"scene-01","expression":"vergisst","transcriptStartFrame":38,"animationStartFrame":38,"resultFrame":116},
+    {"id":"s1-window","sceneId":"scene-01","expression":"Kontextfenster","transcriptStartFrame":164,"animationStartFrame":164,"resultFrame":198},
+    {"id":"s2-rail","sceneId":"scene-02","expression":"langes Band","transcriptStartFrame":275,"animationStartFrame":275,"resultFrame":330},
+    {"id":"s2-limited","sceneId":"scene-02","expression":"begrenzten Ausschnitt","transcriptStartFrame":400,"animationStartFrame":400,"resultFrame":440},
+    {"id":"s3-new","sceneId":"scene-03","expression":"neuen Nachricht","transcriptStartFrame":530,"animationStartFrame":530,"resultFrame":590},
+    {"id":"s3-shift","sceneId":"scene-03","expression":"wandert","transcriptStartFrame":610,"animationStartFrame":610,"resultFrame":675},
+    {"id":"s4-old","sceneId":"scene-04","expression":"Ältere Teile","transcriptStartFrame":750,"animationStartFrame":750,"resultFrame":800},
+    {"id":"s4-out","sceneId":"scene-04","expression":"hinaus","transcriptStartFrame":815,"animationStartFrame":815,"resultFrame":875},
+    {"id":"s4-unavailable","sceneId":"scene-04","expression":"nicht mehr vollständig","transcriptStartFrame":890,"animationStartFrame":890,"resultFrame":930},
+    {"id":"s5-text","sceneId":"scene-05","expression":"langen Texten","transcriptStartFrame":1000,"animationStartFrame":1000,"resultFrame":1050},
+    {"id":"s5-files","sceneId":"scene-05","expression":"vielen Dateien","transcriptStartFrame":1060,"animationStartFrame":1060,"resultFrame":1110},
+    {"id":"s5-answer","sceneId":"scene-05","expression":"ausführlichen Antworten","transcriptStartFrame":1125,"animationStartFrame":1125,"resultFrame":1170},
+    {"id":"s6-name","sceneId":"scene-06","expression":"Namen","transcriptStartFrame":1260,"animationStartFrame":1260,"resultFrame":1300},
+    {"id":"s6-rules","sceneId":"scene-06","expression":"Regeln","transcriptStartFrame":1320,"animationStartFrame":1320,"resultFrame":1360},
+    {"id":"s6-decisions","sceneId":"scene-06","expression":"Entscheidungen","transcriptStartFrame":1370,"animationStartFrame":1370,"resultFrame":1410},
+    {"id":"s7-summary","sceneId":"scene-07","expression":"kurz zusammen","transcriptStartFrame":1485,"animationStartFrame":1485,"resultFrame":1530},
+    {"id":"s7-repeat","sceneId":"scene-07","expression":"Wiederhole zentrale Vorgaben","transcriptStartFrame":1545,"animationStartFrame":1545,"resultFrame":1590},
+    {"id":"s7-sections","sceneId":"scene-07","expression":"klare Abschnitte","transcriptStartFrame":1600,"animationStartFrame":1600,"resultFrame":1650},
+    {"id":"s8-context","sceneId":"scene-08","expression":"genau den Kontext","transcriptStartFrame":1715,"animationStartFrame":1715,"resultFrame":1760},
+    {"id":"s8-intent","sceneId":"scene-08","expression":"nicht absichtlich vergessen","transcriptStartFrame":1780,"animationStartFrame":1780,"resultFrame":1810},
+    {"id":"s8-visible","sceneId":"scene-08","expression":"sichtbaren Fenster","transcriptStartFrame":1830,"animationStartFrame":1830,"resultFrame":1860}
+  ]
+}
