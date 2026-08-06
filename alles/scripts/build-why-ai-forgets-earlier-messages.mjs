@@ -16,6 +16,7 @@ if (config.syncStatus !== 'final-transcript-aligned') {
 }
 
 await run(process.execPath, ['scripts/validate-reel-v3.mjs', config.reelRoot, '--final']);
+await run(process.execPath, ['scripts/validate-v3-caption-coverage.mjs', config.reelRoot]);
 await run(process.execPath, ['scripts/stage-why-ai-forgets-audio.mjs', config.reelRoot]);
 await run('npm', ['run', 'motion:typecheck']);
 await run('npx', ['--no-install', 'vitest', 'run',
