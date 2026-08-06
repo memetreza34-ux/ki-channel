@@ -3,63 +3,14 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from
 import type {CaptionChunk} from '../copy';
 import {fontFamily, palette, shadows} from '../style';
 
-export const progress = (frame: number, start: number, end: number): number =>
-  interpolate(frame, [start, end], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+export const progress = (frame: number, start: number, end: number): number => interpolate(frame,[start,end],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+export const useEnter = (frame: number, delay = 0): number => {const {fps}=useVideoConfig();return spring({frame:frame-delay,fps,config:{damping:18,stiffness:150,mass:.78}});};
 
-export const useEnter = (frame: number, delay = 0): number => {
-  const {fps} = useVideoConfig();
-  return spring({frame: frame - delay, fps, config: {damping: 18, stiffness: 150, mass: 0.78}});
-};
+export const Panel: React.FC<React.PropsWithChildren<{style?:React.CSSProperties;tone?:'neutral'|'accent'|'danger'|'warning'|'success'}>> = ({children,style,tone='neutral'}) => {const border=tone==='accent'?palette.accent:tone==='danger'?palette.danger:tone==='warning'?palette.warning:tone==='success'?palette.success:palette.line;const background=tone==='accent'?palette.accentSoft:tone==='danger'?palette.dangerSoft:tone==='warning'?palette.warningSoft:tone==='success'?palette.successSoft:palette.surface;return <div style={{borderRadius:30,border:`2px solid ${border}55`,background,boxShadow:shadows.card,...style}}>{children}</div>;};
+export const Badge: React.FC<React.PropsWithChildren<{tone?:'accent'|'danger'|'warning'|'success'|'muted';style?:React.CSSProperties}>> = ({children,tone='accent',style}) => {const color=tone==='danger'?palette.danger:tone==='warning'?palette.warning:tone==='success'?palette.success:tone==='muted'?palette.muted:palette.accent;return <div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'10px 18px',borderRadius:999,border:`2px solid ${color}55`,background:`${color}14`,color,fontSize:22,fontWeight:900,letterSpacing:1.2,...style}}>{children}</div>;};
 
-export const Panel: React.FC<React.PropsWithChildren<{
-  style?: React.CSSProperties;
-  tone?: 'neutral' | 'accent' | 'danger' | 'warning' | 'success';
-}>> = ({children, style, tone = 'neutral'}) => {
-  const border = tone === 'accent' ? palette.accent : tone === 'danger' ? palette.danger : tone === 'warning' ? palette.warning : tone === 'success' ? palette.success : palette.line;
-  const background = tone === 'accent' ? palette.accentSoft : tone === 'danger' ? palette.dangerSoft : tone === 'warning' ? palette.warningSoft : tone === 'success' ? palette.successSoft : palette.surface;
-  return <div style={{borderRadius:30,border:`2px solid ${border}55`,background,boxShadow:shadows.card,...style}}>{children}</div>;
-};
+const normalize=(word:string):string=>word.toLocaleLowerCase('de-DE').replace(/[^a-zäöüß0-9]/gi,'');
+const SentenceSubtitle: React.FC<{chunks:readonly CaptionChunk[]}> = ({chunks}) => {const frame=useCurrentFrame();if(chunks.length===0||frame<chunks[0].start)return null;let index=0;for(let chunkIndex=0;chunkIndex<chunks.length;chunkIndex+=1){if(frame>=chunks[chunkIndex].start)index=chunkIndex;}const chunk=chunks[index];const words=chunk.text.split(/\s+/);const reveal=progress(frame,chunk.start,Math.max(chunk.start+1,chunk.end-8));const visibleCount=frame>=chunk.end?words.length:Math.max(1,Math.ceil(reveal*words.length));const emphasis=new Set(chunk.emphasis.map(normalize));return <div style={{position:'absolute',left:64,right:64,bottom:76,zIndex:100,minHeight:142,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{maxWidth:950,fontFamily,fontSize:50,lineHeight:1.16,fontWeight:820,color:'white',WebkitTextStroke:'2.5px rgba(20,15,28,.96)',paintOrder:'stroke fill',textShadow:'0 4px 8px rgba(20,15,28,.88)'}}>{words.slice(0,visibleCount).map((word,wordIndex)=>{const highlighted=emphasis.has(normalize(word));return <React.Fragment key={`${word}-${wordIndex}`}><span style={{color:highlighted?palette.accentSoft:'white',fontWeight:highlighted?950:820,display:'inline-block'}}>{word}</span>{wordIndex<visibleCount-1?' ':null}</React.Fragment>;})}</div></div>;};
 
-export const Badge: React.FC<React.PropsWithChildren<{
-  tone?: 'accent' | 'danger' | 'warning' | 'success' | 'muted';
-  style?: React.CSSProperties;
-}>> = ({children, tone = 'accent', style}) => {
-  const color = tone === 'danger' ? palette.danger : tone === 'warning' ? palette.warning : tone === 'success' ? palette.success : tone === 'muted' ? palette.muted : palette.accent;
-  return <div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'10px 18px',borderRadius:999,border:`2px solid ${color}55`,background:`${color}14`,color,fontSize:22,fontWeight:900,letterSpacing:1.2,...style}}>{children}</div>;
-};
-
-const normalize = (word: string): string => word.toLocaleLowerCase('de-DE').replace(/[^a-zäöüß0-9]/gi, '');
-
-const SentenceSubtitle: React.FC<{chunks: readonly CaptionChunk[]}> = ({chunks}) => {
-  const frame = useCurrentFrame();
-  if (chunks.length === 0 || frame < chunks[0].start) return null;
-  let index = 0;
-  for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
-    if (frame >= chunks[chunkIndex].start) index = chunkIndex;
-  }
-  const chunk = chunks[index];
-  const words = chunk.text.split(/\s+/);
-  const reveal = progress(frame, chunk.start, Math.max(chunk.start + 1, chunk.end - 8));
-  const visibleCount = frame >= chunk.end ? words.length : Math.max(1, Math.ceil(reveal * words.length));
-  const emphasis = new Set(chunk.emphasis.map(normalize));
-  return <div style={{position:'absolute',left:64,right:64,bottom:76,zIndex:100,minHeight:142,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}><div style={{maxWidth:950,fontFamily,fontSize:50,lineHeight:1.16,fontWeight:820,color:'white',textShadow:'0 3px 5px rgba(20,15,28,.9), 0 0 2px rgba(20,15,28,1)'}}>{words.slice(0,visibleCount).map((word,wordIndex)=>{const highlighted=emphasis.has(normalize(word));return <React.Fragment key={`${word}-${wordIndex}`}><span style={{color:highlighted?palette.accentSoft:'white',fontWeight:highlighted?950:820,display:'inline-block'}}>{word}</span>{wordIndex<visibleCount-1?' ':null}</React.Fragment>;})}</div></div>;
-};
-
-export const SceneFrame: React.FC<React.PropsWithChildren<{
-  sceneNumber: number;
-  kicker: string;
-  heading: string;
-  captions: readonly CaptionChunk[];
-}>> = ({sceneNumber,kicker,heading,captions,children}) => {
-  const frame = useCurrentFrame();
-  const intro = useEnter(frame, 2);
-  return <AbsoluteFill style={{background:palette.background,color:palette.foreground,fontFamily,overflow:'hidden'}}><div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 50% 42%, rgba(125,73,223,.12), transparent 46%)'}}/><div style={{position:'absolute',left:66,right:66,top:86,zIndex:80,opacity:intro,transform:`translateY(${(1-intro)*24}px)`}}><div style={{display:'flex',alignItems:'center',gap:16,marginBottom:14}}><Badge>{String(sceneNumber).padStart(2,'0')}</Badge><div style={{fontSize:23,fontWeight:950,letterSpacing:4,color:palette.accent}}>{kicker}</div></div><div style={{fontSize:58,lineHeight:1.03,fontWeight:950,letterSpacing:-2.4,maxWidth:950}}>{heading}</div></div><div style={{position:'absolute',left:54,right:54,top:300,bottom:286,zIndex:20}}>{children}</div><SentenceSubtitle chunks={captions}/></AbsoluteFill>;
-};
-
-export const ResultStrip: React.FC<{text:string;visible:number;tone?:'accent'|'danger'|'success'|'warning'}> = ({text,visible,tone='accent'}) => {
-  const color=tone==='danger'?palette.danger:tone==='success'?palette.success:tone==='warning'?palette.warning:palette.accent;
-  return <div style={{position:'absolute',left:90,right:90,bottom:24,height:86,borderRadius:24,border:`2px solid ${color}66`,background:`${color}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:29,fontWeight:950,letterSpacing:1.6,color,opacity:visible,transform:`translateY(${(1-visible)*18}px)`}}>{text}</div>;
-};
+export const SceneFrame: React.FC<React.PropsWithChildren<{sceneNumber:number;kicker:string;heading:string;captions:readonly CaptionChunk[]}>> = ({sceneNumber,kicker,heading,captions,children}) => {const frame=useCurrentFrame();const intro=useEnter(frame,2);return <AbsoluteFill style={{background:palette.background,color:palette.foreground,fontFamily,overflow:'hidden'}}><div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 50% 42%, rgba(125,73,223,.12), transparent 46%)'}}/><div style={{position:'absolute',left:66,right:66,top:86,zIndex:80,opacity:intro,transform:`translateY(${(1-intro)*24}px)`}}><div style={{display:'flex',alignItems:'center',gap:16,marginBottom:14}}><Badge>{String(sceneNumber).padStart(2,'0')}</Badge><div style={{fontSize:23,fontWeight:950,letterSpacing:4,color:palette.accent}}>{kicker}</div></div><div style={{fontSize:58,lineHeight:1.03,fontWeight:950,letterSpacing:-2.4,maxWidth:950}}>{heading}</div></div><div style={{position:'absolute',left:54,right:54,top:300,bottom:286,zIndex:20}}>{children}</div><SentenceSubtitle chunks={captions}/></AbsoluteFill>;};
+export const ResultStrip: React.FC<{text:string;visible:number;tone?:'accent'|'danger'|'success'|'warning'}> = ({text,visible,tone='accent'}) => {const color=tone==='danger'?palette.danger:tone==='success'?palette.success:tone==='warning'?palette.warning:palette.accent;return <div style={{position:'absolute',left:90,right:90,bottom:24,height:86,borderRadius:24,border:`2px solid ${color}66`,background:`${color}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:29,fontWeight:950,letterSpacing:1.6,color,opacity:visible,transform:`translateY(${(1-visible)*18}px)`}}>{text}</div>;};
