@@ -2,186 +2,99 @@
 
 ## Mission
 
-This repository produces premium German vertical AI explainer reels with deterministic Remotion animation. Work as a production engineer. Approved content defines the meaning; the real final voiceover defines every final timestamp.
+Produce premium German vertical AI reels with deterministic Remotion animation. The real voiceover is the only final clock. Work as a production engineer together with the Animation Director, Sync Auditor and Visual QA Agent.
 
-## Instruction order
+## Read first
 
-1. Read this file.
-2. Read `ki/reel-brain/PRODUCTION-BRAIN.md`.
-3. Read `ki/reel-brain/FUTURE-REEL-STANDARD.md`.
-4. Read `ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`.
-5. Read `ki/reel-brain/brain.json`.
-6. Read the nearest nested `AGENTS.md` and the named reel package.
+1. this file
+2. `ki/reel-brain/PRODUCTION-BRAIN.md`
+3. `ki/reel-brain/FUTURE-REEL-STANDARD.md`
+4. `ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
+5. `ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
+6. `ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
+7. `.agents/skills/reel-animation-director/SKILL.md`
+8. `.agents/skills/reel-sync-auditor/SKILL.md`
+9. `.agents/skills/reel-visual-qa/SKILL.md`
+10. nearest reel-local `AGENTS.md`
 
 ## Git safety
 
-- Never modify `main`.
-- Work only on the named branch.
-- Do not create, merge, close or mark a pull request ready unless explicitly requested.
-- Do not rewrite unrelated files.
-- Report the final branch and commit SHA.
+- never modify `main`
+- work only on the named branch
+- do not merge or mark a PR ready without explicit approval
+- preserve unrelated files
+- report final branch and commit SHA
 
 ## Truthfulness
 
-- Never claim transcript alignment, tests, typecheck, screenshots, renders, audio checks or visual review succeeded unless they actually ran.
-- Estimated timing is not final synchronization.
-- A valid MP4 container is not a visually approved reel.
-- Never hide failures with disabled tests, fake reports, `any` or weakened validators.
+Never claim transcript alignment, tests, typecheck, renders, phone review or visual approval unless they actually ran on the current commit.
 
-## Standard for every newly created reel
+## New reel standard
 
-New reels use `standardId: ki-animation-only-reel-v2`:
+New reels use `ki-animation-only-reel-v3`:
 
-- 1080 × 1920 at 30 FPS
-- approximately 58 to 70 seconds
+- 1080 × 1920, 30 FPS
 - 125 to 145 words
 - 8 to 9 scenes
-- 100 percent Remotion animation
-- no generated scene images
-- one static cover with one sentence
-- voiceover and playback at 1.00x
-- no music or sound effects
-- final duration derived from real speech end
-- one primary object, one dominant motion and one stable result per scene
-- one to three semantic beats per scene
-- full-sentence captions shown instantly
-- one violet progress line synchronized to the real sentence duration
-- caption bottom position between 210 and 235 px
+- exactly two short caption sentences per scene
+- both sentences fully visible immediately
+- active spoken word violet from real word timings
+- no progress line, word reveal, bounce or size change
+- caption bottom 245 to 285 px
+- one large primary object per scene
+- one dominant explanatory motion
+- maximum two strong simultaneous motions
+- maximum three semantic beats
+- primary visual roughly 60 to 78 percent of the animation area
+- no generated scene images, music or SFX
 
-Historical `ki-animation-only-reel-v1` projects may remain unchanged but are not templates for future work.
+## Final synchronization
 
-## Audio-first finalization
+After final audio:
 
-Before final audio, scene frames are placeholders only. After final audio arrives, Codex must:
+1. normalize audio
+2. generate real word timestamps
+3. create `timeline/final-sync.json`
+4. create one caption pair per scene with exactly two sentences and word timings
+5. derive scene boundaries from pauses
+6. align semantic triggers within five frames
+7. derive final duration from speech end plus 1.2 to 2.2 seconds
+8. ensure production code uses only final sync data
+9. regenerate checkpoints after every code or sync change
 
-1. normalize the audio
-2. generate real word and sentence timestamps
-3. detect speech start, speech end and meaningful pauses
-4. create `timeline/final-sync.json`
-5. derive final scene boundaries from sentence or meaning pauses
-6. derive final composition duration from speech end plus 1.2 to 2.2 seconds
-7. replace every estimated caption, scene and animation timestamp
-8. ensure production code uses only `final-sync.json`
-9. regenerate checkpoints from the final scene boundaries
+## Choreography review
 
-Never place audio into a fixed 60- or 65-second timeline and call it synchronized.
-
-## Synchronization tolerances
-
-- semantic animation trigger: maximum ±5 frames from the spoken phrase
-- scene boundary: maximum ±6 frames from the intended sentence or meaning pause
-- first caption: visible no later than 3 frames after speech starts
-- outro hold: 1.2 to 2.2 seconds after the last spoken word
-- no active fallback timing in a final render
-
-## Choreography
-
-Each scene must be understandable as:
+Before implementation, the Animation Director must define per scene:
 
 ```text
-one primary object
-→ one spoken meaning phrase
-→ one dominant explanatory motion
-→ one stable result
+spoken meaning → primary object → dominant motion → stable result
 ```
 
-Rules:
+Reject mini-dashboards, repetitive card slides, weak contrast, small visuals and topic-only decoration.
 
-- maximum two strong simultaneous motions
-- maximum three semantic beats per scene
-- maximum two small supporting elements
-- no rapid effect chains
-- no decorative constant motion
-- no scene-number badge or kicker repeated on every scene
-- no mini-dashboard as the main explanation
-- no emoji as the main explanation
-- no tiny labels, thin-line diagrams or clusters of small cards carrying the key message
-- primary visual should use roughly 55 to 72 percent of the animation area
-- prefer one recurring visual object across scenes when the topic supports it
-- important motion begins on or immediately after the matching spoken phrase
+## Required execution
 
-## Captions
-
-Final captions must:
-
-- show the complete current sentence or meaning unit immediately
-- remain visually stable for the full cue
-- use maximum two lines
-- use 46 to 52 px and never below 42 px
-- sit 210 to 235 px above the bottom edge
-- use white text with a dark outline or strong shadow
-- not use a large background box
-- not reveal words one by one
-- not highlight individual words
-- not bounce, scale or move the sentence
-
-The only moving caption element is a single 6-to-10-pixel violet line beneath the text. It progresses from 0 to 100 percent using the real sentence start and end times.
-
-Forbidden final-caption implementations include `visibleCount`, word-by-word reveal, karaoke highlighting and estimated local frames.
-
-## Remotion rules
-
-- Use deterministic frame-based helpers only.
-- No `Math.random()`, timers, CSS transitions, network calls or render-time downloads.
-- Every composition must seek correctly to any frame.
-- Hard cuts are the default.
-- Production components import or receive final sync data.
-- Fallback timing may exist for previews only and must be impossible to use in the final build.
-
-## Required execution sequence
-
-1. Validate branch and working tree.
-2. Read global and reel-local contracts.
-3. Check script and semantic plan.
-4. Confirm simple Remotion prebuild exists.
-5. Validate final audio.
-6. Transcribe words and sentences.
-7. Create and validate `timeline/final-sync.json`.
-8. Switch production code from placeholders to final sync data.
-9. Run synchronization validation.
-10. Run typecheck and focused tests.
-11. Render smoke frames from the final timeline.
-12. Inspect full size and phone size.
-13. Fix timing and visual simplicity at the source.
-14. Render all current checkpoints, cover and MP4.
-15. Inspect contact sheet.
-16. Watch the complete MP4 at normal speed and phone size.
-17. Run technical artifact validation.
-18. Update only genuinely completed review items.
+1. planning validation with `validate-reel-v3.mjs`
+2. final audio transcript and sync generation
+3. final v3 validation
+4. typecheck and focused tests
+5. smoke frames
+6. Animation Director review
+7. all checkpoints and contact sheet
+8. full MP4 at normal speed and phone size
+9. Visual QA Agent report
+10. technical artifact validation
+11. user approval
 
 ## Release blockers
 
-Do not approve when any of these are present:
-
-- missing or invalid `final-sync.json`
-- fallback timing active in production
-- scene timing fixed independently of the real voiceover
-- more than 2.2 seconds of silence after speech end
-- semantic trigger offset above 5 frames
-- scene boundary offset above 6 frames
-- word-by-word subtitle reveal
-- captions below the allowed safe zone
-- more than three meaning beats in one scene
-- multiple small cards replacing one clear main visual
-- important motion before the spoken phrase
-- unclear, decorative or topic-only animation
-- incomplete final frame
-- unreadable phone-size text
-- stale checkpoints after a code or sync change
-
-## Final report
-
-Report:
-
-1. branch and commit SHA
-2. final audio duration, speech start and speech end
-3. final composition duration and outro hold
-4. largest trigger and scene-boundary offsets
-5. final caption mode and bottom position
-6. active timing source
-7. files changed
-8. commands run and exact results
-9. rendered artifact paths
-10. visual problems found and fixes applied
-11. remaining known issues
-12. confirmation that `main` was not modified
+- missing or placeholder final sync
+- fewer or more than two caption sentences
+- wrong active word
+- progress line present
+- trigger offset above five frames
+- scene boundary offset above six frames
+- outro hold outside 1.2 to 2.2 seconds
+- repeated weak card choreography
+- tiny or washed-out primary visual
+- stale render after changes

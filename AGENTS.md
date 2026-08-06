@@ -12,60 +12,61 @@ Vor jeder Reel-Arbeit lesen:
 2. `alles/ki/reel-brain/PRODUCTION-BRAIN.md`
 3. `alles/ki/reel-brain/FUTURE-REEL-STANDARD.md`
 4. `alles/ki/reel-brain/AUDIO-FIRST-SYNC-CONTRACT.md`
-5. `alles/ki/reel-brain/brain.json`
-6. `alles/ki/reel-brain/VALIDATION.md`
-7. die nächste reel-lokale `AGENTS.md`
+5. `alles/ki/reel-brain/REEL-ANIMATION-DIRECTOR.md`
+6. `alles/ki/reel-brain/REEL-VISUAL-QA-AGENT.md`
+7. `alles/ki/reel-brain/brain.json`
+8. die nächste reel-lokale `AGENTS.md`
 
-Neue Reel-Projekte werden nur unter `reels/<woche>/<wochentag>/<reel-thema>/` angelegt. Technische Befehle werden aus `alles/` ausgeführt.
+Zusätzlich für neue oder überarbeitete Reels verwenden:
 
-## Standard für alle neu erstellten Reels
+```text
+.agents/skills/reel-animation-director/SKILL.md
+.agents/skills/reel-sync-auditor/SKILL.md
+.agents/skills/reel-visual-qa/SKILL.md
+```
 
-- `standardId: ki-animation-only-reel-v2`
+## Standard für neue Reels
+
+- `standardId: ki-animation-only-reel-v3`
 - ungefähr 58 bis 70 Sekunden
 - 125 bis 145 Wörter
 - 8 bis 9 Szenen
+- genau zwei kurze Sätze pro Szene
 - 100 Prozent Remotion-Animation
 - keine generierten Szenenbilder
-- genau ein statisches Cover mit einem Satz
-- Stimme und Wiedergabe bei 1,00x
+- Voiceover und Wiedergabe bei 1,00x
 - keine Musik und keine Soundeffekte
-- ein Hauptobjekt, eine Hauptbewegung und ein Ergebnis pro Szene
-- ein bis drei Bedeutungsbeats pro Szene
-- maximal zwei starke Bewegungen gleichzeitig
-- Untertitel erscheinen als vollständiger Satz sofort
-- keine Wort-für-Wort-Einblendung
-- genau eine violette Fortschrittslinie synchron zur echten Satzdauer
-- Untertitel-Unterkante zwischen 210 und 235 px
+- ein großes Hauptobjekt und eine dominante Bewegung pro Szene
+- maximal drei Sinnbeats und zwei starke Bewegungen
+- beide Untertitelsätze vollständig sofort sichtbar
+- aktuelles gesprochenes Wort violett
+- keine Fortschrittslinie
+- Untertitel-Unterkante 245 bis 285 px, Standard 260 px
 
-## Audio-first ist verpflichtend
-
-Vor der finalen Audiodatei sind alle Frames nur Platzhalter. Nach dem Audio muss Codex:
+## Audio-first
 
 ```text
 Audio transkribieren
 → timeline/final-sync.json erzeugen
-→ Szenengrenzen aus Satz- und Sinnpausen ableiten
-→ Animationstrigger aus echten Wortzeiten ableiten
-→ Untertitel und violette Linie aus echten Satzzeiten ableiten
-→ Composition-Dauer auf Sprachende + 1,2 bis 2,2 Sekunden setzen
+→ Wortzeiten für beide Untertitelsätze speichern
+→ Szenengrenzen aus Pausen ableiten
+→ Animations-Trigger aus echten Wortzeiten ableiten
+→ finale Dauer aus Sprachende + 1,2 bis 2,2 Sekunden ableiten
 ```
-
-Ein Audio darf niemals nur in eine vorher festgelegte 60- oder 65-Sekunden-Timeline gelegt werden.
 
 Finale Toleranzen:
 
 - Bedeutungs-Trigger maximal ±5 Frames
-- Szenenwechsel maximal ±6 Frames von der Sinnpause
+- Szenenwechsel maximal ±6 Frames
 - erster Untertitel spätestens 3 Frames nach Sprachbeginn
-- Schluss-Hold 1,2 bis 2,2 Sekunden
 - keine Fallback-Zeitquelle im finalen Render
 
 ## Prüfung
 
 ```bash
 cd alles
-node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<reel-thema>
-node scripts/validate-future-reel-standard.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
+node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema>
+node scripts/validate-reel-v3.mjs ../reels/<woche>/<wochentag>/<reel-thema> --final
 ```
 
-Historische Reels mit `ki-animation-only-reel-v1` dürfen bestehen bleiben, sind aber keine Vorlage. `main` nicht verändern, nichts ohne ausdrückliche Freigabe mergen und keinen Pull Request als bereit markieren.
+`main` nicht verändern, nichts ohne ausdrückliche Freigabe mergen und keinen Pull Request als bereit markieren.

@@ -1,1 +1,0 @@
-Planungs- und Implementierungspaket abgeschlossen. Finale Produktion wartet auf das echte Voiceover.

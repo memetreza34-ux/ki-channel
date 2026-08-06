@@ -1,148 +1,16 @@
 {
-  "version": 4,
-  "standardId": "ki-animation-only-reel-v2",
-  "mission": "Premium German vertical AI explainers whose final timeline, scenes, captions and semantic animation triggers are derived from the real voiceover transcript.",
+  "version": 5,
+  "standardId": "ki-animation-only-reel-v3",
+  "mission": "Premium German AI reels whose final scene timing, semantic motion and two-sentence karaoke captions are driven by the real voiceover transcript.",
   "appliesTo": "all newly created reels",
-  "historicalStandardIds": ["ki-animation-only-reel-v1"],
-  "responsibilities": {
-    "planner": [
-      "topic",
-      "direct hook",
-      "125-to-145-word voiceover",
-      "8-to-9-scene argument structure",
-      "one-sentence cover concept",
-      "one-to-three semantic meaning beats per scene",
-      "simple Remotion prebuild using placeholder timing only",
-      "tests",
-      "audio-first Codex task"
-    ],
-    "user": [
-      "generate final voiceover at 1.00x",
-      "place one audio file in the reel project",
-      "provide or approve one static cover visual",
-      "approve final cover and MP4"
-    ],
-    "codex": [
-      "validate final audio",
-      "transcribe words and sentences",
-      "create timeline/final-sync.json",
-      "replace every estimated timing source",
-      "derive composition duration and scene boundaries from speech",
-      "align semantic triggers within five frames",
-      "render stable full-sentence captions with one violet progress line",
-      "run tests and typecheck",
-      "render and inspect phone-size checkpoints and MP4",
-      "report honestly"
-    ]
-  },
-  "editorial": {
-    "targetDurationSeconds": {"min": 58, "max": 70},
-    "targetScriptWords": {"min": 125, "max": 145},
-    "targetSceneCount": {"min": 8, "max": 9},
-    "finalDurationRule": "speech end plus 1.2 to 2.2 seconds",
-    "maximumLeadInSeconds": 0.6,
-    "hookPattern": "direct viewer question, contradiction or surprising claim",
-    "simplicityRule": "one clear claim, one primary object, one dominant explanatory motion and one stable result per scene",
-    "forbidArtificialPadding": true
-  },
-  "audio": {
-    "sourceGenerationSpeed": 1,
-    "defaultPlaybackRate": 1,
-    "maximumPlaybackRateWithoutExplicitApproval": 1.05,
-    "preservePitch": true,
-    "music": false,
-    "soundEffects": "off",
-    "timingSource": "timeline/final-sync.json generated from final voiceover",
-    "estimatedTimingMayBeUsedInFinalRender": false,
-    "maximumOutroHoldSeconds": 2.2,
-    "minimumOutroHoldSeconds": 1.2
-  },
-  "sync": {
-    "requiredFinalFile": "timeline/final-sync.json",
-    "singleSourceOfTruth": true,
-    "maximumSemanticTriggerOffsetFrames": 5,
-    "maximumSceneBoundaryOffsetFrames": 6,
-    "maximumCaptionStartDelayFrames": 3,
-    "fallbackTimingAllowedAfterFinalAudio": false,
-    "compositionDurationDerivedFromSpeech": true,
-    "sceneBoundariesDerivedFromSentenceOrMeaningPauses": true
-  },
-  "visual": {
-    "format": {"width": 1080, "height": 1920, "fps": 30},
-    "reelSceneStrategy": "100-percent deterministic Remotion animation",
-    "generatedSceneImagesAllowed": false,
-    "stockSceneImagesAllowed": false,
-    "cover": {
-      "finalAssetCount": 1,
-      "type": "static image",
-      "sentenceCount": 1,
-      "singleMainMotif": true,
-      "additionalLabelsAllowed": false,
-      "sentenceMustBeTypesetDeterministically": true
-    },
-    "primaryObjectsPerScene": 1,
-    "maximumSupportingElementsPerScene": 2,
-    "primaryVisualAreaPercent": {"min": 55, "max": 72},
-    "dominantMotionsPerScene": 1,
-    "maximumStrongSimultaneousMotions": 2,
-    "maximumSemanticBeatsPerScene": 3,
-    "minimumReadableResultHoldSeconds": 1,
-    "persistentSceneNumbersAllowed": false,
-    "persistentKickersAllowed": false,
-    "miniDashboardsAllowed": false,
-    "emojiAsPrimaryExplanationAllowed": false,
-    "hardCutsDefault": true,
-    "decorativeConstantMotionAllowed": false,
-    "phoneReadabilityRequired": true
-  },
-  "captions": {
-    "mode": "instant-full-sentence-with-violet-progress-line",
-    "wordByWordRevealAllowed": false,
-    "wordHighlightAllowed": false,
-    "maximumLines": 2,
-    "defaultFontSizePx": 50,
-    "minimumFontSizePx": 42,
-    "bottomPx": {"min": 210, "max": 235},
-    "baseText": "white with dark outline or strong shadow",
-    "largeBackgroundBoxAllowed": false,
-    "progressIndicator": {
-      "type": "single-violet-line",
-      "heightPx": {"min": 6, "max": 10},
-      "timingSource": "real sentence start and end"
-    }
-  },
-  "sceneRhythm": {
-    "readableOpeningSeconds": {"min": 0, "max": 0.4},
-    "mainExplanationBeginsAfterSpokenTrigger": true,
-    "resultHoldSeconds": {"min": 1},
-    "fastEffectChainsAllowed": false
-  },
-  "semanticCoverage": {
-    "requireBeatMapBeforeCoding": true,
-    "beatMapShape": "meaning phrase -> visual reaction -> transcript trigger -> result state",
-    "importantMeaningWithoutVisualReactionAllowed": false,
-    "fillerWordsReceiveStrongAnimation": false,
-    "maximumBeatsPerScene": 3
-  },
-  "releaseRequires": [
-    "final audio",
-    "real word and sentence transcript",
-    "valid timeline/final-sync.json",
-    "no active fallback timing",
-    "trigger offset validation",
-    "scene boundary validation",
-    "caption position and mode validation",
-    "composition duration derived from speech",
-    "typecheck",
-    "focused tests",
-    "current checkpoints",
-    "contact sheet review",
-    "full current MP4",
-    "normal-speed watch",
-    "phone-size review",
-    "cover review",
-    "technical artifact validation",
-    "user approval"
-  ],
+  "historicalStandardIds": ["ki-animation-only-reel-v1", "ki-animation-only-reel-v2"],
+  "requiredAgents": ["reel-animation-director", "reel-sync-auditor", "reel-visual-qa-agent"],
+  "editorial": {"targetDurationSeconds":{"min":58,"max":70},"targetScriptWords":{"min":125,"max":145},"targetSceneCount":{"min":8,"max":9},"sentencesPerScene":2,"finalDurationRule":"speech end plus 1.2 to 2.2 seconds","maximumLeadInSeconds":0.6,"forbidArtificialPadding":true},
+  "audio": {"sourceGenerationSpeed":1,"defaultPlaybackRate":1,"maximumPlaybackRateWithoutExplicitApproval":1.05,"preservePitch":true,"music":false,"soundEffects":"off","timingSource":"timeline/final-sync.json generated from final voiceover","estimatedTimingMayBeUsedInFinalRender":false},
+  "sync": {"requiredFinalFile":"timeline/final-sync.json","singleSourceOfTruth":true,"wordTimingsRequired":true,"maximumSemanticTriggerOffsetFrames":5,"maximumSceneBoundaryOffsetFrames":6,"maximumCaptionStartDelayFrames":3,"fallbackTimingAllowedAfterFinalAudio":false,"compositionDurationDerivedFromSpeech":true},
+  "captions": {"mode":"dual-sentence-active-word","sentencesVisible":2,"fullTextVisibleImmediately":true,"activeWordColor":"violet","inactiveWordColor":"white","wordByWordRevealAllowed":false,"wordSizeChangeAllowed":false,"progressIndicatorAllowed":false,"defaultFontSizePx":44,"minimumFontSizePx":42,"bottomPx":{"min":245,"max":285},"largeBackgroundBoxAllowed":false,"timingSource":"real word start and end frames"},
+  "visual": {"format":{"width":1080,"height":1920,"fps":30},"reelSceneStrategy":"100-percent deterministic Remotion animation","generatedSceneImagesAllowed":false,"stockSceneImagesAllowed":false,"primaryObjectsPerScene":1,"maximumSupportingElementsPerScene":2,"primaryVisualAreaPercent":{"min":60,"max":78},"dominantMotionsPerScene":1,"maximumStrongSimultaneousMotions":2,"maximumSemanticBeatsPerScene":3,"minimumReadableResultHoldSeconds":1,"miniDashboardsAllowed":false,"tinyLabelsAsPrimaryExplanationAllowed":false,"repeatedFullChoreographyAllowed":false,"persistentSceneNumbersAllowed":false,"persistentKickersAllowed":false,"decorativeConstantMotionAllowed":false,"phoneReadabilityRequired":true},
+  "semanticCoverage": {"requireBeatMapBeforeCoding":true,"beatMapShape":"meaning phrase -> visual reaction -> transcript trigger -> result state","importantMeaningWithoutVisualReactionAllowed":false,"fillerWordsReceiveStrongAnimation":false,"maximumBeatsPerScene":3},
+  "releaseRequires": ["final audio","real word transcript","valid timeline/final-sync.json","two caption sentences per scene","violet active-word tracking","no progress line","no active fallback timing","trigger offset validation","scene boundary validation","typecheck","focused tests","animation director review","visual QA agent review","current checkpoints","contact sheet review","full current MP4","normal-speed phone-size watch","technical artifact validation","user approval"],
   "canonicalHumanStandard": "FUTURE-REEL-STANDARD.md"
 }
