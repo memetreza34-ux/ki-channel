@@ -1,0 +1,27 @@
+{
+  "title": "Warum KI nicht automatisch aktuell ist",
+  "beats": [
+    {
+      "spokenText": "Nach dem Training bleibt der Wissensstand zunächst eingefroren.",
+      "communicationGoal": "Training und aktuelles Weltwissen klar trennen.",
+      "archetype": "spatial_metaphor",
+      "visibleStateBefore": "Ein gefülltes Wissensarchiv wird versiegelt.",
+      "visibleStateAfter": "Das Archiv steht still, während die Welt daneben weiterläuft.",
+      "meaningfulChange": "Ein Zeitstempel am Archiv friert ein; Nachrichten und Preise rechts verändern sich weiter.",
+      "continuityObject": "versiegeltes Wissensarchiv",
+      "startFrame": 0,
+      "endFrame": 150
+    },
+    {
+      "spokenText": "Mit Webzugriff kann die KI aktuelle Quellen hinzunehmen.",
+      "communicationGoal": "Webzugriff als überprüfbare Erweiterung zeigen.",
+      "archetype": "problem_solution",
+      "visibleStateBefore": "Das Archiv kennt die neue Meldung nicht.",
+      "visibleStateAfter": "Ein Browser liefert eine aktuelle Originalquelle.",
+      "meaningfulChange": "Eine sichtbare Verbindung öffnet sich vom Archiv zur datierten Originalquelle.",
+      "continuityObject": "versiegeltes Wissensarchiv",
+      "startFrame": 150,
+      "endFrame": 300
+    }
+  ]
+}
