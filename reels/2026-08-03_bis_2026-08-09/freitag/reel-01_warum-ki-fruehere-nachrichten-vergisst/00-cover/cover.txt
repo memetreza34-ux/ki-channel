@@ -1,0 +1,22 @@
+REEL-COVER
+
+EXAKTER COVER-TEXT
+WARUM VERGISST DEINE KI FRÜHERE NACHRICHTEN?
+
+HAUPTMOTIV
+Eine lange Chat-Spur läuft durch ein großes transparentes Kontextfenster. Die neuesten violetten Nachrichten liegen klar im Fenster. Ältere graue Nachrichten verlassen links sichtbar den begrenzten Rahmen und verblassen. Das Motiv erklärt sofort: Die KI sieht nur den aktuellen Ausschnitt.
+
+BILDPROMPT FÜR DAS MOTIV
+A premium simplified 3D editorial cover visual about an AI forgetting earlier messages because of a limited context window. Show one long horizontal conversation rail passing through a large transparent graphite-and-glass rectangular window. The newest message cards inside the window are crisp, illuminated with restrained violet accents and clearly active. Several older message cards on the left have moved outside the window and gradually fade into soft gray, while one clean boundary line shows the exact limit of what remains visible. Use a near-white studio background, dark graphite materials, frosted glass, controlled violet light, realistic soft global illumination, crisp geometry and a strong central silhouette. Keep the upper 34 percent calm and empty for the exact German title. Vertical 9:16. No people, no hands, no faces, no robots, no logos, no watermark, no readable generated text, no gibberish writing, no cyberpunk environment.
+
+NEGATIVE PROMPT
+humans, hands, faces, body parts, humanoid robot, android, glowing brain, cyberpunk city, excessive neon, random particles, many unrelated cards, unreadable text, gibberish letters, logos, brands, watermark, subtitles, childish cartoon, flat clipart, busy background, black background, lens flare, extreme bloom, cropped main window
+
+TEXTREGEL
+Der Bildgenerator erzeugt nur das Motiv. Der exakte deutsche Satz wird anschließend kontrolliert und groß gesetzt. Keine KI-Fantasieschrift akzeptieren.
+
+OPTIONALER DATEINAME
+cover-visual.png
+
+PROGRAMMIERTES FALLBACK-COVER
+Die Remotion-Composition `Cover-WhyAIForgetsEarlierMessages` erzeugt dasselbe Motiv als Vektorgrafik mit exakt gesetztem Text.
