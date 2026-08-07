@@ -39,6 +39,7 @@ export type CompiledSceneChoreography = {
   strongEventPeak: number;
   stableStartHold: boolean;
   stableEndHold: boolean;
+  semanticPayloadEmbedded: boolean;
   subtitleWordCount: number;
   semanticBeatCount: number;
   valid: boolean;
@@ -114,6 +115,9 @@ const peakOverlap = (
   return peak;
 };
 
+const compactTerms = (values: readonly string[]): string =>
+  values.filter(Boolean).join(' | ');
+
 export const compileSceneChoreography = (
   scene: UniversalSceneMotionPlan,
 ): CompiledSceneChoreography => {
@@ -122,6 +126,10 @@ export const compileSceneChoreography = (
   const warnings: string[] = [];
   const activeStart = scene.stableStartHoldFrames;
   const activeEnd = scene.durationInFrames - scene.stableEndHoldFrames;
+  const meaning = scene.meaningContract;
+  const headlineText =
+    compactTerms(meaning.subjectTerms.slice(0, 3)) ||
+    scene.sentenceCoverage.tokens.slice(0, 3).map((token) => token.text).join(' ');
 
   events.push({
     eventId: `${scene.sceneId}-headline`,
@@ -132,9 +140,12 @@ export const compileSceneChoreography = (
     zIndex: 60,
     safeZone: 'headline-top',
     mechanismId: scene.headlineMotionId,
-    targetText: null,
+    targetText: headlineText || null,
     intensity: 'support',
-    metadata: {persistentAfterEntry: true},
+    metadata: {
+      persistentAfterEntry: true,
+      communicationGoal: meaning.communicationGoal,
+    },
   });
   events.push({
     eventId: `${scene.sceneId}-main`,
@@ -145,12 +156,23 @@ export const compileSceneChoreography = (
     zIndex: 20,
     safeZone: 'main-center',
     mechanismId: scene.animationId,
-    targetText: null,
+    targetText: scene.spokenText,
     intensity: 'strong',
     metadata: {
+      semanticContractVersion: 1,
+      contentSpecific: true,
       visualFamily: scene.visualFamily,
       layoutFamily: scene.layoutFamily,
       motionSignature: scene.motionSignature,
+      communicationGoal: meaning.communicationGoal,
+      startState: meaning.startState,
+      visibleChange: meaning.visibleChange,
+      endState: meaning.endState,
+      subjectTerms: compactTerms(meaning.subjectTerms),
+      actionTerms: compactTerms(meaning.actionTerms),
+      resultTerms: compactTerms(meaning.resultTerms),
+      requiredVisualCues: compactTerms(meaning.requiredVisualCues),
+      forbiddenVisualCues: compactTerms(meaning.forbiddenVisualCues),
     },
   });
 
@@ -206,6 +228,7 @@ export const compileSceneChoreography = (
         role: beat.role,
         tokenIndex: beat.tokenIndex,
         critical: beat.critical,
+        communicationGoal: meaning.communicationGoal,
       },
     });
     if (beat.soundCue !== 'none') {
@@ -241,8 +264,23 @@ export const compileSceneChoreography = (
         scene.transitionOut.mechanismId === 'transition-hard-cut-impact'
           ? 'strong'
           : 'support',
-      metadata: {toSceneId: scene.transitionOut.toSceneId},
+      metadata: {
+        toSceneId: scene.transitionOut.toSceneId,
+        outgoingSemanticState: meaning.endState,
+      },
     });
+  }
+
+  const mainEvent = events.find((event) => event.eventType === 'main-animation');
+  const semanticPayloadEmbedded = Boolean(
+    mainEvent?.targetText &&
+    mainEvent.metadata.startState &&
+    mainEvent.metadata.visibleChange &&
+    mainEvent.metadata.endState &&
+    mainEvent.metadata.requiredVisualCues,
+  );
+  if (!semanticPayloadEmbedded) {
+    blockers.push('main animation event is missing the exact semantic payload');
   }
 
   const strongEventsWithoutMain = events.filter(
@@ -290,6 +328,7 @@ export const compileSceneChoreography = (
     strongEventPeak,
     stableStartHold,
     stableEndHold,
+    semanticPayloadEmbedded,
     subtitleWordCount: tokens.length,
     semanticBeatCount: scene.sentenceCoverage.beats.length,
     valid: blockers.length === 0,
