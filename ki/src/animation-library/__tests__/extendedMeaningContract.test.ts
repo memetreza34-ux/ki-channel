@@ -85,4 +85,13 @@ describe('extended scene meaning contract', () => {
     expect(contract.visibleChange.length).toBeGreaterThan(20);
     expect(contract.endState.length).toBeGreaterThan(20);
   });
+
+  it('does not replace the base meaning from one generic word alone', () => {
+    const contract = enhanceSceneMeaning(
+      'Das System besitzt eine interne Regel.',
+    );
+
+    expect(contract.communicationGoal).toBe('show-result');
+    expect(contract.preferredVisualFamilies[0]).not.toBe('decision-logic');
+  });
 });
