@@ -27,6 +27,57 @@ describe('prototype content resolution', () => {
     expect(resolved?.meaningContract.visibleChange).toContain('→');
   });
 
+  it('preserves German states that contain the standalone word an', () => {
+    const spokenText =
+      'An der Kapazitätsgrenze steigt die Last, während der Dienst noch stabil bleibt.';
+    const base = enhanceSceneMeaning(spokenText);
+    const sourceMeaningContract = {
+      ...base,
+      startState: 'An der Kapazitätsgrenze bleiben die Anfragen zunächst stabil.',
+      visibleChange: 'An der Grenze steigt die Last sichtbar an.',
+      endState: 'Am Engpass bleibt die Latenz als Ergebnis sichtbar.',
+    };
+    const resolved = resolvePrototypeContent({
+      spokenText,
+      meaningContract: sourceMeaningContract,
+    });
+
+    expect(resolved?.meaningContract.startState).toBe(
+      sourceMeaningContract.startState,
+    );
+    expect(resolved?.meaningContract.visibleChange).toBe(
+      sourceMeaningContract.visibleChange,
+    );
+    expect(resolved?.meaningContract.endState).toBe(
+      sourceMeaningContract.endState,
+    );
+  });
+
+  it('does not treat a single German technical noun such as Input as English', () => {
+    const spokenText = 'Der Input bleibt sichtbar, bis die Prüfung startet.';
+    const base = enhanceSceneMeaning(spokenText);
+    const sourceMeaningContract = {
+      ...base,
+      startState: 'Input bleibt vor der Prüfung sichtbar.',
+      visibleChange: 'Die Prüfung markiert den Input Schritt für Schritt.',
+      endState: 'Der geprüfte Input bleibt als Ergebnis sichtbar.',
+    };
+    const resolved = resolvePrototypeContent({
+      spokenText,
+      meaningContract: sourceMeaningContract,
+    });
+
+    expect(resolved?.meaningContract.startState).toBe(
+      sourceMeaningContract.startState,
+    );
+    expect(resolved?.meaningContract.visibleChange).toBe(
+      sourceMeaningContract.visibleChange,
+    );
+    expect(resolved?.meaningContract.endState).toBe(
+      sourceMeaningContract.endState,
+    );
+  });
+
   it('preserves explicitly supplied render wording', () => {
     const spokenText = 'Eine Quelle wird geprüft.';
     const sourceMeaningContract = enhanceSceneMeaning(spokenText);
