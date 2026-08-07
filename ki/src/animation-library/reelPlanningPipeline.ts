@@ -1,4 +1,5 @@
 import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
+import {enhanceSceneMeaning} from './extendedMeaningContract';
 import {
   planProductionReelAnimations,
   type ProductionReelAnimationPlan,
@@ -57,7 +58,20 @@ export const planReelAnimationsFromText = ({
     sceneIds.add(scene.sceneId);
   }
 
-  const analyses = analyzeScenesForAnimation(scenes);
+  const analyses = analyzeScenesForAnimation(scenes).map((analysis) => {
+    const meaningContract = enhanceSceneMeaning(
+      analysis.spokenText,
+      analysis.meaningContract,
+    );
+    return {
+      ...analysis,
+      meaningContract,
+      brief: {
+        ...analysis.brief,
+        meaningContract,
+      },
+    } satisfies SceneAnimationAnalysis;
+  });
   const productionPlan = planProductionReelAnimations({
     reelId,
     reelIndex,
