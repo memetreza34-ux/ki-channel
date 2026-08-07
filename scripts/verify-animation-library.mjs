@@ -24,6 +24,8 @@ const checks = [
   ],
   ['node', ['--check', 'scripts/render-animation-library.mjs']],
   ['node', ['--check', 'scripts/check-animation-library-renders.mjs']],
+  ['node', ['--check', 'scripts/render-content-matched-prototype.mjs']],
+  ['node', ['--check', 'scripts/verify-content-matched-runtime.mjs']],
   [
     'npx',
     [
