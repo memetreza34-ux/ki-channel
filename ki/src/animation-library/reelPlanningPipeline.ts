@@ -6,6 +6,7 @@ import {
 } from './productionPlanner';
 import {
   analyzeScenesForAnimation,
+  type AnimationFamilyName,
   type SceneAnimationAnalysis,
 } from './sceneAnalyzer';
 
@@ -29,6 +30,56 @@ export type RawReelAnimationPlan = {
     selectionScore: number | null;
     mustBeNew: boolean;
   }[];
+};
+
+const unique = <T,>(values: readonly T[]): T[] => [...new Set(values)];
+
+const synchronizeEnhancedAnalysis = (
+  analysis: SceneAnimationAnalysis,
+): SceneAnimationAnalysis => {
+  const meaningContract = enhanceSceneMeaning(
+    analysis.spokenText,
+    analysis.meaningContract,
+  );
+  const validFamilies = new Set(
+    analysis.familyScores.map((score) => score.visualFamily),
+  );
+  const preferredVisualFamilies = unique([
+    ...meaningContract.preferredVisualFamilies.filter(
+      (family): family is AnimationFamilyName =>
+        validFamilies.has(family as AnimationFamilyName),
+    ),
+    ...analysis.preferredVisualFamilies,
+  ]).slice(0, 3);
+  const semanticTags = unique([
+    ...analysis.semanticTags,
+    ...meaningContract.subjectTerms,
+    ...meaningContract.actionTerms,
+    ...meaningContract.resultTerms,
+  ]).slice(0, 16);
+  const explanationPatterns = unique([
+    ...meaningContract.preferredExplanationPatterns,
+    ...(analysis.brief.explanationPatterns ?? []),
+  ]).slice(0, 10);
+  const forbiddenVisualFamilies = analysis.forbiddenVisualFamilies.filter(
+    (family) => !preferredVisualFamilies.includes(family),
+  );
+
+  return {
+    ...analysis,
+    semanticTags,
+    meaningContract,
+    preferredVisualFamilies,
+    forbiddenVisualFamilies,
+    brief: {
+      ...analysis.brief,
+      semanticTags,
+      explanationPatterns,
+      preferredVisualFamilies,
+      forbiddenVisualFamilies,
+      meaningContract,
+    },
+  };
 };
 
 export const planReelAnimationsFromText = ({
@@ -58,20 +109,9 @@ export const planReelAnimationsFromText = ({
     sceneIds.add(scene.sceneId);
   }
 
-  const analyses = analyzeScenesForAnimation(scenes).map((analysis) => {
-    const meaningContract = enhanceSceneMeaning(
-      analysis.spokenText,
-      analysis.meaningContract,
-    );
-    return {
-      ...analysis,
-      meaningContract,
-      brief: {
-        ...analysis.brief,
-        meaningContract,
-      },
-    } satisfies SceneAnimationAnalysis;
-  });
+  const analyses = analyzeScenesForAnimation(scenes).map(
+    synchronizeEnhancedAnalysis,
+  );
   const productionPlan = planProductionReelAnimations({
     reelId,
     reelIndex,
@@ -83,12 +123,16 @@ export const planReelAnimationsFromText = ({
 
   const decisionSummary = productionPlan.scenes.map((scenePlan, index) => {
     const analysis = analyses[index];
+    const primaryFamily = analysis.preferredVisualFamilies[0];
+    const primaryFamilyScore = analysis.familyScores.find(
+      (score) => score.visualFamily === primaryFamily,
+    );
     return {
       sceneId: scenePlan.sceneId,
-      primaryFamily: analysis.preferredVisualFamilies[0],
+      primaryFamily,
       selectedAnimationId: scenePlan.animationId,
       source: scenePlan.source,
-      familyScore: analysis.familyScores[0]?.score ?? 0,
+      familyScore: primaryFamilyScore?.score ?? 0,
       selectionScore: scenePlan.selectionScore,
       mustBeNew: analysis.mustBeNew,
     };
