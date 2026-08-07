@@ -6,6 +6,7 @@ import {
 } from './motion-artifact-validation.mjs';
 import {
   ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+  ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES,
   ANIMATION_LIBRARY_EXPECTED_ARTIFACT_COUNT,
   ANIMATION_LIBRARY_RENDER_CONFIG,
   ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
@@ -24,6 +25,11 @@ const readJson = async (path, label) => {
   }
 };
 
+const sameNumberArray = (left, right) =>
+  Array.isArray(left) &&
+  left.length === right.length &&
+  left.every((value, index) => value === right[index]);
+
 const planPath = resolve(OUTPUT_DIR, 'render-plan.json');
 const plan = await readJson(planPath, 'Animation-Library-Renderplan');
 const planProblems = [];
@@ -39,7 +45,17 @@ if (plan.sourceFingerprint !== ANIMATION_LIBRARY_SOURCE_FINGERPRINT) {
   );
 }
 if (plan.contentSmokeFrame !== ANIMATION_LIBRARY_CONTENT_RENDER_FRAME) {
-  planProblems.push('Renderplan verwendet nicht den aktuellen Content-Smoke-Frame.');
+  planProblems.push('Renderplan verwendet nicht den aktuellen primären Content-Smoke-Frame.');
+}
+if (
+  !sameNumberArray(
+    plan.contentSmokeFrames,
+    [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
+  )
+) {
+  planProblems.push(
+    'Renderplan enthält nicht alle aktuellen Content-Checkpoints für Einstieg, Erklärung, Ergebnis und End-Hold.',
+  );
 }
 if (
   !Array.isArray(plan.prototypes) ||
@@ -63,17 +79,17 @@ const expectedArtifacts = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.flatMap(
           `frame-${String(frame).padStart(3, '0')}.png`,
         ),
       })),
-      {
+      ...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES.map((frame) => ({
         kind: 'still',
         variant: 'content-smoke',
         animationId: prototype.animationId,
         compositionId: prototype.compositionId,
-        frame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+        frame,
         path: resolve(
           directory,
-          `content-frame-${String(ANIMATION_LIBRARY_CONTENT_RENDER_FRAME).padStart(3, '0')}.png`,
+          `content-frame-${String(frame).padStart(3, '0')}.png`,
         ),
-      },
+      })),
       {
         kind: 'video',
         variant: 'demo',
@@ -140,24 +156,31 @@ const prototypeReports = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.map(
       (result) => result.animationId === prototype.animationId,
     );
     const passed = prototypeArtifacts.filter((artifact) => artifact.valid).length;
-    const contentSmoke = prototypeArtifacts.find(
+    const contentSmokes = prototypeArtifacts.filter(
       (artifact) => artifact.variant === 'content-smoke',
     );
+    const passedContentSmokes = contentSmokes.filter(
+      (artifact) => artifact.valid,
+    ).length;
     return {
       animationId: prototype.animationId,
       compositionId: prototype.compositionId,
       expectedArtifacts: prototypeArtifacts.length,
       passedArtifacts: passed,
       failedArtifacts: prototypeArtifacts.length - passed,
-      contentSmokePassed: contentSmoke?.valid === true,
+      expectedContentSmokeArtifacts: contentSmokes.length,
+      passedContentSmokeArtifacts: passedContentSmokes,
+      failedContentSmokeArtifacts: contentSmokes.length - passedContentSmokes,
+      contentSmokePassed: passedContentSmokes === contentSmokes.length,
       passed: passed === prototypeArtifacts.length,
     };
   },
 );
 
 const report = {
-  version: 2,
+  version: 3,
   sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
+  contentSmokeFrames: [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
   expectedArtifacts: expectedArtifacts.length,
   passedArtifacts,
   failedArtifacts,
@@ -184,11 +207,11 @@ if (!report.passed) {
     console.error(`- ${result.path}: ${result.failure}`);
   }
   console.error(
-    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Smokes gültig.`,
+    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints gültig.`,
   );
   process.exit(1);
 }
 
 console.log(
-  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Smokes gültig.`,
+  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints gültig.`,
 );
