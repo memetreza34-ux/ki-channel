@@ -73,6 +73,23 @@ assert(
     rawContentFixtures.frame < durationInFrames,
   'content fixture frame must be a valid frame number',
 );
+const contentCheckpoints = [
+  30,
+  rawContentFixtures.frame,
+  Math.min(150, durationInFrames - 2),
+  durationInFrames - 1,
+].filter((frame, index, all) => all.indexOf(frame) === index).sort((a, b) => a - b);
+assert(
+  contentCheckpoints.length >= 4 &&
+    contentCheckpoints.every(
+      (frame, index) =>
+        Number.isInteger(frame) &&
+        frame >= 0 &&
+        frame < durationInFrames &&
+        (index === 0 || frame > contentCheckpoints[index - 1]),
+    ),
+  'content checkpoints must cover four unique valid render phases',
+);
 assert(
   Array.isArray(rawContentFixtures.fixtures),
   'content fixtures must be an array',
@@ -118,8 +135,11 @@ export const ANIMATION_LIBRARY_RENDER_CONFIG = Object.freeze({
   ),
 });
 
-export const ANIMATION_LIBRARY_CONTENT_RENDER_FRAME =
-  rawContentFixtures.frame;
+// Backward-compatible primary content frame plus the full release checkpoint set.
+export const ANIMATION_LIBRARY_CONTENT_RENDER_FRAME = rawContentFixtures.frame;
+export const ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES = Object.freeze(
+  contentCheckpoints,
+);
 export const ANIMATION_LIBRARY_CONTENT_RENDER_FIXTURES = Object.freeze(
   rawContentFixtures.fixtures.map((fixture) =>
     Object.freeze({
@@ -152,6 +172,7 @@ export const ANIMATION_LIBRARY_SOURCE_FILES = Object.freeze([
   resolve('scripts/render-animation-library.mjs'),
   resolve('scripts/check-animation-library-renders.mjs'),
   resolve('scripts/render-content-matched-prototype.mjs'),
+  resolve('scripts/check-native-prototype-bindings.mjs'),
 ].sort());
 
 const hash = createHash('sha256');
@@ -166,4 +187,8 @@ export const ANIMATION_LIBRARY_SOURCE_FINGERPRINT = hash.digest('hex');
 
 export const ANIMATION_LIBRARY_EXPECTED_ARTIFACT_COUNT =
   ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.length *
-  (ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.length + 2);
+  (
+    ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.length +
+    ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES.length +
+    1
+  );
