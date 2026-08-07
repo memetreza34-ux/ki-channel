@@ -1,6 +1,8 @@
 import {describe, expect, it} from 'vitest';
 import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
+import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
+import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
 import {planReelAnimationsFromText} from '../reelPlanningPipeline';
 
 const brain = createInitialCreativeBrainState({
@@ -36,6 +38,38 @@ describe('raw reel animation planning pipeline', () => {
     expect(
       new Set(plan.productionPlan.scenes.map((scene) => scene.animationId)).size,
     ).toBe(5);
+  });
+
+  it('keeps executable but shell-only variants out of the public text-to-production path', () => {
+    const shellOnlyEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) =>
+        EXECUTABLE_ANIMATION_IDS.includes(entry.animationId) &&
+        !NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(entry.animationId),
+    );
+    expect(shellOnlyEntry).toBeDefined();
+
+    const plan = planReelAnimationsFromText({
+      reelId: 'raw-reel-shell-only',
+      reelIndex: 21,
+      entries: [shellOnlyEntry!],
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-shell-only',
+          spokenText:
+            'Die Animation muss die konkreten Begriffe und Zustandsänderungen dieses Satzes direkt sichtbar machen.',
+        },
+      ],
+    });
+
+    expect(plan.productionPlan.scenes).toHaveLength(1);
+    expect(plan.productionPlan.scenes[0].source).toBe('new-build');
+    expect(plan.productionPlan.scenes[0].animationId).not.toBe(
+      shellOnlyEntry!.animationId,
+    );
+    expect(plan.productionPlan.scenes[0].buildSpec).not.toBeNull();
+    expect(plan.decisionSummary[0].source).toBe('new-build');
   });
 
   it('passes forced-new decisions into the proposal compiler', () => {
