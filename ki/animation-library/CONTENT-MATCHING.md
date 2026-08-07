@@ -186,6 +186,54 @@ Unterstützte Modi:
 
 Das Skript validiert Sprechertext, Bedeutungsvertrag, Pflicht-Cues, Szenenzuordnung und Animation-ID. Anschließend übergibt es die normalisierten Daten über Remotions offizielles `--props`-Verfahren.
 
+## Content-Fixtures und harter Runtime-Key-Gate
+
+`ki/src/animation-library/content-render-fixtures.json` enthält für **jede der 22 registrierten Kernanimationen genau ein echtes Inhaltsbeispiel** mit Sprechertext und prototypspezifischen Labels beziehungsweise Werten.
+
+Die Fixtures sind nicht nur Beispieldaten. Sie sind Teil der Freigabeprüfung.
+
+`scripts/check-native-prototype-bindings.mjs` prüft vor dem Rendern:
+
+- exakt 22 native Kernkomponenten,
+- exakt 22 eindeutige Content-Fixtures,
+- jede Komponente verwendet `PrototypeContentContext`,
+- jedes Fixture besitzt echten Sprechertext,
+- jedes Fixture prüft mindestens einen expliziten Render-Key,
+- **jeder einzelne `labels`-/`values`-Key muss von der zugehörigen TSX-Komponente tatsächlich gelesen werden**.
+
+Damit werden Tippfehler wie `path1` statt `slowPath`, `resultCount` statt `evidenceCount` oder `value1` statt `vector1` bereits vor dem Rendern abgelehnt. Ein stiller Rückfall auf Demo-Fallbackwerte darf nicht mehr als bestandene Content-Prüfung gelten.
+
+## Content-aware Release-Artefakte
+
+Der normale Animation-Library-Release prüft nicht mehr ausschließlich die bisherigen Demo-Render.
+
+Für jede der 22 Kernkompositionen wird mit realen Content-Props zusätzlich an vier Phasen gerendert:
+
+- **Frame 30:** Einstieg / Aufbau
+- **Frame 90:** zentrale Erklärphase
+- **Frame 150:** Ergebnisphase
+- **Frame 179:** finaler Hold
+
+Bei der aktuellen Konfiguration mit sieben bisherigen Demo-Kontrollframes ergibt ein vollständiger `all`-Lauf pro Prototyp:
+
+- 7 Demo-Stills
+- 4 Content-aware Stills
+- 1 Demo-Video
+
+Für 22 Prototypen sind das insgesamt **264 technische Release-Artefakte**, davon **88 Content-aware Kontrollframes**.
+
+`scripts/check-animation-library-renders.mjs` akzeptiert für die Freigabe ausschließlich einen frischen Renderplan aus dem Modus `all`. Getrennte oder ältere Still-/Video-Läufe dürfen nicht mehr zu einer scheinbar vollständigen Freigabe zusammenfallen.
+
+Der Checker verlangt außerdem:
+
+- aktuellen Source-Fingerprint,
+- alle registrierten Prototypen,
+- exakt die aktuellen vier Content-Checkpoints,
+- gültige Bild-/Video-Artefakte,
+- vier bestandene Content-Frames pro Kernprototyp.
+
+Damit kann ein grüner Demo-Render allein die neue content-aware Runtime nicht mehr freigeben.
+
 ## Neue Animation statt falscher Wiederverwendung
 
 Wenn keine bestehende Animation den Inhalt ausreichend erklärt, erzeugt das System ein `NewAnimationProposal` mit:
@@ -208,7 +256,7 @@ Ein Proposal ist noch keine implementierte Animation. Eine `new-build`-Szene ble
 
 ## Remotion-Event-Payload
 
-Das kompilierten `main-animation`-Event enthält:
+Das kompilierte `main-animation`-Event enthält:
 
 - den exakten Sprechertext
 - Kommunikationsziel
@@ -254,7 +302,7 @@ Ohne `content`-Props rendert die Galerie weiterhin ihre bisherigen Demonstration
 
 ## Prüfung
 
-Regressionstests decken unter anderem ab:
+Regressionstests und Release-Gates decken unter anderem ab:
 
 - Bedeutungsverträge
 - Inhaltsfit vor Neuheit
@@ -267,14 +315,21 @@ Regressionstests decken unter anderem ab:
 - serialisierbare Render-Props
 - deutschsprachige Renderzustände ohne Mutation des Quellvertrags
 - Blockierung nicht implementierter New-Build-Animationen
+- 22/22 Content-Fixture-Abdeckung
+- Ablehnung unbenutzter oder falsch geschriebener Fixture-Keys
+- vier Content-aware Kontrollphasen pro Prototyp
+- Ablehnung gemischter oder veralteter Release-Artefakte
 
 ## Noch ausstehende reale Freigabe
 
 Der vollständige Repository-TypeScript-, Vitest- und Remotion-Lauf muss weiterhin ausgeführt werden:
 
 ```bash
+node scripts/verify-content-matched-runtime.mjs
 npm run animation-library:verify
 npm run animation-library:full-release-check
 ```
 
 GitHub Actions beendet Jobs in diesem privaten Repository aktuell vor dem ersten Schritt. Es entstehen weder Checkout-Schritte noch Logs. Deshalb darf der Draft-PR erst nach einem funktionierenden lokalen oder GitHub-basierten Gesamtlauf freigegeben werden.
+
+Die zusätzlichen technischen Content-Frames ersetzen außerdem keine visuelle Qualitätskontrolle. Vor dem Merge müssen insbesondere Lesbarkeit, Objektüberlagerungen, Timing und tatsächliche semantische Verständlichkeit der gerenderten Content-Frames kontrolliert werden.
