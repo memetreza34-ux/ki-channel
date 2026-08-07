@@ -43,10 +43,26 @@ const compactTerms = (
     .slice(0, maximum)
     .join(' · ');
 
-const likelyEnglishState = (value: string): boolean =>
-  /\b(the|a|an|one|multiple|visible|state|result|input|output|through|while|without|into|from|and|remains|changes|shows|begins|ends)\b/i.test(
+const matchCount = (value: string, pattern: RegExp): number =>
+  value.match(pattern)?.length ?? 0;
+
+const likelyEnglishState = (value: string): boolean => {
+  // Strong markers are English grammar/action words that are unlikely to appear
+  // naturally in a German render state. Technical nouns such as input/output/result
+  // and weak articles are deliberately insufficient on their own. This prevents
+  // German sentences such as “An der Grenze …” from being mistaken for English.
+  const strongMarkerCount = matchCount(
     value,
+    /\b(multiple|several|visible|through|while|without|into|from|remains|changes|shows|begins|ends|waits|moves|becomes|increases|reduces|fixed|clearly|labeled)\b/gi,
   );
+  if (strongMarkerCount > 0) return true;
+
+  const weakMarkerCount = matchCount(
+    value,
+    /\b(the|a|an|one|state|result|input|output|and)\b/gi,
+  );
+  return weakMarkerCount >= 2;
+};
 
 const renderState = ({
   supplied,
