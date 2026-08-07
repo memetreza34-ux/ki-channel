@@ -5,6 +5,10 @@ export type PrototypeContentBindingLevel =
 
 export const NATIVE_CONTENT_BOUND_PROTOTYPE_IDS = new Set<string>([
   'tokenization-magnetic-phrase-slicer-v1',
+  'data-transformation-vector-prism-converter-v1',
+  'semantic-space-meaning-terrain-v1',
+  'probability-probability-fluid-columns-v1',
+  'decision-logic-decision-tree-burst-v1',
   'retrieval-search-knowledge-magnet-v1',
   'risk-contrast-confidence-glass-crack-v1',
   'scale-performance-latency-tunnel-race-v1',
