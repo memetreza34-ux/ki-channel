@@ -2,6 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
+import {isProductionReadyLibraryAnimation} from '../productionEligibility';
 import {planProductionReelAnimations} from '../productionPlanner';
 
 const brain = createInitialCreativeBrainState({
@@ -50,6 +51,15 @@ describe('production reel animation planner', () => {
     expect(new Set(plan.scenes.map((scene) => scene.animationId)).size).toBe(4);
     expect(new Set(plan.layoutFamilies).size).toBe(4);
     expect(new Set(plan.visualFamilies).size).toBeGreaterThanOrEqual(4);
+    expect(
+      plan.scenes.every(
+        (scene) =>
+          scene.source === 'library' &&
+          scene.buildSpec === null &&
+          isProductionReadyLibraryAnimation(scene.animationId),
+      ),
+    ).toBe(true);
+    expect(plan.readyForImplementation).toBe(true);
   });
 
   it('never reuses an unregistered catalog entry in a production plan', () => {
@@ -115,9 +125,10 @@ describe('production reel animation planner', () => {
     expect(plan.scenes).toHaveLength(1);
     expect(plan.scenes[0].animationId).not.toBe(unregisteredAnimationId);
     if (plan.scenes[0].source === 'library') {
-      expect(EXECUTABLE_ANIMATION_IDS).toContain(plan.scenes[0].animationId);
+      expect(isProductionReadyLibraryAnimation(plan.scenes[0].animationId)).toBe(true);
     } else {
       expect(plan.scenes[0].source).toBe('new-build');
+      expect(plan.readyForImplementation).toBe(false);
     }
   });
 
@@ -144,6 +155,7 @@ describe('production reel animation planner', () => {
     expect(plan.scenes[0].source).toBe('new-build');
     expect(plan.scenes[0].buildSpec).not.toBeNull();
     expect(plan.scenes[0].catalogEntry.status).toBe('concept');
+    expect(plan.readyForImplementation).toBe(false);
     expect(plan.scenes[0].buildSpec?.implementationRules).toContain(
       'Reject the result if it is only a card layout with different labels.',
     );
