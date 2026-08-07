@@ -5,6 +5,7 @@ import {
   type ReelImplementationBrief,
 } from './implementationBrief';
 import type {SceneMeaningContract} from './meaningContract';
+import {isProductionReadyLibraryAnimation} from './productionEligibility';
 import {
   getPrototypeContentBindingLevel,
   isPrototypeContentBindingReady,
@@ -60,6 +61,21 @@ export type ChannelReelMasterPlan = {
 
 const unique = (values: readonly string[]): string[] => [...new Set(values)];
 
+const assertProductionReuseInvariant = (
+  prepared: PreparedReelProduction,
+): void => {
+  for (const scene of prepared.plan.productionPlan.scenes) {
+    if (
+      scene.source === 'library' &&
+      !isProductionReadyLibraryAnimation(scene.animationId)
+    ) {
+      throw new Error(
+        `production reuse invariant violated: scene ${scene.sceneId} uses library animation ${scene.animationId} without executable native content binding`,
+      );
+    }
+  }
+};
+
 export const createChannelReelMasterPlan = ({
   prepared,
   durationBySceneId,
@@ -67,6 +83,7 @@ export const createChannelReelMasterPlan = ({
   prepared: PreparedReelProduction;
   durationBySceneId: Readonly<Record<string, number>>;
 }): ChannelReelMasterPlan => {
+  assertProductionReuseInvariant(prepared);
   const implementationBrief = compileReelImplementationBrief(prepared);
   const analysisByScene = new Map(
     prepared.plan.analyses.map((analysis) => [analysis.sceneId, analysis]),
