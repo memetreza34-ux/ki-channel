@@ -1,4 +1,9 @@
 import {completeImportantWordCoverage} from './importantWordCoverage';
+import {enhanceSceneMeaning} from './extendedMeaningContract';
+import {
+  analyzeSceneMeaning,
+  type SceneMeaningContract,
+} from './meaningContract';
 import type {
   SemanticMotionBeat,
   SentenceMotionCoveragePlan,
@@ -14,6 +19,7 @@ export type UniversalSceneMotionInput = {
   motionSignature: string;
   transitionInTags?: readonly string[];
   transitionOutTags?: readonly string[];
+  meaningContract?: SceneMeaningContract;
 };
 
 export type UniversalSceneLayerPlan = {
@@ -42,10 +48,12 @@ export type UniversalTransitionPlan = {
 
 export type UniversalSceneMotionPlan = {
   sceneId: string;
+  spokenText: string;
   animationId: string;
   visualFamily: string;
   layoutFamily: string;
   motionSignature: string;
+  meaningContract: SceneMeaningContract;
   durationInFrames: number;
   headlineMotionId: 'keyword-rise-lock';
   subtitleMode: 'word-by-word-with-semantic-emphasis';
@@ -90,6 +98,18 @@ const REQUIRED_LAYERS: readonly UniversalSceneLayerPlan[] = [
   {layerId:'sound-design',required:true,purpose:'Support visible actions with restrained synchronized sound cues.'},
   {layerId:'transition',required:true,purpose:'Connect scenes through meaning, shape, object, direction, or a deliberate hard cut.'},
 ] as const;
+
+const resolveMeaningContract = (
+  scene: UniversalSceneMotionInput,
+): SceneMeaningContract => {
+  if (!scene.meaningContract) {
+    return enhanceSceneMeaning(scene.spokenText);
+  }
+  const automaticBase = analyzeSceneMeaning(scene.spokenText);
+  return JSON.stringify(scene.meaningContract) === JSON.stringify(automaticBase)
+    ? enhanceSceneMeaning(scene.spokenText, scene.meaningContract)
+    : scene.meaningContract;
+};
 
 const chooseTransition = (
   current: UniversalSceneMotionInput,
@@ -157,6 +177,16 @@ export const createUniversalReelMotionPlan = ({
     sceneIds.add(scene.sceneId);
     if (!scene.animationId.trim()) blockers.push(`scene ${scene.sceneId} has no full animation`);
 
+    const meaningContract = resolveMeaningContract(scene);
+    const semanticPayloadComplete =
+      Boolean(meaningContract.startState.trim()) &&
+      Boolean(meaningContract.visibleChange.trim()) &&
+      Boolean(meaningContract.endState.trim()) &&
+      meaningContract.requiredVisualCues.length > 0;
+    if (!semanticPayloadComplete) {
+      blockers.push(`scene ${scene.sceneId} has an incomplete meaning contract`);
+    }
+
     const sentenceCoverage = completeImportantWordCoverage({
       sceneId: scene.sceneId,
       spokenText: scene.spokenText,
@@ -184,20 +214,29 @@ export const createUniversalReelMotionPlan = ({
     if (soundCues.length > 8) {
       sceneWarnings.push(`${soundCues.length} sound cues may overload the scene`);
     }
+    if (meaningContract.subjectTerms.length === 0) {
+      sceneWarnings.push('meaning contract has no labeled subject terms');
+    }
+    if (meaningContract.actionTerms.length === 0) {
+      sceneWarnings.push('meaning contract has no explicit action term; use the visible-change sentence as the motion trigger');
+    }
     const transitionOut = index < scenes.length - 1
       ? chooseTransition(scene, scenes[index + 1])
       : null;
     const valid =
       Boolean(scene.animationId.trim()) &&
+      semanticPayloadComplete &&
       sentenceCoverage.importantBeatCoverage === 1 &&
       sentenceCoverage.strongMotionCount <= 3;
 
     return {
       sceneId: scene.sceneId,
+      spokenText: scene.spokenText,
       animationId: scene.animationId,
       visualFamily: scene.visualFamily,
       layoutFamily: scene.layoutFamily,
       motionSignature: scene.motionSignature,
+      meaningContract,
       durationInFrames: scene.durationInFrames,
       headlineMotionId: 'keyword-rise-lock' as const,
       subtitleMode: 'word-by-word-with-semantic-emphasis' as const,
@@ -257,7 +296,7 @@ export const createUniversalReelMotionPlan = ({
     ? 1
     : animatedImportantWordCount / importantWordCount;
   const validSentenceCount = plannedScenes.filter(
-    (scene) => Boolean(scene.animationId.trim()),
+    (scene) => Boolean(scene.animationId.trim()) && scene.valid,
   ).length;
   const sentenceCoverage = validSentenceCount / plannedScenes.length;
   const uniqueVisualFamilyCount = new Set(
