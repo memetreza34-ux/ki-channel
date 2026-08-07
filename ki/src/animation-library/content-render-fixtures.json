@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "frame": 90,
+  "fixtures": [
+    {
+      "animationId": "retrieval-search-knowledge-magnet-v1",
+      "content": {
+        "title": "Passende Quellen finden",
+        "spokenText": "Die Suche zieht nur die drei Quellen heran, die unsere Aussage wirklich belegen.",
+        "labels": {"query": "Welche Quelle belegt die Aussage?", "source1": "Studie 2026", "source2": "Fachbericht", "source3": "Primärquelle"},
+        "values": {"resultCount": 3}
+      }
+    },
+    {
+      "animationId": "cost-efficiency-budget-leak-meter-v1",
+      "content": {
+        "title": "Kosten sichtbar senken",
+        "spokenText": "Ein zu langer Prompt, unnötiger Kontext und das falsche Modell treiben die Kosten hoch.",
+        "labels": {"leak1": "zu langer Prompt", "leak2": "unnötiger Kontext", "leak3": "falsches Modell"},
+        "values": {"startCost": 94, "endCost": 28, "leak1Amount": 18, "leak2Amount": 27, "leak3Amount": 21}
+      }
+    },
+    {
+      "animationId": "context-window-context-window-train-v1",
+      "content": {
+        "title": "Begrenzter Kontext",
+        "spokenText": "Neue Nachrichten schieben alte Informationen aus dem Kontextfenster, während die wichtigste Regel angeheftet bleibt.",
+        "labels": {"message1": "Frage", "message2": "Antwort", "message3": "Wichtige Regel", "message4": "Beispiel", "message5": "Neue Frage", "message6": "Neue Antwort"},
+        "values": {"capacity": 4, "pinnedIndex": 3}
+      }
+    },
+    {
+      "animationId": "decision-logic-decision-tree-burst-v1",
+      "content": {
+        "title": "Entscheidung mit Kriterien",
+        "spokenText": "Die Entscheidung prüft Preis, Tempo und Sicherheit und verwirft ungeeignete Wege.",
+        "labels": {"question": "Welches Tool passt?", "branch1": "günstig?", "branch2": "schnell?", "branch3": "unsicher?", "branch4": "skalierbar?", "branch5": "zu komplex?", "selectedPath": "günstig + schnell + skalierbar"},
+        "values": {"branch1Valid": 1, "branch2Valid": 1, "branch3Valid": 0, "branch4Valid": 1, "branch5Valid": 0}
+      }
+    },
+    {
+      "animationId": "human-ai-collaboration-human-ai-relay-v1",
+      "content": {
+        "title": "Mensch und KI teilen die Arbeit",
+        "spokenText": "Der Mensch setzt Ziel und Qualitätsgrenze, die KI erzeugt Optionen, danach prüft der Mensch und die KI setzt die freigegebene Lösung um.",
+        "labels": {"stage1": "Ziel", "stage2": "Entwurf", "stage3": "Prüfung", "stage4": "Ausführung", "result": "Klare Übergaben statt Mensch gegen KI"}
+      }
+    },
+    {
+      "animationId": "learning-update-knowledge-tree-graft-v1",
+      "content": {
+        "title": "Wissen kontrolliert aktualisieren",
+        "spokenText": "Eine neue verifizierte Information ersetzt die unsichere alte Aussage nachvollziehbar und versioniert.",
+        "labels": {"old1": "Stand 2024", "old2": "Stand 2025", "uncertain": "unsicher", "newFact": "Stand 2026", "source": "Primärquelle"},
+        "values": {"confidence": 92, "revisionFrom": 3, "revisionTo": 4}
+      }
+    },
+    {
+      "animationId": "tokenization-magnetic-phrase-slicer-v1",
+      "content": {
+        "title": "Satz in Tokens zerlegen",
+        "spokenText": "Die KI zerlegt diesen Satz sichtbar in einzelne Tokens.",
+        "labels": {"lane1": "Grammatik", "lane2": "Bedeutung", "lane3": "Kontext"}
+      }
+    },
+    {
+      "animationId": "data-transformation-vector-prism-converter-v1",
+      "content": {
+        "title": "Wort wird Zahlenvektor",
+        "spokenText": "Das Wort Berlin wird in numerische Dimensionen für Bedeutung, Kontext und Ton umgewandelt.",
+        "labels": {"input": "Berlin", "dimension1": "Bedeutung", "dimension2": "Kontext", "dimension3": "Ton"},
+        "values": {"value1": "0.82", "value2": "-0.31", "value3": "0.47"}
+      }
+    },
+    {
+      "animationId": "ranking-dynamic-podium-rise-v1",
+      "content": {
+        "title": "Ranking verändert sich",
+        "spokenText": "Sobald Preis, Tempo und Qualität gemeinsam zählen, steigt Tool A auf Platz eins.",
+        "labels": {"candidate1": "Tool A", "candidate2": "Tool B", "candidate3": "Tool C", "criterion1": "Preis", "criterion2": "Tempo", "criterion3": "Qualität"},
+        "values": {"candidate1Start": 58, "candidate1Middle": 74, "candidate1End": 91, "candidate2Start": 72, "candidate2Middle": 68, "candidate2End": 76, "candidate3Start": 64, "candidate3Middle": 81, "candidate3End": 69}
+      }
+    },
+    {
+      "animationId": "process-flow-subway-workflow-map-v1",
+      "content": {
+        "title": "Workflow als Strecke",
+        "spokenText": "Die Aufgabe läuft von Eingabe über Prüfung und Planung bis zur Ausführung und zum Ergebnis.",
+        "labels": {"station1": "Input", "station2": "Prüfen", "station3": "Planen", "station4": "Ausführen", "station5": "Ergebnis", "result": "Workflow abgeschlossen"}
+      }
+    },
+    {
+      "animationId": "input-output-funnel-compression-output-v1",
+      "content": {
+        "title": "Viele Quellen, ein Ergebnis",
+        "spokenText": "Dokumente, Notizen, Webseiten und Berichte werden gefiltert und zu einer klaren Zusammenfassung verdichtet.",
+        "labels": {"input1": "Dokumente", "input2": "Notizen", "input3": "Webseiten", "input4": "Chats", "input5": "Tabellen", "input6": "Berichte", "output": "Klare Zusammenfassung"}
+      }
+    },
+    {
+      "animationId": "error-detection-anomaly-xray-scanner-v1",
+      "content": {
+        "title": "Fehlerquelle finden",
+        "spokenText": "Der Scanner verfolgt den Ablauf und isoliert den Fehler im Modellschritt, bevor der Output repariert wird.",
+        "labels": {"step1": "Input", "step2": "Filter", "step3": "Modell", "step4": "Output", "error": "Fehler im Modellschritt", "repaired": "Route repariert"},
+        "values": {"errorIndex": 3}
+      }
+    },
+    {
+      "animationId": "semantic-space-meaning-terrain-v1",
+      "content": {
+        "title": "Bedeutungen bilden Cluster",
+        "spokenText": "Hund, Katze und Tier liegen im Bedeutungsraum näher zusammen als Auto, Zug und Reise.",
+        "labels": {"concept1": "Hund", "concept2": "Katze", "concept3": "Tier", "concept4": "Auto", "concept5": "Zug", "concept6": "Reise", "cluster1": "Tier-Bereich", "cluster2": "Reise-Bereich"}
+      }
+    },
+    {
+      "animationId": "relationship-network-dependency-bridge-builder-v1",
+      "content": {
+        "title": "Wörter gewichten Beziehungen",
+        "spokenText": "Attention verbindet das Wort KI stark mit liest und Text, während eine schwache Direktverbindung verworfen wird.",
+        "labels": {"node1": "KI", "node2": "liest", "node3": "Text", "result": "Starke Beziehungen tragen den Kontext"}
+      }
+    },
+    {
+      "animationId": "probability-probability-fluid-columns-v1",
+      "content": {
+        "title": "Nächstes Wort nach Wahrscheinlichkeit",
+        "spokenText": "Nach dem Kontext steigt die Wahrscheinlichkeit für das Wort Text auf sechsundsechzig Prozent.",
+        "labels": {"candidate1": "Text", "candidate2": "Daten", "candidate3": "Antwort", "context1": "Thema", "context2": "Grammatik", "context3": "Kontext"},
+        "values": {"candidate1Start": 38, "candidate1End": 66, "candidate2Start": 44, "candidate2End": 24, "candidate3Start": 18, "candidate3End": 10}
+      }
+    },
+    {
+      "animationId": "model-processing-residual-river-v1",
+      "content": {
+        "title": "Information durch Modellschichten",
+        "spokenText": "Das Eingangssignal fließt durch drei Verarbeitungsschichten und wird bei jedem Schritt verfeinert.",
+        "labels": {"input": "Eingangssignal", "layer1": "Attention", "layer2": "Transformation", "layer3": "Residual", "output": "Verfeinerter Output"}
+      }
+    },
+    {
+      "animationId": "generation-answer-loom-v1",
+      "content": {
+        "title": "Antwort entsteht Schritt für Schritt",
+        "spokenText": "Aus Kontext, Thema, Grammatik und Ton entsteht Wort für Wort die Antwort KI setzt Muster fort.",
+        "labels": {"thread1": "Kontext", "thread2": "Thema", "thread3": "Grammatik", "thread4": "Ton", "answer": "KI setzt Muster fort."}
+      }
+    },
+    {
+      "animationId": "risk-contrast-confidence-glass-crack-v1",
+      "content": {
+        "title": "Sicherer Ton ist kein Beweis",
+        "spokenText": "Eine sehr sicher formulierte Behauptung zerbricht, sobald Quelle, Datum und Beleg fehlen.",
+        "labels": {"statement": "Diese Aussage ist definitiv korrekt.", "check1": "Quelle?", "check2": "Datum?", "check3": "Beleg?", "warning": "Sicherheit im Ton ist kein Beweis für Wahrheit."},
+        "values": {"confidence": 98}
+      }
+    },
+    {
+      "animationId": "security-privacy-encryption-vault-layers-v1",
+      "content": {
+        "title": "Daten durch Schutzschichten",
+        "spokenText": "Sensible Kundendaten passieren Transport, Verschlüsselung und Berechtigung, bevor der Zugriff freigegeben wird.",
+        "labels": {"data": "Kundendaten", "layer1": "Transport", "layer2": "Verschlüsselung", "layer3": "Berechtigung", "result": "Zugriff geschützt"}
+      }
+    },
+    {
+      "animationId": "scale-performance-latency-tunnel-race-v1",
+      "content": {
+        "title": "Engpass macht den Pfad langsam",
+        "spokenText": "Der serielle Pfad braucht siebenhundertachtzig Millisekunden, während der parallele Pfad in dreihundertvierzig Millisekunden fertig ist.",
+        "labels": {"path1": "Seriell", "path2": "Parallel", "bottleneck": "Engpass"},
+        "values": {"path1Ms": 780, "path2Ms": 340}
+      }
+    },
+    {
+      "animationId": "time-change-timeline-microscope-v1",
+      "content": {
+        "title": "Veränderung über Versionen",
+        "spokenText": "Von Version eins bis heute wächst das System durch viele kleine Verbesserungen bei Tempo, Agenten und Kontext.",
+        "labels": {"milestone1": "V1", "milestone2": "V2", "milestone3": "V3", "milestone4": "V4", "milestone5": "Heute", "change1": "größeres Fenster", "change2": "bessere Werkzeuge", "change3": "stabilere Planung"}
+      }
+    },
+    {
+      "animationId": "comparison-benchmark-racetrack-v1",
+      "content": {
+        "title": "Modelle fair vergleichen",
+        "spokenText": "Modell A gewinnt insgesamt bei Tempo und Qualität, Modell B bleibt günstiger.",
+        "labels": {"competitor1": "Modell A", "competitor2": "Modell B", "metric1": "Tempo", "metric2": "Kosten", "metric3": "Qualität", "result1": "Gesamtsieger", "result2": "Kostensieger"},
+        "values": {"competitor1End": 100, "competitor2End": 92}
+      }
+    }
+  ]
+}
