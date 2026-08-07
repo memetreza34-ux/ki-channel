@@ -26,6 +26,7 @@ const tests = [
   'ki/src/animation-library/__tests__/extendedMeaningContract.test.ts',
   'ki/src/animation-library/__tests__/reelPlanningPipeline.test.ts',
   'ki/src/animation-library/__tests__/productionPlanner.test.ts',
+  'ki/src/animation-library/__tests__/productionExecutableGuard.test.ts',
   'ki/src/animation-library/__tests__/executionCatalog.test.ts',
   'ki/src/animation-library/__tests__/reelLifecycle.test.ts',
   'ki/src/animation-library/__tests__/universalMotionPlan.test.ts',
