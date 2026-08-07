@@ -57,6 +57,9 @@ if (
     'Renderplan enthält nicht alle aktuellen Content-Checkpoints für Einstieg, Erklärung, Ergebnis und End-Hold.',
   );
 }
+if (plan.contentVideoRequired !== true) {
+  planProblems.push('Renderplan verlangt kein vollständiges Content-aware Video pro Prototyp.');
+}
 if (
   !Array.isArray(plan.prototypes) ||
   plan.prototypes.length !== ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.length
@@ -97,6 +100,14 @@ const expectedArtifacts = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.flatMap(
         compositionId: prototype.compositionId,
         frame: null,
         path: resolve(directory, 'prototype.mp4'),
+      },
+      {
+        kind: 'video',
+        variant: 'content-video',
+        animationId: prototype.animationId,
+        compositionId: prototype.compositionId,
+        frame: null,
+        path: resolve(directory, 'content-prototype.mp4'),
       },
     ];
   },
@@ -147,7 +158,13 @@ const failedArtifacts = results.length - passedArtifacts;
 const contentSmokeArtifacts = results.filter(
   (result) => result.variant === 'content-smoke',
 );
+const contentVideoArtifacts = results.filter(
+  (result) => result.variant === 'content-video',
+);
 const passedContentSmokeArtifacts = contentSmokeArtifacts.filter(
+  (result) => result.valid,
+).length;
+const passedContentVideoArtifacts = contentVideoArtifacts.filter(
   (result) => result.valid,
 ).length;
 const prototypeReports = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.map(
@@ -162,6 +179,9 @@ const prototypeReports = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.map(
     const passedContentSmokes = contentSmokes.filter(
       (artifact) => artifact.valid,
     ).length;
+    const contentVideo = prototypeArtifacts.find(
+      (artifact) => artifact.variant === 'content-video',
+    );
     return {
       animationId: prototype.animationId,
       compositionId: prototype.compositionId,
@@ -172,13 +192,14 @@ const prototypeReports = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.map(
       passedContentSmokeArtifacts: passedContentSmokes,
       failedContentSmokeArtifacts: contentSmokes.length - passedContentSmokes,
       contentSmokePassed: passedContentSmokes === contentSmokes.length,
+      contentVideoPassed: contentVideo?.valid === true,
       passed: passed === prototypeArtifacts.length,
     };
   },
 );
 
 const report = {
-  version: 3,
+  version: 4,
   sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
   contentSmokeFrames: [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
   expectedArtifacts: expectedArtifacts.length,
@@ -188,6 +209,10 @@ const report = {
   passedContentSmokeArtifacts,
   failedContentSmokeArtifacts:
     contentSmokeArtifacts.length - passedContentSmokeArtifacts,
+  expectedContentVideoArtifacts: contentVideoArtifacts.length,
+  passedContentVideoArtifacts,
+  failedContentVideoArtifacts:
+    contentVideoArtifacts.length - passedContentVideoArtifacts,
   planValid: planProblems.length === 0,
   passed: planProblems.length === 0 && failedArtifacts === 0,
   planProblems,
@@ -207,11 +232,11 @@ if (!report.passed) {
     console.error(`- ${result.path}: ${result.failure}`);
   }
   console.error(
-    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints gültig.`,
+    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints und ${passedContentVideoArtifacts}/${contentVideoArtifacts.length} Content-Videos gültig.`,
   );
   process.exit(1);
 }
 
 console.log(
-  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints gültig.`,
+  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Checkpoints und ${passedContentVideoArtifacts}/${contentVideoArtifacts.length} Content-Videos gültig.`,
 );
