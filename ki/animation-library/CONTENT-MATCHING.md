@@ -214,13 +214,21 @@ Für jede der 22 Kernkompositionen wird mit realen Content-Props zusätzlich an 
 - **Frame 150:** Ergebnisphase
 - **Frame 179:** finaler Hold
 
+Zusätzlich wird für jede Kernkomposition ein vollständiges `content-prototype.mp4` mit denselben realen Content-Props gerendert. Damit werden nicht nur einzelne Zustände, sondern auch der komplette zeitliche Bewegungsablauf der produktionsnahen Variante technisch geprüft.
+
 Bei der aktuellen Konfiguration mit sieben bisherigen Demo-Kontrollframes ergibt ein vollständiger `all`-Lauf pro Prototyp:
 
 - 7 Demo-Stills
 - 4 Content-aware Stills
 - 1 Demo-Video
+- 1 Content-aware Video
 
-Für 22 Prototypen sind das insgesamt **264 technische Release-Artefakte**, davon **88 Content-aware Kontrollframes**.
+Für 22 Prototypen sind das insgesamt **286 technische Release-Artefakte**:
+
+- 154 Demo-Kontrollframes
+- 88 Content-aware Kontrollframes
+- 22 Demo-Videos
+- 22 Content-aware Videos
 
 `scripts/check-animation-library-renders.mjs` akzeptiert für die Freigabe ausschließlich einen frischen Renderplan aus dem Modus `all`. Getrennte oder ältere Still-/Video-Läufe dürfen nicht mehr zu einer scheinbar vollständigen Freigabe zusammenfallen.
 
@@ -229,10 +237,12 @@ Der Checker verlangt außerdem:
 - aktuellen Source-Fingerprint,
 - alle registrierten Prototypen,
 - exakt die aktuellen vier Content-Checkpoints,
+- den expliziten Content-Video-Vertrag,
 - gültige Bild-/Video-Artefakte,
-- vier bestandene Content-Frames pro Kernprototyp.
+- vier bestandene Content-Frames pro Kernprototyp,
+- ein bestandenes vollständiges Content-Video pro Kernprototyp.
 
-Damit kann ein grüner Demo-Render allein die neue content-aware Runtime nicht mehr freigeben.
+Damit kann weder ein grüner Demo-Render noch ein einzelner erfolgreicher Content-Frame die neue content-aware Runtime allein freigeben.
 
 ## Neue Animation statt falscher Wiederverwendung
 
@@ -318,6 +328,7 @@ Regressionstests und Release-Gates decken unter anderem ab:
 - 22/22 Content-Fixture-Abdeckung
 - Ablehnung unbenutzter oder falsch geschriebener Fixture-Keys
 - vier Content-aware Kontrollphasen pro Prototyp
+- vollständiges Content-aware Video pro Prototyp
 - Ablehnung gemischter oder veralteter Release-Artefakte
 
 ## Noch ausstehende reale Freigabe
@@ -332,4 +343,4 @@ npm run animation-library:full-release-check
 
 GitHub Actions beendet Jobs in diesem privaten Repository aktuell vor dem ersten Schritt. Es entstehen weder Checkout-Schritte noch Logs. Deshalb darf der Draft-PR erst nach einem funktionierenden lokalen oder GitHub-basierten Gesamtlauf freigegeben werden.
 
-Die zusätzlichen technischen Content-Frames ersetzen außerdem keine visuelle Qualitätskontrolle. Vor dem Merge müssen insbesondere Lesbarkeit, Objektüberlagerungen, Timing und tatsächliche semantische Verständlichkeit der gerenderten Content-Frames kontrolliert werden.
+Die zusätzlichen technischen Content-Frames und Content-Videos ersetzen außerdem keine visuelle Qualitätskontrolle. Vor dem Merge müssen insbesondere Lesbarkeit, Objektüberlagerungen, Timing, Bewegungsrhythmus und tatsächliche semantische Verständlichkeit der gerenderten Content-Varianten kontrolliert werden.
