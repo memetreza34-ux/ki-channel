@@ -23,6 +23,7 @@ export type ResolvedPrototypeContent = {
   title: string | null;
   spokenText: string;
   meaningContract: SceneMeaningContract;
+  sourceMeaningContract: SceneMeaningContract;
   labels: Readonly<Record<string, string>>;
   values: Readonly<Record<string, string | number>>;
 };
@@ -31,19 +32,92 @@ const PrototypeContentContext = createContext<ResolvedPrototypeContent | null>(
   null,
 );
 
-const resolvePrototypeContent = (
+const humanizeTerm = (value: string): string =>
+  value.replace(/[-_]+/g, ' ').trim();
+
+const compactTerms = (
+  values: readonly string[],
+  maximum = 4,
+): string =>
+  [...new Set(values.map(humanizeTerm).filter((value) => value.length >= 2))]
+    .slice(0, maximum)
+    .join(' · ');
+
+const likelyEnglishState = (value: string): boolean =>
+  /\b(the|a|an|one|multiple|visible|state|result|input|output|through|while|without|into|from|and|remains|changes|shows|begins|ends)\b/i.test(
+    value,
+  );
+
+const renderState = ({
+  supplied,
+  original,
+  fallback,
+}: {
+  supplied: string | undefined;
+  original: string;
+  fallback: string;
+}): string => {
+  const explicit = supplied?.trim();
+  if (explicit) return explicit;
+  if (!likelyEnglishState(original)) return original;
+  return fallback || original;
+};
+
+const createRenderContract = ({
+  spokenText,
+  contract,
+  labels,
+}: {
+  spokenText: string;
+  contract: SceneMeaningContract;
+  labels: Readonly<Record<string, string>>;
+}): SceneMeaningContract => {
+  const startTerms = compactTerms(contract.subjectTerms);
+  const resultTerms = compactTerms(contract.resultTerms);
+  const actionTerms = compactTerms(contract.actionTerms, 3);
+  const visibleFallback = actionTerms && resultTerms
+    ? `${actionTerms} → ${resultTerms}`
+    : spokenText || actionTerms || resultTerms;
+
+  return {
+    ...contract,
+    startState: renderState({
+      supplied: labels.startState,
+      original: contract.startState,
+      fallback: startTerms || spokenText,
+    }),
+    visibleChange: renderState({
+      supplied: labels.visibleChange,
+      original: contract.visibleChange,
+      fallback: visibleFallback,
+    }),
+    endState: renderState({
+      supplied: labels.endState,
+      original: contract.endState,
+      fallback: resultTerms || spokenText,
+    }),
+  };
+};
+
+export const resolvePrototypeContent = (
   content: PrototypeContentInput,
 ): ResolvedPrototypeContent | null => {
   const spokenText = content.spokenText?.trim() ?? '';
-  const meaningContract = content.meaningContract ??
+  const sourceMeaningContract = content.meaningContract ??
     (spokenText ? enhanceSceneMeaning(spokenText) : null);
-  if (!meaningContract) return null;
+  if (!sourceMeaningContract) return null;
+  const labels = Object.freeze({...content.labels ?? {}});
 
   return {
     title: content.title?.trim() || null,
     spokenText,
-    meaningContract,
-    labels: Object.freeze({...content.labels ?? {}}),
+    sourceMeaningContract,
+    meaningContract: createRenderContract({
+      spokenText,
+      contract: sourceMeaningContract,
+      labels,
+    }),
+    labels,
     values: Object.freeze({...content.values ?? {}}),
   };
 };
