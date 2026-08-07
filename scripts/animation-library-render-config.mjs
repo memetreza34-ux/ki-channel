@@ -5,8 +5,14 @@ import {relative, resolve} from 'node:path';
 const CONFIG_PATH = resolve(
   'ki/src/animation-library/prototype-render-config.json',
 );
+const CONTENT_FIXTURE_CONFIG_PATH = resolve(
+  'ki/src/animation-library/content-render-fixtures.json',
+);
 
 const rawConfig = JSON.parse(readFileSync(CONFIG_PATH, 'utf8'));
+const rawContentFixtures = JSON.parse(
+  readFileSync(CONTENT_FIXTURE_CONFIG_PATH, 'utf8'),
+);
 
 const assert = (condition, message) => {
   if (!condition) throw new Error(`Animation library render config: ${message}`);
@@ -60,6 +66,46 @@ assert(
   'animation IDs must be unique',
 );
 
+assert(rawContentFixtures.version === 1, 'content fixture version must equal 1');
+assert(
+  Number.isInteger(rawContentFixtures.frame) &&
+    rawContentFixtures.frame >= 0 &&
+    rawContentFixtures.frame < durationInFrames,
+  'content fixture frame must be a valid frame number',
+);
+assert(
+  Array.isArray(rawContentFixtures.fixtures),
+  'content fixtures must be an array',
+);
+assert(
+  rawContentFixtures.fixtures.length === rawConfig.prototypes.length,
+  'content fixtures must cover every registered prototype exactly once',
+);
+
+const fixtureAnimationIds = rawContentFixtures.fixtures.map(
+  (fixture) => fixture.animationId,
+);
+assert(
+  new Set(fixtureAnimationIds).size === fixtureAnimationIds.length,
+  'content fixture animation IDs must be unique',
+);
+assert(
+  fixtureAnimationIds.every((animationId) => animationIds.includes(animationId)) &&
+    animationIds.every((animationId) => fixtureAnimationIds.includes(animationId)),
+  'content fixture animation IDs must exactly match registered prototype IDs',
+);
+for (const fixture of rawContentFixtures.fixtures) {
+  assert(
+    fixture.content && typeof fixture.content === 'object',
+    `content fixture ${fixture.animationId} needs a content object`,
+  );
+  assert(
+    typeof fixture.content.spokenText === 'string' &&
+      fixture.content.spokenText.trim().length > 0,
+    `content fixture ${fixture.animationId} needs spokenText`,
+  );
+}
+
 export const ANIMATION_LIBRARY_RENDER_CONFIG = Object.freeze({
   ...rawConfig,
   defaults: Object.freeze({
@@ -71,6 +117,23 @@ export const ANIMATION_LIBRARY_RENDER_CONFIG = Object.freeze({
     rawConfig.prototypes.map((prototype) => Object.freeze({...prototype})),
   ),
 });
+
+export const ANIMATION_LIBRARY_CONTENT_RENDER_FRAME =
+  rawContentFixtures.frame;
+export const ANIMATION_LIBRARY_CONTENT_RENDER_FIXTURES = Object.freeze(
+  rawContentFixtures.fixtures.map((fixture) =>
+    Object.freeze({
+      animationId: fixture.animationId,
+      props: Object.freeze({
+        content: Object.freeze({
+          ...fixture.content,
+          labels: Object.freeze({...fixture.content.labels ?? {}}),
+          values: Object.freeze({...fixture.content.values ?? {}}),
+        }),
+      }),
+    }),
+  ),
+);
 
 const collectFiles = (path) => {
   const absolute = resolve(path);
@@ -99,4 +162,4 @@ export const ANIMATION_LIBRARY_SOURCE_FINGERPRINT = hash.digest('hex');
 
 export const ANIMATION_LIBRARY_EXPECTED_ARTIFACT_COUNT =
   ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.length *
-  (ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.length + 1);
+  (ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.length + 2);
