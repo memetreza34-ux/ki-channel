@@ -4,30 +4,21 @@ import {
   isPrototypeContentBindingReady,
   NATIVE_CONTENT_BOUND_PROTOTYPE_IDS,
 } from '../prototypeContentCoverage';
+import {ANIMATION_PROTOTYPE_REGISTRY} from '../prototypes/registry';
 
 describe('prototype content binding coverage', () => {
-  it('tracks the prototypes whose dominant objects consume scene content', () => {
-    expect([...NATIVE_CONTENT_BOUND_PROTOTYPE_IDS]).toEqual(
-      expect.arrayContaining([
-        'tokenization-magnetic-phrase-slicer-v1',
-        'data-transformation-vector-prism-converter-v1',
-        'semantic-space-meaning-terrain-v1',
-        'probability-probability-fluid-columns-v1',
-        'decision-logic-decision-tree-burst-v1',
-        'retrieval-search-knowledge-magnet-v1',
-        'context-window-context-window-train-v1',
-        'relationship-network-dependency-bridge-builder-v1',
-        'generation-answer-loom-v1',
-        'model-processing-residual-river-v1',
-        'risk-contrast-confidence-glass-crack-v1',
-        'scale-performance-latency-tunnel-race-v1',
-      ]),
-    );
-    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(12);
+  it('covers every registered core prototype with native object binding', () => {
+    const registeredIds = ANIMATION_PROTOTYPE_REGISTRY.map(
+      (registration) => registration.animationId,
+    ).sort();
+    const nativeIds = [...NATIVE_CONTENT_BOUND_PROTOTYPE_IDS].sort();
+
+    expect(nativeIds).toEqual(registeredIds);
+    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(22);
   });
 
-  it('does not mark shell-only library prototypes as production-ready', () => {
-    const animationId = 'comparison-benchmark-racetrack-v1';
+  it('does not mark an unadapted library prototype as production-ready', () => {
+    const animationId = 'future-unadapted-library-prototype-v1';
     expect(
       getPrototypeContentBindingLevel({animationId, source: 'library'}),
     ).toBe('semantic-shell-only');
@@ -36,13 +27,13 @@ describe('prototype content binding coverage', () => {
     ).toBe(false);
   });
 
-  it('keeps purpose-built new animations separate from generic reuse', () => {
+  it('keeps a proposed new animation blocked until implementation', () => {
     const animationId = 'custom-scene-animation-v1';
     expect(
       getPrototypeContentBindingLevel({animationId, source: 'new-build'}),
     ).toBe('purpose-built-new-animation');
     expect(
       isPrototypeContentBindingReady({animationId, source: 'new-build'}),
-    ).toBe(true);
+    ).toBe(false);
   });
 });
