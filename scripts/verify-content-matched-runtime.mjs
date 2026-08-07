@@ -31,7 +31,6 @@ const tests = [
   'ki/src/animation-library/__tests__/remotionChoreographyCompiler.test.ts',
   'ki/src/animation-library/__tests__/prototypeRegistry.test.ts',
   'ki/src/animation-library/__tests__/prototypeContentCoverage.test.ts',
-  'ki/src/animation-library/__tests__/prototypeNativeBindingSource.test.ts',
   'ki/src/animation-library/__tests__/prototypeRenderPayload.test.ts',
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
@@ -89,6 +88,11 @@ await writeFile(
 );
 
 try {
+  await run(
+    'node',
+    ['scripts/check-native-prototype-bindings.mjs'],
+    'Quellcode-Gate für native Objektbindung aller 22 Kernprototypen',
+  );
   await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
