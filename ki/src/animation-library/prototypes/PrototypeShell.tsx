@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {usePrototypeContent} from './PrototypeContentContext';
 
 export const PROTOTYPE_PALETTE = {
   background: '#F8F7FB',
@@ -24,6 +25,9 @@ export const prototypeProgress = (
     extrapolateRight: 'clamp',
   });
 
+const readableFamily = (value: string): string =>
+  value.replace(/[-_]+/g, ' ').toLocaleUpperCase('de-DE');
+
 export const PrototypeShell: React.FC<{
   family: string;
   title: string;
@@ -32,8 +36,35 @@ export const PrototypeShell: React.FC<{
 }> = ({family, title, subtitle, children}) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
+  const content = usePrototypeContent();
   const progress = prototypeProgress(frame, 0, durationInFrames - 1);
   const titleEnter = prototypeProgress(frame, 0, 18);
+  const displayFamily = content
+    ? readableFamily(
+        content.meaningContract.preferredVisualFamilies[0] ?? family,
+      )
+    : family;
+  const displayTitle = content?.title ?? title;
+  const displaySubtitle = content?.spokenText || subtitle;
+  const semanticPhase = content
+    ? progress < 0.26
+      ? {
+          label: 'STARTZUSTAND',
+          state: content.meaningContract.startState,
+          color: PROTOTYPE_PALETTE.muted,
+        }
+      : progress < 0.76
+        ? {
+            label: 'SICHTBARE VERÄNDERUNG',
+            state: content.meaningContract.visibleChange,
+            color: PROTOTYPE_PALETTE.accent,
+          }
+        : {
+            label: 'ERGEBNIS',
+            state: content.meaningContract.endState,
+            color: PROTOTYPE_PALETTE.success,
+          }
+    : null;
 
   return (
     <AbsoluteFill
@@ -77,36 +108,90 @@ export const PrototypeShell: React.FC<{
             textTransform: 'uppercase',
           }}
         >
-          ANIMATION LIBRARY · {family}
+          {content ? 'CONTENT MATCHED' : 'ANIMATION LIBRARY'} · {displayFamily}
         </div>
         <div
           style={{
             marginTop: 12,
             fontFamily: 'Arial Narrow, Arial, sans-serif',
-            fontSize: 60,
+            fontSize: displayTitle.length > 38 ? 50 : 60,
             lineHeight: 0.96,
             fontWeight: 900,
             letterSpacing: -2,
             maxWidth: 900,
           }}
         >
-          {title}
+          {displayTitle}
         </div>
         <div
           style={{
             marginTop: 18,
-            fontSize: 25,
+            fontSize: displaySubtitle.length > 120 ? 21 : 25,
             lineHeight: 1.25,
             fontWeight: 700,
             color: PROTOTYPE_PALETTE.muted,
-            maxWidth: 820,
+            maxWidth: 860,
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
           }}
         >
-          {subtitle}
+          {displaySubtitle}
         </div>
       </div>
 
       {children}
+
+      {semanticPhase ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: 74,
+            right: 74,
+            bottom: 100,
+            minHeight: 55,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 18,
+            padding: '8px 4px',
+            zIndex: 24,
+            opacity: titleEnter,
+          }}
+        >
+          <div
+            style={{
+              flex: '0 0 auto',
+              color: semanticPhase.color,
+              fontSize: 15,
+              fontWeight: 950,
+              letterSpacing: 2.5,
+            }}
+          >
+            {semanticPhase.label}
+          </div>
+          <div
+            style={{
+              height: 28,
+              width: 2,
+              background: `${semanticPhase.color}55`,
+            }}
+          />
+          <div
+            style={{
+              color: PROTOTYPE_PALETTE.foreground,
+              fontSize: 17,
+              lineHeight: 1.2,
+              fontWeight: 750,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {semanticPhase.state}
+          </div>
+        </div>
+      ) : null}
 
       <div
         style={{
