@@ -1,0 +1,22 @@
+import {EXECUTABLE_ANIMATION_IDS} from './executionCatalog';
+import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from './prototypeContentCoverage';
+import type {AnimationLibraryEntry} from './schema';
+
+const executableIds = new Set(EXECUTABLE_ANIMATION_IDS);
+
+export const PRODUCTION_READY_LIBRARY_ANIMATION_IDS = Object.freeze(
+  [...NATIVE_CONTENT_BOUND_PROTOTYPE_IDS]
+    .filter((animationId) => executableIds.has(animationId))
+    .sort(),
+);
+
+const productionReadyIds = new Set(PRODUCTION_READY_LIBRARY_ANIMATION_IDS);
+
+export const isProductionReadyLibraryAnimation = (
+  animationId: string,
+): boolean => productionReadyIds.has(animationId);
+
+export const getProductionReadyLibraryEntries = (
+  entries: readonly AnimationLibraryEntry[],
+): AnimationLibraryEntry[] =>
+  entries.filter((entry) => productionReadyIds.has(entry.animationId));
