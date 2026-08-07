@@ -24,6 +24,13 @@ describe('animation prototype registry', () => {
     }
   });
 
+  it('wraps every composition with optional content-matched props', () => {
+    for (const registration of ANIMATION_PROTOTYPE_REGISTRY) {
+      expect(registration.defaultProps).toEqual({content: null});
+      expect(registration.component.displayName).toMatch(/^ContentAware/);
+    }
+  });
+
   it('uses a shared 1080x1920, 30fps, 180-frame render contract', () => {
     expect(ANIMATION_PROTOTYPE_RENDER_CONFIG.defaults).toEqual({
       durationInFrames: 180,
