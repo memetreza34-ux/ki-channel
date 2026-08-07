@@ -54,6 +54,13 @@ export const BudgetLeakMeterPrototype: React.FC = () => {
   const initialCost = numericValue(getPrototypeValue({content, key: 'initialCost', fallback: 94}), 94);
   const optimizedCost = Math.min(initialCost, numericValue(getPrototypeValue({content, key: 'optimizedCost', fallback: 28}), 28));
   const targetSavings = Math.max(0, initialCost - optimizedCost);
+  const requestedSavedAmount = numericValue(
+    getPrototypeValue({content, key: 'savedAmount', fallback: targetSavings}),
+    targetSavings,
+  );
+  const savedAmount = Math.abs(requestedSavedAmount - targetSavings) <= 1
+    ? requestedSavedAmount
+    : targetSavings;
   const totalLeakAmount = Math.max(1, leaks.reduce((sum, leak) => sum + leak.amount, 0));
   const sealedWeight = leaks.reduce((sum, leak) => sum + leak.amount * leak.seal, 0) / totalLeakAmount;
   const currentSavings = targetSavings * sealedWeight;
@@ -62,7 +69,6 @@ export const BudgetLeakMeterPrototype: React.FC = () => {
   const level = (0.32 + Math.max(0, Math.min(1, normalizedCost)) * 0.56) * fill;
   const currency = getPrototypeLabel({content, key: 'currency', fallback: '€'});
   const meterLabel = getPrototypeLabel({content, key: 'meterLabel', fallback: 'KOSTEN PRO REEL'});
-  const savedAmount = Math.max(0, numericValue(getPrototypeValue({content, key: 'savedAmount', fallback: targetSavings}), targetSavings));
   const resultText = getPrototypeLabel({
     content,
     key: 'resultText',
@@ -70,7 +76,7 @@ export const BudgetLeakMeterPrototype: React.FC = () => {
   });
 
   return (
-    <PrototypeShell family="COST EFFICIENCY" title="Budget Leak Meter" subtitle="Jedes geschlossene Kostenleck senkt den Gesamtwert proportional zu seinem Anteil. Die angezeigten Beträge verursachen damit direkt die sichtbare Einsparung.">
+    <PrototypeShell family="COST EFFICIENCY" title="Budget Leak Meter" subtitle="Jedes geschlossene Kostenleck senkt den Gesamtwert proportional zu seinem Anteil. Die Endkarte bleibt an derselben Initial-/Zielkostenrechnung gebunden.">
       <div style={{position: 'absolute', left: 90, right: 90, top: 380, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
           <div style={{position: 'absolute', left: 175, right: 175, top: 120, height: 690, borderRadius: '42px 42px 90px 90px', border: `5px solid ${PROTOTYPE_PALETTE.foreground}`, background: 'rgba(255,255,255,.65)', overflow: 'hidden', boxShadow: 'inset 0 0 60px rgba(61,42,94,.08), 0 24px 60px rgba(45,31,70,.12)'}}>
@@ -100,7 +106,7 @@ export const BudgetLeakMeterPrototype: React.FC = () => {
           })}
 
           <div style={{position: 'absolute', left: 105, right: 105, bottom: 58, padding: '22px 28px', borderRadius: 25, background: 'rgba(53,197,138,.10)', border: '2px solid rgba(53,197,138,.36)', opacity: saved, transform: `translateY(${(1 - saved) * 42}px) scale(${0.94 + saved * 0.06})`, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14, fontSize: 26, fontWeight: 900, textAlign: 'center'}}>
-            <span style={{color: PROTOTYPE_PALETTE.success, whiteSpace: 'nowrap'}}>{savedAmount} {currency} GESPART</span>
+            <span style={{color: PROTOTYPE_PALETTE.success, whiteSpace: 'nowrap'}}>{Math.round(savedAmount)} {currency} GESPART</span>
             <span style={{color: PROTOTYPE_PALETTE.muted, fontSize: resultText.length > 60 ? 17 : 22, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{resultText}</span>
           </div>
         </GlassSurface>
