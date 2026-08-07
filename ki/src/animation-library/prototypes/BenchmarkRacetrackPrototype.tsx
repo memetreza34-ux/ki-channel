@@ -49,11 +49,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
     : [];
   const competitors: Competitor[] = [
     {
-      label: getPrototypeLabel({
-        content,
-        key: 'competitor1',
-        fallback: terms[0] ?? 'MODELL A',
-      }),
+      label: getPrototypeLabel({content, key: 'competitor1', fallback: terms[0] ?? 'MODELL A'}),
       color: '#8757E8',
       checkpoints: [
         0,
@@ -63,11 +59,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
       ],
     },
     {
-      label: getPrototypeLabel({
-        content,
-        key: 'competitor2',
-        fallback: terms[1] ?? 'MODELL B',
-      }),
+      label: getPrototypeLabel({content, key: 'competitor2', fallback: terms[1] ?? 'MODELL B'}),
       color: '#35C58A',
       checkpoints: [
         0,
@@ -81,11 +73,9 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
     getPrototypeLabel({
       content,
       key: `metric${index + 1}`,
-      fallback:
-        content?.meaningContract.preferredExplanationPatterns[index] ?? fallback,
+      fallback: content?.meaningContract.preferredExplanationPatterns[index] ?? fallback,
     }),
   );
-  const metricCheckpointIndex = Math.min(3, Math.max(1, Math.ceil(race * 3)));
   const activeMetricIndex = Math.min(2, Math.floor(race * 3));
   const metricLeaders = metrics.map((_, metricIndex) => {
     const checkpoint = metricIndex + 1;
@@ -111,10 +101,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
     detail: getPrototypeLabel({
       content,
       key: `competitor${index + 1}Detail`,
-      fallback:
-        index === winnerIndex
-          ? 'höchster Gesamtwert'
-          : 'stark bei einzelnen Kriterien',
+      fallback: index === winnerIndex ? 'höchster Gesamtwert' : 'stark bei einzelnen Kriterien',
     }),
     competitor,
   }));
@@ -146,7 +133,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
           const y = 390 + index * 300;
           const position = positionAt(race, competitor);
           const x = interpolate(position, [0, 1], [115, 822]);
-          const currentCheckpointValue = competitor.checkpoints[metricCheckpointIndex];
+          const liveScore = Math.round(position * 100);
           return (
             <React.Fragment key={`${competitor.label}-${index}`}>
               <div style={{position: 'absolute', left: 85, right: 80, top: y - 78, height: 156, borderRadius: 78, background: 'rgba(255,255,255,.58)', border: `5px solid ${competitor.color}44`, overflow: 'hidden', opacity: track}}>
@@ -158,7 +145,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
                 ))}
               </div>
               <div style={{position: 'absolute', left: 94, top: y - 128, maxWidth: 260, padding: '10px 15px', borderRadius: 15, background: 'rgba(255,255,255,.94)', border: `2px solid ${competitor.color}55`, color: competitor.color, fontSize: competitor.label.length > 16 ? 14 : 18, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{competitor.label.toLocaleUpperCase('de-DE')}</div>
-              <div style={{position: 'absolute', right: 95, top: y - 128, padding: '9px 12px', borderRadius: 14, background: 'rgba(255,255,255,.94)', border: `2px solid ${competitor.color}44`, color: competitor.color, fontFamily: 'monospace', fontSize: 16, fontWeight: 900}}>{Math.round(currentCheckpointValue * 100)}</div>
+              <div style={{position: 'absolute', right: 95, top: y - 128, padding: '9px 12px', borderRadius: 14, background: 'rgba(255,255,255,.94)', border: `2px solid ${competitor.color}44`, color: competitor.color, fontFamily: 'monospace', fontSize: 16, fontWeight: 900}}>{liveScore}</div>
               <div style={{position: 'absolute', left: x, top: y, width: 76, height: 76, borderRadius: index === 0 ? 24 : 999, background: competitor.color, border: '8px solid white', boxShadow: `0 0 38px ${competitor.color}66`, transform: 'translate(-50%, -50%)', zIndex: 7}} />
             </React.Fragment>
           );
