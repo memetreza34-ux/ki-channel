@@ -9,6 +9,7 @@ export const PrototypeGalleryRoot: React.FC = () => (
         key={registration.compositionId}
         id={registration.compositionId}
         component={registration.component}
+        defaultProps={registration.defaultProps}
         durationInFrames={registration.durationInFrames}
         fps={registration.fps}
         width={registration.width}
