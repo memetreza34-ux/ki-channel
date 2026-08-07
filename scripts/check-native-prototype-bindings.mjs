@@ -35,6 +35,20 @@ const MOTION_SEMANTIC_RULES = new Map([
     },
   ],
   [
+    'AnswerLoomPrototype.tsx',
+    {
+      required: ['semanticAnswer', 'generatedWordCount', 'WORT {generatedWordCount}'],
+      forbidden: ['Math.sin(frame / 5)'],
+    },
+  ],
+  [
+    'ConfidenceGlassCrackPrototype.tsx',
+    {
+      required: ['checkProgresses', 'failedChecks', 'CHECKS FEHLEN'],
+      forbidden: ['const crack = prototypeProgress'],
+    },
+  ],
+  [
     'ContextWindowTrainPrototype.tsx',
     {
       required: ['overflowCount', 'shiftedSlots', 'keepPinned'],
@@ -53,6 +67,13 @@ const MOTION_SEMANTIC_RULES = new Map([
     {
       required: ['weight12', 'weakWeight', 'VERWORFEN'],
       forbidden: [],
+    },
+  ],
+  [
+    'EncryptionVaultLayersPrototype.tsx',
+    {
+      required: ['allLayersActive', 'SCHICHTEN AKTIV', 'AKTIV ✓'],
+      forbidden: ['frame * 1.8', 'frame * 0.22'],
     },
   ],
   [
