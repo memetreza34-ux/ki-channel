@@ -30,6 +30,7 @@ const MOTION_SEMANTIC_RULES = new Map([
   ['AnomalyXRayScannerPrototype.tsx', {required: ['errorScanned', 'repairAtStep', 'REPAIR'], forbidden: []}],
   ['AnswerLoomPrototype.tsx', {required: ['semanticAnswer', 'generatedWordCount', 'WORT {generatedWordCount}'], forbidden: ['Math.sin(frame / 5)']}],
   ['BenchmarkRacetrackPrototype.tsx', {required: ['metricLeaders', 'WIRD GEMESSEN', 'FÜHRT:'], forbidden: ['position * 450']}],
+  ['BudgetLeakMeterPrototype.tsx', {required: ['sealedWeight', 'currentSavings', 'POTENZIAL'], forbidden: ['Math.sin((frame']}],
   ['ConfidenceGlassCrackPrototype.tsx', {required: ['checkProgresses', 'failedChecks', 'CHECKS FEHLEN'], forbidden: ['const crack = prototypeProgress']}],
   ['ContextWindowTrainPrototype.tsx', {required: ['overflowCount', 'shiftedSlots', 'keepPinned'], forbidden: ['windowStart = interpolate']}],
   ['DecisionTreeBurstPrototype.tsx', {required: ['validBranches.map', 'Kriterien tragen den Weg'], forbidden: ['routeDistance(']}],
@@ -37,19 +38,26 @@ const MOTION_SEMANTIC_RULES = new Map([
   ['DynamicPodiumRisePrototype.tsx', {required: ['criterionProgresses', 'currentRanks', 'EINGERECHNET ✓'], forbidden: []}],
   ['EncryptionVaultLayersPrototype.tsx', {required: ['allLayersActive', 'SCHICHTEN AKTIV', 'AKTIV ✓'], forbidden: ['frame * 1.8', 'frame * 0.22']}],
   ['FunnelCompressionOutputPrototype.tsx', {required: ['input${index + 1}Keep', 'keptInputs', 'VERWORFEN'], forbidden: []}],
+  ['HumanAIRelayPrototype.tsx', {required: ['stageProgresses', 'currentOwnerColor', 'ÜBERGABE →'], forbidden: ['taskProgress < 0.2']}],
   ['KnowledgeMagnetPrototype.tsx', {required: ['source${index + 1}Relevant', 'requestedEvidenceCount', 'relevantDocuments'], forbidden: []}],
+  ['KnowledgeTreeGraftPrototype.tsx', {required: ['verificationThreshold', 'acceptedSupersede', 'WISSEN BLEIBT UNVERÄNDERT'], forbidden: ['rotate(${(1 - newFact)']}],
   ['LatencyTunnelRacePrototype.tsx', {required: ['maximumLatency / tunnel.finalValue', 'latencyDelta', 'speedup'], forbidden: ['race * 360']}],
   ['MagneticPhraseSlicerPrototype.tsx', {required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'], forbidden: ['lane: index % 3']}],
+  ['MeaningTerrainPrototype.tsx', {required: ['concept${index + 1}Cluster', 'clusterForm', 'CLUSTER {concept.cluster}'], forbidden: ['const lift = concept.height']}],
   ['ProbabilityFluidColumnsPrototype.tsx', {required: ['signalProgresses', 'contextProgress'], forbidden: ['const context = prototypeProgress']}],
   ['ResidualRiverPrototype.tsx', {required: ['progress: prototypeProgress', 'completedLayers', 'SCHICHTEN VERARBEITET'], forbidden: ['Math.sin(', 'rotate(${gateFlow']}],
+  ['SubwayWorkflowMapPrototype.tsx', {required: ['showAlternative', 'inferredAlternative', 'completedStations'], forbidden: ['travel * 420']}],
+  ['TimelineMicroscopePrototype.tsx', {required: ['inferredFocus', 'changeProgresses', 'FOKUS {focusIndex + 1}'], forbidden: []}],
   ['VectorPrismConverterPrototype.tsx', {required: ['dimensionReveals', 'ZERLEGT MERKMALE'], forbidden: []}],
 ]);
 
 if (CONTENT_BOUND_PROTOTYPES.length !== 22) throw new Error(`Native Content-Binding-Gate erwartet 22 Komponenten, gefunden: ${CONTENT_BOUND_PROTOTYPES.length}.`);
+if (MOTION_SEMANTIC_RULES.size !== CONTENT_BOUND_PROTOTYPES.length) throw new Error(`Motion-Semantik-Gate erwartet Regeln für alle 22 Komponenten, gefunden: ${MOTION_SEMANTIC_RULES.size}.`);
 const animationIds = CONTENT_BOUND_PROTOTYPES.map(([animationId]) => animationId);
 const fileNames = CONTENT_BOUND_PROTOTYPES.map(([, fileName]) => fileName);
 if (new Set(animationIds).size !== animationIds.length) throw new Error('Native Content-Binding-Gate enthält doppelte Animation-IDs.');
 if (new Set(fileNames).size !== fileNames.length) throw new Error('Native Content-Binding-Gate enthält doppelte Komponenten.');
+for (const fileName of fileNames) if (!MOTION_SEMANTIC_RULES.has(fileName)) throw new Error(`Motion-Semantik-Gate fehlt für ${fileName}.`);
 
 const fixtureConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/content-render-fixtures.json'), 'utf8'));
 if (!Array.isArray(fixtureConfig.fixtures)) throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
@@ -89,11 +97,9 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
   }
 
   const motionRule = MOTION_SEMANTIC_RULES.get(fileName);
-  if (motionRule) {
-    checkedMotionRules += 1;
-    for (const requiredFragment of motionRule.required) if (!source.includes(requiredFragment)) failures.push(`${fileName}: semantische Bewegungsregel fehlt: ${requiredFragment}`);
-    for (const forbiddenFragment of motionRule.forbidden) if (source.includes(forbiddenFragment)) failures.push(`${fileName}: verbotener dekorativer/inhaltlich falscher Bewegungsmechanismus gefunden: ${forbiddenFragment}`);
-  }
+  checkedMotionRules += 1;
+  for (const requiredFragment of motionRule.required) if (!source.includes(requiredFragment)) failures.push(`${fileName}: semantische Bewegungsregel fehlt: ${requiredFragment}`);
+  for (const forbiddenFragment of motionRule.forbidden) if (source.includes(forbiddenFragment)) failures.push(`${fileName}: verbotener dekorativer/inhaltlich falscher Bewegungsmechanismus gefunden: ${forbiddenFragment}`);
 
   const fixture = fixtureByAnimationId.get(animationId);
   if (!fixture) {
@@ -116,4 +122,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules} semantische Bewegungsregeln sind abgesichert.`);
+console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules}/22 semantische Bewegungsregeln sind abgesichert.`);
