@@ -1,4 +1,5 @@
 import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
+import {EXECUTABLE_ANIMATION_IDS} from './executionCatalog';
 import {
   planReelChoreography,
   type ReelChoreographyPlan,
@@ -33,6 +34,8 @@ export type ProductionReelAnimationPlan = {
   qualityWarnings: string[];
   readyForImplementation: boolean;
 };
+
+const EXECUTABLE_ANIMATION_ID_SET = new Set(EXECUTABLE_ANIMATION_IDS);
 
 const getEntry = (
   entries: readonly AnimationLibraryEntry[],
@@ -87,11 +90,21 @@ export const planProductionReelAnimations = ({
     throw new Error('maximumNewAnimationRatio must be between 0 and 1');
   }
 
+  // Production reuse is intentionally stricter than generic choreography planning.
+  // Catalog concepts may remain available to analysis/expansion tooling, but a real
+  // production plan may only reuse animation IDs that are backed by a registered
+  // executable Remotion prototype. If no executable entry fits, the content-first
+  // planner must fall back to a new-build proposal instead of leaking an unrenderable
+  // catalog concept into the masterplan.
+  const productionEntries = entries.filter((entry) =>
+    EXECUTABLE_ANIMATION_ID_SET.has(entry.animationId),
+  );
+
   const choreography = planReelChoreography({
     reelId,
     reelIndex,
     scenes,
-    entries,
+    entries: productionEntries,
     brain,
   });
 
@@ -99,7 +112,7 @@ export const planProductionReelAnimations = ({
     (selection, index) => {
       const scene = scenes[index];
       if (selection.animationId) {
-        const entry = getEntry(entries, selection.animationId);
+        const entry = getEntry(productionEntries, selection.animationId);
         return {
           sceneId: scene.sceneId,
           source: 'library' as const,
