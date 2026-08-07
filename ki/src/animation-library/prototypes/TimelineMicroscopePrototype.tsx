@@ -35,6 +35,14 @@ const boundedInteger = (
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
+const searchable = (value: string): string =>
+  value
+    .toLocaleLowerCase('de-DE')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
 export const TimelineMicroscopePrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
@@ -54,10 +62,20 @@ export const TimelineMicroscopePrototype: React.FC = () => {
     label: getPrototypeLabel({content, key: `milestone${index + 1}`, fallback: milestone.label}),
     detail: getPrototypeLabel({content, key: `milestone${index + 1}Detail`, fallback: terms[index] ?? milestone.detail}),
   }));
+  const spokenSearch = searchable(content?.spokenText ?? '');
+  const referencedMilestoneIndex = content
+    ? [...milestones]
+        .map((milestone, index) => ({milestone, index}))
+        .reverse()
+        .find(({milestone}) => {
+          const label = searchable(milestone.label);
+          const detail = searchable(milestone.detail);
+          return (label.length >= 2 && spokenSearch.includes(label)) ||
+            (detail.length >= 4 && spokenSearch.includes(detail));
+        })?.index
+    : undefined;
   const inferredFocus = content
-    ? /heute|aktuell|neueste|jetzt|current|latest/i.test(content.spokenText)
-      ? milestones.length - 1
-      : milestones.length - 1
+    ? referencedMilestoneIndex ?? milestones.length - 1
     : 3;
   const focusIndex = boundedInteger(
     getPrototypeValue({content, key: 'focusMilestone', fallback: inferredFocus}),
@@ -80,7 +98,7 @@ export const TimelineMicroscopePrototype: React.FC = () => {
   });
 
   return (
-    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den für die Szene relevanten Zielstand und zeigt die konkreten Änderungen vom vorherigen Zustand dorthin.">
+    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den im Sprechertext genannten Stand; ohne eindeutige Referenz wird der neueste Stand verwendet.">
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 48, right: 48, top: 60, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{header.toLocaleUpperCase('de-DE')}</span><span style={{color: PROTOTYPE_PALETTE.accent}}>FOKUS {focusIndex + 1}/{milestones.length}</span></div>
 
