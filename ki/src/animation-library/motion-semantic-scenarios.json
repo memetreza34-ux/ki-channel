@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "retrieval-explicit-relevance",
+      "animationId": "retrieval-search-knowledge-magnet-v1",
+      "purpose": "Explizite Relevanz muss bestimmen, welche Quellen angezogen werden.",
+      "content": {
+        "spokenText": "Nur Primärquelle und Studie sollen als Belege in die Antwort einfließen.",
+        "labels": {
+          "source1": "Primärquelle",
+          "source2": "Studie",
+          "source3": "Blog",
+          "source4": "Kommentar"
+        },
+        "values": {
+          "source1Relevant": 1,
+          "source2Relevant": 1,
+          "source3Relevant": 0,
+          "source4Relevant": 0,
+          "evidenceCount": 2
+        }
+      }
+    },
+    {
+      "id": "funnel-explicit-filter",
+      "animationId": "input-output-funnel-compression-output-v1",
+      "purpose": "Nur explizit behaltene Inputs dürfen in die Verdichtung einfließen.",
+      "content": {
+        "spokenText": "Dokumente und Berichte bleiben, Chats und Tabellen werden verworfen.",
+        "labels": {
+          "input1": "Dokumente",
+          "input2": "Berichte",
+          "input3": "Chats",
+          "input4": "Tabellen"
+        },
+        "values": {
+          "input1Keep": 1,
+          "input2Keep": 1,
+          "input3Keep": 0,
+          "input4Keep": 0
+        }
+      }
+    },
+    {
+      "id": "attention-explicit-weights",
+      "animationId": "relationship-network-dependency-bridge-builder-v1",
+      "purpose": "Linienstärke und Verwerfen müssen aus den Gewichten folgen.",
+      "content": {
+        "spokenText": "KI ist stark mit liest und Text verbunden, die Direktverbindung ist schwach.",
+        "labels": {
+          "node1": "KI",
+          "node2": "liest",
+          "node3": "Text"
+        },
+        "values": {
+          "weight12": 0.91,
+          "weight23": 0.79,
+          "weakWeight": 0.12
+        }
+      }
+    },
+    {
+      "id": "semantic-space-explicit-clusters",
+      "animationId": "semantic-space-meaning-terrain-v1",
+      "purpose": "Cluster-Zugehörigkeit muss die Zielposition der Begriffe steuern.",
+      "content": {
+        "spokenText": "Hund und Katze gehören zusammen, Auto und Zug bilden den zweiten Bedeutungsbereich.",
+        "labels": {
+          "concept1": "Hund",
+          "concept2": "Katze",
+          "concept3": "Auto",
+          "concept4": "Zug"
+        },
+        "values": {
+          "concept1Cluster": 1,
+          "concept2Cluster": 1,
+          "concept3Cluster": 2,
+          "concept4Cluster": 2
+        }
+      }
+    },
+    {
+      "id": "workflow-alternative-route",
+      "animationId": "process-flow-subway-workflow-map-v1",
+      "purpose": "Eine Alternativroute darf gezielt aktiviert werden.",
+      "content": {
+        "spokenText": "Wenn die Prüfung fehlschlägt, geht der Ablauf zurück und startet die Prüfung erneut.",
+        "labels": {
+          "alternativeLabel": "RÜCKFALLROUTE",
+          "alternativeText": "Fehler führt zurück zur Prüfung."
+        },
+        "values": {
+          "showAlternative": 1
+        }
+      }
+    },
+    {
+      "id": "knowledge-update-rejected",
+      "animationId": "learning-update-knowledge-tree-graft-v1",
+      "purpose": "Unterhalb der Vertrauensschwelle darf kein Wissensstand ersetzt werden.",
+      "content": {
+        "spokenText": "Die neue Information ist noch zu unsicher und darf den bisherigen Stand nicht ersetzen.",
+        "labels": {
+          "newInformation": "Unbestätigte Aussage"
+        },
+        "values": {
+          "confidence": 55,
+          "verificationThreshold": 70,
+          "revisionStart": 4,
+          "revisionEnd": 5
+        }
+      }
+    },
+    {
+      "id": "context-small-capacity",
+      "animationId": "context-window-context-window-train-v1",
+      "purpose": "Kleine Kapazität muss mehrere echte Überläufe erzeugen und den Pin erhalten.",
+      "content": {
+        "spokenText": "Nur zwei Informationen passen gleichzeitig in den Kontext, die wichtige Regel bleibt angeheftet.",
+        "labels": {
+          "message1": "Frage",
+          "message2": "Wichtige Regel",
+          "message3": "Neue Info",
+          "message4": "Noch eine Info"
+        },
+        "values": {
+          "capacity": 2,
+          "pinnedIndex": 1
+        }
+      }
+    },
+    {
+      "id": "decision-no-valid-path",
+      "animationId": "decision-logic-decision-tree-burst-v1",
+      "purpose": "Wenn alle Kriterien scheitern, darf kein falscher Erfolgsweg entstehen.",
+      "content": {
+        "spokenText": "Keiner der geprüften Wege erfüllt die Anforderungen.",
+        "labels": {
+          "selectedPath": "Kein gültiger Pfad"
+        },
+        "values": {
+          "branch1Valid": 0,
+          "branch2Valid": 0,
+          "branch3Valid": 0,
+          "branch4Valid": 0,
+          "branch5Valid": 0
+        }
+      }
+    },
+    {
+      "id": "latency-reversed-input-order",
+      "animationId": "scale-performance-latency-tunnel-race-v1",
+      "purpose": "Schneller/langsamer muss aus den Zahlen folgen und nicht aus der Eingabereihenfolge.",
+      "content": {
+        "spokenText": "Pfad B braucht 760 Millisekunden, Pfad A nur 310 Millisekunden.",
+        "labels": {
+          "slowPath": "Pfad A",
+          "fastPath": "Pfad B"
+        },
+        "values": {
+          "slowLatency": 310,
+          "fastLatency": 760
+        }
+      }
+    }
+  ]
+}
