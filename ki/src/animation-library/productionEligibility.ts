@@ -16,7 +16,11 @@ export const isProductionReadyLibraryAnimation = (
   animationId: string,
 ): boolean => productionReadyIds.has(animationId);
 
+export const isProductionReadyLibraryEntry = (
+  entry: AnimationLibraryEntry,
+): boolean =>
+  productionReadyIds.has(entry.animationId) && entry.status !== 'retired';
+
 export const getProductionReadyLibraryEntries = (
   entries: readonly AnimationLibraryEntry[],
-): AnimationLibraryEntry[] =>
-  entries.filter((entry) => productionReadyIds.has(entry.animationId));
+): AnimationLibraryEntry[] => entries.filter(isProductionReadyLibraryEntry);
