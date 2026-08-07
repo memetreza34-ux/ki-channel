@@ -1,6 +1,9 @@
 import {describe, expect, it} from 'vitest';
-import type {RawReelAnimationPlan} from '../reelPlanningPipeline';
+import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
+import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
 import {diagnoseRawReelAnimationPlan} from '../planDiagnostics';
+import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
+import type {RawReelAnimationPlan} from '../reelPlanningPipeline';
 
 const makePlan = (
   decisions: RawReelAnimationPlan['decisionSummary'],
@@ -28,6 +31,40 @@ describe('reel plan diagnostics', () => {
     expect(result.uniqueAnimationCount).toBe(4);
     expect(result.uniqueFamilyCount).toBe(4);
     expect(result.diagnostics).toEqual([]);
+  });
+
+  it('blocks executable shell-only animations that are not production-ready', () => {
+    const shellOnlyEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) =>
+        EXECUTABLE_ANIMATION_IDS.includes(entry.animationId) &&
+        !NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(entry.animationId),
+    );
+    expect(shellOnlyEntry).toBeDefined();
+
+    const result = diagnoseRawReelAnimationPlan(
+      makePlan([
+        {
+          sceneId: 'shell-only',
+          primaryFamily: shellOnlyEntry!.visualFamily,
+          selectedAnimationId: shellOnlyEntry!.animationId,
+          source: 'library',
+          familyScore: 99,
+          selectionScore: 99,
+          mustBeNew: false,
+        },
+      ]),
+    );
+
+    expect(result.passed).toBe(false);
+    expect(result.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'non-production-ready-library-selection',
+          severity: 'blocker',
+          sceneIds: ['shell-only'],
+        }),
+      ]),
+    );
   });
 
   it('blocks duplicate animations and ignored new-build requirements', () => {
