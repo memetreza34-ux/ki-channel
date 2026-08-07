@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "knowledge-update-rejects-low-confidence",
+      "animationId": "learning-update-knowledge-tree-graft-v1",
+      "expectedBehavior": "Der neue Stand wird sichtbar geprüft, aber nicht in den Wissensbaum übernommen, weil die Verifikationsschwelle nicht erreicht wird.",
+      "content": {
+        "title": "Unsichere Aktualisierung ablehnen",
+        "spokenText": "Die neue Information klingt plausibel, erreicht aber nur 61 Prozent Vertrauen und darf den alten Wissensstand deshalb noch nicht ersetzen.",
+        "meaningContract": {
+          "communicationGoal": "show-verification-gate",
+          "startState": "Ein bestehender Wissensstand ist aktiv und eine neue Information liegt zur Prüfung bereit.",
+          "visibleChange": "Die neue Information wird geprüft und bleibt unter der erforderlichen Verifikationsschwelle.",
+          "endState": "Der bestehende Wissensstand bleibt unverändert, bis die neue Information ausreichend verifiziert ist.",
+          "subjectTerms": ["Wissensstand", "neue Information", "Vertrauen"],
+          "actionTerms": ["prüfen", "ersetzen"],
+          "resultTerms": ["unverändert", "Verifikationsschwelle"],
+          "preferredVisualFamilies": ["learning-update"],
+          "preferredExplanationPatterns": ["verification-gate"],
+          "requiredVisualCues": ["confidence-below-threshold", "old-state-remains"],
+          "forbiddenVisualCues": ["replace-before-verification"]
+        },
+        "labels": {
+          "oldState1": "Bestätigter Stand",
+          "oldState2": "Dokumentierte Quelle",
+          "oldState3": "Aktive Aussage",
+          "newInformation": "Neue Behauptung",
+          "sourceDetail": "Sekundärquelle · ungeprüft",
+          "conclusion": "Wissen bleibt unverändert"
+        },
+        "values": {
+          "confidence": 61,
+          "verificationThreshold": 80,
+          "revisionStart": 7,
+          "revisionEnd": 8
+        }
+      }
+    },
+    {
+      "id": "retrieval-respects-explicit-relevance",
+      "animationId": "retrieval-search-knowledge-magnet-v1",
+      "expectedBehavior": "Nur explizit relevante Quellen werden angezogen; irrelevante Quellen werden abgestoßen, unabhängig von ihrer Position oder Reihenfolge.",
+      "content": {
+        "title": "Nur passende Quellen ziehen",
+        "spokenText": "Von sechs Treffern sind nur die Primärquelle und der Fachbericht relevant; die anderen vier Quellen sollen sichtbar aussortiert werden.",
+        "meaningContract": {
+          "communicationGoal": "show-retrieval-filter",
+          "startState": "Sechs mögliche Quellen liegen ungeordnet im Dokumentraum.",
+          "visibleChange": "Die Relevanzprüfung zieht nur zwei passende Belege zur Anfrage und stößt die übrigen Treffer ab.",
+          "endState": "Genau zwei relevante Belege bleiben an der Anfrage sichtbar.",
+          "subjectTerms": ["Quellen", "Primärquelle", "Fachbericht"],
+          "actionTerms": ["prüfen", "aussortieren", "anziehen"],
+          "resultTerms": ["zwei relevante Belege"],
+          "preferredVisualFamilies": ["retrieval-search"],
+          "preferredExplanationPatterns": ["relevance-filter"],
+          "requiredVisualCues": ["relevant-sources-selected", "irrelevant-sources-rejected"],
+          "forbiddenVisualCues": ["position-based-selection"]
+        },
+        "labels": {
+          "query": "Welche Quellen belegen die Aussage?",
+          "source1": "Blogpost",
+          "source2": "Primärquelle",
+          "source3": "Kommentar",
+          "source4": "Fachbericht",
+          "source5": "Archivnotiz",
+          "source6": "Werbetext",
+          "resultLabel": "2 relevante Belege"
+        },
+        "values": {
+          "evidenceCount": 2,
+          "source1Relevant": 0,
+          "source2Relevant": 1,
+          "source3Relevant": 0,
+          "source4Relevant": 1,
+          "source5Relevant": 0,
+          "source6Relevant": 0
+        }
+      }
+    },
+    {
+      "id": "funnel-drops-explicit-noise",
+      "animationId": "input-output-funnel-compression-output-v1",
+      "expectedBehavior": "Nur markierte Eingaben dürfen in die Verdichtung gelangen; explizit verworfene Eingaben dürfen keine Ergebnispartikel erzeugen.",
+      "content": {
+        "title": "Rauschen vor der Verdichtung entfernen",
+        "spokenText": "Für die Zusammenfassung behalten wir Dokumente, Webseiten und Berichte; Chats, Tabellen und Notizen werden in dieser Szene verworfen.",
+        "meaningContract": {
+          "communicationGoal": "show-filter-and-compress",
+          "startState": "Sechs unterschiedliche Eingabequellen liegen gemeinsam vor.",
+          "visibleChange": "Drei relevante Quellen werden behalten und drei unpassende Quellen vor der Verdichtung ausgesondert.",
+          "endState": "Nur die drei behaltenen Quellen speisen die klare Zusammenfassung.",
+          "subjectTerms": ["Dokumente", "Webseiten", "Berichte", "Chats", "Tabellen", "Notizen"],
+          "actionTerms": ["behalten", "verwerfen", "verdichten"],
+          "resultTerms": ["Zusammenfassung"],
+          "preferredVisualFamilies": ["input-output"],
+          "preferredExplanationPatterns": ["filter-then-compress"],
+          "requiredVisualCues": ["kept-inputs-enter-output", "dropped-inputs-excluded"],
+          "forbiddenVisualCues": ["all-inputs-contribute-equally"]
+        },
+        "labels": {
+          "input1": "Dokumente",
+          "input2": "Notizen",
+          "input3": "Webseiten",
+          "input4": "Chats",
+          "input5": "Tabellen",
+          "input6": "Berichte",
+          "outputTitle": "Gefilterte Zusammenfassung",
+          "outputDetail": "Nur freigegebene Quellen tragen zum Ergebnis bei."
+        },
+        "values": {
+          "input1Keep": 1,
+          "input2Keep": 0,
+          "input3Keep": 1,
+          "input4Keep": 0,
+          "input5Keep": 0,
+          "input6Keep": 1
+        }
+      }
+    },
+    {
+      "id": "workflow-shows-explicit-retry-route",
+      "animationId": "process-flow-subway-workflow-map-v1",
+      "expectedBehavior": "Die Alternativroute ist nur in diesem Fehlerfall sichtbar und erklärt den Rücksprung zur Prüfung.",
+      "content": {
+        "title": "Fehler führt zurück zur Prüfung",
+        "spokenText": "Wenn die Qualitätsprüfung fehlschlägt, springt der Workflow zurück zur Prüfung und läuft erst danach wieder Richtung Ausführung.",
+        "meaningContract": {
+          "communicationGoal": "show-retry-route",
+          "startState": "Der Workflow läuft regulär von Eingabe über Prüfung und Planung.",
+          "visibleChange": "Ein Fehler aktiviert eine sichtbare Rückfallroute zurück zur Prüfung.",
+          "endState": "Nach erneuter Prüfung kann der Workflow wieder bis zur Ausführung und zum Ergebnis weiterlaufen.",
+          "subjectTerms": ["Workflow", "Prüfung", "Fehler"],
+          "actionTerms": ["zurückspringen", "prüfen", "weiterlaufen"],
+          "resultTerms": ["erneute Prüfung", "Ergebnis"],
+          "preferredVisualFamilies": ["process-flow"],
+          "preferredExplanationPatterns": ["retry-loop"],
+          "requiredVisualCues": ["main-route", "retry-route", "return-to-check"],
+          "forbiddenVisualCues": ["retry-route-on-success-only"]
+        },
+        "labels": {
+          "station1": "Eingabe",
+          "station2": "Prüfung",
+          "station3": "Planung",
+          "station4": "Ausführung",
+          "station5": "Ergebnis",
+          "alternativeLabel": "RÜCKFALLROUTE",
+          "alternativeText": "Fehler → zurück zur Prüfung"
+        },
+        "values": {
+          "showAlternative": 1
+        }
+      }
+    },
+    {
+      "id": "semantic-space-respects-nonpositional-clusters",
+      "animationId": "semantic-space-meaning-terrain-v1",
+      "expectedBehavior": "Cluster-Zugehörigkeit folgt den expliziten Clusterwerten und nicht der ursprünglichen Reihenfolge der sechs Begriffe.",
+      "content": {
+        "title": "Cluster unabhängig von Reihenfolge",
+        "spokenText": "Apfel, Banane und Birne gehören zusammen, obwohl ihre Karten absichtlich nicht nebeneinander in der Eingabeliste stehen.",
+        "meaningContract": {
+          "communicationGoal": "show-semantic-clusters",
+          "startState": "Sechs Begriffe erscheinen zunächst als einzelne Punkte.",
+          "visibleChange": "Die Punkte bewegen sich anhand ihrer expliziten Bedeutungsgruppe in zwei Cluster.",
+          "endState": "Semantisch verwandte Begriffe liegen sichtbar zusammen, unabhängig von ihrer Eingabereihenfolge.",
+          "subjectTerms": ["Apfel", "Banane", "Birne", "Auto", "Zug", "Bus"],
+          "actionTerms": ["gruppieren", "annähern"],
+          "resultTerms": ["Obst-Cluster", "Verkehr-Cluster"],
+          "preferredVisualFamilies": ["semantic-space"],
+          "preferredExplanationPatterns": ["cluster-by-similarity"],
+          "requiredVisualCues": ["explicit-cluster-membership", "distance-means-similarity"],
+          "forbiddenVisualCues": ["first-three-versus-last-three"]
+        },
+        "labels": {
+          "concept1": "Apfel",
+          "concept2": "Auto",
+          "concept3": "Banane",
+          "concept4": "Zug",
+          "concept5": "Birne",
+          "concept6": "Bus",
+          "cluster1": "Obst-Cluster",
+          "cluster2": "Verkehr-Cluster"
+        },
+        "values": {
+          "concept1Cluster": 1,
+          "concept2Cluster": 2,
+          "concept3Cluster": 1,
+          "concept4Cluster": 2,
+          "concept5Cluster": 1,
+          "concept6Cluster": 2
+        }
+      }
+    },
+    {
+      "id": "attention-weights-drive-relationship-strength",
+      "animationId": "relationship-network-dependency-bridge-builder-v1",
+      "expectedBehavior": "Linienstärke und sichtbare Prozentwerte folgen den gelieferten Gewichten; die schwache Direktverbindung wird verworfen.",
+      "content": {
+        "title": "Attention-Gewichte sichtbar vergleichen",
+        "spokenText": "Das Modell gewichtet KI zu liest mit 93 Prozent und liest zu Text mit 71 Prozent, während die direkte Verbindung nur 8 Prozent erreicht und verworfen wird.",
+        "meaningContract": {
+          "communicationGoal": "show-weighted-relationships",
+          "startState": "Drei Begriffe besitzen mehrere mögliche Beziehungen.",
+          "visibleChange": "Die Beziehungen erhalten unterschiedliche sichtbare Gewichte und die schwache Direktverbindung verliert Bedeutung.",
+          "endState": "Die beiden starken Beziehungen tragen den Kontext, die 8-Prozent-Verbindung ist verworfen.",
+          "subjectTerms": ["KI", "liest", "Text"],
+          "actionTerms": ["gewichten", "verwerfen"],
+          "resultTerms": ["starke Beziehungen", "Kontext"],
+          "preferredVisualFamilies": ["relationship-network"],
+          "preferredExplanationPatterns": ["weighted-edge-network"],
+          "requiredVisualCues": ["93-percent-edge", "71-percent-edge", "8-percent-rejected-edge"],
+          "forbiddenVisualCues": ["equal-edge-strength"]
+        },
+        "labels": {
+          "node1": "KI",
+          "node2": "liest",
+          "node3": "Text",
+          "strongRelationship": "KI → liest → Text",
+          "weakRelationship": "Direktverbindung zu schwach"
+        },
+        "values": {
+          "weight12": 0.93,
+          "weight23": 0.71,
+          "weakWeight": 0.08
+        }
+      }
+    }
+  ]
+}
