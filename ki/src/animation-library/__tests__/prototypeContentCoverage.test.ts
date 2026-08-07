@@ -15,11 +15,15 @@ describe('prototype content binding coverage', () => {
         'probability-probability-fluid-columns-v1',
         'decision-logic-decision-tree-burst-v1',
         'retrieval-search-knowledge-magnet-v1',
+        'context-window-context-window-train-v1',
+        'relationship-network-dependency-bridge-builder-v1',
+        'generation-answer-loom-v1',
+        'model-processing-residual-river-v1',
         'risk-contrast-confidence-glass-crack-v1',
         'scale-performance-latency-tunnel-race-v1',
       ]),
     );
-    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(8);
+    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(12);
   });
 
   it('does not mark shell-only library prototypes as production-ready', () => {
