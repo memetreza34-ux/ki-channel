@@ -1,4 +1,5 @@
 import {getAnimationLibraryEntry} from './catalog';
+import {isProductionReadyLibraryAnimation} from './productionEligibility';
 import type {RawReelAnimationPlan} from './reelPlanningPipeline';
 
 export type ReelPlanDiagnosticSeverity = 'info' | 'warning' | 'blocker';
@@ -121,6 +122,18 @@ export const diagnoseRawReelAnimationPlan = (
   }
 
   decisions.forEach((decision) => {
+    if (
+      decision.source === 'library' &&
+      !isProductionReadyLibraryAnimation(decision.selectedAnimationId)
+    ) {
+      diagnostics.push({
+        code: 'non-production-ready-library-selection',
+        severity: 'blocker',
+        sceneIds: [decision.sceneId],
+        message:
+          `Bibliotheksauswahl ${decision.selectedAnimationId} ist nicht für direkte Content-Produktion freigegeben.`,
+      });
+    }
     if (
       decision.source === 'library' &&
       decision.selectionScore !== null &&
