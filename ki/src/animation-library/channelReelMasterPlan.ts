@@ -120,9 +120,13 @@ export const createChannelReelMasterPlan = ({
     });
     const contentBindingWarnings = contentBindingReady
       ? []
-      : [
-          'prototype adapts title and semantic phases, but its dominant inner objects are not yet bound to scene content',
-        ];
+      : contentBindingLevel === 'purpose-built-new-animation'
+        ? [
+            'purpose-built animation has a content contract and build specification, but no registered Remotion component yet',
+          ]
+        : [
+            'library prototype adapts semantic shell data, but its dominant inner objects are not yet bound to scene content',
+          ];
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -174,9 +178,10 @@ export const createChannelReelMasterPlan = ({
     ...universalMotion.blockers,
     ...scenes
       .filter((scene) => !scene.contentBindingReady)
-      .map(
-        (scene) =>
-          `scene ${scene.sceneId} uses ${scene.fullAnimationId} with semantic-shell-only content binding`,
+      .map((scene) =>
+        scene.contentBindingLevel === 'purpose-built-new-animation'
+          ? `scene ${scene.sceneId} requires implementation and registry entry for ${scene.fullAnimationId}`
+          : `scene ${scene.sceneId} uses ${scene.fullAnimationId} with semantic-shell-only content binding`,
       ),
   ]);
   const warnings = unique([
