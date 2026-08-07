@@ -30,7 +30,7 @@ Die Bewegung einer Animation darf nicht nur dekorativ oder thematisch ähnlich s
 | Probability | Probability Fluid Columns | Kontextsignale treffen nacheinander ein → erst dadurch ändern sich Wahrscheinlichkeiten → finaler Kandidat folgt dem Endwert. |
 | Model Processing | Residual River | Eingangssignal erreicht Layer 1 → Layer 2 → Layer 3 → jeder Layer zeigt Warten/Verarbeiten/Fertig → Output erst nach Verarbeitung. |
 | Process Flow | Subway Workflow Map | Prozess läuft Station für Station → aktueller Schritt bleibt aktiv → abgeschlossene Schritte werden markiert → Rückfallroute nur bei passendem Inhalt. |
-| Time Change | Timeline Microscope | Zeitlinie läuft chronologisch → inhaltlich relevanter Zielstand wird fokussiert → Änderungen zwischen vorherigem und fokussiertem Stand werden sichtbar. |
+| Time Change | Timeline Microscope | Zeitlinie läuft chronologisch → inhaltlich referenzierter Zielstand wird fokussiert → Änderungen zwischen vorherigem und fokussiertem Stand werden sichtbar. |
 | Data Transformation | Vector Prism Converter | Lesbarer Input geht in Transformation → Dimensionen entstehen nacheinander mit Werten → finaler Vektor baut sich aus denselben Werten auf. |
 
 ## Entfernte Fehlmuster
@@ -48,7 +48,29 @@ Unter anderem wurden folgende Mechanismen entfernt oder entkoppelt:
 - gleichzeitig grün werdende Fehlerdiagnose-Schritte,
 - Latenzrennen mit Bewegungsgeschwindigkeit unabhängig von den ms-Werten,
 - immer sichtbare Workflow-Alternativroute ohne Fehlerinhalt,
-- Wissenserneuerung ohne Verifikationsschwelle.
+- Wissenserneuerung ohne Verifikationsschwelle,
+- Benchmark-Zahlen, die sprunghaft von der kontinuierlichen Markerposition abwichen,
+- Latenz-Farben und Gewinnerrollen, die sich auf die Eingabereihenfolge statt die Messwerte verließen,
+- Budget-Endwerte, die von der tatsächlich gerechneten Einsparung abweichen konnten,
+- Timeline-Fokus, der unabhängig vom im Sprechertext genannten Meilenstein war.
+
+## Edge-Case-Szenarien
+
+`ki/src/animation-library/motion-semantic-scenarios.json` ergänzt die normalen Release-Fixtures um gezielte Grenzfälle. Der Source-Gate prüft, dass jeder dort verwendete Runtime-Key von der zugehörigen TSX-Komponente tatsächlich konsumiert wird.
+
+Aktuell abgedeckt sind unter anderem:
+
+- explizite Retrieval-Relevanz pro Quelle,
+- explizites Behalten/Verwerfen einzelner Funnel-Inputs,
+- starke und schwache Attention-Gewichte,
+- explizite Cluster-Zugehörigkeit im Bedeutungsraum,
+- bewusst aktivierte Workflow-Rückfallroute,
+- Wissensupdate unterhalb der Verifikationsschwelle,
+- kleines Kontextfenster mit mehreren Überläufen,
+- Decision Tree ohne gültigen Pfad,
+- vertauschte Latenz-Eingabereihenfolge, bei der Gewinner und Farben trotzdem aus den Zahlen folgen müssen.
+
+Diese Szenarien erhöhen nicht den normalen 286-Artefakt-Releaseumfang; sie sichern zusätzliche Runtime-Schalter statisch ab und sind die Grundlage für spätere gezielte Sonderfall-Render.
 
 ## Gate
 
@@ -59,7 +81,9 @@ Der Source-Gate verlangt:
 3. echte Runtime-Key-Nutzung,
 4. **22/22 Motion-Semantik-Regeln**,
 5. erforderliche Mechanismen pro Prototyp,
-6. ausgewählte verbotene alte Fehlmuster dürfen nicht zurückkehren.
+6. ausgewählte verbotene alte Fehlmuster dürfen nicht zurückkehren,
+7. mindestens neun eindeutige Edge-Case-Szenarien,
+8. jeder Edge-Case-Runtime-Key muss von der zugehörigen Komponente konsumiert werden.
 
 Das Gate ist bewusst zusätzlich zu TypeScript, Vitest und Remotion-Renderchecks. Es ist kein Ersatz für visuelle Kontrolle.
 
