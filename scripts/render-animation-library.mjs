@@ -4,6 +4,7 @@ import {resolve} from 'node:path';
 import {
   ANIMATION_LIBRARY_CONTENT_RENDER_FIXTURES,
   ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+  ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES,
   ANIMATION_LIBRARY_RENDER_CONFIG,
   ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
 } from './animation-library-render-config.mjs';
@@ -100,6 +101,7 @@ const plan = selectedPrototypes.map((prototype) => {
     height: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.height,
     checkpoints,
     contentSmokeFrame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+    contentSmokeFrames: [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
     sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
   };
 });
@@ -109,10 +111,11 @@ await writeFile(
   resolve(OUTPUT_DIR, 'render-plan.json'),
   `${JSON.stringify(
     {
-      version: 1,
+      version: 2,
       mode: MODE,
       sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
       contentSmokeFrame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+      contentSmokeFrames: [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
       prototypes: plan,
     },
     null,
@@ -190,28 +193,30 @@ for (const prototype of plan) {
   if (shouldRenderContentSmoke) {
     const contentFixture = contentFixtureByAnimationId.get(prototype.animationId);
     const propsPath = resolve(prototype.outputDir, 'content-smoke-props.json');
-    const output = resolve(
-      prototype.outputDir,
-      `content-frame-${String(ANIMATION_LIBRARY_CONTENT_RENDER_FRAME).padStart(3, '0')}.png`,
-    );
     await writeFile(
       propsPath,
       `${JSON.stringify(contentFixture.props, null, 2)}\n`,
       'utf8',
     );
-    tasks.push(async () => {
-      await run('npx', [
-        '--no-install',
-        'remotion',
-        'still',
-        ENTRY_POINT,
-        prototype.compositionId,
-        output,
-        `--frame=${ANIMATION_LIBRARY_CONTENT_RENDER_FRAME}`,
-        `--props=${propsPath}`,
-        '--overwrite',
-      ]);
-    });
+    for (const frame of ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES) {
+      tasks.push(async () => {
+        const output = resolve(
+          prototype.outputDir,
+          `content-frame-${String(frame).padStart(3, '0')}.png`,
+        );
+        await run('npx', [
+          '--no-install',
+          'remotion',
+          'still',
+          ENTRY_POINT,
+          prototype.compositionId,
+          output,
+          `--frame=${frame}`,
+          `--props=${propsPath}`,
+          '--overwrite',
+        ]);
+      });
+    }
   }
 
   if (shouldRenderVideos) {
