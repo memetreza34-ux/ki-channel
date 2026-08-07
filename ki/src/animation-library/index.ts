@@ -27,6 +27,7 @@ export * from './initialBrain';
 export * from './knowledgeGovernance';
 export * from './learningPipeline';
 export * from './libraryAudit';
+export * from './meaningContract';
 export * from './persistence';
 export * from './planner';
 export * from './planDiagnostics';
