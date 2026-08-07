@@ -5,6 +5,11 @@ import {
   type ReelImplementationBrief,
 } from './implementationBrief';
 import type {SceneMeaningContract} from './meaningContract';
+import {
+  getPrototypeContentBindingLevel,
+  isPrototypeContentBindingReady,
+  type PrototypeContentBindingLevel,
+} from './prototypeContentCoverage';
 import {createPrototypeRenderProps} from './prototypeRenderPayload';
 import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 import type {PreparedReelProduction} from './reelLifecycle';
@@ -29,6 +34,8 @@ export type ChannelSceneMasterPlan = {
   endState: string;
   requiredVisualCues: string[];
   prototypeRenderProps: PrototypeRenderProps;
+  contentBindingLevel: PrototypeContentBindingLevel;
+  contentBindingReady: boolean;
   importantWordCount: number;
   importantWordMechanisms: string[];
   requiredVisualSources: string[];
@@ -103,6 +110,19 @@ export const createChannelReelMasterPlan = ({
       spokenText: analysis.spokenText,
       meaningContract: meaning,
     });
+    const contentBindingLevel = getPrototypeContentBindingLevel({
+      animationId: scene.animationId,
+      source: scene.source,
+    });
+    const contentBindingReady = isPrototypeContentBindingReady({
+      animationId: scene.animationId,
+      source: scene.source,
+    });
+    const contentBindingWarnings = contentBindingReady
+      ? []
+      : [
+          'prototype adapts title and semantic phases, but its dominant inner objects are not yet bound to scene content',
+        ];
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -119,6 +139,8 @@ export const createChannelReelMasterPlan = ({
       endState: meaning.endState,
       requiredVisualCues: [...meaning.requiredVisualCues],
       prototypeRenderProps,
+      contentBindingLevel,
+      contentBindingReady,
       importantWordCount: motion.sentenceCoverage.criticalBeatCount,
       importantWordMechanisms: motion.importantWordBeats.map(
         (beat) => beat.mechanismId,
@@ -128,9 +150,10 @@ export const createChannelReelMasterPlan = ({
         ...contentMode.primaryMode.requiredMotionLayers,
         ...motion.layers.filter((layer) => layer.required).map((layer) => layer.layerId),
       ]),
-      valid: motion.valid,
+      valid: motion.valid && contentBindingReady,
       warnings: unique([
         ...motion.warnings,
+        ...contentBindingWarnings,
         ...contentMode.secondaryModes.map(
           (mode) => `secondary content mode: ${mode.modeId}`,
         ),
@@ -149,6 +172,12 @@ export const createChannelReelMasterPlan = ({
   const blockers = unique([
     ...implementationBrief.blockers,
     ...universalMotion.blockers,
+    ...scenes
+      .filter((scene) => !scene.contentBindingReady)
+      .map(
+        (scene) =>
+          `scene ${scene.sceneId} uses ${scene.fullAnimationId} with semantic-shell-only content binding`,
+      ),
   ]);
   const warnings = unique([
     ...implementationBrief.warnings,
@@ -190,6 +219,7 @@ export const renderChannelReelMasterPlanMarkdown = (
     `**Content-Modus:** ${scene.contentMode.primaryMode.modeId}\n\n` +
     `**Vollanimation:** \`${scene.fullAnimationId}\` (${scene.fullAnimationSource})\n\n` +
     `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
+    `**Content-Bindung:** ${scene.contentBindingLevel} (${scene.contentBindingReady ? 'bereit' : 'noch nicht final'})\n\n` +
     `### Bedeutungs-Payload für Remotion\n` +
     `- **Kommunikationsziel:** ${scene.communicationGoal}\n` +
     `- **Startzustand:** ${scene.startState}\n` +
