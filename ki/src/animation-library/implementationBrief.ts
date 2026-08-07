@@ -1,4 +1,5 @@
 import type {PreparedReelProduction} from './reelLifecycle';
+import type {SceneMeaningContract} from './meaningContract';
 
 export type ImplementationPhaseBrief = {
   phaseId: string;
@@ -26,6 +27,7 @@ export type SceneImplementationBrief = {
   transitionOutTags: string[];
   avoidWhen: string[];
   selectionReasons: string[];
+  meaningContract: SceneMeaningContract;
   implementationRules: string[];
   phases: ImplementationPhaseBrief[];
 };
@@ -51,31 +53,47 @@ const LIBRARY_ADAPTATION_RULES = [
   'Use deterministic Remotion motion only and render start, peak, transition, and final-hold checkpoints.',
 ] as const;
 
-const DEFAULT_PHASES: readonly ImplementationPhaseBrief[] = [
+const phasesForMeaning = (
+  contract: SceneMeaningContract,
+): ImplementationPhaseBrief[] => [
   {
     phaseId: 'establish',
     startRatio: 0,
     endRatio: 0.2,
-    purpose: 'Establish the starting state and the object that carries the explanation.',
-    semanticTrigger: 'first key phrase',
+    purpose: `Show the exact starting state: ${contract.startState}.`,
+    semanticTrigger: contract.subjectTerms[0] ?? 'first key phrase',
   },
   {
     phaseId: 'explain',
     startRatio: 0.18,
     endRatio: 0.62,
-    purpose: 'Perform the main transformation, comparison, route, or causal action.',
-    semanticTrigger: 'main action word',
+    purpose: `Make this exact visible change happen: ${contract.visibleChange}.`,
+    semanticTrigger: contract.actionTerms[0] ?? 'main action word',
   },
   {
     phaseId: 'resolve',
     startRatio: 0.58,
     endRatio: 1,
-    purpose: 'Lock the result, highlight the conclusion, and prepare the outgoing transition.',
-    semanticTrigger: 'result phrase',
+    purpose: `Hold the exact result state: ${contract.endState}.`,
+    semanticTrigger: contract.resultTerms[0] ?? 'result phrase',
   },
-] as const;
+];
 
 const unique = (values: readonly string[]): string[] => [...new Set(values)];
+
+const contentRules = (
+  spokenText: string,
+  contract: SceneMeaningContract,
+): string[] => [
+  `Build and judge the animation against this exact spoken sentence: “${spokenText}”.`,
+  `Communication goal: ${contract.communicationGoal}.`,
+  `Opening state: ${contract.startState}.`,
+  `Required visible change: ${contract.visibleChange}.`,
+  `Required final state: ${contract.endState}.`,
+  `Required visual cues: ${contract.requiredVisualCues.join(', ')}.`,
+  `Forbidden shortcuts: ${contract.forbiddenVisualCues.join(', ')}.`,
+  'Reject the scene when the viewer could swap in an unrelated caption without changing the animation.',
+];
 
 export const compileReelImplementationBrief = (
   prepared: PreparedReelProduction,
@@ -97,6 +115,7 @@ export const compileReelImplementationBrief = (
     const analysis = analysisByScene.get(scene.sceneId);
     if (!analysis) throw new Error(`missing scene analysis for ${scene.sceneId}`);
     const spec = scene.buildSpec;
+    const meaningContract = spec?.contentContract ?? analysis.meaningContract;
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -115,12 +134,14 @@ export const compileReelImplementationBrief = (
       transitionOutTags: [...scene.catalogEntry.transitionOutTags],
       avoidWhen: [...scene.catalogEntry.avoidWhen],
       selectionReasons: [...scene.selectionReasons],
-      implementationRules: spec
-        ? [...spec.implementationRules]
-        : [...LIBRARY_ADAPTATION_RULES],
+      meaningContract,
+      implementationRules: unique([
+        ...contentRules(analysis.spokenText, meaningContract),
+        ...(spec ? spec.implementationRules : LIBRARY_ADAPTATION_RULES),
+      ]),
       phases: spec
         ? spec.phases.map((phase) => ({...phase}))
-        : DEFAULT_PHASES.map((phase) => ({...phase})),
+        : phasesForMeaning(meaningContract),
     } satisfies SceneImplementationBrief;
   });
 
@@ -136,7 +157,8 @@ export const compileReelImplementationBrief = (
     globalRules: [
       'Never repeat a complete animation inside the same reel.',
       'Never place the same layout family or motion signature in consecutive scenes.',
-      'Prefer semantic fit over novelty, but build a new animation when no library choice clears the quality threshold.',
+      'Spoken meaning, visible state change, and final result outrank novelty and transition smoothness.',
+      'Build a new animation when no library choice expresses the exact sentence strongly enough.',
       'Treat library entries as adaptable motion grammars rather than identical reusable scene templates.',
       'Every dominant movement must explain a spoken word, relationship, transformation, contrast, or result.',
       'Use hard cuts as the default; add a transition only when an object, direction, or semantic state can continue into the next scene.',
@@ -145,9 +167,11 @@ export const compileReelImplementationBrief = (
     reviewGates: [
       'TypeScript and tests pass without disabled assertions or ignore directives.',
       'All planned checkpoint PNGs and the MP4 are technically valid and use the current source fingerprint.',
+      'The opening frame, visible change, and final hold satisfy the scene meaning contract.',
       'The scene remains understandable without sound and readable at smartphone size.',
       'No overflow, accidental empty frame, repeated full animation, or meaningless decorative motion remains.',
-      'Semantic clarity is at least 78, novelty at least 72, and production confidence at least 75.',
+      'A reviewer cannot replace the spoken sentence with an unrelated sentence while keeping the same animation.',
+      'Semantic clarity is at least 82, novelty at least 72, and production confidence at least 75.',
       'Only a scene that passes both technical and manual review may become verified.',
     ],
     scenes,
@@ -167,12 +191,20 @@ export const renderReelImplementationBriefMarkdown = (
           `- **${phase.phaseId}** (${Math.round(phase.startRatio * 100)}–${Math.round(phase.endRatio * 100)} %): ${phase.purpose} Trigger: ${phase.semanticTrigger}.`,
       )
       .join('\n');
+    const meaning = scene.meaningContract;
     return `## Szene ${index + 1}: ${scene.sceneId}\n\n` +
       `**Sprechtext:** ${scene.spokenText}\n\n` +
       `**Quelle:** ${scene.source}\n\n` +
       `**Animation:** \`${scene.animationId}\` — ${scene.title}\n\n` +
       `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
       `**Richtung / Energie:** ${scene.primaryDirection} / ${scene.energy}\n\n` +
+      `### Bedeutungsvertrag\n` +
+      `- **Kommunikationsziel:** ${meaning.communicationGoal}\n` +
+      `- **Startzustand:** ${meaning.startState}\n` +
+      `- **Sichtbare Veränderung:** ${meaning.visibleChange}\n` +
+      `- **Endzustand:** ${meaning.endState}\n` +
+      `- **Pflicht-Cues:** ${meaning.requiredVisualCues.join(', ')}\n` +
+      `- **Verbotene Abkürzungen:** ${meaning.forbiddenVisualCues.join(', ')}\n\n` +
       `### Semantik\n${bulletList(scene.semanticTags)}\n\n` +
       `### Erklärmuster\n${bulletList(scene.explanationPatterns)}\n\n` +
       `### Grundbausteine\n${bulletList(scene.primitiveTags)}\n\n` +
