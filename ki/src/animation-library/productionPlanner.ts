@@ -202,6 +202,9 @@ export const planProductionReelAnimations = ({
   }
 
   const uniqueWarnings = [...new Set(qualityWarnings)];
+  const hasPendingNewBuild = scenePlans.some(
+    (scene) => scene.source === 'new-build' || scene.buildSpec !== null,
+  );
   return {
     reelId,
     reelIndex,
@@ -213,6 +216,6 @@ export const planProductionReelAnimations = ({
     layoutFamilies,
     motionSignatures,
     qualityWarnings: uniqueWarnings,
-    readyForImplementation: uniqueWarnings.length === 0,
+    readyForImplementation: uniqueWarnings.length === 0 && !hasPendingNewBuild,
   };
 };
