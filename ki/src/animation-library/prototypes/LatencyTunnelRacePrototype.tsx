@@ -31,61 +31,55 @@ export const LatencyTunnelRacePrototype: React.FC = () => {
   const tunnelReveal = prototypeProgress(frame, 0, 36);
   const race = prototypeProgress(frame, 30, 142);
   const finish = prototypeProgress(frame, 136, 174);
-  const slowLatency = numericLatency(
+  const firstLatency = numericLatency(
     getPrototypeValue({content, key: 'slowLatency', fallback: 780}),
     780,
   );
-  const fastLatency = numericLatency(
+  const secondLatency = numericLatency(
     getPrototypeValue({content, key: 'fastLatency', fallback: 340}),
     340,
   );
-  const maximumLatency = Math.max(slowLatency, fastLatency);
-  const minimumLatency = Math.min(slowLatency, fastLatency);
+  const maximumLatency = Math.max(firstLatency, secondLatency);
+  const minimumLatency = Math.min(firstLatency, secondLatency);
   const latencyDelta = maximumLatency - minimumLatency;
   const speedup = maximumLatency / minimumLatency;
   const tunnels = [
     {
-      label: getPrototypeLabel({
-        content,
-        key: 'slowPath',
-        fallback: 'SERIELL',
-      }),
+      label: getPrototypeLabel({content, key: 'slowPath', fallback: 'SERIELL'}),
       y: 390,
-      color: '#FF5D6C',
-      finalValue: slowLatency,
+      finalValue: firstLatency,
     },
     {
-      label: getPrototypeLabel({
-        content,
-        key: 'fastPath',
-        fallback: 'PARALLEL',
-      }),
+      label: getPrototypeLabel({content, key: 'fastPath', fallback: 'PARALLEL'}),
       y: 680,
-      color: '#35C58A',
-      finalValue: fastLatency,
+      finalValue: secondLatency,
     },
-  ] as const;
+  ].map((tunnel) => ({
+    ...tunnel,
+    isFaster: tunnel.finalValue === minimumLatency,
+    color: tunnel.finalValue === minimumLatency ? '#35C58A' : '#FF5D6C',
+  }));
+  const fasterTunnel = tunnels.reduce((best, tunnel) =>
+    tunnel.finalValue < best.finalValue ? tunnel : best,
+  );
+  const slowerTunnel = tunnels.reduce((worst, tunnel) =>
+    tunnel.finalValue > worst.finalValue ? tunnel : worst,
+  );
   const requestLabel = getPrototypeLabel({
     content,
     key: 'requestLabel',
     fallback: content?.meaningContract.subjectTerms[0] ?? 'IDENTISCHE REQUESTS',
   });
-  const benchmarkLabel = getPrototypeLabel({
-    content,
-    key: 'benchmarkLabel',
-    fallback: 'LATENCY BENCHMARK',
-  });
+  const benchmarkLabel = getPrototypeLabel({content, key: 'benchmarkLabel', fallback: 'LATENCY BENCHMARK'});
   const bottleneckLabel = getPrototypeLabel({
     content,
     key: 'bottleneckLabel',
-    fallback: content?.meaningContract.resultTerms.find((term) =>
-      /engpass|latenz|kapazitat/i.test(term),
-    ) ?? 'ENGPÄSSE',
+    fallback: content?.meaningContract.resultTerms.find((term) => /engpass|latenz|kapazitat/i.test(term)) ?? 'LANGSAMER PFAD',
   });
   const optimizedLabel = getPrototypeLabel({
     content,
     key: 'optimizedLabel',
-    fallback: tunnels[1].label,
+    fallback: fasterTunnel.label,
   });
 
   return (
@@ -101,36 +95,27 @@ export const LatencyTunnelRacePrototype: React.FC = () => {
         </div>
 
         {tunnels.map((tunnel, index) => {
-          const progressFromLatency = clamp01(
-            race * (maximumLatency / tunnel.finalValue),
-          );
+          const progressFromLatency = clamp01(race * (maximumLatency / tunnel.finalValue));
           const x = interpolate(progressFromLatency, [0, 1], [118, 820]);
-          const elapsed = Math.min(
-            tunnel.finalValue,
-            race * maximumLatency,
-          );
+          const elapsed = Math.min(tunnel.finalValue, race * maximumLatency);
           const finished = progressFromLatency >= 0.999;
           return (
-            <React.Fragment key={tunnel.label}>
+            <React.Fragment key={`${tunnel.label}-${index}`}>
               <div style={{position: 'absolute', left: 86, right: 86, top: tunnel.y - 82, height: 164, borderRadius: 82, background: `linear-gradient(90deg, ${tunnel.color}12, rgba(255,255,255,.82), ${tunnel.color}18)`, border: `5px solid ${tunnel.color}55`, boxShadow: `inset 0 0 44px ${tunnel.color}20`, opacity: tunnelReveal, overflow: 'hidden'}}>
                 {Array.from({length: 8}, (_, ring) => (
                   <div key={ring} style={{position: 'absolute', left: 45 + ring * 96, top: 16, bottom: 16, width: 4, borderRadius: 999, background: `${tunnel.color}35`, transform: `skewX(${ring % 2 === 0 ? -10 : 10}deg)`}} />
                 ))}
-                {index === 0 ? (
+                {!tunnel.isFaster ? (
                   <>
                     <div style={{position: 'absolute', left: 315, top: 0, bottom: 0, width: 85, background: 'rgba(255,182,72,.20)', borderLeft: '3px solid rgba(255,182,72,.5)', borderRight: '3px solid rgba(255,182,72,.5)'}} />
                     <div style={{position: 'absolute', left: 510, top: 0, bottom: 0, width: 105, background: 'rgba(255,93,108,.15)', borderLeft: '3px solid rgba(255,93,108,.45)', borderRight: '3px solid rgba(255,93,108,.45)'}} />
                   </>
                 ) : null}
               </div>
-
               <div style={{position: 'absolute', left: 100, top: tunnel.y - 145, maxWidth: 300, padding: '11px 17px', borderRadius: 16, background: 'rgba(255,255,255,.94)', border: `2px solid ${tunnel.color}55`, color: tunnel.color, fontSize: tunnel.label.length > 14 ? 15 : 19, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{tunnel.label.toLocaleUpperCase('de-DE')}</div>
               <div style={{position: 'absolute', right: 95, top: tunnel.y - 145, fontFamily: 'monospace', fontSize: 24, fontWeight: 900, color: tunnel.color}}>{metricLabel(elapsed)}</div>
-
-              <div style={{position: 'absolute', left: x, top: tunnel.y, width: 62, height: 62, borderRadius: index === 0 ? 18 : 999, background: tunnel.color, border: `7px solid ${finished ? PROTOTYPE_PALETTE.success : 'white'}`, boxShadow: `0 0 34px ${tunnel.color}66`, transform: `translate(-50%, -50%) scale(${finished ? 1.08 : 1})`, zIndex: 8}} />
-              {finished ? (
-                <div style={{position: 'absolute', left: 710, top: tunnel.y + 58, width: 180, textAlign: 'center', fontSize: 14, fontWeight: 900, letterSpacing: 1.5, color: PROTOTYPE_PALETTE.success}}>ZIEL · {metricLabel(tunnel.finalValue)}</div>
-              ) : null}
+              <div style={{position: 'absolute', left: x, top: tunnel.y, width: 62, height: 62, borderRadius: tunnel.isFaster ? 999 : 18, background: tunnel.color, border: `7px solid ${finished ? PROTOTYPE_PALETTE.success : 'white'}`, boxShadow: `0 0 34px ${tunnel.color}66`, transform: `translate(-50%, -50%) scale(${finished ? 1.08 : 1})`, zIndex: 8}} />
+              {finished ? <div style={{position: 'absolute', left: 710, top: tunnel.y + 58, width: 180, textAlign: 'center', fontSize: 14, fontWeight: 900, letterSpacing: 1.5, color: PROTOTYPE_PALETTE.success}}>ZIEL · {metricLabel(tunnel.finalValue)}</div> : null}
             </React.Fragment>
           );
         })}
@@ -140,11 +125,13 @@ export const LatencyTunnelRacePrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 115, right: 115, bottom: 54, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, opacity: finish, transform: `translateY(${(1 - finish) * 48}px)`}}>
           <div style={{padding: '20px 18px', borderRadius: 24, background: 'rgba(255,93,108,.09)', border: '2px solid rgba(255,93,108,.3)', textAlign: 'center'}}>
             <div style={{fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger, letterSpacing: 1.5}}>{bottleneckLabel.toLocaleUpperCase('de-DE')}</div>
-            <div style={{marginTop: 9, fontSize: 25, fontWeight: 900}}>{metricLabel(maximumLatency)}</div>
+            <div style={{marginTop: 7, fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>{slowerTunnel.label}</div>
+            <div style={{marginTop: 7, fontSize: 25, fontWeight: 900}}>{metricLabel(slowerTunnel.finalValue)}</div>
           </div>
           <div style={{padding: '20px 18px', borderRadius: 24, background: 'rgba(53,197,138,.10)', border: '2px solid rgba(53,197,138,.34)', textAlign: 'center'}}>
             <div style={{fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.success, letterSpacing: 1.5}}>{optimizedLabel.toLocaleUpperCase('de-DE')}</div>
-            <div style={{marginTop: 9, fontSize: 25, fontWeight: 900}}>{metricLabel(minimumLatency)}</div>
+            <div style={{marginTop: 7, fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>{fasterTunnel.label}</div>
+            <div style={{marginTop: 7, fontSize: 25, fontWeight: 900}}>{metricLabel(fasterTunnel.finalValue)}</div>
           </div>
           <div style={{padding: '20px 18px', borderRadius: 24, background: 'rgba(135,87,232,.08)', border: '2px solid rgba(135,87,232,.25)', textAlign: 'center'}}>
             <div style={{fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.accent, letterSpacing: 1.5}}>VORTEIL</div>
