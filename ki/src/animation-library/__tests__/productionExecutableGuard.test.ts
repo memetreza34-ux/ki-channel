@@ -2,6 +2,11 @@ import {describe, expect, it} from 'vitest';
 import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
+import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
+import {
+  getProductionReadyLibraryEntries,
+  PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
+} from '../productionEligibility';
 import {planProductionReelAnimations} from '../productionPlanner';
 
 const brain = createInitialCreativeBrainState({
@@ -10,6 +15,16 @@ const brain = createInitialCreativeBrainState({
 });
 
 describe('production executable guard', () => {
+  it('defines production reuse as executable plus native content binding', () => {
+    expect(PRODUCTION_READY_LIBRARY_ANIMATION_IDS).toHaveLength(22);
+    expect(getProductionReadyLibraryEntries(ANIMATION_LIBRARY_ENTRIES)).toHaveLength(22);
+
+    for (const animationId of PRODUCTION_READY_LIBRARY_ANIMATION_IDS) {
+      expect(EXECUTABLE_ANIMATION_IDS).toContain(animationId);
+      expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)).toBe(true);
+    }
+  });
+
   it('falls back to a new build when every supplied catalog entry is unregistered', () => {
     const sourceEntry = ANIMATION_LIBRARY_ENTRIES.find(
       (entry) => entry.visualFamily === 'retrieval-search',
@@ -73,6 +88,39 @@ describe('production executable guard', () => {
     expect(plan.scenes[0].animationId).not.toBe(unregisteredAnimationId);
     expect(plan.scenes[0].buildSpec).not.toBeNull();
     expect(plan.newAnimationCount).toBe(1);
+    expect(plan.reusedAnimationCount).toBe(0);
+  });
+
+  it('does not reuse an executable variant that only has semantic-shell binding', () => {
+    const shellOnlyEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) =>
+        EXECUTABLE_ANIMATION_IDS.includes(entry.animationId) &&
+        !NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(entry.animationId),
+    );
+    expect(shellOnlyEntry).toBeDefined();
+
+    const plan = planProductionReelAnimations({
+      reelId: 'reel-shell-only-rejected',
+      reelIndex: 23,
+      entries: [shellOnlyEntry!],
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-shell-only',
+          spokenText:
+            'Diese Szene braucht eine Animation, deren sichtbare Objekte den konkreten Sprecherinhalt direkt übernehmen.',
+          semanticTags: [...shellOnlyEntry!.semanticTags],
+          preferredVisualFamilies: [shellOnlyEntry!.visualFamily],
+          preferredEnergy: shellOnlyEntry!.energy,
+        },
+      ],
+    });
+
+    expect(plan.scenes).toHaveLength(1);
+    expect(plan.scenes[0].source).toBe('new-build');
+    expect(plan.scenes[0].animationId).not.toBe(shellOnlyEntry!.animationId);
+    expect(plan.scenes[0].buildSpec).not.toBeNull();
     expect(plan.reusedAnimationCount).toBe(0);
   });
 });
