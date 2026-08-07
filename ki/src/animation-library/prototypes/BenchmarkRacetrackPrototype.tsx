@@ -28,19 +28,18 @@ const numericRatio = (
     : fallback;
 };
 
-const positionAt = (frame: number, competitor: Competitor): number => {
-  const race = prototypeProgress(frame, 28, 150);
-  return interpolate(
+const positionAt = (race: number, competitor: Competitor): number =>
+  interpolate(
     race,
     [0, 0.34, 0.68, 1],
     competitor.checkpoints,
   );
-};
 
 export const BenchmarkRacetrackPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const track = prototypeProgress(frame, 0, 36);
+  const race = prototypeProgress(frame, 28, 150);
   const finish = prototypeProgress(frame, 142, 174);
   const terms = content
     ? [...new Set([
@@ -86,6 +85,18 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
         content?.meaningContract.preferredExplanationPatterns[index] ?? fallback,
     }),
   );
+  const metricCheckpointIndex = Math.min(3, Math.max(1, Math.ceil(race * 3)));
+  const activeMetricIndex = Math.min(2, Math.floor(race * 3));
+  const metricLeaders = metrics.map((_, metricIndex) => {
+    const checkpoint = metricIndex + 1;
+    return competitors.reduce(
+      (best, competitor, index, all) =>
+        competitor.checkpoints[checkpoint] > all[best].checkpoints[checkpoint]
+          ? index
+          : best,
+      0,
+    );
+  });
   const winnerIndex = competitors.reduce(
     (best, competitor, index, all) =>
       competitor.checkpoints[3] > all[best].checkpoints[3] ? index : best,
@@ -112,20 +123,30 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
     <PrototypeShell
       family="COMPARISON"
       title="Benchmark Racetrack"
-      subtitle="Tempo, Kosten und Qualität beeinflussen verschiedene Abschnitte — kein Modell gewinnt automatisch überall."
+      subtitle="Jeder Streckenabschnitt steht für eine Metrik. Nach Tempo, Kosten und Qualität ist sichtbar, welches Modell jeweils führt und wer insgesamt vorne liegt."
     >
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 46, right: 46, top: 65, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, opacity: track}}>
           {metrics.map((label, index) => {
             const color = ['#8757E8', '#FFB648', '#35C58A'][index];
-            return <div key={`${label}-${index}`} style={{padding: '16px 18px', borderRadius: 20, background: `${color}12`, border: `2px solid ${color}44`, color, textAlign: 'center', fontSize: label.length > 16 ? 14 : 19, fontWeight: 900, letterSpacing: 2.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{label.toLocaleUpperCase('de-DE')}</div>;
+            const reached = race >= index / 3;
+            const completed = race >= (index + 1) / 3;
+            const active = index === activeMetricIndex && race < 1;
+            const leader = competitors[metricLeaders[index]];
+            return (
+              <div key={`${label}-${index}`} style={{padding: '14px 16px', borderRadius: 20, background: active ? `${color}22` : `${color}12`, border: `2px solid ${active ? color : `${color}44`}`, color, textAlign: 'center', fontSize: label.length > 16 ? 14 : 19, fontWeight: 900, letterSpacing: 2, transform: `scale(${active ? 1.04 : 1})`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                <div>{label.toLocaleUpperCase('de-DE')}</div>
+                <div style={{marginTop: 5, fontSize: 11, letterSpacing: 1.1, color: completed ? PROTOTYPE_PALETTE.success : reached ? color : PROTOTYPE_PALETTE.muted}}>{completed ? `FÜHRT: ${leader.label}` : active ? 'WIRD GEMESSEN' : 'WARTET'}</div>
+              </div>
+            );
           })}
         </div>
 
         {competitors.map((competitor, index) => {
           const y = 390 + index * 300;
-          const position = positionAt(frame, competitor);
+          const position = positionAt(race, competitor);
           const x = interpolate(position, [0, 1], [115, 822]);
+          const currentCheckpointValue = competitor.checkpoints[metricCheckpointIndex];
           return (
             <React.Fragment key={`${competitor.label}-${index}`}>
               <div style={{position: 'absolute', left: 85, right: 80, top: y - 78, height: 156, borderRadius: 78, background: 'rgba(255,255,255,.58)', border: `5px solid ${competitor.color}44`, overflow: 'hidden', opacity: track}}>
@@ -137,7 +158,8 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
                 ))}
               </div>
               <div style={{position: 'absolute', left: 94, top: y - 128, maxWidth: 260, padding: '10px 15px', borderRadius: 15, background: 'rgba(255,255,255,.94)', border: `2px solid ${competitor.color}55`, color: competitor.color, fontSize: competitor.label.length > 16 ? 14 : 18, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{competitor.label.toLocaleUpperCase('de-DE')}</div>
-              <div style={{position: 'absolute', left: x, top: y, width: 76, height: 76, borderRadius: index === 0 ? 24 : 999, background: competitor.color, border: '8px solid white', boxShadow: `0 0 38px ${competitor.color}66`, transform: `translate(-50%, -50%) rotate(${index === 0 ? position * 450 : 0}deg)`, zIndex: 7}} />
+              <div style={{position: 'absolute', right: 95, top: y - 128, padding: '9px 12px', borderRadius: 14, background: 'rgba(255,255,255,.94)', border: `2px solid ${competitor.color}44`, color: competitor.color, fontFamily: 'monospace', fontSize: 16, fontWeight: 900}}>{Math.round(currentCheckpointValue * 100)}</div>
+              <div style={{position: 'absolute', left: x, top: y, width: 76, height: 76, borderRadius: index === 0 ? 24 : 999, background: competitor.color, border: '8px solid white', boxShadow: `0 0 38px ${competitor.color}66`, transform: 'translate(-50%, -50%)', zIndex: 7}} />
             </React.Fragment>
           );
         })}
@@ -150,7 +172,7 @@ export const BenchmarkRacetrackPrototype: React.FC = () => {
               <div style={{fontSize: competitor.label.length > 16 ? 14 : 19, fontWeight: 900, letterSpacing: 2, color: competitor.color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{competitor.label.toLocaleUpperCase('de-DE')}</div>
               <div style={{marginTop: 10, fontSize: title.length > 22 ? 20 : 27, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{title}</div>
               <div style={{marginTop: 7, fontSize: detail.length > 38 ? 16 : 19, color: PROTOTYPE_PALETTE.muted, fontWeight: 800, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{detail}</div>
-              {index === winnerIndex ? <div style={{marginTop: 8, color: competitor.color, fontWeight: 900}}>FINAL VORN</div> : null}
+              <div style={{marginTop: 8, color: index === winnerIndex ? competitor.color : PROTOTYPE_PALETTE.muted, fontWeight: 900}}>{index === winnerIndex ? 'FINAL VORN' : `FINAL ${Math.round(competitor.checkpoints[3] * 100)}`}</div>
             </div>
           ))}
         </div>
