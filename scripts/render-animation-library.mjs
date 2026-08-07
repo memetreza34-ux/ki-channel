@@ -111,11 +111,12 @@ await writeFile(
   resolve(OUTPUT_DIR, 'render-plan.json'),
   `${JSON.stringify(
     {
-      version: 2,
+      version: 3,
       mode: MODE,
       sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
       contentSmokeFrame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
       contentSmokeFrames: [...ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES],
+      contentVideoRequired: MODE === 'videos' || MODE === 'all',
       prototypes: plan,
     },
     null,
@@ -164,10 +165,21 @@ const runPool = async (tasks, concurrency) => {
 const shouldRenderStills = new Set(['smoke', 'stills', 'all']).has(MODE);
 const shouldRenderVideos = new Set(['videos', 'all']).has(MODE);
 const shouldRenderContentSmoke = new Set(['smoke', 'stills', 'all']).has(MODE);
+const shouldRenderContentVideo = new Set(['videos', 'all']).has(MODE);
 const tasks = [];
 
 for (const prototype of plan) {
   await mkdir(prototype.outputDir, {recursive: true});
+  const contentFixture = contentFixtureByAnimationId.get(prototype.animationId);
+  const propsPath = resolve(prototype.outputDir, 'content-smoke-props.json');
+
+  if (shouldRenderContentSmoke || shouldRenderContentVideo) {
+    await writeFile(
+      propsPath,
+      `${JSON.stringify(contentFixture.props, null, 2)}\n`,
+      'utf8',
+    );
+  }
 
   if (shouldRenderStills) {
     for (const frame of prototype.checkpoints) {
@@ -191,13 +203,6 @@ for (const prototype of plan) {
   }
 
   if (shouldRenderContentSmoke) {
-    const contentFixture = contentFixtureByAnimationId.get(prototype.animationId);
-    const propsPath = resolve(prototype.outputDir, 'content-smoke-props.json');
-    await writeFile(
-      propsPath,
-      `${JSON.stringify(contentFixture.props, null, 2)}\n`,
-      'utf8',
-    );
     for (const frame of ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES) {
       tasks.push(async () => {
         const output = resolve(
@@ -229,6 +234,24 @@ for (const prototype of plan) {
         ENTRY_POINT,
         prototype.compositionId,
         output,
+        '--codec=h264',
+        '--crf=18',
+        '--overwrite',
+      ]);
+    });
+  }
+
+  if (shouldRenderContentVideo) {
+    tasks.push(async () => {
+      const output = resolve(prototype.outputDir, 'content-prototype.mp4');
+      await run('npx', [
+        '--no-install',
+        'remotion',
+        'render',
+        ENTRY_POINT,
+        prototype.compositionId,
+        output,
+        `--props=${propsPath}`,
         '--codec=h264',
         '--crf=18',
         '--overwrite',
