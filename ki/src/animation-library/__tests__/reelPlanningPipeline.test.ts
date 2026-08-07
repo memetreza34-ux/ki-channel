@@ -3,6 +3,7 @@ import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
 import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
+import {isProductionReadyLibraryAnimation} from '../productionEligibility';
 import {planReelAnimationsFromText} from '../reelPlanningPipeline';
 
 const brain = createInitialCreativeBrainState({
@@ -38,6 +39,13 @@ describe('raw reel animation planning pipeline', () => {
     expect(
       new Set(plan.productionPlan.scenes.map((scene) => scene.animationId)).size,
     ).toBe(5);
+    expect(
+      plan.productionPlan.scenes.every(
+        (scene) =>
+          scene.source !== 'library' ||
+          isProductionReadyLibraryAnimation(scene.animationId),
+      ),
+    ).toBe(true);
   });
 
   it('keeps executable but shell-only variants out of the public text-to-production path', () => {
@@ -69,6 +77,7 @@ describe('raw reel animation planning pipeline', () => {
       shellOnlyEntry!.animationId,
     );
     expect(plan.productionPlan.scenes[0].buildSpec).not.toBeNull();
+    expect(plan.productionPlan.readyForImplementation).toBe(false);
     expect(plan.decisionSummary[0].source).toBe('new-build');
   });
 
@@ -91,6 +100,7 @@ describe('raw reel animation planning pipeline', () => {
     expect(plan.decisionSummary[0].mustBeNew).toBe(true);
     expect(plan.productionPlan.scenes[0].source).toBe('new-build');
     expect(plan.productionPlan.scenes[0].buildSpec).not.toBeNull();
+    expect(plan.productionPlan.readyForImplementation).toBe(false);
   });
 
   it('persists the extended meaning contract across analysis and production', () => {
