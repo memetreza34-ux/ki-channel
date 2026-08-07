@@ -2,6 +2,8 @@ import {spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {
+  ANIMATION_LIBRARY_CONTENT_RENDER_FIXTURES,
+  ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
   ANIMATION_LIBRARY_RENDER_CONFIG,
   ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
 } from './animation-library-render-config.mjs';
@@ -68,23 +70,39 @@ if (selectedPrototypes.length === 0) {
   process.exit(1);
 }
 
+const contentFixtureByAnimationId = new Map(
+  ANIMATION_LIBRARY_CONTENT_RENDER_FIXTURES.map((fixture) => [
+    fixture.animationId,
+    fixture,
+  ]),
+);
+
 const checkpoints =
   MODE === 'smoke'
     ? [...ANIMATION_LIBRARY_RENDER_CONFIG.defaults.smokeCheckpoints]
     : [...ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints];
 
-const plan = selectedPrototypes.map((prototype) => ({
-  ...prototype,
-  entryPoint: ENTRY_POINT,
-  outputDir: `${OUTPUT_DIR}/${prototype.animationId}`,
-  durationInFrames:
-    ANIMATION_LIBRARY_RENDER_CONFIG.defaults.durationInFrames,
-  fps: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.fps,
-  width: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.width,
-  height: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.height,
-  checkpoints,
-  sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
-}));
+const plan = selectedPrototypes.map((prototype) => {
+  const contentFixture = contentFixtureByAnimationId.get(prototype.animationId);
+  if (!contentFixture) {
+    throw new Error(
+      `Kein Content-Render-Fixture für ${prototype.animationId} gefunden.`,
+    );
+  }
+  return {
+    ...prototype,
+    entryPoint: ENTRY_POINT,
+    outputDir: `${OUTPUT_DIR}/${prototype.animationId}`,
+    durationInFrames:
+      ANIMATION_LIBRARY_RENDER_CONFIG.defaults.durationInFrames,
+    fps: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.fps,
+    width: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.width,
+    height: ANIMATION_LIBRARY_RENDER_CONFIG.defaults.height,
+    checkpoints,
+    contentSmokeFrame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+    sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
+  };
+});
 
 await mkdir(OUTPUT_DIR, {recursive: true});
 await writeFile(
@@ -94,6 +112,7 @@ await writeFile(
       version: 1,
       mode: MODE,
       sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
+      contentSmokeFrame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
       prototypes: plan,
     },
     null,
@@ -141,6 +160,7 @@ const runPool = async (tasks, concurrency) => {
 
 const shouldRenderStills = new Set(['smoke', 'stills', 'all']).has(MODE);
 const shouldRenderVideos = new Set(['videos', 'all']).has(MODE);
+const shouldRenderContentSmoke = new Set(['smoke', 'stills', 'all']).has(MODE);
 const tasks = [];
 
 for (const prototype of plan) {
@@ -165,6 +185,33 @@ for (const prototype of plan) {
         ]);
       });
     }
+  }
+
+  if (shouldRenderContentSmoke) {
+    const contentFixture = contentFixtureByAnimationId.get(prototype.animationId);
+    const propsPath = resolve(prototype.outputDir, 'content-smoke-props.json');
+    const output = resolve(
+      prototype.outputDir,
+      `content-frame-${String(ANIMATION_LIBRARY_CONTENT_RENDER_FRAME).padStart(3, '0')}.png`,
+    );
+    await writeFile(
+      propsPath,
+      `${JSON.stringify(contentFixture.props, null, 2)}\n`,
+      'utf8',
+    );
+    tasks.push(async () => {
+      await run('npx', [
+        '--no-install',
+        'remotion',
+        'still',
+        ENTRY_POINT,
+        prototype.compositionId,
+        output,
+        `--frame=${ANIMATION_LIBRARY_CONTENT_RENDER_FRAME}`,
+        `--props=${propsPath}`,
+        '--overwrite',
+      ]);
+    });
   }
 
   if (shouldRenderVideos) {
