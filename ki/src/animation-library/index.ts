@@ -39,6 +39,7 @@ export * from './renderReview';
 export * from './rotationReport';
 export * from './sceneAnalyzer';
 export * from './meaningContract';
+export * from './extendedMeaningContract';
 export * from './CompletePrototypeGalleryRoot';
 export * from './ExpandedPrototypeGalleryRoot';
 export * from './MaximalPrototypeGalleryRoot';
