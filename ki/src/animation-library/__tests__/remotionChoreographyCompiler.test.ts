@@ -40,6 +40,33 @@ describe('Remotion choreography compiler', () => {
     expect(compiled.scenes[0].events.some((event) => event.eventType === 'transition')).toBe(true);
   });
 
+  it('embeds the exact sentence and meaning contract in the main animation event', () => {
+    const compiled = compileReelChoreography(motionPlan);
+    const sourceScene = motionPlan.scenes[0];
+    const compiledScene = compiled.scenes[0];
+    const mainEvent = compiledScene.events.find(
+      (event) => event.eventType === 'main-animation',
+    );
+
+    expect(compiledScene.semanticPayloadEmbedded).toBe(true);
+    expect(mainEvent?.targetText).toBe(sourceScene.spokenText);
+    expect(mainEvent?.metadata.communicationGoal).toBe(
+      sourceScene.meaningContract.communicationGoal,
+    );
+    expect(mainEvent?.metadata.startState).toBe(
+      sourceScene.meaningContract.startState,
+    );
+    expect(mainEvent?.metadata.visibleChange).toBe(
+      sourceScene.meaningContract.visibleChange,
+    );
+    expect(mainEvent?.metadata.endState).toBe(
+      sourceScene.meaningContract.endState,
+    );
+    expect(mainEvent?.metadata.requiredVisualCues).toContain(
+      sourceScene.meaningContract.requiredVisualCues[0],
+    );
+  });
+
   it('keeps all compiled events inside scene bounds', () => {
     const compiled = compileReelChoreography(motionPlan);
     for (const scene of compiled.scenes) {
