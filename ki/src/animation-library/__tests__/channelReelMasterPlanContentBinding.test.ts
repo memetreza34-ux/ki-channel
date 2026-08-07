@@ -2,6 +2,9 @@ import {describe, expect, it} from 'vitest';
 import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {createChannelReelMasterPlan} from '../channelReelMasterPlan';
+import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
+import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
+import {isProductionReadyLibraryAnimation} from '../productionEligibility';
 import {prepareReelAnimationProduction} from '../reelLifecycle';
 
 const createBrain = () =>
@@ -49,6 +52,7 @@ describe('channel master plan content binding', () => {
       masterPlan.scenes.every(
         (scene) =>
           scene.fullAnimationSource === 'library' &&
+          isProductionReadyLibraryAnimation(scene.fullAnimationId) &&
           scene.contentBindingLevel === 'native-object-binding' &&
           scene.contentBindingReady,
       ),
@@ -67,6 +71,44 @@ describe('channel master plan content binding', () => {
           blocker.includes('requires implementation and registry entry'),
       ),
     ).toBe(false);
+  });
+
+  it('fails fast if a shell-only executable library scene bypasses production eligibility', () => {
+    const shellOnlyEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) =>
+        EXECUTABLE_ANIMATION_IDS.includes(entry.animationId) &&
+        !NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(entry.animationId),
+    );
+    expect(shellOnlyEntry).toBeDefined();
+
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'masterplan-invariant-bypass',
+      reelIndex: 42,
+      scenes: [
+        {
+          sceneId: 'scene-bypass',
+          spokenText: 'Die KI zerlegt den Satz in Tokens.',
+        },
+      ],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain: createBrain(),
+    });
+
+    Object.assign(prepared.plan.productionPlan.scenes[0], {
+      source: 'library' as const,
+      animationId: shellOnlyEntry!.animationId,
+      catalogEntry: shellOnlyEntry!,
+      buildSpec: null,
+    });
+
+    expect(() =>
+      createChannelReelMasterPlan({
+        prepared,
+        durationBySceneId: {['scene-bypass']: 180},
+      }),
+    ).toThrow(
+      /production reuse invariant violated: scene scene-bypass uses library animation .* without executable native content binding/,
+    );
   });
 
   it('blocks a purpose-built proposal until a Remotion component is registered', () => {
