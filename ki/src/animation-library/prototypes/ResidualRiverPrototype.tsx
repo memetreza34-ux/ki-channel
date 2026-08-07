@@ -1,24 +1,71 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {
+  getPrototypeLabel,
+  usePrototypeContent,
+} from './PrototypeContentContext';
+import {
   GlassSurface,
   PROTOTYPE_PALETTE,
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
 
-const GATES = [
+const DEFAULT_GATES = [
   {label: 'LAYER 1', x: 250, color: '#8757E8'},
   {label: 'LAYER 2', x: 470, color: '#35C58A'},
   {label: 'LAYER 3', x: 690, color: '#FFB648'},
 ] as const;
 
+const compactText = (value: string, maximum: number): string =>
+  value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
+
 export const ResidualRiverPrototype: React.FC = () => {
   const frame = useCurrentFrame();
+  const content = usePrototypeContent();
   const river = prototypeProgress(frame, 0, 42);
   const gateFlow = prototypeProgress(frame, 32, 124);
   const merge = prototypeProgress(frame, 92, 150);
   const resolve = prototypeProgress(frame, 142, 174);
+  const stageTerms = content
+    ? [...new Set([
+        ...content.meaningContract.preferredExplanationPatterns,
+        ...content.meaningContract.actionTerms,
+        ...content.meaningContract.resultTerms,
+      ])]
+    : [];
+  const gates = DEFAULT_GATES.map((gate, index) => ({
+    ...gate,
+    label: getPrototypeLabel({
+      content,
+      key: `layer${index + 1}`,
+      fallback: stageTerms[index] ?? gate.label,
+    }),
+  }));
+  const inputLabel = getPrototypeLabel({
+    content,
+    key: 'inputLabel',
+    fallback: 'HAUPTSTROM',
+  });
+  const inputValue = getPrototypeLabel({
+    content,
+    key: 'inputValue',
+    fallback: content?.meaningContract.subjectTerms[0]
+      ? compactText(content.meaningContract.subjectTerms.slice(0, 3).join(' + '), 48)
+      : 'Grundinformation',
+  });
+  const outputLabel = getPrototypeLabel({
+    content,
+    key: 'outputLabel',
+    fallback: 'VERFEINERTER OUTPUT',
+  });
+  const outputValue = getPrototypeLabel({
+    content,
+    key: 'outputValue',
+    fallback: content
+      ? compactText(content.meaningContract.endState, 82)
+      : 'Altes Signal + neue Verarbeitung',
+  });
 
   return (
     <PrototypeShell
@@ -30,12 +77,12 @@ export const ResidualRiverPrototype: React.FC = () => {
         <svg width="936" height="1080" viewBox="0 0 936 1080" style={{position: 'absolute', inset: 0}}>
           <path d="M 80 610 C 240 530, 360 680, 520 590 S 760 520, 880 610" fill="none" stroke="rgba(135,87,232,.14)" strokeWidth={118} strokeLinecap="round" />
           <path d="M 80 610 C 240 530, 360 680, 520 590 S 760 520, 880 610" fill="none" stroke={PROTOTYPE_PALETTE.accent} strokeWidth={54} strokeLinecap="round" strokeDasharray={1500} strokeDashoffset={1500 * (1 - river)} style={{filter: 'drop-shadow(0 0 20px rgba(135,87,232,.28))'}} />
-          {GATES.map((gate, index) => {
+          {gates.map((gate, index) => {
             const side = index % 2 === 0 ? -1 : 1;
             const sideY = 610 + side * 260;
             const reveal = prototypeProgress(frame, 40 + index * 22, 78 + index * 22);
             return (
-              <React.Fragment key={gate.label}>
+              <React.Fragment key={`${gate.label}-${index}`}>
                 <path d={`M ${gate.x} ${sideY} Q ${gate.x + 30} ${610 + side * 80}, ${gate.x + 95} 610`} fill="none" stroke={gate.color} strokeWidth={16} strokeLinecap="round" strokeDasharray={520} strokeDashoffset={520 * (1 - reveal)} opacity={merge} />
                 <circle cx={gate.x} cy={sideY} r={28} fill={gate.color} opacity={reveal} />
               </React.Fragment>
@@ -43,14 +90,14 @@ export const ResidualRiverPrototype: React.FC = () => {
           })}
         </svg>
 
-        {GATES.map((gate, index) => {
+        {gates.map((gate, index) => {
           const reveal = prototypeProgress(frame, 18 + index * 14, 44 + index * 14);
           const active = gateFlow >= (index + 1) / 3;
           return (
-            <div key={gate.label} style={{position: 'absolute', left: gate.x, top: 610, transform: `translate(-50%, -50%) scale(${0.82 + reveal * 0.18})`, opacity: reveal, zIndex: 6}}>
-              <div style={{width: 126, height: 180, borderRadius: 32, background: 'rgba(255,255,255,.92)', border: `4px solid ${active ? gate.color : PROTOTYPE_PALETTE.line}`, boxShadow: active ? `0 0 38px ${gate.color}55` : '0 16px 42px rgba(55,38,83,.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12}}>
+            <div key={`${gate.label}-${index}`} style={{position: 'absolute', left: gate.x, top: 610, transform: `translate(-50%, -50%) scale(${0.82 + reveal * 0.18})`, opacity: reveal, zIndex: 6}}>
+              <div style={{width: 145, height: 190, borderRadius: 32, background: 'rgba(255,255,255,.92)', border: `4px solid ${active ? gate.color : PROTOTYPE_PALETTE.line}`, boxShadow: active ? `0 0 38px ${gate.color}55` : '0 16px 42px rgba(55,38,83,.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: 10, boxSizing: 'border-box'}}>
                 <div style={{width: 45, height: 45, borderRadius: 14, background: gate.color, transform: `rotate(${gateFlow * 90 + index * 18}deg)`}} />
-                <div style={{fontSize: 18, fontWeight: 900, color: active ? gate.color : PROTOTYPE_PALETTE.muted, textAlign: 'center'}}>{gate.label}</div>
+                <div style={{fontSize: gate.label.length > 15 ? 14 : 18, fontWeight: 900, color: active ? gate.color : PROTOTYPE_PALETTE.muted, textAlign: 'center', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{gate.label.toLocaleUpperCase('de-DE')}</div>
               </div>
             </div>
           );
@@ -63,14 +110,14 @@ export const ResidualRiverPrototype: React.FC = () => {
           return <div key={index} style={{position: 'absolute', left: x, top: y, width: 18 + (index % 3) * 5, height: 18 + (index % 3) * 5, borderRadius: 999, background: index % 3 === 0 ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.accentSoft, border: `4px solid ${PROTOTYPE_PALETTE.accent}`, boxShadow: '0 0 20px rgba(135,87,232,.4)', transform: 'translate(-50%, -50%)', opacity: river, zIndex: 8}} />;
         })}
 
-        <div style={{position: 'absolute', left: 100, top: 220, width: 240, padding: '20px 24px', borderRadius: 24, background: 'rgba(135,87,232,.08)', border: '2px solid rgba(135,87,232,.2)', opacity: river}}>
-          <div style={{fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.accent}}>HAUPTSTROM</div>
-          <div style={{marginTop: 10, fontSize: 26, fontWeight: 900}}>Grundinformation</div>
+        <div style={{position: 'absolute', left: 100, top: 220, width: 275, padding: '20px 24px', borderRadius: 24, background: 'rgba(135,87,232,.08)', border: '2px solid rgba(135,87,232,.2)', opacity: river}}>
+          <div style={{fontSize: inputLabel.length > 18 ? 14 : 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.accent, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{inputLabel.toLocaleUpperCase('de-DE')}</div>
+          <div style={{marginTop: 10, fontSize: inputValue.length > 30 ? 20 : 26, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{inputValue}</div>
         </div>
 
-        <div style={{position: 'absolute', right: 90, bottom: 70, width: 330, padding: '24px 28px', borderRadius: 28, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, opacity: resolve, transform: `translateY(${(1 - resolve) * 55}px)`, boxShadow: '0 22px 60px rgba(20,18,26,.2)'}}>
-          <div style={{fontSize: 18, fontWeight: 900, letterSpacing: 2.5, color: PROTOTYPE_PALETTE.accentSoft}}>VERFEINERTER OUTPUT</div>
-          <div style={{marginTop: 12, fontSize: 30, lineHeight: 1.18, fontWeight: 900}}>Altes Signal + neue Verarbeitung</div>
+        <div style={{position: 'absolute', right: 90, bottom: 70, width: 365, padding: '24px 28px', borderRadius: 28, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, opacity: resolve, transform: `translateY(${(1 - resolve) * 55}px)`, boxShadow: '0 22px 60px rgba(20,18,26,.2)'}}>
+          <div style={{fontSize: outputLabel.length > 22 ? 14 : 18, fontWeight: 900, letterSpacing: 2.5, color: PROTOTYPE_PALETTE.accentSoft, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{outputLabel.toLocaleUpperCase('de-DE')}</div>
+          <div style={{marginTop: 12, fontSize: outputValue.length > 58 ? 21 : 30, lineHeight: 1.18, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{outputValue}</div>
         </div>
       </GlassSurface>
     </PrototypeShell>
