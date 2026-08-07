@@ -89,9 +89,9 @@ describe('production reel animation planner', () => {
       ],
       avoidWhen: [],
       qualityPrior: {
-        semanticClarity: 1,
-        novelty: 1,
-        productionConfidence: 1,
+        semanticClarity: 100,
+        novelty: 100,
+        productionConfidence: 100,
       },
     };
 
