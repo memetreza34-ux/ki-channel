@@ -1,5 +1,9 @@
 import type {AnimationLibraryEntry} from './schema';
 import type {NewAnimationProposal} from './planner';
+import {
+  analyzeSceneMeaning,
+  type SceneMeaningContract,
+} from './meaningContract';
 
 export type AnimationBuildPhase = {
   phaseId: string;
@@ -31,7 +35,16 @@ export type AnimationBuildSpec = {
   phases: AnimationBuildPhase[];
   forbiddenLayoutFamilies: string[];
   forbiddenMotionSignatures: string[];
+  contentContract?: SceneMeaningContract;
   implementationRules: string[];
+};
+
+type CompilableNewAnimationProposal = Omit<
+  NewAnimationProposal,
+  'spokenText' | 'meaningContract'
+> & {
+  spokenText?: string;
+  meaningContract?: SceneMeaningContract;
 };
 
 const slugify = (value: string): string =>
@@ -82,10 +95,15 @@ const semanticPrimitiveMap: Record<string, string[]> = {
   retrieval: ['document-fragments', 'source-markers', 'ranked-stack'],
   data: ['data-particles', 'value-labels', 'flow-paths'],
   text: ['kinetic-type', 'word-capsules', 'semantic-highlights'],
+  token: ['text-strip', 'split-boundaries', 'ordered-token-capsules'],
+  vector: ['source-token', 'conversion-prism', 'numeric-vector-result'],
+  meaning: ['labeled-concepts', 'distance-field', 'semantic-clusters'],
   error: ['warning-marker', 'diagnostic-path', 'repair-state'],
   risk: ['split-state', 'confidence-meter', 'warning-signal'],
+  verify: ['claim-state', 'evidence-check', 'verified-result'],
   compare: ['shared-baseline', 'contrast-zones', 'result-marker'],
   ranking: ['candidate-markers', 'score-display', 'ordered-targets'],
+  probability: ['candidate-columns', 'changing-confidence', 'selected-token'],
   process: ['step-nodes', 'handoff-object', 'completion-state'],
   workflow: ['route-lines', 'stations', 'status-signals'],
   learning: ['knowledge-nodes', 'version-marker', 'graft-connection'],
@@ -128,34 +146,49 @@ const deriveUnusedValue = ({
   throw new Error(`unable to derive unused ${suffix} from ${preferred}`);
 };
 
-const buildPhases = (semanticTags: readonly string[]): AnimationBuildPhase[] => {
-  const trigger = semanticTags[0] ?? 'Kernaussage';
-  const resultTrigger = semanticTags[semanticTags.length - 1] ?? trigger;
+const resolveMeaningContract = (
+  proposal: CompilableNewAnimationProposal,
+): SceneMeaningContract =>
+  proposal.meaningContract ??
+  analyzeSceneMeaning(
+    proposal.spokenText ?? proposal.requiredSemanticTags.join(' '),
+  );
+
+const buildPhases = (
+  semanticTags: readonly string[],
+  content: SceneMeaningContract,
+): AnimationBuildPhase[] => {
+  const trigger =
+    content.subjectTerms[0] ?? semanticTags[0] ?? 'Kernaussage';
+  const actionTrigger =
+    content.actionTerms[0] ?? semanticTags[1] ?? trigger;
+  const resultTrigger =
+    content.resultTerms[0] ?? semanticTags[semanticTags.length - 1] ?? trigger;
   return [
     {
       phaseId: 'establish',
-      purpose: 'Introduce the starting state and the central object without visual overload.',
+      purpose: `Show the exact starting state: ${content.startState}.`,
       startRatio: 0,
       endRatio: 0.2,
       semanticTrigger: trigger,
     },
     {
       phaseId: 'explain',
-      purpose: 'Make the causal or semantic transformation visible through one dominant action.',
+      purpose: `Make this exact content change visible: ${content.visibleChange}.`,
       startRatio: 0.18,
       endRatio: 0.58,
-      semanticTrigger: trigger,
+      semanticTrigger: actionTrigger,
     },
     {
       phaseId: 'contrast',
-      purpose: 'Reveal the consequence, alternative, filter, or decision that explains why the action matters.',
+      purpose: `Prove the communication goal ${content.communicationGoal} without switching to an unrelated visual metaphor.`,
       startRatio: 0.52,
       endRatio: 0.82,
       semanticTrigger: resultTrigger,
     },
     {
       phaseId: 'resolve',
-      purpose: 'Lock a readable result and prepare a semantic transition into the next scene.',
+      purpose: `Hold the exact final state: ${content.endState}.`,
       startRatio: 0.78,
       endRatio: 1,
       semanticTrigger: resultTrigger,
@@ -167,14 +200,19 @@ export const compileNewAnimationProposal = ({
   proposal,
   version = 1,
 }: {
-  proposal: NewAnimationProposal;
+  proposal: CompilableNewAnimationProposal;
   version?: number;
 }): AnimationBuildSpec => {
   if (!Number.isInteger(version) || version < 1) {
     throw new Error('animation proposal version must be a positive integer');
   }
 
-  const family = slugify(proposal.suggestedVisualFamily || 'custom-explanation');
+  const contentContract = resolveMeaningContract(proposal);
+  const family = slugify(
+    proposal.suggestedVisualFamily ||
+      contentContract.preferredVisualFamilies[0] ||
+      'custom-explanation',
+  );
   const baseLayout = `${family}-${directionLayout[proposal.suggestedDirection]}`;
   const baseMotion = `${family}-${directionMotion[proposal.suggestedDirection]}`;
   const layoutFamily = deriveUnusedValue({
@@ -188,9 +226,19 @@ export const compileNewAnimationProposal = ({
     suffix: 'motion',
   });
   const semanticTags = unique(
-    proposal.requiredSemanticTags.map(slugify).filter(Boolean),
-  );
-  const primitiveTags = inferPrimitives(semanticTags);
+    [
+      ...proposal.requiredSemanticTags,
+      ...contentContract.subjectTerms,
+      ...contentContract.actionTerms,
+      ...contentContract.resultTerms,
+    ]
+      .map(slugify)
+      .filter(Boolean),
+  ).slice(0, 16);
+  const primitiveTags = unique([
+    ...inferPrimitives(semanticTags),
+    ...contentContract.requiredVisualCues.map(slugify),
+  ]).slice(0, 12);
   const shortName = slugify(
     semanticTags.slice(0, 3).join('-') || proposal.sceneId,
   );
@@ -208,11 +256,12 @@ export const compileNewAnimationProposal = ({
     noveltyGroup: `${family}-${slugify(proposal.suggestedDirection)}`,
     semanticTags,
     explanationPatterns: unique([
+      ...contentContract.preferredExplanationPatterns.map(slugify),
       'semantic-cause-and-effect',
       proposal.suggestedDirection.startsWith('depth')
         ? 'layered-reveal'
         : 'visible-transformation',
-    ]),
+    ]).slice(0, 8),
     primitiveTags,
     transitionInTags: unique([
       `${proposal.suggestedDirection}-entry`,
@@ -235,10 +284,19 @@ export const compileNewAnimationProposal = ({
       min: proposal.suggestedEnergy === 'impact' ? 3.5 : 4,
       max: proposal.suggestedEnergy === 'calm' ? 8 : 6.5,
     },
-    phases: buildPhases(semanticTags),
+    phases: buildPhases(semanticTags, contentContract),
     forbiddenLayoutFamilies: [...proposal.forbiddenLayoutFamilies],
     forbiddenMotionSignatures: [...proposal.forbiddenMotionSignatures],
+    contentContract,
     implementationRules: [
+      proposal.spokenText
+        ? `Build for this exact spoken sentence: “${proposal.spokenText}”.`
+        : 'Build for the exact semantic tags and content contract; do not invent a different message.',
+      `The opening frame must show: ${contentContract.startState}.`,
+      `The dominant motion must show: ${contentContract.visibleChange}.`,
+      `The final hold must show: ${contentContract.endState}.`,
+      `Required visual cues: ${contentContract.requiredVisualCues.join(', ')}.`,
+      `Forbidden visual shortcuts: ${contentContract.forbiddenVisualCues.join(', ')}.`,
       'Do not reuse a full scene composition from the existing animation library.',
       'Every dominant movement must explain a spoken concept or causal relationship.',
       'Keep title, main animation, and kinetic subtitles in separate safe zones.',
@@ -267,10 +325,11 @@ export const createCatalogEntryFromBuildSpec = ({
   noveltyGroup: spec.noveltyGroup,
   semanticTags: spec.semanticTags,
   explanationPatterns: spec.explanationPatterns,
-  avoidWhen: [
+  avoidWhen: unique([
     'the scene has no semantic connection to the required tags',
     'the available duration is below the build specification minimum',
-  ],
+    ...(spec.contentContract?.forbiddenVisualCues ?? []),
+  ]).slice(0, 8),
   primitiveTags: spec.primitiveTags,
   transitionInTags: spec.transitionInTags,
   transitionOutTags: spec.transitionOutTags,
@@ -281,7 +340,7 @@ export const createCatalogEntryFromBuildSpec = ({
   complexity: spec.complexity,
   durationSeconds: spec.durationSeconds,
   qualityPrior: {
-    semanticClarity: 72,
+    semanticClarity: 78,
     novelty: 92,
     productionConfidence: 45,
   },
