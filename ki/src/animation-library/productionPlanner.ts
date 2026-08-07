@@ -48,10 +48,18 @@ const getEntry = (
 const createBuildDescription = (
   scene: ReelSceneBrief,
   spec: AnimationBuildSpec,
-): string =>
-  `A purpose-built ${spec.visualFamily} animation for scene ${scene.sceneId}. ` +
-  `It visualizes ${scene.semanticTags.join(', ')} through ${spec.layoutFamily} ` +
-  `and the motion signature ${spec.motionSignature}.`;
+): string => {
+  const contract = spec.contentContract ?? scene.meaningContract;
+  if (!contract) {
+    return `A purpose-built ${spec.visualFamily} animation for scene ${scene.sceneId}. ` +
+      `It visualizes ${scene.semanticTags.join(', ')} through ${spec.layoutFamily} ` +
+      `and the motion signature ${spec.motionSignature}.`;
+  }
+  return `A purpose-built ${spec.visualFamily} animation for the exact sentence “${scene.spokenText}”. ` +
+    `It begins with ${contract.startState}, visibly shows ${contract.visibleChange}, ` +
+    `and resolves with ${contract.endState}. The required visual cues are ` +
+    `${contract.requiredVisualCues.join(', ')}.`;
+};
 
 export const planProductionReelAnimations = ({
   reelId,
@@ -185,6 +193,7 @@ export const planProductionReelAnimations = ({
     );
   }
 
+  const uniqueWarnings = [...new Set(qualityWarnings)];
   return {
     reelId,
     reelIndex,
@@ -195,7 +204,7 @@ export const planProductionReelAnimations = ({
     visualFamilies,
     layoutFamilies,
     motionSignatures,
-    qualityWarnings: [...new Set(qualityWarnings)],
-    readyForImplementation: qualityWarnings.length === 0,
+    qualityWarnings: uniqueWarnings,
+    readyForImplementation: uniqueWarnings.length === 0,
   };
 };
