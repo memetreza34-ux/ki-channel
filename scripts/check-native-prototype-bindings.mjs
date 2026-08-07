@@ -28,6 +28,13 @@ const CONTENT_BOUND_PROTOTYPES = [
 
 const MOTION_SEMANTIC_RULES = new Map([
   [
+    'AnomalyXRayScannerPrototype.tsx',
+    {
+      required: ['errorScanned', 'repairAtStep', 'REPAIR'],
+      forbidden: [],
+    },
+  ],
+  [
     'ContextWindowTrainPrototype.tsx',
     {
       required: ['overflowCount', 'shiftedSlots', 'keepPinned'],
@@ -42,17 +49,31 @@ const MOTION_SEMANTIC_RULES = new Map([
     },
   ],
   [
+    'DependencyBridgeBuilderPrototype.tsx',
+    {
+      required: ['weight12', 'weakWeight', 'VERWORFEN'],
+      forbidden: [],
+    },
+  ],
+  [
+    'FunnelCompressionOutputPrototype.tsx',
+    {
+      required: ['input${index + 1}Keep', 'keptInputs', 'VERWORFEN'],
+      forbidden: [],
+    },
+  ],
+  [
+    'KnowledgeMagnetPrototype.tsx',
+    {
+      required: ['source${index + 1}Relevant', 'requestedEvidenceCount', 'relevantDocuments'],
+      forbidden: [],
+    },
+  ],
+  [
     'MagneticPhraseSlicerPrototype.tsx',
     {
       required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'],
       forbidden: ['lane: index % 3'],
-    },
-  ],
-  [
-    'VectorPrismConverterPrototype.tsx',
-    {
-      required: ['dimensionReveals', 'ZERLEGT MERKMALE'],
-      forbidden: [],
     },
   ],
   [
@@ -63,9 +84,9 @@ const MOTION_SEMANTIC_RULES = new Map([
     },
   ],
   [
-    'DependencyBridgeBuilderPrototype.tsx',
+    'VectorPrismConverterPrototype.tsx',
     {
-      required: ['weight12', 'weakWeight', 'VERWORFEN'],
+      required: ['dimensionReveals', 'ZERLEGT MERKMALE'],
       forbidden: [],
     },
   ],
