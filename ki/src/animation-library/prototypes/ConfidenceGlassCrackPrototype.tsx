@@ -2,6 +2,7 @@ import React from 'react';
 import {useCurrentFrame} from 'remotion';
 import {
   getPrototypeLabel,
+  getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
 import {
@@ -35,7 +36,7 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
       ? compactText(content.spokenText, 105)
       : 'Diese Aussage ist definitiv korrekt.',
   });
-  const confidence = getPrototypeLabel({
+  const confidenceLabel = getPrototypeLabel({
     content,
     key: 'confidenceLabel',
     fallback: 'SEHR SICHER FORMULIERT',
@@ -57,9 +58,14 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
       ? compactText(content.meaningContract.endState, 125)
       : 'Sicherheit im Ton ist kein Beweis für Wahrheit.',
   });
-  const confidenceValue = Number(
-    content?.values?.confidence ?? 98,
-  );
+  const confidenceRaw = getPrototypeValue({
+    content,
+    key: 'confidence',
+    fallback: 98,
+  });
+  const confidenceValue = typeof confidenceRaw === 'number'
+    ? confidenceRaw
+    : Number(String(confidenceRaw).replace(',', '.').replace(/[^0-9.-]/g, ''));
   const safeConfidence = Number.isFinite(confidenceValue)
     ? Math.max(0, Math.min(100, confidenceValue))
     : 98;
@@ -78,7 +84,7 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
       <GlassSurface style={{position: 'absolute', left: 74, right: 74, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 120, right: 120, top: 215, height: 560, borderRadius: 40, background: 'linear-gradient(145deg, rgba(255,255,255,.78), rgba(198,168,255,.16))', border: `3px solid ${failedChecks > 0 ? 'rgba(255,93,108,.32)' : 'rgba(255,255,255,.92)'}`, boxShadow: `0 28px 85px rgba(55,38,83,${0.14 + pressure * 0.12})`, backdropFilter: 'blur(18px)', opacity: statement, transform: `scale(${0.92 + statement * 0.08 - crackStrength * 0.018})`, overflow: 'hidden'}}>
           <div style={{position: 'absolute', left: -220 + polish * 1050, top: -140, width: 180, height: 850, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent)', transform: 'rotate(18deg)', opacity: 0.8 * (1 - crackStrength)}} />
-          <div style={{position: 'absolute', left: 58, right: 58, top: 105, textAlign: 'center', fontSize: confidence.length > 24 ? 19 : 24, fontWeight: 900, letterSpacing: 3, color: failedChecks > 0 ? PROTOTYPE_PALETTE.danger : PROTOTYPE_PALETTE.accent}}>{confidence.toLocaleUpperCase('de-DE')}</div>
+          <div style={{position: 'absolute', left: 58, right: 58, top: 105, textAlign: 'center', fontSize: confidenceLabel.length > 24 ? 19 : 24, fontWeight: 900, letterSpacing: 3, color: failedChecks > 0 ? PROTOTYPE_PALETTE.danger : PROTOTYPE_PALETTE.accent}}>{confidenceLabel.toLocaleUpperCase('de-DE')}</div>
           <div style={{position: 'absolute', left: 60, right: 60, top: 180, textAlign: 'center', fontSize: claim.length > 80 ? 31 : claim.length > 50 ? 38 : 46, lineHeight: 1.12, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>„{claim}“</div>
           <div style={{position: 'absolute', left: 115, right: 115, bottom: 80, height: 22, borderRadius: 999, background: 'rgba(135,87,232,.10)', overflow: 'hidden'}}>
             <div style={{height: '100%', width: `${Math.max(0, safeConfidence * (1 - crackStrength * 0.58))}%`, background: failedChecks > 0 ? `linear-gradient(90deg, ${PROTOTYPE_PALETTE.warning}, ${PROTOTYPE_PALETTE.danger})` : `linear-gradient(90deg, ${PROTOTYPE_PALETTE.accentSoft}, ${PROTOTYPE_PALETTE.accent})`, boxShadow: '0 0 20px rgba(135,87,232,.32)'}} />
