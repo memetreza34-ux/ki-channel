@@ -5,6 +5,8 @@ import {
   type ReelImplementationBrief,
 } from './implementationBrief';
 import type {SceneMeaningContract} from './meaningContract';
+import {createPrototypeRenderProps} from './prototypeRenderPayload';
+import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 import type {PreparedReelProduction} from './reelLifecycle';
 import {
   createUniversalReelMotionPlan,
@@ -26,6 +28,7 @@ export type ChannelSceneMasterPlan = {
   visibleChange: string;
   endState: string;
   requiredVisualCues: string[];
+  prototypeRenderProps: PrototypeRenderProps;
   importantWordCount: number;
   importantWordMechanisms: string[];
   requiredVisualSources: string[];
@@ -96,6 +99,10 @@ export const createChannelReelMasterPlan = ({
     const motion = universalByScene.get(scene.sceneId)!;
     const contentMode = resolveChannelContentMode(analysis.spokenText);
     const meaning = motion.meaningContract;
+    const prototypeRenderProps = createPrototypeRenderProps({
+      spokenText: analysis.spokenText,
+      meaningContract: meaning,
+    });
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -111,6 +118,7 @@ export const createChannelReelMasterPlan = ({
       visibleChange: meaning.visibleChange,
       endState: meaning.endState,
       requiredVisualCues: [...meaning.requiredVisualCues],
+      prototypeRenderProps,
       importantWordCount: motion.sentenceCoverage.criticalBeatCount,
       importantWordMechanisms: motion.importantWordBeats.map(
         (beat) => beat.mechanismId,
@@ -187,7 +195,8 @@ export const renderChannelReelMasterPlanMarkdown = (
     `- **Startzustand:** ${scene.startState}\n` +
     `- **Sichtbare Veränderung:** ${scene.visibleChange}\n` +
     `- **Endzustand:** ${scene.endState}\n` +
-    `- **Pflicht-Cues:** ${scene.requiredVisualCues.join(', ')}\n\n` +
+    `- **Pflicht-Cues:** ${scene.requiredVisualCues.join(', ')}\n` +
+    `- **Render-Props:** vollständig erzeugt und für \`--props\` serialisierbar\n\n` +
     `**Wichtige Wörter:** ${scene.importantWordCount}\n\n` +
     `### Wortmechanismen\n${list(scene.importantWordMechanisms)}\n\n` +
     `### Visuelle Quellen\n${list(scene.requiredVisualSources)}\n\n` +
