@@ -69,8 +69,10 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
     key: 'resultText',
     fallback: content ? compactText(content.meaningContract.endState, 105) : 'WORKFLOW ERFOLGREICH ABGESCHLOSSEN',
   });
-  const activeStationIndex = Math.min(stations.length - 1, Math.floor(travel * stations.length));
-  const completedStations = Math.min(stations.length, Math.floor(travel * (stations.length - 1)) + 1);
+  const activeStationIndex = travel >= 1
+    ? stations.length - 1
+    : Math.min(stations.length - 1, Math.floor(travel * stations.length));
+  const completedStations = travel >= 1 ? stations.length : activeStationIndex;
 
   return (
     <PrototypeShell family="PROCESS FLOW" title="Subway Workflow Map" subtitle="Der Prozess läuft Station für Station zum Ziel. Eine Rückfallroute erscheint nur, wenn der konkrete Inhalt tatsächlich einen Fehler- oder Wiederholungsweg beschreibt.">
@@ -85,7 +87,7 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
 
         {stations.map((station, index) => {
           const reveal = prototypeProgress(frame, 8 + index * 8, 28 + index * 8);
-          const completed = travel >= index / (stations.length - 1);
+          const completed = travel >= 1 || index < activeStationIndex;
           const active = index === activeStationIndex && travel < 1;
           return (
             <div key={`${station.label}-${index}`} style={{position: 'absolute', left: station.x, top: station.y, transform: `translate(-50%, -50%) scale(${0.76 + reveal * 0.24 + (active ? 0.08 : 0)})`, opacity: reveal, zIndex: 4}}>
