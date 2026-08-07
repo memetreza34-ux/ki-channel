@@ -28,9 +28,9 @@ const planPath = resolve(OUTPUT_DIR, 'render-plan.json');
 const plan = await readJson(planPath, 'Animation-Library-Renderplan');
 const planProblems = [];
 
-if (plan.mode !== 'all' && plan.mode !== 'stills' && plan.mode !== 'videos') {
+if (plan.mode !== 'all') {
   planProblems.push(
-    'Renderplan stammt nicht aus einem vollständigen Still-/Video-Lauf.',
+    'Freigabeprüfung benötigt einen frischen Renderplan aus dem Modus all; getrennte Still-/Video-Läufe dürfen nicht gemischt werden.',
   );
 }
 if (plan.sourceFingerprint !== ANIMATION_LIBRARY_SOURCE_FINGERPRINT) {
