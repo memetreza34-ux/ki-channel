@@ -28,6 +28,13 @@ const CONTENT_BOUND_PROTOTYPES = [
 
 const MOTION_SEMANTIC_RULES = new Map([
   [
+    'ContextWindowTrainPrototype.tsx',
+    {
+      required: ['overflowCount', 'shiftedSlots', 'keepPinned'],
+      forbidden: ['windowStart = interpolate'],
+    },
+  ],
+  [
     'DecisionTreeBurstPrototype.tsx',
     {
       required: ['validBranches.map', 'Kriterien tragen den Weg'],
