@@ -24,20 +24,64 @@ const DEFAULT_DOCUMENTS = [
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
+const boundedCount = (
+  value: string | number,
+  fallback: number,
+  maximum: number,
+): number => {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(parsed)
+    ? Math.max(0, Math.min(maximum, Math.round(parsed)))
+    : fallback;
+};
+
+const booleanValue = (value: string | number, fallback: boolean): boolean => {
+  if (typeof value === 'number') return value !== 0;
+  const normalized = String(value).trim().toLocaleLowerCase('de-DE');
+  if (['true', 'ja', 'yes', '1', 'relevant', 'passend'].includes(normalized)) return true;
+  if (['false', 'nein', 'no', '0', 'irrelevant', 'unpassend'].includes(normalized)) return false;
+  return fallback;
+};
+
 export const KnowledgeMagnetPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const field = prototypeProgress(frame, 16, 58);
   const attraction = prototypeProgress(frame, 54, 128);
   const ranking = prototypeProgress(frame, 118, 160);
-  const documents = DEFAULT_DOCUMENTS.map((document, index) => ({
-    ...document,
-    label: getPrototypeLabel({
+  const defaultRelevantCount = DEFAULT_DOCUMENTS.filter((document) => document.relevant).length;
+  const requestedEvidenceCount = boundedCount(
+    getPrototypeValue({
       content,
-      key: `source${index + 1}`,
-      fallback: document.label,
+      key: 'evidenceCount',
+      fallback: defaultRelevantCount,
     }),
-  }));
+    defaultRelevantCount,
+    DEFAULT_DOCUMENTS.length,
+  );
+  const documents = DEFAULT_DOCUMENTS.map((document, index) => {
+    const fallbackRelevant = content
+      ? index < requestedEvidenceCount
+      : document.relevant;
+    return {
+      ...document,
+      label: getPrototypeLabel({
+        content,
+        key: `source${index + 1}`,
+        fallback: document.label,
+      }),
+      relevant: booleanValue(
+        getPrototypeValue({
+          content,
+          key: `source${index + 1}Relevant`,
+          fallback: fallbackRelevant ? 1 : 0,
+        }),
+        fallbackRelevant,
+      ),
+    };
+  });
+  const relevantDocuments = documents.filter((document) => document.relevant);
+  const evidenceCount = relevantDocuments.length;
   const queryText = getPrototypeLabel({
     content,
     key: 'query',
@@ -54,11 +98,6 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
     key: 'queryLabel',
     fallback: 'ANFRAGE',
   });
-  const evidenceCount = getPrototypeValue({
-    content,
-    key: 'evidenceCount',
-    fallback: documents.filter((document) => document.relevant).length,
-  });
   const resultLabel = getPrototypeLabel({
     content,
     key: 'resultLabel',
@@ -71,7 +110,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
     <PrototypeShell
       family="RETRIEVAL SEARCH"
       title="Knowledge Magnet"
-      subtitle="Die Anfrage zieht nur passende Belege aus einem großen Dokumentraum an."
+      subtitle="Die Anfrage zieht nur die Quellen an, die für den konkreten Inhalt als relevant markiert sind; unpassende Quellen werden abgestoßen."
     >
       <div style={{position: 'absolute', left: 86, right: 86, top: 380, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -94,9 +133,10 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
                 />
               );
             })}
-            {documents.filter((document) => document.relevant).map((document, index) => {
+            {relevantDocuments.map((document, index) => {
               const pull = Math.min(1, Math.max(0, (attraction - index * 0.12) / 0.65));
-              const endX = 454 + (index - 1) * 105;
+              const centeredIndex = index - (relevantDocuments.length - 1) / 2;
+              const endX = 454 + centeredIndex * 105;
               const endY = 640 + 205;
               const x = interpolate(pull, [0, 1], [document.x, endX]);
               const y = interpolate(pull, [0, 1], [document.y, endY]);
@@ -143,14 +183,15 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
           </div>
 
           {documents.map((document, index) => {
-            const relevantIndex = documents.filter((item) => item.relevant).findIndex(
+            const relevantIndex = relevantDocuments.findIndex(
               (item) => item.label === document.label,
             );
             const pull = document.relevant
               ? Math.min(1, Math.max(0, (attraction - relevantIndex * 0.12) / 0.65))
               : 0;
             const repel = document.relevant ? 0 : prototypeProgress(frame, 88 + index * 3, 142);
-            const endX = 454 + (relevantIndex - 1) * 105;
+            const centeredIndex = relevantIndex - (relevantDocuments.length - 1) / 2;
+            const endX = 454 + centeredIndex * 105;
             const endY = 845;
             const x = document.relevant
               ? interpolate(pull, [0, 1], [document.x, endX])
