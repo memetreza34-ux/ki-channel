@@ -12,6 +12,8 @@ import {
 } from './PrototypeShell';
 
 const DEFAULT_TOKENS = ['Die', 'KI', 'versteht', 'den', 'Satz'] as const;
+const SEMANTIC_LANE_LABELS = ['AUSGANGSTEXT', 'TOKEN-FOLGE', 'WEITERVERARBEITUNG'] as const;
+const LEGACY_LANE_LABELS = new Set(['sprachteil', 'bedeutung', 'kontext']);
 
 const visibleWords = (spokenText: string): string[] => {
   const words = spokenText.match(/[\p{L}\p{N}]+(?:[-'][\p{L}\p{N}]+)*/gu) ?? [];
@@ -37,11 +39,16 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
   const tokenLabels = contentWords.length >= 3
     ? contentWords.slice(0, 5)
     : [...DEFAULT_TOKENS];
-  const laneLabels = [
-    getPrototypeLabel({content, key: 'lanePrimary', fallback: 'AUSGANGSTEXT'}),
-    getPrototypeLabel({content, key: 'laneMeaning', fallback: 'TOKEN-FOLGE'}),
-    getPrototypeLabel({content, key: 'laneContext', fallback: 'WEITERVERARBEITUNG'}),
+  const requestedLaneLabels = [
+    getPrototypeLabel({content, key: 'lanePrimary', fallback: SEMANTIC_LANE_LABELS[0]}),
+    getPrototypeLabel({content, key: 'laneMeaning', fallback: SEMANTIC_LANE_LABELS[1]}),
+    getPrototypeLabel({content, key: 'laneContext', fallback: SEMANTIC_LANE_LABELS[2]}),
   ];
+  const laneLabels = requestedLaneLabels.map((label, index) =>
+    content && LEGACY_LANE_LABELS.has(label.trim().toLocaleLowerCase('de-DE'))
+      ? SEMANTIC_LANE_LABELS[index]
+      : label,
+  );
   const conclusion = content
     ? content.meaningContract.endState
     : 'Die Token-Reihenfolge bleibt erhalten und kann anschließend numerisch verarbeitet werden.';
