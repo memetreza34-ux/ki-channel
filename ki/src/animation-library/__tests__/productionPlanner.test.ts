@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {createInitialCreativeBrainState} from '../brain';
 import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
+import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
 import {planProductionReelAnimations} from '../productionPlanner';
 
 const brain = createInitialCreativeBrainState({
@@ -49,6 +50,75 @@ describe('production reel animation planner', () => {
     expect(new Set(plan.scenes.map((scene) => scene.animationId)).size).toBe(4);
     expect(new Set(plan.layoutFamilies).size).toBe(4);
     expect(new Set(plan.visualFamilies).size).toBeGreaterThanOrEqual(4);
+  });
+
+  it('never reuses an unregistered catalog entry in a production plan', () => {
+    const sourceEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) => entry.visualFamily === 'retrieval-search',
+    );
+    expect(sourceEntry).toBeDefined();
+
+    const unregisteredAnimationId =
+      'retrieval-search-perfect-but-unregistered-test-v1';
+    const unregisteredEntry = {
+      ...sourceEntry!,
+      animationId: unregisteredAnimationId,
+      name: 'Perfect But Unregistered Retrieval Test',
+      description:
+        'Deliberately high-scoring catalog concept without a registered Remotion implementation.',
+      semanticTags: [
+        'search',
+        'retrieval',
+        'evidence',
+        'document',
+        'source',
+        'relevance',
+      ],
+      useWhen: [
+        'the exact scene searches many documents and selects only relevant evidence',
+      ],
+      avoidWhen: [],
+      qualityPrior: {
+        semanticClarity: 1,
+        novelty: 1,
+        productionConfidence: 1,
+      },
+    };
+
+    expect(EXECUTABLE_ANIMATION_IDS).not.toContain(unregisteredAnimationId);
+
+    const plan = planProductionReelAnimations({
+      reelId: 'reel-production-executable-only',
+      reelIndex: 21,
+      entries: [unregisteredEntry, ...ANIMATION_LIBRARY_ENTRIES],
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-retrieval',
+          spokenText:
+            'Die Suche prüft viele Dokumente und zieht nur die relevanten Belege zur Anfrage.',
+          semanticTags: [
+            'search',
+            'retrieval',
+            'evidence',
+            'document',
+            'source',
+            'relevance',
+          ],
+          preferredVisualFamilies: ['retrieval-search'],
+          preferredEnergy: 'dynamic',
+        },
+      ],
+    });
+
+    expect(plan.scenes).toHaveLength(1);
+    expect(plan.scenes[0].animationId).not.toBe(unregisteredAnimationId);
+    if (plan.scenes[0].source === 'library') {
+      expect(EXECUTABLE_ANIMATION_IDS).toContain(plan.scenes[0].animationId);
+    } else {
+      expect(plan.scenes[0].source).toBe('new-build');
+    }
   });
 
   it('compiles must-be-new scenes into build specifications', () => {
