@@ -190,5 +190,5 @@ export const ANIMATION_LIBRARY_EXPECTED_ARTIFACT_COUNT =
   (
     ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.length +
     ANIMATION_LIBRARY_CONTENT_RENDER_FRAMES.length +
-    1
+    2
   );
