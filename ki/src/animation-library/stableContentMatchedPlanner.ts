@@ -8,7 +8,7 @@ import {
   type ReelChoreographyPlan,
   type ReelSceneBrief,
 } from './contentMatchedPlanner';
-import {analyzeSceneMeaning} from './meaningContract';
+import {enhanceSceneMeaning} from './extendedMeaningContract';
 
 const normalize = (value: string): string =>
   value
@@ -28,7 +28,7 @@ const hasGoalIncompatibleShortcut = ({
   scene: ReelSceneBrief;
   entry: AnimationLibraryEntry;
 }): boolean => {
-  const contract = scene.meaningContract ?? analyzeSceneMeaning(scene.spokenText);
+  const contract = enhanceSceneMeaning(scene.spokenText, scene.meaningContract);
   const corpus = normalize(
     [
       entry.title,
@@ -127,6 +127,13 @@ export const planReelChoreography = ({
   beamWidth?: number;
   candidateLimit?: number;
 }): ReelChoreographyPlan => {
+  const enrichedScenes = scenes.map((scene) => ({
+    ...scene,
+    meaningContract: enhanceSceneMeaning(
+      scene.spokenText,
+      scene.meaningContract,
+    ),
+  }));
   const selections: PlannedAnimationSelection[] = [];
   const acceptedEntries: AnimationLibraryEntry[] = [];
   const usedAnimationIds = new Set<string>();
@@ -258,7 +265,7 @@ export const planReelChoreography = ({
     processSegment(segment.slice(firstUnsafeIndex + 1));
   };
 
-  processSegment(scenes);
+  processSegment(enrichedScenes);
 
   const visualFamilies = acceptedEntries.map((entry) => entry.visualFamily);
   const layoutFamilies = acceptedEntries.map((entry) => entry.layoutFamily);
