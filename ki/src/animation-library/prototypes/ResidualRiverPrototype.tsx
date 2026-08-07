@@ -125,7 +125,7 @@ export const ResidualRiverPrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 100, top: 220, width: 275, padding: '20px 24px', borderRadius: 24, background: 'rgba(135,87,232,.08)', border: '2px solid rgba(135,87,232,.2)', opacity: river}}>
           <div style={{fontSize: inputLabel.length > 18 ? 14 : 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.accent, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{inputLabel.toLocaleUpperCase('de-DE')}</div>
           <div style={{marginTop: 10, fontSize: inputValue.length > 30 ? 20 : 26, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{inputValue}</div>
-          <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>0/{gates.length} SCHICHTEN</div>
+          <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>{completedLayers}/{gates.length} SCHICHTEN</div>
         </div>
 
         <div style={{position: 'absolute', right: 90, bottom: 70, width: 365, padding: '24px 28px', borderRadius: 28, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, opacity: resolve, transform: `translateY(${(1 - resolve) * 55}px)`, boxShadow: '0 22px 60px rgba(20,18,26,.2)'}}>
