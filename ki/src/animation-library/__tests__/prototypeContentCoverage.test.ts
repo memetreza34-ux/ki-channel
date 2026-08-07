@@ -10,12 +10,16 @@ describe('prototype content binding coverage', () => {
     expect([...NATIVE_CONTENT_BOUND_PROTOTYPE_IDS]).toEqual(
       expect.arrayContaining([
         'tokenization-magnetic-phrase-slicer-v1',
+        'data-transformation-vector-prism-converter-v1',
+        'semantic-space-meaning-terrain-v1',
+        'probability-probability-fluid-columns-v1',
+        'decision-logic-decision-tree-burst-v1',
         'retrieval-search-knowledge-magnet-v1',
         'risk-contrast-confidence-glass-crack-v1',
         'scale-performance-latency-tunnel-race-v1',
       ]),
     );
-    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(4);
+    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.size).toBe(8);
   });
 
   it('does not mark shell-only library prototypes as production-ready', () => {
