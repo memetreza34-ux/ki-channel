@@ -32,6 +32,7 @@ export * from './planner';
 export * from './planDiagnostics';
 export * from './productionPlanner';
 export * from './proposalCompiler';
+export * from './prototypeContentCoverage';
 export * from './prototypeCoverage';
 export * from './prototypeRenderPayload';
 export * from './reelLifecycle';
