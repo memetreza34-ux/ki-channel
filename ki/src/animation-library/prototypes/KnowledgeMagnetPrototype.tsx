@@ -1,13 +1,18 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {
+  getPrototypeLabel,
+  getPrototypeValue,
+  usePrototypeContent,
+} from './PrototypeContentContext';
+import {
   GlassSurface,
   PROTOTYPE_PALETTE,
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
 
-const DOCUMENTS = [
+const DEFAULT_DOCUMENTS = [
   {label: 'Quelle A', x: 145, y: 450, relevant: false},
   {label: 'Studie 2026', x: 730, y: 430, relevant: true},
   {label: 'Blog', x: 120, y: 760, relevant: false},
@@ -16,11 +21,51 @@ const DOCUMENTS = [
   {label: 'Kommentar', x: 685, y: 1080, relevant: false},
 ] as const;
 
+const compactText = (value: string, maximum: number): string =>
+  value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
+
 export const KnowledgeMagnetPrototype: React.FC = () => {
   const frame = useCurrentFrame();
+  const content = usePrototypeContent();
   const field = prototypeProgress(frame, 16, 58);
   const attraction = prototypeProgress(frame, 54, 128);
   const ranking = prototypeProgress(frame, 118, 160);
+  const documents = DEFAULT_DOCUMENTS.map((document, index) => ({
+    ...document,
+    label: getPrototypeLabel({
+      content,
+      key: `source${index + 1}`,
+      fallback: document.label,
+    }),
+  }));
+  const queryText = getPrototypeLabel({
+    content,
+    key: 'query',
+    fallback: content
+      ? compactText(
+          content.meaningContract.subjectTerms.slice(0, 4).join(' ') ||
+            content.spokenText,
+          44,
+        )
+      : 'Welche Quelle belegt das?',
+  });
+  const queryLabel = getPrototypeLabel({
+    content,
+    key: 'queryLabel',
+    fallback: 'ANFRAGE',
+  });
+  const evidenceCount = getPrototypeValue({
+    content,
+    key: 'evidenceCount',
+    fallback: documents.filter((document) => document.relevant).length,
+  });
+  const resultLabel = getPrototypeLabel({
+    content,
+    key: 'resultLabel',
+    fallback: content
+      ? compactText(content.meaningContract.endState, 62)
+      : 'nach Relevanz geordnet',
+  });
 
   return (
     <PrototypeShell
@@ -49,7 +94,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
                 />
               );
             })}
-            {DOCUMENTS.filter((document) => document.relevant).map((document, index) => {
+            {documents.filter((document) => document.relevant).map((document, index) => {
               const pull = Math.min(1, Math.max(0, (attraction - index * 0.12) / 0.65));
               const endX = 454 + (index - 1) * 105;
               const endY = 640 + 205;
@@ -57,7 +102,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
               const y = interpolate(pull, [0, 1], [document.y, endY]);
               return (
                 <path
-                  key={document.label}
+                  key={`${document.label}-${index}`}
                   d={`M ${document.x} ${document.y} Q 454 640 ${x} ${y}`}
                   fill="none"
                   stroke={PROTOTYPE_PALETTE.accent}
@@ -92,13 +137,13 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
             }}
           >
             <div>
-              <div style={{fontSize: 23, fontWeight: 900, letterSpacing: 3, color: PROTOTYPE_PALETTE.accent}}>ANFRAGE</div>
-              <div style={{marginTop: 12, fontSize: 34, lineHeight: 1.05, fontWeight: 900}}>„Welche Quelle belegt das?“</div>
+              <div style={{fontSize: 23, fontWeight: 900, letterSpacing: 3, color: PROTOTYPE_PALETTE.accent}}>{queryLabel.toLocaleUpperCase('de-DE')}</div>
+              <div style={{marginTop: 12, fontSize: queryText.length > 30 ? 25 : 34, lineHeight: 1.05, fontWeight: 900}}>„{queryText}“</div>
             </div>
           </div>
 
-          {DOCUMENTS.map((document, index) => {
-            const relevantIndex = DOCUMENTS.filter((item) => item.relevant).findIndex(
+          {documents.map((document, index) => {
+            const relevantIndex = documents.filter((item) => item.relevant).findIndex(
               (item) => item.label === document.label,
             );
             const pull = document.relevant
@@ -117,7 +162,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
 
             return (
               <div
-                key={document.label}
+                key={`${document.label}-${index}`}
                 style={{
                   position: 'absolute',
                   left: x,
@@ -138,13 +183,14 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
                   textAlign: 'center',
                   padding: 16,
                   boxSizing: 'border-box',
-                  fontSize: 21,
+                  fontSize: document.label.length > 13 ? 17 : 21,
                   fontWeight: 850,
                   color: selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.foreground,
                   zIndex: selected ? 8 : 2,
+                  overflow: 'hidden',
                 }}
               >
-                {document.label}
+                {compactText(document.label, 22)}
               </div>
             );
           })}
@@ -152,8 +198,8 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
           <div
             style={{
               position: 'absolute',
-              left: 184,
-              right: 184,
+              left: 125,
+              right: 125,
               bottom: 62,
               padding: '22px 28px',
               borderRadius: 26,
@@ -165,12 +211,13 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
               gap: 15,
               opacity: ranking,
               transform: `translateY(${(1 - ranking) * 38}px)`,
-              fontSize: 27,
+              fontSize: 23,
               fontWeight: 900,
+              textAlign: 'center',
             }}
           >
-            <span style={{color: PROTOTYPE_PALETTE.success}}>3 BELEGE</span>
-            <span style={{color: PROTOTYPE_PALETTE.muted}}>nach Relevanz geordnet</span>
+            <span style={{color: PROTOTYPE_PALETTE.success}}>{evidenceCount} BELEGE</span>
+            <span style={{color: PROTOTYPE_PALETTE.muted}}>{resultLabel}</span>
           </div>
         </GlassSurface>
       </div>
