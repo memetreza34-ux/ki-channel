@@ -50,7 +50,14 @@ export const VectorPrismConverterPrototype: React.FC = () => {
     key: 'vectorLabel',
     fallback: 'VEKTOR',
   });
-  const vectorOutput = `[${dimensions.map((dimension) => dimension.value).join(', ')}]`;
+  const dimensionReveals = dimensions.map((_, index) =>
+    prototypeProgress(frame, 72 + index * 10, 112 + index * 10),
+  );
+  const vectorOutput = `[${dimensions
+    .map((dimension, index) =>
+      dimensionReveals[index] > 0.55 ? dimension.value : '·',
+    )
+    .join(', ')}]`;
   const explanation = content
     ? compactText(content.meaningContract.endState, 105)
     : 'Ein Begriff wird nicht als Wort gespeichert, sondern als Zahlenmuster.';
@@ -59,11 +66,20 @@ export const VectorPrismConverterPrototype: React.FC = () => {
     <PrototypeShell
       family="DATA TRANSFORMATION"
       title="Vector Prism Converter"
-      subtitle="Lesbare Begriffe werden in mehrere numerische Dimensionen aufgeteilt."
+      subtitle="Der lesbare Begriff wird sichtbar in mehrere numerische Dimensionen zerlegt und anschließend als Vektor zusammengesetzt."
     >
       <GlassSurface style={{position: 'absolute', left: 74, right: 74, top: 390, bottom: 190, overflow: 'hidden'}}>
-        <div style={{position: 'absolute', left: 88, top: 470, width: 240, height: 116, borderRadius: 28, background: 'linear-gradient(135deg, #FFFFFF, #EEE6FF)', border: '2px solid rgba(135,87,232,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: inputLabel.length > 12 ? 28 : 42, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground, boxShadow: '0 18px 48px rgba(55,38,83,.12)', opacity: input, transform: `translateX(${(1 - input) * -120}px) scale(${0.88 + input * 0.12})`, padding: 14, boxSizing: 'border-box', textAlign: 'center', overflow: 'hidden'}}>
-          „{compactText(inputLabel, 20)}“
+        <div style={{position: 'absolute', left: 62, right: 62, top: 62, display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 16, fontSize: 16, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted, opacity: input}}>
+          <div style={{textAlign: 'center'}}>WORT</div>
+          <div style={{color: PROTOTYPE_PALETTE.accent}}>→</div>
+          <div style={{textAlign: 'center'}}>DIMENSIONEN</div>
+          <div style={{color: PROTOTYPE_PALETTE.accent}}>→</div>
+          <div style={{textAlign: 'center'}}>VEKTOR</div>
+        </div>
+
+        <div style={{position: 'absolute', left: 88, top: 470, width: 240, height: 116, borderRadius: 28, background: 'linear-gradient(135deg, #FFFFFF, #EEE6FF)', border: '2px solid rgba(135,87,232,.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontSize: inputLabel.length > 12 ? 28 : 42, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground, boxShadow: '0 18px 48px rgba(55,38,83,.12)', opacity: input * (1 - result * 0.25), transform: `translateX(${(1 - input) * -120}px) scale(${0.88 + input * 0.12 - refract * 0.04})`, padding: 14, boxSizing: 'border-box', textAlign: 'center', overflow: 'hidden'}}>
+          <div style={{fontSize: 13, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted, marginBottom: 7}}>LESBARER INPUT</div>
+          <div>„{compactText(inputLabel, 20)}“</div>
         </div>
 
         <svg width="932" height="1050" viewBox="0 0 932 1050" style={{position: 'absolute', inset: 0}}>
@@ -77,18 +93,31 @@ export const VectorPrismConverterPrototype: React.FC = () => {
           <line x1="328" y1="528" x2="455" y2="528" stroke={PROTOTYPE_PALETTE.accent} strokeWidth={12} strokeLinecap="round" strokeDasharray={170} strokeDashoffset={170 * (1 - prismCharge)} opacity={prismCharge} />
           {dimensions.map((dimension, index) => {
             const targetY = 280 + index * 245;
-            const reveal = prototypeProgress(frame, 72 + index * 8, 112 + index * 8);
-            return <line key={`${dimension.label}-${index}`} x1="572" y1="520" x2="850" y2={targetY} stroke={dimension.color} strokeWidth={10 - index} strokeLinecap="round" strokeDasharray={430} strokeDashoffset={430 * (1 - reveal)} opacity={reveal} style={{filter: `drop-shadow(0 0 12px ${dimension.color}77)`}} />;
+            const reveal = dimensionReveals[index];
+            const particle = Math.max(0, Math.min(1, (reveal - 0.18) / 0.72));
+            const particleX = interpolate(particle, [0, 1], [572, 850]);
+            const particleY = interpolate(particle, [0, 1], [520, targetY]);
+            return (
+              <React.Fragment key={`${dimension.label}-${index}`}>
+                <line x1="572" y1="520" x2="850" y2={targetY} stroke={dimension.color} strokeWidth={10 - index} strokeLinecap="round" strokeDasharray={430} strokeDashoffset={430 * (1 - reveal)} opacity={reveal} style={{filter: `drop-shadow(0 0 12px ${dimension.color}77)`}} />
+                <circle cx={particleX} cy={particleY} r={11 + reveal * 4} fill={dimension.color} opacity={reveal} style={{filter: `drop-shadow(0 0 9px ${dimension.color})`}} />
+              </React.Fragment>
+            );
           })}
         </svg>
 
+        <div style={{position: 'absolute', left: 405, top: 760, width: 190, padding: '12px 14px', borderRadius: 18, background: 'rgba(135,87,232,.08)', border: '1px solid rgba(135,87,232,.18)', textAlign: 'center', opacity: prismCharge, fontSize: 15, fontWeight: 900, letterSpacing: 1.5, color: PROTOTYPE_PALETTE.accent}}>
+          ZERLEGT MERKMALE
+        </div>
+
         {dimensions.map((dimension, index) => {
-          const reveal = prototypeProgress(frame, 78 + index * 9, 122 + index * 9);
+          const reveal = dimensionReveals[index];
           const y = 246 + index * 245;
           return (
             <div key={`${dimension.label}-${index}`} style={{position: 'absolute', right: 50, top: y, width: 250, minHeight: 130, padding: '22px 24px', borderRadius: 26, background: 'rgba(255,255,255,.9)', border: `2px solid ${dimension.color}55`, boxShadow: `0 18px 50px ${dimension.color}22`, opacity: reveal, transform: `translateX(${(1 - reveal) * 110}px) scale(${0.9 + reveal * 0.1})`}}>
               <div style={{fontSize: dimension.label.length > 12 ? 15 : 19, fontWeight: 900, letterSpacing: 2.5, color: dimension.color, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{dimension.label.toLocaleUpperCase('de-DE')}</div>
               <div style={{marginTop: 12, fontFamily: 'monospace', fontSize: 38, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground}}>{dimension.value}</div>
+              <div style={{marginTop: 8, fontSize: 13, color: PROTOTYPE_PALETTE.muted, fontWeight: 800}}>numerischer Anteil</div>
             </div>
           );
         })}
@@ -98,7 +127,7 @@ export const VectorPrismConverterPrototype: React.FC = () => {
           <div style={{marginTop: 12, fontFamily: 'monospace', fontSize: vectorOutput.length > 25 ? 27 : 36, fontWeight: 900}}>{vectorOutput}</div>
         </div>
 
-        <div style={{position: 'absolute', left: 340, top: 785, width: 250, textAlign: 'center', fontSize: content ? 18 : 21, lineHeight: 1.3, fontWeight: 800, color: PROTOTYPE_PALETTE.muted, opacity: interpolate(refract, [0, 1], [0, 1]), display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{explanation}</div>
+        <div style={{position: 'absolute', left: 340, top: 805, width: 260, textAlign: 'center', fontSize: content ? 18 : 21, lineHeight: 1.3, fontWeight: 800, color: PROTOTYPE_PALETTE.muted, opacity: refract, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{explanation}</div>
       </GlassSurface>
     </PrototypeShell>
   );
