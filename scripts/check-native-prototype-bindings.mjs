@@ -29,130 +29,76 @@ const CONTENT_BOUND_PROTOTYPES = [
 const MOTION_SEMANTIC_RULES = new Map([
   [
     'AnomalyXRayScannerPrototype.tsx',
-    {
-      required: ['errorScanned', 'repairAtStep', 'REPAIR'],
-      forbidden: [],
-    },
+    {required: ['errorScanned', 'repairAtStep', 'REPAIR'], forbidden: []},
   ],
   [
     'AnswerLoomPrototype.tsx',
-    {
-      required: ['semanticAnswer', 'generatedWordCount', 'WORT {generatedWordCount}'],
-      forbidden: ['Math.sin(frame / 5)'],
-    },
+    {required: ['semanticAnswer', 'generatedWordCount', 'WORT {generatedWordCount}'], forbidden: ['Math.sin(frame / 5)']},
   ],
   [
     'ConfidenceGlassCrackPrototype.tsx',
-    {
-      required: ['checkProgresses', 'failedChecks', 'CHECKS FEHLEN'],
-      forbidden: ['const crack = prototypeProgress'],
-    },
+    {required: ['checkProgresses', 'failedChecks', 'CHECKS FEHLEN'], forbidden: ['const crack = prototypeProgress']},
   ],
   [
     'ContextWindowTrainPrototype.tsx',
-    {
-      required: ['overflowCount', 'shiftedSlots', 'keepPinned'],
-      forbidden: ['windowStart = interpolate'],
-    },
+    {required: ['overflowCount', 'shiftedSlots', 'keepPinned'], forbidden: ['windowStart = interpolate']},
   ],
   [
     'DecisionTreeBurstPrototype.tsx',
-    {
-      required: ['validBranches.map', 'Kriterien tragen den Weg'],
-      forbidden: ['routeDistance('],
-    },
+    {required: ['validBranches.map', 'Kriterien tragen den Weg'], forbidden: ['routeDistance(']},
   ],
   [
     'DependencyBridgeBuilderPrototype.tsx',
-    {
-      required: ['weight12', 'weakWeight', 'VERWORFEN'],
-      forbidden: [],
-    },
+    {required: ['weight12', 'weakWeight', 'VERWORFEN'], forbidden: []},
   ],
   [
     'EncryptionVaultLayersPrototype.tsx',
-    {
-      required: ['allLayersActive', 'SCHICHTEN AKTIV', 'AKTIV ✓'],
-      forbidden: ['frame * 1.8', 'frame * 0.22'],
-    },
+    {required: ['allLayersActive', 'SCHICHTEN AKTIV', 'AKTIV ✓'], forbidden: ['frame * 1.8', 'frame * 0.22']},
   ],
   [
     'FunnelCompressionOutputPrototype.tsx',
-    {
-      required: ['input${index + 1}Keep', 'keptInputs', 'VERWORFEN'],
-      forbidden: [],
-    },
+    {required: ['input${index + 1}Keep', 'keptInputs', 'VERWORFEN'], forbidden: []},
   ],
   [
     'KnowledgeMagnetPrototype.tsx',
-    {
-      required: ['source${index + 1}Relevant', 'requestedEvidenceCount', 'relevantDocuments'],
-      forbidden: [],
-    },
+    {required: ['source${index + 1}Relevant', 'requestedEvidenceCount', 'relevantDocuments'], forbidden: []},
   ],
   [
     'MagneticPhraseSlicerPrototype.tsx',
-    {
-      required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'],
-      forbidden: ['lane: index % 3'],
-    },
+    {required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'], forbidden: ['lane: index % 3']},
   ],
   [
     'ProbabilityFluidColumnsPrototype.tsx',
-    {
-      required: ['signalProgresses', 'contextProgress'],
-      forbidden: ['const context = prototypeProgress'],
-    },
+    {required: ['signalProgresses', 'contextProgress'], forbidden: ['const context = prototypeProgress']},
+  ],
+  [
+    'ResidualRiverPrototype.tsx',
+    {required: ['progress: prototypeProgress', 'completedLayers', 'SCHICHTEN VERARBEITET'], forbidden: ['Math.sin(', 'rotate(${gateFlow']},
   ],
   [
     'VectorPrismConverterPrototype.tsx',
-    {
-      required: ['dimensionReveals', 'ZERLEGT MERKMALE'],
-      forbidden: [],
-    },
+    {required: ['dimensionReveals', 'ZERLEGT MERKMALE'], forbidden: []},
   ],
 ]);
 
 if (CONTENT_BOUND_PROTOTYPES.length !== 22) {
-  throw new Error(
-    `Native Content-Binding-Gate erwartet 22 Komponenten, gefunden: ${CONTENT_BOUND_PROTOTYPES.length}.`,
-  );
+  throw new Error(`Native Content-Binding-Gate erwartet 22 Komponenten, gefunden: ${CONTENT_BOUND_PROTOTYPES.length}.`);
 }
 const animationIds = CONTENT_BOUND_PROTOTYPES.map(([animationId]) => animationId);
 const fileNames = CONTENT_BOUND_PROTOTYPES.map(([, fileName]) => fileName);
-if (new Set(animationIds).size !== animationIds.length) {
-  throw new Error('Native Content-Binding-Gate enthält doppelte Animation-IDs.');
-}
-if (new Set(fileNames).size !== fileNames.length) {
-  throw new Error('Native Content-Binding-Gate enthält doppelte Komponenten.');
-}
+if (new Set(animationIds).size !== animationIds.length) throw new Error('Native Content-Binding-Gate enthält doppelte Animation-IDs.');
+if (new Set(fileNames).size !== fileNames.length) throw new Error('Native Content-Binding-Gate enthält doppelte Komponenten.');
 
-const fixtureConfig = JSON.parse(
-  readFileSync(
-    resolve('ki/src/animation-library/content-render-fixtures.json'),
-    'utf8',
-  ),
-);
-if (!Array.isArray(fixtureConfig.fixtures)) {
-  throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
-}
-const fixtureByAnimationId = new Map(
-  fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]),
-);
-if (fixtureByAnimationId.size !== 22) {
-  throw new Error(
-    `Content-Fixture-Gate erwartet 22 eindeutige Fixtures, gefunden: ${fixtureByAnimationId.size}.`,
-  );
-}
+const fixtureConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/content-render-fixtures.json'), 'utf8'));
+if (!Array.isArray(fixtureConfig.fixtures)) throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
+const fixtureByAnimationId = new Map(fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]));
+if (fixtureByAnimationId.size !== 22) throw new Error(`Content-Fixture-Gate erwartet 22 eindeutige Fixtures, gefunden: ${fixtureByAnimationId.size}.`);
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const buildKeyMatcher = (source) => {
   const literalKeys = new Set();
   const templatePatterns = [];
-
-  for (const match of source.matchAll(/key:\s*['"]([^'"]+)['"]/g)) {
-    literalKeys.add(match[1]);
-  }
+  for (const match of source.matchAll(/key:\s*['"]([^'"]+)['"]/g)) literalKeys.add(match[1]);
   for (const match of source.matchAll(/key:\s*`([^`]+)`/g)) {
     const template = match[1];
     const parts = template.split(/\$\{[^}]+\}/g).map(escapeRegex);
@@ -161,16 +107,12 @@ const buildKeyMatcher = (source) => {
       literalKeys.add(template);
       continue;
     }
-    templatePatterns.push(
-      new RegExp(`^${parts.join('\\d+')}$`),
-    );
+    templatePatterns.push(new RegExp(`^${parts.join('\\d+')}$`));
   }
-
   return {
     literalKeys,
     templatePatterns,
-    accepts: (key) =>
-      literalKeys.has(key) || templatePatterns.some((pattern) => pattern.test(key)),
+    accepts: (key) => literalKeys.has(key) || templatePatterns.some((pattern) => pattern.test(key)),
   };
 };
 
@@ -181,18 +123,9 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
   const path = resolve('ki/src/animation-library/prototypes', fileName);
   const source = readFileSync(path, 'utf8');
   const missing = [];
-  if (!source.includes('usePrototypeContent')) {
-    missing.push('usePrototypeContent');
-  }
-  if (
-    !source.includes('getPrototypeLabel') &&
-    !source.includes('getPrototypeValue')
-  ) {
-    missing.push('getPrototypeLabel/getPrototypeValue');
-  }
-  if (!source.includes('content')) {
-    missing.push('content usage');
-  }
+  if (!source.includes('usePrototypeContent')) missing.push('usePrototypeContent');
+  if (!source.includes('getPrototypeLabel') && !source.includes('getPrototypeValue')) missing.push('getPrototypeLabel/getPrototypeValue');
+  if (!source.includes('content')) missing.push('content usage');
   if (missing.length > 0) {
     failures.push(`${fileName}: ${missing.join(', ')}`);
     continue;
@@ -202,18 +135,10 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
   if (motionRule) {
     checkedMotionRules += 1;
     for (const requiredFragment of motionRule.required) {
-      if (!source.includes(requiredFragment)) {
-        failures.push(
-          `${fileName}: semantische Bewegungsregel fehlt: ${requiredFragment}`,
-        );
-      }
+      if (!source.includes(requiredFragment)) failures.push(`${fileName}: semantische Bewegungsregel fehlt: ${requiredFragment}`);
     }
     for (const forbiddenFragment of motionRule.forbidden) {
-      if (source.includes(forbiddenFragment)) {
-        failures.push(
-          `${fileName}: verbotener dekorativer/inhaltlich falscher Bewegungsmechanismus gefunden: ${forbiddenFragment}`,
-        );
-      }
+      if (source.includes(forbiddenFragment)) failures.push(`${fileName}: verbotener dekorativer/inhaltlich falscher Bewegungsmechanismus gefunden: ${forbiddenFragment}`);
     }
   }
 
@@ -222,34 +147,19 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
     failures.push(`${animationId}: Content-Render-Fixture fehlt`);
     continue;
   }
-  if (typeof fixture.content?.spokenText !== 'string' || !fixture.content.spokenText.trim()) {
-    failures.push(`${animationId}: spokenText fehlt`);
-  }
+  if (typeof fixture.content?.spokenText !== 'string' || !fixture.content.spokenText.trim()) failures.push(`${animationId}: spokenText fehlt`);
 
   const matcher = buildKeyMatcher(source);
-  const explicitKeys = [
-    ...Object.keys(fixture.content?.labels ?? {}),
-    ...Object.keys(fixture.content?.values ?? {}),
-  ];
-  if (explicitKeys.length === 0) {
-    failures.push(`${animationId}: Fixture prüft keine expliziten Render-Keys`);
-  }
+  const explicitKeys = [...Object.keys(fixture.content?.labels ?? {}), ...Object.keys(fixture.content?.values ?? {})];
+  if (explicitKeys.length === 0) failures.push(`${animationId}: Fixture prüft keine expliziten Render-Keys`);
   for (const key of explicitKeys) {
     checkedFixtureKeys += 1;
-    if (!matcher.accepts(key)) {
-      failures.push(
-        `${animationId}: Fixture-Key "${key}" wird von ${fileName} nicht konsumiert`,
-      );
-    }
+    if (!matcher.accepts(key)) failures.push(`${animationId}: Fixture-Key "${key}" wird von ${fileName} nicht konsumiert`);
   }
 }
 
 for (const fixture of fixtureConfig.fixtures) {
-  if (!animationIds.includes(fixture.animationId)) {
-    failures.push(
-      `${fixture.animationId}: Fixture besitzt keine registrierte native Kernkomponente`,
-    );
-  }
+  if (!animationIds.includes(fixture.animationId)) failures.push(`${fixture.animationId}: Fixture besitzt keine registrierte native Kernkomponente`);
 }
 
 if (failures.length > 0) {
@@ -258,6 +168,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(
-  `Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules} semantische Bewegungsregeln sind abgesichert.`,
-);
+console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules} semantische Bewegungsregeln sind abgesichert.`);
