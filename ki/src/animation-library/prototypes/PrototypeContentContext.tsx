@@ -43,8 +43,8 @@ const resolvePrototypeContent = (
     title: content.title?.trim() || null,
     spokenText,
     meaningContract,
-    labels: Object.freeze({...content.labels}),
-    values: Object.freeze({...content.values}),
+    labels: Object.freeze({...content.labels ?? {}}),
+    values: Object.freeze({...content.values ?? {}}),
   };
 };
 
