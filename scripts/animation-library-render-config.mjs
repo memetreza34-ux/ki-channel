@@ -148,6 +148,10 @@ export const ANIMATION_LIBRARY_SOURCE_FILES = Object.freeze([
     /\.(ts|tsx|json)$/.test(file),
   ),
   resolve('ki/reels/animation-history.json'),
+  resolve('scripts/animation-library-render-config.mjs'),
+  resolve('scripts/render-animation-library.mjs'),
+  resolve('scripts/check-animation-library-renders.mjs'),
+  resolve('scripts/render-content-matched-prototype.mjs'),
 ].sort());
 
 const hash = createHash('sha256');
