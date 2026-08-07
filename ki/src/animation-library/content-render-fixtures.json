@@ -7,8 +7,14 @@
       "content": {
         "title": "Passende Quellen finden",
         "spokenText": "Die Suche zieht nur die drei Quellen heran, die unsere Aussage wirklich belegen.",
-        "labels": {"query": "Welche Quelle belegt die Aussage?", "source1": "Studie 2026", "source2": "Fachbericht", "source3": "Primärquelle"},
-        "values": {"resultCount": 3}
+        "labels": {
+          "query": "Welche Quelle belegt die Aussage?",
+          "source1": "Studie 2026",
+          "source2": "Fachbericht",
+          "source3": "Primärquelle",
+          "resultLabel": "nach Relevanz geordnet"
+        },
+        "values": {"evidenceCount": 3}
       }
     },
     {
@@ -16,8 +22,20 @@
       "content": {
         "title": "Kosten sichtbar senken",
         "spokenText": "Ein zu langer Prompt, unnötiger Kontext und das falsche Modell treiben die Kosten hoch.",
-        "labels": {"leak1": "zu langer Prompt", "leak2": "unnötiger Kontext", "leak3": "falsches Modell"},
-        "values": {"startCost": 94, "endCost": 28, "leak1Amount": 18, "leak2Amount": 27, "leak3Amount": 21}
+        "labels": {
+          "leak1": "zu langer Prompt",
+          "leak2": "unnötiger Kontext",
+          "leak3": "falsches Modell",
+          "meterLabel": "Kosten pro Reel",
+          "resultText": "durch drei konkrete Optimierungen"
+        },
+        "values": {
+          "initialCost": 94,
+          "optimizedCost": 28,
+          "leak1Amount": 18,
+          "leak2Amount": 27,
+          "leak3Amount": 21
+        }
       }
     },
     {
@@ -25,8 +43,17 @@
       "content": {
         "title": "Begrenzter Kontext",
         "spokenText": "Neue Nachrichten schieben alte Informationen aus dem Kontextfenster, während die wichtigste Regel angeheftet bleibt.",
-        "labels": {"message1": "Frage", "message2": "Antwort", "message3": "Wichtige Regel", "message4": "Beispiel", "message5": "Neue Frage", "message6": "Neue Antwort"},
-        "values": {"capacity": 4, "pinnedIndex": 3}
+        "labels": {
+          "message1": "Frage",
+          "message2": "Antwort",
+          "message3": "Wichtige Regel",
+          "message4": "Beispiel",
+          "message5": "Neue Frage",
+          "message6": "Neue Antwort",
+          "contextLabel": "Aktiver Kontext",
+          "pinnedResult": "Wichtige Regel bleibt aktiv"
+        },
+        "values": {"capacity": 4, "pinnedIndex": 2}
       }
     },
     {
@@ -34,8 +61,22 @@
       "content": {
         "title": "Entscheidung mit Kriterien",
         "spokenText": "Die Entscheidung prüft Preis, Tempo und Sicherheit und verwirft ungeeignete Wege.",
-        "labels": {"question": "Welches Tool passt?", "branch1": "günstig?", "branch2": "schnell?", "branch3": "unsicher?", "branch4": "skalierbar?", "branch5": "zu komplex?", "selectedPath": "günstig + schnell + skalierbar"},
-        "values": {"branch1Valid": 1, "branch2Valid": 1, "branch3Valid": 0, "branch4Valid": 1, "branch5Valid": 0}
+        "labels": {
+          "question": "Welches Tool passt?",
+          "branch1": "günstig?",
+          "branch2": "schnell?",
+          "branch3": "unsicher?",
+          "branch4": "skalierbar?",
+          "branch5": "zu komplex?",
+          "selectedPath": "günstig + schnell + skalierbar"
+        },
+        "values": {
+          "branch1Valid": 1,
+          "branch2Valid": 1,
+          "branch3Valid": 0,
+          "branch4Valid": 1,
+          "branch5Valid": 0
+        }
       }
     },
     {
@@ -43,7 +84,15 @@
       "content": {
         "title": "Mensch und KI teilen die Arbeit",
         "spokenText": "Der Mensch setzt Ziel und Qualitätsgrenze, die KI erzeugt Optionen, danach prüft der Mensch und die KI setzt die freigegebene Lösung um.",
-        "labels": {"stage1": "Ziel", "stage2": "Entwurf", "stage3": "Prüfung", "stage4": "Ausführung", "result": "Klare Übergaben statt Mensch gegen KI"}
+        "labels": {
+          "stage1": "Ziel",
+          "stage2": "Entwurf",
+          "stage3": "Prüfung",
+          "stage4": "Ausführung",
+          "taskLabel": "Aufgabe",
+          "resultTitle": "Richtige Übergaben",
+          "resultText": "Mensch setzt Ziel und Urteil, KI beschleunigt Entwurf und Ausführung."
+        }
       }
     },
     {
@@ -51,8 +100,15 @@
       "content": {
         "title": "Wissen kontrolliert aktualisieren",
         "spokenText": "Eine neue verifizierte Information ersetzt die unsichere alte Aussage nachvollziehbar und versioniert.",
-        "labels": {"old1": "Stand 2024", "old2": "Stand 2025", "uncertain": "unsicher", "newFact": "Stand 2026", "source": "Primärquelle"},
-        "values": {"confidence": 92, "revisionFrom": 3, "revisionTo": 4}
+        "labels": {
+          "oldState1": "Stand 2024",
+          "oldState2": "Stand 2025",
+          "oldState3": "unsicher",
+          "newInformation": "Stand 2026",
+          "sourceDetail": "Primärquelle · 2026",
+          "conclusion": "Wissen nachvollziehbar aktualisiert"
+        },
+        "values": {"confidence": 92, "revisionStart": 3, "revisionEnd": 4}
       }
     },
     {
@@ -60,7 +116,11 @@
       "content": {
         "title": "Satz in Tokens zerlegen",
         "spokenText": "Die KI zerlegt diesen Satz sichtbar in einzelne Tokens.",
-        "labels": {"lane1": "Grammatik", "lane2": "Bedeutung", "lane3": "Kontext"}
+        "labels": {
+          "lanePrimary": "Sprachteil",
+          "laneMeaning": "Bedeutung",
+          "laneContext": "Kontext"
+        }
       }
     },
     {
@@ -68,8 +128,13 @@
       "content": {
         "title": "Wort wird Zahlenvektor",
         "spokenText": "Das Wort Berlin wird in numerische Dimensionen für Bedeutung, Kontext und Ton umgewandelt.",
-        "labels": {"input": "Berlin", "dimension1": "Bedeutung", "dimension2": "Kontext", "dimension3": "Ton"},
-        "values": {"value1": "0.82", "value2": "-0.31", "value3": "0.47"}
+        "labels": {
+          "input": "Berlin",
+          "dimension1": "Bedeutung",
+          "dimension2": "Kontext",
+          "dimension3": "Ton"
+        },
+        "values": {"vector1": "0.82", "vector2": "-0.31", "vector3": "0.47"}
       }
     },
     {
@@ -77,8 +142,26 @@
       "content": {
         "title": "Ranking verändert sich",
         "spokenText": "Sobald Preis, Tempo und Qualität gemeinsam zählen, steigt Tool A auf Platz eins.",
-        "labels": {"candidate1": "Tool A", "candidate2": "Tool B", "candidate3": "Tool C", "criterion1": "Preis", "criterion2": "Tempo", "criterion3": "Qualität"},
-        "values": {"candidate1Start": 58, "candidate1Middle": 74, "candidate1End": 91, "candidate2Start": 72, "candidate2Middle": 68, "candidate2End": 76, "candidate3Start": 64, "candidate3Middle": 81, "candidate3End": 69}
+        "labels": {
+          "candidate1": "Tool A",
+          "candidate2": "Tool B",
+          "candidate3": "Tool C",
+          "criterion1": "Preis",
+          "criterion2": "Tempo",
+          "criterion3": "Qualität",
+          "resultLabel": "Ranking nach allen Kriterien"
+        },
+        "values": {
+          "candidate1Start": 58,
+          "candidate1Middle": 74,
+          "candidate1End": 91,
+          "candidate2Start": 72,
+          "candidate2Middle": 68,
+          "candidate2End": 76,
+          "candidate3Start": 64,
+          "candidate3Middle": 81,
+          "candidate3End": 69
+        }
       }
     },
     {
@@ -86,7 +169,14 @@
       "content": {
         "title": "Workflow als Strecke",
         "spokenText": "Die Aufgabe läuft von Eingabe über Prüfung und Planung bis zur Ausführung und zum Ergebnis.",
-        "labels": {"station1": "Input", "station2": "Prüfen", "station3": "Planen", "station4": "Ausführen", "station5": "Ergebnis", "result": "Workflow abgeschlossen"}
+        "labels": {
+          "station1": "Input",
+          "station2": "Prüfen",
+          "station3": "Planen",
+          "station4": "Ausführen",
+          "station5": "Ergebnis",
+          "resultText": "Workflow erfolgreich abgeschlossen"
+        }
       }
     },
     {
@@ -94,7 +184,17 @@
       "content": {
         "title": "Viele Quellen, ein Ergebnis",
         "spokenText": "Dokumente, Notizen, Webseiten und Berichte werden gefiltert und zu einer klaren Zusammenfassung verdichtet.",
-        "labels": {"input1": "Dokumente", "input2": "Notizen", "input3": "Webseiten", "input4": "Chats", "input5": "Tabellen", "input6": "Berichte", "output": "Klare Zusammenfassung"}
+        "labels": {
+          "input1": "Dokumente",
+          "input2": "Notizen",
+          "input3": "Webseiten",
+          "input4": "Chats",
+          "input5": "Tabellen",
+          "input6": "Berichte",
+          "outputLabel": "Verdichtetes Ergebnis",
+          "outputTitle": "Klare Zusammenfassung",
+          "outputDetail": "Nur relevante Informationen bleiben erhalten."
+        }
       }
     },
     {
@@ -102,8 +202,15 @@
       "content": {
         "title": "Fehlerquelle finden",
         "spokenText": "Der Scanner verfolgt den Ablauf und isoliert den Fehler im Modellschritt, bevor der Output repariert wird.",
-        "labels": {"step1": "Input", "step2": "Filter", "step3": "Modell", "step4": "Output", "error": "Fehler im Modellschritt", "repaired": "Route repariert"},
-        "values": {"errorIndex": 3}
+        "labels": {
+          "step1": "Input",
+          "step2": "Filter",
+          "step3": "Modell",
+          "step4": "Output",
+          "isolatedText": "Fehler entsteht im Modellschritt.",
+          "repairedText": "Alle Schritte laufen wieder stabil."
+        },
+        "values": {"errorStep": 2}
       }
     },
     {
@@ -111,7 +218,16 @@
       "content": {
         "title": "Bedeutungen bilden Cluster",
         "spokenText": "Hund, Katze und Tier liegen im Bedeutungsraum näher zusammen als Auto, Zug und Reise.",
-        "labels": {"concept1": "Hund", "concept2": "Katze", "concept3": "Tier", "concept4": "Auto", "concept5": "Zug", "concept6": "Reise", "cluster1": "Tier-Bereich", "cluster2": "Reise-Bereich"}
+        "labels": {
+          "concept1": "Hund",
+          "concept2": "Katze",
+          "concept3": "Tier",
+          "concept4": "Auto",
+          "concept5": "Zug",
+          "concept6": "Reise",
+          "cluster1": "Tier-Bereich",
+          "cluster2": "Reise-Bereich"
+        }
       }
     },
     {
@@ -119,7 +235,14 @@
       "content": {
         "title": "Wörter gewichten Beziehungen",
         "spokenText": "Attention verbindet das Wort KI stark mit liest und Text, während eine schwache Direktverbindung verworfen wird.",
-        "labels": {"node1": "KI", "node2": "liest", "node3": "Text", "result": "Starke Beziehungen tragen den Kontext"}
+        "labels": {
+          "node1": "KI",
+          "node2": "liest",
+          "node3": "Text",
+          "strongRelationship": "KI → liest → Text",
+          "weakRelationship": "schwache Direktlinie wird verworfen",
+          "conclusion": "Starke Beziehungen tragen den Kontext"
+        }
       }
     },
     {
@@ -127,8 +250,22 @@
       "content": {
         "title": "Nächstes Wort nach Wahrscheinlichkeit",
         "spokenText": "Nach dem Kontext steigt die Wahrscheinlichkeit für das Wort Text auf sechsundsechzig Prozent.",
-        "labels": {"candidate1": "Text", "candidate2": "Daten", "candidate3": "Antwort", "context1": "Thema", "context2": "Grammatik", "context3": "Kontext"},
-        "values": {"candidate1Start": 38, "candidate1End": 66, "candidate2Start": 44, "candidate2End": 24, "candidate3Start": 18, "candidate3End": 10}
+        "labels": {
+          "candidate1": "Text",
+          "candidate2": "Daten",
+          "candidate3": "Antwort",
+          "signal1": "Thema",
+          "signal2": "Grammatik",
+          "signal3": "Kontext"
+        },
+        "values": {
+          "candidate1Start": 38,
+          "candidate1End": 66,
+          "candidate2Start": 44,
+          "candidate2End": 24,
+          "candidate3Start": 18,
+          "candidate3End": 10
+        }
       }
     },
     {
@@ -136,7 +273,15 @@
       "content": {
         "title": "Information durch Modellschichten",
         "spokenText": "Das Eingangssignal fließt durch drei Verarbeitungsschichten und wird bei jedem Schritt verfeinert.",
-        "labels": {"input": "Eingangssignal", "layer1": "Attention", "layer2": "Transformation", "layer3": "Residual", "output": "Verfeinerter Output"}
+        "labels": {
+          "inputLabel": "Hauptstrom",
+          "inputValue": "Eingangssignal",
+          "layer1": "Attention",
+          "layer2": "Transformation",
+          "layer3": "Residual",
+          "outputLabel": "Verfeinerter Output",
+          "outputValue": "Verarbeitetes Signal"
+        }
       }
     },
     {
@@ -144,7 +289,13 @@
       "content": {
         "title": "Antwort entsteht Schritt für Schritt",
         "spokenText": "Aus Kontext, Thema, Grammatik und Ton entsteht Wort für Wort die Antwort KI setzt Muster fort.",
-        "labels": {"thread1": "Kontext", "thread2": "Thema", "thread3": "Grammatik", "thread4": "Ton", "answer": "KI setzt Muster fort."}
+        "labels": {
+          "thread1": "Kontext",
+          "thread2": "Thema",
+          "thread3": "Grammatik",
+          "thread4": "Ton",
+          "answer": "KI setzt Muster fort."
+        }
       }
     },
     {
@@ -152,7 +303,13 @@
       "content": {
         "title": "Sicherer Ton ist kein Beweis",
         "spokenText": "Eine sehr sicher formulierte Behauptung zerbricht, sobald Quelle, Datum und Beleg fehlen.",
-        "labels": {"statement": "Diese Aussage ist definitiv korrekt.", "check1": "Quelle?", "check2": "Datum?", "check3": "Beleg?", "warning": "Sicherheit im Ton ist kein Beweis für Wahrheit."},
+        "labels": {
+          "claim": "Diese Aussage ist definitiv korrekt.",
+          "check1": "Quelle?",
+          "check2": "Datum?",
+          "check3": "Beleg?",
+          "warningText": "Sicherheit im Ton ist kein Beweis für Wahrheit."
+        },
         "values": {"confidence": 98}
       }
     },
@@ -161,7 +318,14 @@
       "content": {
         "title": "Daten durch Schutzschichten",
         "spokenText": "Sensible Kundendaten passieren Transport, Verschlüsselung und Berechtigung, bevor der Zugriff freigegeben wird.",
-        "labels": {"data": "Kundendaten", "layer1": "Transport", "layer2": "Verschlüsselung", "layer3": "Berechtigung", "result": "Zugriff geschützt"}
+        "labels": {
+          "dataLabel": "Kundendaten",
+          "securityLayer1": "Transport",
+          "securityLayer2": "Verschlüsselung",
+          "securityLayer3": "Berechtigung",
+          "resultLabel": "Zugriff geschützt",
+          "resultText": "Nur berechtigte Systeme erreichen die Daten."
+        }
       }
     },
     {
@@ -169,8 +333,13 @@
       "content": {
         "title": "Engpass macht den Pfad langsam",
         "spokenText": "Der serielle Pfad braucht siebenhundertachtzig Millisekunden, während der parallele Pfad in dreihundertvierzig Millisekunden fertig ist.",
-        "labels": {"path1": "Seriell", "path2": "Parallel", "bottleneck": "Engpass"},
-        "values": {"path1Ms": 780, "path2Ms": 340}
+        "labels": {
+          "slowPath": "Seriell",
+          "fastPath": "Parallel",
+          "bottleneckLabel": "Engpass",
+          "optimizedLabel": "Optimierter Pfad"
+        },
+        "values": {"slowLatency": 780, "fastLatency": 340}
       }
     },
     {
@@ -178,7 +347,16 @@
       "content": {
         "title": "Veränderung über Versionen",
         "spokenText": "Von Version eins bis heute wächst das System durch viele kleine Verbesserungen bei Tempo, Agenten und Kontext.",
-        "labels": {"milestone1": "V1", "milestone2": "V2", "milestone3": "V3", "milestone4": "V4", "milestone5": "Heute", "change1": "größeres Fenster", "change2": "bessere Werkzeuge", "change3": "stabilere Planung"}
+        "labels": {
+          "milestone1": "V1",
+          "milestone2": "V2",
+          "milestone3": "V3",
+          "milestone4": "V4",
+          "milestone5": "Heute",
+          "change1": "größeres Fenster",
+          "change2": "bessere Werkzeuge",
+          "change3": "stabilere Planung"
+        }
       }
     },
     {
@@ -186,8 +364,16 @@
       "content": {
         "title": "Modelle fair vergleichen",
         "spokenText": "Modell A gewinnt insgesamt bei Tempo und Qualität, Modell B bleibt günstiger.",
-        "labels": {"competitor1": "Modell A", "competitor2": "Modell B", "metric1": "Tempo", "metric2": "Kosten", "metric3": "Qualität", "result1": "Gesamtsieger", "result2": "Kostensieger"},
-        "values": {"competitor1End": 100, "competitor2End": 92}
+        "labels": {
+          "competitor1": "Modell A",
+          "competitor2": "Modell B",
+          "metric1": "Tempo",
+          "metric2": "Kosten",
+          "metric3": "Qualität",
+          "competitor1Result": "Gesamtsieger",
+          "competitor2Result": "Kostensieger"
+        },
+        "values": {"competitor1Final": 100, "competitor2Final": 92}
       }
     }
   ]
