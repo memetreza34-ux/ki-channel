@@ -1,5 +1,5 @@
 import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
-import {EXECUTABLE_ANIMATION_IDS} from './executionCatalog';
+import {getProductionReadyLibraryEntries} from './productionEligibility';
 import {
   planReelChoreography,
   type ReelChoreographyPlan,
@@ -34,8 +34,6 @@ export type ProductionReelAnimationPlan = {
   qualityWarnings: string[];
   readyForImplementation: boolean;
 };
-
-const EXECUTABLE_ANIMATION_ID_SET = new Set(EXECUTABLE_ANIMATION_IDS);
 
 const getEntry = (
   entries: readonly AnimationLibraryEntry[],
@@ -91,14 +89,11 @@ export const planProductionReelAnimations = ({
   }
 
   // Production reuse is intentionally stricter than generic choreography planning.
-  // Catalog concepts may remain available to analysis/expansion tooling, but a real
-  // production plan may only reuse animation IDs that are backed by a registered
-  // executable Remotion prototype. If no executable entry fits, the content-first
-  // planner must fall back to a new-build proposal instead of leaking an unrenderable
-  // catalog concept into the masterplan.
-  const productionEntries = entries.filter((entry) =>
-    EXECUTABLE_ANIMATION_ID_SET.has(entry.animationId),
-  );
+  // Analysis and expansion tooling may still inspect the complete catalog, including
+  // executable variants that only have a semantic shell. A real content-matched
+  // production plan may reuse only animations that are BOTH executable and natively
+  // content-bound. Otherwise it must fall back to a purpose-built new animation.
+  const productionEntries = getProductionReadyLibraryEntries(entries);
 
   const choreography = planReelChoreography({
     reelId,
