@@ -126,27 +126,31 @@ export const analyzeSceneForAnimation = ({
   const normalizedText = normalize(spokenText);
   if (!sceneId.trim()) throw new Error('scene analyzer requires sceneId');
   if (!normalizedText) throw new Error('scene analyzer requires spokenText');
-  const tokens = new Set(tokenize(spokenText));
+  const tokenList = tokenize(spokenText);
   const meaningContract = analyzeSceneMeaning(spokenText);
 
   const familyScores = FAMILY_RULES.map((rule) => {
-    const matchedTerms = Object.keys(rule.terms).filter((term) =>
-      [...tokens].some((token) => tokenMatches(token, term)),
+    const matchedTerms = Object.keys(rule.terms)
+      .map((term) => tokenList.find((token) => tokenMatches(token, term)))
+      .filter((token): token is string => Boolean(token));
+    const matchedRuleTerms = Object.keys(rule.terms).filter((term) =>
+      tokenList.some((token) => tokenMatches(token, term)),
     );
     const matchedPhrases = Object.keys(rule.phrases).filter((phrase) =>
       normalizedText.includes(normalize(phrase)),
     );
     const meaningBonus = meaningContract.preferredVisualFamilies.indexOf(rule.family);
+    const lexicalScore =
+      matchedRuleTerms.reduce((sum, term) => sum + rule.terms[term], 0) +
+      matchedPhrases.reduce((sum, phrase) => sum + rule.phrases[phrase], 0);
     const score = Math.min(
       100,
-      matchedTerms.reduce((sum, term) => sum + rule.terms[term], 0) +
-        matchedPhrases.reduce((sum, phrase) => sum + rule.phrases[phrase], 0) +
-        (meaningBonus === 0 ? 22 : meaningBonus > 0 ? 12 : 0),
+      lexicalScore + (meaningBonus === 0 ? 22 : meaningBonus > 0 ? 12 : 0),
     );
     return {
       visualFamily: rule.family,
       score,
-      matchedTerms,
+      matchedTerms: unique(matchedTerms),
       matchedPhrases,
       explanationPatterns: [...rule.patterns],
     };
@@ -154,6 +158,9 @@ export const analyzeSceneForAnimation = ({
     right.score - left.score || left.visualFamily.localeCompare(right.visualFamily),
   );
 
+  const hasDirectEvidence = familyScores.some(
+    (family) => family.matchedTerms.length > 0 || family.matchedPhrases.length > 0,
+  );
   const positive = familyScores.filter((family) => family.score > 0);
   const validFamilies = new Set(FAMILY_RULES.map((rule) => rule.family));
   const fallback: AnimationFamilyName = 'input-output';
@@ -192,6 +199,7 @@ export const analyzeSceneForAnimation = ({
   const secondScore = familyScores[1]?.score ?? 0;
   const mustBeNew =
     forceNewAnimation ||
+    !hasDirectEvidence ||
     topScore < 18 ||
     (topScore === secondScore && topScore < 28);
   const maximumComplexity = complexityForText(spokenText);
