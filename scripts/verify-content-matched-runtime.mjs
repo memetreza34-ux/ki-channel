@@ -25,6 +25,8 @@ const tests = [
   'ki/src/animation-library/__tests__/stableContentMatchedPlanner.test.ts',
   'ki/src/animation-library/__tests__/extendedMeaningContract.test.ts',
   'ki/src/animation-library/__tests__/reelPlanningPipeline.test.ts',
+  'ki/src/animation-library/__tests__/productionPlanner.test.ts',
+  'ki/src/animation-library/__tests__/executionCatalog.test.ts',
   'ki/src/animation-library/__tests__/reelLifecycle.test.ts',
   'ki/src/animation-library/__tests__/universalMotionPlan.test.ts',
   'ki/src/animation-library/__tests__/universalMotionMeaning.test.ts',
@@ -106,7 +108,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions- und Runtime-Regressionstests',
   );
   await run(
     'node',
