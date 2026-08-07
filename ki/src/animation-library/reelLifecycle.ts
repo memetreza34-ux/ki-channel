@@ -7,6 +7,7 @@ import {
   diagnoseRawReelAnimationPlan,
   type ReelPlanDiagnostics,
 } from './planDiagnostics';
+import {isProductionReadyLibraryAnimation} from './productionEligibility';
 import {
   planReelAnimationsFromText,
   type RawReelAnimationPlan,
@@ -181,6 +182,35 @@ const upsertEntry = (
   return next;
 };
 
+const assertCurrentRuntimeReady = ({
+  prepared,
+  entries,
+}: {
+  prepared: PreparedReelProduction;
+  entries: readonly AnimationLibraryEntry[];
+}): void => {
+  for (const scene of prepared.plan.productionPlan.scenes) {
+    const currentEntry = entries.find(
+      (entry) => entry.animationId === scene.animationId,
+    );
+    if (!currentEntry) {
+      throw new Error(
+        `cannot finalize scene ${scene.sceneId}: current catalog entry ${scene.animationId} is missing`,
+      );
+    }
+    if (!isProductionReadyLibraryAnimation(scene.animationId)) {
+      throw new Error(
+        `cannot finalize scene ${scene.sceneId}: animation ${scene.animationId} is not registered with executable native content binding`,
+      );
+    }
+    if (currentEntry.status === 'retired') {
+      throw new Error(
+        `cannot finalize scene ${scene.sceneId}: animation ${scene.animationId} is retired`,
+      );
+    }
+  }
+};
+
 export const finalizeReelAnimationProduction = ({
   prepared,
   entries,
@@ -201,11 +231,13 @@ export const finalizeReelAnimationProduction = ({
     );
   }
   ensureReviewsMatchPlan({plan: prepared.plan, reviews});
+  assertCurrentRuntimeReady({prepared, entries});
 
+  // Finalization deliberately starts from the CURRENT catalog supplied by the caller.
+  // The planned scene snapshot can be older (especially for a new-build that was
+  // implemented after planning), so it must never overwrite newer implementation,
+  // registry or status metadata before review.
   let nextEntries = [...entries];
-  for (const scene of prepared.plan.productionPlan.scenes) {
-    nextEntries = upsertEntry(nextEntries, scene.catalogEntry);
-  }
 
   const sortedReviewTimes = reviews
     .map((review) => review.createdAt)
