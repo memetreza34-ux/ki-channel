@@ -37,24 +37,22 @@ const numericScore = (
     : fallback;
 };
 
-const scoreAt = (frame: number, candidate: RankingCandidate): number => {
-  if (frame <= 90) {
-    return interpolate(frame, [20, 90], [candidate.start, candidate.middle], {
+const scoreAt = (frame: number, candidate: RankingCandidate): number =>
+  interpolate(
+    frame,
+    [20, 58, 96, 134],
+    [50, candidate.start, candidate.middle, candidate.end],
+    {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
-    });
-  }
-  return interpolate(frame, [90, 150], [candidate.middle, candidate.end], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-};
+    },
+  );
 
 export const DynamicPodiumRisePrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const intro = prototypeProgress(frame, 0, 28);
-  const lock = prototypeProgress(frame, 140, 170);
+  const lock = prototypeProgress(frame, 136, 170);
   const terms = content
     ? [...new Set([
         ...content.meaningContract.subjectTerms,
@@ -103,6 +101,15 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
         content?.meaningContract.preferredExplanationPatterns[index] ?? fallback,
     }),
   );
+  const criterionProgresses = criteria.map((_, index) =>
+    prototypeProgress(frame, 28 + index * 38, 58 + index * 38),
+  );
+  const currentScores = candidates.map((candidate) => scoreAt(frame, candidate));
+  const rankedIndices = currentScores
+    .map((score, index) => ({score, index}))
+    .sort((a, b) => b.score - a.score)
+    .map(({index}) => index);
+  const currentRanks = candidates.map((_, index) => rankedIndices.indexOf(index) + 1);
   const winnerIndex = candidates.reduce(
     (best, candidate, index, all) =>
       candidate.end > all[best].end ? index : best,
@@ -118,23 +125,27 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
     <PrototypeShell
       family="RANKING"
       title="Dynamic Podium Rise"
-      subtitle="Die Reihenfolge verändert sich sichtbar, sobald neue Kriterien einfließen."
+      subtitle="Preis, Tempo und Qualität werden nacheinander eingerechnet. Nach jedem Kriterium ändern sich Score und Rang sichtbar."
     >
       <GlassSurface style={{position: 'absolute', left: 76, right: 76, top: 390, bottom: 190, overflow: 'hidden'}}>
-        <div style={{position: 'absolute', left: 50, right: 50, top: 65, display: 'flex', justifyContent: 'space-between', opacity: intro}}>
+        <div style={{position: 'absolute', left: 50, right: 50, top: 58, display: 'flex', justifyContent: 'space-between', gap: 14, opacity: intro}}>
           {criteria.map((criterion, index) => {
-            const active = prototypeProgress(frame, 32 + index * 34, 52 + index * 34) *
-              (1 - prototypeProgress(frame, 62 + index * 34, 76 + index * 34));
+            const progress = criterionProgresses[index];
+            const active = progress > 0.08 && progress < 0.92;
+            const applied = progress >= 0.92;
             return (
-              <div key={`${criterion}-${index}`} style={{width: 230, padding: '17px 18px', borderRadius: 22, textAlign: 'center', fontSize: criterion.length > 16 ? 14 : 20, fontWeight: 900, letterSpacing: 2.5, color: active > 0.1 ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.muted, background: active > 0.1 ? `linear-gradient(135deg, ${PROTOTYPE_PALETTE.accent}, #6A39D0)` : 'rgba(135,87,232,.07)', border: '1px solid rgba(135,87,232,.18)', transform: `scale(${1 + active * 0.08})`, boxShadow: active > 0.1 ? '0 12px 35px rgba(135,87,232,.3)' : 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{criterion.toLocaleUpperCase('de-DE')}</div>
+              <div key={`${criterion}-${index}`} style={{width: 245, padding: '15px 16px', borderRadius: 22, textAlign: 'center', fontSize: criterion.length > 16 ? 14 : 19, fontWeight: 900, letterSpacing: 2, color: active || applied ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.muted, background: active ? `linear-gradient(135deg, ${PROTOTYPE_PALETTE.accent}, #6A39D0)` : applied ? PROTOTYPE_PALETTE.success : 'rgba(135,87,232,.07)', border: '1px solid rgba(135,87,232,.18)', transform: `scale(${1 + (active ? 0.07 : 0)})`, boxShadow: active ? '0 12px 35px rgba(135,87,232,.3)' : 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                <div>{criterion.toLocaleUpperCase('de-DE')}</div>
+                <div style={{marginTop: 5, fontSize: 11, letterSpacing: 1.2}}>{applied ? 'EINGERECHNET ✓' : active ? 'WIRD GEWERTET' : 'WARTET'}</div>
+              </div>
             );
           })}
         </div>
 
         <div style={{position: 'absolute', left: 70, right: 70, bottom: 96, height: 760, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', gap: 24}}>
           {candidates.map((candidate, index) => {
-            const score = scoreAt(frame, candidate);
-            const height = interpolate(score, [50, 95], [270, 650], {
+            const score = currentScores[index];
+            const height = interpolate(score, [45, 95], [235, 650], {
               extrapolateLeft: 'clamp',
               extrapolateRight: 'clamp',
             });
@@ -142,7 +153,8 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
             const isWinner = index === winnerIndex && lock > 0.35;
             return (
               <div key={`${candidate.label}-${index}`} style={{width: 230, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', opacity: reveal, transform: `translateY(${(1 - reveal) * 90}px)`}}>
-                <div style={{maxWidth: 230, marginBottom: 18, padding: '15px 20px', borderRadius: 20, background: isWinner ? candidate.color : 'rgba(255,255,255,.92)', border: `2px solid ${candidate.color}55`, color: isWinner ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.foreground, fontSize: candidate.label.length > 15 ? 20 : 30, fontWeight: 900, boxShadow: isWinner ? `0 18px 50px ${candidate.color}55` : '0 12px 34px rgba(50,34,80,.1)', transform: `scale(${1 + (isWinner ? lock * 0.12 : 0)})`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{candidate.label}</div>
+                <div style={{marginBottom: 8, padding: '8px 13px', borderRadius: 16, background: currentRanks[index] === 1 ? `${candidate.color}18` : 'rgba(255,255,255,.82)', border: `2px solid ${candidate.color}44`, color: candidate.color, fontFamily: 'monospace', fontSize: 17, fontWeight: 900}}>RANG {currentRanks[index]}</div>
+                <div style={{maxWidth: 230, marginBottom: 16, padding: '15px 20px', borderRadius: 20, background: isWinner ? candidate.color : 'rgba(255,255,255,.92)', border: `2px solid ${candidate.color}55`, color: isWinner ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.foreground, fontSize: candidate.label.length > 15 ? 20 : 30, fontWeight: 900, boxShadow: isWinner ? `0 18px 50px ${candidate.color}55` : '0 12px 34px rgba(50,34,80,.1)', transform: `scale(${1 + (isWinner ? lock * 0.1 : 0)})`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{candidate.label}</div>
                 <div style={{width: '100%', height, borderRadius: '30px 30px 10px 10px', background: `linear-gradient(180deg, ${candidate.color}, ${candidate.color}44)`, border: `2px solid ${candidate.color}88`, boxShadow: `0 20px 55px ${candidate.color}33`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 30, boxSizing: 'border-box'}}>
                   <div style={{padding: '12px 16px', borderRadius: 18, background: 'rgba(255,255,255,.9)', color: candidate.color, fontFamily: 'monospace', fontSize: 34, fontWeight: 900}}>{Math.round(score)}</div>
                 </div>
@@ -151,7 +163,7 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
           })}
         </div>
 
-        <div style={{position: 'absolute', left: '50%', bottom: 36, maxWidth: 760, transform: `translateX(-50%) translateY(${(1 - lock) * 34}px)`, opacity: lock, padding: '16px 26px', borderRadius: 22, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, fontSize: resultLabel.length > 40 ? 17 : 23, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{resultLabel.toLocaleUpperCase('de-DE')} · {candidates[winnerIndex].label}</div>
+        <div style={{position: 'absolute', left: '50%', bottom: 36, maxWidth: 760, transform: `translateX(-50%) translateY(${(1 - lock) * 34}px)`, opacity: lock, padding: '16px 26px', borderRadius: 22, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, fontSize: resultLabel.length > 40 ? 17 : 23, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{resultLabel.toLocaleUpperCase('de-DE')} · {candidates[winnerIndex].label} · {Math.round(candidates[winnerIndex].end)}</div>
       </GlassSurface>
     </PrototypeShell>
   );
