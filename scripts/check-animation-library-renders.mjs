@@ -5,6 +5,7 @@ import {
   inspectMotionArtifactBuffer,
 } from './motion-artifact-validation.mjs';
 import {
+  ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
   ANIMATION_LIBRARY_EXPECTED_ARTIFACT_COUNT,
   ANIMATION_LIBRARY_RENDER_CONFIG,
   ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
@@ -37,6 +38,9 @@ if (plan.sourceFingerprint !== ANIMATION_LIBRARY_SOURCE_FINGERPRINT) {
     'Renderplan stammt aus einem älteren Animation-Library-Quellstand.',
   );
 }
+if (plan.contentSmokeFrame !== ANIMATION_LIBRARY_CONTENT_RENDER_FRAME) {
+  planProblems.push('Renderplan verwendet nicht den aktuellen Content-Smoke-Frame.');
+}
 if (
   !Array.isArray(plan.prototypes) ||
   plan.prototypes.length !== ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.length
@@ -50,6 +54,7 @@ const expectedArtifacts = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.flatMap(
     return [
       ...ANIMATION_LIBRARY_RENDER_CONFIG.defaults.checkpoints.map((frame) => ({
         kind: 'still',
+        variant: 'demo',
         animationId: prototype.animationId,
         compositionId: prototype.compositionId,
         frame,
@@ -59,7 +64,19 @@ const expectedArtifacts = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.flatMap(
         ),
       })),
       {
+        kind: 'still',
+        variant: 'content-smoke',
+        animationId: prototype.animationId,
+        compositionId: prototype.compositionId,
+        frame: ANIMATION_LIBRARY_CONTENT_RENDER_FRAME,
+        path: resolve(
+          directory,
+          `content-frame-${String(ANIMATION_LIBRARY_CONTENT_RENDER_FRAME).padStart(3, '0')}.png`,
+        ),
+      },
+      {
         kind: 'video',
+        variant: 'demo',
         animationId: prototype.animationId,
         compositionId: prototype.compositionId,
         frame: null,
@@ -111,29 +128,43 @@ for (const artifact of expectedArtifacts) {
 
 const passedArtifacts = results.filter((result) => result.valid).length;
 const failedArtifacts = results.length - passedArtifacts;
+const contentSmokeArtifacts = results.filter(
+  (result) => result.variant === 'content-smoke',
+);
+const passedContentSmokeArtifacts = contentSmokeArtifacts.filter(
+  (result) => result.valid,
+).length;
 const prototypeReports = ANIMATION_LIBRARY_RENDER_CONFIG.prototypes.map(
   (prototype) => {
     const prototypeArtifacts = results.filter(
       (result) => result.animationId === prototype.animationId,
     );
     const passed = prototypeArtifacts.filter((artifact) => artifact.valid).length;
+    const contentSmoke = prototypeArtifacts.find(
+      (artifact) => artifact.variant === 'content-smoke',
+    );
     return {
       animationId: prototype.animationId,
       compositionId: prototype.compositionId,
       expectedArtifacts: prototypeArtifacts.length,
       passedArtifacts: passed,
       failedArtifacts: prototypeArtifacts.length - passed,
+      contentSmokePassed: contentSmoke?.valid === true,
       passed: passed === prototypeArtifacts.length,
     };
   },
 );
 
 const report = {
-  version: 1,
+  version: 2,
   sourceFingerprint: ANIMATION_LIBRARY_SOURCE_FINGERPRINT,
   expectedArtifacts: expectedArtifacts.length,
   passedArtifacts,
   failedArtifacts,
+  expectedContentSmokeArtifacts: contentSmokeArtifacts.length,
+  passedContentSmokeArtifacts,
+  failedContentSmokeArtifacts:
+    contentSmokeArtifacts.length - passedContentSmokeArtifacts,
   planValid: planProblems.length === 0,
   passed: planProblems.length === 0 && failedArtifacts === 0,
   planProblems,
@@ -153,11 +184,11 @@ if (!report.passed) {
     console.error(`- ${result.path}: ${result.failure}`);
   }
   console.error(
-    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig.`,
+    `Animation-Library-Freigabe fehlgeschlagen: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Smokes gültig.`,
   );
   process.exit(1);
 }
 
 console.log(
-  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig.`,
+  `Animation-Library technisch bestanden: ${passedArtifacts}/${expectedArtifacts.length} Artefakte gültig; ${passedContentSmokeArtifacts}/${contentSmokeArtifacts.length} Content-Smokes gültig.`,
 );
