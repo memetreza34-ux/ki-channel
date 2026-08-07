@@ -4,6 +4,7 @@ import {
   compileReelImplementationBrief,
   type ReelImplementationBrief,
 } from './implementationBrief';
+import type {SceneMeaningContract} from './meaningContract';
 import type {PreparedReelProduction} from './reelLifecycle';
 import {
   createUniversalReelMotionPlan,
@@ -20,6 +21,11 @@ export type ChannelSceneMasterPlan = {
   visualFamily: string;
   layoutFamily: string;
   motionSignature: string;
+  communicationGoal: SceneMeaningContract['communicationGoal'];
+  startState: string;
+  visibleChange: string;
+  endState: string;
+  requiredVisualCues: string[];
   importantWordCount: number;
   importantWordMechanisms: string[];
   requiredVisualSources: string[];
@@ -74,6 +80,7 @@ export const createChannelReelMasterPlan = ({
       motionSignature: scene.catalogEntry.motionSignature,
       transitionInTags: scene.catalogEntry.transitionInTags,
       transitionOutTags: scene.catalogEntry.transitionOutTags,
+      meaningContract: analysis.meaningContract,
     };
   });
   const universalMotion = createUniversalReelMotionPlan({
@@ -88,6 +95,7 @@ export const createChannelReelMasterPlan = ({
     const analysis = analysisByScene.get(scene.sceneId)!;
     const motion = universalByScene.get(scene.sceneId)!;
     const contentMode = resolveChannelContentMode(analysis.spokenText);
+    const meaning = motion.meaningContract;
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -98,6 +106,11 @@ export const createChannelReelMasterPlan = ({
       visualFamily: scene.catalogEntry.visualFamily,
       layoutFamily: scene.catalogEntry.layoutFamily,
       motionSignature: scene.catalogEntry.motionSignature,
+      communicationGoal: meaning.communicationGoal,
+      startState: meaning.startState,
+      visibleChange: meaning.visibleChange,
+      endState: meaning.endState,
+      requiredVisualCues: [...meaning.requiredVisualCues],
       importantWordCount: motion.sentenceCoverage.criticalBeatCount,
       importantWordMechanisms: motion.importantWordBeats.map(
         (beat) => beat.mechanismId,
@@ -169,6 +182,12 @@ export const renderChannelReelMasterPlanMarkdown = (
     `**Content-Modus:** ${scene.contentMode.primaryMode.modeId}\n\n` +
     `**Vollanimation:** \`${scene.fullAnimationId}\` (${scene.fullAnimationSource})\n\n` +
     `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
+    `### Bedeutungs-Payload für Remotion\n` +
+    `- **Kommunikationsziel:** ${scene.communicationGoal}\n` +
+    `- **Startzustand:** ${scene.startState}\n` +
+    `- **Sichtbare Veränderung:** ${scene.visibleChange}\n` +
+    `- **Endzustand:** ${scene.endState}\n` +
+    `- **Pflicht-Cues:** ${scene.requiredVisualCues.join(', ')}\n\n` +
     `**Wichtige Wörter:** ${scene.importantWordCount}\n\n` +
     `### Wortmechanismen\n${list(scene.importantWordMechanisms)}\n\n` +
     `### Visuelle Quellen\n${list(scene.requiredVisualSources)}\n\n` +
