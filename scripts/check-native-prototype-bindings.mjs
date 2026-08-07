@@ -55,6 +55,7 @@ if (CONTENT_BOUND_PROTOTYPES.length !== 22) throw new Error(`Native Content-Bind
 if (MOTION_SEMANTIC_RULES.size !== CONTENT_BOUND_PROTOTYPES.length) throw new Error(`Motion-Semantik-Gate erwartet Regeln für alle 22 Komponenten, gefunden: ${MOTION_SEMANTIC_RULES.size}.`);
 const animationIds = CONTENT_BOUND_PROTOTYPES.map(([animationId]) => animationId);
 const fileNames = CONTENT_BOUND_PROTOTYPES.map(([, fileName]) => fileName);
+const fileByAnimationId = new Map(CONTENT_BOUND_PROTOTYPES);
 if (new Set(animationIds).size !== animationIds.length) throw new Error('Native Content-Binding-Gate enthält doppelte Animation-IDs.');
 if (new Set(fileNames).size !== fileNames.length) throw new Error('Native Content-Binding-Gate enthält doppelte Komponenten.');
 for (const fileName of fileNames) if (!MOTION_SEMANTIC_RULES.has(fileName)) throw new Error(`Motion-Semantik-Gate fehlt für ${fileName}.`);
@@ -63,6 +64,12 @@ const fixtureConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/
 if (!Array.isArray(fixtureConfig.fixtures)) throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
 const fixtureByAnimationId = new Map(fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]));
 if (fixtureByAnimationId.size !== 22) throw new Error(`Content-Fixture-Gate erwartet 22 eindeutige Fixtures, gefunden: ${fixtureByAnimationId.size}.`);
+
+const scenarioConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/motion-semantic-scenarios.json'), 'utf8'));
+if (scenarioConfig.version !== 1 || !Array.isArray(scenarioConfig.scenarios)) throw new Error('Motion-Semantik-Szenarien fehlen oder besitzen eine ungültige Version.');
+if (scenarioConfig.scenarios.length < 9) throw new Error(`Motion-Semantik-Gate erwartet mindestens 9 Edge-Case-Szenarien, gefunden: ${scenarioConfig.scenarios.length}.`);
+const scenarioIds = scenarioConfig.scenarios.map((scenario) => scenario.id);
+if (new Set(scenarioIds).size !== scenarioIds.length) throw new Error('Motion-Semantik-Szenarien enthalten doppelte IDs.');
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const buildKeyMatcher = (source) => {
@@ -82,11 +89,18 @@ const buildKeyMatcher = (source) => {
   return {accepts: (key) => literalKeys.has(key) || templatePatterns.some((pattern) => pattern.test(key))};
 };
 
+const sourceByFile = new Map(
+  fileNames.map((fileName) => [
+    fileName,
+    readFileSync(resolve('ki/src/animation-library/prototypes', fileName), 'utf8'),
+  ]),
+);
 const failures = [];
 let checkedFixtureKeys = 0;
 let checkedMotionRules = 0;
+let checkedScenarioKeys = 0;
 for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
-  const source = readFileSync(resolve('ki/src/animation-library/prototypes', fileName), 'utf8');
+  const source = sourceByFile.get(fileName);
   const missing = [];
   if (!source.includes('usePrototypeContent')) missing.push('usePrototypeContent');
   if (!source.includes('getPrototypeLabel') && !source.includes('getPrototypeValue')) missing.push('getPrototypeLabel/getPrototypeValue');
@@ -117,9 +131,30 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
 }
 for (const fixture of fixtureConfig.fixtures) if (!animationIds.includes(fixture.animationId)) failures.push(`${fixture.animationId}: Fixture besitzt keine registrierte native Kernkomponente`);
 
+for (const scenario of scenarioConfig.scenarios) {
+  if (typeof scenario.id !== 'string' || !scenario.id.trim()) {
+    failures.push('Motion-Semantik-Szenario ohne ID gefunden');
+    continue;
+  }
+  if (!animationIds.includes(scenario.animationId)) {
+    failures.push(`${scenario.id}: unbekannte Animation ${scenario.animationId}`);
+    continue;
+  }
+  if (typeof scenario.purpose !== 'string' || !scenario.purpose.trim()) failures.push(`${scenario.id}: purpose fehlt`);
+  if (typeof scenario.content?.spokenText !== 'string' || !scenario.content.spokenText.trim()) failures.push(`${scenario.id}: spokenText fehlt`);
+  const fileName = fileByAnimationId.get(scenario.animationId);
+  const matcher = buildKeyMatcher(sourceByFile.get(fileName));
+  const scenarioKeys = [...Object.keys(scenario.content?.labels ?? {}), ...Object.keys(scenario.content?.values ?? {})];
+  if (scenarioKeys.length === 0) failures.push(`${scenario.id}: Szenario enthält keine expliziten Runtime-Keys`);
+  for (const key of scenarioKeys) {
+    checkedScenarioKeys += 1;
+    if (!matcher.accepts(key)) failures.push(`${scenario.id}: Runtime-Key "${key}" wird von ${fileName} nicht konsumiert`);
+  }
+}
+
 if (failures.length > 0) {
   console.error('Native Content-Binding-/Fixture-/Motion-Gate fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules}/22 semantische Bewegungsregeln sind abgesichert.`);
+console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} Release-Fixture-Keys, ${checkedMotionRules}/22 semantische Bewegungsregeln und ${checkedScenarioKeys} Edge-Case-Runtime-Keys sind abgesichert.`);
