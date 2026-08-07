@@ -91,7 +91,12 @@ try {
   await run(
     'node',
     ['scripts/check-native-prototype-bindings.mjs'],
-    'Quellcode-Gate für native Objektbindung aller 22 Kernprototypen',
+    'Quellcode-Gate für native Objektbindung und Motion-Semantik aller 22 Kernprototypen',
+  );
+  await run(
+    'node',
+    ['scripts/check-content-motion-edge-cases.mjs'],
+    'Semantische Gegenbeispiele für kritische Content-Motion-Steuerwerte',
   );
   await run(
     'npx',
