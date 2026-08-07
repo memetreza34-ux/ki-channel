@@ -89,6 +89,7 @@ describe('production executable guard', () => {
     expect(plan.scenes[0].buildSpec).not.toBeNull();
     expect(plan.newAnimationCount).toBe(1);
     expect(plan.reusedAnimationCount).toBe(0);
+    expect(plan.readyForImplementation).toBe(false);
   });
 
   it('does not reuse an executable variant that only has semantic-shell binding', () => {
@@ -122,5 +123,43 @@ describe('production executable guard', () => {
     expect(plan.scenes[0].animationId).not.toBe(shellOnlyEntry!.animationId);
     expect(plan.scenes[0].buildSpec).not.toBeNull();
     expect(plan.reusedAnimationCount).toBe(0);
+    expect(plan.readyForImplementation).toBe(false);
+  });
+
+  it('does not reuse a retired entry even when its animation id is otherwise production-ready', () => {
+    const productionReadyEntry = ANIMATION_LIBRARY_ENTRIES.find((entry) =>
+      PRODUCTION_READY_LIBRARY_ANIMATION_IDS.includes(entry.animationId),
+    );
+    expect(productionReadyEntry).toBeDefined();
+
+    const retiredEntry = {
+      ...productionReadyEntry!,
+      status: 'retired' as const,
+    };
+    expect(getProductionReadyLibraryEntries([retiredEntry])).toEqual([]);
+
+    const plan = planProductionReelAnimations({
+      reelId: 'reel-retired-rejected',
+      reelIndex: 24,
+      entries: [retiredEntry],
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-retired',
+          spokenText:
+            'Die Szene benötigt eine aktuell freigegebene content-aware Animation.',
+          semanticTags: [...retiredEntry.semanticTags],
+          preferredVisualFamilies: [retiredEntry.visualFamily],
+          preferredEnergy: retiredEntry.energy,
+        },
+      ],
+    });
+
+    expect(plan.scenes).toHaveLength(1);
+    expect(plan.scenes[0].source).toBe('new-build');
+    expect(plan.scenes[0].animationId).not.toBe(retiredEntry.animationId);
+    expect(plan.reusedAnimationCount).toBe(0);
+    expect(plan.readyForImplementation).toBe(false);
   });
 });
