@@ -1,26 +1,53 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {
+  getPrototypeLabel,
+  usePrototypeContent,
+} from './PrototypeContentContext';
+import {
   GlassSurface,
   PROTOTYPE_PALETTE,
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
 
-const TOKENS = [
-  {label: 'Die', lane: 0},
-  {label: 'KI', lane: 1},
-  {label: 'versteht', lane: 2},
-  {label: 'den', lane: 0},
-  {label: 'Satz', lane: 1},
-] as const;
+const DEFAULT_TOKENS = ['Die', 'KI', 'versteht', 'den', 'Satz'] as const;
+
+const visibleWords = (spokenText: string): string[] => {
+  const words = spokenText.match(/[\p{L}\p{N}]+(?:[-'][\p{L}\p{N}]+)*/gu) ?? [];
+  if (words.length <= 5) return words;
+  const first = words.slice(0, 4);
+  const finalMeaningful = [...words]
+    .reverse()
+    .find((word) => word.length >= 4 && !first.includes(word));
+  return finalMeaningful ? [...first, finalMeaningful] : words.slice(0, 5);
+};
 
 export const MagneticPhraseSlicerPrototype: React.FC = () => {
   const frame = useCurrentFrame();
+  const content = usePrototypeContent();
   const sentenceEnter = prototypeProgress(frame, 0, 24);
   const blade = prototypeProgress(frame, 28, 72);
   const separate = prototypeProgress(frame, 64, 118);
   const settle = prototypeProgress(frame, 112, 160);
+  const contentWords = content?.spokenText
+    ? visibleWords(content.spokenText)
+    : [];
+  const tokenLabels = contentWords.length >= 3
+    ? contentWords.slice(0, 5)
+    : [...DEFAULT_TOKENS];
+  const tokens = tokenLabels.map((label, index) => ({
+    label,
+    lane: index % 3,
+  }));
+  const laneLabels = [
+    getPrototypeLabel({content, key: 'lanePrimary', fallback: 'SPRACHTEIL'}),
+    getPrototypeLabel({content, key: 'laneMeaning', fallback: 'BEDEUTUNG'}),
+    getPrototypeLabel({content, key: 'laneContext', fallback: 'KONTEXT'}),
+  ];
+  const conclusion = content
+    ? content.meaningContract.endState
+    : 'Token-Grenzen entstehen durch Muster — nicht durch menschliches Lesen.';
 
   return (
     <PrototypeShell
@@ -57,39 +84,45 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
             boxShadow: '0 22px 65px rgba(53,35,85,.12)',
           }}
         >
-          {TOKENS.map((token, index) => {
-            const baseX = (index - 2) * 158;
+          {tokens.map((token, index) => {
+            const centerIndex = (tokens.length - 1) / 2;
+            const baseX = (index - centerIndex) * 158;
             const laneY = 480 + token.lane * 170;
             const targetX = 160 + (index % 2) * 510;
-            const splitX = baseX + (index - 2) * 14 * separate;
+            const splitX = baseX + (index - centerIndex) * 14 * separate;
             const x = interpolate(settle, [0, 1], [540 + splitX, targetX]);
             const y = interpolate(settle, [0, 1], [200 + index * 4, laneY]);
-            const rotation = interpolate(settle, [0, 1], [(index - 2) * 2, 0]);
+            const rotation = interpolate(settle, [0, 1], [(index - centerIndex) * 2, 0]);
+            const highlighted = index === 1 || index === tokens.length - 1;
             return (
               <div
-                key={token.label}
+                key={`${token.label}-${index}`}
                 style={{
                   position: 'absolute',
                   left: x,
                   top: y,
                   minWidth: 126,
+                  maxWidth: 235,
                   padding: '18px 24px',
                   borderRadius: 24,
                   textAlign: 'center',
-                  fontSize: 38,
+                  fontSize: token.label.length > 11 ? 27 : 38,
                   fontWeight: 900,
-                  color: index === 1 || index === 4
+                  color: highlighted
                     ? PROTOTYPE_PALETTE.white
                     : PROTOTYPE_PALETTE.foreground,
-                  background: index === 1 || index === 4
+                  background: highlighted
                     ? `linear-gradient(135deg, ${PROTOTYPE_PALETTE.accent}, #6635CE)`
                     : PROTOTYPE_PALETTE.white,
                   border: '2px solid rgba(135,87,232,.2)',
-                  boxShadow: index === 1 || index === 4
+                  boxShadow: highlighted
                     ? '0 18px 48px rgba(135,87,232,.34)'
                     : '0 14px 38px rgba(55,38,83,.11)',
                   transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${0.88 + separate * 0.12})`,
                   zIndex: 5,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {token.label}
@@ -98,8 +131,8 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
           })}
         </div>
 
-        {[0, 1, 2, 3].map((index) => {
-          const x = 268 + index * 150;
+        {Array.from({length: Math.max(2, tokens.length - 1)}, (_, index) => {
+          const x = 268 + index * (600 / Math.max(1, tokens.length - 1));
           return (
             <div
               key={index}
@@ -120,9 +153,9 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
           );
         })}
 
-        {['GRAMMATIK', 'BEDEUTUNG', 'KONTEXT'].map((label, lane) => (
+        {laneLabels.map((label, lane) => (
           <div
-            key={label}
+            key={`${label}-${lane}`}
             style={{
               position: 'absolute',
               left: 68,
@@ -147,7 +180,7 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
                 color: lane === 1 ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.muted,
               }}
             >
-              {label}
+              {label.toLocaleUpperCase('de-DE')}
             </div>
           </div>
         ))}
@@ -159,14 +192,18 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
             right: 110,
             bottom: 70,
             textAlign: 'center',
-            fontSize: 25,
+            fontSize: content ? 21 : 25,
             lineHeight: 1.25,
             fontWeight: 800,
             color: PROTOTYPE_PALETTE.foreground,
             opacity: settle,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
           }}
         >
-          Token-Grenzen entstehen durch <span style={{color: PROTOTYPE_PALETTE.accent}}>Muster</span> — nicht durch menschliches Lesen.
+          {conclusion}
         </div>
       </GlassSurface>
     </PrototypeShell>
