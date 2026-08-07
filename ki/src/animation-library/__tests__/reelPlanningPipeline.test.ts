@@ -59,6 +59,36 @@ describe('raw reel animation planning pipeline', () => {
     expect(plan.productionPlan.scenes[0].buildSpec).not.toBeNull();
   });
 
+  it('persists the extended meaning contract across analysis and production', () => {
+    const plan = planReelAnimationsFromText({
+      reelId: 'extended-meaning-persistence',
+      reelIndex: 22,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'performance-scene',
+          spokenText:
+            'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+          forceNewAnimation: true,
+        },
+      ],
+    });
+
+    const analysis = plan.analyses[0];
+    const buildSpec = plan.productionPlan.scenes[0].buildSpec;
+
+    expect(analysis.meaningContract.preferredVisualFamilies[0]).toBe(
+      'scale-performance',
+    );
+    expect(analysis.brief.meaningContract).toEqual(analysis.meaningContract);
+    expect(analysis.meaningContract.requiredVisualCues).toContain(
+      'visible-bottleneck',
+    );
+    expect(buildSpec?.contentContract).toEqual(analysis.meaningContract);
+  });
+
   it('rejects duplicate scene identifiers and invalid reel indices', () => {
     expect(() =>
       planReelAnimationsFromText({
