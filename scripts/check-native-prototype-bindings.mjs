@@ -26,6 +26,44 @@ const CONTENT_BOUND_PROTOTYPES = [
   ['data-transformation-vector-prism-converter-v1', 'VectorPrismConverterPrototype.tsx'],
 ];
 
+const MOTION_SEMANTIC_RULES = new Map([
+  [
+    'DecisionTreeBurstPrototype.tsx',
+    {
+      required: ['validBranches.map', 'Kriterien tragen den Weg'],
+      forbidden: ['routeDistance('],
+    },
+  ],
+  [
+    'MagneticPhraseSlicerPrototype.tsx',
+    {
+      required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'],
+      forbidden: ['lane: index % 3'],
+    },
+  ],
+  [
+    'VectorPrismConverterPrototype.tsx',
+    {
+      required: ['dimensionReveals', 'ZERLEGT MERKMALE'],
+      forbidden: [],
+    },
+  ],
+  [
+    'ProbabilityFluidColumnsPrototype.tsx',
+    {
+      required: ['signalProgresses', 'contextProgress'],
+      forbidden: ['const context = prototypeProgress'],
+    },
+  ],
+  [
+    'DependencyBridgeBuilderPrototype.tsx',
+    {
+      required: ['weight12', 'weakWeight', 'VERWORFEN'],
+      forbidden: [],
+    },
+  ],
+]);
+
 if (CONTENT_BOUND_PROTOTYPES.length !== 22) {
   throw new Error(
     `Native Content-Binding-Gate erwartet 22 Komponenten, gefunden: ${CONTENT_BOUND_PROTOTYPES.length}.`,
@@ -89,6 +127,7 @@ const buildKeyMatcher = (source) => {
 
 const failures = [];
 let checkedFixtureKeys = 0;
+let checkedMotionRules = 0;
 for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
   const path = resolve('ki/src/animation-library/prototypes', fileName);
   const source = readFileSync(path, 'utf8');
@@ -108,6 +147,25 @@ for (const [animationId, fileName] of CONTENT_BOUND_PROTOTYPES) {
   if (missing.length > 0) {
     failures.push(`${fileName}: ${missing.join(', ')}`);
     continue;
+  }
+
+  const motionRule = MOTION_SEMANTIC_RULES.get(fileName);
+  if (motionRule) {
+    checkedMotionRules += 1;
+    for (const requiredFragment of motionRule.required) {
+      if (!source.includes(requiredFragment)) {
+        failures.push(
+          `${fileName}: semantische Bewegungsregel fehlt: ${requiredFragment}`,
+        );
+      }
+    }
+    for (const forbiddenFragment of motionRule.forbidden) {
+      if (source.includes(forbiddenFragment)) {
+        failures.push(
+          `${fileName}: verbotener dekorativer/inhaltlich falscher Bewegungsmechanismus gefunden: ${forbiddenFragment}`,
+        );
+      }
+    }
   }
 
   const fixture = fixtureByAnimationId.get(animationId);
@@ -146,11 +204,11 @@ for (const fixture of fixtureConfig.fixtures) {
 }
 
 if (failures.length > 0) {
-  console.error('Native Content-Binding-/Fixture-Gate fehlgeschlagen:');
+  console.error('Native Content-Binding-/Fixture-/Motion-Gate fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
 console.log(
-  `Native Content-Binding-/Fixture-Gate bestanden: 22/22 Komponenten und ${checkedFixtureKeys} explizite Fixture-Keys sind an echte Runtime-Zugriffe gebunden.`,
+  `Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} explizite Fixture-Keys und ${checkedMotionRules} semantische Bewegungsregeln sind abgesichert.`,
 );
