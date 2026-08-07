@@ -82,10 +82,17 @@ describe('raw reel animation planning pipeline', () => {
     expect(analysis.meaningContract.preferredVisualFamilies[0]).toBe(
       'scale-performance',
     );
+    expect(analysis.preferredVisualFamilies[0]).toBe('scale-performance');
+    expect(analysis.brief.preferredVisualFamilies?.[0]).toBe(
+      'scale-performance',
+    );
+    expect(plan.decisionSummary[0].primaryFamily).toBe('scale-performance');
+    expect(analysis.forbiddenVisualFamilies).not.toContain('scale-performance');
     expect(analysis.brief.meaningContract).toEqual(analysis.meaningContract);
     expect(analysis.meaningContract.requiredVisualCues).toContain(
       'visible-bottleneck',
     );
+    expect(analysis.brief.explanationPatterns).toContain('bottleneck');
     expect(buildSpec?.contentContract).toEqual(analysis.meaningContract);
   });
 
