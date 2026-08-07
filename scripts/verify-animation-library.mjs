@@ -25,6 +25,7 @@ const checks = [
   ['node', ['--check', 'scripts/render-animation-library.mjs']],
   ['node', ['--check', 'scripts/check-animation-library-renders.mjs']],
   ['node', ['--check', 'scripts/render-content-matched-prototype.mjs']],
+  ['node', ['--check', 'scripts/render-content-motion-edge-cases.mjs']],
   ['node', ['--check', 'scripts/verify-content-matched-runtime.mjs']],
   ['node', ['--check', 'scripts/check-native-prototype-bindings.mjs']],
   ['node', ['--check', 'scripts/check-content-motion-edge-cases.mjs']],
@@ -50,6 +51,7 @@ const checks = [
     ],
   ],
   ['node', ['scripts/render-animation-library.mjs', 'plan']],
+  ['node', ['scripts/render-content-motion-edge-cases.mjs', 'plan']],
 ];
 
 for (const [command, args] of checks) {
