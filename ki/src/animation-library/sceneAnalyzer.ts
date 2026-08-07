@@ -1,5 +1,10 @@
 import type {AnimationLibraryEntry} from './schema';
 import type {ReelSceneBrief} from './planner';
+import {
+  analyzeSceneMeaning,
+  estimateSpokenDurationSeconds,
+  type SceneMeaningContract,
+} from './meaningContract';
 
 export type AnimationFamilyName =
   | 'tokenization'
@@ -38,6 +43,7 @@ export type SceneAnimationAnalysis = {
   spokenText: string;
   normalizedText: string;
   semanticTags: string[];
+  meaningContract: SceneMeaningContract;
   familyScores: AnimationFamilyScore[];
   preferredVisualFamilies: AnimationFamilyName[];
   forbiddenVisualFamilies: AnimationFamilyName[];
@@ -85,11 +91,19 @@ const normalize = (value: string): string =>
     .toLocaleLowerCase('de-DE')
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9äöüß]+/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
 const tokenize = (value: string): string[] => normalize(value).split(' ').filter(Boolean);
+const unique = <T,>(values: readonly T[]): T[] => [...new Set(values)];
+
+const tokenMatches = (token: string, term: string): boolean => {
+  const normalizedTerm = normalize(term);
+  return token === normalizedTerm ||
+    (normalizedTerm.length >= 5 && token.startsWith(normalizedTerm)) ||
+    (token.length >= 5 && normalizedTerm.startsWith(token));
+};
 
 const complexityForText = (
   text: string,
@@ -113,14 +127,21 @@ export const analyzeSceneForAnimation = ({
   if (!sceneId.trim()) throw new Error('scene analyzer requires sceneId');
   if (!normalizedText) throw new Error('scene analyzer requires spokenText');
   const tokens = new Set(tokenize(spokenText));
+  const meaningContract = analyzeSceneMeaning(spokenText);
 
   const familyScores = FAMILY_RULES.map((rule) => {
-    const matchedTerms = Object.keys(rule.terms).filter((term) => tokens.has(normalize(term)));
-    const matchedPhrases = Object.keys(rule.phrases).filter((phrase) => normalizedText.includes(normalize(phrase)));
+    const matchedTerms = Object.keys(rule.terms).filter((term) =>
+      [...tokens].some((token) => tokenMatches(token, term)),
+    );
+    const matchedPhrases = Object.keys(rule.phrases).filter((phrase) =>
+      normalizedText.includes(normalize(phrase)),
+    );
+    const meaningBonus = meaningContract.preferredVisualFamilies.indexOf(rule.family);
     const score = Math.min(
       100,
       matchedTerms.reduce((sum, term) => sum + rule.terms[term], 0) +
-        matchedPhrases.reduce((sum, phrase) => sum + rule.phrases[phrase], 0),
+        matchedPhrases.reduce((sum, phrase) => sum + rule.phrases[phrase], 0) +
+        (meaningBonus === 0 ? 22 : meaningBonus > 0 ? 12 : 0),
     );
     return {
       visualFamily: rule.family,
@@ -129,38 +150,67 @@ export const analyzeSceneForAnimation = ({
       matchedPhrases,
       explanationPatterns: [...rule.patterns],
     };
-  }).sort((left, right) => right.score - left.score || left.visualFamily.localeCompare(right.visualFamily));
+  }).sort((left, right) =>
+    right.score - left.score || left.visualFamily.localeCompare(right.visualFamily),
+  );
 
   const positive = familyScores.filter((family) => family.score > 0);
+  const validFamilies = new Set(FAMILY_RULES.map((rule) => rule.family));
   const fallback: AnimationFamilyName = 'input-output';
-  const preferredVisualFamilies = (
-    positive.length > 0 ? positive.slice(0, 3).map((family) => family.visualFamily) : [fallback]
-  ) as AnimationFamilyName[];
-  const dominantRule = FAMILY_RULES.find((rule) => rule.family === preferredVisualFamilies[0])!;
-  const semanticTags = [...new Set([
-    ...positive.slice(0, 4).flatMap((family) => [...family.matchedTerms, ...family.matchedPhrases]),
+  const preferredVisualFamilies = unique([
+    ...meaningContract.preferredVisualFamilies.filter(
+      (family): family is AnimationFamilyName => validFamilies.has(family as AnimationFamilyName),
+    ),
+    ...positive.map((family) => family.visualFamily),
+  ]).slice(0, 3);
+  if (preferredVisualFamilies.length === 0) preferredVisualFamilies.push(fallback);
+
+  const dominantRule = FAMILY_RULES.find(
+    (rule) => rule.family === preferredVisualFamilies[0],
+  )!;
+  const semanticTags = unique([
+    ...meaningContract.subjectTerms,
+    ...meaningContract.actionTerms,
+    ...meaningContract.resultTerms,
+    ...positive.slice(0, 4).flatMap(
+      (family) => [...family.matchedTerms, ...family.matchedPhrases],
+    ),
     ...dominantRule.patterns,
-  ])].slice(0, 16);
+  ]).slice(0, 16);
   const safeSemanticTags = semanticTags.length >= 2
     ? semanticTags
     : [preferredVisualFamilies[0], 'explanation'];
   const forbiddenVisualFamilies = familyScores
-    .filter((family) => family.score === 0)
-    .slice(-3)
+    .filter(
+      (family) =>
+        family.score === 0 &&
+        !preferredVisualFamilies.includes(family.visualFamily),
+    )
+    .slice(0, 3)
     .map((family) => family.visualFamily);
   const topScore = familyScores[0]?.score ?? 0;
   const secondScore = familyScores[1]?.score ?? 0;
-  const mustBeNew = forceNewAnimation || topScore < 8 || (topScore > 0 && topScore === secondScore && topScore < 14);
+  const mustBeNew =
+    forceNewAnimation ||
+    topScore < 18 ||
+    (topScore === secondScore && topScore < 28);
+  const maximumComplexity = complexityForText(spokenText);
+  const durationSeconds = estimateSpokenDurationSeconds(spokenText);
 
   const brief: ReelSceneBrief = {
     sceneId,
     spokenText,
     semanticTags: safeSemanticTags,
-    explanationPatterns: dominantRule.patterns,
+    explanationPatterns: unique([
+      ...meaningContract.preferredExplanationPatterns,
+      ...dominantRule.patterns,
+    ]),
     preferredVisualFamilies,
     forbiddenVisualFamilies,
     preferredEnergy: dominantRule.defaultEnergy,
-    maximumComplexity: complexityForText(spokenText),
+    maximumComplexity,
+    durationSeconds,
+    meaningContract,
     mustBeNew,
   };
 
@@ -169,11 +219,12 @@ export const analyzeSceneForAnimation = ({
     spokenText,
     normalizedText,
     semanticTags: safeSemanticTags,
+    meaningContract,
     familyScores,
     preferredVisualFamilies,
     forbiddenVisualFamilies,
     preferredEnergy: dominantRule.defaultEnergy,
-    maximumComplexity: complexityForText(spokenText),
+    maximumComplexity,
     mustBeNew,
     brief,
   };
