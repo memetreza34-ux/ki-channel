@@ -99,6 +99,79 @@ describe('reel animation lifecycle', () => {
     }
   });
 
+  it('refuses to finalize a pending new-build before it is runtime-registered and natively content-bound', () => {
+    const brain = createBrain();
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'pending-new-build-finalization',
+      reelIndex: 34,
+      scenes: [
+        {
+          sceneId: 'scene-new-build',
+          spokenText:
+            'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+          forceNewAnimation: true,
+        },
+      ],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+    });
+    const plannedScene = prepared.plan.productionPlan.scenes[0];
+
+    expect(plannedScene.source).toBe('new-build');
+    expect(prepared.readyForImplementation).toBe(false);
+    expect(prepared.diagnostics.passed).toBe(true);
+
+    expect(() =>
+      finalizeReelAnimationProduction({
+        prepared,
+        entries: [...ANIMATION_LIBRARY_ENTRIES, plannedScene.catalogEntry],
+        brain,
+        reviews: [acceptedReview('scene-new-build', 1)],
+      }),
+    ).toThrow(
+      /cannot finalize scene scene-new-build: animation .* is not registered with executable native content binding/,
+    );
+  });
+
+  it('reviews the current catalog entry instead of overwriting it with the older planning snapshot', () => {
+    const brain = createBrain();
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'current-entry-wins',
+      reelIndex: 35,
+      scenes: [SCENES[0]],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+    });
+    const plannedScene = prepared.plan.productionPlan.scenes[0];
+    const currentTitle = 'CURRENT RUNTIME ENTRY TITLE';
+    const currentEntry = {
+      ...plannedScene.catalogEntry,
+      title: currentTitle,
+      description:
+        'Current catalog metadata must survive finalization instead of being replaced by the planning snapshot.',
+      status: 'prototype' as const,
+    };
+    const currentEntries = ANIMATION_LIBRARY_ENTRIES.map((entry) =>
+      entry.animationId === currentEntry.animationId ? currentEntry : entry,
+    );
+
+    const result = finalizeReelAnimationProduction({
+      prepared,
+      entries: currentEntries,
+      brain,
+      reviews: [acceptedReview(SCENES[0].sceneId, 1)],
+    });
+    const finalizedEntry = result.entries.find(
+      (entry) => entry.animationId === currentEntry.animationId,
+    );
+
+    expect(result.releasePassed).toBe(true);
+    expect(finalizedEntry?.title).toBe(currentTitle);
+    expect(finalizedEntry?.description).toBe(currentEntry.description);
+    expect(finalizedEntry?.status).toBe('verified');
+  });
+
   it('keeps a failed render review out of release and learns the rejection', () => {
     const brain = createBrain();
     const prepared = prepareReelAnimationProduction({
