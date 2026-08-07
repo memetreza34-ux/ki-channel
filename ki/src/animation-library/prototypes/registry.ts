@@ -20,6 +20,10 @@ import {LatencyTunnelRacePrototype} from './LatencyTunnelRacePrototype';
 import {MagneticPhraseSlicerPrototype} from './MagneticPhraseSlicerPrototype';
 import {MeaningTerrainPrototype} from './MeaningTerrainPrototype';
 import {ProbabilityFluidColumnsPrototype} from './ProbabilityFluidColumnsPrototype';
+import {
+  createContentAwarePrototype,
+  type PrototypeRenderProps,
+} from './PrototypeContentContext';
 import {ResidualRiverPrototype} from './ResidualRiverPrototype';
 import {SubwayWorkflowMapPrototype} from './SubwayWorkflowMapPrototype';
 import {TimelineMicroscopePrototype} from './TimelineMicroscopePrototype';
@@ -50,7 +54,8 @@ export const ANIMATION_PROTOTYPE_RENDER_CONFIG = renderConfigSchema.parse(
 export type AnimationPrototypeRegistration = {
   compositionId: string;
   animationId: string;
-  component: ComponentType;
+  component: ComponentType<PrototypeRenderProps>;
+  defaultProps: PrototypeRenderProps;
   durationInFrames: number;
   fps: number;
   width: number;
@@ -85,8 +90,8 @@ const COMPONENTS: Record<string, ComponentType> = {
 
 export const ANIMATION_PROTOTYPE_REGISTRY: AnimationPrototypeRegistration[] =
   ANIMATION_PROTOTYPE_RENDER_CONFIG.prototypes.map((prototype) => {
-    const component = COMPONENTS[prototype.animationId];
-    if (!component) {
+    const rawComponent = COMPONENTS[prototype.animationId];
+    if (!rawComponent) {
       throw new Error(
         `missing prototype component for ${prototype.animationId}`,
       );
@@ -99,7 +104,8 @@ export const ANIMATION_PROTOTYPE_REGISTRY: AnimationPrototypeRegistration[] =
 
     return {
       ...prototype,
-      component,
+      component: createContentAwarePrototype(rawComponent),
+      defaultProps: {content: null},
       durationInFrames:
         ANIMATION_PROTOTYPE_RENDER_CONFIG.defaults.durationInFrames,
       fps: ANIMATION_PROTOTYPE_RENDER_CONFIG.defaults.fps,
