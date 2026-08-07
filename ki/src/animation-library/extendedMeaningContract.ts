@@ -140,6 +140,22 @@ const RULES: readonly ExtendedMeaningRule[] = [
   },
 ] as const;
 
+const STRONG_SINGLE_TERMS = new Set([
+  'ranking',
+  'prioritat',
+  'tokenkosten',
+  'latenz',
+  'throughput',
+  'engpass',
+  'transformer',
+  'inference',
+  'attention',
+  'debug',
+  'anomalie',
+  'timeline',
+  'zeitverlauf',
+]);
+
 const unique = (values: readonly string[]): string[] => [...new Set(values)];
 
 const tokenMatches = (token: string, term: string): boolean => {
@@ -151,17 +167,28 @@ const tokenMatches = (token: string, term: string): boolean => {
 const scoreRule = (
   rule: ExtendedMeaningRule,
   normalizedText: string,
-): {score: number; matchedTerms: string[]} => {
+): {
+  score: number;
+  matchedTerms: string[];
+  matchedTermCount: number;
+  matchedPhraseCount: number;
+  hasStrongSingleTerm: boolean;
+} => {
   const tokens = normalizedText.split(' ').filter(Boolean);
-  const matchedTerms = rule.terms.filter((term) =>
+  const matchedRuleTerms = rule.terms.filter((term) =>
     tokens.some((token) => tokenMatches(token, term)),
   );
   const matchedPhrases = rule.phrases.filter((phrase) =>
     normalizedText.includes(normalizeMeaningText(phrase)),
   );
   return {
-    score: matchedTerms.length * 7 + matchedPhrases.length * 16,
-    matchedTerms: unique([...matchedTerms, ...matchedPhrases]),
+    score: matchedRuleTerms.length * 7 + matchedPhrases.length * 16,
+    matchedTerms: unique([...matchedRuleTerms, ...matchedPhrases]),
+    matchedTermCount: matchedRuleTerms.length,
+    matchedPhraseCount: matchedPhrases.length,
+    hasStrongSingleTerm: matchedRuleTerms.some((term) =>
+      STRONG_SINGLE_TERMS.has(normalizeMeaningText(term)),
+    ),
   };
 };
 
@@ -173,7 +200,11 @@ export const enhanceSceneMeaning = (
   const normalizedText = normalizeMeaningText(spokenText);
   const matches = RULES
     .map((rule) => ({rule, ...scoreRule(rule, normalizedText)}))
-    .filter((match) => match.score >= 7)
+    .filter((match) =>
+      match.matchedPhraseCount > 0 ||
+      match.matchedTermCount >= 2 ||
+      match.hasStrongSingleTerm,
+    )
     .sort((left, right) =>
       right.score - left.score || left.rule.id.localeCompare(right.rule.id),
     );
