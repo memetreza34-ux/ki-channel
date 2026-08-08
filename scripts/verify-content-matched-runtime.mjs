@@ -131,6 +131,11 @@ try {
     'Kanonischer Release-Pfad bleibt Deriver -> Sanitizer -> Association -> Render-Props',
   );
   await run(
+    'node',
+    ['scripts/check-content-review-finalization-path.mjs'],
+    'Manuelle 22+6 Review-ID, Export-Nachweis und Finalizer-Reihenfolge bleiben verpflichtend',
+  );
+  await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
     'TypeScript-Prüfung der gesamten Animationsbibliothek',
@@ -153,7 +158,7 @@ try {
 
   console.log('\n[content-runtime] Technische Runtime-Prüfung bestanden.');
   console.log(
-    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für alle 22 Kompositionen visuell prüfen.',
+    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für alle 22 Kompositionen visuell prüfen und visual-review.json finalisieren.',
   );
 } catch (error) {
   console.error('\n[content-runtime] Prüfung fehlgeschlagen.');
