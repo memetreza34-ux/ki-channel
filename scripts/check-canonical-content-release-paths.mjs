@@ -26,6 +26,7 @@ const renderEdgeCases = read('scripts/render-content-motion-edge-cases.mjs');
 const verifyEdgeCases = read('scripts/verify-content-motion-edge-case-renders.mjs');
 const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
 const reviewVerifier = read('scripts/verify-content-review-gallery.mjs');
+const releaseRunner = read('scripts/run-content-release.mjs');
 
 for (const required of [
   'render-masterplan-content-release.mjs',
@@ -52,6 +53,30 @@ requireExcludes(
   verifyAll,
   'verify-production-derived-content.mjs',
   'verify-all-content-release',
+);
+
+for (const required of [
+  "new Set(['verify', 'smoke', 'full'])",
+  'scripts/verify-content-matched-runtime.mjs',
+  "['run', 'animation-library:verify']",
+  'scripts/render-masterplan-content-release.mjs',
+  'scripts/verify-masterplan-content-release.mjs',
+  'scripts/render-content-motion-edge-cases.mjs',
+  'scripts/verify-content-motion-edge-case-renders.mjs',
+  'scripts/build-content-review-gallery.mjs',
+  'scripts/verify-content-review-gallery.mjs',
+  'scripts/render-all-content-release.mjs',
+  'scripts/verify-all-content-release.mjs',
+  'content-release-run',
+  "status: 'failed'",
+  "status: 'passed'",
+]) {
+  requireContains(releaseRunner, required, 'run-content-release');
+}
+requireExcludes(
+  releaseRunner,
+  'render-production-derived-content.mjs',
+  'run-content-release',
 );
 
 requireContains(
@@ -153,5 +178,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: all-content/complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner, all-content und complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
