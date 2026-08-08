@@ -1,5 +1,6 @@
 import type {PreparedReelProduction} from './reelLifecycle';
 import type {SceneMeaningContract} from './meaningContract';
+import {areProductionRuntimeScenesReady} from './productionEligibility';
 
 export type ImplementationPhaseBrief = {
   phaseId: string;
@@ -151,7 +152,9 @@ export const compileReelImplementationBrief = (
     reelIndex: prepared.plan.reelIndex,
     sceneCount: scenes.length,
     readyForImplementation:
-      prepared.readyForImplementation && blockers.length === 0,
+      prepared.diagnostics.passed &&
+      blockers.length === 0 &&
+      areProductionRuntimeScenesReady(prepared.plan.productionPlan.scenes),
     blockers,
     warnings,
     globalRules: [
