@@ -24,6 +24,18 @@ Production inputs are in `ki/src/animation-library/masterplan-content-fixtures.j
 - Do not weaken tests, skip assertions, insert fake values, or copy direct demo values from `content-render-fixtures.json` into production fixtures.
 - Never claim a test or render passed unless the command actually exited successfully and its expected artifact was inspected.
 
+## Fast path
+
+Run the complete first-test sequence with one command:
+
+`node scripts/run-antigravity-content-test.mjs`
+
+Then inspect:
+
+`out/antigravity-content-test/summary.json`
+
+Do not continue if the summary status is not `passed`.
+
 ## Environment preparation
 
 1. Confirm Node is available with `node --version`.
@@ -33,7 +45,9 @@ Production inputs are in `ki/src/animation-library/masterplan-content-fixtures.j
    `npm install --workspaces=false --package-lock=false --no-audit --no-fund`
 4. Do not use `npx -y` to fetch arbitrary newer versions for release verification.
 
-## Test 0 — production input boundary
+## Underlying sequence for debugging
+
+### Test 0 — production input boundary
 
 Run:
 
@@ -41,15 +55,13 @@ Run:
 
 Expected result includes a successful 22/22 production-ID check. If it fails, fix the actual fixture/config mismatch before continuing.
 
-## Test 0B — first-test contract
+### Test 0B — first-test contract
 
 Run:
 
 `node scripts/check-first-content-grounding-test-contract.mjs`
 
-This protects the official first test sequence and exact assertions.
-
-## Test 1 — official first grounding test
+### Test 1 — official first grounding test
 
 Run:
 
@@ -70,9 +82,7 @@ Inspect:
 
 `out/first-content-grounding-test/cost-efficiency-budget-leak-meter-v1/test-summary.json`
 
-Do not continue unless its status is `passed` and the values match the spoken text.
-
-## Test 1B — latency grounding
+### Test 1B — latency grounding
 
 Run:
 
@@ -89,15 +99,16 @@ Inspect its `test-summary.json` under `out/first-content-grounding-test/`.
 
 ## Debugging protocol
 
-When a command fails:
+When the one-command runner fails:
 
-1. Capture the first real exception/assertion and its command.
-2. Classify as environment/dependency or source regression.
-3. If source-related, inspect the relevant stage in order: meaning, deriver, sanitizer, association, payload, render-plan.
-4. Fix the source cause rather than the test expectation unless the expectation is objectively wrong.
-5. Rerun the narrow failing command.
-6. Rerun the Antigravity self-check, Test 0, Test 0B, Test 1 and Test 1B in order.
-7. Report the exact successful/failed commands and artifact paths.
+1. Read `out/antigravity-content-test/summary.json`.
+2. Capture the first real exception/assertion and its command.
+3. Classify as environment/dependency or source regression.
+4. If source-related, inspect the relevant stage in order: meaning, deriver, sanitizer, association, payload, render-plan.
+5. Fix the source cause rather than the test expectation unless the expectation is objectively wrong.
+6. Rerun the narrow failing command.
+7. Rerun `node scripts/run-antigravity-content-test.mjs` from the start.
+8. Report the exact successful/failed commands and artifact paths.
 
 ## After both grounding tests pass
 
