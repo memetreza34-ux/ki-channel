@@ -9,6 +9,11 @@ export type PrototypeRuntimeContentAssociationInput = {
   content: AssociatablePrototypeRuntimeContent;
 };
 
+type IndexedMeasurement = {
+  index: number;
+  value: number;
+};
+
 const normalize = (value: string): string =>
   value
     .toLocaleLowerCase('de-DE')
@@ -254,11 +259,21 @@ const alignComparisonWinner = (
   return true;
 };
 
+const comparisonWinnerFromScores = (
+  exactScores: readonly (number | null)[],
+): number => {
+  if (!exactScores.every((score): score is number => score !== null)) return -1;
+  if (!hasUniqueMaximum(exactScores)) return -1;
+  const maximum = Math.max(...exactScores);
+  return exactScores.findIndex((score) => score === maximum);
+};
+
 const associateComparisonScores = (
   spokenText: string,
   content: AssociatablePrototypeRuntimeContent,
 ): AssociatablePrototypeRuntimeContent => {
   const values = {...content.values};
+  const associatedLabels = {...content.labels};
   const labels = [1, 2].map(
     (index) => content.labels[`competitor${index}`] ?? '',
   );
@@ -276,21 +291,33 @@ const associateComparisonScores = (
     if (score !== null) values[`competitor${keyIndex}Final`] = score;
   });
 
-  const completeScores = exactScores.every(
-    (score): score is number => score !== null,
-  );
-  const scoreWinnerGrounded =
-    completeScores && hasUniqueMaximum(exactScores);
+  const scoreWinner = comparisonWinnerFromScores(exactScores);
   const explicitWinner = winnerCueIndex(spokenText, labels);
   const explicitWinnerGrounded = explicitWinner >= 0
     ? alignComparisonWinner(values, exactScores, explicitWinner)
     : false;
+  const groundedWinner = explicitWinner >= 0
+    ? explicitWinnerGrounded ? explicitWinner : -1
+    : scoreWinner;
 
-  values.comparisonOutcomeGrounded = explicitWinner >= 0
-    ? explicitWinnerGrounded ? 1 : 0
-    : scoreWinnerGrounded ? 1 : 0;
+  values.comparisonOutcomeGrounded = groundedWinner >= 0 ? 1 : 0;
+  for (let index = 0; index < 2; index += 1) {
+    const isWinner = index === groundedWinner;
+    associatedLabels[`competitor${index + 1}Result`] = groundedWinner >= 0
+      ? isWinner ? 'Gesamtsieger' : 'Vergleichsergebnis'
+      : 'Vergleichsergebnis';
+    associatedLabels[`competitor${index + 1}Detail`] = groundedWinner < 0
+      ? 'kein eindeutiger Gesamtsieger belegt'
+      : isWinner
+        ? explicitWinner >= 0
+          ? 'im Sprechertext als Sieger benannt'
+          : 'höchster belegter Gesamtwert'
+        : explicitWinner >= 0
+          ? 'im Sprechertext nicht als Sieger benannt'
+          : 'niedrigerer belegter Gesamtwert';
+  }
 
-  return {labels: content.labels, values};
+  return {labels: associatedLabels, values};
 };
 
 const distributeProbabilityRemainder = (
@@ -469,16 +496,16 @@ const costUnitPattern = (unit: string): string | null => {
   return null;
 };
 
-const orderedCostMeasurements = (
+const costMeasurementEntries = (
   spokenText: string,
   unit: string,
-): number[] => {
+): IndexedMeasurement[] => {
   const unitPattern = costUnitPattern(unit);
   if (!unitPattern) return [];
   const number = '(-?\\d+(?:[.,]\\d+)?)';
   const suffix = new RegExp(`${number}\\s*${unitPattern}`, 'gi');
   const prefix = new RegExp(`${unitPattern}\\s*${number}`, 'gi');
-  const measurements: Array<{index: number; value: number}> = [];
+  const measurements: IndexedMeasurement[] = [];
 
   for (const pattern of [suffix, prefix]) {
     for (const match of spokenText.matchAll(pattern)) {
@@ -497,8 +524,34 @@ const orderedCostMeasurements = (
         index === 0 ||
         entry.index !== all[index - 1].index ||
         entry.value !== all[index - 1].value,
-    )
-    .map((entry) => entry.value);
+    );
+};
+
+const resolveCostTransition = (
+  spokenText: string,
+  unit: string,
+): {initial: number; optimized: number} | null => {
+  const measurements = costMeasurementEntries(spokenText, unit);
+  if (measurements.length < 2) return null;
+  const first = measurements[0];
+  const second = measurements[1];
+  const beforeFirst = normalize(
+    spokenText.slice(Math.max(0, first.index - 52), first.index),
+  );
+  const between = normalize(
+    spokenText.slice(first.index, Math.min(spokenText.length, second.index + 8)),
+  );
+  const currentFirst =
+    /\b(?:jetzt|nun|aktuell|heute|nur noch|nach der optimierung|nach optimierung|danach|anschliessend)\b/.test(beforeFirst);
+  const secondMarkedOld =
+    /\b(?:statt\s+)?(?:vorher|zuvor|fruher)\b/.test(between);
+  const reverseTemporalOrder =
+    /\bstatt\s+(?:vorher|zuvor|fruher)\b/.test(between) ||
+    (currentFirst && secondMarkedOld);
+
+  return reverseTemporalOrder
+    ? {initial: second.value, optimized: first.value}
+    : {initial: first.value, optimized: second.value};
 };
 
 const enforceCostReductionDirection = (
@@ -507,13 +560,10 @@ const enforceCostReductionDirection = (
 ): AssociatablePrototypeRuntimeContent => {
   const values = {...content.values};
   const unit = content.labels.currency;
-  const measurements = unit
-    ? orderedCostMeasurements(spokenText, unit)
-    : [];
+  const transition = unit ? resolveCostTransition(spokenText, unit) : null;
 
-  if (measurements.length < 2) return content;
-  const initial = measurements[0];
-  const optimized = measurements[1];
+  if (!transition) return content;
+  const {initial, optimized} = transition;
 
   if (optimized >= initial) {
     values.measurementExact = 0;
