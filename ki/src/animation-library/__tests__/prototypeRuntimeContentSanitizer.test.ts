@@ -16,8 +16,11 @@ const deriveSafe = (animationId: string, spokenText: string) => {
   });
 };
 
+const numeric = (value: string | number | undefined): number =>
+  Number(value ?? Number.NaN);
+
 describe('prototype runtime content sanitizer', () => {
-  it('repairs truncated article-plus-initial entity fragments', () => {
+  it('does not keep article-plus-initial entity fragments', () => {
     const result = deriveSafe(
       'ranking-dynamic-podium-rise-v1',
       'Die Suche vergleicht Tool A und Tool B nach Tempo und Qualität.',
@@ -26,7 +29,11 @@ describe('prototype runtime content sanitizer', () => {
       .filter(([key]) => /^candidate\d+$/.test(key))
       .map(([, value]) => value);
 
-    expect(candidates.some((value) => /^(?:Die|Der|Das|Ein|Eine) [A-ZÄÖÜ0-9]$/.test(value))).toBe(false);
+    expect(
+      candidates.some((value) =>
+        /^(?:Die|Der|Das|Ein|Eine) [A-ZÄÖÜ0-9]$/.test(value),
+      ),
+    ).toBe(false);
     expect(candidates).toContain('Tool A');
     expect(candidates).toContain('Tool B');
   });
@@ -40,11 +47,39 @@ describe('prototype runtime content sanitizer', () => {
     expect(result.values.candidate1End).toBe(100);
     expect(result.values.candidate2End).toBe(0);
     expect(result.values.candidate3End).toBe(0);
+    expect(result.values.candidate1ProbabilityExact).toBe(1);
+    expect(result.values.probabilityOutcomeGrounded).toBe(1);
     expect(
-      Number(result.values.candidate1End) +
-        Number(result.values.candidate2End) +
-        Number(result.values.candidate3End),
+      numeric(result.values.candidate1End) +
+        numeric(result.values.candidate2End) +
+        numeric(result.values.candidate3End),
     ).toBe(100);
+  });
+
+  it('does not claim a probability winner without a number or winner cue', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Kontext, Grammatik und Thema verschieben die möglichen Antworten unterschiedlich.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.probabilityOutcomeGrounded).toBe(0);
+    expect(result.values.candidate1ProbabilityExact).toBe(0);
+    expect(result.values.candidate2ProbabilityExact).toBe(0);
+    expect(result.values.candidate3ProbabilityExact).toBe(0);
+  });
+
+  it('grounds a probability outcome from an explicit spoken winner without inventing exact percentages', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Nach allen Kontextsignalen gewinnt Antwort B klar vor den anderen Kandidaten.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.probabilityOutcomeGrounded).toBe(1);
+    expect(result.values.candidate1ProbabilityExact).toBe(0);
+    expect(result.values.candidate2ProbabilityExact).toBe(0);
+    expect(result.values.candidate3ProbabilityExact).toBe(0);
   });
 
   it('keeps exact cost values only when a real unit is present', () => {
@@ -126,5 +161,98 @@ describe('prototype runtime content sanitizer', () => {
     expect(exact.values.slowLatency).toBe(780);
     expect(exact.values.fastLatency).toBe(340);
     expect(exact.labels.latencyUnit).toBe('ms');
+  });
+
+  it('does not ground a ranking winner from internal illustrative scores alone', () => {
+    const result = deriveSafe(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A, Tool B und Tool C werden nach Preis, Tempo und Qualität verglichen.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+    expect(result.values.candidate1ScoreExact).toBe(0);
+    expect(result.values.candidate2ScoreExact).toBe(0);
+    expect(result.values.candidate3ScoreExact).toBe(0);
+  });
+
+  it('grounds a ranking winner from an explicit winner cue without showing fake scores', () => {
+    const result = deriveSafe(
+      'ranking-dynamic-podium-rise-v1',
+      'Nach Preis, Tempo und Qualität gewinnt Tool B den Vergleich.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.rankingOutcomeGrounded).toBe(1);
+    expect(result.values.candidate1ScoreExact).toBe(0);
+    expect(result.values.candidate2ScoreExact).toBe(0);
+    expect(result.values.candidate3ScoreExact).toBe(0);
+
+    const toolBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool B',
+    );
+    expect(toolBIndex).toBeDefined();
+    const winnerScore = numeric(result.values[`candidate${toolBIndex}End`]);
+    const otherScores = [1, 2, 3]
+      .filter((index) => index !== toolBIndex)
+      .map((index) => numeric(result.values[`candidate${index}End`]));
+    expect(otherScores.every((score) => winnerScore > score)).toBe(true);
+  });
+
+  it('marks only spoken ranking scores as exact', () => {
+    const result = deriveSafe(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A erreicht 96 Punkte, Tool B erreicht 88 Punkte und Tool C bleibt ohne exakten Score.',
+    );
+
+    expect(result.values.measurementExact).toBe(1);
+    expect(result.values.rankingOutcomeGrounded).toBe(1);
+    expect(result.values.candidate1ScoreExact).toBe(1);
+    expect(result.values.candidate2ScoreExact).toBe(1);
+    expect(result.values.candidate3ScoreExact).toBe(0);
+  });
+
+  it('does not ground a benchmark winner without scores or a spoken winner', () => {
+    const result = deriveSafe(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A und Modell B werden bei Tempo, Kosten und Qualität verglichen.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.comparisonOutcomeGrounded).toBe(0);
+    expect(result.values.competitor1ScoreExact).toBe(0);
+    expect(result.values.competitor2ScoreExact).toBe(0);
+  });
+
+  it('grounds a benchmark winner from an explicit spoken winner cue', () => {
+    const result = deriveSafe(
+      'comparison-benchmark-racetrack-v1',
+      'Im Gesamtvergleich gewinnt Modell B klar gegen Modell A.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.comparisonOutcomeGrounded).toBe(1);
+    const modelBIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell B',
+    );
+    expect(modelBIndex).toBeDefined();
+    const otherIndex = modelBIndex === 1 ? 2 : 1;
+    expect(
+      numeric(result.values[`competitor${modelBIndex}Final`]),
+    ).toBeGreaterThan(
+      numeric(result.values[`competitor${otherIndex}Final`]),
+    );
+  });
+
+  it('marks explicit benchmark scores as exact per competitor', () => {
+    const result = deriveSafe(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A erreicht 96 Punkte, Modell B erreicht 88 Punkte.',
+    );
+
+    expect(result.values.measurementExact).toBe(1);
+    expect(result.values.comparisonOutcomeGrounded).toBe(1);
+    expect(result.values.competitor1ScoreExact).toBe(1);
+    expect(result.values.competitor2ScoreExact).toBe(1);
   });
 });
