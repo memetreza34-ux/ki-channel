@@ -224,7 +224,7 @@ describe('production reel animation planner', () => {
     expect(first.readyForImplementation).toBe(false);
   });
 
-  it('assigns unique ids to two same-semantic new builds in one reel', () => {
+  it('assigns unique ids, layouts, and motion signatures to same-semantic new builds', () => {
     const shared = {
       spokenText:
         'Private Daten werden durch mehrere Vertrauenszonen geleitet.',
@@ -248,6 +248,8 @@ describe('production reel animation planner', () => {
     expect(plan.scenes).toHaveLength(2);
     expect(plan.scenes.every((scene) => scene.source === 'new-build')).toBe(true);
     expect(new Set(plan.scenes.map((scene) => scene.animationId)).size).toBe(2);
+    expect(new Set(plan.layoutFamilies).size).toBe(2);
+    expect(new Set(plan.motionSignatures).size).toBe(2);
     expect(
       plan.scenes.some((scene) =>
         scene.selectionReasons.some((reason) =>
@@ -258,6 +260,16 @@ describe('production reel animation planner', () => {
     expect(plan.qualityWarnings).not.toContain(
       '1 duplicate full animation selections remain',
     );
+    expect(
+      plan.qualityWarnings.some((warning) =>
+        warning.includes('repeat the same layout family'),
+      ),
+    ).toBe(false);
+    expect(
+      plan.qualityWarnings.some((warning) =>
+        warning.includes('repeat the same motion signature'),
+      ),
+    ).toBe(false);
     expect(plan.readyForImplementation).toBe(false);
   });
 
