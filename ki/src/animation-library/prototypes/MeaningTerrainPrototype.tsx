@@ -101,7 +101,7 @@ export const MeaningTerrainPrototype: React.FC = () => {
     <PrototypeShell
       family="SEMANTIC SPACE"
       title="Meaning Terrain"
-      subtitle="Begriffe starten verteilt und rücken entsprechend ihrer tatsächlichen Cluster-Zugehörigkeit zusammen. Nähe steht für Bedeutungsähnlichkeit."
+      subtitle="Begriffe starten verteilt und rücken entsprechend ihrer tatsächlichen Cluster-Zugehörigkeit zusammen. Interne Cluster-IDs und Gruppengrößen werden im Content-Modus nicht als Fakten ausgegeben."
     >
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <svg width="936" height="1080" viewBox="0 0 936 1080" style={{position: 'absolute', inset: 0}}>
@@ -126,13 +126,13 @@ export const MeaningTerrainPrototype: React.FC = () => {
             <div key={`${concept.label}-${index}`} style={{position: 'absolute', left: x, top: y, transform: `translate(-50%, -50%) scale(${0.72 + enter * 0.28 + relation * 0.04})`, opacity: enter, zIndex: 4}}>
               <div style={{width: 34, height: 34, borderRadius: 999, background: color, boxShadow: `0 0 28px ${concept.cluster === 1 ? 'rgba(135,87,232,.55)' : 'rgba(53,197,138,.5)'}`, margin: '0 auto 10px'}} />
               <div style={{maxWidth: 185, padding: '10px 16px', borderRadius: 16, background: 'rgba(255,255,255,.94)', border: `2px solid ${color}44`, fontSize: concept.label.length > 12 ? 16 : 22, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground, opacity: labels, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{concept.label}</div>
-              <div style={{marginTop: 6, textAlign: 'center', fontFamily: 'monospace', fontSize: 11, fontWeight: 900, color}}>CLUSTER {concept.cluster}</div>
+              <div style={{marginTop: 6, textAlign: 'center', fontFamily: 'monospace', fontSize: 11, fontWeight: 900, color}}>{content ? (concept.cluster === 1 ? 'GRUPPE A' : 'GRUPPE B') : `CLUSTER ${concept.cluster}`}</div>
             </div>
           );
         })}
 
-        <div style={{position: 'absolute', left: 105, top: 860, width: 360, textAlign: 'center', color: PROTOTYPE_PALETTE.accent, fontSize: firstCluster.length > 18 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: relation, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{firstCluster.toLocaleUpperCase('de-DE')} · {concepts.filter((concept) => concept.cluster === 1).length}</div>
-        <div style={{position: 'absolute', right: 80, top: 860, width: 385, textAlign: 'center', color: PROTOTYPE_PALETTE.success, fontSize: secondCluster.length > 18 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: relation, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{secondCluster.toLocaleUpperCase('de-DE')} · {concepts.filter((concept) => concept.cluster === 2).length}</div>
+        <div style={{position: 'absolute', left: 105, top: 860, width: 360, textAlign: 'center', color: PROTOTYPE_PALETTE.accent, fontSize: firstCluster.length > 18 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: relation, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{firstCluster.toLocaleUpperCase('de-DE')}{content ? '' : ` · ${concepts.filter((concept) => concept.cluster === 1).length}`}</div>
+        <div style={{position: 'absolute', right: 80, top: 860, width: 385, textAlign: 'center', color: PROTOTYPE_PALETTE.success, fontSize: secondCluster.length > 18 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: relation, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{secondCluster.toLocaleUpperCase('de-DE')}{content ? '' : ` · ${concepts.filter((concept) => concept.cluster === 2).length}`}</div>
         <div style={{position: 'absolute', left: 145, right: 145, bottom: 72, padding: '22px 26px', borderRadius: 26, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, textAlign: 'center', fontSize: conclusion.length > 85 ? 20 : 25, lineHeight: 1.25, fontWeight: 900, opacity: relation, transform: `translateY(${(1 - relation) * 45}px)`, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{conclusion}</div>
       </GlassSurface>
     </PrototypeShell>
