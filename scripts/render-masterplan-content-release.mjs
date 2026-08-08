@@ -1,6 +1,7 @@
 import {spawn} from 'node:child_process';
 import {mkdir, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {loadSceneMeaningEnhancer} from './load-scene-meaning-enhancer.mjs';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
@@ -42,6 +43,7 @@ if (prototypes.length === 0) {
 const fixtureByAnimationId = new Map(
   fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]),
 );
+const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
 const sanitizePrototypeRuntimeContent =
@@ -71,16 +73,23 @@ for (const prototype of prototypes) {
   const fixture = fixtureByAnimationId.get(prototype.animationId);
   if (!fixture) throw new Error(`Content-Fixture fehlt für ${prototype.animationId}.`);
   const sourceContent = getMasterplanFixtureContent(fixture);
-  if (!sourceContent?.spokenText || !sourceContent?.meaningContract) {
+  if (!sourceContent?.spokenText) {
     throw new Error(
-      `Content-Fixture ${prototype.animationId} benötigt spokenText und meaningContract.`,
+      `Content-Fixture ${prototype.animationId} benötigt spokenText.`,
+    );
+  }
+  const meaningContract =
+    sourceContent.meaningContract ?? enhanceSceneMeaning(sourceContent.spokenText);
+  if (!meaningContract?.startState || !meaningContract?.visibleChange || !meaningContract?.endState) {
+    throw new Error(
+      `Meaning-Enhancer liefert keinen vollständigen Contract für ${prototype.animationId}.`,
     );
   }
 
   const derived = derivePrototypeRuntimeContent({
     animationId: prototype.animationId,
     spokenText: sourceContent.spokenText,
-    meaningContract: sourceContent.meaningContract,
+    meaningContract,
   });
   const sanitized = sanitizePrototypeRuntimeContent({
     animationId: prototype.animationId,
@@ -102,7 +111,7 @@ for (const prototype of prototypes) {
 
   const props = createPrototypeRenderProps({
     spokenText: sourceContent.spokenText,
-    meaningContract: sourceContent.meaningContract,
+    meaningContract,
     labels: associated.labels,
     values: associated.values,
   });
@@ -143,13 +152,14 @@ for (const prototype of prototypes) {
     propsPath,
     derivedLabelCount: Object.keys(associated.labels).length,
     derivedValueCount: Object.keys(associated.values).length,
+    meaningSource: sourceContent.meaningContract ? 'fixture-explicit' : 'spoken-text-enhancer',
   });
 }
 
 const manifest = {
   version: 1,
   payloadBuilder:
-    'derive+sanitize+associate+createPrototypeRenderProps',
+    'meaning+derive+sanitize+associate+createPrototypeRenderProps',
   mode: requestedMode,
   requestedAnimationId: requestedAnimationId ?? null,
   sourceFingerprint,
