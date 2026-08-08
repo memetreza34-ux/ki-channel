@@ -5,6 +5,7 @@ import {
   getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
+import {parseExplicitCountNear} from './PrototypeMeasurementGrounding';
 import {
   GlassSurface,
   PROTOTYPE_PALETTE,
@@ -56,12 +57,22 @@ export const ContextWindowTrainPrototype: React.FC = () => {
     0,
     DEFAULT_MESSAGES.length - 1,
   );
-  const capacity = boundedInteger(
+  const inferredCapacity = boundedInteger(
     getPrototypeValue({content, key: 'capacity', fallback: 4}),
     4,
     2,
     6,
   );
+  const explicitCapacity = content
+    ? parseExplicitCountNear({
+        spokenText: content.spokenText,
+        terms: ['Plätze', 'Slots', 'Nachrichten', 'Kapazität', 'Kontextfenster'],
+        minimum: 2,
+        maximum: 6,
+      })
+    : null;
+  const capacityExact = !content || explicitCapacity !== null;
+  const capacity = explicitCapacity ?? inferredCapacity;
   const messages = DEFAULT_MESSAGES.map((fallback, index) => ({
     id: `m${index + 1}`,
     label: getPrototypeLabel({
@@ -118,19 +129,25 @@ export const ContextWindowTrainPrototype: React.FC = () => {
   );
   const slotStep = slotWidth + slotGap;
   const firstSlotX = 54 + slotWidth / 2;
+  const capacityLabel = capacityExact
+    ? `${capacity} PLÄTZE`
+    : 'BEGRENZTE KAPAZITÄT';
+  const overflowLabel = !content
+    ? `${removedCount}/${overflowCount} ÜBERLAUF`
+    : 'ÜBERLAUF SICHTBAR';
 
   return (
     <PrototypeShell
       family="CONTEXT WINDOW"
       title="Context Window Train"
-      subtitle="Das Fenster besitzt eine echte Kapazität: Neue Nachrichten belegen Slots, ältere rutschen heraus und angeheftete Information bleibt sichtbar."
+      subtitle="Neue Nachrichten belegen den begrenzten Kontext, ältere rutschen heraus und angeheftete Information bleibt sichtbar. Eine exakte Kapazität wird nur gezeigt, wenn sie im Sprechertext genannt wird."
     >
       <div style={{position: 'absolute', left: 82, right: 82, top: 405, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
           <div style={{position: 'absolute', left: 68, right: 68, top: 150, height: 620, borderRadius: 36, border: `5px solid ${PROTOTYPE_PALETTE.foreground}`, background: 'rgba(248,247,251,.72)', overflow: 'hidden'}}>
             <div style={{position: 'absolute', top: 24, left: 32, right: 32, display: 'flex', justifyContent: 'space-between', fontSize: 20, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}>
               <span>{contextLabel.toLocaleUpperCase('de-DE')}</span>
-              <span style={{color: PROTOTYPE_PALETTE.accent}}>{capacity} PLÄTZE</span>
+              <span style={{color: PROTOTYPE_PALETTE.accent}}>{capacityLabel}</span>
             </div>
 
             <div style={{position: 'absolute', left: 24, right: 24, top: 105, height: 385, overflow: 'hidden'}}>
@@ -173,7 +190,7 @@ export const ContextWindowTrainPrototype: React.FC = () => {
           <div style={{position: 'absolute', left: 95, top: 830, width: 315, padding: '22px 24px', borderRadius: 24, background: 'rgba(255,93,108,.10)', border: '2px solid rgba(255,93,108,.34)', opacity: overflow, transform: `translateX(${(1 - overflow) * -60}px)`, textAlign: 'center'}}>
             <div style={{fontSize: removedLabel.length > 20 ? 16 : 21, fontWeight: 900, color: PROTOTYPE_PALETTE.danger, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{removedLabel.toLocaleUpperCase('de-DE')}</div>
             <div style={{fontSize: removedResult.length > 30 ? 20 : 27, fontWeight: 900, marginTop: 9, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{removedResult}</div>
-            <div style={{marginTop: 9, fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger}}>{removedCount}/{overflowCount} ÜBERLAUF</div>
+            <div style={{marginTop: 9, fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger}}>{overflowLabel}</div>
           </div>
 
           <div style={{position: 'absolute', right: 92, top: 830, width: 355, padding: '22px 24px', borderRadius: 24, background: 'rgba(255,182,72,.12)', border: '2px solid rgba(255,182,72,.38)', opacity: pin, transform: `translateX(${(1 - pin) * 60}px)`, textAlign: 'center'}}>
