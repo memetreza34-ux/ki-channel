@@ -110,4 +110,19 @@ describe('visible precision grounding bindings', () => {
     expect(source).toContain('SCHUTZSCHICHTEN WERDEN GEPRÜFT');
     expect(source).toContain('SCHUTZSCHICHTEN AKTIV');
   });
+
+  it('derives human-ai owners from stage text and keeps handoff counts qualitative', () => {
+    const source = read('HumanAIRelayPrototype.tsx');
+    expect(source).toContain('const inferOwner =');
+    expect(source).toContain("return 'ROLLE'");
+    expect(source).toContain("content ? 'ÜBERGABEN ABGESCHLOSSEN'");
+  });
+
+  it('never falls back to demo tokens for short content and marks token boundaries schematic', () => {
+    const source = read('MagneticPhraseSlicerPrototype.tsx');
+    expect(source).toContain("contentWords.length > 0 ? contentWords.slice(0, 5) : ['TEXT']");
+    expect(source).toContain('SCHEMATISCHE TOKEN-FOLGE');
+    expect(source).toContain('TEXTTEIL ${index + 1}');
+    expect(source).toContain('SCHEMATISCHE REIHENFOLGE');
+  });
 });
