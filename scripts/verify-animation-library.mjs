@@ -30,6 +30,7 @@ const checks = [
   ['node', ['--check', 'scripts/check-native-prototype-bindings.mjs']],
   ['node', ['--check', 'scripts/check-production-derived-runtime-keys.mjs']],
   ['node', ['--check', 'scripts/check-content-motion-edge-cases.mjs']],
+  ['node', ['--check', 'scripts/check-canonical-content-release-paths.mjs']],
   ['node', ['--check', 'scripts/load-prototype-runtime-content-deriver.mjs']],
   ['node', ['--check', 'scripts/load-prototype-runtime-content-sanitizer.mjs']],
   ['node', ['--check', 'scripts/load-prototype-runtime-content-association.mjs']],
@@ -38,9 +39,12 @@ const checks = [
   ['node', ['--check', 'scripts/verify-masterplan-content-release.mjs']],
   ['node', ['--check', 'scripts/render-all-content-release.mjs']],
   ['node', ['--check', 'scripts/verify-all-content-release.mjs']],
+  ['node', ['--check', 'scripts/render-complete-content-release.mjs']],
+  ['node', ['--check', 'scripts/verify-complete-content-release.mjs']],
   ['node', ['scripts/check-native-prototype-bindings.mjs']],
   ['node', ['scripts/check-production-derived-runtime-keys.mjs']],
   ['node', ['scripts/check-content-motion-edge-cases.mjs']],
+  ['node', ['scripts/check-canonical-content-release-paths.mjs']],
   [
     'npx',
     [
