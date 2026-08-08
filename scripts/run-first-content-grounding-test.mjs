@@ -61,10 +61,6 @@ if (
 ) {
   throw new Error(`${animationId}: Meaning Contract ist unvollständig.`);
 }
-if (!meaningContract.preferredVisualFamilies?.includes(animationId.split('-').slice(0, -5).join('-'))) {
-  // Do not fail on the generic prefix heuristic; exact domain assertions below
-  // cover the first official test cases. This field is still recorded for review.
-}
 
 const derived = derivePrototypeRuntimeContent({
   animationId,
