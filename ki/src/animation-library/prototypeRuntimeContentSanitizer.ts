@@ -43,7 +43,7 @@ const capitalizedEntities = (spokenText: string): string[] => {
 };
 
 const suspiciousArticleFragment = (value: string): boolean =>
-  /^(?:die|der|das|ein|eine|einen|einem|einer)\s+[A-ZÄÖÜ0-9]$/u.test(
+  /^(?:die|der|das|ein|eine|einen|einem|einer)\s+[A-ZÄÖÜ0-9]$/iu.test(
     value.trim(),
   );
 
@@ -107,6 +107,84 @@ const detectLatencyUnit = (spokenText: string): string | null => {
   return null;
 };
 
+const parseMeasurement = (value: string): number | null => {
+  const parsed = Number(value.replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const collectMeasurements = (
+  spokenText: string,
+  patterns: readonly RegExp[],
+): number[] => {
+  const values: number[] = [];
+  for (const pattern of patterns) {
+    for (const match of spokenText.matchAll(pattern)) {
+      const raw = match.slice(1).find(Boolean);
+      if (!raw) continue;
+      const parsed = parseMeasurement(raw);
+      if (parsed !== null) values.push(parsed);
+    }
+  }
+  return values;
+};
+
+const costMeasurements = (spokenText: string, unit: string): number[] => {
+  const number = '(-?\\d+(?:[.,]\\d+)?)';
+  if (unit === 'ct') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*(?:cent|ct)\\b`, 'gi')]);
+  }
+  if (unit === '€') {
+    return collectMeasurements(spokenText, [
+      new RegExp(`${number}\\s*(?:€|euro)\\b?`, 'gi'),
+      new RegExp(`€\\s*${number}`, 'gi'),
+    ]);
+  }
+  if (unit === '$') {
+    return collectMeasurements(spokenText, [
+      new RegExp(`${number}\\s*(?:\\$|dollar|usd)\\b?`, 'gi'),
+      new RegExp(`\\$\\s*${number}`, 'gi'),
+    ]);
+  }
+  if (unit === 'Credits') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*credits?\\b`, 'gi')]);
+  }
+  if (unit === 'Token') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*tokens?\\b`, 'gi')]);
+  }
+  return [];
+};
+
+const latencyMeasurements = (spokenText: string, unit: string): number[] => {
+  const number = '(-?\\d+(?:[.,]\\d+)?)';
+  if (unit === 'ms') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*(?:ms|millisekunden?)\\b`, 'gi')]);
+  }
+  if (unit === 'µs') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*(?:µs|us|mikrosekunden?)\\b`, 'gi')]);
+  }
+  if (unit === 's') {
+    return collectMeasurements(spokenText, [new RegExp(`${number}\\s*(?:sekunden?|sek\\.?|s)\\b`, 'gi')]);
+  }
+  return [];
+};
+
+const numericTokenCount = (spokenText: string): number =>
+  [...spokenText.matchAll(/-?\d+(?:[.,]\d+)?/g)].length;
+
+const unitMentionCount = (spokenText: string, unit: string): number => {
+  const patterns: Record<string, RegExp> = {
+    ct: /\b(?:cent|ct)\b/gi,
+    '€': /€|\beuro\b/gi,
+    '$': /\$|\b(?:dollar|usd)\b/gi,
+    Credits: /\bcredits?\b/gi,
+    Token: /\btokens?\b/gi,
+    ms: /\b(?:ms|millisekunden?)\b/gi,
+    'µs': /\b(?:µs|us|mikrosekunden?)\b/gi,
+    s: /\b(?:sekunden?|sek\.?|s)\b/gi,
+  };
+  return [...spokenText.matchAll(patterns[unit] ?? /$^/g)].length;
+};
+
 const sanitizeProbability = (
   spokenText: string,
   values: Record<string, string | number>,
@@ -131,11 +209,29 @@ const sanitizeCost = (
   values: Record<string, string | number>,
 ): SanitizablePrototypeRuntimeContent => {
   const unit = detectCostUnit(spokenText);
-  const exact =
+  const boundMeasurements = unit ? costMeasurements(spokenText, unit) : [];
+  const fallbackExact =
     unit !== null &&
+    unitMentionCount(spokenText, unit) >= 2 &&
+    numericTokenCount(spokenText) <= 2 &&
     values.initialCost !== undefined &&
     values.optimizedCost !== undefined;
+  const exact = boundMeasurements.length >= 2 || fallbackExact;
   const nextValues = {...values, measurementExact: exact ? 1 : 0};
+
+  if (boundMeasurements.length >= 2) {
+    const initial = Math.max(boundMeasurements[0], boundMeasurements[1]);
+    const optimized = Math.min(boundMeasurements[0], boundMeasurements[1]);
+    const delta = Math.max(0, initial - optimized);
+    nextValues.initialCost = initial;
+    nextValues.optimizedCost = optimized;
+    const first = Math.round(delta * 0.34);
+    const second = Math.round(delta * 0.33);
+    nextValues.leak1Amount = first;
+    nextValues.leak2Amount = second;
+    nextValues.leak3Amount = Math.max(0, delta - first - second);
+  }
+
   if (!exact) {
     delete nextValues.initialCost;
     delete nextValues.optimizedCost;
@@ -156,11 +252,20 @@ const sanitizeLatency = (
   values: Record<string, string | number>,
 ): SanitizablePrototypeRuntimeContent => {
   const unit = detectLatencyUnit(spokenText);
-  const exact =
+  const boundMeasurements = unit ? latencyMeasurements(spokenText, unit) : [];
+  const fallbackExact =
     unit !== null &&
+    unitMentionCount(spokenText, unit) >= 2 &&
+    numericTokenCount(spokenText) <= 2 &&
     values.slowLatency !== undefined &&
     values.fastLatency !== undefined;
+  const exact = boundMeasurements.length >= 2 || fallbackExact;
   const nextValues = {...values, measurementExact: exact ? 1 : 0};
+
+  if (boundMeasurements.length >= 2) {
+    nextValues.slowLatency = Math.max(boundMeasurements[0], boundMeasurements[1]);
+    nextValues.fastLatency = Math.min(boundMeasurements[0], boundMeasurements[1]);
+  }
   if (!exact) {
     delete nextValues.slowLatency;
     delete nextValues.fastLatency;
