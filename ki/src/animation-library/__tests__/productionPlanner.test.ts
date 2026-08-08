@@ -161,6 +161,106 @@ describe('production reel animation planner', () => {
     );
   });
 
+  it('resolves a new-build id that collides with an existing catalog id deterministically', () => {
+    const reelId = 'collision-reel';
+    const sceneId = 'collision-scene';
+    const scene = {
+      sceneId,
+      spokenText:
+        'Private Daten werden durch mehrere Vertrauenszonen geleitet.',
+      semanticTags: ['security', 'privacy', 'data', 'trust-zone'],
+      preferredVisualFamilies: ['security-privacy'],
+      preferredEnergy: 'dynamic' as const,
+      mustBeNew: true,
+    };
+
+    const baseline = planProductionReelAnimations({
+      reelId,
+      reelIndex: 25,
+      entries: [],
+      brain,
+      scenes: [scene],
+      maximumNewAnimationRatio: 1,
+    });
+    const collidingAnimationId = baseline.scenes[0].animationId;
+    const sourceEntry = ANIMATION_LIBRARY_ENTRIES[0];
+    const collidingCatalogEntry = {
+      ...sourceEntry,
+      animationId: collidingAnimationId,
+      title: 'Reserved Collision Test Entry',
+      description:
+        'Existing catalog entry deliberately reserves the deterministic new-build animation id for collision testing.',
+    };
+
+    const first = planProductionReelAnimations({
+      reelId,
+      reelIndex: 25,
+      entries: [collidingCatalogEntry],
+      brain,
+      scenes: [scene],
+      maximumNewAnimationRatio: 1,
+    });
+    const second = planProductionReelAnimations({
+      reelId,
+      reelIndex: 25,
+      entries: [collidingCatalogEntry],
+      brain,
+      scenes: [scene],
+      maximumNewAnimationRatio: 1,
+    });
+
+    expect(first.scenes[0].source).toBe('new-build');
+    expect(first.scenes[0].animationId).not.toBe(collidingAnimationId);
+    expect(first.scenes[0].animationId).toBe(second.scenes[0].animationId);
+    expect(first.scenes[0].buildSpec?.animationId).toBe(
+      first.scenes[0].animationId,
+    );
+    expect(first.scenes[0].catalogEntry.animationId).toBe(
+      first.scenes[0].animationId,
+    );
+    expect(first.scenes[0].selectionReasons).toContain(
+      `new-build animation id collision resolved: ${collidingAnimationId} -> ${first.scenes[0].animationId}`,
+    );
+    expect(first.readyForImplementation).toBe(false);
+  });
+
+  it('assigns unique ids to two same-semantic new builds in one reel', () => {
+    const shared = {
+      spokenText:
+        'Private Daten werden durch mehrere Vertrauenszonen geleitet.',
+      semanticTags: ['security', 'privacy', 'data', 'trust-zone'],
+      preferredVisualFamilies: ['security-privacy'],
+      preferredEnergy: 'dynamic' as const,
+      mustBeNew: true,
+    };
+    const plan = planProductionReelAnimations({
+      reelId: 'same-semantic-new-builds',
+      reelIndex: 26,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {sceneId: 'same-a', ...shared},
+        {sceneId: 'same-b', ...shared},
+      ],
+    });
+
+    expect(plan.scenes).toHaveLength(2);
+    expect(plan.scenes.every((scene) => scene.source === 'new-build')).toBe(true);
+    expect(new Set(plan.scenes.map((scene) => scene.animationId)).size).toBe(2);
+    expect(
+      plan.scenes.some((scene) =>
+        scene.selectionReasons.some((reason) =>
+          reason.startsWith('new-build animation id collision resolved:'),
+        ),
+      ),
+    ).toBe(true);
+    expect(plan.qualityWarnings).not.toContain(
+      '1 duplicate full animation selections remain',
+    );
+    expect(plan.readyForImplementation).toBe(false);
+  });
+
   it('rejects empty reels and invalid new-animation ratios', () => {
     expect(() =>
       planProductionReelAnimations({
