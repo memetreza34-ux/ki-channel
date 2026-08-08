@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {EXECUTABLE_ANIMATION_MANIFEST_IDS} from '../executableAnimationManifest';
 import {
   createAnimationExecutionCoverageReport,
   EXECUTABLE_ANIMATION_IDS,
@@ -10,8 +11,15 @@ import {
 describe('animation execution catalog', () => {
   it('contains all 88 catalog entries as executable animations', () => {
     expect(EXECUTABLE_ANIMATION_IDS).toHaveLength(88);
+    expect(EXECUTABLE_ANIMATION_MANIFEST_IDS).toHaveLength(88);
     expect(getExecutableAnimationLibraryEntries()).toHaveLength(88);
     expect(getRemainingConceptAnimationEntries()).toHaveLength(0);
+  });
+
+  it('keeps the pure planner manifest exactly aligned with component registries', () => {
+    expect([...EXECUTABLE_ANIMATION_MANIFEST_IDS].sort()).toEqual(
+      [...EXECUTABLE_ANIMATION_IDS].sort(),
+    );
   });
 
   it('has exactly four executable variants per family', () => {
