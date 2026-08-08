@@ -37,8 +37,8 @@ try {
     'Kanonische Release-Topologie prüfen',
   );
   await run(
-    ['scripts/verify-content-review-gallery.mjs'],
-    'Vollständigkeit der 22+6 visuellen Review-Galerie prüfen',
+    ['scripts/verify-content-review-gallery.mjs', 'full'],
+    'Vollständigkeit der 22+6 visuellen Full-Review-Galerie prüfen',
   );
 
   console.log(
