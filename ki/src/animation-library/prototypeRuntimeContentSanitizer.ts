@@ -168,6 +168,16 @@ const latencyMeasurements = (spokenText: string, unit: string): number[] => {
   return [];
 };
 
+const explicitPercentages = (spokenText: string): number[] =>
+  collectMeasurements(spokenText, [
+    /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/gi,
+  ]).filter((value) => value >= 0 && value <= 100);
+
+const scoreMeasurements = (spokenText: string): number[] =>
+  collectMeasurements(spokenText, [
+    /\bscore(?:\s+von)?\s*(-?\d+(?:[.,]\d+)?)(?:\s*(?:punkte?|points?|%|prozent))?|\b(?:mit|erreicht(?:\s+mit)?|hat)\s*(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?|%|prozent)\b|(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?)\b/gi,
+  ]).filter((value) => value >= 0 && value <= 100);
+
 const numericTokenCount = (spokenText: string): number =>
   [...spokenText.matchAll(/-?\d+(?:[.,]\d+)?/g)].length;
 
@@ -189,18 +199,64 @@ const sanitizeProbability = (
   spokenText: string,
   values: Record<string, string | number>,
 ): Record<string, string | number> => {
-  const percentage = explicitPercentage(spokenText);
-  if (percentage === null) return values;
-  const primaryEnd = Math.max(0, Math.min(100, percentage));
+  const percentages = explicitPercentages(spokenText);
+  const fallbackPercentage = percentages[0] ?? explicitPercentage(spokenText);
+  const nextValues = {...values};
+
+  for (let index = 0; index < 3; index += 1) {
+    nextValues[`candidate${index + 1}ProbabilityExact`] =
+      percentages[index] !== undefined ? 1 : 0;
+  }
+  nextValues.measurementExact = fallbackPercentage === null ? 0 : 1;
+
+  if (percentages.length >= 3) {
+    for (let index = 0; index < 3; index += 1) {
+      nextValues[`candidate${index + 1}End`] = percentages[index];
+    }
+    return nextValues;
+  }
+  if (fallbackPercentage === null) return nextValues;
+
+  const primaryEnd = Math.max(0, Math.min(100, fallbackPercentage));
   const remaining = 100 - primaryEnd;
   const secondEnd = remaining === 0 ? 0 : Math.round(remaining * 0.65);
   const thirdEnd = Math.max(0, 100 - primaryEnd - secondEnd);
-  return {
-    ...values,
-    candidate1End: primaryEnd,
-    candidate2End: secondEnd,
-    candidate3End: thirdEnd,
-  };
+  nextValues.candidate1End = primaryEnd;
+  nextValues.candidate2End = secondEnd;
+  nextValues.candidate3End = thirdEnd;
+  nextValues.candidate1ProbabilityExact = 1;
+  return nextValues;
+};
+
+const sanitizeRanking = (
+  spokenText: string,
+  values: Record<string, string | number>,
+): Record<string, string | number> => {
+  const scores = scoreMeasurements(spokenText);
+  const nextValues = {...values, measurementExact: scores.length > 0 ? 1 : 0};
+  for (let index = 0; index < 3; index += 1) {
+    const score = scores[index];
+    nextValues[`candidate${index + 1}ScoreExact`] = score === undefined ? 0 : 1;
+    if (score === undefined) continue;
+    nextValues[`candidate${index + 1}End`] = score;
+    nextValues[`candidate${index + 1}Start`] = Math.max(10, score - 18 + index * 4);
+    nextValues[`candidate${index + 1}Middle`] = Math.max(10, score - 7 + (2 - index) * 3);
+  }
+  return nextValues;
+};
+
+const sanitizeComparison = (
+  spokenText: string,
+  values: Record<string, string | number>,
+): Record<string, string | number> => {
+  const scores = scoreMeasurements(spokenText);
+  const nextValues = {...values, measurementExact: scores.length > 0 ? 1 : 0};
+  for (let index = 0; index < 2; index += 1) {
+    const score = scores[index];
+    nextValues[`competitor${index + 1}ScoreExact`] = score === undefined ? 0 : 1;
+    if (score !== undefined) nextValues[`competitor${index + 1}Final`] = score;
+  }
+  return nextValues;
 };
 
 const sanitizeCost = (
@@ -290,6 +346,12 @@ export const sanitizePrototypeRuntimeContent = ({
 
   if (animationId === 'probability-probability-fluid-columns-v1') {
     values = sanitizeProbability(spokenText, values);
+  }
+  if (animationId === 'ranking-dynamic-podium-rise-v1') {
+    values = sanitizeRanking(spokenText, values);
+  }
+  if (animationId === 'comparison-benchmark-racetrack-v1') {
+    values = sanitizeComparison(spokenText, values);
   }
   if (animationId === 'cost-efficiency-budget-leak-meter-v1') {
     return sanitizeCost(spokenText, repairedLabels, values);
