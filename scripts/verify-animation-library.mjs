@@ -32,6 +32,7 @@ const checks = [
   ['node', ['--check', 'scripts/check-content-motion-edge-cases.mjs']],
   ['node', ['--check', 'scripts/load-prototype-runtime-content-deriver.mjs']],
   ['node', ['--check', 'scripts/load-prototype-runtime-content-sanitizer.mjs']],
+  ['node', ['--check', 'scripts/load-prototype-runtime-content-association.mjs']],
   ['node', ['--check', 'scripts/load-prototype-render-payload.mjs']],
   ['node', ['--check', 'scripts/render-masterplan-content-release.mjs']],
   ['node', ['--check', 'scripts/verify-masterplan-content-release.mjs']],
