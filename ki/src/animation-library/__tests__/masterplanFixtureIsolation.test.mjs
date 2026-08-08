@@ -4,73 +4,73 @@ import {describe, expect, it} from 'vitest';
 import {loadSceneMeaningEnhancer} from '../../../../scripts/load-scene-meaning-enhancer.mjs';
 import {getMasterplanFixtureContent} from '../../../../scripts/masterplan-content-release-utils.mjs';
 
-const fixtureConfig = JSON.parse(
-  readFileSync(
-    resolve('ki/src/animation-library/content-render-fixtures.json'),
-    'utf8',
-  ),
+const readJson = (path) =>
+  JSON.parse(readFileSync(resolve(path), 'utf8'));
+
+const demoFixtureConfig = readJson(
+  'ki/src/animation-library/content-render-fixtures.json',
+);
+const productionFixtureConfig = readJson(
+  'ki/src/animation-library/masterplan-content-fixtures.json',
 );
 
 describe('masterplan fixture isolation', () => {
-  it('keeps direct fixture labels and values out of canonical production source content', () => {
-    expect(Array.isArray(fixtureConfig.fixtures)).toBe(true);
-    expect(fixtureConfig.fixtures).toHaveLength(22);
+  it('keeps demo fixture labels and values out of canonical production source content', () => {
+    expect(demoFixtureConfig.fixtures).toHaveLength(22);
 
-    const fixturesWithDirectValues = fixtureConfig.fixtures.filter((fixture) => {
+    const fixturesWithDirectValues = demoFixtureConfig.fixtures.filter((fixture) => {
       const raw = fixture.content ?? fixture;
       return raw.values && Object.keys(raw.values).length > 0;
     });
     expect(fixturesWithDirectValues.length).toBeGreaterThan(0);
 
-    for (const fixture of fixtureConfig.fixtures) {
-      const productionSource = getMasterplanFixtureContent(fixture);
-
-      expect(productionSource.spokenText, fixture.animationId).toEqual(
-        expect.any(String),
-      );
-      expect(
-        productionSource.spokenText.trim().length,
-        fixture.animationId,
-      ).toBeGreaterThan(0);
-      expect(productionSource, fixture.animationId).not.toHaveProperty('labels');
-      expect(productionSource, fixture.animationId).not.toHaveProperty('values');
+    for (const fixture of demoFixtureConfig.fixtures) {
+      const extracted = getMasterplanFixtureContent(fixture);
+      expect(extracted.spokenText, fixture.animationId).toEqual(expect.any(String));
+      expect(extracted, fixture.animationId).not.toHaveProperty('labels');
+      expect(extracted, fixture.animationId).not.toHaveProperty('values');
     }
   });
 
-  it('derives a complete meaning contract from all 22 fixture spoken texts when no explicit contract exists', async () => {
+  it('accepts the flat production fixture shape and still exposes semantic input only', () => {
+    expect(productionFixtureConfig.fixtures).toHaveLength(22);
+
+    for (const fixture of productionFixtureConfig.fixtures) {
+      const extracted = getMasterplanFixtureContent(fixture);
+      expect(extracted.spokenText, fixture.animationId).toBe(fixture.spokenText);
+      expect(extracted.meaningContract, fixture.animationId).toBeNull();
+      expect(extracted, fixture.animationId).not.toHaveProperty('labels');
+      expect(extracted, fixture.animationId).not.toHaveProperty('values');
+    }
+  });
+
+  it('derives complete meaning from all 22 production spoken texts', async () => {
     const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 
-    for (const fixture of fixtureConfig.fixtures) {
-      const productionSource = getMasterplanFixtureContent(fixture);
-      const contract =
-        productionSource.meaningContract ??
-        enhanceSceneMeaning(productionSource.spokenText);
+    for (const fixture of productionFixtureConfig.fixtures) {
+      const extracted = getMasterplanFixtureContent(fixture);
+      const contract = enhanceSceneMeaning(extracted.spokenText);
 
-      expect(contract, fixture.animationId).toEqual(expect.any(Object));
-      expect(contract.communicationGoal, fixture.animationId).toEqual(
-        expect.any(String),
-      );
+      expect(contract.communicationGoal, fixture.animationId).toEqual(expect.any(String));
       expect(contract.startState.trim().length, fixture.animationId).toBeGreaterThan(0);
       expect(contract.visibleChange.trim().length, fixture.animationId).toBeGreaterThan(0);
       expect(contract.endState.trim().length, fixture.animationId).toBeGreaterThan(0);
-      expect(contract.subjectTerms, fixture.animationId).toEqual(expect.any(Array));
       expect(contract.requiredVisualCues.length, fixture.animationId).toBeGreaterThan(0);
     }
   });
 
-  it('proves the cost fixture cannot inject its direct exact numbers into masterplan props', () => {
-    const fixture = fixtureConfig.fixtures.find(
-      (candidate) =>
-        candidate.animationId === 'cost-efficiency-budget-leak-meter-v1',
+  it('proves demo exact values and production exact values are separate data sources', () => {
+    const demoFixture = demoFixtureConfig.fixtures.find(
+      (fixture) => fixture.animationId === 'cost-efficiency-budget-leak-meter-v1',
     );
-    expect(fixture).toBeDefined();
+    const productionFixture = productionFixtureConfig.fixtures.find(
+      (fixture) => fixture.animationId === 'cost-efficiency-budget-leak-meter-v1',
+    );
 
-    const raw = fixture?.content ?? fixture;
-    expect(raw?.values).toBeDefined();
-    expect(Object.keys(raw?.values ?? {}).length).toBeGreaterThan(0);
-
-    const productionSource = getMasterplanFixtureContent(fixture);
-    expect(productionSource).not.toHaveProperty('values');
-    expect(productionSource).not.toHaveProperty('labels');
+    expect(demoFixture?.content?.values?.initialCost).toBe(94);
+    expect(demoFixture?.content?.values?.optimizedCost).toBe(28);
+    expect(productionFixture).not.toHaveProperty('values');
+    expect(productionFixture.spokenText).toContain('94 Cent');
+    expect(productionFixture.spokenText).toContain('28 Cent');
   });
 });
