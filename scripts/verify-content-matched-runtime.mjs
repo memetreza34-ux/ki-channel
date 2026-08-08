@@ -114,8 +114,18 @@ await writeFile(
 try {
   await run(
     'node',
+    ['scripts/check-masterplan-production-inputs.mjs'],
+    'Test 0: 22 Production-Sprechertexte und Render-IDs sind deckungsgleich und geerdet',
+  );
+  await run(
+    'node',
     ['scripts/check-masterplan-production-fixtures.mjs'],
     'Dependency-freier Preflight für 22 Production-Fixtures und die kanonische Grounding-Reihenfolge',
+  );
+  await run(
+    'node',
+    ['scripts/check-first-content-grounding-test-contract.mjs'],
+    'Vertrag für offiziellen Test 1: Kosten-Grounding bis zum Content-Matched-Render-Plan',
   );
   await run(
     'node',
