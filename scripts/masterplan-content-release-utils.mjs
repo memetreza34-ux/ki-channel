@@ -14,6 +14,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
   const fixedFiles = [
     'ki/src/animation-library/prototypeRuntimeContentDeriver.ts',
     'ki/src/animation-library/prototypeRuntimeContentSanitizer.ts',
+    'ki/src/animation-library/prototypeRuntimeContentAssociation.ts',
     'ki/src/animation-library/prototypeRenderPayload.ts',
     'ki/src/animation-library/prototypes/PrototypeContentContext.tsx',
     'ki/src/animation-library/channelReelMasterPlan.ts',
@@ -24,6 +25,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
     'scripts/render-content-matched-prototype.mjs',
     'scripts/load-prototype-runtime-content-deriver.mjs',
     'scripts/load-prototype-runtime-content-sanitizer.mjs',
+    'scripts/load-prototype-runtime-content-association.mjs',
     'scripts/load-prototype-render-payload.mjs',
     'scripts/render-masterplan-content-release.mjs',
     'scripts/verify-masterplan-content-release.mjs',
