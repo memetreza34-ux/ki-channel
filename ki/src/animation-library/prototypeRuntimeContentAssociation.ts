@@ -97,11 +97,11 @@ const associateComparisonScores = (
 };
 
 const costUnitPattern = (unit: string): string | null => {
-  if (unit === 'ct') return '(?:cent|ct)';
-  if (unit === '€') return '(?:€|euro)';
-  if (unit === '$') return '(?:\\$|dollar|usd)';
-  if (unit === 'Credits') return 'credits?';
-  if (unit === 'Token') return 'tokens?';
+  if (unit === 'ct') return '(?:cent\\b|ct\\b)';
+  if (unit === '€') return '(?:€|euro\\b)';
+  if (unit === '$') return '(?:\\$|dollar\\b|usd\\b)';
+  if (unit === 'Credits') return 'credits?\\b';
+  if (unit === 'Token') return 'tokens?\\b';
   return null;
 };
 
@@ -112,7 +112,7 @@ const orderedCostMeasurements = (
   const unitPattern = costUnitPattern(unit);
   if (!unitPattern) return [];
   const number = '(-?\\d+(?:[.,]\\d+)?)';
-  const suffix = new RegExp(`${number}\\s*${unitPattern}\\b?`, 'gi');
+  const suffix = new RegExp(`${number}\\s*${unitPattern}`, 'gi');
   const prefix = new RegExp(`${unitPattern}\\s*${number}`, 'gi');
   const measurements: Array<{index: number; value: number}> = [];
 
