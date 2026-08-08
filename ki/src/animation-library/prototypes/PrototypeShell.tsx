@@ -28,6 +28,19 @@ export const prototypeProgress = (
 const readableFamily = (value: string): string =>
   value.replace(/[-_]+/g, ' ').toLocaleUpperCase('de-DE');
 
+const contentTitleFromMeaning = (content: NonNullable<ReturnType<typeof usePrototypeContent>>): string => {
+  const terms = [
+    ...content.meaningContract.resultTerms,
+    ...content.meaningContract.subjectTerms,
+  ]
+    .map((term) => term.trim())
+    .filter((term) => term.length >= 2);
+  const uniqueTerms = [...new Set(terms)].slice(0, 3);
+  return uniqueTerms.length > 0
+    ? uniqueTerms.join(' · ')
+    : 'VISUELLE ERKLÄRUNG';
+};
+
 export const PrototypeShell: React.FC<{
   family: string;
   title: string;
@@ -39,32 +52,11 @@ export const PrototypeShell: React.FC<{
   const content = usePrototypeContent();
   const progress = prototypeProgress(frame, 0, durationInFrames - 1);
   const titleEnter = prototypeProgress(frame, 0, 18);
-  const displayFamily = content
-    ? readableFamily(
-        content.meaningContract.preferredVisualFamilies[0] ?? family,
-      )
-    : family;
-  const displayTitle = content?.title ?? title;
+  const displayFamily = readableFamily(family);
+  const displayTitle = content
+    ? content.title?.trim() || contentTitleFromMeaning(content)
+    : title;
   const displaySubtitle = content?.spokenText || subtitle;
-  const semanticPhase = content
-    ? progress < 0.26
-      ? {
-          label: 'STARTZUSTAND',
-          state: content.meaningContract.startState,
-          color: PROTOTYPE_PALETTE.muted,
-        }
-      : progress < 0.76
-        ? {
-            label: 'SICHTBARE VERÄNDERUNG',
-            state: content.meaningContract.visibleChange,
-            color: PROTOTYPE_PALETTE.accent,
-          }
-        : {
-            label: 'ERGEBNIS',
-            state: content.meaningContract.endState,
-            color: PROTOTYPE_PALETTE.success,
-          }
-    : null;
 
   return (
     <AbsoluteFill
@@ -93,26 +85,28 @@ export const PrototypeShell: React.FC<{
           position: 'absolute',
           left: 88,
           right: 88,
-          top: 105,
+          top: content ? 118 : 105,
           opacity: titleEnter,
           transform: `translateY(${(1 - titleEnter) * -30}px)`,
           zIndex: 20,
         }}
       >
+        {!content ? (
+          <div
+            style={{
+              color: PROTOTYPE_PALETTE.accent,
+              fontSize: 22,
+              fontWeight: 900,
+              letterSpacing: 4,
+              textTransform: 'uppercase',
+            }}
+          >
+            ANIMATION LIBRARY · {displayFamily}
+          </div>
+        ) : null}
         <div
           style={{
-            color: PROTOTYPE_PALETTE.accent,
-            fontSize: 22,
-            fontWeight: 900,
-            letterSpacing: 4,
-            textTransform: 'uppercase',
-          }}
-        >
-          {content ? 'CONTENT MATCHED' : 'ANIMATION LIBRARY'} · {displayFamily}
-        </div>
-        <div
-          style={{
-            marginTop: 12,
+            marginTop: content ? 0 : 12,
             fontFamily: 'Arial Narrow, Arial, sans-serif',
             fontSize: displayTitle.length > 38 ? 50 : 60,
             lineHeight: 0.96,
@@ -142,56 +136,6 @@ export const PrototypeShell: React.FC<{
       </div>
 
       {children}
-
-      {semanticPhase ? (
-        <div
-          style={{
-            position: 'absolute',
-            left: 74,
-            right: 74,
-            bottom: 100,
-            minHeight: 55,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 18,
-            padding: '8px 4px',
-            zIndex: 24,
-            opacity: titleEnter,
-          }}
-        >
-          <div
-            style={{
-              flex: '0 0 auto',
-              color: semanticPhase.color,
-              fontSize: 15,
-              fontWeight: 950,
-              letterSpacing: 2.5,
-            }}
-          >
-            {semanticPhase.label}
-          </div>
-          <div
-            style={{
-              height: 28,
-              width: 2,
-              background: `${semanticPhase.color}55`,
-            }}
-          />
-          <div
-            style={{
-              color: PROTOTYPE_PALETTE.foreground,
-              fontSize: 17,
-              lineHeight: 1.2,
-              fontWeight: 750,
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {semanticPhase.state}
-          </div>
-        </div>
-      ) : null}
 
       <div
         style={{
