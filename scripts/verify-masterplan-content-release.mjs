@@ -18,7 +18,7 @@ const config = await readMasterplanJson(
   'ki/src/animation-library/prototype-render-config.json',
 );
 const fixtureConfig = await readMasterplanJson(
-  'ki/src/animation-library/content-render-fixtures.json',
+  'ki/src/animation-library/masterplan-content-fixtures.json',
 );
 const manifest = await readMasterplanJson(
   resolve(MASTERPLAN_CONTENT_OUTPUT_ROOT, 'manifest.json'),
@@ -28,6 +28,7 @@ if (
   manifest.version !== 1 ||
   manifest.payloadBuilder !==
     'meaning+derive+sanitize+associate+createPrototypeRenderProps' ||
+  manifest.fixtureSource !== 'masterplan-content-fixtures.json' ||
   !Array.isArray(manifest.results)
 ) {
   throw new Error('Masterplan-Content-Manifest ist ungültig.');
@@ -104,7 +105,7 @@ for (const result of manifest.results) {
 
   const sourceContent = getMasterplanFixtureContent(fixture);
   if (!sourceContent?.spokenText) {
-    throw new Error(`Fixture ${result.animationId} benötigt spokenText.`);
+    throw new Error(`Masterplan-Content-Fixture ${result.animationId} benötigt spokenText.`);
   }
   const meaningContract =
     sourceContent.meaningContract ?? enhanceSceneMeaning(sourceContent.spokenText);
