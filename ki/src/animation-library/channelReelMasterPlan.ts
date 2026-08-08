@@ -16,6 +16,7 @@ import {
 } from './prototypeContentCoverage';
 import {createPrototypeRenderProps} from './prototypeRenderPayload';
 import {derivePrototypeRuntimeContent} from './prototypeRuntimeContentDeriver';
+import {sanitizePrototypeRuntimeContent} from './prototypeRuntimeContentSanitizer';
 import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 import type {PreparedReelProduction} from './reelLifecycle';
 import {
@@ -129,10 +130,15 @@ export const createChannelReelMasterPlan = ({
     const motion = universalByScene.get(scene.sceneId)!;
     const contentMode = resolveChannelContentMode(analysis.spokenText);
     const meaning = motion.meaningContract;
-    const runtimeContent = derivePrototypeRuntimeContent({
+    const derivedRuntimeContent = derivePrototypeRuntimeContent({
       animationId: scene.animationId,
       spokenText: analysis.spokenText,
       meaningContract: meaning,
+    });
+    const runtimeContent = sanitizePrototypeRuntimeContent({
+      animationId: scene.animationId,
+      spokenText: analysis.spokenText,
+      derived: derivedRuntimeContent,
     });
     const prototypeRenderProps = createPrototypeRenderProps({
       spokenText: analysis.spokenText,
