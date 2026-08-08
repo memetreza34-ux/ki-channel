@@ -60,6 +60,16 @@ if (new Set(animationIds).size !== animationIds.length) throw new Error('Native 
 if (new Set(fileNames).size !== fileNames.length) throw new Error('Native Content-Binding-Gate enthält doppelte Komponenten.');
 for (const fileName of fileNames) if (!MOTION_SEMANTIC_RULES.has(fileName)) throw new Error(`Motion-Semantik-Gate fehlt für ${fileName}.`);
 
+const renderConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/prototype-render-config.json'), 'utf8'));
+if (renderConfig.version !== 1 || !Array.isArray(renderConfig.prototypes)) throw new Error('Prototype-Render-Config fehlt oder besitzt eine ungültige Version.');
+const renderAnimationIds = renderConfig.prototypes.map((prototype) => prototype.animationId);
+const renderCompositionIds = renderConfig.prototypes.map((prototype) => prototype.compositionId);
+if (new Set(renderAnimationIds).size !== renderAnimationIds.length) throw new Error('Prototype-Render-Config enthält doppelte Animation-IDs.');
+if (new Set(renderCompositionIds).size !== renderCompositionIds.length) throw new Error('Prototype-Render-Config enthält doppelte Composition-IDs.');
+if (renderAnimationIds.length !== animationIds.length) throw new Error(`Prototype-Render-Config erwartet dieselben ${animationIds.length} nativen Content-Animationen, gefunden: ${renderAnimationIds.length}.`);
+for (const animationId of animationIds) if (!renderAnimationIds.includes(animationId)) throw new Error(`Prototype-Render-Config fehlt für native Content-Animation ${animationId}.`);
+for (const animationId of renderAnimationIds) if (!animationIds.includes(animationId)) throw new Error(`Prototype-Render-Config enthält ${animationId}, aber dafür fehlt native Content-Bindung im Source-Gate.`);
+
 const fixtureConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/content-render-fixtures.json'), 'utf8'));
 if (!Array.isArray(fixtureConfig.fixtures)) throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
 const fixtureByAnimationId = new Map(fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]));
@@ -157,4 +167,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, ${checkedFixtureKeys} Release-Fixture-Keys, ${checkedMotionRules}/22 semantische Bewegungsregeln und ${checkedScenarioKeys} Edge-Case-Runtime-Keys sind abgesichert.`);
+console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, 22/22 Content-Render-Config-Einträge, ${checkedFixtureKeys} Release-Fixture-Keys, ${checkedMotionRules}/22 semantische Bewegungsregeln und ${checkedScenarioKeys} Edge-Case-Runtime-Keys sind abgesichert.`);
