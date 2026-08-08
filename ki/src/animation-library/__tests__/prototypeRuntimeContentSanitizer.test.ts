@@ -20,7 +20,7 @@ const numeric = (value: string | number | undefined): number =>
   Number(value ?? Number.NaN);
 
 describe('prototype runtime content sanitizer', () => {
-  it('does not keep article-plus-initial entity fragments', () => {
+  it('prioritizes structured entities over generic sentence-start nouns', () => {
     const result = deriveSafe(
       'ranking-dynamic-podium-rise-v1',
       'Die Suche vergleicht Tool A und Tool B nach Tempo und Qualität.',
@@ -34,8 +34,8 @@ describe('prototype runtime content sanitizer', () => {
         /^(?:Die|Der|Das|Ein|Eine) [A-ZÄÖÜ0-9]$/.test(value),
       ),
     ).toBe(false);
-    expect(candidates).toContain('Tool A');
-    expect(candidates).toContain('Tool B');
+    expect(candidates[0]).toBe('Tool A');
+    expect(candidates[1]).toBe('Tool B');
   });
 
   it('preserves an explicit 100 percent probability as 100/0/0', () => {
@@ -62,7 +62,6 @@ describe('prototype runtime content sanitizer', () => {
       'Kontext, Grammatik und Thema verschieben die möglichen Antworten unterschiedlich.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.probabilityOutcomeGrounded).toBe(0);
     expect(result.values.candidate1ProbabilityExact).toBe(0);
     expect(result.values.candidate2ProbabilityExact).toBe(0);
@@ -75,11 +74,11 @@ describe('prototype runtime content sanitizer', () => {
       'Nach allen Kontextsignalen gewinnt Antwort B klar vor den anderen Kandidaten.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.probabilityOutcomeGrounded).toBe(1);
     expect(result.values.candidate1ProbabilityExact).toBe(0);
     expect(result.values.candidate2ProbabilityExact).toBe(0);
     expect(result.values.candidate3ProbabilityExact).toBe(0);
+    expect(result.labels.candidate1).toBe('Antwort B');
   });
 
   it('keeps exact cost values only when a real unit is present', () => {
@@ -169,7 +168,6 @@ describe('prototype runtime content sanitizer', () => {
       'Tool A, Tool B und Tool C werden nach Preis, Tempo und Qualität verglichen.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.rankingOutcomeGrounded).toBe(0);
     expect(result.values.candidate1ScoreExact).toBe(0);
     expect(result.values.candidate2ScoreExact).toBe(0);
@@ -182,7 +180,6 @@ describe('prototype runtime content sanitizer', () => {
       'Nach Preis, Tempo und Qualität gewinnt Tool B den Vergleich.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.rankingOutcomeGrounded).toBe(1);
     expect(result.values.candidate1ScoreExact).toBe(0);
     expect(result.values.candidate2ScoreExact).toBe(0);
@@ -205,11 +202,12 @@ describe('prototype runtime content sanitizer', () => {
       'Tool A erreicht 96 Punkte, Tool B erreicht 88 Punkte und Tool C bleibt ohne exakten Score.',
     );
 
-    expect(result.values.measurementExact).toBe(1);
     expect(result.values.rankingOutcomeGrounded).toBe(1);
     expect(result.values.candidate1ScoreExact).toBe(1);
     expect(result.values.candidate2ScoreExact).toBe(1);
     expect(result.values.candidate3ScoreExact).toBe(0);
+    expect(result.values.candidate1End).toBe(96);
+    expect(result.values.candidate2End).toBe(88);
   });
 
   it('does not ground a benchmark winner without scores or a spoken winner', () => {
@@ -218,7 +216,6 @@ describe('prototype runtime content sanitizer', () => {
       'Modell A und Modell B werden bei Tempo, Kosten und Qualität verglichen.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.comparisonOutcomeGrounded).toBe(0);
     expect(result.values.competitor1ScoreExact).toBe(0);
     expect(result.values.competitor2ScoreExact).toBe(0);
@@ -230,7 +227,6 @@ describe('prototype runtime content sanitizer', () => {
       'Im Gesamtvergleich gewinnt Modell B klar gegen Modell A.',
     );
 
-    expect(result.values.measurementExact).toBe(0);
     expect(result.values.comparisonOutcomeGrounded).toBe(1);
     const modelBIndex = [1, 2].find(
       (index) => result.labels[`competitor${index}`] === 'Modell B',
@@ -250,9 +246,10 @@ describe('prototype runtime content sanitizer', () => {
       'Modell A erreicht 96 Punkte, Modell B erreicht 88 Punkte.',
     );
 
-    expect(result.values.measurementExact).toBe(1);
     expect(result.values.comparisonOutcomeGrounded).toBe(1);
     expect(result.values.competitor1ScoreExact).toBe(1);
     expect(result.values.competitor2ScoreExact).toBe(1);
+    expect(result.values.competitor1Final).toBe(96);
+    expect(result.values.competitor2Final).toBe(88);
   });
 });
