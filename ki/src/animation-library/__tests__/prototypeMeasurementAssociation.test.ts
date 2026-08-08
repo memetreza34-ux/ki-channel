@@ -101,7 +101,7 @@ describe('prototype measurement association', () => {
     expect(result.values.probabilityOutcomeGrounded).toBe(0);
   });
 
-  it('keeps an explicit winner grounded even when one known probability alone would not decide it', () => {
+  it('keeps an explicit winner grounded when its 40 percent share can still be uniquely largest', () => {
     const result = deriveSafe(
       'probability-probability-fluid-columns-v1',
       'Antwort B liegt bei 40 Prozent und gewinnt nach den übrigen Kontextsignalen.',
@@ -109,10 +109,64 @@ describe('prototype measurement association', () => {
 
     const answerBIndex = [1, 2, 3].find(
       (index) => result.labels[`candidate${index}`] === 'Antwort B',
-    );
-    expect(answerBIndex).toBeDefined();
+    )!;
+    const otherEnds = [1, 2, 3]
+      .filter((index) => index !== answerBIndex)
+      .map((index) => Number(result.values[`candidate${index}End`]));
+
     expect(result.values[`candidate${answerBIndex}ProbabilityExact`]).toBe(1);
+    expect(result.values[`candidate${answerBIndex}End`]).toBe(40);
     expect(result.values.probabilityOutcomeGrounded).toBe(1);
+    expect(otherEnds.every((value) => value < 40)).toBe(true);
+  });
+
+  it('aligns a named probability winner above a compatible 40 percent opponent', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A gewinnt. Antwort B liegt bei 40 Prozent und Antwort C bleibt offen.',
+    );
+    const answerAIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Antwort A',
+    )!;
+    const answerBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Antwort B',
+    )!;
+
+    expect(result.values.probabilityOutcomeGrounded).toBe(1);
+    expect(result.values[`candidate${answerBIndex}ProbabilityExact`]).toBe(1);
+    expect(result.values[`candidate${answerBIndex}End`]).toBe(40);
+    expect(Number(result.values[`candidate${answerAIndex}End`])).toBeGreaterThan(40);
+    expect(
+      Number(result.values.candidate1End) +
+        Number(result.values.candidate2End) +
+        Number(result.values.candidate3End),
+    ).toBeCloseTo(100, 6);
+  });
+
+  it('rejects a named probability winner that cannot beat a known 70 percent opponent', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A gewinnt. Antwort B liegt bei 70 Prozent und Antwort C bleibt offen.',
+    );
+    const answerBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Antwort B',
+    )!;
+
+    expect(result.values.probabilityOutcomeGrounded).toBe(0);
+    expect(result.values[`candidate${answerBIndex}ProbabilityExact`]).toBe(1);
+    expect(result.values[`candidate${answerBIndex}End`]).toBe(70);
+  });
+
+  it('does not ground a distribution when all explicit percentages sum below 100', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A hat 15 Prozent, Antwort B hat 40 Prozent und Antwort C hat 30 Prozent.',
+    );
+
+    expect(result.values.probabilityOutcomeGrounded).toBe(0);
+    expect(result.values.candidate1ProbabilityExact).toBe(0);
+    expect(result.values.candidate2ProbabilityExact).toBe(0);
+    expect(result.values.candidate3ProbabilityExact).toBe(0);
   });
 
   it('does not present contradictory percentages above 100 percent as a grounded distribution', () => {
