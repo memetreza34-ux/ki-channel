@@ -1,15 +1,17 @@
-name: Motion System Checks
+name: Motion and Content System Checks
 
-# Der private Repository-Runner beendet Jobs aktuell vor dem ersten Schritt.
-# Bis die Actions-/Billing-Einstellung geklärt ist, wird der Workflow bewusst
-# manuell gestartet, damit neue Commits nicht fortlaufend rote PR-Checks erzeugen.
+# Der private Repository-Runner hat Jobs in früheren Läufen bereits vor dem
+# ersten sinnvollen Schritt beendet. Bis Actions/Billing zuverlässig funktioniert,
+# bleibt dieser Workflow bewusst manuell. Ein manueller Lauf prüft jedoch jetzt
+# sowohl den bestehenden Motion-Pfad als auch den aktuellen Content-Grounding-
+# und Animation-Library-Produktionsvertrag.
 on:
   workflow_dispatch:
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +31,7 @@ jobs:
             echo "node=$(node --version)"
             echo "npm=$(npm --version)"
             echo "pwd=$(pwd)"
+            echo "head=$(git rev-parse HEAD)"
             echo "root-files:"
             find . -maxdepth 2 -type f | sort | head -200
           } | tee ci-logs/environment.log
@@ -40,38 +43,64 @@ jobs:
           set -o pipefail
           npm install --workspaces=false --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
-      - name: Run focused motion verification
-        id: verify
-        if: always()
+      - name: Run legacy motion verification
+        id: motion_verify
+        if: always() && steps.install.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
-          npm run motion:verify 2>&1 | tee ci-logs/verify.log
+          npm run motion:verify 2>&1 | tee ci-logs/motion-verify.log
 
-      - name: Upload render plan
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: motion-render-plan
-          path: out/motion-system/render-plan.json
-          if-no-files-found: warn
+      - name: Run focused content runtime verification
+        id: content_verify
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node scripts/verify-content-matched-runtime.mjs 2>&1 | tee ci-logs/content-runtime-verify.log
+
+      - name: Run full animation library verification
+        id: library_verify
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run animation-library:verify 2>&1 | tee ci-logs/animation-library-verify.log
 
       - name: Upload verification diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: motion-verification-diagnostics
+          name: production-verification-diagnostics
           path: ci-logs/
           if-no-files-found: error
 
-      - name: Fail when verification failed
-        if: always() && (steps.install.outcome == 'failure' || steps.verify.outcome == 'failure')
+      - name: Upload generated verification plans
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-verification-plans
+          path: |
+            out/motion-system/render-plan.json
+            out/content-matched/runtime-verification/
+            out/masterplan-content-release/manifest.json
+          if-no-files-found: warn
+
+      - name: Fail when any verification failed
+        if: >-
+          always() &&
+          (
+            steps.install.outcome == 'failure' ||
+            steps.motion_verify.outcome == 'failure' ||
+            steps.content_verify.outcome == 'failure' ||
+            steps.library_verify.outcome == 'failure'
+          )
         run: exit 1
 
   smoke-render:
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,17 +113,23 @@ jobs:
       - name: Install root dependencies without legacy workspaces
         run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
 
-      - name: Render middle frame for all visual types
+      - name: Render middle frame for all legacy motion visual types
         env:
           MOTION_CONCURRENCY: '2'
         run: npm run motion:smoke
 
-      - name: Render middle frame for every timeline scene
+      - name: Render middle frame for every legacy timeline scene
         env:
           MOTION_CONCURRENCY: '2'
         run: npm run motion:timeline-smoke
 
-      - name: Upload all smoke renders
+      - name: Render content-grounded smoke frames for all 22 production prototypes
+        run: node scripts/render-masterplan-content-release.mjs smoke
+
+      - name: Verify content-grounded smoke artifacts and exact runtime props
+        run: node scripts/verify-masterplan-content-release.mjs
+
+      - name: Upload legacy smoke renders
         uses: actions/upload-artifact@v4
         with:
           name: motion-smoke-renders
@@ -103,6 +138,13 @@ jobs:
             out/motion-system/timeline-demo/frame-233.png
             out/motion-system/timeline-demo/frame-391.png
             out/motion-system/timeline-demo/frame-549.png
+          if-no-files-found: error
+
+      - name: Upload content-grounded smoke release
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-grounded-smoke-renders
+          path: out/masterplan-content-release/
           if-no-files-found: error
 
       - name: Upload timeline render plan
