@@ -61,11 +61,13 @@ for (const required of [
 
 for (const required of [
   "['scripts/verify-content-release-summary.mjs', 'full']",
+  "['scripts/verify-all-content-release.mjs']",
   "['scripts/verify-content-review-gallery.mjs', 'full']",
   "['scripts/verify-content-visual-review.mjs', visualReviewPath]",
-  "steps.length !== 3",
+  "steps.length !== 4",
   "steps.some((step) => step.status !== 'passed')",
   "status: 'passed'",
+  'technicalArtifactsReverified: true',
   'technicalCompletedAt',
   'reviewedAt',
   'manualVisualReviewVerified: true',
@@ -77,6 +79,9 @@ for (const required of [
 const summaryIndex = finalizer.indexOf(
   "['scripts/verify-content-release-summary.mjs', 'full']",
 );
+const artifactIndex = finalizer.indexOf(
+  "['scripts/verify-all-content-release.mjs']",
+);
 const galleryIndex = finalizer.indexOf(
   "['scripts/verify-content-review-gallery.mjs', 'full']",
 );
@@ -85,11 +90,12 @@ const visualIndex = finalizer.indexOf(
 );
 if (
   summaryIndex < 0 ||
-  galleryIndex <= summaryIndex ||
+  artifactIndex <= summaryIndex ||
+  galleryIndex <= artifactIndex ||
   visualIndex <= galleryIndex
 ) {
   failures.push(
-    'finalize-content-release: Reihenfolge muss fresh full summary -> full gallery -> manual visual review bleiben',
+    'finalize-content-release: Reihenfolge muss fresh full summary -> full artifact reverification -> full gallery -> manual visual review bleiben',
   );
 }
 
@@ -132,5 +138,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Content-Review-Finalization-Gate bestanden: Review-ID bindet die konkrete source-fingerprinted Rendergeneration; Edge Cases besitzen einen eigenen Config-/Renderer-Fingerprint; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind für die Finalisierung verpflichtend.',
+  'Content-Review-Finalization-Gate bestanden: Review-ID bindet die konkrete source-fingerprinted Rendergeneration; Edge Cases besitzen einen eigenen Config-/Renderer-Fingerprint; Finalizer reverifiziert die Full-Artefakte; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind verpflichtend.',
 );
