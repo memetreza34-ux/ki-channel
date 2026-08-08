@@ -18,6 +18,7 @@ type RankingCandidate = {
   start: number;
   middle: number;
   end: number;
+  exact: boolean;
 };
 
 const COLORS = ['#8757E8', '#35C58A', '#FFB648'] as const;
@@ -37,6 +38,11 @@ const numericScore = (
     : fallback;
 };
 
+const booleanValue = (value: string | number, fallback: boolean): boolean => {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed >= 0.5 : fallback;
+};
+
 const scoreAt = (frame: number, candidate: RankingCandidate): number =>
   interpolate(
     frame,
@@ -53,6 +59,14 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
   const content = usePrototypeContent();
   const intro = prototypeProgress(frame, 0, 28);
   const lock = prototypeProgress(frame, 136, 170);
+  const outcomeGrounded = booleanValue(
+    getPrototypeValue({
+      content,
+      key: 'rankingOutcomeGrounded',
+      fallback: content ? 0 : 1,
+    }),
+    !content,
+  );
   const terms = content
     ? [...new Set([
         ...content.meaningContract.subjectTerms,
@@ -91,6 +105,14 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
         }),
         candidate.end,
       ),
+      exact: booleanValue(
+        getPrototypeValue({
+          content,
+          key: `candidate${index + 1}ScoreExact`,
+          fallback: content ? 0 : 1,
+        }),
+        !content,
+      ),
     }),
   );
   const criteria = ['PREIS', 'TEMPO', 'QUALITÄT'].map((fallback, index) =>
@@ -125,7 +147,7 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
     <PrototypeShell
       family="RANKING"
       title="Dynamic Podium Rise"
-      subtitle="Preis, Tempo und Qualität werden nacheinander eingerechnet. Nach jedem Kriterium ändern sich Score und Rang sichtbar."
+      subtitle="Kriterien werden nacheinander eingerechnet. Exakte Scores und ein finaler Sieger erscheinen nur, wenn der Sprechertext sie wirklich begründet."
     >
       <GlassSurface style={{position: 'absolute', left: 76, right: 76, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 50, right: 50, top: 58, display: 'flex', justifyContent: 'space-between', gap: 14, opacity: intro}}>
@@ -150,20 +172,31 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
               extrapolateRight: 'clamp',
             });
             const reveal = prototypeProgress(frame, 14 + index * 8, 38 + index * 8);
-            const isWinner = index === winnerIndex && lock > 0.35;
+            const isWinner = outcomeGrounded && index === winnerIndex && lock > 0.35;
+            const valueLabel = candidate.exact && lock > 0.35
+              ? `${Math.round(candidate.end)} P`
+              : outcomeGrounded
+                ? `RANG ${currentRanks[index]}`
+                : 'WERTUNG';
             return (
               <div key={`${candidate.label}-${index}`} style={{width: 230, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', opacity: reveal, transform: `translateY(${(1 - reveal) * 90}px)`}}>
-                <div style={{marginBottom: 8, padding: '8px 13px', borderRadius: 16, background: currentRanks[index] === 1 ? `${candidate.color}18` : 'rgba(255,255,255,.82)', border: `2px solid ${candidate.color}44`, color: candidate.color, fontFamily: 'monospace', fontSize: 17, fontWeight: 900}}>RANG {currentRanks[index]}</div>
+                <div style={{marginBottom: 8, padding: '8px 13px', borderRadius: 16, background: outcomeGrounded && currentRanks[index] === 1 ? `${candidate.color}18` : 'rgba(255,255,255,.82)', border: `2px solid ${candidate.color}44`, color: candidate.color, fontFamily: 'monospace', fontSize: 17, fontWeight: 900}}>
+                  {outcomeGrounded ? `RANG ${currentRanks[index]}` : 'POSITION OFFEN'}
+                </div>
                 <div style={{maxWidth: 230, marginBottom: 16, padding: '15px 20px', borderRadius: 20, background: isWinner ? candidate.color : 'rgba(255,255,255,.92)', border: `2px solid ${candidate.color}55`, color: isWinner ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.foreground, fontSize: candidate.label.length > 15 ? 20 : 30, fontWeight: 900, boxShadow: isWinner ? `0 18px 50px ${candidate.color}55` : '0 12px 34px rgba(50,34,80,.1)', transform: `scale(${1 + (isWinner ? lock * 0.1 : 0)})`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{candidate.label}</div>
                 <div style={{width: '100%', height, borderRadius: '30px 30px 10px 10px', background: `linear-gradient(180deg, ${candidate.color}, ${candidate.color}44)`, border: `2px solid ${candidate.color}88`, boxShadow: `0 20px 55px ${candidate.color}33`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 30, boxSizing: 'border-box'}}>
-                  <div style={{padding: '12px 16px', borderRadius: 18, background: 'rgba(255,255,255,.9)', color: candidate.color, fontFamily: 'monospace', fontSize: 34, fontWeight: 900}}>{Math.round(score)}</div>
+                  <div style={{padding: '12px 16px', borderRadius: 18, background: 'rgba(255,255,255,.9)', color: candidate.color, fontFamily: 'monospace', fontSize: candidate.exact && lock > 0.35 ? 30 : 20, fontWeight: 900}}>{valueLabel}</div>
                 </div>
               </div>
             );
           })}
         </div>
 
-        <div style={{position: 'absolute', left: '50%', bottom: 36, maxWidth: 760, transform: `translateX(-50%) translateY(${(1 - lock) * 34}px)`, opacity: lock, padding: '16px 26px', borderRadius: 22, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, fontSize: resultLabel.length > 40 ? 17 : 23, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{resultLabel.toLocaleUpperCase('de-DE')} · {candidates[winnerIndex].label} · {Math.round(candidates[winnerIndex].end)}</div>
+        <div style={{position: 'absolute', left: '50%', bottom: 36, maxWidth: 760, transform: `translateX(-50%) translateY(${(1 - lock) * 34}px)`, opacity: lock, padding: '16px 26px', borderRadius: 22, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, fontSize: resultLabel.length > 40 ? 17 : 23, fontWeight: 900, letterSpacing: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+          {outcomeGrounded
+            ? `${resultLabel.toLocaleUpperCase('de-DE')} · ${candidates[winnerIndex].label}${candidates[winnerIndex].exact ? ` · ${Math.round(candidates[winnerIndex].end)} P` : ''}`
+            : 'KRITERIEN VERGLICHEN · KEIN UNBELEGTER SIEGER'}
+        </div>
       </GlassSurface>
     </PrototypeShell>
   );
