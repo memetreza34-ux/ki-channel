@@ -1,4 +1,5 @@
 import {resolve} from 'node:path';
+import {loadSceneMeaningEnhancer} from './load-scene-meaning-enhancer.mjs';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
@@ -26,7 +27,7 @@ const manifest = await readMasterplanJson(
 if (
   manifest.version !== 1 ||
   manifest.payloadBuilder !==
-    'derive+sanitize+associate+createPrototypeRenderProps' ||
+    'meaning+derive+sanitize+associate+createPrototypeRenderProps' ||
   !Array.isArray(manifest.results)
 ) {
   throw new Error('Masterplan-Content-Manifest ist ungültig.');
@@ -68,6 +69,7 @@ const fixtureByAnimationId = new Map(
 const prototypeByAnimationId = new Map(
   config.prototypes.map((prototype) => [prototype.animationId, prototype]),
 );
+const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
 const sanitizePrototypeRuntimeContent =
@@ -101,13 +103,27 @@ for (const result of manifest.results) {
   }
 
   const sourceContent = getMasterplanFixtureContent(fixture);
-  if (!sourceContent?.spokenText || !sourceContent?.meaningContract) {
-    throw new Error(`Fixture ${result.animationId} ist unvollständig.`);
+  if (!sourceContent?.spokenText) {
+    throw new Error(`Fixture ${result.animationId} benötigt spokenText.`);
   }
+  const meaningContract =
+    sourceContent.meaningContract ?? enhanceSceneMeaning(sourceContent.spokenText);
+  if (!meaningContract?.startState || !meaningContract?.visibleChange || !meaningContract?.endState) {
+    throw new Error(`Meaning Contract für ${result.animationId} ist unvollständig.`);
+  }
+  const expectedMeaningSource = sourceContent.meaningContract
+    ? 'fixture-explicit'
+    : 'spoken-text-enhancer';
+  if (result.meaningSource !== expectedMeaningSource) {
+    throw new Error(
+      `Meaning-Quelle im Manifest ist für ${result.animationId} veraltet: ${result.meaningSource} statt ${expectedMeaningSource}.`,
+    );
+  }
+
   const derived = derivePrototypeRuntimeContent({
     animationId: result.animationId,
     spokenText: sourceContent.spokenText,
-    meaningContract: sourceContent.meaningContract,
+    meaningContract,
   });
   const sanitized = sanitizePrototypeRuntimeContent({
     animationId: result.animationId,
@@ -121,7 +137,7 @@ for (const result of manifest.results) {
   });
   const expectedProps = createPrototypeRenderProps({
     spokenText: sourceContent.spokenText,
-    meaningContract: sourceContent.meaningContract,
+    meaningContract,
     labels: associated.labels,
     values: associated.values,
   });
@@ -131,7 +147,7 @@ for (const result of manifest.results) {
   );
   if (JSON.stringify(actualProps) !== JSON.stringify(expectedProps)) {
     throw new Error(
-      `Masterplan-Props für ${result.animationId} entsprechen nicht der aktuellen Deriver+Sanitizer+Association+Payload-Kette.`,
+      `Masterplan-Props für ${result.animationId} entsprechen nicht der aktuellen Meaning+Deriver+Sanitizer+Association+Payload-Kette.`,
     );
   }
   if (JSON.stringify(normalizedProps) !== JSON.stringify(expectedProps)) {
@@ -202,7 +218,7 @@ for (const prototype of expectedPrototypes) {
 }
 
 console.log(
-  `[masterplan-content] Verifikation bestanden: ${seen.size} Animationen, ${checkedLabels} final zugeordnete Labels, ${checkedValues} final zugeordnete Werte, ${checkedPngs} PNGs und ${checkedVideos} Videos.`,
+  `[masterplan-content] Verifikation bestanden: ${seen.size} Animationen, Meaning neu bestätigt, ${checkedLabels} final zugeordnete Labels, ${checkedValues} final zugeordnete Werte, ${checkedPngs} PNGs und ${checkedVideos} Videos.`,
 );
 if (!complete) {
   console.log(
