@@ -24,7 +24,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
     'ki/src/animation-library/productionEligibility.ts',
     'ki/src/animation-library/executableAnimationManifest.ts',
     'ki/src/animation-library/prototype-render-config.json',
-    'ki/src/animation-library/content-render-fixtures.json',
+    'ki/src/animation-library/masterplan-content-fixtures.json',
     'scripts/render-content-matched-prototype.mjs',
     'scripts/load-scene-meaning-enhancer.mjs',
     'scripts/load-prototype-runtime-content-deriver.mjs',
@@ -51,7 +51,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
 };
 
 export const getMasterplanFixtureContent = (fixture) => {
-  const raw = fixture?.content ?? fixture?.props?.content ?? null;
+  const raw = fixture?.content ?? fixture?.props?.content ?? fixture ?? null;
   if (!raw || typeof raw !== 'object') return null;
 
   const spokenText = typeof raw.spokenText === 'string'
@@ -62,10 +62,8 @@ export const getMasterplanFixtureContent = (fixture) => {
       ? raw.meaningContract
       : null;
 
-  // Deliberately do not expose fixture labels/values here. Those fields are useful
-  // for direct prototype demos, but the canonical masterplan release must rebuild
-  // runtime labels/values from spokenText -> meaning -> deriver -> sanitizer ->
-  // association. Otherwise a fixture could inject fake precision directly.
+  // Deliberately return only the canonical semantic input. Demo fixture labels
+  // and values are never exposed to the production masterplan release.
   return {
     spokenText,
     meaningContract,
