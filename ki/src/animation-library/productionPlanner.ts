@@ -158,6 +158,8 @@ export const planProductionReelAnimations = ({
     ...entries.map((entry) => entry.animationId),
     ...PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
   ]);
+  const usedProductionLayoutFamilies = new Set<string>();
+  const usedProductionMotionSignatures = new Set<string>();
   const scenePlans: ProductionSceneAnimationPlan[] = [];
 
   choreography.selections.forEach((selection, index) => {
@@ -173,6 +175,8 @@ export const planProductionReelAnimations = ({
         selectionScore: selection.score?.total ?? null,
         selectionReasons: selection.reasons,
       });
+      usedProductionLayoutFamilies.add(entry.layoutFamily);
+      usedProductionMotionSignatures.add(entry.motionSignature);
       return;
     }
 
@@ -182,8 +186,28 @@ export const planProductionReelAnimations = ({
       );
     }
 
+    // The generic planner intentionally does not reserve implementation details for
+    // new-build scenes. At production compilation time we do know the concrete build
+    // specs, so carry every already-used production layout/motion into the compiler's
+    // forbidden sets. This prevents two purpose-built scenes from collapsing into the
+    // same visual grammar even when their semantic inputs are nearly identical.
+    const productionAwareProposal = {
+      ...selection.newAnimationProposal,
+      forbiddenLayoutFamilies: [
+        ...new Set([
+          ...selection.newAnimationProposal.forbiddenLayoutFamilies,
+          ...usedProductionLayoutFamilies,
+        ]),
+      ],
+      forbiddenMotionSignatures: [
+        ...new Set([
+          ...selection.newAnimationProposal.forbiddenMotionSignatures,
+          ...usedProductionMotionSignatures,
+        ]),
+      ],
+    };
     const compiledBuildSpec = compileNewAnimationProposal({
-      proposal: selection.newAnimationProposal,
+      proposal: productionAwareProposal,
     });
     const buildSpec = reserveUniqueBuildSpec({
       spec: compiledBuildSpec,
@@ -212,6 +236,8 @@ export const planProductionReelAnimations = ({
           : []),
       ],
     });
+    usedProductionLayoutFamilies.add(buildSpec.layoutFamily);
+    usedProductionMotionSignatures.add(buildSpec.motionSignature);
   });
 
   const newAnimationCount = scenePlans.filter(
@@ -250,12 +276,16 @@ export const planProductionReelAnimations = ({
   }
 
   for (let index = 1; index < scenePlans.length; index += 1) {
-    if (
-      scenePlans[index - 1].catalogEntry.layoutFamily ===
-      scenePlans[index].catalogEntry.layoutFamily
-    ) {
+    const previous = scenePlans[index - 1];
+    const current = scenePlans[index];
+    if (previous.catalogEntry.layoutFamily === current.catalogEntry.layoutFamily) {
       qualityWarnings.push(
-        `scenes ${scenePlans[index - 1].sceneId} and ${scenePlans[index].sceneId} repeat the same layout family`,
+        `scenes ${previous.sceneId} and ${current.sceneId} repeat the same layout family`,
+      );
+    }
+    if (previous.catalogEntry.motionSignature === current.catalogEntry.motionSignature) {
+      qualityWarnings.push(
+        `scenes ${previous.sceneId} and ${current.sceneId} repeat the same motion signature`,
       );
     }
   }
