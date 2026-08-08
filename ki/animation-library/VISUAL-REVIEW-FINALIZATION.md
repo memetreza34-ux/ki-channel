@@ -42,7 +42,7 @@ Die Full-Galerie enthält:
 - Meaning Contract,
 - bei Edge Cases das erwartete Verhalten.
 
-Jede Galerie besitzt eine `reviewId`. Sie wird aus der konkreten Masterplan-/Edge-Rendergeneration und deren Source-Fingerprint abgeleitet. Eine neue Rendergeneration erzeugt damit einen anderen Nachweiskontext.
+Jede Galerie besitzt eine `reviewId`. Sie wird aus der konkreten Masterplan-/Edge-Rendergeneration und dem Produktions-Fingerprint abgeleitet. Die Edge-Case-Artefakte besitzen zusätzlich einen eigenen Fingerprint aus Produktions-Fingerprint, Edge-Case-Config sowie Edge-Renderer/-Verifier. Eine neue relevante Render- oder Source-Generation wird deshalb als neuer Nachweiskontext behandelt.
 
 ## 3. Pro Karte sechs Entscheidungen treffen
 
@@ -118,11 +118,14 @@ Der Finalizer prüft in fester Reihenfolge:
 
 ```text
 1. verify-content-release-summary.mjs full
-2. verify-content-review-gallery.mjs full
-3. verify-content-visual-review.mjs
+2. verify-all-content-release.mjs
+3. verify-content-review-gallery.mjs full
+4. verify-content-visual-review.mjs
 ```
 
-Nur wenn alle drei Schritte grün sind, wird geschrieben:
+Schritt 2 reverifiziert die Full-Artefakte direkt vor der Freigabe. Dadurch reicht ein früherer grüner Report nicht aus, wenn danach PNGs, MP4s, Props, Manifeste oder Edge-Artefakte verändert/beschädigt wurden.
+
+Nur wenn alle vier Schritte grün sind, wird geschrieben:
 
 ```text
 out/content-release-run/finalization.json
@@ -136,8 +139,9 @@ Ein erfolgreicher Finalisierungsnachweis enthält unter anderem:
 - Zeitpunkt des technischen Full-Runs,
 - Zeitpunkt der manuellen Review,
 - Zeitpunkt der Finalisierung,
+- `technicalArtifactsReverified: true`,
 - `manualVisualReviewVerified: true`,
-- drei bestandene Finalizer-Schritte.
+- vier bestandene Finalizer-Schritte.
 
 ## 7. Was nicht als Freigabe zählt
 
@@ -149,6 +153,7 @@ Nicht ausreichend sind:
 - nur Häkchen im Browser ohne exportierten Nachweis,
 - ein `visual-review.json` einer anderen Review-ID,
 - ein Full-Summary eines älteren Git-HEADs,
+- ein technisch grüner Full-Run ohne aktuelle Artefakt-Reverifikation,
 - ein technisch grüner Full-Run ohne manuelle 28/28 Sichtprüfung.
 
 ## 8. Merge-Regel
