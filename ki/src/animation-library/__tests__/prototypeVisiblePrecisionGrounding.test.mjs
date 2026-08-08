@@ -84,4 +84,30 @@ describe('visible precision grounding bindings', () => {
     expect(source).toContain("content ? 'ENTWICKLUNG IM ZEITVERLAUF' : 'MODEL EVOLUTION · 2023–2026'");
     expect(source).toContain('content ? `FOKUS: ${milestones[focusIndex].label}`');
   });
+
+  it('does not pad short generated answers with demo words or show word counters', () => {
+    const source = read('AnswerLoomPrototype.tsx');
+    expect(source).toContain('const wordSlots = content');
+    expect(source).toContain("content ? 'WORT FÜR WORT'");
+    expect(source).toContain("extractedWords[index] ?? 'Antwort'");
+  });
+
+  it('does not expose internal decision branch counts as content facts', () => {
+    const source = read('DecisionTreeBurstPrototype.tsx');
+    expect(source).toContain('UNPASSENDE ÄSTE VERWORFEN');
+    expect(source).toContain('TRAGENDE KRITERIEN BLEIBEN');
+  });
+
+  it('does not expose workflow station counters or demo route branding in content', () => {
+    const source = read('SubwayWorkflowMapPrototype.tsx');
+    expect(source).toContain("content ? 'PROZESSROUTE' : 'AUTOMATION LINE · LIVE ROUTE'");
+    expect(source).toContain("travel >= 1 ? 'ROUTE ABGESCHLOSSEN' : 'ROUTE LÄUFT'");
+  });
+
+  it('does not expose security layer counters or unsupported zero-trust branding in content', () => {
+    const source = read('EncryptionVaultLayersPrototype.tsx');
+    expect(source).toContain("content ? 'GESCHÜTZTE DATENROUTE' : 'ZERO-TRUST DATA ROUTE'");
+    expect(source).toContain('SCHUTZSCHICHTEN WERDEN GEPRÜFT');
+    expect(source).toContain('SCHUTZSCHICHTEN AKTIV');
+  });
 });
