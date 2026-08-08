@@ -43,6 +43,19 @@ const currentGitHead = execFileSync('git', ['rev-parse', 'HEAD'], {
   encoding: 'utf8',
   stdio: ['ignore', 'pipe', 'ignore'],
 }).trim();
+const currentTrackedWorktreeStatus = execFileSync(
+  'git',
+  ['status', '--porcelain', '--untracked-files=no'],
+  {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  },
+).trim();
+if (currentTrackedWorktreeStatus) {
+  throw new Error(
+    `Release-Summary kann bei dirty tracked Worktree nicht bestätigt werden:\n${currentTrackedWorktreeStatus}`,
+  );
+}
 
 const summaryPath = resolve(
   'out/content-release-run',
@@ -65,6 +78,11 @@ if (summary.status !== 'passed') {
 }
 if (summary.error !== null) {
   throw new Error('Ein bestandener Release-Summary darf keinen Fehler enthalten.');
+}
+if (summary.trackedWorktreeClean !== true) {
+  throw new Error(
+    'Release-Summary wurde nicht auf einem sauberen tracked Worktree erzeugt.',
+  );
 }
 if (!summary.gitHead || summary.gitHead !== currentGitHead) {
   throw new Error(
@@ -127,7 +145,7 @@ if (
 }
 
 console.log(
-  `[content-release-summary] ${requestedMode} bestätigt: Git-HEAD ${currentGitHead}, ${expectedCount}/${expectedCount} Schritte passed.`,
+  `[content-release-summary] ${requestedMode} bestätigt: Git-HEAD ${currentGitHead}, sauberer tracked Worktree, ${expectedCount}/${expectedCount} Schritte passed.`,
 );
 if (requestedMode === 'full') {
   console.log(
