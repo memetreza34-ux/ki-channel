@@ -32,12 +32,20 @@ try {
     ['scripts/check-production-derived-runtime-keys.mjs'],
     'Abgeleitete Runtime-Keys gegen TSX-Komponenten prüfen',
   );
+  await run(
+    ['scripts/check-canonical-content-release-paths.mjs'],
+    'Kanonische Release-Topologie prüfen',
+  );
+  await run(
+    ['scripts/verify-content-review-gallery.mjs'],
+    'Vollständigkeit der 22+6 visuellen Review-Galerie prüfen',
+  );
 
   console.log(
     '\n[all-content-release] Vollständiger technischer Content-Releasevertrag bestanden.',
   );
   console.log(
-    '[all-content-release] Zusätzlich weiterhin erforderlich: visuelle manuelle Freigabe der 22 Masterplan-Content-Videos und sechs Edge-Case-Renders.',
+    '[all-content-release] Zusätzlich weiterhin erforderlich: Review-Galerie manuell visuell freigeben; technische Galerie-Vollständigkeit ist kein visuelles Qualitätsurteil.',
   );
 } catch (error) {
   console.error('\n[all-content-release] Releaseprüfung fehlgeschlagen.');
