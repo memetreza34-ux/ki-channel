@@ -7,7 +7,7 @@ import {
   diagnoseRawReelAnimationPlan,
   type ReelPlanDiagnostics,
 } from './planDiagnostics';
-import {isProductionReadyLibraryAnimation} from './productionEligibility';
+import {isProductionRuntimeSceneReady} from './productionEligibility';
 import {
   planReelAnimationsFromText,
   type RawReelAnimationPlan,
@@ -198,14 +198,15 @@ const assertCurrentRuntimeReady = ({
         `cannot finalize scene ${scene.sceneId}: current catalog entry ${scene.animationId} is missing`,
       );
     }
-    if (!isProductionReadyLibraryAnimation(scene.animationId)) {
+    if (
+      !isProductionRuntimeSceneReady({
+        animationId: scene.animationId,
+        source: scene.source,
+        catalogEntry: currentEntry,
+      })
+    ) {
       throw new Error(
-        `cannot finalize scene ${scene.sceneId}: animation ${scene.animationId} is not registered with executable native content binding`,
-      );
-    }
-    if (currentEntry.status === 'retired') {
-      throw new Error(
-        `cannot finalize scene ${scene.sceneId}: animation ${scene.animationId} is retired`,
+        `cannot finalize scene ${scene.sceneId}: animation ${scene.animationId} does not satisfy current production runtime eligibility for source ${scene.source} and status ${currentEntry.status}`,
       );
     }
   }
