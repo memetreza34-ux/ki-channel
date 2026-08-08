@@ -1,5 +1,8 @@
 import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
-import {getProductionReadyLibraryEntries} from './productionEligibility';
+import {
+  areProductionRuntimeScenesReady,
+  getProductionReadyLibraryEntries,
+} from './productionEligibility';
 import {
   planReelChoreography,
   type ReelChoreographyPlan,
@@ -202,9 +205,6 @@ export const planProductionReelAnimations = ({
   }
 
   const uniqueWarnings = [...new Set(qualityWarnings)];
-  const hasPendingNewBuild = scenePlans.some(
-    (scene) => scene.source === 'new-build' || scene.buildSpec !== null,
-  );
   return {
     reelId,
     reelIndex,
@@ -216,6 +216,7 @@ export const planProductionReelAnimations = ({
     layoutFamilies,
     motionSignatures,
     qualityWarnings: uniqueWarnings,
-    readyForImplementation: uniqueWarnings.length === 0 && !hasPendingNewBuild,
+    readyForImplementation:
+      uniqueWarnings.length === 0 && areProductionRuntimeScenesReady(scenePlans),
   };
 };
