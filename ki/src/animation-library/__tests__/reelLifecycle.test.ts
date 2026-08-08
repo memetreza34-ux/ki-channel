@@ -99,7 +99,7 @@ describe('reel animation lifecycle', () => {
     }
   });
 
-  it('refuses to finalize a pending new-build before it is runtime-registered and natively content-bound', () => {
+  it('refuses to finalize a pending new-build before it satisfies production runtime eligibility', () => {
     const brain = createBrain();
     const prepared = prepareReelAnimationProduction({
       reelId: 'pending-new-build-finalization',
@@ -130,11 +130,11 @@ describe('reel animation lifecycle', () => {
         reviews: [acceptedReview('scene-new-build', 1)],
       }),
     ).toThrow(
-      /cannot finalize scene scene-new-build: animation .* is not registered with executable native content binding/,
+      /cannot finalize scene scene-new-build: animation .* does not satisfy current production runtime eligibility/,
     );
   });
 
-  it('allows a historical new-build to finalize after that exact runtime is implemented', () => {
+  it('allows a historical new-build concept to receive its first review once the runtime is fully registered', () => {
     const brain = createBrain();
     const sceneId = 'scene-promoted-new-build';
     const prepared = prepareReelAnimationProduction({
@@ -158,26 +158,35 @@ describe('reel animation lifecycle', () => {
       (entry) => entry.animationId === 'scale-performance-latency-tunnel-race-v1',
     );
     expect(implementedEntry).toBeDefined();
+    const implementedConceptEntry = {
+      ...implementedEntry!,
+      status: 'concept' as const,
+    };
+    const currentEntries = ANIMATION_LIBRARY_ENTRIES.map((entry) =>
+      entry.animationId === implementedConceptEntry.animationId
+        ? implementedConceptEntry
+        : entry,
+    );
 
     Object.assign(prepared.plan.productionPlan.scenes[0], {
-      animationId: implementedEntry!.animationId,
-      catalogEntry: implementedEntry!,
+      animationId: implementedConceptEntry.animationId,
+      catalogEntry: implementedConceptEntry,
     });
 
     const result = finalizeReelAnimationProduction({
       prepared,
-      entries: ANIMATION_LIBRARY_ENTRIES,
+      entries: currentEntries,
       brain,
       reviews: [acceptedReview(sceneId, 1)],
     });
     const sceneReview = result.sceneReviews[0];
     const finalizedEntry = result.entries.find(
-      (entry) => entry.animationId === implementedEntry!.animationId,
+      (entry) => entry.animationId === implementedConceptEntry.animationId,
     );
 
     expect(result.releasePassed).toBe(true);
     expect(sceneReview.source).toBe('new-build');
-    expect(sceneReview.animationId).toBe(implementedEntry!.animationId);
+    expect(sceneReview.animationId).toBe(implementedConceptEntry.animationId);
     expect(sceneReview.decision.outcome).toBe('accepted');
     expect(finalizedEntry?.status).toBe('verified');
   });
