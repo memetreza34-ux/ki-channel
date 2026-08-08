@@ -1,6 +1,7 @@
 import {resolve} from 'node:path';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
+import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
 import {
   assertMasterplanMp4,
   assertMasterplanPng,
@@ -23,7 +24,7 @@ const manifest = await readMasterplanJson(
 
 if (
   manifest.version !== 1 ||
-  manifest.payloadBuilder !== 'createPrototypeRenderProps' ||
+  manifest.payloadBuilder !== 'derive+sanitize+createPrototypeRenderProps' ||
   !Array.isArray(manifest.results)
 ) {
   throw new Error('Masterplan-Content-Manifest ist ungültig.');
@@ -67,6 +68,8 @@ const prototypeByAnimationId = new Map(
 );
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
+const sanitizePrototypeRuntimeContent =
+  await loadPrototypeRuntimeContentSanitizer();
 const createPrototypeRenderProps = await loadCreatePrototypeRenderProps();
 
 const seen = new Set();
@@ -102,11 +105,16 @@ for (const result of manifest.results) {
     spokenText: sourceContent.spokenText,
     meaningContract: sourceContent.meaningContract,
   });
+  const sanitized = sanitizePrototypeRuntimeContent({
+    animationId: result.animationId,
+    spokenText: sourceContent.spokenText,
+    derived,
+  });
   const expectedProps = createPrototypeRenderProps({
     spokenText: sourceContent.spokenText,
     meaningContract: sourceContent.meaningContract,
-    labels: derived.labels,
-    values: derived.values,
+    labels: sanitized.labels,
+    values: sanitized.values,
   });
   const actualProps = await readMasterplanJson(result.propsPath);
   const normalizedProps = await readMasterplanJson(
@@ -114,7 +122,7 @@ for (const result of manifest.results) {
   );
   if (JSON.stringify(actualProps) !== JSON.stringify(expectedProps)) {
     throw new Error(
-      `Masterplan-Props für ${result.animationId} entsprechen nicht der aktuellen Deriver+Payload-Kette.`,
+      `Masterplan-Props für ${result.animationId} entsprechen nicht der aktuellen Deriver+Sanitizer+Payload-Kette.`,
     );
   }
   if (JSON.stringify(normalizedProps) !== JSON.stringify(expectedProps)) {
@@ -123,11 +131,11 @@ for (const result of manifest.results) {
     );
   }
 
-  const labelCount = Object.keys(derived.labels).length;
-  const valueCount = Object.keys(derived.values).length;
+  const labelCount = Object.keys(sanitized.labels).length;
+  const valueCount = Object.keys(sanitized.values).length;
   if (labelCount + valueCount === 0) {
     throw new Error(
-      `Runtime-Deriver liefert keine spezifischen Keys für ${result.animationId}.`,
+      `Runtime-Deriver/Sanitizer liefert keine spezifischen Keys für ${result.animationId}.`,
     );
   }
   if (
@@ -135,7 +143,7 @@ for (const result of manifest.results) {
     result.derivedValueCount !== valueCount
   ) {
     throw new Error(
-      `Deriver-Key-Zähler im Manifest ist für ${result.animationId} veraltet.`,
+      `Deriver-/Sanitizer-Key-Zähler im Manifest ist für ${result.animationId} veraltet.`,
     );
   }
   checkedLabels += labelCount;
@@ -185,7 +193,7 @@ for (const prototype of expectedPrototypes) {
 }
 
 console.log(
-  `[masterplan-content] Verifikation bestanden: ${seen.size} Animationen, ${checkedLabels} abgeleitete Labels, ${checkedValues} abgeleitete Werte, ${checkedPngs} PNGs und ${checkedVideos} Videos.`,
+  `[masterplan-content] Verifikation bestanden: ${seen.size} Animationen, ${checkedLabels} abgeleitete/sanitisierte Labels, ${checkedValues} abgeleitete/sanitisierte Werte, ${checkedPngs} PNGs und ${checkedVideos} Videos.`,
 );
 if (!complete) {
   console.log(
