@@ -1,12 +1,20 @@
 name: Motion and Content System Checks
 
-# Der private Repository-Runner hat Jobs in früheren Läufen bereits vor dem
-# ersten sinnvollen Schritt beendet. Bis Actions/Billing zuverlässig funktioniert,
-# bleibt dieser Workflow bewusst manuell. Ein manueller Lauf prüft jedoch jetzt
-# sowohl den bestehenden Motion-Pfad als auch den aktuellen Content-Grounding-
-# und Animation-Library-Produktionsvertrag.
+# Der private Repository-Runner beendet Jobs aktuell bereits vor Step 1. Deshalb
+# bleibt dieser Workflow bewusst manuell. Sobald Actions/Billing wieder läuft,
+# deckt ein Lauf den aktuellen Content-Grounding-Vertrag ab; optional kann der
+# vollständige 22+6 Release inklusive Videos erzeugt werden.
 on:
   workflow_dispatch:
+    inputs:
+      full_release:
+        description: 'Zusätzlich vollständigen 22+6 Content-Release mit Videos rendern'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
 
 jobs:
   verify:
@@ -100,7 +108,7 @@ jobs:
   smoke-render:
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -123,11 +131,20 @@ jobs:
           MOTION_CONCURRENCY: '2'
         run: npm run motion:timeline-smoke
 
-      - name: Render content-grounded smoke frames for all 22 production prototypes
+      - name: Render 22 content-grounded production smoke sets
         run: node scripts/render-masterplan-content-release.mjs smoke
 
-      - name: Verify content-grounded smoke artifacts and exact runtime props
+      - name: Verify 22 smoke runtime props and artifacts
         run: node scripts/verify-masterplan-content-release.mjs
+
+      - name: Render 6 semantic edge-case smoke sets
+        run: node scripts/render-content-motion-edge-cases.mjs smoke
+
+      - name: Build 22+6 smoke review gallery
+        run: node scripts/build-content-review-gallery.mjs
+
+      - name: Verify smoke review gallery without stale videos
+        run: node scripts/verify-content-review-gallery.mjs smoke
 
       - name: Upload legacy smoke renders
         uses: actions/upload-artifact@v4
@@ -144,7 +161,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: content-grounded-smoke-renders
-          path: out/masterplan-content-release/
+          path: |
+            out/masterplan-content-release/
+            out/content-motion-edge-cases/
+            out/content-review-gallery/
           if-no-files-found: error
 
       - name: Upload timeline render plan
@@ -152,4 +172,43 @@ jobs:
         with:
           name: motion-timeline-render-plan
           path: out/motion-system/timeline-render-plan.json
+          if-no-files-found: error
+
+  full-release:
+    if: ${{ inputs.full_release == true }}
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install root dependencies without legacy workspaces
+        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
+
+      - name: Render canonical complete content release
+        run: node scripts/render-all-content-release.mjs
+
+      - name: Verify canonical complete content release
+        run: node scripts/verify-all-content-release.mjs
+
+      - name: Upload full content review gallery
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-full-review-gallery
+          path: out/content-review-gallery/
+          if-no-files-found: error
+
+      - name: Upload full masterplan and edge-case renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-full-release-renders
+          path: |
+            out/masterplan-content-release/
+            out/content-motion-edge-cases/
           if-no-files-found: error
