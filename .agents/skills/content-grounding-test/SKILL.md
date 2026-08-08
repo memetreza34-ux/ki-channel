@@ -27,9 +27,11 @@ Production inputs are in `ki/src/animation-library/masterplan-content-fixtures.j
 ## Environment preparation
 
 1. Confirm Node is available with `node --version`.
-2. If declared local packages are missing, install dependencies without modifying the lockfile:
+2. Run the Antigravity workspace self-check:
+   `node scripts/check-antigravity-content-test-contract.mjs`
+3. If declared local packages are missing, install dependencies without modifying the lockfile:
    `npm install --workspaces=false --package-lock=false --no-audit --no-fund`
-3. Do not use `npx -y` to fetch arbitrary newer versions for release verification.
+4. Do not use `npx -y` to fetch arbitrary newer versions for release verification.
 
 ## Test 0 — production input boundary
 
@@ -94,7 +96,7 @@ When a command fails:
 3. If source-related, inspect the relevant stage in order: meaning, deriver, sanitizer, association, payload, render-plan.
 4. Fix the source cause rather than the test expectation unless the expectation is objectively wrong.
 5. Rerun the narrow failing command.
-6. Rerun Test 0, Test 0B, Test 1 and Test 1B in order.
+6. Rerun the Antigravity self-check, Test 0, Test 0B, Test 1 and Test 1B in order.
 7. Report the exact successful/failed commands and artifact paths.
 
 ## After both grounding tests pass
