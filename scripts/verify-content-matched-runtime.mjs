@@ -48,6 +48,7 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeCrossLabelGrounding.test.ts',
   'ki/src/animation-library/__tests__/prototypeVisiblePrecisionGrounding.test.mjs',
   'ki/src/animation-library/__tests__/prototypeProductionShell.test.mjs',
+  'ki/src/animation-library/__tests__/masterplanFixtureIsolation.test.mjs',
   'ki/src/animation-library/__tests__/runtimeContentSanitizerBindings.test.mjs',
   'ki/src/animation-library/__tests__/productionDerivedRuntimeKeys.test.mjs',
   'ki/src/animation-library/__tests__/masterplanPayloadLoaders.test.mjs',
@@ -153,7 +154,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Fixture-Isolation-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
