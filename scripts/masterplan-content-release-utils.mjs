@@ -17,6 +17,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
     'ki/src/animation-library/prototypeRuntimeContentAssociation.ts',
     'ki/src/animation-library/prototypeRenderPayload.ts',
     'ki/src/animation-library/prototypes/PrototypeContentContext.tsx',
+    'ki/src/animation-library/prototypes/PrototypeMeasurementGrounding.ts',
     'ki/src/animation-library/channelReelMasterPlan.ts',
     'ki/src/animation-library/productionEligibility.ts',
     'ki/src/animation-library/executableAnimationManifest.ts',
