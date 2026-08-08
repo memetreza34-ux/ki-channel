@@ -15,6 +15,7 @@ import {
   type PrototypeContentBindingLevel,
 } from './prototypeContentCoverage';
 import {createPrototypeRenderProps} from './prototypeRenderPayload';
+import {associatePrototypeRuntimeContent} from './prototypeRuntimeContentAssociation';
 import {derivePrototypeRuntimeContent} from './prototypeRuntimeContentDeriver';
 import {sanitizePrototypeRuntimeContent} from './prototypeRuntimeContentSanitizer';
 import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
@@ -135,10 +136,15 @@ export const createChannelReelMasterPlan = ({
       spokenText: analysis.spokenText,
       meaningContract: meaning,
     });
-    const runtimeContent = sanitizePrototypeRuntimeContent({
+    const sanitizedRuntimeContent = sanitizePrototypeRuntimeContent({
       animationId: scene.animationId,
       spokenText: analysis.spokenText,
       derived: derivedRuntimeContent,
+    });
+    const runtimeContent = associatePrototypeRuntimeContent({
+      animationId: scene.animationId,
+      spokenText: analysis.spokenText,
+      content: sanitizedRuntimeContent,
     });
     const prototypeRenderProps = createPrototypeRenderProps({
       spokenText: analysis.spokenText,
@@ -279,7 +285,7 @@ export const renderChannelReelMasterPlanMarkdown = (
     `- **Sichtbare Veränderung:** ${scene.visibleChange}\n` +
     `- **Endzustand:** ${scene.endState}\n` +
     `- **Pflicht-Cues:** ${scene.requiredVisualCues.join(', ')}\n` +
-    `- **Render-Props:** prototypspezifische Labels/Werte erzeugt und für \`--props\` serialisierbar\n\n` +
+    `- **Render-Props:** prototypspezifische Labels/Werte abgeleitet, sanitisiert, objektgenau zugeordnet und für \`--props\` serialisierbar\n\n` +
     `**Wichtige Wörter:** ${scene.importantWordCount}\n\n` +
     `### Wortmechanismen\n${list(scene.importantWordMechanisms)}\n\n` +
     `### Visuelle Quellen\n${list(scene.requiredVisualSources)}\n\n` +
