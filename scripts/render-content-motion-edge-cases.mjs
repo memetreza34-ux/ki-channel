@@ -1,7 +1,7 @@
 import {spawn} from 'node:child_process';
 import {mkdir, readFile, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
-import {getMasterplanContentSourceFingerprint} from './masterplan-content-release-utils.mjs';
+import {getEdgeCaseSourceFingerprint} from './edge-case-release-utils.mjs';
 
 const requestedMode = process.argv[2] ?? 'plan';
 const requestedCaseId = process.argv[3] ?? null;
@@ -35,7 +35,7 @@ if (requestedCaseId && selectedCases.length !== 1) {
 
 const outputRoot = resolve('out/content-motion-edge-cases');
 const inputRoot = resolve(outputRoot, '.inputs');
-const sourceFingerprint = await getMasterplanContentSourceFingerprint();
+const sourceFingerprint = await getEdgeCaseSourceFingerprint();
 await mkdir(inputRoot, {recursive: true});
 
 const run = (command, args, env = process.env) =>
