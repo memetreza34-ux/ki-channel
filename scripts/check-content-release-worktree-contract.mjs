@@ -14,25 +14,33 @@ const verifier = read('scripts/verify-content-release-summary.mjs');
 
 for (const required of [
   "['status', '--porcelain', '--untracked-files=no']",
-  'const trackedWorktreeClean = trackedWorktreeStatus ===',
-  'trackedWorktreeClean,',
-  'if (!trackedWorktreeClean)',
-  'Content-Release benötigt einen sauberen tracked Worktree',
+  'readTrackedWorktreeStatus',
+  'initialTrackedWorktreeStatus',
+  'initialTrackedWorktreeClean',
+  'if (!initialTrackedWorktreeClean)',
+  'const finalTrackedWorktreeStatus = readTrackedWorktreeStatus()',
+  "if (finalTrackedWorktreeStatus !== '')",
+  'Content-Release hat den tracked Worktree während des Laufs verändert oder dirty hinterlassen',
+  "trackedWorktreeClean: trackedWorktreeStatus === ''",
   "await writeSummary({status: 'running'});",
 ]) {
   requireContains(runner, required, 'run-content-release clean-worktree contract');
 }
 
 const runningIndex = runner.indexOf("await writeSummary({status: 'running'});");
-const cleanGuardIndex = runner.indexOf('if (!trackedWorktreeClean)');
+const initialGuardIndex = runner.indexOf('if (!initialTrackedWorktreeClean)');
 const firstChildLoopIndex = runner.indexOf('for (const step of requestedSteps)');
+const finalGuardIndex = runner.indexOf("if (finalTrackedWorktreeStatus !== '')");
+const passedSummaryIndex = runner.indexOf("await writeSummary({status: 'passed'});");
 if (
   runningIndex < 0 ||
-  cleanGuardIndex <= runningIndex ||
-  firstChildLoopIndex <= cleanGuardIndex
+  initialGuardIndex <= runningIndex ||
+  firstChildLoopIndex <= initialGuardIndex ||
+  finalGuardIndex <= firstChildLoopIndex ||
+  passedSummaryIndex <= finalGuardIndex
 ) {
   failures.push(
-    'run-content-release: erst alten Report invalidieren, dann clean-worktree prüfen, dann Child-Schritte starten',
+    'run-content-release: Reihenfolge muss alten Report invalidieren -> initial clean guard -> Child-Schritte -> final clean guard -> passed summary bleiben',
   );
 }
 
@@ -53,5 +61,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Content-Release-Worktree-Gate bestanden: Release-Reports werden nur auf sauberem tracked Worktree erzeugt und bestätigt; untracked Renderartefakte bleiben davon unberührt.',
+  'Content-Release-Worktree-Gate bestanden: Release startet und endet mit sauberem tracked Worktree; Summary-Verifier bestätigt denselben Zustand, während untracked Renderartefakte erlaubt bleiben.',
 );
