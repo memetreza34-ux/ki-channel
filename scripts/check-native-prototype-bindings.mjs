@@ -70,6 +70,24 @@ if (renderAnimationIds.length !== animationIds.length) throw new Error(`Prototyp
 for (const animationId of animationIds) if (!renderAnimationIds.includes(animationId)) throw new Error(`Prototype-Render-Config fehlt für native Content-Animation ${animationId}.`);
 for (const animationId of renderAnimationIds) if (!animationIds.includes(animationId)) throw new Error(`Prototype-Render-Config enthält ${animationId}, aber dafür fehlt native Content-Bindung im Source-Gate.`);
 
+const deriverSource = readFileSync(resolve('ki/src/animation-library/prototypeRuntimeContentDeriver.ts'), 'utf8');
+const deriverAnimationIds = [...deriverSource.matchAll(/^\s{2}'([^']+-v1)':\s*derive[A-Za-z]+,/gm)].map((match) => match[1]);
+if (new Set(deriverAnimationIds).size !== deriverAnimationIds.length) throw new Error('Prototype-Runtime-Deriver enthält doppelte Animation-IDs.');
+if (deriverAnimationIds.length !== animationIds.length) throw new Error(`Prototype-Runtime-Deriver erwartet ${animationIds.length} native Animationen, gefunden: ${deriverAnimationIds.length}.`);
+for (const animationId of animationIds) if (!deriverAnimationIds.includes(animationId)) throw new Error(`Prototype-Runtime-Deriver fehlt für native Content-Animation ${animationId}.`);
+for (const animationId of deriverAnimationIds) if (!animationIds.includes(animationId)) throw new Error(`Prototype-Runtime-Deriver enthält ${animationId}, aber dafür fehlt native Content-Bindung im Source-Gate.`);
+
+const masterPlanSource = readFileSync(resolve('ki/src/animation-library/channelReelMasterPlan.ts'), 'utf8');
+for (const requiredFragment of [
+  'derivePrototypeRuntimeContent({',
+  'labels: runtimeContent.labels',
+  'values: runtimeContent.values',
+]) {
+  if (!masterPlanSource.includes(requiredFragment)) {
+    throw new Error(`Channel-Masterplan übergibt prototypspezifischen Runtime-Content nicht vollständig: ${requiredFragment}`);
+  }
+}
+
 const fixtureConfig = JSON.parse(readFileSync(resolve('ki/src/animation-library/content-render-fixtures.json'), 'utf8'));
 if (!Array.isArray(fixtureConfig.fixtures)) throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
 const fixtureByAnimationId = new Map(fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]));
@@ -163,8 +181,8 @@ for (const scenario of scenarioConfig.scenarios) {
 }
 
 if (failures.length > 0) {
-  console.error('Native Content-Binding-/Fixture-/Motion-Gate fehlgeschlagen:');
+  console.error('Native Content-Binding-/Deriver-/Fixture-/Motion-Gate fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`Native Content-Binding-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, 22/22 Content-Render-Config-Einträge, ${checkedFixtureKeys} Release-Fixture-Keys, ${checkedMotionRules}/22 semantische Bewegungsregeln und ${checkedScenarioKeys} Edge-Case-Runtime-Keys sind abgesichert.`);
+console.log(`Native Content-Binding-/Deriver-/Fixture-/Motion-Gate bestanden: 22/22 Komponenten, 22/22 Content-Render-Config-Einträge, 22/22 Runtime-Deriver, ${checkedFixtureKeys} Release-Fixture-Keys, ${checkedMotionRules}/22 semantische Bewegungsregeln und ${checkedScenarioKeys} Edge-Case-Runtime-Keys sind abgesichert.`);
