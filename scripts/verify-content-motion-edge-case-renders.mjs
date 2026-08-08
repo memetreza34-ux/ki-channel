@@ -1,9 +1,9 @@
 import {access, readFile, readdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {getEdgeCaseSourceFingerprint} from './edge-case-release-utils.mjs';
 import {
   assertMasterplanMp4,
   assertMasterplanPng,
-  getMasterplanContentSourceFingerprint,
 } from './masterplan-content-release-utils.mjs';
 
 const requestedMode = process.argv[2] ?? 'full';
@@ -38,7 +38,7 @@ const [summary, edgeConfig, renderConfig, currentSourceFingerprint] =
     readJson(summaryPath),
     readJson(edgeConfigPath),
     readJson(renderConfigPath),
-    getMasterplanContentSourceFingerprint(),
+    getEdgeCaseSourceFingerprint(),
   ]);
 
 if (
@@ -53,7 +53,7 @@ if (!summary.generatedAt || Number.isNaN(Date.parse(summary.generatedAt))) {
 }
 if (summary.sourceFingerprint !== currentSourceFingerprint) {
   throw new Error(
-    'Edge-Case-Render-Artefakte sind veraltet: Source-Fingerprint stimmt nicht mit dem aktuellen Produktionspfad überein.',
+    'Edge-Case-Render-Artefakte sind veraltet: Source-Fingerprint stimmt nicht mit dem aktuellen Edge-Case-/Produktionspfad überein.',
   );
 }
 if (edgeConfig.cases.length !== 6) {
