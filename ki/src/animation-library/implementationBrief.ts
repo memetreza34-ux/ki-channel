@@ -96,6 +96,35 @@ const contentRules = (
   'Reject the scene when the viewer could swap in an unrelated caption without changing the animation.',
 ];
 
+const removeResolvedRuntimeWarnings = ({
+  prepared,
+  warnings,
+}: {
+  prepared: PreparedReelProduction;
+  warnings: readonly string[];
+}): string[] => {
+  const productionScenes = prepared.plan.productionPlan.scenes;
+  const runtimeReady = areProductionRuntimeScenesReady(productionScenes);
+  const actualFamilyCount = new Set(
+    productionScenes.map((scene) => scene.catalogEntry.visualFamily),
+  ).size;
+
+  return warnings.filter((warning) => {
+    if (
+      runtimeReady &&
+      warning ===
+        'one or more scenes require a content-specific animation before production'
+    ) {
+      return false;
+    }
+    const familyWarning = /^only (\d+) visual families were selected$/.exec(warning);
+    if (familyWarning && actualFamilyCount > Number(familyWarning[1])) {
+      return false;
+    }
+    return true;
+  });
+};
+
 export const compileReelImplementationBrief = (
   prepared: PreparedReelProduction,
 ): ReelImplementationBrief => {
@@ -105,12 +134,15 @@ export const compileReelImplementationBrief = (
   const blockers = prepared.diagnostics.diagnostics
     .filter((diagnostic) => diagnostic.severity === 'blocker')
     .map((diagnostic) => diagnostic.message);
-  const warnings = unique([
-    ...prepared.plan.productionPlan.qualityWarnings,
-    ...prepared.diagnostics.diagnostics
-      .filter((diagnostic) => diagnostic.severity === 'warning')
-      .map((diagnostic) => diagnostic.message),
-  ]);
+  const warnings = removeResolvedRuntimeWarnings({
+    prepared,
+    warnings: unique([
+      ...prepared.plan.productionPlan.qualityWarnings,
+      ...prepared.diagnostics.diagnostics
+        .filter((diagnostic) => diagnostic.severity === 'warning')
+        .map((diagnostic) => diagnostic.message),
+    ]),
+  });
 
   const scenes = prepared.plan.productionPlan.scenes.map((scene) => {
     const analysis = analysisByScene.get(scene.sceneId);
