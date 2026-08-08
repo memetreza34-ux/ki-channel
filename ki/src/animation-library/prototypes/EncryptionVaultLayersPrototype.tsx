@@ -41,16 +41,17 @@ export const EncryptionVaultLayersPrototype: React.FC = () => {
     label: getPrototypeLabel({
       content,
       key: `securityLayer${index + 1}`,
-      fallback: terms[index + 1] ?? shell.label,
+      fallback: terms[index + 1] ?? (content ? 'SCHUTZSCHICHT' : shell.label),
     }),
     progress: prototypeProgress(frame, shell.start, shell.start + 36),
   }));
   const allLayersActive = Math.min(...shells.map((shell) => shell.progress));
   const locked = allLayersActive > 0.78 && lock > 0.55;
+  const activeLayerCount = shells.filter((shell) => shell.progress > 0.78).length;
   const routeLabel = getPrototypeLabel({
     content,
     key: 'routeLabel',
-    fallback: 'ZERO-TRUST DATA ROUTE',
+    fallback: content ? 'GESCHÜTZTE DATENROUTE' : 'ZERO-TRUST DATA ROUTE',
   });
   const dataLabel = getPrototypeLabel({
     content,
@@ -60,17 +61,17 @@ export const EncryptionVaultLayersPrototype: React.FC = () => {
   const vaultLabel = getPrototypeLabel({
     content,
     key: 'vaultLabel',
-    fallback: 'VAULT',
+    fallback: content ? 'SCHUTZKERN' : 'VAULT',
   });
   const verifyingLabel = getPrototypeLabel({
     content,
     key: 'verifyingLabel',
-    fallback: 'VERIFYING',
+    fallback: content ? 'SCHUTZ WIRD GEPRÜFT' : 'VERIFYING',
   });
   const lockedLabel = getPrototypeLabel({
     content,
     key: 'lockedLabel',
-    fallback: 'LOCKED',
+    fallback: content ? 'GESCHÜTZT' : 'LOCKED',
   });
   const resultLabel = getPrototypeLabel({
     content,
@@ -84,17 +85,22 @@ export const EncryptionVaultLayersPrototype: React.FC = () => {
       ? compactText(content.meaningContract.endState, 100)
       : 'Nur berechtigte Systeme erreichen die Daten.',
   });
+  const layerStatus = content
+    ? locked
+      ? 'SCHUTZSCHICHTEN AKTIV'
+      : 'SCHUTZSCHICHTEN WERDEN GEPRÜFT'
+    : `${activeLayerCount}/3 SCHICHTEN AKTIV`;
 
   return (
     <PrototypeShell
       family="SECURITY PRIVACY"
       title="Encryption Vault Layers"
-      subtitle="Die Daten passieren die Schutzschichten nacheinander. Erst wenn Transport, Verschlüsselung und Berechtigung aktiv sind, verriegelt der Tresor."
+      subtitle="Die Daten passieren die Schutzschichten nacheinander. Erst wenn die beschriebenen Schutzmechanismen aktiv sind, verriegelt der Kern. Interne Layer-Zähler und unbelegte Zero-Trust-Terminologie werden im Content-Modus nicht eingeblendet."
     >
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 45, right: 45, top: 68, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'monospace', fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}>
           <span style={{maxWidth: 520, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{routeLabel.toLocaleUpperCase('de-DE')}</span>
-          <span style={{color: locked ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.accent}}>{shells.filter((shell) => shell.progress > 0.78).length}/3 SCHICHTEN AKTIV</span>
+          <span style={{color: locked ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.accent}}>{layerStatus}</span>
         </div>
 
         <div style={{position: 'absolute', left: dataX, top: 540, transform: `translate(-50%, -50%) scale(${0.82 + dataEnter * 0.18 - allLayersActive * 0.08})`, opacity: dataEnter * (1 - result * 0.35), zIndex: 10}}>
