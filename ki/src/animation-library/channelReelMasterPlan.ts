@@ -5,7 +5,10 @@ import {
   type ReelImplementationBrief,
 } from './implementationBrief';
 import type {SceneMeaningContract} from './meaningContract';
-import {isProductionReadyLibraryAnimation} from './productionEligibility';
+import {
+  isProductionReadyLibraryAnimation,
+  isProductionRuntimeSceneReady,
+} from './productionEligibility';
 import {
   getPrototypeContentBindingLevel,
   isPrototypeContentBindingReady,
@@ -37,6 +40,7 @@ export type ChannelSceneMasterPlan = {
   prototypeRenderProps: PrototypeRenderProps;
   contentBindingLevel: PrototypeContentBindingLevel;
   contentBindingReady: boolean;
+  runtimeReady: boolean;
   importantWordCount: number;
   importantWordMechanisms: string[];
   requiredVisualSources: string[];
@@ -67,10 +71,11 @@ const assertProductionReuseInvariant = (
   for (const scene of prepared.plan.productionPlan.scenes) {
     if (
       scene.source === 'library' &&
-      !isProductionReadyLibraryAnimation(scene.animationId)
+      (!isProductionReadyLibraryAnimation(scene.animationId) ||
+        !isProductionRuntimeSceneReady(scene))
     ) {
       throw new Error(
-        `production reuse invariant violated: scene ${scene.sceneId} uses library animation ${scene.animationId} without executable native content binding`,
+        `production reuse invariant violated: scene ${scene.sceneId} uses library animation ${scene.animationId} without full production runtime eligibility`,
       );
     }
   }
@@ -135,15 +140,22 @@ export const createChannelReelMasterPlan = ({
       animationId: scene.animationId,
       source: scene.source,
     });
+    const runtimeReady = isProductionRuntimeSceneReady(scene);
     const contentBindingWarnings = contentBindingReady
       ? []
       : contentBindingLevel === 'purpose-built-new-animation'
         ? [
-            'purpose-built animation has a content contract and build specification, but no registered Remotion component yet',
+            'purpose-built animation has a content contract and build specification, but no native scene-content binding yet',
           ]
         : [
             'library prototype adapts semantic shell data, but its dominant inner objects are not yet bound to scene content',
           ];
+    const runtimeWarnings =
+      contentBindingReady && !runtimeReady
+        ? [
+            'native scene-content binding exists, but the animation is not fully production-renderable through the executable/content-render/status gates',
+          ]
+        : [];
     return {
       sceneId: scene.sceneId,
       spokenText: analysis.spokenText,
@@ -162,6 +174,7 @@ export const createChannelReelMasterPlan = ({
       prototypeRenderProps,
       contentBindingLevel,
       contentBindingReady,
+      runtimeReady,
       importantWordCount: motion.sentenceCoverage.criticalBeatCount,
       importantWordMechanisms: motion.importantWordBeats.map(
         (beat) => beat.mechanismId,
@@ -171,10 +184,11 @@ export const createChannelReelMasterPlan = ({
         ...contentMode.primaryMode.requiredMotionLayers,
         ...motion.layers.filter((layer) => layer.required).map((layer) => layer.layerId),
       ]),
-      valid: motion.valid && contentBindingReady,
+      valid: motion.valid && runtimeReady,
       warnings: unique([
         ...motion.warnings,
         ...contentBindingWarnings,
+        ...runtimeWarnings,
         ...contentMode.secondaryModes.map(
           (mode) => `secondary content mode: ${mode.modeId}`,
         ),
@@ -194,12 +208,15 @@ export const createChannelReelMasterPlan = ({
     ...implementationBrief.blockers,
     ...universalMotion.blockers,
     ...scenes
-      .filter((scene) => !scene.contentBindingReady)
-      .map((scene) =>
-        scene.contentBindingLevel === 'purpose-built-new-animation'
-          ? `scene ${scene.sceneId} requires implementation and registry entry for ${scene.fullAnimationId}`
-          : `scene ${scene.sceneId} uses ${scene.fullAnimationId} with semantic-shell-only content binding`,
-      ),
+      .filter((scene) => !scene.runtimeReady)
+      .map((scene) => {
+        if (!scene.contentBindingReady) {
+          return scene.contentBindingLevel === 'purpose-built-new-animation'
+            ? `scene ${scene.sceneId} requires native content implementation and registry entry for ${scene.fullAnimationId}`
+            : `scene ${scene.sceneId} uses ${scene.fullAnimationId} with semantic-shell-only content binding`;
+        }
+        return `scene ${scene.sceneId} has native content binding for ${scene.fullAnimationId}, but full production runtime eligibility is incomplete`;
+      }),
   ]);
   const warnings = unique([
     ...implementationBrief.warnings,
@@ -241,6 +258,7 @@ export const renderChannelReelMasterPlanMarkdown = (
     `**Vollanimation:** \`${scene.fullAnimationId}\` (${scene.fullAnimationSource})\n\n` +
     `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
     `**Content-Bindung:** ${scene.contentBindingLevel} (${scene.contentBindingReady ? 'bereit' : 'noch nicht final'})\n\n` +
+    `**Production Runtime:** ${scene.runtimeReady ? 'bereit' : 'BLOCKIERT'}\n\n` +
     `### Bedeutungs-Payload für Remotion\n` +
     `- **Kommunikationsziel:** ${scene.communicationGoal}\n` +
     `- **Startzustand:** ${scene.startState}\n` +
