@@ -49,6 +49,7 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeVisiblePrecisionGrounding.test.mjs',
   'ki/src/animation-library/__tests__/prototypeProductionShell.test.mjs',
   'ki/src/animation-library/__tests__/masterplanFixtureIsolation.test.mjs',
+  'ki/src/animation-library/__tests__/masterplanProductionFixtureContract.test.mjs',
   'ki/src/animation-library/__tests__/runtimeContentSanitizerBindings.test.mjs',
   'ki/src/animation-library/__tests__/productionDerivedRuntimeKeys.test.mjs',
   'ki/src/animation-library/__tests__/masterplanPayloadLoaders.test.mjs',
@@ -65,25 +66,25 @@ const sampleProps = {
   content: {
     title: 'Latenz · Kapazität · Engpass',
     spokenText:
-      'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+      'Der überlastete Dienst braucht 780 Millisekunden, der optimierte Dienst nur 340 Millisekunden.',
     meaningContract: {
-      communicationGoal: 'show-limitation',
+      communicationGoal: 'show-result',
       startState:
-        'Anfragen bewegen sich unterhalb der sichtbaren Kapazitätsgrenze.',
+        'Der überlastete Dienst beginnt mit einer gemessenen Laufzeit von 780 Millisekunden.',
       visibleChange:
-        'Die Last steigt, ein Engpass entsteht und die Latenz nimmt sichtbar zu.',
+        'Die Optimierung verändert denselben Ablauf und senkt die gemessene Laufzeit auf 340 Millisekunden.',
       endState:
-        'Engpass, Kapazitätsgrenze und Latenz bleiben gemeinsam erkennbar.',
-      subjectTerms: ['Last', 'Latenz', 'Kapazität', 'Engpass'],
-      actionTerms: ['steigt', 'wird'],
-      resultTerms: ['Engpass', 'Latenz'],
+        'Beide gemessenen Laufzeiten bleiben auf derselben Vergleichsbasis sichtbar.',
+      subjectTerms: ['Dienst', 'Latenz', 'Optimierung'],
+      actionTerms: ['braucht', 'senkt'],
+      resultTerms: ['780 Millisekunden', '340 Millisekunden'],
       preferredVisualFamilies: ['scale-performance'],
-      preferredExplanationPatterns: ['bottleneck', 'capacity-limit'],
+      preferredExplanationPatterns: ['performance-improvement'],
       requiredVisualCues: [
-        'load-level',
-        'request-flow',
-        'visible-bottleneck',
-        'latency-or-capacity-result',
+        'baseline-performance',
+        'optimization-change',
+        'latency-or-throughput-improvement',
+        'measured-or-relative-result',
       ],
       forbiddenVisualCues: [
         'podium-without-ranking-meaning',
@@ -93,7 +94,7 @@ const sampleProps = {
     labels: {
       slowPath: 'Überlasteter Dienst',
       fastPath: 'Optimierter Dienst',
-      bottleneckLabel: 'Kapazitätsengpass',
+      bottleneckLabel: 'Ausgangszustand',
       latencyUnit: 'ms',
     },
     values: {
@@ -113,6 +114,11 @@ await writeFile(
 try {
   await run(
     'node',
+    ['scripts/check-masterplan-production-fixtures.mjs'],
+    'Dependency-freier Preflight für 22 Production-Fixtures und die kanonische Grounding-Reihenfolge',
+  );
+  await run(
+    'node',
     ['scripts/check-native-prototype-bindings.mjs'],
     'Quellcode-Gate für native Objektbindung, Runtime-Deriver und Motion-Semantik aller 22 Kernprototypen',
   );
@@ -129,7 +135,7 @@ try {
   await run(
     'node',
     ['scripts/check-canonical-content-release-paths.mjs'],
-    'Kanonischer Release-Pfad bleibt Deriver -> Sanitizer -> Association -> Render-Props',
+    'Kanonischer Release-Pfad bleibt Meaning -> Deriver -> Sanitizer -> Association -> Render-Props',
   );
   await run(
     'node',
@@ -154,7 +160,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Fixture-Isolation-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Production-Fixture-, Fixture-Isolation-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
@@ -164,7 +170,7 @@ try {
       samplePropsPath,
       'plan',
     ],
-    'Validierung des Remotion-Props- und Renderauftrags',
+    'Validierung eines geerdeten Remotion-Props- und Renderauftrags',
   );
 
   console.log('\n[content-runtime] Technische Runtime-Prüfung bestanden.');
