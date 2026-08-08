@@ -23,6 +23,7 @@ const verifyComplete = read('scripts/verify-complete-content-release.mjs');
 const renderMasterplan = read('scripts/render-masterplan-content-release.mjs');
 const verifyMasterplan = read('scripts/verify-masterplan-content-release.mjs');
 const renderEdgeCases = read('scripts/render-content-motion-edge-cases.mjs');
+const verifyEdgeCases = read('scripts/verify-content-motion-edge-case-renders.mjs');
 const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
 const reviewVerifier = read('scripts/verify-content-review-gallery.mjs');
 
@@ -41,6 +42,7 @@ requireExcludes(
 for (const required of [
   'verify-masterplan-content-release.mjs',
   'check-content-motion-edge-cases.mjs',
+  "['scripts/verify-content-motion-edge-case-renders.mjs', 'full']",
   'check-canonical-content-release-paths.mjs',
   "['scripts/verify-content-review-gallery.mjs', 'full']",
 ]) {
@@ -112,6 +114,20 @@ requireContains(
   'render-content-motion-edge-cases artifact isolation',
 );
 for (const required of [
+  "new Set(['smoke', 'full'])",
+  "requestedMode === 'full' ? 'all' : 'smoke'",
+  'assertMasterplanPng',
+  'assertMasterplanMp4',
+  'actualFrameNames',
+  'möglicher Stale-Artifact-Leak',
+]) {
+  requireContains(
+    verifyEdgeCases,
+    required,
+    'verify-content-motion-edge-case-renders',
+  );
+}
+for (const required of [
   'masterplanManifest?.results',
   'edgeSummary?.cases',
   'review-manifest.json',
@@ -136,5 +152,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: all-content/complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Review-Galerie und Render-Artefakt-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: all-content/complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
