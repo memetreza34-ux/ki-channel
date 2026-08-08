@@ -107,7 +107,7 @@ describe('prototype runtime content association', () => {
     expect(result.values.rankingOutcomeGrounded).toBe(0);
   });
 
-  it('binds reversed benchmark score mentions to the named models', () => {
+  it('binds reversed benchmark score mentions to the named models and repairs summary labels', () => {
     const result = prepare(
       'comparison-benchmark-racetrack-v1',
       'Modell A und Modell B werden verglichen. Modell B erreicht 88 Punkte, Modell A erreicht 96 Punkte.',
@@ -115,17 +115,20 @@ describe('prototype runtime content association', () => {
 
     const modelAIndex = [1, 2].find(
       (index) => result.labels[`competitor${index}`] === 'Modell A',
-    );
+    )!;
     const modelBIndex = [1, 2].find(
       (index) => result.labels[`competitor${index}`] === 'Modell B',
-    );
-    expect(modelAIndex).toBeDefined();
-    expect(modelBIndex).toBeDefined();
+    )!;
     expect(result.values[`competitor${modelAIndex}Final`]).toBe(96);
     expect(result.values[`competitor${modelBIndex}Final`]).toBe(88);
     expect(result.values[`competitor${modelAIndex}ScoreExact`]).toBe(1);
     expect(result.values[`competitor${modelBIndex}ScoreExact`]).toBe(1);
     expect(result.values.comparisonOutcomeGrounded).toBe(1);
+    expect(result.labels[`competitor${modelAIndex}Result`]).toBe('Gesamtsieger');
+    expect(result.labels[`competitor${modelBIndex}Result`]).toBe('Vergleichsergebnis');
+    expect(result.labels[`competitor${modelAIndex}Detail`]).toBe(
+      'höchster belegter Gesamtwert',
+    );
   });
 
   it('does not ground a benchmark winner when both exact scores tie', () => {
@@ -135,6 +138,8 @@ describe('prototype runtime content association', () => {
     );
 
     expect(result.values.comparisonOutcomeGrounded).toBe(0);
+    expect(result.labels.competitor1Result).toBe('Vergleichsergebnis');
+    expect(result.labels.competitor2Result).toBe('Vergleichsergebnis');
   });
 
   it('uses the 0 to 100 score scale for a benchmark winner without explicit scores', () => {
@@ -153,6 +158,10 @@ describe('prototype runtime content association', () => {
     expect(Number(result.values[`competitor${modelBIndex}Final`])).toBeGreaterThanOrEqual(84);
     expect(Number(result.values[`competitor${modelBIndex}Final`])).toBeGreaterThan(
       Number(result.values[`competitor${modelAIndex}Final`]),
+    );
+    expect(result.labels[`competitor${modelBIndex}Result`]).toBe('Gesamtsieger');
+    expect(result.labels[`competitor${modelBIndex}Detail`]).toBe(
+      'im Sprechertext als Sieger benannt',
     );
   });
 
@@ -180,6 +189,8 @@ describe('prototype runtime content association', () => {
     );
 
     expect(result.values.comparisonOutcomeGrounded).toBe(0);
+    expect(result.labels.competitor1Result).toBe('Vergleichsergebnis');
+    expect(result.labels.competitor2Result).toBe('Vergleichsergebnis');
   });
 
   it('keeps an actual spoken cost reduction in spoken order', () => {
@@ -192,6 +203,29 @@ describe('prototype runtime content association', () => {
     expect(result.values.initialCost).toBe(94);
     expect(result.values.optimizedCost).toBe(28);
     expect(result.labels.currency).toBe('ct');
+  });
+
+  it('resolves current-first cost language against the earlier baseline', () => {
+    const result = prepare(
+      'cost-efficiency-budget-leak-meter-v1',
+      'Der Dienst kostet jetzt nur noch 28 Cent statt vorher 94 Cent.',
+    );
+
+    expect(result.values.measurementExact).toBe(1);
+    expect(result.values.initialCost).toBe(94);
+    expect(result.values.optimizedCost).toBe(28);
+    expect(result.labels.currency).toBe('ct');
+  });
+
+  it('does not turn a current-first cost increase into fake savings', () => {
+    const result = prepare(
+      'cost-efficiency-budget-leak-meter-v1',
+      'Der Dienst kostet jetzt 94 Cent statt vorher 28 Cent.',
+    );
+
+    expect(result.values.measurementExact).toBe(0);
+    expect(result.values.initialCost).toBeUndefined();
+    expect(result.values.optimizedCost).toBeUndefined();
   });
 
   it('refuses to turn a spoken cost increase into fake savings', () => {
