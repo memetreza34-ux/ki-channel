@@ -2,6 +2,7 @@ import {spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
+import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
 import {
@@ -45,6 +46,8 @@ const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
 const sanitizePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentSanitizer();
+const associatePrototypeRuntimeContent =
+  await loadPrototypeRuntimeContentAssociation();
 const createPrototypeRenderProps = await loadCreatePrototypeRenderProps();
 const sourceFingerprint = await getMasterplanContentSourceFingerprint();
 await mkdir(MASTERPLAN_CONTENT_OUTPUT_ROOT, {recursive: true});
@@ -84,19 +87,24 @@ for (const prototype of prototypes) {
     spokenText: sourceContent.spokenText,
     derived,
   });
+  const associated = associatePrototypeRuntimeContent({
+    animationId: prototype.animationId,
+    spokenText: sourceContent.spokenText,
+    content: sanitized,
+  });
   const derivedKeyCount =
-    Object.keys(sanitized.labels).length + Object.keys(sanitized.values).length;
+    Object.keys(associated.labels).length + Object.keys(associated.values).length;
   if (derivedKeyCount === 0) {
     throw new Error(
-      `Runtime-Deriver/Sanitizer liefert keine prototypspezifischen Keys für ${prototype.animationId}.`,
+      `Runtime-Deriver/Sanitizer/Association liefert keine prototypspezifischen Keys für ${prototype.animationId}.`,
     );
   }
 
   const props = createPrototypeRenderProps({
     spokenText: sourceContent.spokenText,
     meaningContract: sourceContent.meaningContract,
-    labels: sanitized.labels,
-    values: sanitized.values,
+    labels: associated.labels,
+    values: associated.values,
   });
 
   const outputRoot = resolve(
@@ -129,14 +137,15 @@ for (const prototype of prototypes) {
     compositionId: prototype.compositionId,
     outputRoot,
     propsPath,
-    derivedLabelCount: Object.keys(sanitized.labels).length,
-    derivedValueCount: Object.keys(sanitized.values).length,
+    derivedLabelCount: Object.keys(associated.labels).length,
+    derivedValueCount: Object.keys(associated.values).length,
   });
 }
 
 const manifest = {
   version: 1,
-  payloadBuilder: 'derive+sanitize+createPrototypeRenderProps',
+  payloadBuilder:
+    'derive+sanitize+associate+createPrototypeRenderProps',
   mode: requestedMode,
   requestedAnimationId: requestedAnimationId ?? null,
   sourceFingerprint,
