@@ -79,6 +79,34 @@ describe('prototype runtime content association', () => {
     expect(result.values.rankingOutcomeGrounded).toBe(1);
   });
 
+  it('keeps a named ranking winner visually ahead of a 96 point partial score', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A gewinnt den Vergleich. Tool B erreicht 96 Punkte und Tool C bleibt ohne Score.',
+    );
+    const toolAIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool A',
+    )!;
+    const toolBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool B',
+    )!;
+
+    expect(result.values.rankingOutcomeGrounded).toBe(1);
+    expect(result.values[`candidate${toolAIndex}ScoreExact`]).toBe(0);
+    expect(result.values[`candidate${toolBIndex}ScoreExact`]).toBe(1);
+    expect(result.values[`candidate${toolBIndex}End`]).toBe(96);
+    expect(Number(result.values[`candidate${toolAIndex}End`])).toBeGreaterThan(96);
+  });
+
+  it('rejects an explicit ranking winner that cannot beat a known 100 point competitor', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A gewinnt den Vergleich. Tool B erreicht 100 Punkte und Tool C bleibt ohne Score.',
+    );
+
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+  });
+
   it('binds reversed benchmark score mentions to the named models', () => {
     const result = prepare(
       'comparison-benchmark-racetrack-v1',
@@ -104,6 +132,51 @@ describe('prototype runtime content association', () => {
     const result = prepare(
       'comparison-benchmark-racetrack-v1',
       'Modell A erreicht 90 Punkte und Modell B erreicht 90 Punkte.',
+    );
+
+    expect(result.values.comparisonOutcomeGrounded).toBe(0);
+  });
+
+  it('uses the 0 to 100 score scale for a benchmark winner without explicit scores', () => {
+    const result = prepare(
+      'comparison-benchmark-racetrack-v1',
+      'Modell B gewinnt den Vergleich gegen Modell A.',
+    );
+    const modelAIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell A',
+    )!;
+    const modelBIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell B',
+    )!;
+
+    expect(result.values.comparisonOutcomeGrounded).toBe(1);
+    expect(Number(result.values[`competitor${modelBIndex}Final`])).toBeGreaterThanOrEqual(84);
+    expect(Number(result.values[`competitor${modelBIndex}Final`])).toBeGreaterThan(
+      Number(result.values[`competitor${modelAIndex}Final`]),
+    );
+  });
+
+  it('keeps a named benchmark winner ahead of a partial exact opponent score', () => {
+    const result = prepare(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A gewinnt den Vergleich. Modell B erreicht 96 Punkte.',
+    );
+    const modelAIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell A',
+    )!;
+    const modelBIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell B',
+    )!;
+
+    expect(result.values.comparisonOutcomeGrounded).toBe(1);
+    expect(result.values[`competitor${modelBIndex}Final`]).toBe(96);
+    expect(Number(result.values[`competitor${modelAIndex}Final`])).toBeGreaterThan(96);
+  });
+
+  it('rejects an explicit benchmark winner contradicted by a known 100 point opponent', () => {
+    const result = prepare(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A gewinnt den Vergleich. Modell B erreicht 100 Punkte.',
     );
 
     expect(result.values.comparisonOutcomeGrounded).toBe(0);
