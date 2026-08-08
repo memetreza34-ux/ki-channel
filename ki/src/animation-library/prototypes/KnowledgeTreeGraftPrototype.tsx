@@ -113,6 +113,11 @@ export const KnowledgeTreeGraftPrototype: React.FC = () => {
   const thresholdStatus = spokenThreshold !== null
     ? `SCHWELLE ${Math.round(spokenThreshold)}%`
     : 'KEINE EXAKTE SCHWELLE GENANNT';
+  const revisionStatus = content
+    ? accepted ? 'VERSIONIERT' : 'STAND UNVERÄNDERT'
+    : `REVISION ${Math.round(
+        interpolate(acceptedGraft, [0, 1], [revisionStart, accepted ? revisionEnd : revisionStart]),
+      )}`;
 
   return (
     <PrototypeShell family="LEARNING UPDATE" title="Knowledge Tree Graft" subtitle="Neue Informationen werden zuerst verifiziert. Nur bei belegter Freigabe oder explizit erfüllter Schwelle werden sie eingefügt und schwächere Aussagen versioniert ersetzt.">
@@ -152,7 +157,7 @@ export const KnowledgeTreeGraftPrototype: React.FC = () => {
             <div style={{height: 3, background: 'linear-gradient(90deg, transparent, rgba(255,182,72,.55))'}} /><div style={{maxWidth: 500, padding: '20px 26px', borderRadius: 24, background: 'rgba(255,182,72,.12)', border: '2px solid rgba(255,182,72,.40)', textAlign: 'center'}}><div style={{fontSize: oldStatementLabel.length > 20 ? 15 : 20, fontWeight: 900, color: '#A66B00'}}>{oldStatementLabel.toLocaleUpperCase('de-DE')}</div><div style={{fontSize: oldStatementResult.length > 42 ? 18 : 25, fontWeight: 900, marginTop: 8, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{oldStatementResult}</div></div><div style={{height: 3, background: 'linear-gradient(90deg, rgba(255,182,72,.55), transparent)'}} />
           </div>
 
-          <div style={{position: 'absolute', left: rootX, top: 1130, maxWidth: 650, transform: `translate(-50%, -50%) scale(${0.8 + acceptedGraft * 0.2})`, padding: '18px 26px', borderRadius: 24, background: PROTOTYPE_PALETTE.foreground, color: 'white', fontSize: conclusion.length > 55 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: grow, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{accepted ? conclusion.toLocaleUpperCase('de-DE') : 'WISSEN BLEIBT UNVERÄNDERT'} · REVISION {Math.round(interpolate(acceptedGraft, [0, 1], [revisionStart, accepted ? revisionEnd : revisionStart]))}</div>
+          <div style={{position: 'absolute', left: rootX, top: 1130, maxWidth: 650, transform: `translate(-50%, -50%) scale(${0.8 + acceptedGraft * 0.2})`, padding: '18px 26px', borderRadius: 24, background: PROTOTYPE_PALETTE.foreground, color: 'white', fontSize: conclusion.length > 55 ? 16 : 22, fontWeight: 900, letterSpacing: 2, opacity: grow, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{accepted ? conclusion.toLocaleUpperCase('de-DE') : 'WISSEN BLEIBT UNVERÄNDERT'} · {revisionStatus}</div>
         </GlassSurface>
       </div>
     </PrototypeShell>
