@@ -156,6 +156,9 @@ const STRONG_SINGLE_TERMS = new Set([
   'zeitverlauf',
 ]);
 
+const COST_REDUCTION_SIGNAL =
+  /\b(?:spar\w*|senk\w*|weniger|gunstig\w*|optimier\w*|effizien\w*|reduzier\w*|einspar\w*|vermeid\w*|billig\w*)\b/;
+
 const unique = (values: readonly string[]): string[] => [...new Set(values)];
 
 const tokenMatches = (token: string, term: string): boolean => {
@@ -163,6 +166,12 @@ const tokenMatches = (token: string, term: string): boolean => {
   return token === normalizedTerm ||
     (normalizedTerm.length >= 4 && token.startsWith(normalizedTerm));
 };
+
+const passesActivationGuard = (
+  rule: ExtendedMeaningRule,
+  normalizedText: string,
+): boolean =>
+  rule.id !== 'cost-efficiency' || COST_REDUCTION_SIGNAL.test(normalizedText);
 
 const scoreRule = (
   rule: ExtendedMeaningRule,
@@ -201,9 +210,12 @@ export const enhanceSceneMeaning = (
   const matches = RULES
     .map((rule) => ({rule, ...scoreRule(rule, normalizedText)}))
     .filter((match) =>
-      match.matchedPhraseCount > 0 ||
-      match.matchedTermCount >= 2 ||
-      match.hasStrongSingleTerm,
+      passesActivationGuard(match.rule, normalizedText) &&
+      (
+        match.matchedPhraseCount > 0 ||
+        match.matchedTermCount >= 2 ||
+        match.hasStrongSingleTerm
+      ),
     )
     .sort((left, right) =>
       right.score - left.score || left.rule.id.localeCompare(right.rule.id),
