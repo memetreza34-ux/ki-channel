@@ -1,22 +1,30 @@
 import {EXECUTABLE_ANIMATION_MANIFEST_IDS} from './executableAnimationManifest';
 import rawPrototypeRenderConfig from './prototype-render-config.json';
 import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from './prototypeContentCoverage';
+import {PROTOTYPE_RUNTIME_CONTENT_DERIVER_IDS} from './prototypeRuntimeContentDeriver';
 import type {AnimationLibraryEntry} from './schema';
 
 const executableIds = new Set(EXECUTABLE_ANIMATION_MANIFEST_IDS);
 const contentRenderIds = new Set(
   rawPrototypeRenderConfig.prototypes.map((prototype) => prototype.animationId),
 );
+const contentDeriverIds = new Set(PROTOTYPE_RUNTIME_CONTENT_DERIVER_IDS);
 
 export const CONTENT_RENDERABLE_ANIMATION_IDS = Object.freeze(
   [...contentRenderIds].sort(),
+);
+
+export const CONTENT_DERIVER_ANIMATION_IDS = Object.freeze(
+  [...contentDeriverIds].sort(),
 );
 
 export const PRODUCTION_READY_LIBRARY_ANIMATION_IDS = Object.freeze(
   [...NATIVE_CONTENT_BOUND_PROTOTYPE_IDS]
     .filter(
       (animationId) =>
-        executableIds.has(animationId) && contentRenderIds.has(animationId),
+        executableIds.has(animationId) &&
+        contentRenderIds.has(animationId) &&
+        contentDeriverIds.has(animationId),
     )
     .sort(),
 );
