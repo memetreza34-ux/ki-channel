@@ -27,6 +27,7 @@ const verifyEdgeCases = read('scripts/verify-content-motion-edge-case-renders.mj
 const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
 const reviewVerifier = read('scripts/verify-content-review-gallery.mjs');
 const releaseRunner = read('scripts/run-content-release.mjs');
+const releaseSummaryVerifier = read('scripts/verify-content-release-summary.mjs');
 const actionsWorkflow = read('.github/workflows/motion-system-checks.yml');
 
 for (const required of [
@@ -72,6 +73,9 @@ for (const required of [
   "status: 'failed'",
   "status: 'passed'",
   "completedAt: status === 'running' ? null",
+  'gitHead: currentGitHead',
+  'expectedStepCount: requestedSteps.length',
+  "steps.some((step) => step.status !== 'passed')",
 ]) {
   requireContains(releaseRunner, required, 'run-content-release');
 }
@@ -95,6 +99,23 @@ if (
 ) {
   failures.push(
     'run-content-release: aktueller running-Report muss vor try/erstem Child-Step geschrieben werden, damit ein alter passed-Report sofort ungültig wird',
+  );
+}
+
+for (const required of [
+  "new Set(['verify', 'smoke', 'full'])",
+  'git rev-parse',
+  'summary.status !== \'passed\'',
+  'summary.gitHead !== currentGitHead',
+  'summary.expectedStepCount !== expectedCount',
+  "step.status !== 'passed'",
+  'expectedCommandFragments',
+  'Date.parse(step.completedAt) < Date.parse(step.startedAt)',
+]) {
+  requireContains(
+    releaseSummaryVerifier,
+    required,
+    'verify-content-release-summary',
   );
 }
 
@@ -224,5 +245,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner ist die einzige Content-Release-Quelle für CI und lokal; Run-Reports werden vor Step 1 invalidiert; all-content/complete nutzen den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner ist die einzige Content-Release-Quelle für CI und lokal; Run-Reports werden vor Step 1 invalidiert und an Git-HEAD/erwartete Schritte gebunden; all-content/complete nutzen den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
