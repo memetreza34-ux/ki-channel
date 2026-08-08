@@ -47,6 +47,7 @@ const tests = [
   'ki/src/animation-library/__tests__/masterplanPayloadLoaders.test.mjs',
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
+  'ki/src/animation-library/__tests__/channelMasterplanSanitizedProps.test.ts',
 ];
 
 const outputDir = resolve('out/content-matched/runtime-verification');
@@ -126,7 +127,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Winner-Cue-, Messwert-Zuordnungs-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Winner-Cue-, Messwert-Zuordnungs-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
