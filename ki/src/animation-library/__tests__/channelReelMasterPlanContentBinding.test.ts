@@ -191,6 +191,16 @@ describe('channel master plan content binding', () => {
     expect(scene.valid).toBe(true);
     expect(masterPlan.implementationBrief.readyForImplementation).toBe(true);
     expect(
+      masterPlan.implementationBrief.warnings,
+    ).not.toContain(
+      'one or more scenes require a content-specific animation before production',
+    );
+    expect(
+      masterPlan.implementationBrief.warnings.some((warning) =>
+        /^only 0 visual families were selected$/.test(warning),
+      ),
+    ).toBe(false);
+    expect(
       masterPlan.blockers.some((blocker) =>
         blocker.includes('requires implementation and registry entry'),
       ),
