@@ -8,13 +8,14 @@ First read `AGENTS.md` for repository-wide production and Git safety rules. For 
 
 When asked to "test", "run the first test", "continue until we can test", or verify the content-matched animation system, execute this sequence from the repository root:
 
-1. `node scripts/check-masterplan-production-inputs.mjs`
-2. `node scripts/check-first-content-grounding-test-contract.mjs`
-3. `node scripts/run-first-content-grounding-test.mjs`
-4. Inspect `out/first-content-grounding-test/cost-efficiency-budget-leak-meter-v1/test-summary.json`.
-5. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
-6. Inspect the corresponding latency `test-summary.json`.
-7. If all are green, run `node scripts/run-content-release.mjs verify`.
+1. `node scripts/check-antigravity-content-test-contract.mjs`
+2. `node scripts/check-masterplan-production-inputs.mjs`
+3. `node scripts/check-first-content-grounding-test-contract.mjs`
+4. `node scripts/run-first-content-grounding-test.mjs`
+5. Inspect `out/first-content-grounding-test/cost-efficiency-budget-leak-meter-v1/test-summary.json`.
+6. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
+7. Inspect the corresponding latency `test-summary.json`.
+8. If all are green, run `node scripts/run-content-release.mjs verify`.
 
 If dependencies are missing, install the declared repository dependencies without changing the lockfile:
 
