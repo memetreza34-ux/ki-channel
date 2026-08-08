@@ -1,5 +1,6 @@
 import {access, readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {getEdgeCaseSourceFingerprint} from './edge-case-release-utils.mjs';
 
 const requestedMode = process.argv[2] ?? 'full';
 const VALID_MODES = new Set(['smoke', 'full']);
@@ -40,13 +41,19 @@ for (const path of [
   await assertFile(path);
 }
 
-const [manifest, masterplanManifest, edgeSummary, renderConfig] =
-  await Promise.all([
-    readFile(manifestPath, 'utf8').then(JSON.parse),
-    readFile(masterplanManifestPath, 'utf8').then(JSON.parse),
-    readFile(edgeSummaryPath, 'utf8').then(JSON.parse),
-    readFile(renderConfigPath, 'utf8').then(JSON.parse),
-  ]);
+const [
+  manifest,
+  masterplanManifest,
+  edgeSummary,
+  renderConfig,
+  currentEdgeSourceFingerprint,
+] = await Promise.all([
+  readFile(manifestPath, 'utf8').then(JSON.parse),
+  readFile(masterplanManifestPath, 'utf8').then(JSON.parse),
+  readFile(edgeSummaryPath, 'utf8').then(JSON.parse),
+  readFile(renderConfigPath, 'utf8').then(JSON.parse),
+  getEdgeCaseSourceFingerprint(),
+]);
 
 if (
   manifest.version !== 1 ||
@@ -101,6 +108,11 @@ if (edgeSummary.caseCount !== 6) {
 }
 if (!edgeSummary.generatedAt || Number.isNaN(Date.parse(edgeSummary.generatedAt))) {
   throw new Error('Edge-Case-Summary benötigt einen gültigen generatedAt-Zeitstempel.');
+}
+if (edgeSummary.sourceFingerprint !== currentEdgeSourceFingerprint) {
+  throw new Error(
+    'Review-Galerie verweist auf veraltete Edge-Case-Renders: Edge-Source-Fingerprint stimmt nicht mit dem aktuellen Source-Stand überein.',
+  );
 }
 if (
   manifest.upstreamMode !== expectedUpstreamMode ||
@@ -176,7 +188,7 @@ if (manifest.totalFrames !== 28 * expectedFrameCount) {
 }
 
 console.log(
-  `[content-review] ${requestedMode}-Galerie technisch vollständig: Review-ID ${manifest.reviewId}, ${manifest.masterplanCount} Production + ${manifest.edgeCaseCount} Edge Cases, ${manifest.totalFrames} Frames, ${manifest.totalVideos} Videos.`,
+  `[content-review] ${requestedMode}-Galerie technisch vollständig: Review-ID ${manifest.reviewId}, Edge-Fingerprint ${edgeSummary.sourceFingerprint}, ${manifest.masterplanCount} Production + ${manifest.edgeCaseCount} Edge Cases, ${manifest.totalFrames} Frames, ${manifest.totalVideos} Videos.`,
 );
 console.log(
   '[content-review] Dies bestätigt nur die Vollständigkeit der Review-Oberfläche, nicht die manuellen Entscheidungen. Für die Freigabe visual-review.json exportieren und separat verifizieren.',
