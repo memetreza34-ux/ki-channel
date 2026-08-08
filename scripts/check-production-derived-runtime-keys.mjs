@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
 
@@ -73,6 +74,8 @@ const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
 const sanitizePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentSanitizer();
+const associatePrototypeRuntimeContent =
+  await loadPrototypeRuntimeContentAssociation();
 const failures = [];
 let checkedLabels = 0;
 let checkedValues = 0;
@@ -106,11 +109,16 @@ for (const fixture of fixtures) {
     spokenText: content.spokenText,
     derived,
   });
-  const labelKeys = Object.keys(sanitized.labels);
-  const valueKeys = Object.keys(sanitized.values);
+  const associated = associatePrototypeRuntimeContent({
+    animationId: fixture.animationId,
+    spokenText: content.spokenText,
+    content: sanitized,
+  });
+  const labelKeys = Object.keys(associated.labels);
+  const valueKeys = Object.keys(associated.values);
   if (labelKeys.length + valueKeys.length === 0) {
     failures.push(
-      `${fixture.animationId}: Runtime-Deriver/Sanitizer liefert keine Keys`,
+      `${fixture.animationId}: Runtime-Deriver/Sanitizer/Association liefert keine Keys`,
     );
   }
 
@@ -118,7 +126,7 @@ for (const fixture of fixtures) {
     checkedLabels += 1;
     if (!matcher.accepts(key)) {
       failures.push(
-        `${fixture.animationId}: sanitisierter Label-Key "${key}" wird von ${fileName} nicht konsumiert`,
+        `${fixture.animationId}: finaler Label-Key "${key}" wird von ${fileName} nicht konsumiert`,
       );
     }
   }
@@ -126,7 +134,7 @@ for (const fixture of fixtures) {
     checkedValues += 1;
     if (!matcher.accepts(key)) {
       failures.push(
-        `${fixture.animationId}: sanitisierter Value-Key "${key}" wird von ${fileName} nicht konsumiert`,
+        `${fixture.animationId}: finaler Value-Key "${key}" wird von ${fileName} nicht konsumiert`,
       );
     }
   }
@@ -145,5 +153,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Production-Derived-Runtime-Key-Gate bestanden: 22/22 Animationen, ${checkedLabels} sanitisierte Label-Keys und ${checkedValues} sanitisierte Value-Keys werden von ihren TSX-Komponenten konsumiert.`,
+  `Production-Derived-Runtime-Key-Gate bestanden: 22/22 Animationen, ${checkedLabels} finale Label-Keys und ${checkedValues} finale Value-Keys werden von ihren TSX-Komponenten konsumiert.`,
 );
