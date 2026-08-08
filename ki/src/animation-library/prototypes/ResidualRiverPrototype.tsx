@@ -114,7 +114,7 @@ export const ResidualRiverPrototype: React.FC = () => {
               <div style={{width: 145, height: 190, borderRadius: 32, background: completed ? `${gate.color}12` : 'rgba(255,255,255,.92)', border: `4px solid ${active || completed ? gate.color : PROTOTYPE_PALETTE.line}`, boxShadow: active ? `0 0 42px ${gate.color}55` : completed ? `0 0 28px ${gate.color}33` : '0 16px 42px rgba(55,38,83,.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 11, padding: 10, boxSizing: 'border-box'}}>
                 <div style={{width: 45, height: 45, borderRadius: 14, background: gate.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 22, fontWeight: 900}}>{completed ? '✓' : index + 1}</div>
                 <div style={{fontSize: gate.label.length > 15 ? 14 : 18, fontWeight: 900, color: active || completed ? gate.color : PROTOTYPE_PALETTE.muted, textAlign: 'center', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{gate.label.toLocaleUpperCase('de-DE')}</div>
-                <div style={{fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: active ? gate.color : completed ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.muted}}>{completed ? 'VERARBEITET' : active ? `${Math.round(gate.progress * 100)}%` : 'WARTET'}</div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: active ? gate.color : completed ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.muted}}>{completed ? 'VERARBEITET' : active ? (content ? 'WIRD VERARBEITET' : `${Math.round(gate.progress * 100)}%`) : 'WARTET'}</div>
               </div>
             </div>
           );
@@ -125,13 +125,13 @@ export const ResidualRiverPrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 100, top: 220, width: 275, padding: '20px 24px', borderRadius: 24, background: 'rgba(135,87,232,.08)', border: '2px solid rgba(135,87,232,.2)', opacity: river}}>
           <div style={{fontSize: inputLabel.length > 18 ? 14 : 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.accent, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{inputLabel.toLocaleUpperCase('de-DE')}</div>
           <div style={{marginTop: 10, fontSize: inputValue.length > 30 ? 20 : 26, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{inputValue}</div>
-          <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>{completedLayers}/{gates.length} SCHICHTEN</div>
+          <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.muted}}>{content ? 'SCHICHTEN WERDEN NACHEINANDER VERARBEITET' : `${completedLayers}/${gates.length} SCHICHTEN`}</div>
         </div>
 
         <div style={{position: 'absolute', right: 90, bottom: 70, width: 365, padding: '24px 28px', borderRadius: 28, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, opacity: resolve, transform: `translateY(${(1 - resolve) * 55}px)`, boxShadow: '0 22px 60px rgba(20,18,26,.2)'}}>
           <div style={{fontSize: outputLabel.length > 22 ? 14 : 18, fontWeight: 900, letterSpacing: 2.5, color: PROTOTYPE_PALETTE.accentSoft, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{outputLabel.toLocaleUpperCase('de-DE')}</div>
           <div style={{marginTop: 12, fontSize: outputValue.length > 58 ? 21 : 30, lineHeight: 1.18, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{outputValue}</div>
-          <div style={{marginTop: 10, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>{completedLayers}/{gates.length} SCHICHTEN VERARBEITET</div>
+          <div style={{marginTop: 10, fontFamily: 'monospace', fontSize: 14, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>{content ? 'VERARBEITUNG ABGESCHLOSSEN' : `${completedLayers}/${gates.length} SCHICHTEN VERARBEITET`}</div>
         </div>
       </GlassSurface>
     </PrototypeShell>
