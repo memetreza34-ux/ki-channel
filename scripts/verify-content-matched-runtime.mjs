@@ -136,6 +136,11 @@ try {
     'Manuelle 22+6 Review-ID, Export-Nachweis und Finalizer-Reihenfolge bleiben verpflichtend',
   );
   await run(
+    'node',
+    ['scripts/check-content-release-worktree-contract.mjs'],
+    'Release-Nachweise verlangen einen sauberen tracked Worktree und aktuellen Git-HEAD',
+  );
+  await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
     'TypeScript-Prüfung der gesamten Animationsbibliothek',
