@@ -42,6 +42,25 @@ describe('cross-label grounding', () => {
     expect(result.values[`candidate${toolBIndex}End`]).toBe(88);
   });
 
+  it('blocks a short ranking score leak across another candidate label', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A und Tool B erreicht 88 Punkte.',
+    );
+
+    const toolAIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool A',
+    );
+    const toolBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool B',
+    );
+    expect(toolAIndex).toBeDefined();
+    expect(toolBIndex).toBeDefined();
+    expect(result.values[`candidate${toolAIndex}ScoreExact`]).toBe(0);
+    expect(result.values[`candidate${toolBIndex}ScoreExact`]).toBe(1);
+    expect(result.values[`candidate${toolBIndex}End`]).toBe(88);
+  });
+
   it('does not assign Modell B score to Modell A when labels share one clause', () => {
     const result = prepare(
       'comparison-benchmark-racetrack-v1',
@@ -61,21 +80,42 @@ describe('cross-label grounding', () => {
     expect(result.values[`competitor${modelBIndex}Final`]).toBe(88);
   });
 
-  it('does not assign Answer B percentage to Answer A without punctuation', () => {
-    const derived = derivePrototypeRuntimeContent({
-      animationId: 'probability-probability-fluid-columns-v1',
-      spokenText:
-        'Antwort A bleibt möglich und Antwort B liegt bei 70 Prozent.',
-      meaningContract: enhanceSceneMeaning(
-        'Antwort A bleibt möglich und Antwort B liegt bei 70 Prozent.',
-      ),
-    });
-    const result = sanitizePrototypeRuntimeContent({
-      animationId: 'probability-probability-fluid-columns-v1',
-      spokenText:
-        'Antwort A bleibt möglich und Antwort B liegt bei 70 Prozent.',
-      derived,
-    });
+  it('blocks a short benchmark score leak across another competitor label', () => {
+    const result = prepare(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A und Modell B erreicht 88 Punkte.',
+    );
+
+    const modelAIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell A',
+    );
+    const modelBIndex = [1, 2].find(
+      (index) => result.labels[`competitor${index}`] === 'Modell B',
+    );
+    expect(modelAIndex).toBeDefined();
+    expect(modelBIndex).toBeDefined();
+    expect(result.values[`competitor${modelAIndex}ScoreExact`]).toBe(0);
+    expect(result.values[`competitor${modelBIndex}ScoreExact`]).toBe(1);
+  });
+
+  it('does not assign Antwort B percentage to Antwort A without punctuation', () => {
+    const result = prepare(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A bleibt möglich und Antwort B liegt bei 70 Prozent.',
+    );
+
+    expect(result.labels.candidate1).toBe('Antwort A');
+    expect(result.labels.candidate2).toBe('Antwort B');
+    expect(result.values.candidate1ProbabilityExact).toBe(0);
+    expect(result.values.candidate2ProbabilityExact).toBe(1);
+    expect(result.values.candidate2End).toBe(70);
+  });
+
+  it('blocks a short probability leak across another candidate label', () => {
+    const result = prepare(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A und Antwort B liegt bei 70 Prozent.',
+    );
 
     expect(result.labels.candidate1).toBe('Antwort A');
     expect(result.labels.candidate2).toBe('Antwort B');
