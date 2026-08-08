@@ -22,13 +22,12 @@ const readGitValue = (args) => {
   }
 };
 
+const readTrackedWorktreeStatus = () =>
+  readGitValue(['status', '--porcelain', '--untracked-files=no']);
+
 const currentGitHead = readGitValue(['rev-parse', 'HEAD']);
-const trackedWorktreeStatus = readGitValue([
-  'status',
-  '--porcelain',
-  '--untracked-files=no',
-]);
-const trackedWorktreeClean = trackedWorktreeStatus === '';
+const initialTrackedWorktreeStatus = readTrackedWorktreeStatus();
+const initialTrackedWorktreeClean = initialTrackedWorktreeStatus === '';
 
 const outputRoot = resolve('out/content-release-run');
 await mkdir(outputRoot, {recursive: true});
@@ -102,6 +101,7 @@ const requestedSteps = [
 ];
 
 const writeSummary = async ({status, error = null}) => {
+  const trackedWorktreeStatus = readTrackedWorktreeStatus();
   await writeFile(
     summaryPath,
     `${JSON.stringify(
@@ -110,7 +110,7 @@ const writeSummary = async ({status, error = null}) => {
         mode: requestedMode,
         status,
         gitHead: currentGitHead,
-        trackedWorktreeClean,
+        trackedWorktreeClean: trackedWorktreeStatus === '',
         expectedStepCount: requestedSteps.length,
         startedAt,
         completedAt: status === 'running' ? null : new Date().toISOString(),
@@ -170,9 +170,9 @@ try {
       'Content-Release benötigt ein Git-Repository mit auflösbarem HEAD.',
     );
   }
-  if (!trackedWorktreeClean) {
+  if (!initialTrackedWorktreeClean) {
     throw new Error(
-      `Content-Release benötigt einen sauberen tracked Worktree. Nicht committe Änderungen:\n${trackedWorktreeStatus}`,
+      `Content-Release benötigt einen sauberen tracked Worktree. Nicht committe Änderungen:\n${initialTrackedWorktreeStatus}`,
     );
   }
 
@@ -188,6 +188,14 @@ try {
       `Release-Schrittkonsistenz verletzt: ${steps.filter((step) => step.status === 'passed').length}/${requestedSteps.length} Schritte sind passed.`,
     );
   }
+
+  const finalTrackedWorktreeStatus = readTrackedWorktreeStatus();
+  if (finalTrackedWorktreeStatus !== '') {
+    throw new Error(
+      `Content-Release hat den tracked Worktree während des Laufs verändert oder dirty hinterlassen:\n${finalTrackedWorktreeStatus ?? 'Git-Status nicht lesbar'}`,
+    );
+  }
+
   await writeSummary({status: 'passed'});
   console.log(
     `\n[content-release:${requestedMode}] Alle ${requestedSteps.length} Schritte bestanden.`,
