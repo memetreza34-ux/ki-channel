@@ -17,7 +17,7 @@ const durationBySceneId = (sceneIds: readonly string[]) =>
   Object.fromEntries(sceneIds.map((sceneId) => [sceneId, 180]));
 
 describe('channel master plan content binding', () => {
-  it('marks reused registered prototypes as natively content-bound', () => {
+  it('marks reused registered prototypes as natively content-bound and runtime-ready', () => {
     const scenes = [
       {sceneId: 'tokens', spokenText: 'Die KI zerlegt den Satz in Tokens.'},
       {
@@ -54,7 +54,8 @@ describe('channel master plan content binding', () => {
           scene.fullAnimationSource === 'library' &&
           isProductionReadyLibraryAnimation(scene.fullAnimationId) &&
           scene.contentBindingLevel === 'native-object-binding' &&
-          scene.contentBindingReady,
+          scene.contentBindingReady &&
+          scene.runtimeReady,
       ),
     ).toBe(true);
     expect(
@@ -68,7 +69,7 @@ describe('channel master plan content binding', () => {
       masterPlan.blockers.some(
         (blocker) =>
           blocker.includes('semantic-shell-only') ||
-          blocker.includes('requires implementation and registry entry'),
+          blocker.includes('full production runtime eligibility'),
       ),
     ).toBe(false);
   });
@@ -107,7 +108,7 @@ describe('channel master plan content binding', () => {
         durationBySceneId: {['scene-bypass']: 180},
       }),
     ).toThrow(
-      /production reuse invariant violated: scene scene-bypass uses library animation .* without executable native content binding/,
+      /production reuse invariant violated: scene scene-bypass uses library animation .* without full production runtime eligibility/,
     );
   });
 
@@ -136,22 +137,76 @@ describe('channel master plan content binding', () => {
     expect(scene.fullAnimationSource).toBe('new-build');
     expect(scene.contentBindingLevel).toBe('purpose-built-new-animation');
     expect(scene.contentBindingReady).toBe(false);
+    expect(scene.runtimeReady).toBe(false);
     expect(scene.valid).toBe(false);
     expect(masterPlan.animateEverythingAsFarAsUseful).toBe(false);
     expect(
       masterPlan.blockers.some(
         (blocker) =>
-          blocker.includes('requires implementation and registry entry') &&
+          blocker.includes('requires native content implementation and registry entry') &&
           blocker.includes(scene.fullAnimationId),
       ),
     ).toBe(true);
+  });
+
+  it('blocks native content binding that is still missing full production runtime eligibility', () => {
+    const sceneId = 'native-but-not-renderable';
+    const fakeAnimationId = 'test-native-without-content-render-config-v1';
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'native-runtime-gap',
+      reelIndex: 43,
+      scenes: [
+        {
+          sceneId,
+          spokenText:
+            'Die Szene ist inhaltlich gebunden, aber der Produktionsrenderer ist noch nicht vollständig registriert.',
+          forceNewAnimation: true,
+        },
+      ],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain: createBrain(),
+      maximumNewAnimationRatio: 1,
+    });
+    const plannedScene = prepared.plan.productionPlan.scenes[0];
+    const fakeEntry = {
+      ...plannedScene.catalogEntry,
+      animationId: fakeAnimationId,
+      status: 'prototype' as const,
+    };
+
+    NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.add(fakeAnimationId);
+    try {
+      Object.assign(plannedScene, {
+        animationId: fakeAnimationId,
+        catalogEntry: fakeEntry,
+      });
+      const masterPlan = createChannelReelMasterPlan({
+        prepared,
+        durationBySceneId: {[sceneId]: 180},
+      });
+      const scene = masterPlan.scenes[0];
+
+      expect(scene.contentBindingLevel).toBe('native-object-binding');
+      expect(scene.contentBindingReady).toBe(true);
+      expect(scene.runtimeReady).toBe(false);
+      expect(scene.valid).toBe(false);
+      expect(masterPlan.implementationBrief.readyForImplementation).toBe(false);
+      expect(
+        masterPlan.blockers.some((blocker) =>
+          blocker.includes('full production runtime eligibility is incomplete') &&
+          blocker.includes(fakeAnimationId),
+        ),
+      ).toBe(true);
+    } finally {
+      NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.delete(fakeAnimationId);
+    }
   });
 
   it('keeps new-build history but becomes ready after that animation id is implemented', () => {
     const sceneId = 'implemented-after-planning';
     const prepared = prepareReelAnimationProduction({
       reelId: 'new-build-runtime-promotion',
-      reelIndex: 43,
+      reelIndex: 44,
       scenes: [
         {
           sceneId,
@@ -188,6 +243,7 @@ describe('channel master plan content binding', () => {
     expect(scene.fullAnimationId).toBe(implementedEntry!.animationId);
     expect(scene.contentBindingLevel).toBe('native-object-binding');
     expect(scene.contentBindingReady).toBe(true);
+    expect(scene.runtimeReady).toBe(true);
     expect(scene.valid).toBe(true);
     expect(masterPlan.implementationBrief.readyForImplementation).toBe(true);
     expect(
@@ -202,7 +258,7 @@ describe('channel master plan content binding', () => {
     ).toBe(false);
     expect(
       masterPlan.blockers.some((blocker) =>
-        blocker.includes('requires implementation and registry entry'),
+        blocker.includes('full production runtime eligibility'),
       ),
     ).toBe(false);
   });
