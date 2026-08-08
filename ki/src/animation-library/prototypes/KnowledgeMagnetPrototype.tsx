@@ -5,6 +5,7 @@ import {
   getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
+import {parseExplicitCountNear} from './PrototypeMeasurementGrounding';
 import {
   GlassSurface,
   PROTOTYPE_PALETTE,
@@ -59,6 +60,14 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
     defaultRelevantCount,
     DEFAULT_DOCUMENTS.length,
   );
+  const explicitEvidenceCount = content
+    ? parseExplicitCountNear({
+        spokenText: content.spokenText,
+        terms: ['Belege', 'Quellen', 'Treffer', 'Dokumente', 'Nachweise'],
+        minimum: 1,
+        maximum: DEFAULT_DOCUMENTS.length,
+      })
+    : null;
   const documents = DEFAULT_DOCUMENTS.map((document, index) => {
     const fallbackRelevant = content
       ? index < requestedEvidenceCount
@@ -105,12 +114,17 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
       ? compactText(content.meaningContract.endState, 62)
       : 'nach Relevanz geordnet',
   });
+  const evidenceLabel = !content
+    ? `${evidenceCount} BELEGE`
+    : explicitEvidenceCount !== null
+      ? `${explicitEvidenceCount} BELEGE`
+      : 'RELEVANTE BELEGE';
 
   return (
     <PrototypeShell
       family="RETRIEVAL SEARCH"
       title="Knowledge Magnet"
-      subtitle="Die Anfrage zieht nur die Quellen an, die für den konkreten Inhalt als relevant markiert sind; unpassende Quellen werden abgestoßen."
+      subtitle="Die Anfrage zieht nur die Quellen an, die für den konkreten Inhalt als relevant markiert sind; unpassende Quellen werden abgestoßen. Eine exakte Trefferzahl wird nur gezeigt, wenn sie im Sprechertext genannt wird."
     >
       <div style={{position: 'absolute', left: 86, right: 86, top: 380, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -155,27 +169,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
             })}
           </svg>
 
-          <div
-            style={{
-              position: 'absolute',
-              left: 454,
-              top: 640,
-              transform: `translate(-50%, -50%) scale(${0.72 + field * 0.28})`,
-              width: 255,
-              height: 255,
-              borderRadius: 999,
-              background: `radial-gradient(circle, ${PROTOTYPE_PALETTE.white} 0%, #EFE7FF 58%, ${PROTOTYPE_PALETTE.accentSoft} 100%)`,
-              border: `5px solid ${PROTOTYPE_PALETTE.accent}`,
-              boxShadow: `0 0 ${35 + field * 45}px rgba(135,87,232,.42)`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              padding: 30,
-              boxSizing: 'border-box',
-              zIndex: 5,
-            }}
-          >
+          <div style={{position: 'absolute', left: 454, top: 640, transform: `translate(-50%, -50%) scale(${0.72 + field * 0.28})`, width: 255, height: 255, borderRadius: 999, background: `radial-gradient(circle, ${PROTOTYPE_PALETTE.white} 0%, #EFE7FF 58%, ${PROTOTYPE_PALETTE.accentSoft} 100%)`, border: `5px solid ${PROTOTYPE_PALETTE.accent}`, boxShadow: `0 0 ${35 + field * 45}px rgba(135,87,232,.42)`, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 30, boxSizing: 'border-box', zIndex: 5}}>
             <div>
               <div style={{fontSize: 23, fontWeight: 900, letterSpacing: 3, color: PROTOTYPE_PALETTE.accent}}>{queryLabel.toLocaleUpperCase('de-DE')}</div>
               <div style={{marginTop: 12, fontSize: queryText.length > 30 ? 25 : 34, lineHeight: 1.05, fontWeight: 900}}>„{queryText}“</div>
@@ -202,62 +196,14 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
             const selected = document.relevant && pull > 0.75;
 
             return (
-              <div
-                key={`${document.label}-${index}`}
-                style={{
-                  position: 'absolute',
-                  left: x,
-                  top: y,
-                  width: selected ? 150 : 132,
-                  minHeight: selected ? 118 : 98,
-                  borderRadius: 22,
-                  transform: `translate(-50%, -50%) rotate(${document.relevant ? (index - 2) * 2 : (index % 2 ? 7 : -7)}deg) scale(${selected ? 1.05 : 1})`,
-                  background: selected ? '#F1EAFF' : 'white',
-                  border: `2px solid ${selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.line}`,
-                  boxShadow: selected
-                    ? '0 18px 45px rgba(135,87,232,.27)'
-                    : '0 12px 30px rgba(48,34,74,.10)',
-                  opacity: document.relevant ? 1 : 1 - repel * 0.78,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  padding: 16,
-                  boxSizing: 'border-box',
-                  fontSize: document.label.length > 13 ? 17 : 21,
-                  fontWeight: 850,
-                  color: selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.foreground,
-                  zIndex: selected ? 8 : 2,
-                  overflow: 'hidden',
-                }}
-              >
+              <div key={`${document.label}-${index}`} style={{position: 'absolute', left: x, top: y, width: selected ? 150 : 132, minHeight: selected ? 118 : 98, borderRadius: 22, transform: `translate(-50%, -50%) rotate(${document.relevant ? (index - 2) * 2 : (index % 2 ? 7 : -7)}deg) scale(${selected ? 1.05 : 1})`, background: selected ? '#F1EAFF' : 'white', border: `2px solid ${selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.line}`, boxShadow: selected ? '0 18px 45px rgba(135,87,232,.27)' : '0 12px 30px rgba(48,34,74,.10)', opacity: document.relevant ? 1 : 1 - repel * 0.78, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 16, boxSizing: 'border-box', fontSize: document.label.length > 13 ? 17 : 21, fontWeight: 850, color: selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.foreground, zIndex: selected ? 8 : 2, overflow: 'hidden'}}>
                 {compactText(document.label, 22)}
               </div>
             );
           })}
 
-          <div
-            style={{
-              position: 'absolute',
-              left: 125,
-              right: 125,
-              bottom: 62,
-              padding: '22px 28px',
-              borderRadius: 26,
-              background: 'rgba(53,197,138,.10)',
-              border: '2px solid rgba(53,197,138,.34)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 15,
-              opacity: ranking,
-              transform: `translateY(${(1 - ranking) * 38}px)`,
-              fontSize: 23,
-              fontWeight: 900,
-              textAlign: 'center',
-            }}
-          >
-            <span style={{color: PROTOTYPE_PALETTE.success}}>{evidenceCount} BELEGE</span>
+          <div style={{position: 'absolute', left: 125, right: 125, bottom: 62, padding: '22px 28px', borderRadius: 26, background: 'rgba(53,197,138,.10)', border: '2px solid rgba(53,197,138,.34)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 15, opacity: ranking, transform: `translateY(${(1 - ranking) * 38}px)`, fontSize: 23, fontWeight: 900, textAlign: 'center'}}>
+            <span style={{color: PROTOTYPE_PALETTE.success}}>{evidenceLabel}</span>
             <span style={{color: PROTOTYPE_PALETTE.muted}}>{resultLabel}</span>
           </div>
         </GlassSurface>
