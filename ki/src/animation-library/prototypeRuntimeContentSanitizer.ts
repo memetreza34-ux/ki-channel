@@ -195,12 +195,39 @@ const unitMentionCount = (spokenText: string, unit: string): number => {
   return [...spokenText.matchAll(patterns[unit] ?? /$^/g)].length;
 };
 
+const winnerCueIndex = ({
+  spokenText,
+  labels,
+  prefix,
+  count,
+}: {
+  spokenText: string;
+  labels: Record<string, string>;
+  prefix: string;
+  count: number;
+}): number => {
+  const text = normalize(spokenText);
+  for (let index = 0; index < count; index += 1) {
+    const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
+    if (label.length < 2) continue;
+    const position = text.indexOf(label);
+    if (position < 0) continue;
+    const window = text.slice(Math.max(0, position - 50), position + label.length + 70);
+    if (/\b(gewinnt|gewinner|sieger|fuhrt|vorne|platz 1|erster|erste|bestes|beste|besten)\b/.test(window)) {
+      return index;
+    }
+  }
+  return -1;
+};
+
 const sanitizeProbability = (
   spokenText: string,
+  labels: Record<string, string>,
   values: Record<string, string | number>,
 ): Record<string, string | number> => {
   const percentages = explicitPercentages(spokenText);
   const fallbackPercentage = percentages[0] ?? explicitPercentage(spokenText);
+  const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
   const nextValues = {...values};
 
   for (let index = 0; index < 3; index += 1) {
@@ -208,6 +235,8 @@ const sanitizeProbability = (
       percentages[index] !== undefined ? 1 : 0;
   }
   nextValues.measurementExact = fallbackPercentage === null ? 0 : 1;
+  nextValues.probabilityOutcomeGrounded =
+    fallbackPercentage !== null || winnerCue >= 0 ? 1 : 0;
 
   if (percentages.length >= 3) {
     for (let index = 0; index < 3; index += 1) {
@@ -215,25 +244,37 @@ const sanitizeProbability = (
     }
     return nextValues;
   }
-  if (fallbackPercentage === null) return nextValues;
-
-  const primaryEnd = Math.max(0, Math.min(100, fallbackPercentage));
-  const remaining = 100 - primaryEnd;
-  const secondEnd = remaining === 0 ? 0 : Math.round(remaining * 0.65);
-  const thirdEnd = Math.max(0, 100 - primaryEnd - secondEnd);
-  nextValues.candidate1End = primaryEnd;
-  nextValues.candidate2End = secondEnd;
-  nextValues.candidate3End = thirdEnd;
-  nextValues.candidate1ProbabilityExact = 1;
+  if (fallbackPercentage !== null) {
+    const primaryEnd = Math.max(0, Math.min(100, fallbackPercentage));
+    const remaining = 100 - primaryEnd;
+    const secondEnd = remaining === 0 ? 0 : Math.round(remaining * 0.65);
+    const thirdEnd = Math.max(0, 100 - primaryEnd - secondEnd);
+    nextValues.candidate1End = primaryEnd;
+    nextValues.candidate2End = secondEnd;
+    nextValues.candidate3End = thirdEnd;
+    nextValues.candidate1ProbabilityExact = 1;
+    return nextValues;
+  }
+  if (winnerCue >= 0) {
+    for (let index = 0; index < 3; index += 1) {
+      nextValues[`candidate${index + 1}End`] = index === winnerCue ? 68 : 16;
+    }
+  }
   return nextValues;
 };
 
 const sanitizeRanking = (
   spokenText: string,
+  labels: Record<string, string>,
   values: Record<string, string | number>,
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
-  const nextValues = {...values, measurementExact: scores.length > 0 ? 1 : 0};
+  const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
+  const nextValues = {
+    ...values,
+    measurementExact: scores.length > 0 ? 1 : 0,
+    rankingOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
+  };
   for (let index = 0; index < 3; index += 1) {
     const score = scores[index];
     nextValues[`candidate${index + 1}ScoreExact`] = score === undefined ? 0 : 1;
@@ -242,19 +283,37 @@ const sanitizeRanking = (
     nextValues[`candidate${index + 1}Start`] = Math.max(10, score - 18 + index * 4);
     nextValues[`candidate${index + 1}Middle`] = Math.max(10, score - 7 + (2 - index) * 3);
   }
+  if (scores.length < 2 && winnerCue >= 0) {
+    for (let index = 0; index < 3; index += 1) {
+      const end = index === winnerCue ? 92 : 66 - index * 4;
+      nextValues[`candidate${index + 1}End`] = end;
+      nextValues[`candidate${index + 1}Start`] = Math.max(10, end - 18 + index * 4);
+      nextValues[`candidate${index + 1}Middle`] = Math.max(10, end - 7 + (2 - index) * 3);
+    }
+  }
   return nextValues;
 };
 
 const sanitizeComparison = (
   spokenText: string,
+  labels: Record<string, string>,
   values: Record<string, string | number>,
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
-  const nextValues = {...values, measurementExact: scores.length > 0 ? 1 : 0};
+  const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'competitor', count: 2});
+  const nextValues = {
+    ...values,
+    measurementExact: scores.length > 0 ? 1 : 0,
+    comparisonOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
+  };
   for (let index = 0; index < 2; index += 1) {
     const score = scores[index];
     nextValues[`competitor${index + 1}ScoreExact`] = score === undefined ? 0 : 1;
     if (score !== undefined) nextValues[`competitor${index + 1}Final`] = score;
+  }
+  if (scores.length < 2 && winnerCue >= 0) {
+    nextValues.competitor1Final = winnerCue === 0 ? 100 : 0.88;
+    nextValues.competitor2Final = winnerCue === 1 ? 100 : 0.88;
   }
   return nextValues;
 };
@@ -345,13 +404,13 @@ export const sanitizePrototypeRuntimeContent = ({
   let values = {...derived.values};
 
   if (animationId === 'probability-probability-fluid-columns-v1') {
-    values = sanitizeProbability(spokenText, values);
+    values = sanitizeProbability(spokenText, repairedLabels, values);
   }
   if (animationId === 'ranking-dynamic-podium-rise-v1') {
-    values = sanitizeRanking(spokenText, values);
+    values = sanitizeRanking(spokenText, repairedLabels, values);
   }
   if (animationId === 'comparison-benchmark-racetrack-v1') {
-    values = sanitizeComparison(spokenText, values);
+    values = sanitizeComparison(spokenText, repairedLabels, values);
   }
   if (animationId === 'cost-efficiency-budget-leak-meter-v1') {
     return sanitizeCost(spokenText, repairedLabels, values);
