@@ -24,7 +24,15 @@ const compactText = (value: string, maximum: number): string =>
 const ownerColor = (owner: string): string =>
   /\b(ki|ai|modell|agent)\b/i.test(owner)
     ? PROTOTYPE_PALETTE.accent
-    : PROTOTYPE_PALETTE.warning;
+    : /\b(mensch|human|person|nutzer|user)\b/i.test(owner)
+      ? PROTOTYPE_PALETTE.warning
+      : PROTOTYPE_PALETTE.muted;
+
+const inferOwner = (stageText: string): string => {
+  if (/\b(ki|ai|modell|agent)\b/i.test(stageText)) return 'KI';
+  if (/\b(mensch|human|person|nutzer|user)\b/i.test(stageText)) return 'MENSCH';
+  return 'ROLLE';
+};
 
 export const HumanAIRelayPrototype: React.FC = () => {
   const frame = useCurrentFrame();
@@ -40,25 +48,27 @@ export const HumanAIRelayPrototype: React.FC = () => {
       ])]
     : [];
   const stages = DEFAULT_STAGES.map((stage, index) => {
+    const label = getPrototypeLabel({
+      content,
+      key: `stage${index + 1}`,
+      fallback: terms[index] ?? (content ? 'ARBEITSSCHRITT' : stage.label),
+    });
     const owner = getPrototypeLabel({
       content,
       key: `stage${index + 1}Owner`,
-      fallback: stage.owner,
+      fallback: content ? inferOwner(label) : stage.owner,
     });
     return {
       ...stage,
-      label: getPrototypeLabel({
-        content,
-        key: `stage${index + 1}`,
-        fallback: terms[index] ?? stage.label,
-      }),
+      label,
       owner,
       color: ownerColor(owner),
       detail: getPrototypeLabel({
         content,
         key: `stage${index + 1}Detail`,
         fallback:
-          content?.meaningContract.requiredVisualCues[index] ?? stage.detail,
+          content?.meaningContract.requiredVisualCues[index] ??
+          (content ? 'Beitrag dieses Schritts' : stage.detail),
       }),
     };
   });
@@ -90,7 +100,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
   const resultTitle = getPrototypeLabel({
     content,
     key: 'resultTitle',
-    fallback: 'BESSER ALS „MENSCH ODER KI“',
+    fallback: content ? 'ERGEBNIS DER ZUSAMMENARBEIT' : 'BESSER ALS „MENSCH ODER KI“',
   });
   const resultText = getPrototypeLabel({
     content,
@@ -104,7 +114,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
     <PrototypeShell
       family="HUMAN AI COLLABORATION"
       title="Human AI Relay"
-      subtitle="Die Aufgabe wechselt sichtbar zwischen den tatsächlichen Verantwortlichen. Jede Übergabe folgt der in den Szenendaten definierten Rollenverteilung."
+      subtitle="Die Aufgabe wechselt sichtbar zwischen den im Szeneninhalt erkennbaren Verantwortlichen. Unbekannte Rollen werden neutral markiert statt aus der Demo erfunden."
     >
       <div style={{position: 'absolute', left: 78, right: 78, top: 400, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -153,7 +163,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
           <div style={{position: 'absolute', left: 105, right: 105, bottom: 64, padding: '26px 30px', borderRadius: 28, background: `linear-gradient(135deg, ${PROTOTYPE_PALETTE.foreground}, #302741)`, color: 'white', opacity: finish, transform: `translateY(${(1 - finish) * 45}px)`, textAlign: 'center', boxShadow: '0 22px 58px rgba(20,18,26,.24)'}}>
             <div style={{fontSize: resultTitle.length > 38 ? 23 : 34, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{resultTitle}</div>
             <div style={{fontSize: resultText.length > 78 ? 18 : 23, fontWeight: 750, marginTop: 12, color: PROTOTYPE_PALETTE.accentSoft, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{resultText}</div>
-            <div style={{marginTop: 9, fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>{completedStages}/{stages.length} ÜBERGABEN ABGESCHLOSSEN</div>
+            <div style={{marginTop: 9, fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>{content ? 'ÜBERGABEN ABGESCHLOSSEN' : `${completedStages}/${stages.length} ÜBERGABEN ABGESCHLOSSEN`}</div>
           </div>
         </GlassSurface>
       </div>
