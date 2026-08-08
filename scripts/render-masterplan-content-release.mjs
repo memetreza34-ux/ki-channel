@@ -3,6 +3,7 @@ import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
+import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
 import {
   getMasterplanContentSourceFingerprint,
   getMasterplanFixtureContent,
@@ -42,6 +43,8 @@ const fixtureByAnimationId = new Map(
 );
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
+const sanitizePrototypeRuntimeContent =
+  await loadPrototypeRuntimeContentSanitizer();
 const createPrototypeRenderProps = await loadCreatePrototypeRenderProps();
 const sourceFingerprint = await getMasterplanContentSourceFingerprint();
 await mkdir(MASTERPLAN_CONTENT_OUTPUT_ROOT, {recursive: true});
@@ -76,19 +79,24 @@ for (const prototype of prototypes) {
     spokenText: sourceContent.spokenText,
     meaningContract: sourceContent.meaningContract,
   });
+  const sanitized = sanitizePrototypeRuntimeContent({
+    animationId: prototype.animationId,
+    spokenText: sourceContent.spokenText,
+    derived,
+  });
   const derivedKeyCount =
-    Object.keys(derived.labels).length + Object.keys(derived.values).length;
+    Object.keys(sanitized.labels).length + Object.keys(sanitized.values).length;
   if (derivedKeyCount === 0) {
     throw new Error(
-      `Runtime-Deriver liefert keine prototypspezifischen Keys für ${prototype.animationId}.`,
+      `Runtime-Deriver/Sanitizer liefert keine prototypspezifischen Keys für ${prototype.animationId}.`,
     );
   }
 
   const props = createPrototypeRenderProps({
     spokenText: sourceContent.spokenText,
     meaningContract: sourceContent.meaningContract,
-    labels: derived.labels,
-    values: derived.values,
+    labels: sanitized.labels,
+    values: sanitized.values,
   });
 
   const outputRoot = resolve(
@@ -121,14 +129,14 @@ for (const prototype of prototypes) {
     compositionId: prototype.compositionId,
     outputRoot,
     propsPath,
-    derivedLabelCount: Object.keys(derived.labels).length,
-    derivedValueCount: Object.keys(derived.values).length,
+    derivedLabelCount: Object.keys(sanitized.labels).length,
+    derivedValueCount: Object.keys(sanitized.values).length,
   });
 }
 
 const manifest = {
   version: 1,
-  payloadBuilder: 'createPrototypeRenderProps',
+  payloadBuilder: 'derive+sanitize+createPrototypeRenderProps',
   mode: requestedMode,
   requestedAnimationId: requestedAnimationId ?? null,
   sourceFingerprint,
