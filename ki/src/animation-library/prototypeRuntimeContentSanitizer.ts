@@ -234,12 +234,15 @@ const winnerCueIndex = ({
 }): number => {
   const text = normalize(spokenText);
   const cue = '(?:gewinnt|gewinner|sieger|fuhrt|vorne|platz\\s*1|erster|erste|bestes|beste|besten)';
+  const negative = '(?:nicht|kein|keine|keinen|keiner|keinem|weder|nie|niemals)';
+  const safeGap = `(?:(?!\\b${negative}\\b)[^,.!?;]){0,18}`;
+  const notNegatedAfterCue = `(?!\\s+${negative}\\b)`;
   for (let index = 0; index < count; index += 1) {
     const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
     if (label.length < 2) continue;
     const escapedLabel = escapeRegex(label).replace(/\s+/g, '\\s+');
-    const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^,.!?;]{0,18}\\b${cue}\\b`);
-    const cueBeforeLabel = new RegExp(`\\b${cue}\\b[^,.!?;]{0,18}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+    const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap}\\b${cue}\\b${notNegatedAfterCue}`);
+    const cueBeforeLabel = new RegExp(`\\b${cue}\\b${notNegatedAfterCue}${safeGap}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
     if (labelBeforeCue.test(text) || cueBeforeLabel.test(text)) return index;
   }
   return -1;
