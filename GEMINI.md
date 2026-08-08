@@ -4,6 +4,24 @@ This repository is compatible with Google Antigravity IDE/CLI.
 
 First read `AGENTS.md` for repository-wide production and Git safety rules. For content-matching, grounding, animation-library tests, or the first production render test, load and follow `.agents/skills/content-grounding-test/SKILL.md`.
 
+## First production reel
+
+When asked to build, render, finish, or continue the first real reel, use:
+
+`.agents/skills/build-context-overload-reel/SKILL.md`
+
+Approved reel package:
+
+`ki/src/reels/antigravity-context-overload/`
+
+Topic: `Warum mehr Kontext eine KI schlechter machen kann`.
+
+Before implementation run:
+
+`node scripts/check-antigravity-context-overload-reel.mjs`
+
+Then follow the reel package's nested `AGENTS.md` and `CODEX_ASSEMBLY_TASK.md`. Do not rewrite the approved five-scene voiceover casually, do not replace the selected production-ready animation mechanisms, and do not inject demo values.
+
 ## Fastest first-test path
 
 For the complete first grounding sequence, run this one command from the repository root:
