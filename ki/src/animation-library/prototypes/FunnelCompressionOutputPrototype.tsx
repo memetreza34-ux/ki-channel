@@ -94,12 +94,18 @@ export const FunnelCompressionOutputPrototype: React.FC = () => {
     key: 'outputDetail',
     fallback: 'Nur relevante Informationen bleiben erhalten.',
   });
+  const droppedLabel = content
+    ? 'IRRELEVANTE QUELLEN VERWORFEN'
+    : `${droppedInputs} QUELLEN VERWORFEN`;
+  const keptLabel = content
+    ? 'RELEVANTE QUELLEN BLEIBEN'
+    : `${keptInputs.length} QUELLEN BLEIBEN`;
 
   return (
     <PrototypeShell
       family="INPUT OUTPUT"
       title="Funnel Compression Output"
-      subtitle="Viele Quellen werden zuerst auf Relevanz geprüft; nur die passenden Informationen fließen weiter und werden verdichtet."
+      subtitle="Viele Quellen werden zuerst auf Relevanz geprüft; nur die passenden Informationen fließen weiter und werden verdichtet. Interne Visualisierungs-Counts werden im Content-Modus nicht als Fakten ausgegeben."
     >
       <GlassSurface style={{position: 'absolute', left: 74, right: 74, top: 390, bottom: 190, overflow: 'hidden'}}>
         {inputs.map((input, index) => {
@@ -150,10 +156,10 @@ export const FunnelCompressionOutputPrototype: React.FC = () => {
         )}
 
         <div style={{position: 'absolute', left: 90, top: 865, width: 250, padding: '16px 18px', borderRadius: 20, background: 'rgba(255,93,108,.08)', border: '2px solid rgba(255,93,108,.25)', color: PROTOTYPE_PALETTE.danger, textAlign: 'center', opacity: filterPhase * (1 - output), fontSize: 16, fontWeight: 900}}>
-          {droppedInputs} QUELLEN VERWORFEN
+          {droppedLabel}
         </div>
         <div style={{position: 'absolute', right: 90, top: 865, width: 250, padding: '16px 18px', borderRadius: 20, background: 'rgba(53,197,138,.08)', border: '2px solid rgba(53,197,138,.25)', color: PROTOTYPE_PALETTE.success, textAlign: 'center', opacity: filterPhase * (1 - output), fontSize: 16, fontWeight: 900}}>
-          {keptInputs.length} QUELLEN BLEIBEN
+          {keptLabel}
         </div>
 
         <div style={{position: 'absolute', left: 135, right: 135, bottom: 60, padding: '30px 34px', borderRadius: 32, background: `linear-gradient(135deg, ${PROTOTYPE_PALETTE.foreground}, #342747)`, color: PROTOTYPE_PALETTE.white, textAlign: 'center', opacity: output, transform: `translateY(${(1 - output) * 80}px) scale(${0.88 + output * 0.12})`, boxShadow: '0 24px 70px rgba(20,18,26,.24)'}}>
