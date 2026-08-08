@@ -128,6 +128,62 @@ const hasUniqueMaximum = (values: readonly number[]): boolean => {
   return values.filter((value) => value === maximum).length === 1;
 };
 
+const setRankingMotionValue = (
+  values: Record<string, string | number>,
+  index: number,
+  end: number,
+): void => {
+  const keyIndex = index + 1;
+  values[`candidate${keyIndex}End`] = end;
+  values[`candidate${keyIndex}Start`] = Math.max(
+    10,
+    end - 18 + index * 4,
+  );
+  values[`candidate${keyIndex}Middle`] = Math.max(
+    10,
+    end - 7 + (2 - index) * 3,
+  );
+};
+
+const alignRankingWinner = (
+  values: Record<string, string | number>,
+  exactScores: readonly (number | null)[],
+  winnerIndex: number,
+): boolean => {
+  const winnerScore = exactScores[winnerIndex];
+  const knownOthers = exactScores
+    .filter((score, index): score is number => index !== winnerIndex && score !== null);
+
+  if (winnerScore !== null) {
+    if (winnerScore <= 0 || knownOthers.some((score) => score >= winnerScore)) {
+      return false;
+    }
+    exactScores.forEach((score, index) => {
+      if (index === winnerIndex || score !== null) return;
+      setRankingMotionValue(
+        values,
+        index,
+        Math.max(0, winnerScore - 12 - index * 4),
+      );
+    });
+    return true;
+  }
+
+  const maximumKnown = knownOthers.length > 0 ? Math.max(...knownOthers) : 0;
+  if (maximumKnown >= 100) return false;
+  const winnerEnd = Math.min(100, Math.max(84, maximumKnown + 4));
+  setRankingMotionValue(values, winnerIndex, winnerEnd);
+  exactScores.forEach((score, index) => {
+    if (index === winnerIndex || score !== null) return;
+    setRankingMotionValue(
+      values,
+      index,
+      Math.max(0, winnerEnd - 12 - index * 4),
+    );
+  });
+  return true;
+};
+
 const associateRankingScores = (
   spokenText: string,
   content: AssociatablePrototypeRuntimeContent,
@@ -145,32 +201,58 @@ const associateRankingScores = (
   );
   const associatedCount = exactScores.filter((value) => value !== null).length;
 
-  if (associatedCount > 0) {
-    exactScores.forEach((score, index) => {
-      const keyIndex = index + 1;
-      values[`candidate${keyIndex}ScoreExact`] = score === null ? 0 : 1;
-      if (score === null) return;
-      values[`candidate${keyIndex}End`] = score;
-      values[`candidate${keyIndex}Start`] = Math.max(
-        10,
-        score - 18 + index * 4,
-      );
-      values[`candidate${keyIndex}Middle`] = Math.max(
-        10,
-        score - 7 + (2 - index) * 3,
-      );
-    });
-    const completeScores = exactScores.every(
-      (score): score is number => score !== null,
-    );
-    const scoreWinnerGrounded =
-      completeScores && hasUniqueMaximum(exactScores);
-    const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+  exactScores.forEach((score, index) => {
+    const keyIndex = index + 1;
+    values[`candidate${keyIndex}ScoreExact`] = score === null ? 0 : 1;
+    if (score !== null) setRankingMotionValue(values, index, score);
+  });
+
+  const completeScores = exactScores.every(
+    (score): score is number => score !== null,
+  );
+  const scoreWinnerGrounded =
+    completeScores && hasUniqueMaximum(exactScores);
+  const explicitWinner = winnerCueIndex(spokenText, labels);
+  const explicitWinnerGrounded = explicitWinner >= 0
+    ? alignRankingWinner(values, exactScores, explicitWinner)
+    : false;
+
+  if (associatedCount > 0 || explicitWinner >= 0) {
     values.rankingOutcomeGrounded =
-      scoreWinnerGrounded || explicitWinner ? 1 : 0;
+      scoreWinnerGrounded || explicitWinnerGrounded ? 1 : 0;
   }
 
   return {labels: content.labels, values};
+};
+
+const alignComparisonWinner = (
+  values: Record<string, string | number>,
+  exactScores: readonly (number | null)[],
+  winnerIndex: number,
+): boolean => {
+  const winnerScore = exactScores[winnerIndex];
+  const otherIndex = winnerIndex === 0 ? 1 : 0;
+  const otherScore = exactScores[otherIndex];
+
+  if (winnerScore !== null) {
+    if (winnerScore <= 0 || (otherScore !== null && otherScore >= winnerScore)) {
+      return false;
+    }
+    if (otherScore === null) {
+      values[`competitor${otherIndex + 1}Final`] = Math.max(0, winnerScore - 12);
+    }
+    return true;
+  }
+
+  if (otherScore !== null && otherScore >= 100) return false;
+  values[`competitor${winnerIndex + 1}Final`] = Math.min(
+    100,
+    Math.max(0.84, (otherScore ?? 0) + 4),
+  );
+  if (otherScore === null) {
+    values[`competitor${otherIndex + 1}Final`] = 0.72;
+  }
+  return true;
 };
 
 const associateComparisonScores = (
@@ -190,20 +272,25 @@ const associateComparisonScores = (
   );
   const associatedCount = exactScores.filter((value) => value !== null).length;
 
-  if (associatedCount > 0) {
-    exactScores.forEach((score, index) => {
-      const keyIndex = index + 1;
-      values[`competitor${keyIndex}ScoreExact`] = score === null ? 0 : 1;
-      if (score !== null) values[`competitor${keyIndex}Final`] = score;
-    });
-    const completeScores = exactScores.every(
-      (score): score is number => score !== null,
-    );
-    const scoreWinnerGrounded =
-      completeScores && hasUniqueMaximum(exactScores);
-    const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+  exactScores.forEach((score, index) => {
+    const keyIndex = index + 1;
+    values[`competitor${keyIndex}ScoreExact`] = score === null ? 0 : 1;
+    if (score !== null) values[`competitor${keyIndex}Final`] = score;
+  });
+
+  const completeScores = exactScores.every(
+    (score): score is number => score !== null,
+  );
+  const scoreWinnerGrounded =
+    completeScores && hasUniqueMaximum(exactScores);
+  const explicitWinner = winnerCueIndex(spokenText, labels);
+  const explicitWinnerGrounded = explicitWinner >= 0
+    ? alignComparisonWinner(values, exactScores, explicitWinner)
+    : false;
+
+  if (associatedCount > 0 || explicitWinner >= 0) {
     values.comparisonOutcomeGrounded =
-      scoreWinnerGrounded || explicitWinner ? 1 : 0;
+      scoreWinnerGrounded || explicitWinnerGrounded ? 1 : 0;
   }
 
   return {labels: content.labels, values};
@@ -221,7 +308,11 @@ const distributeProbabilityRemainder = (
   const missing = exactValues
     .map((value, index) => (value === null ? index : -1))
     .filter((index) => index >= 0);
-  if (missing.length === 0) return exactValues.map((value) => value ?? 0);
+  if (missing.length === 0) {
+    return Math.abs(exactSum - 100) < 0.001
+      ? exactValues.map((value) => value ?? 0)
+      : null;
+  }
 
   const remaining = 100 - exactSum;
   const fallbackWeight = missing.reduce(
@@ -242,6 +333,65 @@ const distributeProbabilityRemainder = (
   return result;
 };
 
+const exactScoresMajority = (
+  exactValues: readonly (number | null)[],
+): boolean => exactValues.some(
+  (value) => value !== null && value > 50,
+);
+
+const alignProbabilityWinner = (
+  exactValues: readonly (number | null)[],
+  winnerIndex: number,
+): number[] | null => {
+  const exactSum = exactValues.reduce(
+    (sum, value) => sum + (value ?? 0),
+    0,
+  );
+  if (exactSum > 100) return null;
+
+  const result = exactValues.map((value) => value ?? 0);
+  const winnerValue = exactValues[winnerIndex];
+  const unknownOthers = exactValues
+    .map((value, index) => index !== winnerIndex && value === null ? index : -1)
+    .filter((index) => index >= 0);
+  const knownOthers = exactValues
+    .filter((value, index): value is number => index !== winnerIndex && value !== null);
+  const maximumKnown = knownOthers.length > 0 ? Math.max(...knownOthers) : 0;
+
+  if (winnerValue !== null) {
+    if (winnerValue <= maximumKnown) return null;
+    const remaining = 100 - exactSum;
+    if (unknownOthers.length === 0) {
+      return Math.abs(remaining) < 0.001 ? result : null;
+    }
+    if (remaining / unknownOthers.length >= winnerValue) return null;
+    unknownOthers.forEach((index) => {
+      result[index] = remaining / unknownOthers.length;
+    });
+    return result;
+  }
+
+  const remaining = 100 - exactSum;
+  if (remaining <= maximumKnown) return null;
+  if (unknownOthers.length === 0) {
+    result[winnerIndex] = remaining;
+    return result;
+  }
+
+  const minimumWinner = Math.max(
+    maximumKnown + 1,
+    remaining / (unknownOthers.length + 1) + 1,
+  );
+  const chosenWinner = Math.min(remaining, minimumWinner);
+  if (chosenWinner <= maximumKnown) return null;
+  result[winnerIndex] = chosenWinner;
+  const leftover = remaining - chosenWinner;
+  unknownOthers.forEach((index) => {
+    result[index] = leftover / unknownOthers.length;
+  });
+  return hasUniqueMaximum(result) ? result : null;
+};
+
 const associateProbabilityPercentages = (
   spokenText: string,
   content: AssociatablePrototypeRuntimeContent,
@@ -258,7 +408,8 @@ const associateProbabilityPercentages = (
     ),
   );
   const associatedCount = exactValues.filter((value) => value !== null).length;
-  if (associatedCount === 0) return content;
+  const explicitWinner = winnerCueIndex(spokenText, labels);
+  if (associatedCount === 0 && explicitWinner < 0) return content;
 
   for (let index = 0; index < 3; index += 1) {
     values[`candidate${index + 1}ProbabilityExact`] =
@@ -268,10 +419,15 @@ const associateProbabilityPercentages = (
   const fallbackValues = [1, 2, 3].map((index) =>
     toNumber(values[`candidate${index}End`], 100 / 3),
   );
-  const distributed = distributeProbabilityRemainder(
+  const normalDistribution = distributeProbabilityRemainder(
     exactValues,
     fallbackValues,
   );
+  const winnerDistribution = explicitWinner >= 0
+    ? alignProbabilityWinner(exactValues, explicitWinner)
+    : null;
+  const distributed = winnerDistribution ?? normalDistribution;
+
   if (!distributed) {
     for (let index = 0; index < 3; index += 1) {
       values[`candidate${index + 1}ProbabilityExact`] = 0;
@@ -284,18 +440,15 @@ const associateProbabilityPercentages = (
     values[`candidate${index + 1}End`] = value;
   });
   const majorityGrounded = exactScoresMajority(exactValues);
-  const enoughKnownValues = associatedCount >= 2 && hasUniqueMaximum(distributed);
-  const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+  const enoughKnownValues =
+    associatedCount >= 2 && normalDistribution !== null &&
+    hasUniqueMaximum(normalDistribution);
+  const explicitWinnerGrounded =
+    explicitWinner >= 0 && winnerDistribution !== null;
   values.probabilityOutcomeGrounded =
-    majorityGrounded || enoughKnownValues || explicitWinner ? 1 : 0;
+    majorityGrounded || enoughKnownValues || explicitWinnerGrounded ? 1 : 0;
   return {labels: content.labels, values};
 };
-
-const exactScoresMajority = (
-  exactValues: readonly (number | null)[],
-): boolean => exactValues.some(
-  (value) => value !== null && value > 50,
-);
 
 const costUnitPattern = (unit: string): string | null => {
   if (unit === 'ct') return '(?:cent\\b|ct\\b)';
