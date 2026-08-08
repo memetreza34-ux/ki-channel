@@ -72,4 +72,16 @@ describe('visible precision grounding bindings', () => {
     expect(source).toContain('IRRELEVANTE QUELLEN VERWORFEN');
     expect(source).toContain('RELEVANTE QUELLEN BLEIBEN');
   });
+
+  it('does not expose internal semantic cluster ids or group sizes as content facts', () => {
+    const source = read('MeaningTerrainPrototype.tsx');
+    expect(source).toContain("concept.cluster === 1 ? 'GRUPPE A' : 'GRUPPE B'");
+    expect(source).toContain("{content ? '' : ` · ${concepts.filter");
+  });
+
+  it('does not expose demo years or focus counters in content timelines', () => {
+    const source = read('TimelineMicroscopePrototype.tsx');
+    expect(source).toContain("content ? 'ENTWICKLUNG IM ZEITVERLAUF' : 'MODEL EVOLUTION · 2023–2026'");
+    expect(source).toContain('content ? `FOKUS: ${milestones[focusIndex].label}`');
+  });
 });
