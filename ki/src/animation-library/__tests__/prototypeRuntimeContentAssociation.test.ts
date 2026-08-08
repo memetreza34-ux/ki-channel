@@ -23,10 +23,10 @@ const prepare = (animationId: string, spokenText: string) => {
 };
 
 describe('prototype runtime content association', () => {
-  it('binds reversed ranking score mentions to the named tools', () => {
+  it('binds reversed ranking scores but keeps the winner open while one candidate is unscored', () => {
     const result = prepare(
       'ranking-dynamic-podium-rise-v1',
-      'Tool A und Tool B werden verglichen. Tool B erreicht 88 Punkte, Tool A erreicht 96 Punkte.',
+      'Tool A, Tool B und Tool C werden verglichen. Tool B erreicht 88 Punkte, Tool A erreicht 96 Punkte.',
     );
 
     const toolAIndex = [1, 2, 3].find(
@@ -35,12 +35,47 @@ describe('prototype runtime content association', () => {
     const toolBIndex = [1, 2, 3].find(
       (index) => result.labels[`candidate${index}`] === 'Tool B',
     );
+    const toolCIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Tool C',
+    );
     expect(toolAIndex).toBeDefined();
     expect(toolBIndex).toBeDefined();
+    expect(toolCIndex).toBeDefined();
     expect(result.values[`candidate${toolAIndex}End`]).toBe(96);
     expect(result.values[`candidate${toolBIndex}End`]).toBe(88);
     expect(result.values[`candidate${toolAIndex}ScoreExact`]).toBe(1);
     expect(result.values[`candidate${toolBIndex}ScoreExact`]).toBe(1);
+    expect(result.values[`candidate${toolCIndex}ScoreExact`]).toBe(0);
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+  });
+
+  it('grounds a ranking winner when all three named scores are explicit and unique', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool B erreicht 88 Punkte, Tool A erreicht 96 Punkte und Tool C erreicht 82 Punkte.',
+    );
+
+    expect(result.values.candidate1ScoreExact).toBe(1);
+    expect(result.values.candidate2ScoreExact).toBe(1);
+    expect(result.values.candidate3ScoreExact).toBe(1);
+    expect(result.values.rankingOutcomeGrounded).toBe(1);
+  });
+
+  it('does not ground a ranking winner when the highest explicit scores tie', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A erreicht 96 Punkte, Tool B erreicht 96 Punkte und Tool C erreicht 82 Punkte.',
+    );
+
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+  });
+
+  it('allows an explicit spoken ranking winner even when not every score is given', () => {
+    const result = prepare(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A erreicht 96 Punkte und gewinnt den Vergleich gegen Tool B und Tool C.',
+    );
+
     expect(result.values.rankingOutcomeGrounded).toBe(1);
   });
 
@@ -63,6 +98,15 @@ describe('prototype runtime content association', () => {
     expect(result.values[`competitor${modelAIndex}ScoreExact`]).toBe(1);
     expect(result.values[`competitor${modelBIndex}ScoreExact`]).toBe(1);
     expect(result.values.comparisonOutcomeGrounded).toBe(1);
+  });
+
+  it('does not ground a benchmark winner when both exact scores tie', () => {
+    const result = prepare(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A erreicht 90 Punkte und Modell B erreicht 90 Punkte.',
+    );
+
+    expect(result.values.comparisonOutcomeGrounded).toBe(0);
   });
 
   it('keeps an actual spoken cost reduction in spoken order', () => {
