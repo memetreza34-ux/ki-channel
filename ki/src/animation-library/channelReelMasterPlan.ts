@@ -15,6 +15,7 @@ import {
   type PrototypeContentBindingLevel,
 } from './prototypeContentCoverage';
 import {createPrototypeRenderProps} from './prototypeRenderPayload';
+import {derivePrototypeRuntimeContent} from './prototypeRuntimeContentDeriver';
 import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 import type {PreparedReelProduction} from './reelLifecycle';
 import {
@@ -128,9 +129,16 @@ export const createChannelReelMasterPlan = ({
     const motion = universalByScene.get(scene.sceneId)!;
     const contentMode = resolveChannelContentMode(analysis.spokenText);
     const meaning = motion.meaningContract;
+    const runtimeContent = derivePrototypeRuntimeContent({
+      animationId: scene.animationId,
+      spokenText: analysis.spokenText,
+      meaningContract: meaning,
+    });
     const prototypeRenderProps = createPrototypeRenderProps({
       spokenText: analysis.spokenText,
       meaningContract: meaning,
+      labels: runtimeContent.labels,
+      values: runtimeContent.values,
     });
     const contentBindingLevel = getPrototypeContentBindingLevel({
       animationId: scene.animationId,
@@ -153,7 +161,7 @@ export const createChannelReelMasterPlan = ({
     const runtimeWarnings =
       contentBindingReady && !runtimeReady
         ? [
-            'native scene-content binding exists, but the animation is not fully production-renderable through the executable/content-render/status gates',
+            'native scene-content binding exists, but the animation is not fully production-renderable through the executable/content-render/content-deriver/status gates',
           ]
         : [];
     return {
@@ -265,7 +273,7 @@ export const renderChannelReelMasterPlanMarkdown = (
     `- **Sichtbare Veränderung:** ${scene.visibleChange}\n` +
     `- **Endzustand:** ${scene.endState}\n` +
     `- **Pflicht-Cues:** ${scene.requiredVisualCues.join(', ')}\n` +
-    `- **Render-Props:** vollständig erzeugt und für \`--props\` serialisierbar\n\n` +
+    `- **Render-Props:** prototypspezifische Labels/Werte erzeugt und für \`--props\` serialisierbar\n\n` +
     `**Wichtige Wörter:** ${scene.importantWordCount}\n\n` +
     `### Wortmechanismen\n${list(scene.importantWordMechanisms)}\n\n` +
     `### Visuelle Quellen\n${list(scene.requiredVisualSources)}\n\n` +
