@@ -11,16 +11,24 @@ if (!VALID_MODES.has(requestedMode)) {
   process.exit(1);
 }
 
-const currentGitHead = (() => {
+const readGitValue = (args) => {
   try {
-    return execFileSync('git', ['rev-parse', 'HEAD'], {
+    return execFileSync('git', args, {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).trim();
   } catch {
     return null;
   }
-})();
+};
+
+const currentGitHead = readGitValue(['rev-parse', 'HEAD']);
+const trackedWorktreeStatus = readGitValue([
+  'status',
+  '--porcelain',
+  '--untracked-files=no',
+]);
+const trackedWorktreeClean = trackedWorktreeStatus === '';
 
 const outputRoot = resolve('out/content-release-run');
 await mkdir(outputRoot, {recursive: true});
@@ -102,6 +110,7 @@ const writeSummary = async ({status, error = null}) => {
         mode: requestedMode,
         status,
         gitHead: currentGitHead,
+        trackedWorktreeClean,
         expectedStepCount: requestedSteps.length,
         startedAt,
         completedAt: status === 'running' ? null : new Date().toISOString(),
@@ -151,12 +160,22 @@ const run = (command, args, label) =>
     });
   });
 
-// Invalidate any older successful report before starting the first child process.
-// If this run is interrupted externally, the current summary remains `running`
-// instead of leaving a stale `passed` result from an earlier release behind.
+// Invalidate any older successful report before validating the repository state
+// or starting the first child process.
 await writeSummary({status: 'running'});
 
 try {
+  if (!currentGitHead) {
+    throw new Error(
+      'Content-Release benötigt ein Git-Repository mit auflösbarem HEAD.',
+    );
+  }
+  if (!trackedWorktreeClean) {
+    throw new Error(
+      `Content-Release benötigt einen sauberen tracked Worktree. Nicht committe Änderungen:\n${trackedWorktreeStatus}`,
+    );
+  }
+
   for (const step of requestedSteps) {
     await run(step.command, step.args, step.label);
     await writeSummary({status: 'running'});
