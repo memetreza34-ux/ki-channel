@@ -4,6 +4,7 @@ import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
 import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
 import {
+  CONTENT_RENDERABLE_ANIMATION_IDS,
   getProductionReadyLibraryEntries,
   PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
 } from '../productionEligibility';
@@ -15,14 +16,19 @@ const brain = createInitialCreativeBrainState({
 });
 
 describe('production executable guard', () => {
-  it('defines production reuse as executable plus native content binding', () => {
+  it('defines production reuse as executable plus native binding plus content-render configuration', () => {
+    expect(CONTENT_RENDERABLE_ANIMATION_IDS).toHaveLength(22);
     expect(PRODUCTION_READY_LIBRARY_ANIMATION_IDS).toHaveLength(22);
     expect(getProductionReadyLibraryEntries(ANIMATION_LIBRARY_ENTRIES)).toHaveLength(22);
 
     for (const animationId of PRODUCTION_READY_LIBRARY_ANIMATION_IDS) {
       expect(EXECUTABLE_ANIMATION_IDS).toContain(animationId);
       expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)).toBe(true);
+      expect(CONTENT_RENDERABLE_ANIMATION_IDS).toContain(animationId);
     }
+    expect([...PRODUCTION_READY_LIBRARY_ANIMATION_IDS].sort()).toEqual(
+      [...CONTENT_RENDERABLE_ANIMATION_IDS].sort(),
+    );
   });
 
   it('falls back to a new build when every supplied catalog entry is unregistered', () => {
