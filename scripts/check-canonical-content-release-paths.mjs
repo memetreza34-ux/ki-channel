@@ -22,22 +22,30 @@ const renderComplete = read('scripts/render-complete-content-release.mjs');
 const verifyComplete = read('scripts/verify-complete-content-release.mjs');
 const renderMasterplan = read('scripts/render-masterplan-content-release.mjs');
 const verifyMasterplan = read('scripts/verify-masterplan-content-release.mjs');
+const renderEdgeCases = read('scripts/render-content-motion-edge-cases.mjs');
+const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
+const reviewVerifier = read('scripts/verify-content-review-gallery.mjs');
 
-requireContains(
-  renderAll,
+for (const required of [
   'render-masterplan-content-release.mjs',
-  'render-all-content-release',
-);
+  'render-content-motion-edge-cases.mjs',
+  'build-content-review-gallery.mjs',
+]) {
+  requireContains(renderAll, required, 'render-all-content-release');
+}
 requireExcludes(
   renderAll,
   'render-production-derived-content.mjs',
   'render-all-content-release',
 );
-requireContains(
-  verifyAll,
+for (const required of [
   'verify-masterplan-content-release.mjs',
-  'verify-all-content-release',
-);
+  'check-content-motion-edge-cases.mjs',
+  'check-canonical-content-release-paths.mjs',
+  "['scripts/verify-content-review-gallery.mjs', 'full']",
+]) {
+  requireContains(verifyAll, required, 'verify-all-content-release');
+}
 requireExcludes(
   verifyAll,
   'verify-production-derived-content.mjs',
@@ -93,6 +101,34 @@ for (const [label, source] of [
   }
 }
 
+requireContains(
+  renderMasterplan,
+  'await rm(outputRoot, {recursive: true, force: true});',
+  'render-masterplan-content-release artifact isolation',
+);
+requireContains(
+  renderEdgeCases,
+  'await rm(caseOutputRoot, {recursive: true, force: true});',
+  'render-content-motion-edge-cases artifact isolation',
+);
+for (const required of [
+  'masterplanManifest?.results',
+  'edgeSummary?.cases',
+  'review-manifest.json',
+  'Content Release Visual Review',
+]) {
+  requireContains(reviewBuilder, required, 'build-content-review-gallery');
+}
+for (const required of [
+  "new Set(['smoke', 'full'])",
+  "requestedMode === 'full' ? 'all' : 'smoke'",
+  "requestedMode === 'full' ? 'checkpoints'",
+  "requestedMode === 'smoke' && card.hasVideo",
+  '28 * expectedFrameCount',
+]) {
+  requireContains(reviewVerifier, required, 'verify-content-review-gallery');
+}
+
 if (failures.length > 0) {
   console.error('Canonical-Content-Release-Path-Gate fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
@@ -100,5 +136,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: all-content und complete-Kompatibilitätsbefehle führen ausschließlich über den exakten Masterplan-Grounding-Pfad.',
+  'Canonical-Content-Release-Path-Gate bestanden: all-content/complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Review-Galerie und Render-Artefakt-Isolation sind verpflichtend.',
 );
