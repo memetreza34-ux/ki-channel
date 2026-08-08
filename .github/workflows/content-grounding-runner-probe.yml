@@ -1,0 +1,37 @@
+name: Content Grounding Runner Probe
+
+# Controlled infrastructure probe. This workflow triggers only when this probe file
+# itself changes, so it cannot create a stream of red checks on normal feature work.
+on:
+  push:
+    branches:
+      - fix/content-matched-animation-selection
+    paths:
+      - .github/workflows/content-grounding-runner-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Confirm runner and repository checkout
+        run: |
+          set -euxo pipefail
+          echo "head=$(git rev-parse HEAD)"
+          node --version
+          npm --version
+          test -f package.json
+          test -f scripts/verify-content-matched-runtime.mjs
+          test -f ki/tsconfig.animation-library.json
