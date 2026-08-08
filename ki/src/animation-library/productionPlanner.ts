@@ -2,6 +2,7 @@ import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
 import {
   areProductionRuntimeScenesReady,
   getProductionReadyLibraryEntries,
+  PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
 } from './productionEligibility';
 import {
   planReelChoreography,
@@ -65,6 +66,50 @@ const createBuildDescription = (
     `${contract.requiredVisualCues.join(', ')}.`;
 };
 
+const slugifyIdSegment = (value: string): string =>
+  value
+    .toLocaleLowerCase('de-DE')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 48);
+
+const reserveUniqueBuildSpec = ({
+  spec,
+  reservedAnimationIds,
+  reelId,
+  sceneId,
+}: {
+  spec: AnimationBuildSpec;
+  reservedAnimationIds: Set<string>;
+  reelId: string;
+  sceneId: string;
+}): AnimationBuildSpec => {
+  if (!reservedAnimationIds.has(spec.animationId)) {
+    reservedAnimationIds.add(spec.animationId);
+    return spec;
+  }
+
+  const versionMatch = /-v(\d+)$/.exec(spec.animationId);
+  const version = versionMatch?.[1] ?? '1';
+  const stem = versionMatch
+    ? spec.animationId.slice(0, -versionMatch[0].length)
+    : spec.animationId;
+  const scope = [slugifyIdSegment(reelId), slugifyIdSegment(sceneId)]
+    .filter(Boolean)
+    .join('-') || 'scene';
+
+  let attempt = 1;
+  let candidate = `${stem}-${scope}-v${version}`;
+  while (reservedAnimationIds.has(candidate)) {
+    attempt += 1;
+    candidate = `${stem}-${scope}-${attempt}-v${version}`;
+  }
+  reservedAnimationIds.add(candidate);
+  return {...spec, animationId: candidate};
+};
+
 export const planProductionReelAnimations = ({
   reelId,
   reelIndex,
@@ -94,8 +139,8 @@ export const planProductionReelAnimations = ({
   // Production reuse is intentionally stricter than generic choreography planning.
   // Analysis and expansion tooling may still inspect the complete catalog, including
   // executable variants that only have a semantic shell. A real content-matched
-  // production plan may reuse only animations that are BOTH executable and natively
-  // content-bound. Otherwise it must fall back to a purpose-built new animation.
+  // production plan may reuse only animations that are executable, natively bound,
+  // and addressable through the content-render configuration.
   const productionEntries = getProductionReadyLibraryEntries(entries);
 
   const choreography = planReelChoreography({
@@ -106,46 +151,68 @@ export const planProductionReelAnimations = ({
     brain,
   });
 
-  const scenePlans: ProductionSceneAnimationPlan[] = choreography.selections.map(
-    (selection, index) => {
-      const scene = scenes[index];
-      if (selection.animationId) {
-        const entry = getEntry(productionEntries, selection.animationId);
-        return {
-          sceneId: scene.sceneId,
-          source: 'library' as const,
-          animationId: entry.animationId,
-          catalogEntry: entry,
-          buildSpec: null,
-          selectionScore: selection.score?.total ?? null,
-          selectionReasons: selection.reasons,
-        };
-      }
+  // New-build IDs are deterministic by semantic content. Reserve every supplied
+  // catalog ID plus every globally production-ready runtime ID so a newly compiled
+  // build can never inherit readiness merely by colliding with an existing runtime.
+  const reservedAnimationIds = new Set([
+    ...entries.map((entry) => entry.animationId),
+    ...PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
+  ]);
+  const scenePlans: ProductionSceneAnimationPlan[] = [];
 
-      if (!selection.newAnimationProposal) {
-        throw new Error(
-          `scene ${scene.sceneId} has neither a library animation nor a build proposal`,
-        );
-      }
-
-      const buildSpec = compileNewAnimationProposal({
-        proposal: selection.newAnimationProposal,
-      });
-      const catalogEntry = createCatalogEntryFromBuildSpec({
-        spec: buildSpec,
-        description: createBuildDescription(scene, buildSpec),
-      });
-      return {
+  choreography.selections.forEach((selection, index) => {
+    const scene = scenes[index];
+    if (selection.animationId) {
+      const entry = getEntry(productionEntries, selection.animationId);
+      scenePlans.push({
         sceneId: scene.sceneId,
-        source: 'new-build' as const,
-        animationId: buildSpec.animationId,
-        catalogEntry,
-        buildSpec,
+        source: 'library',
+        animationId: entry.animationId,
+        catalogEntry: entry,
+        buildSpec: null,
         selectionScore: selection.score?.total ?? null,
         selectionReasons: selection.reasons,
-      };
-    },
-  );
+      });
+      return;
+    }
+
+    if (!selection.newAnimationProposal) {
+      throw new Error(
+        `scene ${scene.sceneId} has neither a library animation nor a build proposal`,
+      );
+    }
+
+    const compiledBuildSpec = compileNewAnimationProposal({
+      proposal: selection.newAnimationProposal,
+    });
+    const buildSpec = reserveUniqueBuildSpec({
+      spec: compiledBuildSpec,
+      reservedAnimationIds,
+      reelId,
+      sceneId: scene.sceneId,
+    });
+    const collisionResolved = buildSpec.animationId !== compiledBuildSpec.animationId;
+    const catalogEntry = createCatalogEntryFromBuildSpec({
+      spec: buildSpec,
+      description: createBuildDescription(scene, buildSpec),
+    });
+    scenePlans.push({
+      sceneId: scene.sceneId,
+      source: 'new-build',
+      animationId: buildSpec.animationId,
+      catalogEntry,
+      buildSpec,
+      selectionScore: selection.score?.total ?? null,
+      selectionReasons: [
+        ...selection.reasons,
+        ...(collisionResolved
+          ? [
+              `new-build animation id collision resolved: ${compiledBuildSpec.animationId} -> ${buildSpec.animationId}`,
+            ]
+          : []),
+      ],
+    });
+  });
 
   const newAnimationCount = scenePlans.filter(
     (scene) => scene.source === 'new-build',
