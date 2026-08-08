@@ -12,6 +12,12 @@ export const PRODUCTION_READY_LIBRARY_ANIMATION_IDS = Object.freeze(
 
 const productionReadyIds = new Set(PRODUCTION_READY_LIBRARY_ANIMATION_IDS);
 
+export type ProductionRuntimeSceneLike = {
+  animationId: string;
+  source: 'library' | 'new-build';
+  catalogEntry: Pick<AnimationLibraryEntry, 'status'>;
+};
+
 export const isProductionReadyLibraryAnimation = (
   animationId: string,
 ): boolean => productionReadyIds.has(animationId);
@@ -24,3 +30,13 @@ export const isProductionReadyLibraryEntry = (
 export const getProductionReadyLibraryEntries = (
   entries: readonly AnimationLibraryEntry[],
 ): AnimationLibraryEntry[] => entries.filter(isProductionReadyLibraryEntry);
+
+export const isProductionRuntimeSceneReady = (
+  scene: ProductionRuntimeSceneLike,
+): boolean =>
+  scene.catalogEntry.status !== 'retired' &&
+  isProductionReadyLibraryAnimation(scene.animationId);
+
+export const areProductionRuntimeScenesReady = (
+  scenes: readonly ProductionRuntimeSceneLike[],
+): boolean => scenes.every(isProductionRuntimeSceneReady);
