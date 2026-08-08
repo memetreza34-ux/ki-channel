@@ -150,7 +150,7 @@ export const AnomalyXRayScannerPrototype: React.FC = () => {
               <div style={{width: 112, height: 112, borderRadius: 30, background: 'rgba(255,255,255,.94)', border: `5px solid ${statusColor}`, boxShadow: `0 0 ${isError ? 42 : 24}px ${statusColor}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 42, fontWeight: 900, color: statusColor}}>{symbol}</div>
               <div style={{marginTop: 12, maxWidth: 185, padding: '10px 14px', borderRadius: 16, background: 'rgba(255,255,255,.92)', border: `1px solid ${statusColor}55`, fontSize: step.label.length > 13 ? 14 : 18, fontWeight: 900, letterSpacing: 1.5, color: statusColor, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{step.label.toLocaleUpperCase('de-DE')}</div>
               {index >= errorIndex && repairAtStep > 0 && repairAtStep < 1 ? (
-                <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>REPAIR {Math.round(repairAtStep * 100)}%</div>
+                <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: PROTOTYPE_PALETTE.success}}>{content ? 'REPARATUR LÄUFT' : `REPAIR ${Math.round(repairAtStep * 100)}%`}</div>
               ) : null}
             </div>
           );
