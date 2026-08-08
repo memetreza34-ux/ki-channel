@@ -146,4 +146,54 @@ describe('channel master plan content binding', () => {
       ),
     ).toBe(true);
   });
+
+  it('keeps new-build history but becomes ready after that animation id is implemented', () => {
+    const sceneId = 'implemented-after-planning';
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'new-build-runtime-promotion',
+      reelIndex: 43,
+      scenes: [
+        {
+          sceneId,
+          spokenText:
+            'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+          forceNewAnimation: true,
+        },
+      ],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain: createBrain(),
+      maximumNewAnimationRatio: 1,
+    });
+    expect(prepared.plan.productionPlan.scenes[0].source).toBe('new-build');
+    expect(prepared.readyForImplementation).toBe(false);
+
+    const implementedEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) => entry.animationId === 'scale-performance-latency-tunnel-race-v1',
+    );
+    expect(implementedEntry).toBeDefined();
+    expect(isProductionReadyLibraryAnimation(implementedEntry!.animationId)).toBe(true);
+
+    Object.assign(prepared.plan.productionPlan.scenes[0], {
+      animationId: implementedEntry!.animationId,
+      catalogEntry: implementedEntry!,
+    });
+
+    const masterPlan = createChannelReelMasterPlan({
+      prepared,
+      durationBySceneId: {[sceneId]: 180},
+    });
+    const scene = masterPlan.scenes[0];
+
+    expect(scene.fullAnimationSource).toBe('new-build');
+    expect(scene.fullAnimationId).toBe(implementedEntry!.animationId);
+    expect(scene.contentBindingLevel).toBe('native-object-binding');
+    expect(scene.contentBindingReady).toBe(true);
+    expect(scene.valid).toBe(true);
+    expect(masterPlan.implementationBrief.readyForImplementation).toBe(true);
+    expect(
+      masterPlan.blockers.some((blocker) =>
+        blocker.includes('requires implementation and registry entry'),
+      ),
+    ).toBe(false);
+  });
 });
