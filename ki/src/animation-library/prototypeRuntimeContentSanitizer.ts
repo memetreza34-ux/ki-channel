@@ -237,7 +237,7 @@ const winnerCueIndex = ({
   for (let index = 0; index < count; index += 1) {
     const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
     if (label.length < 2) continue;
-    const escapedLabel = escapeRegex(label).replace(/\\\s+/g, '\\s+');
+    const escapedLabel = escapeRegex(label).replace(/\s+/g, '\\s+');
     const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^.!?;]{0,36}\\b${cue}\\b`);
     const cueBeforeLabel = new RegExp(`\\b${cue}\\b[^.!?;]{0,28}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
     if (labelBeforeCue.test(text) || cueBeforeLabel.test(text)) return index;
@@ -259,7 +259,6 @@ const sanitizeProbability = (
     nextValues[`candidate${index + 1}ProbabilityExact`] =
       percentages[index] !== undefined ? 1 : 0;
   }
-  nextValues.measurementExact = fallbackPercentage === null ? 0 : 1;
   nextValues.probabilityOutcomeGrounded =
     fallbackPercentage !== null || winnerCue >= 0 ? 1 : 0;
 
@@ -297,7 +296,6 @@ const sanitizeRanking = (
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
   const nextValues = {
     ...values,
-    measurementExact: scores.length > 0 ? 1 : 0,
     rankingOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
   for (let index = 0; index < 3; index += 1) {
@@ -328,7 +326,6 @@ const sanitizeComparison = (
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'competitor', count: 2});
   const nextValues = {
     ...values,
-    measurementExact: scores.length > 0 ? 1 : 0,
     comparisonOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
   for (let index = 0; index < 2; index += 1) {
