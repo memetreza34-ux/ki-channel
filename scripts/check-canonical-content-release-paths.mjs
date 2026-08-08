@@ -27,6 +27,7 @@ const verifyEdgeCases = read('scripts/verify-content-motion-edge-case-renders.mj
 const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
 const reviewVerifier = read('scripts/verify-content-review-gallery.mjs');
 const releaseRunner = read('scripts/run-content-release.mjs');
+const actionsWorkflow = read('.github/workflows/motion-system-checks.yml');
 
 for (const required of [
   'render-masterplan-content-release.mjs',
@@ -94,6 +95,33 @@ if (
 ) {
   failures.push(
     'run-content-release: aktueller running-Report muss vor try/erstem Child-Step geschrieben werden, damit ein alter passed-Report sofort ungültig wird',
+  );
+}
+
+for (const required of [
+  'workflow_dispatch:',
+  'release_mode:',
+  '- verify',
+  '- smoke',
+  '- full',
+  'node scripts/run-content-release.mjs "${{ inputs.release_mode }}"',
+  'out/content-release-run/',
+]) {
+  requireContains(actionsWorkflow, required, 'motion-system-checks workflow');
+}
+for (const forbidden of [
+  'node scripts/verify-content-matched-runtime.mjs',
+  'npm run animation-library:verify',
+  'node scripts/render-masterplan-content-release.mjs',
+  'node scripts/render-content-motion-edge-cases.mjs',
+  'node scripts/build-content-review-gallery.mjs',
+  'node scripts/render-all-content-release.mjs',
+  'node scripts/verify-all-content-release.mjs',
+]) {
+  requireExcludes(
+    actionsWorkflow,
+    forbidden,
+    'motion-system-checks workflow direct content-release drift',
   );
 }
 
@@ -196,5 +224,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner, all-content und complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; Run-Reports werden vor Step 1 invalidiert; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner ist die einzige Content-Release-Quelle für CI und lokal; Run-Reports werden vor Step 1 invalidiert; all-content/complete nutzen den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
