@@ -9,23 +9,30 @@ const read = (fileName) =>
   );
 
 describe('visible precision grounding bindings', () => {
-  it('keeps retrieval counts qualitative unless an explicit count is spoken', () => {
+  it('keeps retrieval counts qualitative unless an explicit consistent count is spoken', () => {
     const source = read('KnowledgeMagnetPrototype.tsx');
     expect(source).toContain('parseExplicitCountNear');
+    expect(source).toContain('CONTENT_SOURCE_FALLBACKS');
+    expect(source).toContain('parsedEvidenceCount === evidenceCount');
+    expect(source).toContain("terms: ['Belege', 'Treffer', 'Nachweise']");
     expect(source).toContain('RELEVANTE BELEGE');
-    expect(source).toContain('explicitEvidenceCount');
   });
 
-  it('keeps context capacity qualitative unless an explicit count is spoken', () => {
+  it('keeps context capacity and pin behavior grounded in explicit context language', () => {
     const source = read('ContextWindowTrainPrototype.tsx');
     expect(source).toContain('parseExplicitCountNear');
+    expect(source).toContain("terms: ['Plätze', 'Slots', 'Kapazität', 'Kontextfenster']");
+    expect(source).toContain('const hasPinMeaning =');
+    expect(source).toContain('const pinGrounded =');
     expect(source).toContain('BEGRENZTE KAPAZITÄT');
     expect(source).toContain('ÜBERLAUF SICHTBAR');
+    expect(source).toContain("{content ? '•' : `#${index + 1}`}");
   });
 
-  it('keeps relationship weights qualitative without explicit percentages', () => {
+  it('keeps relationship weights qualitative without explicit relationship context', () => {
     const source = read('DependencyBridgeBuilderPrototype.tsx');
     expect(source).toContain('parseExplicitPercentages');
+    expect(source).toContain('hasRelationshipMeasurementContext');
     expect(source).toContain('qualitativeWeight');
     expect(source).toContain("'STARK'");
     expect(source).toContain("'SCHWACH'");
@@ -34,13 +41,19 @@ describe('visible precision grounding bindings', () => {
   it('keeps confidence qualitative without a grounded confidence percentage', () => {
     const source = read('ConfidenceGlassCrackPrototype.tsx');
     expect(source).toContain('parseExplicitPercentageNear');
+    expect(source).toContain("'Sicherheit im Ton'");
     expect(source).toContain('qualitativeConfidence');
     expect(source).toContain('HOHE SICHERHEIT IM TON');
+    expect(source).toContain('const checkStatus = content');
   });
 
-  it('keeps knowledge confidence, threshold and revision qualitative without explicit values', () => {
+  it('keeps knowledge confidence, threshold, fallbacks and revision conservative', () => {
     const source = read('KnowledgeTreeGraftPrototype.tsx');
     expect(source).toContain('parseExplicitPercentageNear');
+    expect(source).toContain('CONTENT_OLD_STATE_FALLBACKS');
+    expect(source).toContain("content ? 'Neue Information' : 'Stand 2026'");
+    expect(source).toContain('Quelle im Sprechertext prüfen');
+    expect(source).not.toContain('verifiziert|belegt|bestatigt|primarquelle|');
     expect(source).toContain('KEINE EXAKTE SCHWELLE GENANNT');
     expect(source).toContain('QUALITATIV BESTÄTIGT');
     expect(source).toContain('VERSIONIERT');
@@ -79,10 +92,14 @@ describe('visible precision grounding bindings', () => {
     expect(source).toContain("{content ? '' : ` · ${concepts.filter");
   });
 
-  it('does not expose demo years or focus counters in content timelines', () => {
+  it('does not expose demo years, artificial stand numbers or focus counters in content timelines', () => {
     const source = read('TimelineMicroscopePrototype.tsx');
+    expect(source).toContain('CONTENT_MILESTONE_FALLBACKS');
+    expect(source).toContain("'FRÜHER'");
+    expect(source).toContain("'NEUER STAND'");
     expect(source).toContain("content ? 'ENTWICKLUNG IM ZEITVERLAUF' : 'MODEL EVOLUTION · 2023–2026'");
     expect(source).toContain('content ? `FOKUS: ${milestones[focusIndex].label}`');
+    expect(source).not.toContain('`STAND ${index + 1}`');
   });
 
   it('does not pad short generated answers with demo words or show word counters', () => {
