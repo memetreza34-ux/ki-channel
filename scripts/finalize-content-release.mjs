@@ -81,6 +81,12 @@ try {
   await writeFinalization({status: 'running'});
 
   await run(
+    ['scripts/verify-all-content-release.mjs'],
+    'Aktuelle Full-Release-Artefakte erneut gegen Source-Fingerprints, Props und Dateisignaturen prüfen',
+  );
+  await writeFinalization({status: 'running'});
+
+  await run(
     ['scripts/verify-content-review-gallery.mjs', 'full'],
     'Aktuelle 22+6 Full-Review-Galerie prüfen',
   );
@@ -97,9 +103,9 @@ try {
     '28/28 manuelle Visual-Review-Entscheidungen prüfen',
   );
 
-  if (steps.length !== 3 || steps.some((step) => step.status !== 'passed')) {
+  if (steps.length !== 4 || steps.some((step) => step.status !== 'passed')) {
     throw new Error(
-      `Finalisierung inkonsistent: ${steps.filter((step) => step.status === 'passed').length}/3 Schritte passed.`,
+      `Finalisierung inkonsistent: ${steps.filter((step) => step.status === 'passed').length}/4 Schritte passed.`,
     );
   }
 
@@ -123,6 +129,7 @@ try {
         technicalCompletedAt: technicalSummary.completedAt,
         reviewedAt: visualReview.reviewedAt,
         finalizedAt: new Date().toISOString(),
+        technicalArtifactsReverified: true,
         manualVisualReviewRequired: true,
         manualVisualReviewVerified: true,
         steps,
