@@ -70,6 +70,7 @@ for (const required of [
   'content-release-run',
   "status: 'failed'",
   "status: 'passed'",
+  "completedAt: status === 'running' ? null",
 ]) {
   requireContains(releaseRunner, required, 'run-content-release');
 }
@@ -78,6 +79,23 @@ requireExcludes(
   'render-production-derived-content.mjs',
   'run-content-release',
 );
+
+const initialRunningSummaryIndex = releaseRunner.indexOf(
+  "await writeSummary({status: 'running'});",
+);
+const releaseTryIndex = releaseRunner.indexOf('\ntry {');
+const releaseLoopIndex = releaseRunner.indexOf('for (const step of requestedSteps)');
+if (
+  initialRunningSummaryIndex < 0 ||
+  releaseTryIndex < 0 ||
+  releaseLoopIndex < 0 ||
+  initialRunningSummaryIndex >= releaseTryIndex ||
+  initialRunningSummaryIndex >= releaseLoopIndex
+) {
+  failures.push(
+    'run-content-release: aktueller running-Report muss vor try/erstem Child-Step geschrieben werden, damit ein alter passed-Report sofort ungültig wird',
+  );
+}
 
 requireContains(
   renderComplete,
@@ -178,5 +196,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner, all-content und complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner, all-content und complete führen ausschließlich über den exakten Masterplan-Grounding-Pfad; Run-Reports werden vor Step 1 invalidiert; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
