@@ -134,11 +134,59 @@ describe('reel animation lifecycle', () => {
     );
   });
 
+  it('allows a historical new-build to finalize after that exact runtime is implemented', () => {
+    const brain = createBrain();
+    const sceneId = 'scene-promoted-new-build';
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'promoted-new-build-finalization',
+      reelIndex: 35,
+      scenes: [
+        {
+          sceneId,
+          spokenText:
+            'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+          forceNewAnimation: true,
+        },
+      ],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+    });
+    expect(prepared.plan.productionPlan.scenes[0].source).toBe('new-build');
+
+    const implementedEntry = ANIMATION_LIBRARY_ENTRIES.find(
+      (entry) => entry.animationId === 'scale-performance-latency-tunnel-race-v1',
+    );
+    expect(implementedEntry).toBeDefined();
+
+    Object.assign(prepared.plan.productionPlan.scenes[0], {
+      animationId: implementedEntry!.animationId,
+      catalogEntry: implementedEntry!,
+    });
+
+    const result = finalizeReelAnimationProduction({
+      prepared,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      reviews: [acceptedReview(sceneId, 1)],
+    });
+    const sceneReview = result.sceneReviews[0];
+    const finalizedEntry = result.entries.find(
+      (entry) => entry.animationId === implementedEntry!.animationId,
+    );
+
+    expect(result.releasePassed).toBe(true);
+    expect(sceneReview.source).toBe('new-build');
+    expect(sceneReview.animationId).toBe(implementedEntry!.animationId);
+    expect(sceneReview.decision.outcome).toBe('accepted');
+    expect(finalizedEntry?.status).toBe('verified');
+  });
+
   it('reviews the current catalog entry instead of overwriting it with the older planning snapshot', () => {
     const brain = createBrain();
     const prepared = prepareReelAnimationProduction({
       reelId: 'current-entry-wins',
-      reelIndex: 35,
+      reelIndex: 36,
       scenes: [SCENES[0]],
       entries: ANIMATION_LIBRARY_ENTRIES,
       brain,
