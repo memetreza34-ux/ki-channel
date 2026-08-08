@@ -43,7 +43,7 @@ describe('channel masterplan sanitized props', () => {
   it('removes fake latency measurements when the spoken sentence gives no exact time', () => {
     const sceneId = 'sanitized-relative-latency';
     const spokenText =
-      'Unter hoher Last wird der serielle Pfad deutlich langsamer, während der parallele Pfad schneller bleibt.';
+      'Unter hoher Last steigt die Latenz: Der serielle Pfad wird deutlich langsamer, während der parallele Pfad schneller bleibt.';
     const prepared = prepareReelAnimationProduction({
       reelId: 'sanitized-masterplan-relative-latency',
       reelIndex: 61,
@@ -52,10 +52,9 @@ describe('channel masterplan sanitized props', () => {
       brain: createBrain(),
     });
 
-    const planned = prepared.plan.productionPlan.scenes[0];
-    if (planned.animationId !== 'scale-performance-latency-tunnel-race-v1') {
-      return;
-    }
+    expect(prepared.plan.productionPlan.scenes[0].animationId).toBe(
+      'scale-performance-latency-tunnel-race-v1',
+    );
 
     const masterPlan = createChannelReelMasterPlan({
       prepared,
