@@ -33,15 +33,22 @@ const toNumber = (value: string | number | undefined, fallback: number): number 
 const normalizedLabelPattern = (label: string): string =>
   escapeRegex(normalize(label)).replace(/\s+/g, '\\s+');
 
-const safeGap = (otherLabels: readonly string[], maxChars: number): string => {
+const otherLabelGuard = (otherLabels: readonly string[]): string => {
   const patterns = otherLabels
     .map(normalize)
     .filter((label) => label.length >= 2)
     .map((label) => escapeRegex(label).replace(/\s+/g, '\\s+'));
-  const otherLabelGuard = patterns.length > 0
+  return patterns.length > 0
     ? `(?!\\b(?:${patterns.join('|')})\\b)`
     : '';
-  return `(?:${otherLabelGuard}[^0-9,.!?;]){0,${maxChars}}`;
+};
+
+const safeGap = (otherLabels: readonly string[], maxChars: number): string =>
+  `(?:${otherLabelGuard(otherLabels)}[^0-9,.!?;]){0,${maxChars}}`;
+
+const winnerGap = (otherLabels: readonly string[], maxChars: number): string => {
+  const negative = '(?:nicht|kein|keine|keinen|keiner|keinem|weder|nie|niemals)';
+  return `(?:(?!\\b${negative}\\b)${otherLabelGuard(otherLabels)}[^,.!?;]){0,${maxChars}}`;
 };
 
 const winnerCueIndex = (
@@ -57,11 +64,8 @@ const winnerCueIndex = (
     const label = labels[index];
     if (normalize(label).length < 2) continue;
     const escapedLabel = normalizedLabelPattern(label);
-    const otherLabels = labels.filter((_, labelIndex) => labelIndex !== index);
-    const gap = safeGap(otherLabels, 18).replace(
-      /\[\^0-9,\.\!\?;\]/g,
-      `(?:(?!\\b${negative}\\b)[^0-9,.!?;])`,
-    );
+    const peers = labels.filter((_, labelIndex) => labelIndex !== index);
+    const gap = winnerGap(peers, 18);
     const labelBeforeCue = new RegExp(
       `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}\\b${cue}\\b${notNegatedAfterCue}`,
     );
