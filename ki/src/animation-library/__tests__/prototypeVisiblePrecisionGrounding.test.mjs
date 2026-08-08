@@ -67,8 +67,9 @@ describe('visible precision grounding bindings', () => {
 
   it('does not expose inferred funnel source counts as content facts', () => {
     const source = read('FunnelCompressionOutputPrototype.tsx');
+    expect(source).toContain('const droppedLabel = content');
+    expect(source).toContain('const keptLabel = content');
     expect(source).toContain('IRRELEVANTE QUELLEN VERWORFEN');
     expect(source).toContain('RELEVANTE QUELLEN BLEIBEN');
-    expect(source).toContain('content\n    ?');
   });
 });
