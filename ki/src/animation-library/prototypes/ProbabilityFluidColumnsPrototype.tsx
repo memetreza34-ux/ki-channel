@@ -21,12 +21,24 @@ const numberValue = (value: string | number, fallback: number): number => {
     : Number(String(value).replace(',', '.').replace(/[^0-9.-]/g, ''));
   return Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : fallback;
 };
+const booleanValue = (value: string | number, fallback: boolean): boolean => {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed >= 0.5 : fallback;
+};
 
 export const ProbabilityFluidColumnsPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const enter = prototypeProgress(frame, 0, 34);
   const lock = prototypeProgress(frame, 112, 164);
+  const outcomeGrounded = booleanValue(
+    getPrototypeValue({
+      content,
+      key: 'probabilityOutcomeGrounded',
+      fallback: content ? 0 : 1,
+    }),
+    !content,
+  );
   const defaultTerms = content
     ? [...new Set([
         ...content.meaningContract.resultTerms,
@@ -39,18 +51,30 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
       color: COLORS[0],
       start: numberValue(getPrototypeValue({content, key: 'candidate1Start', fallback: 38}), 38),
       end: numberValue(getPrototypeValue({content, key: 'candidate1End', fallback: 66}), 66),
+      exact: booleanValue(
+        getPrototypeValue({content, key: 'candidate1ProbabilityExact', fallback: content ? 0 : 1}),
+        !content,
+      ),
     },
     {
       label: getPrototypeLabel({content, key: 'candidate2', fallback: defaultTerms[1] ?? 'Daten'}),
       color: COLORS[1],
       start: numberValue(getPrototypeValue({content, key: 'candidate2Start', fallback: 44}), 44),
       end: numberValue(getPrototypeValue({content, key: 'candidate2End', fallback: 24}), 24),
+      exact: booleanValue(
+        getPrototypeValue({content, key: 'candidate2ProbabilityExact', fallback: content ? 0 : 1}),
+        !content,
+      ),
     },
     {
       label: getPrototypeLabel({content, key: 'candidate3', fallback: defaultTerms[2] ?? 'Antwort'}),
       color: COLORS[2],
       start: numberValue(getPrototypeValue({content, key: 'candidate3Start', fallback: 18}), 18),
       end: numberValue(getPrototypeValue({content, key: 'candidate3End', fallback: 10}), 10),
+      exact: booleanValue(
+        getPrototypeValue({content, key: 'candidate3ProbabilityExact', fallback: content ? 0 : 1}),
+        !content,
+      ),
     },
   ];
   const winnerIndex = candidates.reduce(
@@ -84,7 +108,7 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
     <PrototypeShell
       family="PROBABILITY"
       title="Probability Fluid Columns"
-      subtitle="Jedes neue Kontextsignal verschiebt die Wahrscheinlichkeiten sichtbar, bis ein Kandidat vorne liegt."
+      subtitle="Kontextsignale verschieben die Verteilung sichtbar. Exakte Prozentwerte und ein benannter Gewinner erscheinen nur, wenn der Sprechertext sie wirklich trägt."
     >
       <GlassSurface style={{position: 'absolute', left: 76, right: 76, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 90, right: 90, top: 65, padding: '20px 24px', borderRadius: 26, background: 'rgba(135,87,232,.07)', border: '1px solid rgba(135,87,232,.18)', fontSize: prompt.length > 60 ? 21 : 28, lineHeight: 1.25, fontWeight: 900, textAlign: 'center', opacity: enter, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
@@ -108,15 +132,17 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
             const level = interpolate(contextProgress, [0, 1], [candidate.start, candidate.end]);
             const height = interpolate(level, [0, 100], [0, 570]);
             const reveal = prototypeProgress(frame, 12 + index * 7, 34 + index * 7);
-            const winner = index === winnerIndex && lock > 0.35;
+            const winner = outcomeGrounded && index === winnerIndex && lock > 0.35;
             const delta = candidate.end - candidate.start;
-            const direction = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
+            const relativeDirection = delta > 0 ? 'STEIGT' : delta < 0 ? 'SINKT' : 'STABIL';
             return (
               <div key={`${candidate.label}-${index}`} style={{width: 225, height: 720, position: 'relative', opacity: reveal, transform: `translateY(${(1 - reveal) * 80}px)`}}>
                 <div style={{position: 'absolute', top: 0, left: 0, right: 0, textAlign: 'center', fontSize: candidate.label.length > 12 ? 20 : 30, fontWeight: 900, color: winner ? candidate.color : PROTOTYPE_PALETTE.foreground, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{candidate.label}</div>
-                <div style={{position: 'absolute', top: 58, left: '50%', transform: 'translateX(-50%)', padding: '10px 15px', borderRadius: 16, background: 'rgba(255,255,255,.92)', border: `2px solid ${candidate.color}44`, color: candidate.color, fontFamily: 'monospace', fontSize: 29, fontWeight: 900}}>{Math.round(level)}%</div>
-                <div style={{position: 'absolute', top: 112, left: 12, right: 12, textAlign: 'center', fontSize: 14, fontWeight: 850, color: delta >= 0 ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.danger}}>
-                  {candidate.start}% {direction} {candidate.end}% · {delta >= 0 ? '+' : ''}{delta} Pkt.
+                <div style={{position: 'absolute', top: 58, left: '50%', transform: 'translateX(-50%)', padding: '10px 15px', borderRadius: 16, background: 'rgba(255,255,255,.92)', border: `2px solid ${candidate.color}44`, color: candidate.color, fontFamily: 'monospace', fontSize: candidate.exact ? 29 : 20, fontWeight: 900}}>
+                  {candidate.exact ? `${Math.round(candidate.end)}%` : outcomeGrounded ? relativeDirection : 'VERTEILUNG'}
+                </div>
+                <div style={{position: 'absolute', top: 112, left: 12, right: 12, textAlign: 'center', fontSize: 14, fontWeight: 850, color: candidate.exact ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.muted}}>
+                  {candidate.exact ? 'EXPLIZIT IM SPRECHTEXT' : outcomeGrounded ? 'RELATIVE VERSCHIEBUNG' : 'KEINE EXAKTE WAHRSCHEINLICHKEIT GENANNT'}
                 </div>
                 <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 580, borderRadius: '34px 34px 22px 22px', border: `4px solid ${candidate.color}66`, background: 'rgba(255,255,255,.55)', overflow: 'hidden', boxShadow: winner ? `0 0 45px ${candidate.color}55` : '0 18px 48px rgba(55,38,83,.10)'}}>
                   <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height, background: `linear-gradient(180deg, ${candidate.color}AA, ${candidate.color})`, borderRadius: '24px 24px 16px 16px', boxShadow: `0 -12px 28px ${candidate.color}44`, transition: 'none'}}>
@@ -137,7 +163,11 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
         })}
 
         <div style={{position: 'absolute', left: 150, right: 150, bottom: 50, padding: '21px 26px', borderRadius: 24, background: PROTOTYPE_PALETTE.foreground, color: PROTOTYPE_PALETTE.white, textAlign: 'center', fontSize: 25, fontWeight: 900, opacity: lock, transform: `translateY(${(1 - lock) * 45}px)`}}>
-          {resultLabel}: <span style={{color: COLORS[winnerIndex]}}>„{candidates[winnerIndex].label}“</span>
+          {outcomeGrounded ? (
+            <>{resultLabel}: <span style={{color: COLORS[winnerIndex]}}>„{candidates[winnerIndex].label}“</span></>
+          ) : (
+            'VERTEILUNG GEZEIGT · KEIN UNBELEGTER GEWINNER'
+          )}
         </div>
       </GlassSurface>
     </PrototypeShell>
