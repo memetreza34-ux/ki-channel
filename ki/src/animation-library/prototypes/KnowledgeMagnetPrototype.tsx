@@ -22,6 +22,15 @@ const DEFAULT_DOCUMENTS = [
   {label: 'Kommentar', x: 685, y: 1080, relevant: false},
 ] as const;
 
+const CONTENT_SOURCE_FALLBACKS = [
+  'QUELLE A',
+  'QUELLE B',
+  'QUELLE C',
+  'QUELLE D',
+  'QUELLE E',
+  'QUELLE F',
+] as const;
+
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
@@ -60,10 +69,10 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
     defaultRelevantCount,
     DEFAULT_DOCUMENTS.length,
   );
-  const explicitEvidenceCount = content
+  const parsedEvidenceCount = content
     ? parseExplicitCountNear({
         spokenText: content.spokenText,
-        terms: ['Belege', 'Quellen', 'Treffer', 'Dokumente', 'Nachweise'],
+        terms: ['Belege', 'Treffer', 'Nachweise'],
         minimum: 1,
         maximum: DEFAULT_DOCUMENTS.length,
       })
@@ -77,7 +86,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
       label: getPrototypeLabel({
         content,
         key: `source${index + 1}`,
-        fallback: document.label,
+        fallback: content ? CONTENT_SOURCE_FALLBACKS[index] : document.label,
       }),
       relevant: booleanValue(
         getPrototypeValue({
@@ -91,6 +100,10 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
   });
   const relevantDocuments = documents.filter((document) => document.relevant);
   const evidenceCount = relevantDocuments.length;
+  const explicitEvidenceCount =
+    parsedEvidenceCount !== null && parsedEvidenceCount === evidenceCount
+      ? parsedEvidenceCount
+      : null;
   const queryText = getPrototypeLabel({
     content,
     key: 'query',
@@ -124,7 +137,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
     <PrototypeShell
       family="RETRIEVAL SEARCH"
       title="Knowledge Magnet"
-      subtitle="Die Anfrage zieht nur die Quellen an, die für den konkreten Inhalt als relevant markiert sind; unpassende Quellen werden abgestoßen. Eine exakte Trefferzahl wird nur gezeigt, wenn sie im Sprechertext genannt wird."
+      subtitle="Die Anfrage zieht nur als relevant markierte Quellen an. Eine exakte Belegzahl wird nur gezeigt, wenn sie ausdrücklich genannt wird und mit der sichtbaren Auswahl übereinstimmt."
     >
       <div style={{position: 'absolute', left: 86, right: 86, top: 380, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -196,7 +209,7 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
             const selected = document.relevant && pull > 0.75;
 
             return (
-              <div key={`${document.label}-${index}`} style={{position: 'absolute', left: x, top: y, width: selected ? 150 : 132, minHeight: selected ? 118 : 98, borderRadius: 22, transform: `translate(-50%, -50%) rotate(${document.relevant ? (index - 2) * 2 : (index % 2 ? 7 : -7)}deg) scale(${selected ? 1.05 : 1})`, background: selected ? '#F1EAFF' : 'white', border: `2px solid ${selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.line}`, boxShadow: selected ? '0 18px 45px rgba(135,87,232,.27)' : '0 12px 30px rgba(48,34,74,.10)', opacity: document.relevant ? 1 : 1 - repel * 0.78, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 16, boxSizing: 'border-box', fontSize: document.label.length > 13 ? 17 : 21, fontWeight: 850, color: selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.foreground, zIndex: selected ? 8 : 2, overflow: 'hidden'}}>
+              <div key={`${document.label}-${index}`} style={{position: 'absolute', left: x, top: y, width: selected ? 150 : 132, minHeight: selected ? 118 : 98, borderRadius: 22, transform: `translate(-50%, -50%) rotate(${document.relevant ? (index - 2.5) * 2 : (index % 2 ? 7 : -7)}deg) scale(${selected ? 1.05 : 1})`, background: selected ? '#F1EAFF' : 'white', border: `2px solid ${selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.line}`, boxShadow: selected ? '0 18px 45px rgba(135,87,232,.27)' : '0 12px 30px rgba(48,34,74,.10)', opacity: document.relevant ? 1 : 1 - repel * 0.78, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 16, boxSizing: 'border-box', fontSize: document.label.length > 13 ? 17 : 21, fontWeight: 850, color: selected ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.foreground, zIndex: selected ? 8 : 2, overflow: 'hidden'}}>
                 {compactText(document.label, 22)}
               </div>
             );
