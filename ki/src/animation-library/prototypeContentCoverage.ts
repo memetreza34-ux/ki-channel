@@ -35,9 +35,14 @@ export const getPrototypeContentBindingLevel = ({
   animationId: string;
   source: 'library' | 'new-build';
 }): PrototypeContentBindingLevel => {
-  if (source === 'new-build') return 'purpose-built-new-animation';
-  return NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)
-    ? 'native-object-binding'
+  // `source` records where the scene came from. It must not permanently lock a
+  // purpose-built animation into a non-ready state after that exact animationId
+  // has later received native scene-content binding and a real runtime component.
+  if (NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)) {
+    return 'native-object-binding';
+  }
+  return source === 'new-build'
+    ? 'purpose-built-new-animation'
     : 'semantic-shell-only';
 };
 
