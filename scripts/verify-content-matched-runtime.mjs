@@ -39,6 +39,7 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeContentCoverage.test.ts',
   'ki/src/animation-library/__tests__/prototypeRenderPayload.test.ts',
   'ki/src/animation-library/__tests__/prototypeRuntimeContentDeriver.test.ts',
+  'ki/src/animation-library/__tests__/prototypeRuntimeContentSanitizer.test.ts',
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
 ];
@@ -80,10 +81,12 @@ const sampleProps = {
       slowPath: 'Überlasteter Dienst',
       fastPath: 'Optimierter Dienst',
       bottleneckLabel: 'Kapazitätsengpass',
+      latencyUnit: 'ms',
     },
     values: {
       slowLatency: 780,
       fastLatency: 340,
+      measurementExact: 1,
     },
   },
 };
@@ -113,7 +116,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
