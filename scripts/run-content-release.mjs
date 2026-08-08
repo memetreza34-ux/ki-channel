@@ -1,4 +1,4 @@
-import {spawn} from 'node:child_process';
+import {execFileSync, spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
@@ -11,67 +11,22 @@ if (!VALID_MODES.has(requestedMode)) {
   process.exit(1);
 }
 
+const currentGitHead = (() => {
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return null;
+  }
+})();
+
 const outputRoot = resolve('out/content-release-run');
 await mkdir(outputRoot, {recursive: true});
 const summaryPath = resolve(outputRoot, `${requestedMode}-summary.json`);
 const startedAt = new Date().toISOString();
 const steps = [];
-
-const writeSummary = async ({status, error = null}) => {
-  await writeFile(
-    summaryPath,
-    `${JSON.stringify(
-      {
-        version: 1,
-        mode: requestedMode,
-        status,
-        startedAt,
-        completedAt: status === 'running' ? null : new Date().toISOString(),
-        error,
-        steps,
-      },
-      null,
-      2,
-    )}\n`,
-    'utf8',
-  );
-};
-
-const run = (command, args, label) =>
-  new Promise((resolvePromise, reject) => {
-    const step = {
-      label,
-      command: [command, ...args].join(' '),
-      status: 'running',
-      startedAt: new Date().toISOString(),
-      completedAt: null,
-    };
-    steps.push(step);
-    console.log(`\n[content-release:${requestedMode}] ${label}`);
-    console.log(`[content-release:${requestedMode}] > ${step.command}`);
-
-    const child = spawn(command, args, {
-      stdio: 'inherit',
-      shell: process.platform === 'win32',
-      env: process.env,
-    });
-
-    child.on('error', (error) => {
-      step.status = 'failed';
-      step.completedAt = new Date().toISOString();
-      reject(error);
-    });
-    child.on('exit', (code) => {
-      step.completedAt = new Date().toISOString();
-      if (code === 0) {
-        step.status = 'passed';
-        resolvePromise();
-        return;
-      }
-      step.status = 'failed';
-      reject(new Error(`${label} endete mit Code ${code}.`));
-    });
-  });
 
 const verificationSteps = [
   {
@@ -138,6 +93,64 @@ const requestedSteps = [
   ...(requestedMode === 'full' ? fullSteps : []),
 ];
 
+const writeSummary = async ({status, error = null}) => {
+  await writeFile(
+    summaryPath,
+    `${JSON.stringify(
+      {
+        version: 1,
+        mode: requestedMode,
+        status,
+        gitHead: currentGitHead,
+        expectedStepCount: requestedSteps.length,
+        startedAt,
+        completedAt: status === 'running' ? null : new Date().toISOString(),
+        error,
+        steps,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
+};
+
+const run = (command, args, label) =>
+  new Promise((resolvePromise, reject) => {
+    const step = {
+      label,
+      command: [command, ...args].join(' '),
+      status: 'running',
+      startedAt: new Date().toISOString(),
+      completedAt: null,
+    };
+    steps.push(step);
+    console.log(`\n[content-release:${requestedMode}] ${label}`);
+    console.log(`[content-release:${requestedMode}] > ${step.command}`);
+
+    const child = spawn(command, args, {
+      stdio: 'inherit',
+      shell: process.platform === 'win32',
+      env: process.env,
+    });
+
+    child.on('error', (error) => {
+      step.status = 'failed';
+      step.completedAt = new Date().toISOString();
+      reject(error);
+    });
+    child.on('exit', (code) => {
+      step.completedAt = new Date().toISOString();
+      if (code === 0) {
+        step.status = 'passed';
+        resolvePromise();
+        return;
+      }
+      step.status = 'failed';
+      reject(new Error(`${label} endete mit Code ${code}.`));
+    });
+  });
+
 // Invalidate any older successful report before starting the first child process.
 // If this run is interrupted externally, the current summary remains `running`
 // instead of leaving a stale `passed` result from an earlier release behind.
@@ -147,6 +160,14 @@ try {
   for (const step of requestedSteps) {
     await run(step.command, step.args, step.label);
     await writeSummary({status: 'running'});
+  }
+  if (
+    steps.length !== requestedSteps.length ||
+    steps.some((step) => step.status !== 'passed')
+  ) {
+    throw new Error(
+      `Release-Schrittkonsistenz verletzt: ${steps.filter((step) => step.status === 'passed').length}/${requestedSteps.length} Schritte sind passed.`,
+    );
   }
   await writeSummary({status: 'passed'});
   console.log(
