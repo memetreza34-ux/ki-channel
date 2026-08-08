@@ -91,4 +91,25 @@ describe('prototype runtime content association', () => {
     expect(result.values.leak2Amount).toBeUndefined();
     expect(result.values.leak3Amount).toBeUndefined();
   });
+
+  it.each([
+    {unit: 'ct', spokenText: 'Die Kosten sinken von 94 Cent auf 28 Cent.'},
+    {unit: '€', spokenText: 'Die Kosten sinken von 94 Euro auf 28 Euro.'},
+    {unit: '$', spokenText: 'Die Kosten sinken von $ 94 auf $ 28.'},
+    {unit: 'Credits', spokenText: 'Die Kosten sinken von 94 Credits auf 28 Credits.'},
+    {unit: 'Token', spokenText: 'Die Kosten sinken von 94 Token auf 28 Token.'},
+  ])('parses $unit cost measurements without invalid dynamic regexes', ({unit, spokenText}) => {
+    const result = associatePrototypeRuntimeContent({
+      animationId: 'cost-efficiency-budget-leak-meter-v1',
+      spokenText,
+      content: {
+        labels: {currency: unit},
+        values: {measurementExact: 1},
+      },
+    });
+
+    expect(result.values.measurementExact).toBe(1);
+    expect(result.values.initialCost).toBe(94);
+    expect(result.values.optimizedCost).toBe(28);
+  });
 });
