@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {associatePrototypeRuntimeContent} from '../prototypeRuntimeContentAssociation';
 import {enhanceSceneMeaning} from '../extendedMeaningContract';
 import {derivePrototypeRuntimeContent} from '../prototypeRuntimeContentDeriver';
 import {sanitizePrototypeRuntimeContent} from '../prototypeRuntimeContentSanitizer';
@@ -9,7 +10,16 @@ const deriveSafe = (animationId: string, spokenText: string) => {
     spokenText,
     meaningContract: enhanceSceneMeaning(spokenText),
   });
-  return sanitizePrototypeRuntimeContent({animationId, spokenText, derived});
+  const sanitized = sanitizePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    derived,
+  });
+  return associatePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    content: sanitized,
+  });
 };
 
 const numberValue = (value: string | number | undefined): number =>
