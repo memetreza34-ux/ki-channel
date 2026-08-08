@@ -1,48 +1,38 @@
 import {spawn} from 'node:child_process';
 
-const run = (command, args, label) =>
+const runCanonicalRelease = () =>
   new Promise((resolvePromise, reject) => {
-    console.log(`\n[complete-content-render] ${label}`);
-    const child = spawn(command, args, {
-      stdio: 'inherit',
-      shell: process.platform === 'win32',
-      env: process.env,
-    });
+    const child = spawn(
+      process.execPath,
+      ['scripts/render-all-content-release.mjs'],
+      {
+        stdio: 'inherit',
+        shell: process.platform === 'win32',
+        env: process.env,
+      },
+    );
     child.on('error', reject);
     child.on('exit', (code) => {
-      if (code === 0) {
-        resolvePromise();
-        return;
-      }
-      reject(new Error(`${label} endete mit Code ${code}.`));
+      if (code === 0) resolvePromise();
+      else reject(
+        new Error(
+          `Kanonischer All-Content-Renderlauf endete mit Code ${code}.`,
+        ),
+      );
     });
   });
 
-try {
-  await run(
-    'node',
-    ['scripts/render-animation-library.mjs', 'all'],
-    'Bestehende vollständige Animationsbibliothek-Releaseartefakte rendern',
-  );
-  await run(
-    'node',
-    ['scripts/render-production-derived-content.mjs', 'all'],
-    '22/22 Production-Derived-Content-Kompositionen rendern',
-  );
-  await run(
-    'node',
-    ['scripts/render-content-motion-edge-cases.mjs', 'all'],
-    'Sechs semantische Edge-Case-Kompositionen rendern',
-  );
+console.warn(
+  '[complete-content-render] DEPRECATED: Dieser Kompatibilitätsbefehl delegiert vollständig an scripts/render-all-content-release.mjs.',
+);
+console.warn(
+  '[complete-content-render] Production-Derived-Only-Artefakte sind kein vollständiger Produktionsrelease, weil der kanonische Pfad Deriver -> Sanitizer -> Association -> Render-Props verlangt.',
+);
 
-  console.log(
-    '\n[complete-content-render] Alle Standard-, Production-Derived- und Edge-Case-Artefakte wurden erzeugt.',
-  );
-  console.log(
-    '[complete-content-render] Danach ausführen: node scripts/verify-complete-content-release.mjs',
-  );
+try {
+  await runCanonicalRelease();
 } catch (error) {
-  console.error('\n[complete-content-render] Renderlauf fehlgeschlagen.');
+  console.error('\n[complete-content-render] Kanonischer Renderlauf fehlgeschlagen.');
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;
 }
