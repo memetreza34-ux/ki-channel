@@ -16,6 +16,7 @@ const visualVerifier = read('scripts/verify-content-visual-review.mjs');
 const finalizer = read('scripts/finalize-content-release.mjs');
 const edgeRenderer = read('scripts/render-content-motion-edge-cases.mjs');
 const edgeVerifier = read('scripts/verify-content-motion-edge-case-renders.mjs');
+const edgeUtils = read('scripts/edge-case-release-utils.mjs');
 
 for (const required of [
   "import {createHash} from 'node:crypto'",
@@ -93,7 +94,7 @@ if (
 }
 
 for (const required of [
-  'getMasterplanContentSourceFingerprint',
+  'getEdgeCaseSourceFingerprint',
   'sourceFingerprint,',
   'generatedAt: new Date().toISOString()',
 ]) {
@@ -104,7 +105,7 @@ for (const required of [
   );
 }
 for (const required of [
-  'getMasterplanContentSourceFingerprint',
+  'getEdgeCaseSourceFingerprint',
   'summary.sourceFingerprint !== currentSourceFingerprint',
   'Edge-Case-Render-Artefakte sind veraltet',
 ]) {
@@ -114,6 +115,15 @@ for (const required of [
     'verify-content-motion-edge-case-renders source freshness',
   );
 }
+for (const required of [
+  'getMasterplanContentSourceFingerprint',
+  'content-motion-edge-cases.json',
+  'render-content-motion-edge-cases.mjs',
+  'verify-content-motion-edge-case-renders.mjs',
+  'edge-case-release-utils.mjs',
+]) {
+  requireContains(edgeUtils, required, 'edge-case-release-utils fingerprint inputs');
+}
 
 if (failures.length > 0) {
   console.error('Content-Review-Finalization-Gate fehlgeschlagen:');
@@ -122,5 +132,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Content-Review-Finalization-Gate bestanden: Review-ID bindet die konkrete source-fingerprinted Rendergeneration; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind für die Finalisierung verpflichtend.',
+  'Content-Review-Finalization-Gate bestanden: Review-ID bindet die konkrete source-fingerprinted Rendergeneration; Edge Cases besitzen einen eigenen Config-/Renderer-Fingerprint; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind für die Finalisierung verpflichtend.',
 );
