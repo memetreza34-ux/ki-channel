@@ -1,5 +1,5 @@
 import {spawn} from 'node:child_process';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
 const requestedMode = process.argv[2] ?? 'plan';
@@ -64,6 +64,10 @@ for (const edgeCase of selectedCases) {
   );
 
   const caseOutputRoot = resolve(outputRoot, edgeCase.id);
+  // Keep each render mode isolated from previous artifacts. A smoke run must not
+  // inherit an MP4 or additional checkpoints from an earlier full render.
+  await rm(caseOutputRoot, {recursive: true, force: true});
+  await mkdir(caseOutputRoot, {recursive: true});
   console.log(
     `\n[edge-case-render] ${edgeCase.id} · ${edgeCase.animationId} · ${requestedMode}`,
   );
