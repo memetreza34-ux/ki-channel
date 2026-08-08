@@ -66,6 +66,37 @@ source: new-build
 
 und bleibt bis zur echten Implementierung/Registrierung blockiert.
 
+## Runtime-Promotion eines New-Builds
+
+`source: "new-build"` beschreibt die **Herkunft** einer Szene. Es darf nicht dauerhaft bedeuten, dass diese Szene nie runtime-ready werden kann.
+
+Deshalb wird die aktuelle Bereitschaft anhand der `animationId` neu bewertet:
+
+```text
+new-build geplant
+→ TSX/Remotion-Komponente implementiert
+→ Animation ausführbar registriert
+→ native Content-Bindung eingetragen
+→ dieselbe animationId wird runtime-ready
+```
+
+Der historische Source-Wert bleibt dabei `new-build`.
+
+`getPrototypeContentBindingLevel()` prüft deshalb zuerst, ob die konkrete ID inzwischen native Content-Bindung besitzt. Wenn ja, lautet das Binding auch bei historischer Quelle `new-build`:
+
+```text
+native-object-binding
+```
+
+`areProductionRuntimeScenesReady()` bildet dieselbe Runtime-Regel zentral für Production Planner und Implementierungsbrief ab.
+
+Damit muss nach einer Implementierung nicht künstlich neu geplant oder `source` nachträglich auf `library` umgeschrieben werden.
+
+Zusätzlich werden veraltete Planwarnungen entfernt, sobald die Runtime den zuvor fehlenden Zustand aufgelöst hat, insbesondere:
+
+- `one or more scenes require a content-specific animation before production`
+- eine alte `only 0 visual families were selected`-Warnung, wenn die realen Produktionsszenen inzwischen eine Familie besitzen
+
 ## Defense in Depth
 
 Die Produktionsgrenze wird nicht nur an einer Stelle geprüft.
@@ -74,7 +105,7 @@ Die Produktionsgrenze wird nicht nur an einer Stelle geprüft.
 
 `productionPlanner.ts` gibt dem Content-first Planner nur production-ready Library-Entries zur direkten Wiederverwendung.
 
-Ein `new-build` setzt `readyForImplementation` ausdrücklich auf `false`, unabhängig davon, ob aktuell zusätzlich eine Warnung existiert. Die Sicherheit hängt damit nicht von Warntexten ab.
+`readyForImplementation` wird aus der aktuellen Runtime-Bereitschaft der Szenen abgeleitet. Ein noch nicht implementierter New-Build bleibt `false`; eine später wirklich registrierte und nativ gebundene ID kann dagegen runtime-ready werden, ohne ihre Historie zu verlieren.
 
 ### 2. Plan Diagnostics
 
@@ -90,7 +121,7 @@ falls ein Raw-Plan trotz Planner-Schutz eine nicht freigegebene Library-ID enth�
 
 `channelReelMasterPlan.ts` behandelt eine nicht production-ready `source: library`-Szene als internen Invariantenbruch und bricht sofort ab.
 
-Ein normaler `new-build` bleibt dagegen ein erwarteter Masterplan-Blocker, bis seine Runtime existiert.
+Ein normaler, noch nicht implementierter `new-build` bleibt ein erwarteter Masterplan-Blocker. Sobald dieselbe ID später runtime-ready ist, darf der Masterplan die Szene als `native-object-binding` behandeln, während `fullAnimationSource` weiterhin `new-build` bleibt.
 
 ### 4. Release Finalization
 
@@ -113,7 +144,7 @@ Planung: new-build / concept
 → Review
 ```
 
-Die neue Implementierungs-/Katalogversion bleibt erhalten und wird nicht durch den alten Plan-Snapshot wieder auf `concept` zurückgesetzt.
+Die neue Implementierungs-/Katalogversion bleibt erhalten und wird nicht durch den alten Plan-Snapshot wieder auf `concept` zurückgesetzt. Nach erfolgreicher Runtime-Registrierung kann derselbe historisch als `new-build` geplante Eintrag regulär reviewed und `verified` werden.
 
 ## Relevante Dateien
 
@@ -122,6 +153,7 @@ ki/src/animation-library/executionCatalog.ts
 ki/src/animation-library/prototypeContentCoverage.ts
 ki/src/animation-library/productionEligibility.ts
 ki/src/animation-library/productionPlanner.ts
+ki/src/animation-library/implementationBrief.ts
 ki/src/animation-library/planDiagnostics.ts
 ki/src/animation-library/channelReelMasterPlan.ts
 ki/src/animation-library/reelLifecycle.ts
@@ -134,6 +166,7 @@ ki/src/animation-library/__tests__/productionPlanner.test.ts
 ki/src/animation-library/__tests__/productionExecutableGuard.test.ts
 ki/src/animation-library/__tests__/reelPlanningPipeline.test.ts
 ki/src/animation-library/__tests__/planDiagnostics.test.ts
+ki/src/animation-library/__tests__/prototypeContentCoverage.test.ts
 ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts
 ki/src/animation-library/__tests__/reelLifecycle.test.ts
 ```
@@ -153,7 +186,10 @@ Die Tests prüfen unter anderem:
 9. Diagnostics blockiert eine eingeschleuste Shell-only-Library-Auswahl.
 10. Der Masterplan schlägt bei einer eingeschleusten nicht production-ready Library-ID sofort fehl.
 11. Ein noch nicht runtime-registrierter New-Build kann nicht finalisiert werden.
-12. Aktuelle Katalogmetadaten werden bei Finalisierung nicht durch den älteren Plan-Snapshot überschrieben.
+12. Eine historische `new-build`-Szene wird nach realer Registrierung als nativ content-bound erkannt.
+13. Der Implementierungsbrief wird nach dieser Runtime-Promotion wieder bereit und entfernt aufgelöste Warnungen.
+14. Ein historischer New-Build kann nach echter Runtime-Implementierung regulär finalisiert werden, ohne `source` umzuschreiben.
+15. Aktuelle Katalogmetadaten werden bei Finalisierung nicht durch den älteren Plan-Snapshot überschrieben.
 
 ## Ausbau auf mehr als 22 direkte Reuse-Varianten
 
