@@ -161,6 +161,8 @@ const COST_REDUCTION_SIGNAL =
 const COST_OPTIMIZATION_SIGNAL = /\b(?:optimier\w*|effizien\w*)\b/;
 const COST_INCREASE_SIGNAL =
   /\b(?:steig\w*|teurer\w*|hoher\w*|mehr\s+kosten|kosten\s+steigen|preis\s+steigt)\b/;
+const PERFORMANCE_IMPROVEMENT_SIGNAL =
+  /\b(?:latenz\s+(?:sink\w*|fall\w*|reduzier\w*)|(?:sink\w*|fall\w*|reduzier\w*)\s+(?:die\s+)?latenz|schneller\w*|beschleunig\w*|throughput\s+steig\w*|durchsatz\s+steig\w*|mehr\s+(?:throughput|durchsatz))\b/;
 
 const unique = (values: readonly string[]): string[] => [...new Set(values)];
 
@@ -236,13 +238,34 @@ export const enhanceSceneMeaning = (
     (match) => match.score >= Math.max(7, dominant.score * 0.55),
   ).slice(0, 2);
   const matchedTerms = unique(selected.flatMap((match) => match.matchedTerms));
+  const performanceImproves =
+    dominant.rule.id === 'scale-performance' &&
+    PERFORMANCE_IMPROVEMENT_SIGNAL.test(normalizedText);
+  const selectedCues = selected.flatMap((match) =>
+    performanceImproves && match.rule.id === 'scale-performance'
+      ? [
+          'baseline-performance',
+          'optimization-change',
+          'latency-or-throughput-improvement',
+          'measured-or-relative-result',
+        ]
+      : match.rule.cues,
+  );
 
   return {
     ...base,
-    communicationGoal: dominant.rule.communicationGoal,
-    startState: dominant.rule.startState,
-    visibleChange: dominant.rule.visibleChange,
-    endState: dominant.rule.endState,
+    communicationGoal: performanceImproves
+      ? 'show-result'
+      : dominant.rule.communicationGoal,
+    startState: performanceImproves
+      ? 'the original path begins in its slower or more constrained performance state on a shared baseline'
+      : dominant.rule.startState,
+    visibleChange: performanceImproves
+      ? 'the stated optimization changes the same path and visibly reduces latency or increases throughput'
+      : dominant.rule.visibleChange,
+    endState: performanceImproves
+      ? 'the improved performance result remains visible on the same baseline without inventing an unspoken bottleneck'
+      : dominant.rule.endState,
     subjectTerms: unique([...base.subjectTerms, ...matchedTerms]).slice(0, 10),
     actionTerms: unique([
       ...base.actionTerms,
@@ -258,11 +281,12 @@ export const enhanceSceneMeaning = (
       ...base.preferredVisualFamilies,
     ]).slice(0, 5),
     preferredExplanationPatterns: unique([
+      ...(performanceImproves ? ['performance-improvement'] : []),
       ...selected.flatMap((match) => match.rule.patterns),
       ...base.preferredExplanationPatterns,
     ]).slice(0, 8),
     requiredVisualCues: unique([
-      ...selected.flatMap((match) => match.rule.cues),
+      ...selectedCues,
       ...base.requiredVisualCues,
     ]).slice(0, 12),
     forbiddenVisualCues: unique(base.forbiddenVisualCues),
