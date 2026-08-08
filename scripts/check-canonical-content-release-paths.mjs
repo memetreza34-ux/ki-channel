@@ -104,7 +104,8 @@ if (
 
 for (const required of [
   "new Set(['verify', 'smoke', 'full'])",
-  'git rev-parse',
+  "execFileSync('git'",
+  "['rev-parse', 'HEAD']",
   'summary.status !== \'passed\'',
   'summary.gitHead !== currentGitHead',
   'summary.expectedStepCount !== expectedCount',
