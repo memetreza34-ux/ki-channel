@@ -41,6 +41,7 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeRuntimeContentDeriver.test.ts',
   'ki/src/animation-library/__tests__/prototypeRuntimeContentSanitizer.test.ts',
   'ki/src/animation-library/__tests__/prototypeWinnerCueGrounding.test.ts',
+  'ki/src/animation-library/__tests__/prototypeMeasurementAssociation.test.ts',
   'ki/src/animation-library/__tests__/runtimeContentSanitizerBindings.test.mjs',
   'ki/src/animation-library/__tests__/productionDerivedRuntimeKeys.test.mjs',
   'ki/src/animation-library/__tests__/masterplanPayloadLoaders.test.mjs',
@@ -125,7 +126,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Winner-Cue-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Winner-Cue-, Messwert-Zuordnungs-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
