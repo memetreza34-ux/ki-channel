@@ -1,25 +1,29 @@
 name: Motion and Content System Checks
 
-# Der private Repository-Runner beendet Jobs aktuell bereits vor Step 1. Deshalb
-# bleibt dieser Workflow bewusst manuell. Sobald Actions/Billing wieder läuft,
-# deckt ein Lauf den aktuellen Content-Grounding-Vertrag ab; optional kann der
-# vollständige 22+6 Release inklusive Videos erzeugt werden.
+# Der private Repository-Runner beendet Jobs aktuell bereits vor Step 1, weil
+# GitHub Actions durch Billing/Spending-Limit blockiert ist. Deshalb bleibt der
+# Workflow bewusst manuell. Sobald Billing wieder funktioniert, nutzt CI exakt
+# denselben Content-Release-Runner wie die lokale Freigabe.
 on:
   workflow_dispatch:
     inputs:
-      full_release:
-        description: 'Zusätzlich vollständigen 22+6 Content-Release mit Videos rendern'
-        required: false
-        default: false
-        type: boolean
+      release_mode:
+        description: 'Content-Prüftiefe'
+        required: true
+        default: 'smoke'
+        type: choice
+        options:
+          - verify
+          - smoke
+          - full
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  release:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 180
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,8 +44,7 @@ jobs:
             echo "npm=$(npm --version)"
             echo "pwd=$(pwd)"
             echo "head=$(git rev-parse HEAD)"
-            echo "root-files:"
-            find . -maxdepth 2 -type f | sort | head -200
+            echo "release_mode=${{ inputs.release_mode }}"
           } | tee ci-logs/environment.log
 
       - name: Install root dependencies without legacy workspaces
@@ -51,7 +54,7 @@ jobs:
           set -o pipefail
           npm install --workspaces=false --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
-      - name: Run legacy motion verification
+      - name: Verify legacy motion system
         id: motion_verify
         if: always() && steps.install.outcome == 'success'
         continue-on-error: true
@@ -59,159 +62,50 @@ jobs:
           set -o pipefail
           npm run motion:verify 2>&1 | tee ci-logs/motion-verify.log
 
-      - name: Run focused content runtime verification
-        id: content_verify
+      - name: Run canonical content release mode
+        id: content_release
         if: always() && steps.install.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
-          node scripts/verify-content-matched-runtime.mjs 2>&1 | tee ci-logs/content-runtime-verify.log
+          node scripts/run-content-release.mjs "${{ inputs.release_mode }}" 2>&1 | tee ci-logs/content-release.log
 
-      - name: Run full animation library verification
-        id: library_verify
-        if: always() && steps.install.outcome == 'success'
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          npm run animation-library:verify 2>&1 | tee ci-logs/animation-library-verify.log
-
-      - name: Upload verification diagnostics
+      - name: Upload release summary and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: production-verification-diagnostics
-          path: ci-logs/
-          if-no-files-found: error
-
-      - name: Upload generated verification plans
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-verification-plans
+          name: content-release-${{ inputs.release_mode }}-diagnostics
           path: |
-            out/motion-system/render-plan.json
+            ci-logs/
+            out/content-release-run/
             out/content-matched/runtime-verification/
-            out/masterplan-content-release/manifest.json
           if-no-files-found: warn
 
-      - name: Fail when any verification failed
+      - name: Upload smoke/full review artifacts
+        if: always() && (inputs.release_mode == 'smoke' || inputs.release_mode == 'full')
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-release-${{ inputs.release_mode }}-review
+          path: |
+            out/masterplan-content-release/
+            out/content-motion-edge-cases/
+            out/content-review-gallery/
+          if-no-files-found: warn
+
+      - name: Upload full animation library artifacts
+        if: always() && inputs.release_mode == 'full'
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-release-full-animation-library
+          path: out/animation-library/
+          if-no-files-found: warn
+
+      - name: Fail when verification failed
         if: >-
           always() &&
           (
             steps.install.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
-            steps.content_verify.outcome == 'failure' ||
-            steps.library_verify.outcome == 'failure'
+            steps.content_release.outcome == 'failure'
           )
         run: exit 1
-
-  smoke-render:
-    needs: verify
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install root dependencies without legacy workspaces
-        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
-
-      - name: Render middle frame for all legacy motion visual types
-        env:
-          MOTION_CONCURRENCY: '2'
-        run: npm run motion:smoke
-
-      - name: Render middle frame for every legacy timeline scene
-        env:
-          MOTION_CONCURRENCY: '2'
-        run: npm run motion:timeline-smoke
-
-      - name: Render 22 content-grounded production smoke sets
-        run: node scripts/render-masterplan-content-release.mjs smoke
-
-      - name: Verify 22 smoke runtime props and artifacts
-        run: node scripts/verify-masterplan-content-release.mjs
-
-      - name: Render 6 semantic edge-case smoke sets
-        run: node scripts/render-content-motion-edge-cases.mjs smoke
-
-      - name: Verify 6 semantic edge-case smoke artifacts
-        run: node scripts/verify-content-motion-edge-case-renders.mjs smoke
-
-      - name: Build 22+6 smoke review gallery
-        run: node scripts/build-content-review-gallery.mjs
-
-      - name: Verify smoke review gallery without stale videos
-        run: node scripts/verify-content-review-gallery.mjs smoke
-
-      - name: Upload legacy smoke renders
-        uses: actions/upload-artifact@v4
-        with:
-          name: motion-smoke-renders
-          path: |
-            out/motion-system/*/frame-75.png
-            out/motion-system/timeline-demo/frame-233.png
-            out/motion-system/timeline-demo/frame-391.png
-            out/motion-system/timeline-demo/frame-549.png
-          if-no-files-found: error
-
-      - name: Upload content-grounded smoke release
-        uses: actions/upload-artifact@v4
-        with:
-          name: content-grounded-smoke-renders
-          path: |
-            out/masterplan-content-release/
-            out/content-motion-edge-cases/
-            out/content-review-gallery/
-          if-no-files-found: error
-
-      - name: Upload timeline render plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: motion-timeline-render-plan
-          path: out/motion-system/timeline-render-plan.json
-          if-no-files-found: error
-
-  full-release:
-    if: ${{ inputs.full_release == true }}
-    needs: verify
-    runs-on: ubuntu-latest
-    timeout-minutes: 180
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install root dependencies without legacy workspaces
-        run: npm install --workspaces=false --package-lock=false --no-audit --no-fund
-
-      - name: Render canonical complete content release
-        run: node scripts/render-all-content-release.mjs
-
-      - name: Verify canonical complete content release
-        run: node scripts/verify-all-content-release.mjs
-
-      - name: Upload full content review gallery
-        uses: actions/upload-artifact@v4
-        with:
-          name: content-full-review-gallery
-          path: out/content-review-gallery/
-          if-no-files-found: error
-
-      - name: Upload full masterplan and edge-case renders
-        uses: actions/upload-artifact@v4
-        with:
-          name: content-full-release-renders
-          path: |
-            out/masterplan-content-release/
-            out/content-motion-edge-cases/
-          if-no-files-found: error
