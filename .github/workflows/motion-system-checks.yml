@@ -140,6 +140,9 @@ jobs:
       - name: Render 6 semantic edge-case smoke sets
         run: node scripts/render-content-motion-edge-cases.mjs smoke
 
+      - name: Verify 6 semantic edge-case smoke artifacts
+        run: node scripts/verify-content-motion-edge-case-renders.mjs smoke
+
       - name: Build 22+6 smoke review gallery
         run: node scripts/build-content-review-gallery.mjs
 
