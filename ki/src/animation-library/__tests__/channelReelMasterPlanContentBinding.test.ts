@@ -62,7 +62,8 @@ describe('channel master plan content binding', () => {
       masterPlan.scenes.every(
         (scene) =>
           scene.prototypeRenderProps.content?.spokenText === scene.spokenText &&
-          scene.prototypeRenderProps.content?.meaningContract !== undefined,
+          scene.prototypeRenderProps.content?.meaningContract !== undefined &&
+          Object.keys(scene.prototypeRenderProps.content?.labels ?? {}).length > 0,
       ),
     ).toBe(true);
     expect(
@@ -72,6 +73,36 @@ describe('channel master plan content binding', () => {
           blocker.includes('full production runtime eligibility'),
       ),
     ).toBe(false);
+  });
+
+  it('carries explicit spoken latency values through planning into Remotion props', () => {
+    const sceneId = 'measured-latency';
+    const spokenText =
+      'Die Latenz sinkt vom seriellen Pfad mit 780 Millisekunden auf 340 Millisekunden im parallelen Pfad.';
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'measured-latency-masterplan',
+      reelIndex: 41,
+      scenes: [{sceneId, spokenText}],
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain: createBrain(),
+    });
+
+    expect(prepared.plan.productionPlan.scenes[0].animationId).toBe(
+      'scale-performance-latency-tunnel-race-v1',
+    );
+    const masterPlan = createChannelReelMasterPlan({
+      prepared,
+      durationBySceneId: {[sceneId]: 180},
+    });
+    const scene = masterPlan.scenes[0];
+    const content = scene.prototypeRenderProps.content;
+
+    expect(scene.runtimeReady).toBe(true);
+    expect(content?.spokenText).toBe(spokenText);
+    expect(content?.values?.slowLatency).toBe(780);
+    expect(content?.values?.fastLatency).toBe(340);
+    expect(content?.labels?.slowPath).toBeTruthy();
+    expect(content?.labels?.fastPath).toBeTruthy();
   });
 
   it('fails fast if a shell-only executable library scene bypasses production eligibility', () => {
@@ -123,7 +154,7 @@ describe('channel master plan content binding', () => {
     ] as const;
     const prepared = prepareReelAnimationProduction({
       reelId: 'unimplemented-new-build',
-      reelIndex: 41,
+      reelIndex: 43,
       scenes,
       entries: ANIMATION_LIBRARY_ENTRIES,
       brain: createBrain(),
@@ -154,7 +185,7 @@ describe('channel master plan content binding', () => {
     const fakeAnimationId = 'test-native-without-content-render-config-v1';
     const prepared = prepareReelAnimationProduction({
       reelId: 'native-runtime-gap',
-      reelIndex: 43,
+      reelIndex: 44,
       scenes: [
         {
           sceneId,
@@ -206,7 +237,7 @@ describe('channel master plan content binding', () => {
     const sceneId = 'implemented-after-planning';
     const prepared = prepareReelAnimationProduction({
       reelId: 'new-build-runtime-promotion',
-      reelIndex: 44,
+      reelIndex: 45,
       scenes: [
         {
           sceneId,
@@ -245,6 +276,7 @@ describe('channel master plan content binding', () => {
     expect(scene.contentBindingReady).toBe(true);
     expect(scene.runtimeReady).toBe(true);
     expect(scene.valid).toBe(true);
+    expect(Object.keys(scene.prototypeRenderProps.content?.labels ?? {}).length).toBeGreaterThan(0);
     expect(masterPlan.implementationBrief.readyForImplementation).toBe(true);
     expect(
       masterPlan.implementationBrief.warnings,
