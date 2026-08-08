@@ -59,8 +59,8 @@ export const TimelineMicroscopePrototype: React.FC = () => {
     : [];
   const milestones = DEFAULT_MILESTONES.map((milestone, index) => ({
     ...milestone,
-    label: getPrototypeLabel({content, key: `milestone${index + 1}`, fallback: milestone.label}),
-    detail: getPrototypeLabel({content, key: `milestone${index + 1}Detail`, fallback: terms[index] ?? milestone.detail}),
+    label: getPrototypeLabel({content, key: `milestone${index + 1}`, fallback: content ? (index === DEFAULT_MILESTONES.length - 1 ? 'HEUTE' : `STAND ${index + 1}`) : milestone.label}),
+    detail: getPrototypeLabel({content, key: `milestone${index + 1}Detail`, fallback: terms[index] ?? (content ? 'Änderung' : milestone.detail)}),
   }));
   const spokenSearch = searchable(content?.spokenText ?? '');
   const referencedMilestoneIndex = content
@@ -85,7 +85,11 @@ export const TimelineMicroscopePrototype: React.FC = () => {
   );
   const previousIndex = Math.max(0, focusIndex - 1);
   const lensX = interpolate(lensMove, [0, 1], [milestones[0].x, milestones[focusIndex].x]);
-  const header = getPrototypeLabel({content, key: 'timelineLabel', fallback: 'MODEL EVOLUTION · 2023–2026'});
+  const header = getPrototypeLabel({
+    content,
+    key: 'timelineLabel',
+    fallback: content ? 'ENTWICKLUNG IM ZEITVERLAUF' : 'MODEL EVOLUTION · 2023–2026',
+  });
   const zoomLabel = getPrototypeLabel({content, key: 'zoomLabel', fallback: `ZOOM: ${milestones[focusIndex].label}`});
   const changes = ['größeres Fenster', 'bessere Werkzeuge', 'stabilere Planung'].map((fallback, index) =>
     getPrototypeLabel({content, key: `change${index + 1}`, fallback: content?.meaningContract.requiredVisualCues[index] ?? fallback}),
@@ -98,9 +102,9 @@ export const TimelineMicroscopePrototype: React.FC = () => {
   });
 
   return (
-    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den im Sprechertext genannten Stand; ohne eindeutige Referenz wird der neueste Stand verwendet.">
+    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den im Sprechertext genannten Stand; Demo-Jahre und interne Fokuszähler werden im Content-Modus nicht als Fakten angezeigt.">
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
-        <div style={{position: 'absolute', left: 48, right: 48, top: 60, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{header.toLocaleUpperCase('de-DE')}</span><span style={{color: PROTOTYPE_PALETTE.accent}}>FOKUS {focusIndex + 1}/{milestones.length}</span></div>
+        <div style={{position: 'absolute', left: 48, right: 48, top: 60, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{header.toLocaleUpperCase('de-DE')}</span><span style={{color: PROTOTYPE_PALETTE.accent}}>{content ? `FOKUS: ${milestones[focusIndex].label}` : `FOKUS ${focusIndex + 1}/${milestones.length}`}</span></div>
 
         <div style={{position: 'absolute', left: 100, right: 75, top: 410, height: 14, borderRadius: 999, background: PROTOTYPE_PALETTE.line, overflow: 'hidden'}}><div style={{width: `${line * 100}%`, height: '100%', background: `linear-gradient(90deg, ${PROTOTYPE_PALETTE.accentSoft}, ${PROTOTYPE_PALETTE.accent})`, boxShadow: '0 0 18px rgba(135,87,232,.4)'}} /></div>
 
