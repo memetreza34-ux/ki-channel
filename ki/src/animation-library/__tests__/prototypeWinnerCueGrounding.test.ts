@@ -62,4 +62,35 @@ describe('winner cue grounding', () => {
 
     expect(result.values.rankingOutcomeGrounded).toBe(0);
   });
+
+  it('does not treat German causal "führt zu" as a winner cue', () => {
+    const result = deriveSafe(
+      'ranking-dynamic-podium-rise-v1',
+      'Tool A führt zu höheren Kosten. Tool B und Tool C werden nur verglichen.',
+    );
+
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+  });
+
+  it('does not treat "beste Qualität" as an overall benchmark winner', () => {
+    const result = deriveSafe(
+      'comparison-benchmark-racetrack-v1',
+      'Modell A hat die beste Qualität, Modell B ist dafür schneller.',
+    );
+
+    expect(result.values.comparisonOutcomeGrounded).toBe(0);
+  });
+
+  it.each([
+    'Tool A gewinnt zwar nicht gegen Tool B und Tool C.',
+    'Tool A gewinnt doch nicht gegen Tool B und Tool C.',
+    'Tool A gewinnt auf keinen Fall gegen Tool B und Tool C.',
+  ])('keeps an explicitly negated winner cue ungrounded: %s', (spokenText) => {
+    const result = deriveSafe(
+      'ranking-dynamic-podium-rise-v1',
+      spokenText,
+    );
+
+    expect(result.values.rankingOutcomeGrounded).toBe(0);
+  });
 });
