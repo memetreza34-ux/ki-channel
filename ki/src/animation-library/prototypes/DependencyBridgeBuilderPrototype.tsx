@@ -37,6 +37,11 @@ const relationshipWeight = (
 const qualitativeWeight = (value: number): string =>
   value >= 0.67 ? 'STARK' : value >= 0.4 ? 'MITTEL' : 'SCHWACH';
 
+const hasRelationshipMeasurementContext = (spokenText: string): boolean =>
+  /\b(?:verbunden|verbindung|beziehung|gewicht|gewichtet|attention|aufmerksamkeit)\b/i.test(
+    spokenText,
+  );
+
 export const DependencyBridgeBuilderPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
@@ -57,10 +62,13 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
     label: getPrototypeLabel({
       content,
       key: `node${index + 1}`,
-      fallback: terms[index] ?? island.label,
+      fallback: terms[index] ?? (content ? `KNOTEN ${String.fromCharCode(65 + index)}` : island.label),
     }),
   }));
-  const explicitWeights = content
+  const relationshipMeasurementContext = content
+    ? hasRelationshipMeasurementContext(content.spokenText)
+    : true;
+  const explicitWeights = content && relationshipMeasurementContext
     ? parseExplicitPercentages(content.spokenText)
     : [];
   const weight12Exact = !content || explicitWeights[0] !== undefined;
@@ -101,7 +109,7 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
   const weakRelationship = getPrototypeLabel({
     content,
     key: 'weakRelationship',
-    fallback: 'wird verworfen',
+    fallback: content ? 'schwächere Verbindung' : 'wird verworfen',
   });
   const conclusion = getPrototypeLabel({
     content,
@@ -115,7 +123,7 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
     <PrototypeShell
       family="RELATIONSHIP NETWORK"
       title="Dependency Bridge Builder"
-      subtitle="Beziehungen werden sichtbar gewichtet: starke Verbindungen tragen den Kontext, eine schwache Direktverbindung bricht weg. Exakte Prozentwerte erscheinen nur, wenn sie im Sprechertext genannt werden."
+      subtitle="Beziehungen werden sichtbar gewichtet. Exakte Prozentwerte erscheinen nur, wenn der Sprechertext Prozente in einem klaren Beziehungs- oder Attention-Kontext nennt."
     >
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <svg width="936" height="1080" viewBox="0 0 936 1080" style={{position: 'absolute', inset: 0}}>
@@ -124,15 +132,9 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
           <path d="M 170 640 Q 450 850 755 640" fill="none" stroke={PROTOTYPE_PALETTE.danger} strokeWidth={4 + weakWeight * 12} strokeLinecap="round" strokeDasharray="18 16" opacity={(1 - loadTest) * bridgeTwo * (0.45 + weakWeight)} />
         </svg>
 
-        <div style={{position: 'absolute', left: 300, top: 430, transform: 'translate(-50%, -50%)', padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(135,87,232,.30)', color: PROTOTYPE_PALETTE.accent, fontFamily: 'monospace', fontSize: 20, fontWeight: 900, opacity: bridgeOne, zIndex: 7}}>
-          {weight12Label}
-        </div>
-        <div style={{position: 'absolute', left: 610, top: 425, transform: 'translate(-50%, -50%)', padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(135,87,232,.30)', color: PROTOTYPE_PALETTE.accent, fontFamily: 'monospace', fontSize: 20, fontWeight: 900, opacity: bridgeTwo, zIndex: 7}}>
-          {weight23Label}
-        </div>
-        <div style={{position: 'absolute', left: 462, top: 792, transform: `translate(-50%, -50%) scale(${0.92 + loadTest * 0.08})`, padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(255,93,108,.30)', color: PROTOTYPE_PALETTE.danger, fontFamily: 'monospace', fontSize: 18, fontWeight: 900, opacity: bridgeTwo * (1 - loadTest * 0.55), zIndex: 7}}>
-          {weakWeightLabel} {loadTest > 0.55 ? '×' : ''}
-        </div>
+        <div style={{position: 'absolute', left: 300, top: 430, transform: 'translate(-50%, -50%)', padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(135,87,232,.30)', color: PROTOTYPE_PALETTE.accent, fontFamily: 'monospace', fontSize: 20, fontWeight: 900, opacity: bridgeOne, zIndex: 7}}>{weight12Label}</div>
+        <div style={{position: 'absolute', left: 610, top: 425, transform: 'translate(-50%, -50%)', padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(135,87,232,.30)', color: PROTOTYPE_PALETTE.accent, fontFamily: 'monospace', fontSize: 20, fontWeight: 900, opacity: bridgeTwo, zIndex: 7}}>{weight23Label}</div>
+        <div style={{position: 'absolute', left: 462, top: 792, transform: `translate(-50%, -50%) scale(${0.92 + loadTest * 0.08})`, padding: '9px 13px', borderRadius: 14, background: 'rgba(255,255,255,.95)', border: '2px solid rgba(255,93,108,.30)', color: PROTOTYPE_PALETTE.danger, fontFamily: 'monospace', fontSize: 18, fontWeight: 900, opacity: bridgeTwo * (1 - loadTest * 0.55), zIndex: 7}}>{weakWeightLabel} {loadTest > 0.55 ? '×' : ''}</div>
 
         {islands.map((island, index) => (
           <div key={`${island.label}-${index}`} style={{position: 'absolute', left: island.x, top: island.y, transform: `translate(-50%, -50%) scale(${0.75 + islandsEnter * 0.25})`, opacity: islandsEnter, zIndex: 5}}>
@@ -154,7 +156,7 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
           <div style={{padding: '22px', borderRadius: 24, background: 'rgba(255,93,108,.08)', border: '2px solid rgba(255,93,108,.28)', textAlign: 'center'}}>
             <div style={{fontSize: 19, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.danger}}>SCHWACHE DIREKTLINIE</div>
             <div style={{marginTop: 10, fontSize: weakRelationship.length > 25 ? 20 : 27, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{weakRelationship}</div>
-            <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger}}>{weakWeightLabel} → VERWORFEN</div>
+            <div style={{marginTop: 8, fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger}}>{weakWeightLabel} → {content ? 'SCHWÄCHER' : 'VERWORFEN'}</div>
           </div>
         </div>
 
