@@ -12,6 +12,8 @@ export const readMasterplanJson = async (path) =>
 export const getMasterplanContentSourceFingerprint = async () => {
   const hash = createHash('sha256');
   const fixedFiles = [
+    'ki/src/animation-library/meaningContract.ts',
+    'ki/src/animation-library/extendedMeaningContract.ts',
     'ki/src/animation-library/prototypeRuntimeContentDeriver.ts',
     'ki/src/animation-library/prototypeRuntimeContentSanitizer.ts',
     'ki/src/animation-library/prototypeRuntimeContentAssociation.ts',
@@ -24,6 +26,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
     'ki/src/animation-library/prototype-render-config.json',
     'ki/src/animation-library/content-render-fixtures.json',
     'scripts/render-content-matched-prototype.mjs',
+    'scripts/load-scene-meaning-enhancer.mjs',
     'scripts/load-prototype-runtime-content-deriver.mjs',
     'scripts/load-prototype-runtime-content-sanitizer.mjs',
     'scripts/load-prototype-runtime-content-association.mjs',
@@ -47,8 +50,27 @@ export const getMasterplanContentSourceFingerprint = async () => {
   return hash.digest('hex');
 };
 
-export const getMasterplanFixtureContent = (fixture) =>
-  fixture?.content ?? fixture?.props?.content ?? null;
+export const getMasterplanFixtureContent = (fixture) => {
+  const raw = fixture?.content ?? fixture?.props?.content ?? null;
+  if (!raw || typeof raw !== 'object') return null;
+
+  const spokenText = typeof raw.spokenText === 'string'
+    ? raw.spokenText.trim()
+    : '';
+  const meaningContract =
+    raw.meaningContract && typeof raw.meaningContract === 'object'
+      ? raw.meaningContract
+      : null;
+
+  // Deliberately do not expose fixture labels/values here. Those fields are useful
+  // for direct prototype demos, but the canonical masterplan release must rebuild
+  // runtime labels/values from spokenText -> meaning -> deriver -> sanitizer ->
+  // association. Otherwise a fixture could inject fake precision directly.
+  return {
+    spokenText,
+    meaningContract,
+  };
+};
 
 export const assertMasterplanPng = async (path) => {
   const absolute = resolve(path);
