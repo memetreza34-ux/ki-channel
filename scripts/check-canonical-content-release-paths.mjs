@@ -22,6 +22,8 @@ const renderComplete = read('scripts/render-complete-content-release.mjs');
 const verifyComplete = read('scripts/verify-complete-content-release.mjs');
 const renderMasterplan = read('scripts/render-masterplan-content-release.mjs');
 const verifyMasterplan = read('scripts/verify-masterplan-content-release.mjs');
+const masterplanUtils = read('scripts/masterplan-content-release-utils.mjs');
+const masterplanFixturePreflight = read('scripts/check-masterplan-production-fixtures.mjs');
 const renderEdgeCases = read('scripts/render-content-motion-edge-cases.mjs');
 const verifyEdgeCases = read('scripts/verify-content-motion-edge-case-renders.mjs');
 const reviewBuilder = read('scripts/build-content-review-gallery.mjs');
@@ -173,27 +175,68 @@ for (const [label, source] of [
   ['verify-masterplan-content-release', verifyMasterplan],
 ]) {
   for (const required of [
+    'loadSceneMeaningEnhancer',
     'loadPrototypeRuntimeContentDeriver',
     'loadPrototypeRuntimeContentSanitizer',
     'loadPrototypeRuntimeContentAssociation',
     'loadCreatePrototypeRenderProps',
+    'masterplan-content-fixtures.json',
+    'meaning+derive+sanitize+associate+createPrototypeRenderProps',
   ]) {
     requireContains(source, required, label);
   }
+  requireExcludes(
+    source,
+    "'ki/src/animation-library/content-render-fixtures.json'",
+    `${label} demo fixture isolation`,
+  );
+
+  const meaningIndex = source.indexOf('enhanceSceneMeaning(sourceContent.spokenText)');
   const deriveIndex = source.indexOf('derivePrototypeRuntimeContent({');
   const sanitizeIndex = source.indexOf('sanitizePrototypeRuntimeContent({');
   const associateIndex = source.indexOf('associatePrototypeRuntimeContent({');
   const propsIndex = source.indexOf('createPrototypeRenderProps({');
   if (
-    deriveIndex < 0 ||
+    meaningIndex < 0 ||
+    deriveIndex <= meaningIndex ||
     sanitizeIndex <= deriveIndex ||
     associateIndex <= sanitizeIndex ||
     propsIndex <= associateIndex
   ) {
     failures.push(
-      `${label}: Runtime-Reihenfolge muss derive -> sanitize -> associate -> props bleiben`,
+      `${label}: Runtime-Reihenfolge muss meaning -> derive -> sanitize -> associate -> props bleiben`,
     );
   }
+}
+
+for (const required of [
+  'ki/src/animation-library/masterplan-content-fixtures.json',
+  'ki/src/animation-library/meaningContract.ts',
+  'ki/src/animation-library/extendedMeaningContract.ts',
+  'scripts/load-scene-meaning-enhancer.mjs',
+  'fixture?.content ?? fixture?.props?.content ?? fixture ?? null',
+]) {
+  requireContains(masterplanUtils, required, 'masterplan-content-release-utils');
+}
+requireExcludes(
+  masterplanUtils,
+  "'ki/src/animation-library/content-render-fixtures.json'",
+  'masterplan-content-release-utils production fingerprint',
+);
+
+for (const required of [
+  '22/22 Production-IDs',
+  'masterplan-content-fixtures.json',
+  'content-render-fixtures.json',
+  'meaning -> derive -> sanitize -> associate -> props',
+  '94\\s*Cent',
+  '780\\s*Millisekunden',
+]) {
+  requireContains(
+    masterplanFixturePreflight,
+    required,
+    'check-masterplan-production-fixtures',
+  );
 }
 
 requireContains(
@@ -246,5 +289,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Canonical-Content-Release-Path-Gate bestanden: Unified Runner ist die einzige Content-Release-Quelle für CI und lokal; Run-Reports werden vor Step 1 invalidiert und an Git-HEAD/erwartete Schritte gebunden; all-content/complete nutzen den exakten Masterplan-Grounding-Pfad; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
+  'Canonical-Content-Release-Path-Gate bestanden: Production-Fixtures sind strikt von Demo-Fixtures getrennt; Masterplan nutzt meaning -> derive -> sanitize -> associate -> props; Unified Runner bleibt einzige CI/lokale Release-Quelle; 22+6 Artefaktprüfung, Review-Galerie und Render-Isolation sind verpflichtend.',
 );
