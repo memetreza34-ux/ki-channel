@@ -104,8 +104,8 @@ const RULES: readonly ExtendedMeaningRule[] = [
   },
   {
     id: 'cost-efficiency',
-    terms: ['kosten', 'preis', 'budget', 'spar', 'ressource', 'tokenkosten', 'effizienz'],
-    phrases: ['geld sparen', 'kosten senken', 'weniger ressourcen', 'gunstiger werden'],
+    terms: ['kosten', 'kost', 'preis', 'budget', 'spar', 'ressource', 'tokenkosten', 'effizienz'],
+    phrases: ['geld sparen', 'kosten senken', 'weniger ressourcen', 'gunstiger werden', 'kostet nur noch'],
     communicationGoal: 'show-result',
     families: ['cost-efficiency', 'comparison'],
     patterns: ['cost-optimization', 'efficiency', 'tradeoff'],
@@ -144,6 +144,7 @@ const STRONG_SINGLE_TERMS = new Set([
   'ranking',
   'prioritat',
   'tokenkosten',
+  'kost',
   'latenz',
   'throughput',
   'engpass',
@@ -157,7 +158,7 @@ const STRONG_SINGLE_TERMS = new Set([
 ]);
 
 const COST_REDUCTION_SIGNAL =
-  /\b(?:spar\w*|senk\w*|weniger|gunstig\w*|reduzier\w*|einspar\w*|vermeid\w*|billig\w*)\b/;
+  /\b(?:spar\w*|senk\w*|weniger|gunstig\w*|reduzier\w*|verringer\w*|halbier\w*|einspar\w*|vermeid\w*|billig\w*|nur\s+noch)\b/;
 const COST_OPTIMIZATION_SIGNAL = /\b(?:optimier\w*|effizien\w*)\b/;
 const COST_INCREASE_SIGNAL =
   /\b(?:steig\w*|teurer\w*|hoher\w*|mehr\s+kosten|kosten\s+steigen|preis\s+steigt)\b/;
