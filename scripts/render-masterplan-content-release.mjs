@@ -1,5 +1,5 @@
 import {spawn} from 'node:child_process';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {loadCreatePrototypeRenderProps} from './load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
@@ -111,6 +111,10 @@ for (const prototype of prototypes) {
     MASTERPLAN_CONTENT_OUTPUT_ROOT,
     prototype.animationId,
   );
+  // A new mode must never inherit frames/videos from an older run. Otherwise a
+  // smoke render after a full render could look complete because stale MP4/PNGs
+  // are still present. Keep the release manifest/root, but isolate each case.
+  await rm(outputRoot, {recursive: true, force: true});
   await mkdir(outputRoot, {recursive: true});
   const propsPath = resolve(outputRoot, 'masterplan-render-props.json');
   await writeFile(
