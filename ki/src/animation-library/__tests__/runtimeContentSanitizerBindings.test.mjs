@@ -16,7 +16,7 @@ describe('runtime content sanitizer bindings', () => {
     expect(propsIndex).toBeGreaterThan(sanitizeIndex);
   });
 
-  it('makes exact-vs-relative runtime flags visible in both numeric prototypes', () => {
+  it('makes exact-vs-relative runtime flags visible in cost and latency prototypes', () => {
     const budget = read('ki/src/animation-library/prototypes/BudgetLeakMeterPrototype.tsx');
     const latency = read('ki/src/animation-library/prototypes/LatencyTunnelRacePrototype.tsx');
 
@@ -25,6 +25,48 @@ describe('runtime content sanitizer bindings', () => {
     }
     for (const fragment of ['measurementExact', 'latencyUnit', 'KÜRZERE LAUFZEIT']) {
       expect(latency).toContain(fragment);
+    }
+  });
+
+  it('prevents ungrounded probability percentages and winner claims', () => {
+    const probability = read(
+      'ki/src/animation-library/prototypes/ProbabilityFluidColumnsPrototype.tsx',
+    );
+    for (const fragment of [
+      'probabilityOutcomeGrounded',
+      'candidate1ProbabilityExact',
+      'KEIN UNBELEGTER GEWINNER',
+      'KEINE EXAKTE WAHRSCHEINLICHKEIT GENANNT',
+    ]) {
+      expect(probability).toContain(fragment);
+    }
+  });
+
+  it('prevents ungrounded ranking scores and winners', () => {
+    const ranking = read(
+      'ki/src/animation-library/prototypes/DynamicPodiumRisePrototype.tsx',
+    );
+    for (const fragment of [
+      'rankingOutcomeGrounded',
+      'candidate1ScoreExact',
+      'POSITION OFFEN',
+      'KEIN UNBELEGTER SIEGER',
+    ]) {
+      expect(ranking).toContain(fragment);
+    }
+  });
+
+  it('prevents ungrounded benchmark scores and winners', () => {
+    const benchmark = read(
+      'ki/src/animation-library/prototypes/BenchmarkRacetrackPrototype.tsx',
+    );
+    for (const fragment of [
+      'comparisonOutcomeGrounded',
+      'competitor1ScoreExact',
+      'VERGLEICH ABGESCHLOSSEN',
+      'VERGLICHEN ✓',
+    ]) {
+      expect(benchmark).toContain(fragment);
     }
   });
 
