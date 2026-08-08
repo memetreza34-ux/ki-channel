@@ -4,9 +4,19 @@ This repository is compatible with Google Antigravity IDE/CLI.
 
 First read `AGENTS.md` for repository-wide production and Git safety rules. For content-matching, grounding, animation-library tests, or the first production render test, load and follow `.agents/skills/content-grounding-test/SKILL.md`.
 
-## Default first-test goal
+## Fastest first-test path
 
-When asked to "test", "run the first test", "continue until we can test", or verify the content-matched animation system, execute this sequence from the repository root:
+For the complete first grounding sequence, run this one command from the repository root:
+
+`node scripts/run-antigravity-content-test.mjs`
+
+It self-checks the Antigravity workspace configuration, validates the 22 production inputs, validates the first-test contract, runs the exact cost grounding test, runs the exact latency grounding test, verifies both generated summaries, and writes:
+
+`out/antigravity-content-test/summary.json`
+
+## Expanded first-test sequence
+
+When asked to "test", "run the first test", "continue until we can test", or verify the content-matched animation system, the one-command runner executes this sequence:
 
 1. `node scripts/check-antigravity-content-test-contract.mjs`
 2. `node scripts/check-masterplan-production-inputs.mjs`
