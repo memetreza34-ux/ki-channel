@@ -36,4 +36,15 @@ describe('prototype content binding coverage', () => {
       isPrototypeContentBindingReady({animationId, source: 'new-build'}),
     ).toBe(false);
   });
+
+  it('promotes a historical new-build source once that exact id has native runtime binding', () => {
+    const animationId = 'tokenization-magnetic-phrase-slicer-v1';
+    expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)).toBe(true);
+    expect(
+      getPrototypeContentBindingLevel({animationId, source: 'new-build'}),
+    ).toBe('native-object-binding');
+    expect(
+      isPrototypeContentBindingReady({animationId, source: 'new-build'}),
+    ).toBe(true);
+  });
 });
