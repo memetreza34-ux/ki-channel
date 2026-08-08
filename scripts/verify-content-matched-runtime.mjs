@@ -40,6 +40,9 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeRenderPayload.test.ts',
   'ki/src/animation-library/__tests__/prototypeRuntimeContentDeriver.test.ts',
   'ki/src/animation-library/__tests__/prototypeRuntimeContentSanitizer.test.ts',
+  'ki/src/animation-library/__tests__/runtimeContentSanitizerBindings.test.mjs',
+  'ki/src/animation-library/__tests__/productionDerivedRuntimeKeys.test.mjs',
+  'ki/src/animation-library/__tests__/masterplanPayloadLoaders.test.mjs',
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
 ];
@@ -105,6 +108,11 @@ try {
   );
   await run(
     'node',
+    ['scripts/check-production-derived-runtime-keys.mjs'],
+    'Sanitisierte Production-Runtime-Keys werden von den ausgewählten TSX-Komponenten konsumiert',
+  );
+  await run(
+    'node',
     ['scripts/check-content-motion-edge-cases.mjs'],
     'Semantische Gegenbeispiele für kritische Content-Motion-Steuerwerte',
   );
@@ -116,7 +124,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
