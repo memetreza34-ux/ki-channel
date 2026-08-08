@@ -4,6 +4,50 @@
 
 Eine Animation gilt erst dann als vollständig freigegeben, wenn nicht nur der generische Remotion-Prototyp funktioniert, sondern auch der echte Content-Produktionspfad mit prototypspezifisch abgeleiteten, bereinigten und dem richtigen sichtbaren Objekt zugeordneten Sprechertext-Daten geprüft wurde.
 
+## 0. Ein-Befehl-Runner
+
+Für den normalen Abschluss gibt es jetzt einen zentralen Runner:
+
+```bash
+node scripts/run-content-release.mjs verify
+node scripts/run-content-release.mjs smoke
+node scripts/run-content-release.mjs full
+```
+
+### `verify`
+
+Führt nacheinander aus:
+
+1. `verify-content-matched-runtime.mjs`,
+2. `npm run animation-library:verify`.
+
+### `smoke`
+
+Führt zuerst alle Verify-Gates aus und erzeugt danach:
+
+- 22 Production-Smoke-Sets,
+- 6 Edge-Case-Smoke-Sets,
+- technische Artefaktprüfung,
+- 22+6 Smoke-Review-Galerie,
+- Stale-Artefaktprüfung.
+
+### `full`
+
+Führt zuerst alle Verify-Gates aus und danach:
+
+1. `render-all-content-release.mjs`,
+2. `verify-all-content-release.mjs`.
+
+Nur wenn jeder Child-Prozess erfolgreich endet, erhält der Run den Status `passed`. Nach jedem Schritt wird ein maschinenlesbarer Report geschrieben:
+
+```text
+out/content-release-run/verify-summary.json
+out/content-release-run/smoke-summary.json
+out/content-release-run/full-summary.json
+```
+
+Bei einem Fehler enthält der Report `status: failed`, die Fehlermeldung und die bereits ausgeführten Schritte. Ein Full-Report mit `passed` ersetzt trotzdem **nicht** die manuelle visuelle Freigabe.
+
 ## 1. Fokussierte technische Prüfung
 
 ```bash
@@ -16,6 +60,8 @@ Diese Prüfungen decken unter anderem ab:
 - Content-first Auswahl,
 - Production Eligibility,
 - ausführbares 88er Manifest,
+- 22+66-Partition des ausführbaren Katalogs,
+- sichere Promotion-Gates der 66 Zusatzvarianten,
 - Registry-Alignment,
 - 22 native Content-Bindings,
 - 22 Runtime-Content-Deriver,
@@ -26,6 +72,8 @@ Diese Prüfungen decken unter anderem ab:
 - semantische Edge-Case-Verträge,
 - Syntax der Release-/Review-Skripte,
 - Remotion-Renderaufträge im Plan-Modus.
+
+Die 66 Experimental-/Advanced-/Final-Varianten sind kein Blocker für den aktuellen 22er Production-Release. Ihr separater Promotionsvertrag steht in `CONTENT-VARIANT-PROMOTION.md`.
 
 ## 2. Kanonischer vollständiger Renderlauf
 
@@ -145,7 +193,14 @@ Der Workflow bietet:
 - 22+6 Smoke-Renders inklusive Smoke-Review-Galerie,
 - optional `full_release=true` für den kompletten Release mit Videos.
 
-Am 8. August 2026 wurde ein minimaler branch-spezifischer Probe-Workflow ausgeführt. GitHub beendete den Job erneut mit `failure`, bevor ein einzelner Step erzeugt wurde (`steps: null`). Der Probe-Workflow wurde danach wieder entfernt. Bis Actions/Billing bzw. die Runner-Infrastruktur funktioniert, darf dieser Fehler nicht als Code-Testfehler interpretiert werden.
+Am 8. August 2026 wurde ein minimaler branch-spezifischer Probe-Workflow ausgeführt. GitHub beendete den Job vor Step 1 mit `runner_id=0` und einer leeren Step-Liste. Die Check-Annotation nennt die konkrete Ursache:
+
+```text
+The job was not started because recent account payments have failed or your spending limit needs to be increased.
+Please check the 'Billing & plans' section in your settings.
+```
+
+Der Probe-Workflow wurde danach wieder entfernt. Bis Billing/Spending-Limit korrigiert ist, darf dieser Actions-Fehler nicht als Code-Testfehler interpretiert werden.
 
 ## 7. Kompatibilitätsbefehle
 
@@ -207,7 +262,13 @@ Zusätzlich die dokumentierten Gegenbedingungen prüfen:
 
 ## 10. Releaseentscheidung
 
-Der Draft-PR darf erst freigegeben werden, wenn:
+Der Draft-PR darf erst freigegeben werden, wenn entweder der Ein-Befehl-Full-Runner erfolgreich war:
+
+```bash
+node scripts/run-content-release.mjs full
+```
+
+oder die äquivalenten Einzelschritte vollständig grün waren:
 
 ```text
 verify-content-matched-runtime
@@ -219,4 +280,4 @@ verify-content-matched-runtime
 = bestanden
 ```
 
-Bis dahin bleibt der PR Draft.
+Auch nach einem technisch grünen `full` bleibt die manuelle 22+6 Sichtprüfung Pflicht. Bis dahin bleibt der PR Draft.
