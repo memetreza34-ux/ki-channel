@@ -5,6 +5,7 @@ import {
   getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
+import {parseExplicitVectorTriplet} from './PrototypeMeasurementGrounding';
 import {
   GlassSurface,
   PROTOTYPE_PALETTE,
@@ -13,6 +14,7 @@ import {
 } from './PrototypeShell';
 
 const COLORS = ['#8757E8', '#35C58A', '#FFB648'] as const;
+const SYMBOLS = ['d₁', 'd₂', 'd₃'] as const;
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
@@ -28,20 +30,24 @@ export const VectorPrismConverterPrototype: React.FC = () => {
     key: 'input',
     fallback: content?.meaningContract.subjectTerms[0] ?? 'KI',
   });
+  const explicitVector = content
+    ? parseExplicitVectorTriplet(content.spokenText)
+    : null;
+  const vectorExact = !content || explicitVector !== null;
   const dimensions = [
     {
       label: getPrototypeLabel({content, key: 'dimension1', fallback: 'Bedeutung'}),
-      value: getPrototypeValue({content, key: 'vector1', fallback: '0.82'}),
+      value: explicitVector?.[0] ?? getPrototypeValue({content, key: 'vector1', fallback: '0.82'}),
       color: COLORS[0],
     },
     {
       label: getPrototypeLabel({content, key: 'dimension2', fallback: 'Kontext'}),
-      value: getPrototypeValue({content, key: 'vector2', fallback: '−0.31'}),
+      value: explicitVector?.[1] ?? getPrototypeValue({content, key: 'vector2', fallback: '−0.31'}),
       color: COLORS[1],
     },
     {
       label: getPrototypeLabel({content, key: 'dimension3', fallback: 'Ton'}),
-      value: getPrototypeValue({content, key: 'vector3', fallback: '0.47'}),
+      value: explicitVector?.[2] ?? getPrototypeValue({content, key: 'vector3', fallback: '0.47'}),
       color: COLORS[2],
     },
   ];
@@ -53,11 +59,17 @@ export const VectorPrismConverterPrototype: React.FC = () => {
   const dimensionReveals = dimensions.map((_, index) =>
     prototypeProgress(frame, 72 + index * 10, 112 + index * 10),
   );
-  const vectorOutput = `[${dimensions
-    .map((dimension, index) =>
-      dimensionReveals[index] > 0.55 ? dimension.value : '·',
-    )
-    .join(', ')}]`;
+  const vectorOutput = vectorExact
+    ? `[${dimensions
+        .map((dimension, index) =>
+          dimensionReveals[index] > 0.55 ? dimension.value : '·',
+        )
+        .join(', ')}]`
+    : `[${SYMBOLS
+        .map((symbol, index) =>
+          dimensionReveals[index] > 0.55 ? symbol : '·',
+        )
+        .join(', ')}]`;
   const explanation = content
     ? compactText(content.meaningContract.endState, 105)
     : 'Ein Begriff wird nicht als Wort gespeichert, sondern als Zahlenmuster.';
@@ -66,7 +78,7 @@ export const VectorPrismConverterPrototype: React.FC = () => {
     <PrototypeShell
       family="DATA TRANSFORMATION"
       title="Vector Prism Converter"
-      subtitle="Der lesbare Begriff wird sichtbar in mehrere numerische Dimensionen zerlegt und anschließend als Vektor zusammengesetzt."
+      subtitle="Der lesbare Begriff wird sichtbar in mehrere numerische Dimensionen zerlegt und anschließend als Vektor zusammengesetzt. Konkrete Dezimalwerte erscheinen nur bei einem explizit genannten Vektor."
     >
       <GlassSurface style={{position: 'absolute', left: 74, right: 74, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 62, right: 62, top: 62, display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 16, fontSize: 16, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted, opacity: input}}>
@@ -116,8 +128,8 @@ export const VectorPrismConverterPrototype: React.FC = () => {
           return (
             <div key={`${dimension.label}-${index}`} style={{position: 'absolute', right: 50, top: y, width: 250, minHeight: 130, padding: '22px 24px', borderRadius: 26, background: 'rgba(255,255,255,.9)', border: `2px solid ${dimension.color}55`, boxShadow: `0 18px 50px ${dimension.color}22`, opacity: reveal, transform: `translateX(${(1 - reveal) * 110}px) scale(${0.9 + reveal * 0.1})`}}>
               <div style={{fontSize: dimension.label.length > 12 ? 15 : 19, fontWeight: 900, letterSpacing: 2.5, color: dimension.color, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{dimension.label.toLocaleUpperCase('de-DE')}</div>
-              <div style={{marginTop: 12, fontFamily: 'monospace', fontSize: 38, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground}}>{dimension.value}</div>
-              <div style={{marginTop: 8, fontSize: 13, color: PROTOTYPE_PALETTE.muted, fontWeight: 800}}>numerischer Anteil</div>
+              <div style={{marginTop: 12, fontFamily: 'monospace', fontSize: vectorExact ? 38 : 32, fontWeight: 900, color: PROTOTYPE_PALETTE.foreground}}>{vectorExact ? dimension.value : SYMBOLS[index]}</div>
+              <div style={{marginTop: 8, fontSize: 13, color: PROTOTYPE_PALETTE.muted, fontWeight: 800}}>{vectorExact ? 'expliziter Vektorwert' : 'relative numerische Dimension'}</div>
             </div>
           );
         })}
@@ -125,6 +137,9 @@ export const VectorPrismConverterPrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 96, right: 96, bottom: 82, padding: '24px 30px', borderRadius: 28, background: `linear-gradient(135deg, ${PROTOTYPE_PALETTE.foreground}, #302746)`, color: PROTOTYPE_PALETTE.white, textAlign: 'center', opacity: result, transform: `translateY(${(1 - result) * 60}px)`}}>
           <div style={{fontSize: 22, fontWeight: 900, letterSpacing: 3, color: PROTOTYPE_PALETTE.accentSoft}}>{vectorLabel.toLocaleUpperCase('de-DE')}</div>
           <div style={{marginTop: 12, fontFamily: 'monospace', fontSize: vectorOutput.length > 25 ? 27 : 36, fontWeight: 900}}>{vectorOutput}</div>
+          {!vectorExact ? (
+            <div style={{marginTop: 8, fontSize: 13, fontWeight: 800, color: PROTOTYPE_PALETTE.accentSoft}}>SCHEMATISCH · KEINE DEZIMALWERTE GENANNT</div>
+          ) : null}
         </div>
 
         <div style={{position: 'absolute', left: 340, top: 805, width: 260, textAlign: 'center', fontSize: content ? 18 : 21, lineHeight: 1.3, fontWeight: 800, color: PROTOTYPE_PALETTE.muted, opacity: refract, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{explanation}</div>
