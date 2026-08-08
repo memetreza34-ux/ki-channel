@@ -141,6 +141,11 @@ try {
     'Release-Nachweise verlangen einen sauberen tracked Worktree und aktuellen Git-HEAD',
   );
   await run(
+    'node',
+    ['scripts/check-content-release-status-contract.mjs'],
+    'Release-Status meldet Full-, Artefakt-, Visual-Review- und Finalisierungsblocker in fester Reihenfolge',
+  );
+  await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
     'TypeScript-Prüfung der gesamten Animationsbibliothek',
