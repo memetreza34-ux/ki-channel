@@ -122,6 +122,12 @@ const percentageForLabel = (
   return parsed !== null && parsed >= 0 && parsed <= 100 ? parsed : null;
 };
 
+const hasUniqueMaximum = (values: readonly number[]): boolean => {
+  if (values.length === 0) return false;
+  const maximum = Math.max(...values);
+  return values.filter((value) => value === maximum).length === 1;
+};
+
 const associateRankingScores = (
   spokenText: string,
   content: AssociatablePrototypeRuntimeContent,
@@ -154,7 +160,14 @@ const associateRankingScores = (
         score - 7 + (2 - index) * 3,
       );
     });
-    if (associatedCount >= 2) values.rankingOutcomeGrounded = 1;
+    const completeScores = exactScores.every(
+      (score): score is number => score !== null,
+    );
+    const scoreWinnerGrounded =
+      completeScores && hasUniqueMaximum(exactScores);
+    const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+    values.rankingOutcomeGrounded =
+      scoreWinnerGrounded || explicitWinner ? 1 : 0;
   }
 
   return {labels: content.labels, values};
@@ -183,7 +196,14 @@ const associateComparisonScores = (
       values[`competitor${keyIndex}ScoreExact`] = score === null ? 0 : 1;
       if (score !== null) values[`competitor${keyIndex}Final`] = score;
     });
-    if (associatedCount >= 2) values.comparisonOutcomeGrounded = 1;
+    const completeScores = exactScores.every(
+      (score): score is number => score !== null,
+    );
+    const scoreWinnerGrounded =
+      completeScores && hasUniqueMaximum(exactScores);
+    const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+    values.comparisonOutcomeGrounded =
+      scoreWinnerGrounded || explicitWinner ? 1 : 0;
   }
 
   return {labels: content.labels, values};
@@ -220,11 +240,6 @@ const distributeProbabilityRemainder = (
     assigned += value;
   });
   return result;
-};
-
-const hasUniqueMaximum = (values: readonly number[]): boolean => {
-  const maximum = Math.max(...values);
-  return values.filter((value) => value === maximum).length === 1;
 };
 
 const associateProbabilityPercentages = (
@@ -268,15 +283,19 @@ const associateProbabilityPercentages = (
   distributed.forEach((value, index) => {
     values[`candidate${index + 1}End`] = value;
   });
-  const majorityGrounded = exactValues.some(
-    (value) => value !== null && value > 50,
-  );
+  const majorityGrounded = exactScoresMajority(exactValues);
   const enoughKnownValues = associatedCount >= 2 && hasUniqueMaximum(distributed);
   const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
   values.probabilityOutcomeGrounded =
     majorityGrounded || enoughKnownValues || explicitWinner ? 1 : 0;
   return {labels: content.labels, values};
 };
+
+const exactScoresMajority = (
+  exactValues: readonly (number | null)[],
+): boolean => exactValues.some(
+  (value) => value !== null && value > 50,
+);
 
 const costUnitPattern = (unit: string): string | null => {
   if (unit === 'ct') return '(?:cent\\b|ct\\b)';
