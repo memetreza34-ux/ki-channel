@@ -159,9 +159,6 @@ const STRONG_SINGLE_TERMS = new Set([
 
 const COST_REDUCTION_SIGNAL =
   /\b(?:spar\w*|senk\w*|weniger|gunstig\w*|reduzier\w*|verringer\w*|halbier\w*|einspar\w*|vermeid\w*|billig\w*|nur\s+noch)\b/;
-const COST_OPTIMIZATION_SIGNAL = /\b(?:optimier\w*|effizien\w*)\b/;
-const COST_INCREASE_SIGNAL =
-  /\b(?:steig\w*|teurer\w*|hoher\w*|mehr\s+kosten|kosten\s+steigen|preis\s+steigt)\b/;
 const PERFORMANCE_IMPROVEMENT_SIGNAL =
   /\b(?:latenz\s+(?:sink\w*|fall\w*|reduzier\w*)|(?:sink\w*|fall\w*|reduzier\w*)\s+(?:die\s+)?latenz|schneller\w*|beschleunig\w*|throughput\s+steig\w*|durchsatz\s+steig\w*|mehr\s+(?:throughput|durchsatz))\b/;
 
@@ -176,14 +173,8 @@ const tokenMatches = (token: string, term: string): boolean => {
 const passesActivationGuard = (
   rule: ExtendedMeaningRule,
   normalizedText: string,
-): boolean => {
-  if (rule.id !== 'cost-efficiency') return true;
-  if (COST_REDUCTION_SIGNAL.test(normalizedText)) return true;
-  return (
-    COST_OPTIMIZATION_SIGNAL.test(normalizedText) &&
-    !COST_INCREASE_SIGNAL.test(normalizedText)
-  );
-};
+): boolean =>
+  rule.id !== 'cost-efficiency' || COST_REDUCTION_SIGNAL.test(normalizedText);
 
 const scoreRule = (
   rule: ExtendedMeaningRule,
