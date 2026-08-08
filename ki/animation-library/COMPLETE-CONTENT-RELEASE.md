@@ -38,7 +38,9 @@ Führt zuerst alle Verify-Gates aus und danach:
 1. `render-all-content-release.mjs`,
 2. `verify-all-content-release.mjs`.
 
-Nur wenn jeder Child-Prozess erfolgreich endet, erhält der Run den Status `passed`. Nach jedem Schritt wird ein maschinenlesbarer Report geschrieben:
+Nur wenn jeder Child-Prozess erfolgreich endet, erhält der Run den Status `passed`. Der aktuelle Lauf schreibt **vor dem ersten Child-Prozess** bereits `status: running`; dadurch kann ein alter erfolgreicher Report nicht während eines neuen oder abgebrochenen Laufs wie ein aktueller Erfolg aussehen. Bei `running` bleibt `completedAt` bewusst `null`.
+
+Die maschinenlesbaren Reports liegen unter:
 
 ```text
 out/content-release-run/verify-summary.json
@@ -187,11 +189,19 @@ Dieser Pfad ist die Referenz für die produktive Datenkette. Ein Skript, das nur
 
 `.github/workflows/motion-system-checks.yml` bleibt bewusst `workflow_dispatch`-basiert.
 
-Der Workflow bietet:
+GitHub Actions pflegt keinen eigenen Content-Release-Ablauf mehr. Der Workflow bietet denselben Parameter wie lokal:
 
-- technische Verify-Gates,
-- 22+6 Smoke-Renders inklusive Smoke-Review-Galerie,
-- optional `full_release=true` für den kompletten Release mit Videos.
+```text
+release_mode = verify | smoke | full
+```
+
+Nach Dependency-Installation und dem separaten Legacy-Motion-Check ruft CI ausschließlich auf:
+
+```bash
+node scripts/run-content-release.mjs "${{ inputs.release_mode }}"
+```
+
+Damit sind lokaler Abschluss und CI für den Content-Pfad identisch. `check-canonical-content-release-paths.mjs` verbietet direkte Kopien der Masterplan-/Edge-/Review-/Full-Release-Befehle im Workflow und erzwingt die Nutzung des Unified Runners.
 
 Am 8. August 2026 wurde ein minimaler branch-spezifischer Probe-Workflow ausgeführt. GitHub beendete den Job vor Step 1 mit `runner_id=0` und einer leeren Step-Liste. Die Check-Annotation nennt die konkrete Ursache:
 
