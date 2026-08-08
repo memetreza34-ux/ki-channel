@@ -72,29 +72,40 @@ describe('runtime content grounding bindings', () => {
     }
   });
 
-  it('keeps the exact masterplan release on derive -> sanitize -> associate -> props', () => {
+  it('keeps the exact masterplan release on meaning -> derive -> sanitize -> associate -> props', () => {
     const render = read('scripts/render-masterplan-content-release.mjs');
     const verify = read('scripts/verify-masterplan-content-release.mjs');
 
     for (const source of [render, verify]) {
+      expect(source).toContain('loadSceneMeaningEnhancer');
       expect(source).toContain('loadPrototypeRuntimeContentDeriver');
       expect(source).toContain('loadPrototypeRuntimeContentSanitizer');
       expect(source).toContain('loadPrototypeRuntimeContentAssociation');
       expect(source).toContain('loadCreatePrototypeRenderProps');
-      expect(source.indexOf('sanitizePrototypeRuntimeContent({')).toBeGreaterThan(
-        source.indexOf('derivePrototypeRuntimeContent({'),
+      expect(source).toContain('sourceContent.meaningContract ??');
+      expect(source).toContain('enhanceSceneMeaning(sourceContent.spokenText)');
+
+      const meaningIndex = source.indexOf(
+        'enhanceSceneMeaning(sourceContent.spokenText)',
       );
-      expect(source.indexOf('associatePrototypeRuntimeContent({')).toBeGreaterThan(
-        source.indexOf('sanitizePrototypeRuntimeContent({'),
-      );
-      expect(source.indexOf('createPrototypeRenderProps({')).toBeGreaterThan(
-        source.indexOf('associatePrototypeRuntimeContent({'),
-      );
+      const deriveIndex = source.indexOf('derivePrototypeRuntimeContent({');
+      const sanitizeIndex = source.indexOf('sanitizePrototypeRuntimeContent({');
+      const associationIndex = source.indexOf('associatePrototypeRuntimeContent({');
+      const propsIndex = source.indexOf('createPrototypeRenderProps({');
+
+      expect(meaningIndex).toBeGreaterThanOrEqual(0);
+      expect(deriveIndex).toBeGreaterThan(meaningIndex);
+      expect(sanitizeIndex).toBeGreaterThan(deriveIndex);
+      expect(associationIndex).toBeGreaterThan(sanitizeIndex);
+      expect(propsIndex).toBeGreaterThan(associationIndex);
     }
   });
 
-  it('fingerprints sanitizer and association plus their runtime loaders for release freshness', () => {
+  it('fingerprints meaning, sanitizer and association plus their runtime loaders for release freshness', () => {
     const source = read('scripts/masterplan-content-release-utils.mjs');
+    expect(source).toContain('meaningContract.ts');
+    expect(source).toContain('extendedMeaningContract.ts');
+    expect(source).toContain('load-scene-meaning-enhancer.mjs');
     expect(source).toContain('prototypeRuntimeContentSanitizer.ts');
     expect(source).toContain('prototypeRuntimeContentAssociation.ts');
     expect(source).toContain('load-prototype-runtime-content-sanitizer.mjs');
