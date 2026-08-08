@@ -25,10 +25,10 @@ const config = await readMasterplanJson(
   'ki/src/animation-library/prototype-render-config.json',
 );
 const fixtureConfig = await readMasterplanJson(
-  'ki/src/animation-library/content-render-fixtures.json',
+  'ki/src/animation-library/masterplan-content-fixtures.json',
 );
 if (!Array.isArray(config.prototypes) || !Array.isArray(fixtureConfig.fixtures)) {
-  throw new Error('Prototype-Render-Config oder Content-Fixtures sind ungültig.');
+  throw new Error('Prototype-Render-Config oder Masterplan-Content-Fixtures sind ungültig.');
 }
 
 const prototypes = requestedAnimationId
@@ -71,11 +71,11 @@ const run = (args, env) =>
 const results = [];
 for (const prototype of prototypes) {
   const fixture = fixtureByAnimationId.get(prototype.animationId);
-  if (!fixture) throw new Error(`Content-Fixture fehlt für ${prototype.animationId}.`);
+  if (!fixture) throw new Error(`Masterplan-Content-Fixture fehlt für ${prototype.animationId}.`);
   const sourceContent = getMasterplanFixtureContent(fixture);
   if (!sourceContent?.spokenText) {
     throw new Error(
-      `Content-Fixture ${prototype.animationId} benötigt spokenText.`,
+      `Masterplan-Content-Fixture ${prototype.animationId} benötigt spokenText.`,
     );
   }
   const meaningContract =
@@ -120,9 +120,6 @@ for (const prototype of prototypes) {
     MASTERPLAN_CONTENT_OUTPUT_ROOT,
     prototype.animationId,
   );
-  // A new mode must never inherit frames/videos from an older run. Otherwise a
-  // smoke render after a full render could look complete because stale MP4/PNGs
-  // are still present. Keep the release manifest/root, but isolate each case.
   await rm(outputRoot, {recursive: true, force: true});
   await mkdir(outputRoot, {recursive: true});
   const propsPath = resolve(outputRoot, 'masterplan-render-props.json');
@@ -160,6 +157,7 @@ const manifest = {
   version: 1,
   payloadBuilder:
     'meaning+derive+sanitize+associate+createPrototypeRenderProps',
+  fixtureSource: 'masterplan-content-fixtures.json',
   mode: requestedMode,
   requestedAnimationId: requestedAnimationId ?? null,
   sourceFingerprint,
