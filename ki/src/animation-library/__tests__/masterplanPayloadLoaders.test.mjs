@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {loadCreatePrototypeRenderProps} from '../../../../scripts/load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentDeriver} from '../../../../scripts/load-prototype-runtime-content-deriver.mjs';
+import {loadPrototypeRuntimeContentSanitizer} from '../../../../scripts/load-prototype-runtime-content-sanitizer.mjs';
 
 const meaningContract = {
   communicationGoal: 'show-limitation',
@@ -17,9 +18,11 @@ const meaningContract = {
 };
 
 describe('masterplan runtime payload loaders', () => {
-  it('loads the exact TypeScript deriver and payload builder as executable modules', async () => {
+  it('loads deriver, sanitizer and payload builder as the exact executable chain', async () => {
     const derivePrototypeRuntimeContent =
       await loadPrototypeRuntimeContentDeriver();
+    const sanitizePrototypeRuntimeContent =
+      await loadPrototypeRuntimeContentSanitizer();
     const createPrototypeRenderProps = await loadCreatePrototypeRenderProps();
     const spokenText =
       'Der serielle Pfad braucht 780 Millisekunden, der parallele Pfad nur 340 Millisekunden.';
@@ -29,18 +32,27 @@ describe('masterplan runtime payload loaders', () => {
       spokenText,
       meaningContract,
     });
+    const sanitized = sanitizePrototypeRuntimeContent({
+      animationId: 'scale-performance-latency-tunnel-race-v1',
+      spokenText,
+      derived,
+    });
     const props = createPrototypeRenderProps({
       spokenText,
       meaningContract,
-      labels: derived.labels,
-      values: derived.values,
+      labels: sanitized.labels,
+      values: sanitized.values,
     });
 
-    expect(derived.values.slowLatency).toBe(780);
-    expect(derived.values.fastLatency).toBe(340);
+    expect(sanitized.values.slowLatency).toBe(780);
+    expect(sanitized.values.fastLatency).toBe(340);
+    expect(sanitized.values.measurementExact).toBe(1);
+    expect(sanitized.labels.latencyUnit).toBe('ms');
     expect(props.content?.spokenText).toBe(spokenText);
     expect(props.content?.values?.slowLatency).toBe(780);
     expect(props.content?.values?.fastLatency).toBe(340);
+    expect(props.content?.values?.measurementExact).toBe(1);
+    expect(props.content?.labels?.latencyUnit).toBe('ms');
     expect(props.content?.labels?.subject).toBeTruthy();
     expect(props.content?.labels?.communicationGoal).toBe('show-limitation');
   });
