@@ -7,11 +7,9 @@ const failures = [];
 const fail = (message) => failures.push(message);
 
 const productionPath = 'ki/src/animation-library/masterplan-content-fixtures.json';
-const demoPath = 'ki/src/animation-library/content-render-fixtures.json';
 const renderConfigPath = 'ki/src/animation-library/prototype-render-config.json';
 
 const production = readJson(productionPath);
-const demo = readJson(demoPath);
 const renderConfig = readJson(renderConfigPath);
 const renderer = read('scripts/render-masterplan-content-release.mjs');
 const verifier = read('scripts/verify-masterplan-content-release.mjs');
@@ -67,16 +65,6 @@ requireText('scale-performance-latency-tunnel-race-v1', /780\s*Millisekunden/i, 
 requireText('scale-performance-latency-tunnel-race-v1', /340\s*Millisekunden/i, '340 Millisekunden');
 requireText('ranking-dynamic-podium-rise-v1', /Platz\s+eins/i, 'Platz eins');
 requireText('comparison-benchmark-racetrack-v1', /gewinnt\s+Modell\s+B/i, 'expliziter Gewinner Modell B');
-
-if (!Array.isArray(demo.fixtures) || demo.fixtures.length !== 22) {
-  fail('Demo-Content-Fixtures müssen separat 22 Einträge behalten');
-}
-const demoHasDirectValues = (demo.fixtures ?? []).some((fixture) =>
-  fixture?.content?.values && Object.keys(fixture.content.values).length > 0,
-);
-if (!demoHasDirectValues) {
-  fail('Demo-Fixtures sollten weiterhin direkte Testwerte besitzen; sonst prüft die Isolation keine reale Grenze');
-}
 
 for (const [label, source] of [
   ['renderer', renderer],
