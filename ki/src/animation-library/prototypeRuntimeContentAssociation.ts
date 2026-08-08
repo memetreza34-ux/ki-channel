@@ -218,8 +218,9 @@ const associateRankingScores = (
     : false;
 
   if (associatedCount > 0 || explicitWinner >= 0) {
-    values.rankingOutcomeGrounded =
-      scoreWinnerGrounded || explicitWinnerGrounded ? 1 : 0;
+    values.rankingOutcomeGrounded = explicitWinner >= 0
+      ? explicitWinnerGrounded ? 1 : 0
+      : scoreWinnerGrounded ? 1 : 0;
   }
 
   return {labels: content.labels, values};
@@ -247,10 +248,10 @@ const alignComparisonWinner = (
   if (otherScore !== null && otherScore >= 100) return false;
   values[`competitor${winnerIndex + 1}Final`] = Math.min(
     100,
-    Math.max(0.84, (otherScore ?? 0) + 4),
+    Math.max(84, (otherScore ?? 0) + 4),
   );
   if (otherScore === null) {
-    values[`competitor${otherIndex + 1}Final`] = 0.72;
+    values[`competitor${otherIndex + 1}Final`] = 72;
   }
   return true;
 };
@@ -289,8 +290,9 @@ const associateComparisonScores = (
     : false;
 
   if (associatedCount > 0 || explicitWinner >= 0) {
-    values.comparisonOutcomeGrounded =
-      scoreWinnerGrounded || explicitWinnerGrounded ? 1 : 0;
+    values.comparisonOutcomeGrounded = explicitWinner >= 0
+      ? explicitWinnerGrounded ? 1 : 0
+      : scoreWinnerGrounded ? 1 : 0;
   }
 
   return {labels: content.labels, values};
@@ -426,11 +428,19 @@ const associateProbabilityPercentages = (
   const winnerDistribution = explicitWinner >= 0
     ? alignProbabilityWinner(exactValues, explicitWinner)
     : null;
-  const distributed = winnerDistribution ?? normalDistribution;
+  const distributed = explicitWinner >= 0
+    ? winnerDistribution
+    : normalDistribution;
 
   if (!distributed) {
-    for (let index = 0; index < 3; index += 1) {
-      values[`candidate${index + 1}ProbabilityExact`] = 0;
+    if (explicitWinner < 0) {
+      for (let index = 0; index < 3; index += 1) {
+        values[`candidate${index + 1}ProbabilityExact`] = 0;
+      }
+    } else {
+      exactValues.forEach((value, index) => {
+        if (value !== null) values[`candidate${index + 1}End`] = value;
+      });
     }
     values.probabilityOutcomeGrounded = 0;
     return {labels: content.labels, values};
@@ -445,8 +455,9 @@ const associateProbabilityPercentages = (
     hasUniqueMaximum(normalDistribution);
   const explicitWinnerGrounded =
     explicitWinner >= 0 && winnerDistribution !== null;
-  values.probabilityOutcomeGrounded =
-    majorityGrounded || enoughKnownValues || explicitWinnerGrounded ? 1 : 0;
+  values.probabilityOutcomeGrounded = explicitWinner >= 0
+    ? explicitWinnerGrounded ? 1 : 0
+    : majorityGrounded || enoughKnownValues ? 1 : 0;
   return {labels: content.labels, values};
 };
 
