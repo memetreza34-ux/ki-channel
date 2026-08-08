@@ -20,6 +20,9 @@ const normalize = (value: string): string =>
 const unique = (values: readonly string[]): string[] =>
   [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 
+const escapeRegex = (value: string): string =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const ENTITY_STOPWORDS = new Set([
   'aber', 'als', 'also', 'am', 'an', 'auch', 'auf', 'aus', 'bei', 'beim',
   'bis', 'das', 'dass', 'dem', 'den', 'der', 'des', 'die', 'dies', 'diese',
@@ -42,6 +45,13 @@ const capitalizedEntities = (spokenText: string): string[] => {
   );
 };
 
+const structuredEntities = (spokenText: string): string[] =>
+  unique(
+    spokenText.match(
+      /\b[\p{Lu}][\p{L}\d-]{1,}\s+[A-ZÄÖÜ0-9]\b/gu,
+    ) ?? [],
+  );
+
 const suspiciousArticleFragment = (value: string): boolean =>
   /^(?:die|der|das|ein|eine|einen|einem|einer)\s+[A-ZÄÖÜ0-9]$/iu.test(
     value.trim(),
@@ -63,17 +73,33 @@ const repairEntityLabels = ({
     'semantic-space-meaning-terrain-v1': [/^concept\d+$/],
     'time-change-timeline-microscope-v1': [/^milestone\d+$/],
   };
+  const priorityEntityAnimations = new Set([
+    'ranking-dynamic-podium-rise-v1',
+    'probability-probability-fluid-columns-v1',
+    'comparison-benchmark-racetrack-v1',
+  ]);
   const patterns = entityKeyPatterns[animationId] ?? [];
   if (patterns.length === 0) return labels;
 
-  const candidates = capitalizedEntities(spokenText);
-  let replacementIndex = 0;
+  const genericCandidates = capitalizedEntities(spokenText);
+  const preferredCandidates = priorityEntityAnimations.has(animationId)
+    ? unique([...structuredEntities(spokenText), ...genericCandidates])
+    : genericCandidates;
+
+  let suspiciousReplacementIndex = 0;
   return Object.fromEntries(
     Object.entries(labels).map(([key, value]) => {
       if (!patterns.some((pattern) => pattern.test(key))) return [key, value];
+
+      if (priorityEntityAnimations.has(animationId)) {
+        const numericIndex = Number(key.match(/\d+/)?.[0] ?? '0') - 1;
+        const preferred = preferredCandidates[numericIndex];
+        if (preferred) return [key, preferred];
+      }
+
       if (!suspiciousArticleFragment(value)) return [key, value];
-      const replacement = candidates[replacementIndex];
-      replacementIndex += 1;
+      const replacement = preferredCandidates[suspiciousReplacementIndex];
+      suspiciousReplacementIndex += 1;
       return [key, replacement ?? value.replace(/^\S+\s+/, '')];
     }),
   );
@@ -207,15 +233,14 @@ const winnerCueIndex = ({
   count: number;
 }): number => {
   const text = normalize(spokenText);
+  const cue = '(?:gewinnt|gewinner|sieger|fuhrt|vorne|platz\\s*1|erster|erste|bestes|beste|besten)';
   for (let index = 0; index < count; index += 1) {
     const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
     if (label.length < 2) continue;
-    const position = text.indexOf(label);
-    if (position < 0) continue;
-    const window = text.slice(Math.max(0, position - 50), position + label.length + 70);
-    if (/\b(gewinnt|gewinner|sieger|fuhrt|vorne|platz 1|erster|erste|bestes|beste|besten)\b/.test(window)) {
-      return index;
-    }
+    const escapedLabel = escapeRegex(label).replace(/\\\s+/g, '\\s+');
+    const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^.!?;]{0,36}\\b${cue}\\b`);
+    const cueBeforeLabel = new RegExp(`\\b${cue}\\b[^.!?;]{0,28}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+    if (labelBeforeCue.test(text) || cueBeforeLabel.test(text)) return index;
   }
   return -1;
 };
