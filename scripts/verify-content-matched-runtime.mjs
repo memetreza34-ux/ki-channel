@@ -38,6 +38,7 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeRegistry.test.ts',
   'ki/src/animation-library/__tests__/prototypeContentCoverage.test.ts',
   'ki/src/animation-library/__tests__/prototypeRenderPayload.test.ts',
+  'ki/src/animation-library/__tests__/prototypeRuntimeContentDeriver.test.ts',
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
 ];
@@ -97,7 +98,7 @@ try {
   await run(
     'node',
     ['scripts/check-native-prototype-bindings.mjs'],
-    'Quellcode-Gate für native Objektbindung und Motion-Semantik aller 22 Kernprototypen',
+    'Quellcode-Gate für native Objektbindung, Runtime-Deriver und Motion-Semantik aller 22 Kernprototypen',
   );
   await run(
     'node',
@@ -112,7 +113,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
