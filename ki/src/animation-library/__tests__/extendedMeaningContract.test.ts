@@ -114,6 +114,25 @@ describe('extended scene meaning contract', () => {
     expect(contract.requiredVisualCues).not.toContain('visible-reduction');
   });
 
+  it('does not treat optimization alone as a proven cost reduction', () => {
+    const contract = enhanceSceneMeaning(
+      'Der optimierte Dienst kostet 94 Euro pro Lauf.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).not.toBe('cost-efficiency');
+    expect(contract.requiredVisualCues).not.toContain('visible-reduction');
+  });
+
+  it('recognizes natural spoken cost reduction with "nur noch"', () => {
+    const contract = enhanceSceneMeaning(
+      'Der Dienst kostet jetzt nur noch 28 Cent statt vorher 94 Cent.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).toBe('cost-efficiency');
+    expect(contract.communicationGoal).toBe('show-result');
+    expect(contract.requiredVisualCues).toContain('visible-reduction');
+  });
+
   it('still activates cost efficiency when optimization actually reduces costs', () => {
     const contract = enhanceSceneMeaning(
       'Die Optimierung senkt die Kosten und spart deutlich Ressourcen.',
