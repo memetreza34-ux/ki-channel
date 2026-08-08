@@ -7,7 +7,7 @@
     },
     {
       "animationId": "cost-efficiency-budget-leak-meter-v1",
-      "spokenText": "Drei unnötige Prozessschritte treiben die Kosten zunächst auf 94 Cent; nach der Optimierung sinken sie auf 28 Cent."
+      "spokenText": "Drei unnötige Prozessschritte treiben die Kosten zunächst auf 94 Cent; eine konkrete Optimierung senkt sie anschließend auf 28 Cent."
     },
     {
       "animationId": "context-window-context-window-train-v1",
@@ -55,7 +55,7 @@
     },
     {
       "animationId": "relationship-network-dependency-bridge-builder-v1",
-      "spokenText": "Bei Attention ist die Verbindung zwischen pronomen und seinem Bezugswort stark gewichtet. Eine schwache Direktverbindung wird verworfen."
+      "spokenText": "Bei Attention ist die Verbindung zwischen einem Pronomen und seinem Bezugswort stark gewichtet. Eine schwache Direktverbindung wird verworfen."
     },
     {
       "animationId": "probability-probability-fluid-columns-v1",
