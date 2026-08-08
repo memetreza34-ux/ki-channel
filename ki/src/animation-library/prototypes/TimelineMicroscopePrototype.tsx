@@ -20,6 +20,14 @@ const DEFAULT_MILESTONES = [
   {label: 'HEUTE', x: 845, detail: 'Multimodal'},
 ] as const;
 
+const CONTENT_MILESTONE_FALLBACKS = [
+  'FRÜHER',
+  'ZWISCHENSTAND',
+  'ÄNDERUNG',
+  'NEUER STAND',
+  'HEUTE',
+] as const;
+
 const boundedInteger = (
   value: string | number,
   fallback: number,
@@ -59,8 +67,16 @@ export const TimelineMicroscopePrototype: React.FC = () => {
     : [];
   const milestones = DEFAULT_MILESTONES.map((milestone, index) => ({
     ...milestone,
-    label: getPrototypeLabel({content, key: `milestone${index + 1}`, fallback: content ? (index === DEFAULT_MILESTONES.length - 1 ? 'HEUTE' : `STAND ${index + 1}`) : milestone.label}),
-    detail: getPrototypeLabel({content, key: `milestone${index + 1}Detail`, fallback: terms[index] ?? (content ? 'Änderung' : milestone.detail)}),
+    label: getPrototypeLabel({
+      content,
+      key: `milestone${index + 1}`,
+      fallback: content ? CONTENT_MILESTONE_FALLBACKS[index] : milestone.label,
+    }),
+    detail: getPrototypeLabel({
+      content,
+      key: `milestone${index + 1}Detail`,
+      fallback: terms[index] ?? (content ? 'Änderung' : milestone.detail),
+    }),
   }));
   const spokenSearch = searchable(content?.spokenText ?? '');
   const referencedMilestoneIndex = content
@@ -102,7 +118,7 @@ export const TimelineMicroscopePrototype: React.FC = () => {
   });
 
   return (
-    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den im Sprechertext genannten Stand; Demo-Jahre und interne Fokuszähler werden im Content-Modus nicht als Fakten angezeigt.">
+    <PrototypeShell family="TIME CHANGE" title="Timeline Microscope" subtitle="Die Entwicklung läuft chronologisch. Der Zoom fokussiert den im Sprechertext genannten Stand; Demo-Jahre, künstliche Standnummern und interne Fokuszähler werden im Content-Modus nicht als Fakten angezeigt.">
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 48, right: 48, top: 60, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 900, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{header.toLocaleUpperCase('de-DE')}</span><span style={{color: PROTOTYPE_PALETTE.accent}}>{content ? `FOKUS: ${milestones[focusIndex].label}` : `FOKUS ${focusIndex + 1}/${milestones.length}`}</span></div>
 
