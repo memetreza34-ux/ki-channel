@@ -122,4 +122,34 @@ describe('extended scene meaning contract', () => {
     expect(contract.preferredVisualFamilies[0]).toBe('cost-efficiency');
     expect(contract.requiredVisualCues).toContain('visible-reduction');
   });
+
+  it('treats lower latency as an improvement instead of inventing a bottleneck', () => {
+    const contract = enhanceSceneMeaning(
+      'Durch Parallelisierung sinkt die Latenz von 780 auf 340 Millisekunden.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).toBe('scale-performance');
+    expect(contract.communicationGoal).toBe('show-result');
+    expect(contract.preferredExplanationPatterns[0]).toBe(
+      'performance-improvement',
+    );
+    expect(contract.requiredVisualCues).toContain(
+      'latency-or-throughput-improvement',
+    );
+    expect(contract.requiredVisualCues).not.toContain('visible-bottleneck');
+    expect(contract.visibleChange).toContain('reduces latency');
+  });
+
+  it('keeps rising latency as a limitation with a visible bottleneck', () => {
+    const contract = enhanceSceneMeaning(
+      'Unter hoher Last steigt die Latenz, weil die Kapazität zum Engpass wird.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).toBe('scale-performance');
+    expect(contract.communicationGoal).toBe('show-limitation');
+    expect(contract.requiredVisualCues).toContain('visible-bottleneck');
+    expect(contract.preferredExplanationPatterns[0]).not.toBe(
+      'performance-improvement',
+    );
+  });
 });
