@@ -4,6 +4,8 @@ import {
   CONTENT_VARIANT_PROMOTION_CANDIDATES,
   createContentVariantPromotionReport,
 } from '../contentVariantPromotion';
+import {EXECUTABLE_ANIMATION_MANIFEST_IDS} from '../executableAnimationManifest';
+import {PRODUCTION_READY_LIBRARY_ANIMATION_IDS} from '../productionEligibility';
 
 describe('content variant promotion', () => {
   it('tracks exactly 66 non-core variants across 22 families and three tiers', () => {
@@ -18,6 +20,28 @@ describe('content variant promotion', () => {
     });
     expect(report.families.every((family) => family.candidateCount === 3)).toBe(true);
     expect(() => assertContentVariantPromotionInvariants()).not.toThrow();
+  });
+
+  it('partitions the executable catalog into 22 production-ready core ids plus 66 variants', () => {
+    const variantIds = new Set(
+      CONTENT_VARIANT_PROMOTION_CANDIDATES.map((candidate) => candidate.animationId),
+    );
+    const productionIds = new Set(PRODUCTION_READY_LIBRARY_ANIMATION_IDS);
+
+    expect(EXECUTABLE_ANIMATION_MANIFEST_IDS).toHaveLength(88);
+    expect(PRODUCTION_READY_LIBRARY_ANIMATION_IDS).toHaveLength(22);
+    expect(variantIds.size).toBe(66);
+    expect(
+      [...variantIds].filter((animationId) => productionIds.has(animationId)),
+    ).toEqual([]);
+    expect(
+      new Set([
+        ...PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
+        ...CONTENT_VARIANT_PROMOTION_CANDIDATES.map(
+          (candidate) => candidate.animationId,
+        ),
+      ]).size,
+    ).toBe(88);
   });
 
   it('keeps the current 66 variants blocked until their dominant mechanisms are actually content-bound', () => {
