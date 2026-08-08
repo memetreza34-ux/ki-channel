@@ -26,6 +26,7 @@ const checks = [
   ['node', ['--check', 'scripts/check-animation-library-renders.mjs']],
   ['node', ['--check', 'scripts/render-content-matched-prototype.mjs']],
   ['node', ['--check', 'scripts/render-content-motion-edge-cases.mjs']],
+  ['node', ['--check', 'scripts/verify-content-motion-edge-case-renders.mjs']],
   ['node', ['--check', 'scripts/verify-content-matched-runtime.mjs']],
   ['node', ['--check', 'scripts/check-native-prototype-bindings.mjs']],
   ['node', ['--check', 'scripts/check-production-derived-runtime-keys.mjs']],
