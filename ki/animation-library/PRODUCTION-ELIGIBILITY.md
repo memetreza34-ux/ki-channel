@@ -1,14 +1,15 @@
 # Production Eligibility for Content-Matched Animations
 
-## Warum es zwei verschiedene Grenzen gibt
+## Warum es mehrere technische Grenzen gibt
 
-Der Animationskatalog enthält mehr technisch ausführbare Varianten als aktuell vollständig content-aware Varianten.
+Der Animationskatalog enthält mehr technisch ausführbare Varianten als aktuell vollständig content-aware und direkt über den Content-Renderer adressierbare Varianten.
 
 Aktueller Stand:
 
 - **88** Kataloganimationen besitzen eine ausführbare Remotion-Implementierung.
 - **22** Kernanimationen besitzen zusätzlich native Content-Objektbindung.
-- Nur diese **22** dürfen im content-matched Produktionspfad direkt als bestehende Library-Animation wiederverwendet werden.
+- Diese **22** sind außerdem in `prototype-render-config.json` für den konkreten Content-Renderpfad registriert.
+- Nur diese Schnittmenge darf im content-matched Produktionspfad direkt als bestehende Library-Animation wiederverwendet werden.
 
 Eine technisch renderbare Animation ist damit nicht automatisch für die Content-Produktion freigegeben.
 
@@ -20,7 +21,11 @@ Eine technisch renderbare Animation ist damit nicht automatisch für die Content
 EXECUTABLE_ANIMATION_IDS
 ∩
 NATIVE_CONTENT_BOUND_PROTOTYPE_IDS
+∩
+CONTENT_RENDERABLE_ANIMATION_IDS
 ```
+
+`CONTENT_RENDERABLE_ANIMATION_IDS` wird direkt aus `prototype-render-config.json` abgeleitet.
 
 Das Ergebnis ist:
 
@@ -34,7 +39,7 @@ Für konkrete Katalogeinträge gilt zusätzlich:
 status !== retired
 ```
 
-`getProductionReadyLibraryEntries()` filtert den übergebenen Katalog deshalb auf native, ausführbare und nicht zurückgezogene Entries.
+`getProductionReadyLibraryEntries()` filtert den übergebenen Katalog deshalb auf native, ausführbare, im Content-Renderer konfigurierte und nicht zurückgezogene Entries.
 
 `planProductionReelAnimations()` verwendet nur diese Menge für echte Library-Wiederverwendung.
 
@@ -49,6 +54,10 @@ Ein Entry, dessen `animationId` nicht ausführbar registriert ist, darf niemals 
 ### Ausführbar, aber nur Semantic Shell
 
 Auch eine ausführbare Remotion-Variante wird nicht direkt wiederverwendet, wenn sie keine native Content-Objektbindung besitzt.
+
+### Native und ausführbar, aber nicht im Content-Renderer konfiguriert
+
+Eine ID darf ebenfalls nicht production-ready werden, solange sie in `prototype-render-config.json` fehlt. Dadurch kann der Produktionsplan keine Animation freigeben, die `render-content-matched-prototype.mjs` später als unbekannt ablehnen würde.
 
 ### Retired
 
@@ -77,6 +86,7 @@ new-build geplant
 → TSX/Remotion-Komponente implementiert
 → Animation ausführbar registriert
 → native Content-Bindung eingetragen
+→ prototype-render-config.json ergänzt
 → dieselbe animationId wird runtime-ready
 ```
 
@@ -88,7 +98,7 @@ Der historische Source-Wert bleibt dabei `new-build`.
 native-object-binding
 ```
 
-`areProductionRuntimeScenesReady()` bildet dieselbe Runtime-Regel zentral für Production Planner und Implementierungsbrief ab.
+`areProductionRuntimeScenesReady()` bildet die vollständige Runtime-Regel zentral für Production Planner und Implementierungsbrief ab.
 
 Damit muss nach einer Implementierung nicht künstlich neu geplant oder `source` nachträglich auf `library` umgeschrieben werden.
 
@@ -105,7 +115,7 @@ Die Produktionsgrenze wird nicht nur an einer Stelle geprüft.
 
 `productionPlanner.ts` gibt dem Content-first Planner nur production-ready Library-Entries zur direkten Wiederverwendung.
 
-`readyForImplementation` wird aus der aktuellen Runtime-Bereitschaft der Szenen abgeleitet. Ein noch nicht implementierter New-Build bleibt `false`; eine später wirklich registrierte und nativ gebundene ID kann dagegen runtime-ready werden, ohne ihre Historie zu verlieren.
+`readyForImplementation` wird aus der aktuellen Runtime-Bereitschaft der Szenen abgeleitet. Ein noch nicht implementierter New-Build bleibt `false`; eine später wirklich ausführbare, nativ gebundene und im Content-Renderer konfigurierte ID kann dagegen runtime-ready werden, ohne ihre Historie zu verlieren.
 
 ### 2. Plan Diagnostics
 
@@ -130,7 +140,7 @@ Ein normaler, noch nicht implementierter `new-build` bleibt ein erwarteter Maste
 Damit gilt:
 
 - fehlender aktueller Katalogeintrag → keine Finalisierung,
-- keine ausführbare native Content-Bindung → keine Finalisierung,
+- keine vollständige Production-Eligibility → keine Finalisierung,
 - `retired` → keine Finalisierung,
 - ein geplanter New-Build kann nicht allein durch einen positiven Review `verified` werden.
 
@@ -141,6 +151,7 @@ Das schützt insbesondere den Fall:
 ```text
 Planung: new-build / concept
 → Animation wird später real implementiert und katalogisiert
+→ Runtime + Content-Render-Konfiguration werden ergänzt
 → Review
 ```
 
@@ -150,6 +161,7 @@ Die neue Implementierungs-/Katalogversion bleibt erhalten und wird nicht durch d
 
 ```text
 ki/src/animation-library/executionCatalog.ts
+ki/src/animation-library/prototype-render-config.json
 ki/src/animation-library/prototypeContentCoverage.ts
 ki/src/animation-library/productionEligibility.ts
 ki/src/animation-library/productionPlanner.ts
@@ -178,18 +190,19 @@ Die Tests prüfen unter anderem:
 1. Die Produktions-ID-Menge enthält aktuell exakt 22 Animationen.
 2. Jede dieser IDs ist technisch ausführbar.
 3. Jede dieser IDs besitzt native Content-Objektbindung.
-4. Ein absichtlich hoch bewerteter, aber nicht registrierter Fake-Entry wird nicht wiederverwendet.
-5. Wenn ausschließlich nicht registrierte Entries übergeben werden, entsteht ein `new-build`.
-6. Eine technisch ausführbare, aber nur `semantic-shell-only` gebundene Variante wird ebenfalls nicht wiederverwendet.
-7. Ein `retired` Entry wird trotz production-ready ID nicht wiederverwendet.
-8. Derselbe Schutz gilt im öffentlichen Sprechertext→Reel-Planungspfad.
-9. Diagnostics blockiert eine eingeschleuste Shell-only-Library-Auswahl.
-10. Der Masterplan schlägt bei einer eingeschleusten nicht production-ready Library-ID sofort fehl.
-11. Ein noch nicht runtime-registrierter New-Build kann nicht finalisiert werden.
-12. Eine historische `new-build`-Szene wird nach realer Registrierung als nativ content-bound erkannt.
-13. Der Implementierungsbrief wird nach dieser Runtime-Promotion wieder bereit und entfernt aufgelöste Warnungen.
-14. Ein historischer New-Build kann nach echter Runtime-Implementierung regulär finalisiert werden, ohne `source` umzuschreiben.
-15. Aktuelle Katalogmetadaten werden bei Finalisierung nicht durch den älteren Plan-Snapshot überschrieben.
+4. Jede dieser IDs ist im Content-Render-Config registriert.
+5. Ein absichtlich hoch bewerteter, aber nicht registrierter Fake-Entry wird nicht wiederverwendet.
+6. Wenn ausschließlich nicht registrierte Entries übergeben werden, entsteht ein `new-build`.
+7. Eine technisch ausführbare, aber nur `semantic-shell-only` gebundene Variante wird ebenfalls nicht wiederverwendet.
+8. Ein `retired` Entry wird trotz production-ready ID nicht wiederverwendet.
+9. Derselbe Schutz gilt im öffentlichen Sprechertext→Reel-Planungspfad.
+10. Diagnostics blockiert eine eingeschleuste Shell-only-Library-Auswahl.
+11. Der Masterplan schlägt bei einer eingeschleusten nicht production-ready Library-ID sofort fehl.
+12. Ein noch nicht runtime-registrierter New-Build kann nicht finalisiert werden.
+13. Eine historische `new-build`-Szene wird nach realer Registrierung als nativ content-bound erkannt.
+14. Der Implementierungsbrief wird nach dieser Runtime-Promotion wieder bereit und entfernt aufgelöste Warnungen.
+15. Ein historischer New-Build kann nach echter Runtime-Implementierung regulär finalisiert werden, ohne `source` umzuschreiben.
+16. Aktuelle Katalogmetadaten werden bei Finalisierung nicht durch den älteren Plan-Snapshot überschrieben.
 
 ## Ausbau auf mehr als 22 direkte Reuse-Varianten
 
@@ -200,6 +213,7 @@ Weitere der 88 ausführbaren Varianten können später in die Produktionsmenge a
 - semantische Bewegungslogik,
 - Content-Fixture,
 - Runtime-Key-Gate,
+- Eintrag in `prototype-render-config.json`,
 - visuelle Renderprüfung.
 
-Erst danach sollte ihre ID in `NATIVE_CONTENT_BOUND_PROTOTYPE_IDS` aufgenommen werden. Die Produktions-ID-Menge erweitert sich dann automatisch über die Schnittmenge. Der konkrete Katalogeintrag muss zusätzlich weiterhin nicht `retired` sein.
+Erst danach sollte ihre ID in `NATIVE_CONTENT_BOUND_PROTOTYPE_IDS` aufgenommen werden. Die Produktions-ID-Menge erweitert sich dann automatisch über die vollständige Schnittmenge. Der konkrete Katalogeintrag muss zusätzlich weiterhin nicht `retired` sein.
