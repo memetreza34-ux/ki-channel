@@ -11,6 +11,7 @@ const gemini = read('GEMINI.md');
 const rule = read('.agents/rules/content-grounding.md');
 const skill = read('.agents/skills/content-grounding-test/SKILL.md');
 const agent = read('.agents/agents/content-test-runner/agent.md');
+const runner = read('scripts/run-antigravity-content-test.mjs');
 
 const commands = [
   'node scripts/check-masterplan-production-inputs.mjs',
@@ -57,8 +58,25 @@ for (const required of [
   '.agents/skills/content-grounding-test/SKILL.md',
   '94 Cent -> 28 Cent',
   '780 ms -> 340 ms',
+  'node scripts/run-antigravity-content-test.mjs',
 ]) {
   requireContains(gemini, required, 'GEMINI.md');
+}
+
+for (const required of [
+  'scripts/check-antigravity-content-test-contract.mjs',
+  'scripts/check-masterplan-production-inputs.mjs',
+  'scripts/check-first-content-grounding-test-contract.mjs',
+  'scripts/run-first-content-grounding-test.mjs',
+  'scale-performance-latency-tunnel-race-v1',
+  'out/antigravity-content-test',
+  "status: 'passed'",
+  'initialCost !== 94',
+  'optimizedCost !== 28',
+  'slowLatency !== 780',
+  'fastLatency !== 340',
+]) {
+  requireContains(runner, required, 'Antigravity one-command runner');
 }
 
 if (failures.length > 0) {
@@ -68,5 +86,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Antigravity-Content-Test-Vertrag bestanden: GEMINI.md, Workspace-Rule, Skill und Test-Agent führen reproduzierbar durch Test 0, Test 1, Latenz-Test und technischen Verify.',
+  'Antigravity-Content-Test-Vertrag bestanden: GEMINI.md, Workspace-Rule, Skill, Test-Agent und One-Command-Runner führen reproduzierbar durch Test 0, Test 1, Latenz-Test und technischen Verify.',
 );
