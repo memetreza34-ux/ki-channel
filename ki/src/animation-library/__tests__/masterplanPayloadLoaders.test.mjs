@@ -1,25 +1,13 @@
 import {describe, expect, it} from 'vitest';
+import {loadSceneMeaningEnhancer} from '../../../../scripts/load-scene-meaning-enhancer.mjs';
 import {loadCreatePrototypeRenderProps} from '../../../../scripts/load-prototype-render-payload.mjs';
 import {loadPrototypeRuntimeContentAssociation} from '../../../../scripts/load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from '../../../../scripts/load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from '../../../../scripts/load-prototype-runtime-content-sanitizer.mjs';
 
-const meaningContract = {
-  communicationGoal: 'show-limitation',
-  startState: 'Der serielle Pfad ist langsam.',
-  visibleChange: 'Die Verarbeitung wird parallelisiert und die Latenz sinkt.',
-  endState: 'Der parallele Pfad bleibt sichtbar schneller.',
-  subjectTerms: ['Latenz', 'serieller Pfad', 'paralleler Pfad'],
-  actionTerms: ['sinkt', 'parallelisiert'],
-  resultTerms: ['schneller', '340 Millisekunden'],
-  preferredVisualFamilies: ['scale-performance'],
-  preferredExplanationPatterns: ['performance', 'comparison'],
-  requiredVisualCues: ['two-paths', 'measured-latency', 'visible-speed-difference'],
-  forbiddenVisualCues: ['unrelated-ranking'],
-};
-
 describe('masterplan runtime payload loaders', () => {
-  it('loads derive -> sanitize -> associate -> payload as the exact executable chain', async () => {
+  it('loads meaning -> derive -> sanitize -> associate -> payload as the exact executable chain', async () => {
+    const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
     const derivePrototypeRuntimeContent =
       await loadPrototypeRuntimeContentDeriver();
     const sanitizePrototypeRuntimeContent =
@@ -29,7 +17,13 @@ describe('masterplan runtime payload loaders', () => {
     const createPrototypeRenderProps = await loadCreatePrototypeRenderProps();
     const animationId = 'scale-performance-latency-tunnel-race-v1';
     const spokenText =
-      'Der serielle Pfad braucht 780 Millisekunden, der parallele Pfad nur 340 Millisekunden.';
+      'Durch Parallelisierung sinkt die Latenz des gleichen Dienstes von 780 Millisekunden auf 340 Millisekunden.';
+    const meaningContract = enhanceSceneMeaning(spokenText);
+
+    expect(meaningContract.startState).toBeTruthy();
+    expect(meaningContract.visibleChange).toBeTruthy();
+    expect(meaningContract.endState).toBeTruthy();
+    expect(meaningContract.preferredVisualFamilies).toContain('scale-performance');
 
     const derived = derivePrototypeRuntimeContent({
       animationId,
@@ -58,12 +52,17 @@ describe('masterplan runtime payload loaders', () => {
     expect(associated.values.measurementExact).toBe(1);
     expect(associated.labels.latencyUnit).toBe('ms');
     expect(props.content?.spokenText).toBe(spokenText);
+    expect(props.content?.meaningContract?.startState).toBe(
+      meaningContract.startState,
+    );
     expect(props.content?.values?.slowLatency).toBe(780);
     expect(props.content?.values?.fastLatency).toBe(340);
     expect(props.content?.values?.measurementExact).toBe(1);
     expect(props.content?.labels?.latencyUnit).toBe('ms');
     expect(props.content?.labels?.subject).toBeTruthy();
-    expect(props.content?.labels?.communicationGoal).toBe('show-limitation');
+    expect(props.content?.labels?.communicationGoal).toBe(
+      meaningContract.communicationGoal,
+    );
   });
 
   it('executes the association loader instead of leaking a reversed cost increase into savings props', async () => {
