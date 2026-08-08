@@ -44,6 +44,35 @@ const safeGap = (otherLabels: readonly string[], maxChars: number): string => {
   return `(?:${otherLabelGuard}[^0-9,.!?;]){0,${maxChars}}`;
 };
 
+const winnerCueIndex = (
+  spokenText: string,
+  labels: readonly string[],
+): number => {
+  const text = normalize(spokenText);
+  const cue = '(?:gewinnt|gewinner|sieger|fuhrt|vorne|platz\\s*1|erster|erste|bestes|beste|besten)';
+  const negative = '(?:nicht|kein|keine|keinen|keiner|keinem|weder|nie|niemals)';
+  const notNegatedAfterCue = `(?!\\s+${negative}\\b)`;
+
+  for (let index = 0; index < labels.length; index += 1) {
+    const label = labels[index];
+    if (normalize(label).length < 2) continue;
+    const escapedLabel = normalizedLabelPattern(label);
+    const otherLabels = labels.filter((_, labelIndex) => labelIndex !== index);
+    const gap = safeGap(otherLabels, 18).replace(
+      /\[\^0-9,\.\!\?;\]/g,
+      `(?:(?!\\b${negative}\\b)[^0-9,.!?;])`,
+    );
+    const labelBeforeCue = new RegExp(
+      `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}\\b${cue}\\b${notNegatedAfterCue}`,
+    );
+    const cueBeforeLabel = new RegExp(
+      `\\b${cue}\\b${notNegatedAfterCue}${gap}(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    );
+    if (labelBeforeCue.test(text) || cueBeforeLabel.test(text)) return index;
+  }
+  return -1;
+};
+
 const scoreForLabel = (
   spokenText: string,
   label: string,
@@ -189,6 +218,11 @@ const distributeProbabilityRemainder = (
   return result;
 };
 
+const hasUniqueMaximum = (values: readonly number[]): boolean => {
+  const maximum = Math.max(...values);
+  return values.filter((value) => value === maximum).length === 1;
+};
+
 const associateProbabilityPercentages = (
   spokenText: string,
   content: AssociatablePrototypeRuntimeContent,
@@ -230,7 +264,13 @@ const associateProbabilityPercentages = (
   distributed.forEach((value, index) => {
     values[`candidate${index + 1}End`] = value;
   });
-  values.probabilityOutcomeGrounded = 1;
+  const majorityGrounded = exactValues.some(
+    (value) => value !== null && value > 50,
+  );
+  const enoughKnownValues = associatedCount >= 2 && hasUniqueMaximum(distributed);
+  const explicitWinner = winnerCueIndex(spokenText, labels) >= 0;
+  values.probabilityOutcomeGrounded =
+    majorityGrounded || enoughKnownValues || explicitWinner ? 1 : 0;
   return {labels: content.labels, values};
 };
 
