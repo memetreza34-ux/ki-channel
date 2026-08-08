@@ -94,4 +94,32 @@ describe('extended scene meaning contract', () => {
     expect(contract.communicationGoal).toBe('show-result');
     expect(contract.preferredVisualFamilies[0]).not.toBe('decision-logic');
   });
+
+  it('does not activate savings visuals for a plain cost increase', () => {
+    const contract = enhanceSceneMeaning(
+      'Der Preis und die Kosten steigen von Monat zu Monat deutlich an.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).not.toBe('cost-efficiency');
+    expect(contract.requiredVisualCues).not.toContain('visible-reduction');
+    expect(contract.requiredVisualCues).not.toContain('savings-result');
+  });
+
+  it('does not treat optimization as savings when costs still increase', () => {
+    const contract = enhanceSceneMeaning(
+      'Trotz Optimierung steigen die Kosten und der Preis wird höher.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).not.toBe('cost-efficiency');
+    expect(contract.requiredVisualCues).not.toContain('visible-reduction');
+  });
+
+  it('still activates cost efficiency when optimization actually reduces costs', () => {
+    const contract = enhanceSceneMeaning(
+      'Die Optimierung senkt die Kosten und spart deutlich Ressourcen.',
+    );
+
+    expect(contract.preferredVisualFamilies[0]).toBe('cost-efficiency');
+    expect(contract.requiredVisualCues).toContain('visible-reduction');
+  });
 });
