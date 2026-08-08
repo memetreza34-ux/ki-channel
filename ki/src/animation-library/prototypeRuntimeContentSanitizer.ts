@@ -135,13 +135,13 @@ const costMeasurements = (spokenText: string, unit: string): number[] => {
   }
   if (unit === '€') {
     return collectMeasurements(spokenText, [
-      new RegExp(`${number}\\s*(?:€|euro)\\b?`, 'gi'),
+      new RegExp(`${number}\\s*(?:€|euro\\b)`, 'gi'),
       new RegExp(`€\\s*${number}`, 'gi'),
     ]);
   }
   if (unit === '$') {
     return collectMeasurements(spokenText, [
-      new RegExp(`${number}\\s*(?:\\$|dollar|usd)\\b?`, 'gi'),
+      new RegExp(`${number}\\s*(?:\\$|dollar\\b|usd\\b)`, 'gi'),
       new RegExp(`\\$\\s*${number}`, 'gi'),
     ]);
   }
