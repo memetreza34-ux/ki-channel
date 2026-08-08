@@ -1,8 +1,5 @@
-import {ADVANCED_PROTOTYPE_REGISTRY} from './advancedPrototypeRegistry';
 import {ANIMATION_LIBRARY_ENTRIES} from './catalog';
-import {COMPLETE_PROTOTYPE_REGISTRY} from './completePrototypeRegistry';
-import {EXPERIMENTAL_PROTOTYPE_REGISTRY} from './experimentalPrototypeRegistry';
-import {FINAL_PROTOTYPE_REGISTRY} from './finalPrototypeRegistry';
+import {EXECUTABLE_ANIMATION_MANIFEST_IDS} from './executableAnimationManifest';
 import type {AnimationLibraryEntry} from './schema';
 
 export type ExecutableFamilyCoverage = {
@@ -36,15 +33,10 @@ export type AnimationExecutionCoverageReport = {
   nextWaves: AnimationExpansionWave[];
 };
 
-const executableIds = new Set([
-  ...COMPLETE_PROTOTYPE_REGISTRY.map((item) => item.animationId),
-  ...EXPERIMENTAL_PROTOTYPE_REGISTRY.map((item) => item.animationId),
-  ...ADVANCED_PROTOTYPE_REGISTRY.map((item) => item.animationId),
-  ...FINAL_PROTOTYPE_REGISTRY.map((item) => item.animationId),
-]);
+const executableIds = new Set(EXECUTABLE_ANIMATION_MANIFEST_IDS);
 
 export const EXECUTABLE_ANIMATION_IDS = Object.freeze(
-  [...executableIds].sort(),
+  [...EXECUTABLE_ANIMATION_MANIFEST_IDS],
 );
 
 export const getExecutableAnimationLibraryEntries = (): AnimationLibraryEntry[] =>
