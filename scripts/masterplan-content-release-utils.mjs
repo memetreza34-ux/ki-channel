@@ -13,6 +13,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
   const hash = createHash('sha256');
   const fixedFiles = [
     'ki/src/animation-library/prototypeRuntimeContentDeriver.ts',
+    'ki/src/animation-library/prototypeRuntimeContentSanitizer.ts',
     'ki/src/animation-library/prototypeRenderPayload.ts',
     'ki/src/animation-library/prototypes/PrototypeContentContext.tsx',
     'ki/src/animation-library/channelReelMasterPlan.ts',
@@ -22,6 +23,7 @@ export const getMasterplanContentSourceFingerprint = async () => {
     'ki/src/animation-library/content-render-fixtures.json',
     'scripts/render-content-matched-prototype.mjs',
     'scripts/load-prototype-runtime-content-deriver.mjs',
+    'scripts/load-prototype-runtime-content-sanitizer.mjs',
     'scripts/load-prototype-render-payload.mjs',
     'scripts/render-masterplan-content-release.mjs',
     'scripts/verify-masterplan-content-release.mjs',
