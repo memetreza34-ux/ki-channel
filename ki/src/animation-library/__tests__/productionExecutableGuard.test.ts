@@ -4,6 +4,7 @@ import {ANIMATION_LIBRARY_ENTRIES} from '../catalog';
 import {EXECUTABLE_ANIMATION_IDS} from '../executionCatalog';
 import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from '../prototypeContentCoverage';
 import {
+  CONTENT_DERIVER_ANIMATION_IDS,
   CONTENT_RENDERABLE_ANIMATION_IDS,
   getProductionReadyLibraryEntries,
   PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
@@ -16,11 +17,12 @@ const brain = createInitialCreativeBrainState({
 });
 
 describe('production executable guard', () => {
-  it('defines production reuse as executable plus native binding plus content-render configuration', () => {
+  it('defines production reuse as executable plus native binding plus content render plus runtime derivation', () => {
     const productionReadyEntries = getProductionReadyLibraryEntries(
       ANIMATION_LIBRARY_ENTRIES,
     );
     expect(CONTENT_RENDERABLE_ANIMATION_IDS).toHaveLength(22);
+    expect(CONTENT_DERIVER_ANIMATION_IDS).toHaveLength(22);
     expect(PRODUCTION_READY_LIBRARY_ANIMATION_IDS).toHaveLength(22);
     expect(productionReadyEntries).toHaveLength(22);
     expect(new Set(productionReadyEntries.map((entry) => entry.visualFamily)).size).toBe(22);
@@ -34,9 +36,13 @@ describe('production executable guard', () => {
       expect(EXECUTABLE_ANIMATION_IDS).toContain(animationId);
       expect(NATIVE_CONTENT_BOUND_PROTOTYPE_IDS.has(animationId)).toBe(true);
       expect(CONTENT_RENDERABLE_ANIMATION_IDS).toContain(animationId);
+      expect(CONTENT_DERIVER_ANIMATION_IDS).toContain(animationId);
     }
     expect([...PRODUCTION_READY_LIBRARY_ANIMATION_IDS].sort()).toEqual(
       [...CONTENT_RENDERABLE_ANIMATION_IDS].sort(),
+    );
+    expect([...PRODUCTION_READY_LIBRARY_ANIMATION_IDS].sort()).toEqual(
+      [...CONTENT_DERIVER_ANIMATION_IDS].sort(),
     );
   });
 
