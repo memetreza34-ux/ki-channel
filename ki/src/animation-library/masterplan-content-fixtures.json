@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "animationId": "retrieval-search-knowledge-magnet-v1",
+      "spokenText": "Bei RAG sucht das Modell passende externe Quellen und zieht nur die relevanten Belege in den aktiven Kontext."
+    },
+    {
+      "animationId": "cost-efficiency-budget-leak-meter-v1",
+      "spokenText": "Drei unnötige Prozessschritte treiben die Kosten zunächst auf 94 Cent; nach der Optimierung sinken sie auf 28 Cent."
+    },
+    {
+      "animationId": "context-window-context-window-train-v1",
+      "spokenText": "Ein Kontextfenster kann nur begrenzt viele Informationen gleichzeitig halten. Neue Nachrichten schieben ältere heraus, wichtige Regeln bleiben angeheftet."
+    },
+    {
+      "animationId": "decision-logic-decision-tree-burst-v1",
+      "spokenText": "Der Agent trifft die Entscheidung nur, wenn Budget und Freigabe stimmen. Falsche Zweige werden verworfen, die gültige Bedingung bleibt übrig."
+    },
+    {
+      "animationId": "human-ai-collaboration-human-ai-relay-v1",
+      "spokenText": "Der Mensch setzt das Ziel, die KI erstellt einen Entwurf, der Mensch prüft das Ergebnis und die KI verbessert es danach gezielt."
+    },
+    {
+      "animationId": "learning-update-knowledge-tree-graft-v1",
+      "spokenText": "Eine neue Primärquelle widerspricht dem bisherigen Stand. Sie wird zuerst verifiziert und ersetzt danach die schwächere alte Aussage."
+    },
+    {
+      "animationId": "tokenization-magnetic-phrase-slicer-v1",
+      "spokenText": "Der Satz wird in einzelne Tokens zerlegt. Jedes Token erhält seine Position, damit das Modell die Reihenfolge weiterverarbeiten kann."
+    },
+    {
+      "animationId": "data-transformation-vector-prism-converter-v1",
+      "spokenText": "Aus dem Begriff Apfel wird ein Zahlenvektor. Numerische Dimensionen bilden Eigenschaften ab und machen den Begriff maschinenlesbar."
+    },
+    {
+      "animationId": "ranking-dynamic-podium-rise-v1",
+      "spokenText": "Drei Tools werden nach Qualität, Tempo und Kosten bewertet. Tool A verbessert sich beim Tempo und übernimmt dadurch Platz eins."
+    },
+    {
+      "animationId": "process-flow-subway-workflow-map-v1",
+      "spokenText": "Der Ablauf führt vom Input über Analyse und Prüfung bis zur Ausgabe. Jeder Schritt muss abgeschlossen sein, bevor der nächste startet."
+    },
+    {
+      "animationId": "input-output-funnel-compression-output-v1",
+      "spokenText": "Mehrere Quellen gehen in den Prozess. Unpassende Informationen werden verworfen, relevante Fakten bleiben übrig und verdichten sich zur Antwort."
+    },
+    {
+      "animationId": "error-detection-anomaly-xray-scanner-v1",
+      "spokenText": "Die Pipeline wirkt zunächst korrekt, aber im Modellschritt steckt ein Fehler. Der Scanner findet die Ursache und der reparierte Schritt läuft danach wieder sauber."
+    },
+    {
+      "animationId": "semantic-space-meaning-terrain-v1",
+      "spokenText": "König und Königin liegen im Bedeutungsraum nah beieinander. Berlin gehört zu einem anderen Cluster, weil die semantische Beziehung schwächer ist."
+    },
+    {
+      "animationId": "relationship-network-dependency-bridge-builder-v1",
+      "spokenText": "Bei Attention ist die Verbindung zwischen pronomen und seinem Bezugswort stark gewichtet. Eine schwache Direktverbindung wird verworfen."
+    },
+    {
+      "animationId": "probability-probability-fluid-columns-v1",
+      "spokenText": "Das Modell verteilt Wahrscheinlichkeit auf drei mögliche Antworten. Antwort B steigt auf 66 Prozent und wird damit zur stärksten Option."
+    },
+    {
+      "animationId": "model-processing-residual-river-v1",
+      "spokenText": "Der Eingang fließt durch mehrere Verarbeitungsschichten. Jede Schicht ergänzt Informationen, während der ursprüngliche Signalweg erhalten bleibt."
+    },
+    {
+      "animationId": "generation-answer-loom-v1",
+      "spokenText": "Die Antwort entsteht nicht auf einmal. Das Modell erzeugt Wort für Wort eine passende Fortsetzung, bis der Satz vollständig ist."
+    },
+    {
+      "animationId": "risk-contrast-confidence-glass-crack-v1",
+      "spokenText": "Eine Antwort kann extrem sicher klingen und trotzdem unbelegt sein. Fehlen Quelle, Datum und Beleg, bricht die scheinbare Sicherheit zusammen."
+    },
+    {
+      "animationId": "security-privacy-encryption-vault-layers-v1",
+      "spokenText": "Sensible Nutzerdaten werden vor der Verarbeitung pseudonymisiert, verschlüsselt und nur für autorisierte Systeme freigegeben."
+    },
+    {
+      "animationId": "scale-performance-latency-tunnel-race-v1",
+      "spokenText": "Pfad A braucht 780 Millisekunden, Pfad B nur 340 Millisekunden. Der Engpass macht den Unterschied sichtbar, bis die Optimierung die Laufzeit senkt."
+    },
+    {
+      "animationId": "time-change-timeline-microscope-v1",
+      "spokenText": "Das Modell entwickelt sich von kleinen Kontextfenstern über Werkzeugnutzung bis zu multimodalen Fähigkeiten. Der Zeitstrahl macht die Sprünge sichtbar."
+    },
+    {
+      "animationId": "comparison-benchmark-racetrack-v1",
+      "spokenText": "Modell A ist schneller, Modell B genauer. Im finalen Vergleich gewinnt Modell B knapp, weil die Qualitätsmetrik stärker gewichtet wird."
+    }
+  ]
+}
