@@ -67,6 +67,36 @@ describe('prototype runtime content sanitizer', () => {
     expect(relative.values.leak1Amount).toBeUndefined();
   });
 
+  it('ignores unrelated numbers before unit-bound cost measurements', () => {
+    const exact = deriveSafe(
+      'cost-efficiency-budget-leak-meter-v1',
+      'Drei Schritte kosten zuerst 94 Cent und nach der Optimierung nur noch 28 Cent.',
+    );
+
+    expect(exact.values.measurementExact).toBe(1);
+    expect(exact.values.initialCost).toBe(94);
+    expect(exact.values.optimizedCost).toBe(28);
+    expect(exact.labels.currency).toBe('ct');
+  });
+
+  it('supports euro values before or after the currency symbol', () => {
+    const suffix = deriveSafe(
+      'cost-efficiency-budget-leak-meter-v1',
+      'Der Lauf kostet zuerst 12 Euro und später 7 Euro.',
+    );
+    expect(suffix.values.initialCost).toBe(12);
+    expect(suffix.values.optimizedCost).toBe(7);
+    expect(suffix.labels.currency).toBe('€');
+
+    const prefix = deriveSafe(
+      'cost-efficiency-budget-leak-meter-v1',
+      'Der Lauf kostet zuerst € 12 und später € 7.',
+    );
+    expect(prefix.values.initialCost).toBe(12);
+    expect(prefix.values.optimizedCost).toBe(7);
+    expect(prefix.labels.currency).toBe('€');
+  });
+
   it('keeps exact latency values only when a real time unit is present', () => {
     const exact = deriveSafe(
       'scale-performance-latency-tunnel-race-v1',
@@ -84,5 +114,17 @@ describe('prototype runtime content sanitizer', () => {
     expect(relative.values.measurementExact).toBe(0);
     expect(relative.values.slowLatency).toBeUndefined();
     expect(relative.values.fastLatency).toBeUndefined();
+  });
+
+  it('ignores unrelated numbers before unit-bound latency measurements', () => {
+    const exact = deriveSafe(
+      'scale-performance-latency-tunnel-race-v1',
+      'Drei Pfade werden geprüft: seriell 780 Millisekunden, parallel 340 Millisekunden.',
+    );
+
+    expect(exact.values.measurementExact).toBe(1);
+    expect(exact.values.slowLatency).toBe(780);
+    expect(exact.values.fastLatency).toBe(340);
+    expect(exact.labels.latencyUnit).toBe('ms');
   });
 });
