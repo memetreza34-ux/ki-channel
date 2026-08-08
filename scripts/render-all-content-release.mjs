@@ -28,10 +28,17 @@ try {
     ['scripts/render-content-motion-edge-cases.mjs', 'all'],
     'Sechs semantische Edge-Case-Kompositionen rendern',
   );
+  await run(
+    ['scripts/build-content-review-gallery.mjs'],
+    'Review-Galerie aus Production- und Edge-Case-Artefakten erzeugen',
+  );
 
-  console.log('\n[all-content-render] Alle Release-Artefakte wurden erzeugt.');
+  console.log('\n[all-content-render] Alle Release-Artefakte und die Review-Galerie wurden erzeugt.');
   console.log(
     '[all-content-render] Danach ausführen: node scripts/verify-all-content-release.mjs',
+  );
+  console.log(
+    '[all-content-render] Visuelle Prüfung: out/content-review-gallery/index.html',
   );
 } catch (error) {
   console.error('\n[all-content-render] Renderlauf fehlgeschlagen.');
