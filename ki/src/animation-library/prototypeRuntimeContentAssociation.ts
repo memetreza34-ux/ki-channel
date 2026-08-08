@@ -56,9 +56,10 @@ const winnerCueIndex = (
   labels: readonly string[],
 ): number => {
   const text = normalize(spokenText);
-  const cue = '(?:gewinnt|gewinner|sieger|fuhrt|vorne|platz\\s*1|erster|erste|bestes|beste|besten)';
+  const cue = '(?:gewinnt|gewinner|sieger|fuhrt(?!\\s+zu\\b)|vorne|(?:auf\\s+)?platz\\s*1|erstplatziert)';
   const negative = '(?:nicht|kein|keine|keinen|keiner|keinem|weder|nie|niemals)';
-  const notNegatedAfterCue = `(?!\\s+${negative}\\b)`;
+  const notNegatedAfterCue =
+    `(?!\\s+(?:(?:zwar|doch)\\s+)?${negative}\\b)(?!\\s+auf\\s+keinen\\s+fall\\b)`;
 
   for (let index = 0; index < labels.length; index += 1) {
     const label = labels[index];
@@ -199,7 +200,6 @@ const associateRankingScores = (
       labels.filter((_, labelIndex) => labelIndex !== index),
     ),
   );
-  const associatedCount = exactScores.filter((value) => value !== null).length;
 
   exactScores.forEach((score, index) => {
     const keyIndex = index + 1;
@@ -217,11 +217,9 @@ const associateRankingScores = (
     ? alignRankingWinner(values, exactScores, explicitWinner)
     : false;
 
-  if (associatedCount > 0 || explicitWinner >= 0) {
-    values.rankingOutcomeGrounded = explicitWinner >= 0
-      ? explicitWinnerGrounded ? 1 : 0
-      : scoreWinnerGrounded ? 1 : 0;
-  }
+  values.rankingOutcomeGrounded = explicitWinner >= 0
+    ? explicitWinnerGrounded ? 1 : 0
+    : scoreWinnerGrounded ? 1 : 0;
 
   return {labels: content.labels, values};
 };
@@ -271,7 +269,6 @@ const associateComparisonScores = (
       labels.filter((_, labelIndex) => labelIndex !== index),
     ),
   );
-  const associatedCount = exactScores.filter((value) => value !== null).length;
 
   exactScores.forEach((score, index) => {
     const keyIndex = index + 1;
@@ -289,11 +286,9 @@ const associateComparisonScores = (
     ? alignComparisonWinner(values, exactScores, explicitWinner)
     : false;
 
-  if (associatedCount > 0 || explicitWinner >= 0) {
-    values.comparisonOutcomeGrounded = explicitWinner >= 0
-      ? explicitWinnerGrounded ? 1 : 0
-      : scoreWinnerGrounded ? 1 : 0;
-  }
+  values.comparisonOutcomeGrounded = explicitWinner >= 0
+    ? explicitWinnerGrounded ? 1 : 0
+    : scoreWinnerGrounded ? 1 : 0;
 
   return {labels: content.labels, values};
 };
@@ -411,11 +406,15 @@ const associateProbabilityPercentages = (
   );
   const associatedCount = exactValues.filter((value) => value !== null).length;
   const explicitWinner = winnerCueIndex(spokenText, labels);
-  if (associatedCount === 0 && explicitWinner < 0) return content;
 
   for (let index = 0; index < 3; index += 1) {
     values[`candidate${index + 1}ProbabilityExact`] =
       exactValues[index] === null ? 0 : 1;
+  }
+
+  if (associatedCount === 0 && explicitWinner < 0) {
+    values.probabilityOutcomeGrounded = 0;
+    return {labels: content.labels, values};
   }
 
   const fallbackValues = [1, 2, 3].map((index) =>
