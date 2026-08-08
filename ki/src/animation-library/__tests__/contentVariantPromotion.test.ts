@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {getAnimationLibraryEntry} from '../catalog';
 import {
   assertContentVariantPromotionInvariants,
   CONTENT_VARIANT_PROMOTION_CANDIDATES,
@@ -42,6 +43,17 @@ describe('content variant promotion', () => {
         ),
       ]).size,
     ).toBe(88);
+  });
+
+  it('keeps catalog metadata for every executable promotion candidate', () => {
+    for (const candidate of CONTENT_VARIANT_PROMOTION_CANDIDATES) {
+      const entry = getAnimationLibraryEntry(candidate.animationId);
+      expect(entry, candidate.animationId).toBeDefined();
+      expect(entry?.visualFamily).toBe(candidate.family);
+      expect(entry?.status).toBe('concept');
+      expect(entry?.qualityPrior.semanticClarity).toBeGreaterThanOrEqual(0);
+      expect(entry?.qualityPrior.productionConfidence).toBeGreaterThanOrEqual(0);
+    }
   });
 
   it('keeps the current 66 variants blocked until their dominant mechanisms are actually content-bound', () => {
