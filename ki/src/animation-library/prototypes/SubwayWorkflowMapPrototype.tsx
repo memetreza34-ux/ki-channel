@@ -46,7 +46,7 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
     : [];
   const stations = DEFAULT_STATIONS.map((station, index) => ({
     ...station,
-    label: getPrototypeLabel({content, key: `station${index + 1}`, fallback: terms[index] ?? station.label}),
+    label: getPrototypeLabel({content, key: `station${index + 1}`, fallback: terms[index] ?? (content ? 'PROZESSSCHRITT' : station.label)}),
   }));
   const inferredAlternative = content
     ? /fehler|zurück|alternative|retry|wiederhol|abzweig/i.test(content.spokenText)
@@ -61,9 +61,9 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
   const next = stations[segment + 1];
   const packetX = interpolate(local, [0, 1], [current.x, next.x]);
   const packetY = interpolate(local, [0, 1], [current.y, next.y]);
-  const routeLabel = getPrototypeLabel({content, key: 'routeLabel', fallback: 'AUTOMATION LINE · LIVE ROUTE'});
+  const routeLabel = getPrototypeLabel({content, key: 'routeLabel', fallback: content ? 'PROZESSROUTE' : 'AUTOMATION LINE · LIVE ROUTE'});
   const alternativeLabel = getPrototypeLabel({content, key: 'alternativeLabel', fallback: 'ALTERNATIVROUTE'});
-  const alternativeText = getPrototypeLabel({content, key: 'alternativeText', fallback: 'Fehler führt zur Prüfung zurück.'});
+  const alternativeText = getPrototypeLabel({content, key: 'alternativeText', fallback: content ? 'Der beschriebene Rückfallweg wird sichtbar.' : 'Fehler führt zur Prüfung zurück.'});
   const resultText = getPrototypeLabel({
     content,
     key: 'resultText',
@@ -75,9 +75,9 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
   const completedStations = travel >= 1 ? stations.length : activeStationIndex;
 
   return (
-    <PrototypeShell family="PROCESS FLOW" title="Subway Workflow Map" subtitle="Der Prozess läuft Station für Station zum Ziel. Eine Rückfallroute erscheint nur, wenn der konkrete Inhalt tatsächlich einen Fehler- oder Wiederholungsweg beschreibt.">
+    <PrototypeShell family="PROCESS FLOW" title="Subway Workflow Map" subtitle="Der Prozess läuft Station für Station zum Ziel. Eine Rückfallroute erscheint nur, wenn der konkrete Inhalt tatsächlich einen Fehler- oder Wiederholungsweg beschreibt. Interne Stationszähler bleiben im Content-Modus qualitativ.">
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 385, bottom: 190, overflow: 'hidden'}}>
-        <div style={{position: 'absolute', left: 34, top: 26, right: 34, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 800, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 640, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{routeLabel.toLocaleUpperCase('de-DE')}</span><span>{completedStations}/{stations.length} STATIONEN</span></div>
+        <div style={{position: 'absolute', left: 34, top: 26, right: 34, display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 18, fontWeight: 800, letterSpacing: 2, color: PROTOTYPE_PALETTE.muted}}><span style={{maxWidth: 640, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{routeLabel.toLocaleUpperCase('de-DE')}</span><span>{content ? (travel >= 1 ? 'ROUTE ABGESCHLOSSEN' : 'ROUTE LÄUFT') : `${completedStations}/${stations.length} STATIONEN`}</span></div>
 
         <svg width="936" height="1100" viewBox="0 0 936 1100" style={{position: 'absolute', inset: 0}}>
           <path d="M 145 720 C 220 720, 270 530, 340 530 S 470 700, 535 700 S 655 470, 710 470 S 790 300, 815 250" fill="none" stroke={PROTOTYPE_PALETTE.line} strokeWidth={28} strokeLinecap="round" />
