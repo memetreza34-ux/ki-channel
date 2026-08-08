@@ -35,6 +35,8 @@ export * from './proposalCompiler';
 export * from './prototypeContentCoverage';
 export * from './prototypeCoverage';
 export * from './prototypeRenderPayload';
+export * from './prototypeRuntimeContentDeriver';
+export * from './prototypeRuntimeContentSanitizer';
 export * from './reelLifecycle';
 export * from './reelPlanningPipeline';
 export * from './renderReview';
