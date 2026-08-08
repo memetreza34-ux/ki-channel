@@ -38,14 +38,17 @@ const normalize = (value: string): string =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/ß/g, 'ss');
 
+const escapeRegex = (value: string): string =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const STOPWORDS = new Set([
   'aber', 'als', 'also', 'am', 'an', 'auch', 'auf', 'aus', 'bei', 'beim',
   'bis', 'das', 'dass', 'dem', 'den', 'der', 'des', 'die', 'dies', 'diese',
   'dieser', 'durch', 'ein', 'eine', 'einem', 'einen', 'einer', 'er', 'es',
   'für', 'im', 'in', 'ist', 'mit', 'nach', 'nur', 'oder', 'ohne', 'sich',
   'sie', 'sind', 'so', 'und', 'von', 'vor', 'während', 'weil', 'wenn', 'wie',
-  'wird', 'werden', 'zu', 'zum', 'zur', 'the', 'a', 'an', 'and', 'from', 'into',
-  'of', 'the', 'to', 'with',
+  'wird', 'werden', 'zu', 'zum', 'zur', 'the', 'a', 'and', 'from', 'into',
+  'of', 'to', 'with',
 ]);
 
 const contentWords = (spokenText: string): string[] =>
@@ -106,7 +109,6 @@ const germanBasic: Record<string, number> = {
   zwei: 2,
   drei: 3,
   vier: 4,
-  fünf: 5,
   funf: 5,
   sechs: 6,
   sieben: 7,
@@ -114,21 +116,17 @@ const germanBasic: Record<string, number> = {
   neun: 9,
   zehn: 10,
   elf: 11,
-  zwölf: 12,
   zwolf: 12,
   dreizehn: 13,
   vierzehn: 14,
-  fünfzehn: 15,
   funfzehn: 15,
   sechzehn: 16,
   siebzehn: 17,
   achtzehn: 18,
   neunzehn: 19,
   zwanzig: 20,
-  dreißig: 30,
   dreissig: 30,
   vierzig: 40,
-  fünfzig: 50,
   funfzig: 50,
   sechzig: 60,
   siebzig: 70,
@@ -207,7 +205,7 @@ const stableUnit = (value: string): number => {
     hash ^= char.charCodeAt(0);
     hash = Math.imul(hash, 16777619);
   }
-  return (Math.abs(hash >>> 0) % 1001) / 1000;
+  return ((hash >>> 0) % 1001) / 1000;
 };
 
 const stableSignedVector = (value: string): string =>
@@ -252,10 +250,9 @@ const deriveRetrieval: RuntimeDeriver = ({spokenText, meaningContract}) => {
     if (relevant) relevantCount += 1;
   }
   const numbers = extractNumbers(spokenText);
-  values.evidenceCount = Math.max(
-    1,
-    Math.min(6, numbers[0] ?? relevantCount || Math.min(3, sources.length)),
-  );
+  const derivedEvidenceCount =
+    numbers[0] ?? (relevantCount || Math.min(3, sources.length));
+  values.evidenceCount = Math.max(1, Math.min(6, derivedEvidenceCount));
   return {labels, values};
 };
 
@@ -666,8 +663,10 @@ const deriveComparison: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const competitor1 = pick(competitors, 0, 'Option A');
   const competitor2 = pick(competitors, 1, 'Option B');
   const normalized = normalize(spokenText);
-  const firstWins = new RegExp(`${normalize(competitor1)}.*(?:gewinnt|besser|schneller|starker)`).test(normalized);
-  const secondWins = new RegExp(`${normalize(competitor2)}.*(?:gewinnt|besser|schneller|starker)`).test(normalized);
+  const firstPattern = new RegExp(`${escapeRegex(normalize(competitor1))}.*(?:gewinnt|besser|schneller|starker)`);
+  const secondPattern = new RegExp(`${escapeRegex(normalize(competitor2))}.*(?:gewinnt|besser|schneller|starker)`);
+  const firstWins = firstPattern.test(normalized);
+  const secondWins = secondPattern.test(normalized);
   const firstFinal = numbers[0] ?? (firstWins ? 100 : secondWins ? 88 : 96);
   const secondFinal = numbers[1] ?? (secondWins ? 100 : firstWins ? 88 : 92);
   return {
