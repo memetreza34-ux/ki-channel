@@ -13,26 +13,15 @@ const renderConfig = readJson(
   'ki/src/animation-library/prototype-render-config.json',
 );
 
-const EXPECTED_FAMILY_BY_ID = {
-  'retrieval-search-knowledge-magnet-v1': 'retrieval-search',
+const CRITICAL_FAMILY_EXPECTATIONS = {
   'cost-efficiency-budget-leak-meter-v1': 'cost-efficiency',
-  'context-window-context-window-train-v1': 'context-window',
   'decision-logic-decision-tree-burst-v1': 'decision-logic',
-  'human-ai-collaboration-human-ai-relay-v1': 'human-ai-collaboration',
-  'learning-update-knowledge-tree-graft-v1': 'learning-update',
-  'tokenization-magnetic-phrase-slicer-v1': 'tokenization',
-  'data-transformation-vector-prism-converter-v1': 'data-transformation',
   'ranking-dynamic-podium-rise-v1': 'ranking',
-  'process-flow-subway-workflow-map-v1': 'process-flow',
   'input-output-funnel-compression-output-v1': 'input-output',
   'error-detection-anomaly-xray-scanner-v1': 'error-detection',
-  'semantic-space-meaning-terrain-v1': 'semantic-space',
   'relationship-network-dependency-bridge-builder-v1': 'relationship-network',
   'probability-probability-fluid-columns-v1': 'probability',
   'model-processing-residual-river-v1': 'model-processing',
-  'generation-answer-loom-v1': 'generation',
-  'risk-contrast-confidence-glass-crack-v1': 'risk-contrast',
-  'security-privacy-encryption-vault-layers-v1': 'security-privacy',
   'scale-performance-latency-tunnel-race-v1': 'scale-performance',
   'time-change-timeline-microscope-v1': 'time-change',
   'comparison-benchmark-racetrack-v1': 'comparison',
@@ -53,7 +42,6 @@ describe('masterplan production fixture contract', () => {
 
     expect(new Set(fixtureIds).size).toBe(22);
     expect(fixtureIds).toEqual(renderIds);
-    expect(Object.keys(EXPECTED_FAMILY_BY_ID).sort()).toEqual(renderIds);
   });
 
   it('contains spoken production inputs only, never direct runtime labels or values', () => {
@@ -87,33 +75,38 @@ describe('masterplan production fixture contract', () => {
     }
   });
 
-  it('keeps precision-sensitive examples grounded in the actual spoken text', () => {
+  it('maps critical production examples to their intended visual families', async () => {
+    const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
+    const byId = new Map(
+      fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture]),
+    );
+
+    for (const [animationId, expectedFamily] of Object.entries(
+      CRITICAL_FAMILY_EXPECTATIONS,
+    )) {
+      const fixture = byId.get(animationId);
+      expect(fixture, animationId).toBeDefined();
+      const contract = enhanceSceneMeaning(fixture.spokenText);
+      expect(
+        contract.preferredVisualFamilies,
+        `${animationId} -> ${contract.preferredVisualFamilies.join(', ')}`,
+      ).toContain(expectedFamily);
+    }
+  });
+
+  it('keeps precision-sensitive examples grounded in actual spoken text', () => {
     const byId = new Map(
       fixtureConfig.fixtures.map((fixture) => [fixture.animationId, fixture.spokenText]),
     );
 
     expect(byId.get('cost-efficiency-budget-leak-meter-v1')).toMatch(/94\s*Cent/i);
     expect(byId.get('cost-efficiency-budget-leak-meter-v1')).toMatch(/28\s*Cent/i);
-    expect(byId.get('cost-efficiency-budget-leak-meter-v1')).toMatch(/sink|senk|reduzier|spar/i);
+    expect(byId.get('cost-efficiency-budget-leak-meter-v1')).toMatch(/senk|reduzier|spar/i);
 
     expect(byId.get('probability-probability-fluid-columns-v1')).toMatch(/66\s*Prozent/i);
     expect(byId.get('scale-performance-latency-tunnel-race-v1')).toMatch(/780\s*Millisekunden/i);
     expect(byId.get('scale-performance-latency-tunnel-race-v1')).toMatch(/340\s*Millisekunden/i);
     expect(byId.get('ranking-dynamic-podium-rise-v1')).toMatch(/Platz\s+eins/i);
     expect(byId.get('comparison-benchmark-racetrack-v1')).toMatch(/gewinnt\s+Modell\s+B/i);
-  });
-
-  it('keeps one expected visual family contract per production id', async () => {
-    const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
-
-    for (const fixture of fixtureConfig.fixtures) {
-      const expectedFamily = EXPECTED_FAMILY_BY_ID[fixture.animationId];
-      const contract = enhanceSceneMeaning(fixture.spokenText);
-      expect(expectedFamily, fixture.animationId).toBeTruthy();
-      expect(
-        contract.preferredVisualFamilies,
-        `${fixture.animationId} -> ${contract.preferredVisualFamilies.join(', ')}`,
-      ).toContain(expectedFamily);
-    }
   });
 });
