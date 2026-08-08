@@ -35,6 +35,10 @@ for (const required of [
 }
 
 for (const required of [
+  'getEdgeCaseSourceFingerprint',
+  'currentEdgeSourceFingerprint',
+  'edgeSummary.sourceFingerprint !== currentEdgeSourceFingerprint',
+  'Review-Galerie verweist auf veraltete Edge-Case-Renders',
   'manifest.reviewId',
   'manifest.upstreamMode !== expectedUpstreamMode',
   'manifest.masterplanGeneratedAt !== masterplanManifest.generatedAt',
@@ -138,5 +142,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Content-Review-Finalization-Gate bestanden: Review-ID bindet die konkrete source-fingerprinted Rendergeneration; Edge Cases besitzen einen eigenen Config-/Renderer-Fingerprint; Finalizer reverifiziert die Full-Artefakte; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind verpflichtend.',
+  'Content-Review-Finalization-Gate bestanden: Review-Galerie und Edge-Renders werden gegen den aktuellen Edge-Fingerprint geprüft; Review-ID bindet die konkrete Rendergeneration; Finalizer reverifiziert die Full-Artefakte; 28/28 manuelle Entscheidungen und frischer technischer Full-Report sind verpflichtend.',
 );
