@@ -138,7 +138,8 @@ for (const required of [
 for (const required of [
   "new Set(['smoke', 'full'])",
   "requestedMode === 'full' ? 'all' : 'smoke'",
-  "requestedMode === 'full' ? 'checkpoints'",
+  "const checkpointKey = requestedMode === 'full'",
+  "? 'checkpoints'",
   "requestedMode === 'smoke' && card.hasVideo",
   '28 * expectedFrameCount',
 ]) {
