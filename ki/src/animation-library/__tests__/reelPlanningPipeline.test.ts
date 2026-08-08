@@ -140,6 +140,74 @@ describe('raw reel animation planning pipeline', () => {
     expect(buildSpec?.contentContract).toEqual(analysis.meaningContract);
   });
 
+  it('keeps a cost increase out of the savings family in the public production path', () => {
+    const plan = planReelAnimationsFromText({
+      reelId: 'cost-increase-direction',
+      reelIndex: 23,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'cost-increase',
+          spokenText:
+            'Trotz Optimierung steigen die Kosten von 28 Cent auf 94 Cent und der Preis wird höher.',
+        },
+      ],
+    });
+
+    const analysis = plan.analyses[0];
+    const productionScene = plan.productionPlan.scenes[0];
+
+    expect(analysis.meaningContract.preferredVisualFamilies[0]).not.toBe(
+      'cost-efficiency',
+    );
+    expect(analysis.meaningContract.requiredVisualCues).not.toContain(
+      'visible-reduction',
+    );
+    expect(plan.decisionSummary[0].primaryFamily).not.toBe('cost-efficiency');
+    expect(productionScene.animationId).not.toBe(
+      'cost-efficiency-budget-leak-meter-v1',
+    );
+  });
+
+  it('carries a latency improvement as a result without inventing a bottleneck', () => {
+    const plan = planReelAnimationsFromText({
+      reelId: 'latency-improvement-direction',
+      reelIndex: 24,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'latency-improvement',
+          spokenText:
+            'Durch Parallelisierung sinkt die Latenz von 780 auf 340 Millisekunden.',
+          forceNewAnimation: true,
+        },
+      ],
+    });
+
+    const analysis = plan.analyses[0];
+    const buildSpec = plan.productionPlan.scenes[0].buildSpec;
+
+    expect(analysis.meaningContract.preferredVisualFamilies[0]).toBe(
+      'scale-performance',
+    );
+    expect(analysis.meaningContract.communicationGoal).toBe('show-result');
+    expect(analysis.meaningContract.preferredExplanationPatterns[0]).toBe(
+      'performance-improvement',
+    );
+    expect(analysis.meaningContract.requiredVisualCues).toContain(
+      'latency-or-throughput-improvement',
+    );
+    expect(analysis.meaningContract.requiredVisualCues).not.toContain(
+      'visible-bottleneck',
+    );
+    expect(analysis.brief.meaningContract).toEqual(analysis.meaningContract);
+    expect(buildSpec?.contentContract).toEqual(analysis.meaningContract);
+  });
+
   it('rejects duplicate scene identifiers and invalid reel indices', () => {
     expect(() =>
       planReelAnimationsFromText({
