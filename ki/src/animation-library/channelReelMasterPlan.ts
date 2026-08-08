@@ -219,7 +219,6 @@ export const createChannelReelMasterPlan = ({
     scenes,
     modeDistribution,
     animateEverythingAsFarAsUseful:
-      prepared.readyForImplementation &&
       implementationBrief.readyForImplementation &&
       universalMotion.everythingAnimatedAsFarAsUseful &&
       scenes.every((scene) => scene.valid) &&
