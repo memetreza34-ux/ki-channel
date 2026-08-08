@@ -25,19 +25,65 @@ const parseNumber = (value: string): number | null => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
-const scoreForLabel = (spokenText: string, label: string): number | null => {
+const toNumber = (value: string | number | undefined, fallback: number): number => {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const normalizedLabelPattern = (label: string): string =>
+  escapeRegex(normalize(label)).replace(/\s+/g, '\\s+');
+
+const safeGap = (otherLabels: readonly string[], maxChars: number): string => {
+  const patterns = otherLabels
+    .map(normalize)
+    .filter((label) => label.length >= 2)
+    .map((label) => escapeRegex(label).replace(/\s+/g, '\\s+'));
+  const otherLabelGuard = patterns.length > 0
+    ? `(?!\\b(?:${patterns.join('|')})\\b)`
+    : '';
+  return `(?:${otherLabelGuard}[^0-9,.!?;]){0,${maxChars}}`;
+};
+
+const scoreForLabel = (
+  spokenText: string,
+  label: string,
+  otherLabels: readonly string[],
+): number | null => {
   const text = normalize(spokenText);
   const normalizedLabel = normalize(label);
   if (normalizedLabel.length < 2) return null;
-  const escapedLabel = escapeRegex(normalizedLabel).replace(/\s+/g, '\\s+');
+  const escapedLabel = normalizedLabelPattern(label);
+  const gap = safeGap(otherLabels, 24);
   const score = '(-?\\d+(?:[.,]\\d+)?)';
   const labelBefore = new RegExp(
-    `(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,24}${score}\\s*(?:punkte?|points?|%|prozent)\\b`,
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${score}\\s*(?:punkte?|points?|%|prozent)\\b`,
   );
   const scoreBefore = new RegExp(
-    `${score}\\s*(?:punkte?|points?|%|prozent)\\b[^,.!?;]{0,18}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    `${score}\\s*(?:punkte?|points?|%|prozent)\\b${safeGap(otherLabels, 18)}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
   );
   const match = labelBefore.exec(text) ?? scoreBefore.exec(text);
+  if (!match) return null;
+  const parsed = parseNumber(match[1]);
+  return parsed !== null && parsed >= 0 && parsed <= 100 ? parsed : null;
+};
+
+const percentageForLabel = (
+  spokenText: string,
+  label: string,
+  otherLabels: readonly string[],
+): number | null => {
+  const text = normalize(spokenText);
+  const normalizedLabel = normalize(label);
+  if (normalizedLabel.length < 2) return null;
+  const escapedLabel = normalizedLabelPattern(label);
+  const number = '(\\d{1,3}(?:[.,]\\d+)?)';
+  const labelBefore = new RegExp(
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap(otherLabels, 28)}${number}\\s*(?:%|prozent)\\b`,
+  );
+  const percentageBefore = new RegExp(
+    `${number}\\s*(?:%|prozent)\\b${safeGap(otherLabels, 20)}\\b(?:fur|bei|auf|entfallen\\s+auf|fallen\\s+auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+  );
+  const match = labelBefore.exec(text) ?? percentageBefore.exec(text);
   if (!match) return null;
   const parsed = parseNumber(match[1]);
   return parsed !== null && parsed >= 0 && parsed <= 100 ? parsed : null;
@@ -48,8 +94,15 @@ const associateRankingScores = (
   content: AssociatablePrototypeRuntimeContent,
 ): AssociatablePrototypeRuntimeContent => {
   const values = {...content.values};
-  const exactScores = [1, 2, 3].map((index) =>
-    scoreForLabel(spokenText, content.labels[`candidate${index}`] ?? ''),
+  const labels = [1, 2, 3].map(
+    (index) => content.labels[`candidate${index}`] ?? '',
+  );
+  const exactScores = labels.map((label, index) =>
+    scoreForLabel(
+      spokenText,
+      label,
+      labels.filter((_, labelIndex) => labelIndex !== index),
+    ),
   );
   const associatedCount = exactScores.filter((value) => value !== null).length;
 
@@ -79,8 +132,15 @@ const associateComparisonScores = (
   content: AssociatablePrototypeRuntimeContent,
 ): AssociatablePrototypeRuntimeContent => {
   const values = {...content.values};
-  const exactScores = [1, 2].map((index) =>
-    scoreForLabel(spokenText, content.labels[`competitor${index}`] ?? ''),
+  const labels = [1, 2].map(
+    (index) => content.labels[`competitor${index}`] ?? '',
+  );
+  const exactScores = labels.map((label, index) =>
+    scoreForLabel(
+      spokenText,
+      label,
+      labels.filter((_, labelIndex) => labelIndex !== index),
+    ),
   );
   const associatedCount = exactScores.filter((value) => value !== null).length;
 
@@ -93,6 +153,84 @@ const associateComparisonScores = (
     if (associatedCount >= 2) values.comparisonOutcomeGrounded = 1;
   }
 
+  return {labels: content.labels, values};
+};
+
+const distributeProbabilityRemainder = (
+  exactValues: readonly (number | null)[],
+  fallbackValues: readonly number[],
+): number[] | null => {
+  const exactSum = exactValues.reduce(
+    (sum, value) => sum + (value ?? 0),
+    0,
+  );
+  if (exactSum > 100) return null;
+  const missing = exactValues
+    .map((value, index) => (value === null ? index : -1))
+    .filter((index) => index >= 0);
+  if (missing.length === 0) return exactValues.map((value) => value ?? 0);
+
+  const remaining = 100 - exactSum;
+  const fallbackWeight = missing.reduce(
+    (sum, index) => sum + Math.max(1, fallbackValues[index]),
+    0,
+  );
+  const result = exactValues.map((value) => value ?? 0);
+  let assigned = 0;
+  missing.forEach((index, missingIndex) => {
+    const value = missingIndex === missing.length - 1
+      ? remaining - assigned
+      : Math.round(
+          remaining * (Math.max(1, fallbackValues[index]) / fallbackWeight),
+        );
+    result[index] = Math.max(0, value);
+    assigned += value;
+  });
+  return result;
+};
+
+const associateProbabilityPercentages = (
+  spokenText: string,
+  content: AssociatablePrototypeRuntimeContent,
+): AssociatablePrototypeRuntimeContent => {
+  const values = {...content.values};
+  const labels = [1, 2, 3].map(
+    (index) => content.labels[`candidate${index}`] ?? '',
+  );
+  const exactValues = labels.map((label, index) =>
+    percentageForLabel(
+      spokenText,
+      label,
+      labels.filter((_, labelIndex) => labelIndex !== index),
+    ),
+  );
+  const associatedCount = exactValues.filter((value) => value !== null).length;
+  if (associatedCount === 0) return content;
+
+  for (let index = 0; index < 3; index += 1) {
+    values[`candidate${index + 1}ProbabilityExact`] =
+      exactValues[index] === null ? 0 : 1;
+  }
+
+  const fallbackValues = [1, 2, 3].map((index) =>
+    toNumber(values[`candidate${index}End`], 100 / 3),
+  );
+  const distributed = distributeProbabilityRemainder(
+    exactValues,
+    fallbackValues,
+  );
+  if (!distributed) {
+    for (let index = 0; index < 3; index += 1) {
+      values[`candidate${index + 1}ProbabilityExact`] = 0;
+    }
+    values.probabilityOutcomeGrounded = 0;
+    return {labels: content.labels, values};
+  }
+
+  distributed.forEach((value, index) => {
+    values[`candidate${index + 1}End`] = value;
+  });
+  values.probabilityOutcomeGrounded = 1;
   return {labels: content.labels, values};
 };
 
@@ -184,6 +322,9 @@ export const associatePrototypeRuntimeContent = ({
   }
   if (animationId === 'comparison-benchmark-racetrack-v1') {
     return associateComparisonScores(spokenText, content);
+  }
+  if (animationId === 'probability-probability-fluid-columns-v1') {
+    return associateProbabilityPercentages(spokenText, content);
   }
   if (animationId === 'cost-efficiency-budget-leak-meter-v1') {
     return enforceCostReductionDirection(spokenText, content);
