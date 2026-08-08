@@ -4,16 +4,18 @@ import {describe, expect, it} from 'vitest';
 
 const read = (path) => readFileSync(resolve(path), 'utf8');
 
-describe('runtime content sanitizer bindings', () => {
-  it('keeps sanitize between derivation and render props in the channel masterplan', () => {
+describe('runtime content grounding bindings', () => {
+  it('keeps derive -> sanitize -> associate -> props in the channel masterplan', () => {
     const source = read('ki/src/animation-library/channelReelMasterPlan.ts');
     const deriveIndex = source.indexOf('derivePrototypeRuntimeContent({');
     const sanitizeIndex = source.indexOf('sanitizePrototypeRuntimeContent({');
+    const associationIndex = source.indexOf('associatePrototypeRuntimeContent({');
     const propsIndex = source.indexOf('createPrototypeRenderProps({');
 
     expect(deriveIndex).toBeGreaterThanOrEqual(0);
     expect(sanitizeIndex).toBeGreaterThan(deriveIndex);
-    expect(propsIndex).toBeGreaterThan(sanitizeIndex);
+    expect(associationIndex).toBeGreaterThan(sanitizeIndex);
+    expect(propsIndex).toBeGreaterThan(associationIndex);
   });
 
   it('makes exact-vs-relative runtime flags visible in cost and latency prototypes', () => {
@@ -70,23 +72,32 @@ describe('runtime content sanitizer bindings', () => {
     }
   });
 
-  it('keeps the exact masterplan release on derive -> sanitize -> props', () => {
+  it('keeps the exact masterplan release on derive -> sanitize -> associate -> props', () => {
     const render = read('scripts/render-masterplan-content-release.mjs');
     const verify = read('scripts/verify-masterplan-content-release.mjs');
 
     for (const source of [render, verify]) {
       expect(source).toContain('loadPrototypeRuntimeContentDeriver');
       expect(source).toContain('loadPrototypeRuntimeContentSanitizer');
+      expect(source).toContain('loadPrototypeRuntimeContentAssociation');
       expect(source).toContain('loadCreatePrototypeRenderProps');
       expect(source.indexOf('sanitizePrototypeRuntimeContent({')).toBeGreaterThan(
         source.indexOf('derivePrototypeRuntimeContent({'),
       );
+      expect(source.indexOf('associatePrototypeRuntimeContent({')).toBeGreaterThan(
+        source.indexOf('sanitizePrototypeRuntimeContent({'),
+      );
+      expect(source.indexOf('createPrototypeRenderProps({')).toBeGreaterThan(
+        source.indexOf('associatePrototypeRuntimeContent({'),
+      );
     }
   });
 
-  it('fingerprints the sanitizer and its runtime loader for release freshness', () => {
+  it('fingerprints sanitizer and association plus their runtime loaders for release freshness', () => {
     const source = read('scripts/masterplan-content-release-utils.mjs');
     expect(source).toContain('prototypeRuntimeContentSanitizer.ts');
+    expect(source).toContain('prototypeRuntimeContentAssociation.ts');
     expect(source).toContain('load-prototype-runtime-content-sanitizer.mjs');
+    expect(source).toContain('load-prototype-runtime-content-association.mjs');
   });
 });
