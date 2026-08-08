@@ -49,7 +49,7 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
     label: getPrototypeLabel({
       content,
       key: `branch${index + 1}`,
-      fallback: contractTerms[index] ?? branch.label,
+      fallback: contractTerms[index] ?? (content ? 'Bedingung' : branch.label),
     }),
     valid: booleanValue(
       getPrototypeValue({
@@ -89,7 +89,7 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
     <PrototypeShell
       family="DECISION LOGIC"
       title="Decision Tree Burst"
-      subtitle="Eine Frage öffnet mehrere Wege. Unpassende Äste verschwinden, die gemeinsam tragenden Kriterien bleiben sichtbar."
+      subtitle="Eine Frage öffnet mehrere Wege. Unpassende Äste verschwinden, die gemeinsam tragenden Kriterien bleiben sichtbar. Interne Ast-Zählungen werden im Content-Modus nicht als Fakten ausgegeben."
     >
       <div style={{position: 'absolute', left: 82, right: 82, top: 390, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -140,24 +140,8 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
               );
             })}
 
-            <path
-              d={`M ${mergeX} ${mergeY} Q 458 1105 458 1155`}
-              fill="none"
-              stroke={PROTOTYPE_PALETTE.success}
-              strokeWidth={14}
-              strokeLinecap="round"
-              strokeDasharray="180"
-              strokeDashoffset={180 * (1 - routeVisibility)}
-              opacity={routeVisibility}
-              style={{filter: 'drop-shadow(0 0 12px rgba(53,197,138,.45))'}}
-            />
-            <circle
-              cx={mergeX}
-              cy={mergeY}
-              r={18 + routeVisibility * 8}
-              fill={PROTOTYPE_PALETTE.success}
-              opacity={routeVisibility}
-            />
+            <path d={`M ${mergeX} ${mergeY} Q 458 1105 458 1155`} fill="none" stroke={PROTOTYPE_PALETTE.success} strokeWidth={14} strokeLinecap="round" strokeDasharray="180" strokeDashoffset={180 * (1 - routeVisibility)} opacity={routeVisibility} style={{filter: 'drop-shadow(0 0 12px rgba(53,197,138,.45))'}} />
+            <circle cx={mergeX} cy={mergeY} r={18 + routeVisibility * 8} fill={PROTOTYPE_PALETTE.success} opacity={routeVisibility} />
           </svg>
 
           <div style={{position: 'absolute', left: 458, top: 350, transform: `translate(-50%, -50%) scale(${0.65 + core * 0.35})`, width: 305, height: 200, borderRadius: 36, background: `linear-gradient(145deg, ${PROTOTYPE_PALETTE.accent}, #6B39D0)`, color: 'white', border: '4px solid rgba(255,255,255,.45)', boxShadow: '0 24px 60px rgba(135,87,232,.35)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 24, boxSizing: 'border-box', zIndex: 5}}>
@@ -180,8 +164,8 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
           </div>
 
           <div style={{position: 'absolute', left: 70, right: 70, bottom: 32, display: 'flex', justifyContent: 'space-between', opacity: prune, fontSize: 20, fontWeight: 850, color: PROTOTYPE_PALETTE.muted}}>
-            <span><b style={{color: PROTOTYPE_PALETTE.danger}}>{invalidCount}</b> Äste verworfen</span>
-            <span><b style={{color: validBranches.length > 0 ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.danger}}>{validBranches.length}</b> Kriterien tragen den Weg</span>
+            <span>{content ? 'UNPASSENDE ÄSTE VERWORFEN' : <><b style={{color: PROTOTYPE_PALETTE.danger}}>{invalidCount}</b> Äste verworfen</>}</span>
+            <span>{content ? 'TRAGENDE KRITERIEN BLEIBEN' : <><b style={{color: validBranches.length > 0 ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.danger}}>{validBranches.length}</b> Kriterien tragen den Weg</>}</span>
           </div>
         </GlassSurface>
       </div>
