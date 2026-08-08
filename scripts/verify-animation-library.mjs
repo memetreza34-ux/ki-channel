@@ -31,8 +31,10 @@ const checks = [
   ['node', ['--check', 'scripts/verify-content-matched-runtime.mjs']],
   ['node', ['--check', 'scripts/run-content-release.mjs']],
   ['node', ['--check', 'scripts/verify-content-release-summary.mjs']],
+  ['node', ['--check', 'scripts/content-release-status.mjs']],
   ['node', ['--check', 'scripts/finalize-content-release.mjs']],
   ['node', ['--check', 'scripts/check-content-release-worktree-contract.mjs']],
+  ['node', ['--check', 'scripts/check-content-release-status-contract.mjs']],
   ['node', ['--check', 'scripts/check-native-prototype-bindings.mjs']],
   ['node', ['--check', 'scripts/check-production-derived-runtime-keys.mjs']],
   ['node', ['--check', 'scripts/check-content-motion-edge-cases.mjs']],
@@ -57,6 +59,7 @@ const checks = [
   ['node', ['scripts/check-canonical-content-release-paths.mjs']],
   ['node', ['scripts/check-content-review-finalization-path.mjs']],
   ['node', ['scripts/check-content-release-worktree-contract.mjs']],
+  ['node', ['scripts/check-content-release-status-contract.mjs']],
   [
     'npx',
     [
