@@ -102,6 +102,7 @@ await writeFile(
     {
       version: 1,
       mode: requestedMode,
+      generatedAt: new Date().toISOString(),
       caseCount: renderSummary.length,
       cases: renderSummary,
     },
