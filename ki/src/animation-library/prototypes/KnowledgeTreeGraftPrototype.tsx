@@ -5,6 +5,7 @@ import {
   getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
+import {parseExplicitPercentageNear} from './PrototypeMeasurementGrounding';
 import {
   GlassSurface,
   PROTOTYPE_PALETTE,
@@ -30,6 +31,13 @@ const numericValue = (
 
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
+
+const normalize = (value: string): string =>
+  value
+    .toLocaleLowerCase('de-DE')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss');
 
 export const KnowledgeTreeGraftPrototype: React.FC = () => {
   const frame = useCurrentFrame();
@@ -59,9 +67,28 @@ export const KnowledgeTreeGraftPrototype: React.FC = () => {
   const newInformationLabel = getPrototypeLabel({content, key: 'newInformationLabel', fallback: 'NEUE INFORMATION'});
   const newInformation = getPrototypeLabel({content, key: 'newInformation', fallback: terms[3] ?? 'Stand 2026'});
   const sourceDetail = getPrototypeLabel({content, key: 'sourceDetail', fallback: 'Quelle + Datum + Vertrauen'});
-  const confidence = numericValue(getPrototypeValue({content, key: 'confidence', fallback: 92}), 92);
-  const verificationThreshold = numericValue(getPrototypeValue({content, key: 'verificationThreshold', fallback: 70}), 70);
-  const accepted = confidence >= verificationThreshold;
+  const inferredConfidence = numericValue(getPrototypeValue({content, key: 'confidence', fallback: 92}), 92);
+  const inferredVerificationThreshold = numericValue(getPrototypeValue({content, key: 'verificationThreshold', fallback: 70}), 70);
+  const spokenConfidence = content
+    ? parseExplicitPercentageNear({
+        spokenText: content.spokenText,
+        terms: ['Vertrauen', 'Confidence', 'Konfidenz', 'Sicherheit'],
+      })
+    : null;
+  const spokenThreshold = content
+    ? parseExplicitPercentageNear({
+        spokenText: content.spokenText,
+        terms: ['Schwelle', 'Grenze', 'Threshold', 'Mindestwert'],
+      })
+    : null;
+  const normalizedSpokenText = normalize(content?.spokenText ?? '');
+  const explicitlyRejected = /\b(?:nicht verifiziert|unverifiziert|unsicher|zweifel|unklar|nicht belegt|nicht bestatigt|abgelehnt)\b/.test(normalizedSpokenText);
+  const explicitlyAccepted = !explicitlyRejected && /\b(?:verifiziert|belegt|bestatigt|primarquelle|akzeptiert|freigegeben|aktualisiert|ersetzt)\b/.test(normalizedSpokenText);
+  const accepted = !content
+    ? inferredConfidence >= inferredVerificationThreshold
+    : spokenConfidence !== null && spokenThreshold !== null
+      ? spokenConfidence >= spokenThreshold
+      : explicitlyAccepted;
   const acceptedVerify = accepted ? verify : 0;
   const acceptedGraft = accepted ? graft : 0;
   const acceptedSupersede = accepted ? supersede : 0;
@@ -78,9 +105,17 @@ export const KnowledgeTreeGraftPrototype: React.FC = () => {
       ? compactText(content.meaningContract.endState, 105)
       : `${knowledgeLabel} wurde nachvollziehbar aktualisiert.`,
   });
+  const confidenceStatus = spokenConfidence !== null
+    ? `${Math.round(spokenConfidence)}%`
+    : accepted
+      ? 'QUALITATIV BESTÄTIGT'
+      : 'QUALITATIV UNSICHER';
+  const thresholdStatus = spokenThreshold !== null
+    ? `SCHWELLE ${Math.round(spokenThreshold)}%`
+    : 'KEINE EXAKTE SCHWELLE GENANNT';
 
   return (
-    <PrototypeShell family="LEARNING UPDATE" title="Knowledge Tree Graft" subtitle="Neue Informationen werden zuerst verifiziert. Nur bei ausreichendem Vertrauen werden sie eingefügt und schwächere Aussagen versioniert ersetzt.">
+    <PrototypeShell family="LEARNING UPDATE" title="Knowledge Tree Graft" subtitle="Neue Informationen werden zuerst verifiziert. Nur bei belegter Freigabe oder explizit erfüllter Schwelle werden sie eingefügt und schwächere Aussagen versioniert ersetzt.">
       <div style={{position: 'absolute', left: 82, right: 82, top: 390, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
           <svg width="916" height="1270" viewBox="0 0 916 1270" style={{position: 'absolute', inset: 0}}>
@@ -111,7 +146,7 @@ export const KnowledgeTreeGraftPrototype: React.FC = () => {
             <div style={{fontSize: sourceDetail.length > 28 ? 14 : 18, fontWeight: 750, color: PROTOTYPE_PALETTE.muted, marginTop: 11, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{sourceDetail}</div>
           </div>
 
-          <div style={{position: 'absolute', left: 585, top: 390, width: 235, padding: '16px 20px', borderRadius: 22, background: accepted ? 'rgba(53,197,138,.10)' : 'rgba(255,182,72,.12)', border: `2px solid ${accepted ? 'rgba(53,197,138,.42)' : 'rgba(255,182,72,.45)'}`, opacity: verify, transform: `scale(${0.75 + verify * 0.25})`, textAlign: 'center', fontSize: 18, fontWeight: 900, color: accepted ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.warning}}>{accepted ? verifiedLabel.toLocaleUpperCase('de-DE') : 'PRÜFUNG OFFEN'} · {confidence}%<div style={{fontSize: 12, marginTop: 5, color: PROTOTYPE_PALETTE.muted}}>SCHWELLE {verificationThreshold}%</div></div>
+          <div style={{position: 'absolute', left: 565, top: 390, width: 275, padding: '16px 20px', borderRadius: 22, background: accepted ? 'rgba(53,197,138,.10)' : 'rgba(255,182,72,.12)', border: `2px solid ${accepted ? 'rgba(53,197,138,.42)' : 'rgba(255,182,72,.45)'}`, opacity: verify, transform: `scale(${0.75 + verify * 0.25})`, textAlign: 'center', fontSize: 17, fontWeight: 900, color: accepted ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.warning}}>{accepted ? verifiedLabel.toLocaleUpperCase('de-DE') : 'PRÜFUNG OFFEN'} · {confidenceStatus}<div style={{fontSize: 11, marginTop: 6, color: PROTOTYPE_PALETTE.muted}}>{thresholdStatus}</div></div>
 
           <div style={{position: 'absolute', left: 95, right: 95, bottom: 66, display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 18, alignItems: 'center', opacity: acceptedSupersede}}>
             <div style={{height: 3, background: 'linear-gradient(90deg, transparent, rgba(255,182,72,.55))'}} /><div style={{maxWidth: 500, padding: '20px 26px', borderRadius: 24, background: 'rgba(255,182,72,.12)', border: '2px solid rgba(255,182,72,.40)', textAlign: 'center'}}><div style={{fontSize: oldStatementLabel.length > 20 ? 15 : 20, fontWeight: 900, color: '#A66B00'}}>{oldStatementLabel.toLocaleUpperCase('de-DE')}</div><div style={{fontSize: oldStatementResult.length > 42 ? 18 : 25, fontWeight: 900, marginTop: 8, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{oldStatementResult}</div></div><div style={{height: 3, background: 'linear-gradient(90deg, rgba(255,182,72,.55), transparent)'}} />
