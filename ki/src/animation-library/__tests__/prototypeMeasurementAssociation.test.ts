@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {associatePrototypeRuntimeContent} from '../prototypeRuntimeContentAssociation';
 import {enhanceSceneMeaning} from '../extendedMeaningContract';
 import {derivePrototypeRuntimeContent} from '../prototypeRuntimeContentDeriver';
 import {sanitizePrototypeRuntimeContent} from '../prototypeRuntimeContentSanitizer';
@@ -9,7 +10,16 @@ const deriveSafe = (animationId: string, spokenText: string) => {
     spokenText,
     meaningContract: enhanceSceneMeaning(spokenText),
   });
-  return sanitizePrototypeRuntimeContent({animationId, spokenText, derived});
+  const sanitized = sanitizePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    derived,
+  });
+  return associatePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    content: sanitized,
+  });
 };
 
 describe('prototype measurement association', () => {
@@ -33,6 +43,20 @@ describe('prototype measurement association', () => {
     ).toBe(100);
   });
 
+  it('binds a percentage that appears before the candidate label', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      '70 Prozent entfallen auf Antwort B, die anderen Antworten teilen sich den Rest.',
+    );
+
+    const answerBIndex = [1, 2, 3].find(
+      (index) => result.labels[`candidate${index}`] === 'Antwort B',
+    );
+    expect(answerBIndex).toBeDefined();
+    expect(result.values[`candidate${answerBIndex}ProbabilityExact`]).toBe(1);
+    expect(result.values[`candidate${answerBIndex}End`]).toBe(70);
+  });
+
   it('binds three explicit probabilities to their spoken candidates', () => {
     const result = deriveSafe(
       'probability-probability-fluid-columns-v1',
@@ -45,6 +69,18 @@ describe('prototype measurement association', () => {
     expect(result.values.candidate1ProbabilityExact).toBe(1);
     expect(result.values.candidate2ProbabilityExact).toBe(1);
     expect(result.values.candidate3ProbabilityExact).toBe(1);
+  });
+
+  it('does not present contradictory percentages above 100 percent as a grounded distribution', () => {
+    const result = deriveSafe(
+      'probability-probability-fluid-columns-v1',
+      'Antwort A hat 70 Prozent und Antwort B hat 50 Prozent.',
+    );
+
+    expect(result.values.candidate1ProbabilityExact).toBe(0);
+    expect(result.values.candidate2ProbabilityExact).toBe(0);
+    expect(result.values.candidate3ProbabilityExact).toBe(0);
+    expect(result.values.probabilityOutcomeGrounded).toBe(0);
   });
 
   it('keeps latency measurements attached to spoken path order even when the first path is faster', () => {
