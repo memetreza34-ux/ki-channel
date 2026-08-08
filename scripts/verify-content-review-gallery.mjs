@@ -48,8 +48,16 @@ const [manifest, masterplanManifest, edgeSummary, renderConfig] =
     readFile(renderConfigPath, 'utf8').then(JSON.parse),
   ]);
 
-if (manifest.version !== 1 || !Array.isArray(manifest.cards)) {
-  throw new Error('Review-Galerie-Manifest ist ungültig.');
+if (
+  manifest.version !== 1 ||
+  !Array.isArray(manifest.cards) ||
+  typeof manifest.reviewId !== 'string' ||
+  !/^[a-f0-9]{64}$/.test(manifest.reviewId)
+) {
+  throw new Error('Review-Galerie-Manifest ist ungültig oder besitzt keine stabile Review-ID.');
+}
+if (!manifest.generatedAt || Number.isNaN(Date.parse(manifest.generatedAt))) {
+  throw new Error('Review-Galerie benötigt einen gültigen generatedAt-Zeitstempel.');
 }
 if (manifest.masterplanCount !== 22) {
   throw new Error(
@@ -78,6 +86,9 @@ if (masterplanManifest.prototypeCount !== 22) {
     `Masterplan-Review benötigt 22 Renderaufträge, gefunden: ${masterplanManifest.prototypeCount}.`,
   );
 }
+if (!masterplanManifest.generatedAt || Number.isNaN(Date.parse(masterplanManifest.generatedAt))) {
+  throw new Error('Masterplan-Manifest benötigt einen gültigen generatedAt-Zeitstempel.');
+}
 if (edgeSummary.mode !== expectedUpstreamMode) {
   throw new Error(
     `Edge-Case-Review erwartet Modus ${expectedUpstreamMode}, gefunden: ${edgeSummary.mode}.`,
@@ -86,6 +97,19 @@ if (edgeSummary.mode !== expectedUpstreamMode) {
 if (edgeSummary.caseCount !== 6) {
   throw new Error(
     `Edge-Case-Review benötigt 6 Renderaufträge, gefunden: ${edgeSummary.caseCount}.`,
+  );
+}
+if (!edgeSummary.generatedAt || Number.isNaN(Date.parse(edgeSummary.generatedAt))) {
+  throw new Error('Edge-Case-Summary benötigt einen gültigen generatedAt-Zeitstempel.');
+}
+if (
+  manifest.upstreamMode !== expectedUpstreamMode ||
+  manifest.masterplanGeneratedAt !== masterplanManifest.generatedAt ||
+  manifest.edgeGeneratedAt !== edgeSummary.generatedAt ||
+  manifest.sourceFingerprint !== masterplanManifest.sourceFingerprint
+) {
+  throw new Error(
+    'Review-Galerie gehört nicht exakt zu den aktuellen Masterplan-/Edge-Case-Rendergenerationen.',
   );
 }
 
@@ -130,9 +154,12 @@ for (const required of [
   'keine Demo-/Debug-Texte',
   'keine unbelegten exakten Zahlen',
   'Start → Veränderung → Ergebnis verständlich',
+  'Review JSON exportieren',
+  'visual-review.json',
+  manifest.reviewId,
 ]) {
   if (!html.includes(required)) {
-    throw new Error(`Review-Galerie enthält Pflichtprüfpunkt nicht: ${required}`);
+    throw new Error(`Review-Galerie enthält Pflichtbestandteil nicht: ${required}`);
   }
 }
 
@@ -149,8 +176,8 @@ if (manifest.totalFrames !== 28 * expectedFrameCount) {
 }
 
 console.log(
-  `[content-review] ${requestedMode}-Galerie technisch vollständig: ${manifest.masterplanCount} Production + ${manifest.edgeCaseCount} Edge Cases, ${manifest.totalFrames} Frames, ${manifest.totalVideos} Videos.`,
+  `[content-review] ${requestedMode}-Galerie technisch vollständig: Review-ID ${manifest.reviewId}, ${manifest.masterplanCount} Production + ${manifest.edgeCaseCount} Edge Cases, ${manifest.totalFrames} Frames, ${manifest.totalVideos} Videos.`,
 );
 console.log(
-  '[content-review] Dies bestätigt nur die Vollständigkeit der Review-Oberfläche, nicht die manuelle visuelle Freigabe.',
+  '[content-review] Dies bestätigt nur die Vollständigkeit der Review-Oberfläche, nicht die manuellen Entscheidungen. Für die Freigabe visual-review.json exportieren und separat verifizieren.',
 );
