@@ -5,6 +5,7 @@ import {
   getPrototypeValue,
   usePrototypeContent,
 } from './PrototypeContentContext';
+import {parseExplicitPercentageNear} from './PrototypeMeasurementGrounding';
 import {
   GlassSurface,
   PROTOTYPE_PALETTE,
@@ -21,6 +22,9 @@ const CRACKS = [
 
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
+
+const qualitativeConfidence = (value: number): string =>
+  value >= 75 ? 'HOHE SICHERHEIT IM TON' : value >= 50 ? 'MITTLERE SICHERHEIT IM TON' : 'GERINGE SICHERHEIT IM TON';
 
 export const ConfidenceGlassCrackPrototype: React.FC = () => {
   const frame = useCurrentFrame();
@@ -66,20 +70,31 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
   const confidenceValue = typeof confidenceRaw === 'number'
     ? confidenceRaw
     : Number(String(confidenceRaw).replace(',', '.').replace(/[^0-9.-]/g, ''));
-  const safeConfidence = Number.isFinite(confidenceValue)
+  const inferredConfidence = Number.isFinite(confidenceValue)
     ? Math.max(0, Math.min(100, confidenceValue))
     : 98;
+  const spokenConfidence = content
+    ? parseExplicitPercentageNear({
+        spokenText: content.spokenText,
+        terms: ['Confidence', 'Konfidenz', 'Vertrauen', 'Sicherheit'],
+      })
+    : null;
+  const confidenceExact = !content || spokenConfidence !== null;
+  const safeConfidence = spokenConfidence ?? inferredConfidence;
   const checkProgresses = checks.map((_, index) =>
     prototypeProgress(frame, 64 + index * 14, 88 + index * 14),
   );
   const failedChecks = checkProgresses.filter((value) => value > 0.72).length;
   const crackStrength = failedChecks / checks.length;
+  const confidenceDisplay = confidenceExact
+    ? `CONFIDENCE ${Math.round(safeConfidence)}%`
+    : qualitativeConfidence(safeConfidence);
 
   return (
     <PrototypeShell
       family="RISK CONTRAST"
       title="Confidence Glass Crack"
-      subtitle="Die Behauptung wirkt zunächst sicher. Jede fehlende Verifikation schwächt sie sichtbar, bis die unbelegte Sicherheit zusammenbricht."
+      subtitle="Die Behauptung wirkt zunächst sicher. Jede fehlende Verifikation schwächt sie sichtbar, bis die unbelegte Sicherheit zusammenbricht. Exakte Confidence-Prozente erscheinen nur, wenn sie ausdrücklich genannt werden."
     >
       <GlassSurface style={{position: 'absolute', left: 74, right: 74, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 120, right: 120, top: 215, height: 560, borderRadius: 40, background: 'linear-gradient(145deg, rgba(255,255,255,.78), rgba(198,168,255,.16))', border: `3px solid ${failedChecks > 0 ? 'rgba(255,93,108,.32)' : 'rgba(255,255,255,.92)'}`, boxShadow: `0 28px 85px rgba(55,38,83,${0.14 + pressure * 0.12})`, backdropFilter: 'blur(18px)', opacity: statement, transform: `scale(${0.92 + statement * 0.08 - crackStrength * 0.018})`, overflow: 'hidden'}}>
@@ -89,7 +104,7 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
           <div style={{position: 'absolute', left: 115, right: 115, bottom: 80, height: 22, borderRadius: 999, background: 'rgba(135,87,232,.10)', overflow: 'hidden'}}>
             <div style={{height: '100%', width: `${Math.max(0, safeConfidence * (1 - crackStrength * 0.58))}%`, background: failedChecks > 0 ? `linear-gradient(90deg, ${PROTOTYPE_PALETTE.warning}, ${PROTOTYPE_PALETTE.danger})` : `linear-gradient(90deg, ${PROTOTYPE_PALETTE.accentSoft}, ${PROTOTYPE_PALETTE.accent})`, boxShadow: '0 0 20px rgba(135,87,232,.32)'}} />
           </div>
-          <div style={{position: 'absolute', left: 0, right: 0, bottom: 30, textAlign: 'center', fontFamily: 'monospace', fontSize: 22, fontWeight: 900, color: failedChecks > 0 ? PROTOTYPE_PALETTE.danger : PROTOTYPE_PALETTE.accent}}>CONFIDENCE {safeConfidence}% · {failedChecks}/3 CHECKS FEHLEN</div>
+          <div style={{position: 'absolute', left: 0, right: 0, bottom: 30, textAlign: 'center', fontFamily: 'monospace', fontSize: confidenceExact ? 22 : 18, fontWeight: 900, color: failedChecks > 0 ? PROTOTYPE_PALETTE.danger : PROTOTYPE_PALETTE.accent}}>{confidenceDisplay} · {failedChecks}/3 CHECKS FEHLEN</div>
         </div>
 
         <svg width="932" height="1080" viewBox="0 0 932 1080" style={{position: 'absolute', inset: 0, zIndex: 8}}>
