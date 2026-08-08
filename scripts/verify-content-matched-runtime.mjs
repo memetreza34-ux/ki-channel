@@ -28,6 +28,7 @@ const tests = [
   'ki/src/animation-library/__tests__/productionPlanner.test.ts',
   'ki/src/animation-library/__tests__/productionExecutableGuard.test.ts',
   'ki/src/animation-library/__tests__/executionCatalog.test.ts',
+  'ki/src/animation-library/__tests__/contentVariantPromotion.test.ts',
   'ki/src/animation-library/__tests__/executableAnimationManifest.test.ts',
   'ki/src/animation-library/__tests__/executableRegistryAlignment.test.ts',
   'ki/src/animation-library/__tests__/planDiagnostics.test.ts',
@@ -137,7 +138,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
   );
   await run(
     'node',
