@@ -29,6 +29,10 @@ try {
     'Semantische Edge-Case-Verträge prüfen',
   );
   await run(
+    ['scripts/verify-content-motion-edge-case-renders.mjs', 'full'],
+    'Sechs semantische Edge-Case-Renders inklusive PNG/MP4 und Props prüfen',
+  );
+  await run(
     ['scripts/check-production-derived-runtime-keys.mjs'],
     'Abgeleitete Runtime-Keys gegen TSX-Komponenten prüfen',
   );
