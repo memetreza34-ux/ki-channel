@@ -1,9 +1,9 @@
-import {EXECUTABLE_ANIMATION_IDS} from './executionCatalog';
+import {EXECUTABLE_ANIMATION_MANIFEST_IDS} from './executableAnimationManifest';
 import rawPrototypeRenderConfig from './prototype-render-config.json';
 import {NATIVE_CONTENT_BOUND_PROTOTYPE_IDS} from './prototypeContentCoverage';
 import type {AnimationLibraryEntry} from './schema';
 
-const executableIds = new Set(EXECUTABLE_ANIMATION_IDS);
+const executableIds = new Set(EXECUTABLE_ANIMATION_MANIFEST_IDS);
 const contentRenderIds = new Set(
   rawPrototypeRenderConfig.prototypes.map((prototype) => prototype.animationId),
 );
