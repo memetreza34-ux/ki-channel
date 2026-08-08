@@ -22,6 +22,15 @@ const DEFAULT_MESSAGES = [
   'Neue Frage',
 ] as const;
 
+const CONTENT_MESSAGE_FALLBACKS = [
+  'KONTEXT A',
+  'KONTEXT B',
+  'KONTEXT C',
+  'KONTEXT D',
+  'KONTEXT E',
+  'KONTEXT F',
+] as const;
+
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
@@ -39,11 +48,18 @@ const boundedInteger = (
 
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
+const hasPinMeaning = (spokenText: string): boolean =>
+  /\b(?:angeheftet|anheften|gepinn?t|pin(?:nen)?|festgehalten|bleibt\s+(?:im\s+)?kontext|bleibt\s+aktiv|wichtige\w*\s+regel\w*\s+bleibt)\b/i.test(
+    spokenText,
+  );
+
 export const ContextWindowTrainPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const trainEnter = prototypeProgress(frame, 0, 42);
-  const pin = prototypeProgress(frame, 118, 156);
+  const rawPin = prototypeProgress(frame, 118, 156);
+  const pinGrounded = !content || hasPinMeaning(content.spokenText);
+  const pin = pinGrounded ? rawPin : 0;
   const semanticTerms = content
     ? [...new Set([
         ...content.meaningContract.subjectTerms,
@@ -66,7 +82,7 @@ export const ContextWindowTrainPrototype: React.FC = () => {
   const explicitCapacity = content
     ? parseExplicitCountNear({
         spokenText: content.spokenText,
-        terms: ['Plätze', 'Slots', 'Nachrichten', 'Kapazität', 'Kontextfenster'],
+        terms: ['Plätze', 'Slots', 'Kapazität', 'Kontextfenster'],
         minimum: 2,
         maximum: 6,
       })
@@ -78,9 +94,11 @@ export const ContextWindowTrainPrototype: React.FC = () => {
     label: getPrototypeLabel({
       content,
       key: `message${index + 1}`,
-      fallback: semanticTerms[index] ?? fallback,
+      fallback:
+        semanticTerms[index] ??
+        (content ? CONTENT_MESSAGE_FALLBACKS[index] : fallback),
     }),
-    priority: index === pinnedIndex,
+    priority: pinGrounded && index === pinnedIndex,
   }));
   const overflowCount = Math.max(0, messages.length - capacity);
   const arrivalProgresses = Array.from({length: overflowCount}, (_, index) =>
@@ -107,7 +125,7 @@ export const ContextWindowTrainPrototype: React.FC = () => {
   const removedResult = getPrototypeLabel({
     content,
     key: 'removedResult',
-    fallback: 'verlässt das Fenster',
+    fallback: content ? 'verlässt den aktiven Kontext' : 'verlässt das Fenster',
   });
   const pinnedLabel = getPrototypeLabel({
     content,
@@ -140,7 +158,7 @@ export const ContextWindowTrainPrototype: React.FC = () => {
     <PrototypeShell
       family="CONTEXT WINDOW"
       title="Context Window Train"
-      subtitle="Neue Nachrichten belegen den begrenzten Kontext, ältere rutschen heraus und angeheftete Information bleibt sichtbar. Eine exakte Kapazität wird nur gezeigt, wenn sie im Sprechertext genannt wird."
+      subtitle="Neue Informationen belegen den begrenzten Kontext. Exakte Kapazität und Pin-Verhalten erscheinen nur, wenn der Sprechertext sie tatsächlich beschreibt."
     >
       <div style={{position: 'absolute', left: 82, right: 82, top: 405, bottom: 170}}>
         <GlassSurface style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
@@ -170,7 +188,7 @@ export const ContextWindowTrainPrototype: React.FC = () => {
                 const compact = slotWidth < 145;
                 return (
                   <div key={message.id} style={{position: 'absolute', left: x, top: 185, width: slotWidth, height: 250, borderRadius: compact ? 22 : 28, background: isPinned ? `linear-gradient(145deg, ${PROTOTYPE_PALETTE.accent}, #6E3CD0)` : 'white', border: `3px solid ${isPinned ? 'rgba(255,255,255,.4)' : PROTOTYPE_PALETTE.line}`, boxShadow: isPinned ? '0 20px 52px rgba(135,87,232,.34)' : '0 16px 38px rgba(48,34,74,.12)', opacity: appearing * windowVisibility, transform: `translate(-50%, -50%) translateY(${lift}px) scale(${0.88 + appearing * 0.12})`, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: compact ? 12 : 20, boxSizing: 'border-box', color: isPinned ? 'white' : PROTOTYPE_PALETTE.foreground, zIndex: isPinned ? 8 : 4}}>
-                    <div style={{fontSize: compact ? 14 : 18, fontWeight: 900, letterSpacing: 2, opacity: 0.72}}>#{index + 1}</div>
+                    <div style={{fontSize: compact ? 14 : 18, fontWeight: 900, letterSpacing: 2, opacity: 0.72}}>{content ? '•' : `#${index + 1}`}</div>
                     <div style={{marginTop: compact ? 12 : 18, fontSize: compact ? (message.label.length > 12 ? 16 : 20) : (message.label.length > 15 ? 20 : 28), lineHeight: 1.08, fontWeight: 900, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{message.label}</div>
                     {isPinned ? (
                       <div style={{position: 'absolute', top: -24, width: 54, height: 54, borderRadius: 999, background: PROTOTYPE_PALETTE.warning, border: '5px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, transform: `scale(${0.6 + pin * 0.4})`}}>●</div>
@@ -193,10 +211,12 @@ export const ContextWindowTrainPrototype: React.FC = () => {
             <div style={{marginTop: 9, fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: PROTOTYPE_PALETTE.danger}}>{overflowLabel}</div>
           </div>
 
-          <div style={{position: 'absolute', right: 92, top: 830, width: 355, padding: '22px 24px', borderRadius: 24, background: 'rgba(255,182,72,.12)', border: '2px solid rgba(255,182,72,.38)', opacity: pin, transform: `translateX(${(1 - pin) * 60}px)`, textAlign: 'center'}}>
-            <div style={{fontSize: pinnedLabel.length > 20 ? 16 : 21, fontWeight: 900, color: '#B97800', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{pinnedLabel.toLocaleUpperCase('de-DE')}</div>
-            <div style={{fontSize: pinnedResult.length > 36 ? 19 : 27, fontWeight: 900, marginTop: 9, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{pinnedResult}</div>
-          </div>
+          {pinGrounded ? (
+            <div style={{position: 'absolute', right: 92, top: 830, width: 355, padding: '22px 24px', borderRadius: 24, background: 'rgba(255,182,72,.12)', border: '2px solid rgba(255,182,72,.38)', opacity: pin, transform: `translateX(${(1 - pin) * 60}px)`, textAlign: 'center'}}>
+              <div style={{fontSize: pinnedLabel.length > 20 ? 16 : 21, fontWeight: 900, color: '#B97800', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{pinnedLabel.toLocaleUpperCase('de-DE')}</div>
+              <div style={{fontSize: pinnedResult.length > 36 ? 19 : 27, fontWeight: 900, marginTop: 9, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{pinnedResult}</div>
+            </div>
+          ) : null}
         </GlassSurface>
       </div>
     </PrototypeShell>
