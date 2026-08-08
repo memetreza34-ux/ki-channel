@@ -199,6 +199,25 @@ const explicitPercentages = (spokenText: string): number[] =>
     /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/gi,
   ]).filter((value) => value >= 0 && value <= 100);
 
+const percentageForLabel = (
+  spokenText: string,
+  label: string,
+): number | null => {
+  const text = normalize(spokenText);
+  const normalizedLabel = normalize(label);
+  if (normalizedLabel.length < 2) return null;
+  const escapedLabel = escapeRegex(normalizedLabel).replace(/\s+/g, '\\s+');
+  const number = '(\\d{1,3}(?:[.,]\\d+)?)';
+  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^,.!?;]{0,28}${number}\\s*(?:%|prozent)\\b`);
+  const before = new RegExp(`${number}\\s*(?:%|prozent)\\b[^,.!?;]{0,20}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+  const match = after.exec(text) ?? before.exec(text);
+  if (!match) return null;
+  const parsed = Number(match[1].replace(',', '.'));
+  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 100
+    ? parsed
+    : null;
+};
+
 const scoreMeasurements = (spokenText: string): number[] =>
   collectMeasurements(spokenText, [
     /\bscore(?:\s+von)?\s*(-?\d+(?:[.,]\d+)?)(?:\s*(?:punkte?|points?|%|prozent))?|\b(?:mit|erreicht(?:\s+mit)?|hat)\s*(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?|%|prozent)\b|(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?)\b/gi,
@@ -248,30 +267,85 @@ const winnerCueIndex = ({
   return -1;
 };
 
+const distributeProbabilityRemainder = ({
+  exactValues,
+  fallbackValues,
+}: {
+  exactValues: readonly (number | null)[];
+  fallbackValues: readonly number[];
+}): number[] => {
+  const exactSum = exactValues.reduce(
+    (sum, value) => sum + (value ?? 0),
+    0,
+  );
+  const missing = exactValues
+    .map((value, index) => (value === null ? index : -1))
+    .filter((index) => index >= 0);
+  if (missing.length === 0 || exactSum > 100) {
+    return exactValues.map((value, index) => value ?? fallbackValues[index]);
+  }
+  const remaining = 100 - exactSum;
+  const fallbackWeight = missing.reduce(
+    (sum, index) => sum + Math.max(1, fallbackValues[index]),
+    0,
+  );
+  const distributed = exactValues.map((value) => value ?? 0);
+  let assigned = 0;
+  missing.forEach((index, missingIndex) => {
+    const value = missingIndex === missing.length - 1
+      ? remaining - assigned
+      : Math.round(
+          remaining * (Math.max(1, fallbackValues[index]) / fallbackWeight),
+        );
+    distributed[index] = Math.max(0, value);
+    assigned += value;
+  });
+  return distributed;
+};
+
 const sanitizeProbability = (
   spokenText: string,
   labels: Record<string, string>,
   values: Record<string, string | number>,
 ): Record<string, string | number> => {
-  const percentages = explicitPercentages(spokenText);
-  const fallbackPercentage = percentages[0] ?? explicitPercentage(spokenText);
+  const sequentialPercentages = explicitPercentages(spokenText);
+  const candidateLabels = [labels.candidate1, labels.candidate2, labels.candidate3];
+  let exactValues = candidateLabels.map((label) =>
+    label ? percentageForLabel(spokenText, label) : null,
+  );
+  const associatedCount = exactValues.filter((value) => value !== null).length;
+  if (associatedCount === 0 && sequentialPercentages.length > 0) {
+    exactValues = exactValues.map((_, index) => sequentialPercentages[index] ?? null);
+  }
+  const fallbackValues = [1, 2, 3].map((index) =>
+    Number(values[`candidate${index}End`] ?? 0),
+  );
+  const resolvedEnds = distributeProbabilityRemainder({
+    exactValues,
+    fallbackValues,
+  });
+  const fallbackPercentage = explicitPercentage(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
   const nextValues = {...values};
 
   for (let index = 0; index < 3; index += 1) {
-    nextValues[`candidate${index + 1}ProbabilityExact`] =
-      percentages[index] !== undefined ? 1 : 0;
+    const exact = exactValues[index] !== null;
+    nextValues[`candidate${index + 1}ProbabilityExact`] = exact ? 1 : 0;
+    if (associatedCount > 0 || sequentialPercentages.length > 0) {
+      nextValues[`candidate${index + 1}End`] = resolvedEnds[index];
+    }
   }
   nextValues.probabilityOutcomeGrounded =
-    fallbackPercentage !== null || winnerCue >= 0 ? 1 : 0;
+    associatedCount > 0 || sequentialPercentages.length > 0 ||
+    fallbackPercentage !== null || winnerCue >= 0
+      ? 1
+      : 0;
 
-  if (percentages.length >= 3) {
-    for (let index = 0; index < 3; index += 1) {
-      nextValues[`candidate${index + 1}End`] = percentages[index];
-    }
-    return nextValues;
-  }
-  if (fallbackPercentage !== null) {
+  if (
+    associatedCount === 0 &&
+    sequentialPercentages.length === 0 &&
+    fallbackPercentage !== null
+  ) {
     const primaryEnd = Math.max(0, Math.min(100, fallbackPercentage));
     const remaining = 100 - primaryEnd;
     const secondEnd = remaining === 0 ? 0 : Math.round(remaining * 0.65);
@@ -282,7 +356,11 @@ const sanitizeProbability = (
     nextValues.candidate1ProbabilityExact = 1;
     return nextValues;
   }
-  if (winnerCue >= 0) {
+  if (
+    associatedCount === 0 &&
+    sequentialPercentages.length === 0 &&
+    winnerCue >= 0
+  ) {
     for (let index = 0; index < 3; index += 1) {
       nextValues[`candidate${index + 1}End`] = index === winnerCue ? 68 : 16;
     }
@@ -403,8 +481,8 @@ const sanitizeLatency = (
   const nextValues = {...values, measurementExact: exact ? 1 : 0};
 
   if (boundMeasurements.length >= 2) {
-    nextValues.slowLatency = Math.max(boundMeasurements[0], boundMeasurements[1]);
-    nextValues.fastLatency = Math.min(boundMeasurements[0], boundMeasurements[1]);
+    nextValues.slowLatency = boundMeasurements[0];
+    nextValues.fastLatency = boundMeasurements[1];
   }
   if (!exact) {
     delete nextValues.slowLatency;
