@@ -17,9 +17,18 @@ const brain = createInitialCreativeBrainState({
 
 describe('production executable guard', () => {
   it('defines production reuse as executable plus native binding plus content-render configuration', () => {
+    const productionReadyEntries = getProductionReadyLibraryEntries(
+      ANIMATION_LIBRARY_ENTRIES,
+    );
     expect(CONTENT_RENDERABLE_ANIMATION_IDS).toHaveLength(22);
     expect(PRODUCTION_READY_LIBRARY_ANIMATION_IDS).toHaveLength(22);
-    expect(getProductionReadyLibraryEntries(ANIMATION_LIBRARY_ENTRIES)).toHaveLength(22);
+    expect(productionReadyEntries).toHaveLength(22);
+    expect(new Set(productionReadyEntries.map((entry) => entry.visualFamily)).size).toBe(22);
+    expect(
+      productionReadyEntries.every(
+        (entry) => entry.status === 'prototype' || entry.status === 'verified',
+      ),
+    ).toBe(true);
 
     for (const animationId of PRODUCTION_READY_LIBRARY_ANIMATION_IDS) {
       expect(EXECUTABLE_ANIMATION_IDS).toContain(animationId);
@@ -132,6 +141,41 @@ describe('production executable guard', () => {
     expect(plan.readyForImplementation).toBe(false);
   });
 
+  it('does not directly reuse a concept entry even when its id is otherwise production-ready', () => {
+    const productionReadyEntry = ANIMATION_LIBRARY_ENTRIES.find((entry) =>
+      PRODUCTION_READY_LIBRARY_ANIMATION_IDS.includes(entry.animationId),
+    );
+    expect(productionReadyEntry).toBeDefined();
+    const conceptEntry = {
+      ...productionReadyEntry!,
+      status: 'concept' as const,
+    };
+
+    expect(getProductionReadyLibraryEntries([conceptEntry])).toEqual([]);
+
+    const plan = planProductionReelAnimations({
+      reelId: 'reel-concept-rejected-for-reuse',
+      reelIndex: 24,
+      entries: [conceptEntry],
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-concept',
+          spokenText:
+            'Die Szene benötigt eine bereits als Prototyp freigegebene content-aware Animation.',
+          semanticTags: [...conceptEntry.semanticTags],
+          preferredVisualFamilies: [conceptEntry.visualFamily],
+          preferredEnergy: conceptEntry.energy,
+        },
+      ],
+    });
+
+    expect(plan.scenes[0].source).toBe('new-build');
+    expect(plan.scenes[0].animationId).not.toBe(conceptEntry.animationId);
+    expect(plan.reusedAnimationCount).toBe(0);
+  });
+
   it('does not reuse a retired entry even when its animation id is otherwise production-ready', () => {
     const productionReadyEntry = ANIMATION_LIBRARY_ENTRIES.find((entry) =>
       PRODUCTION_READY_LIBRARY_ANIMATION_IDS.includes(entry.animationId),
@@ -146,7 +190,7 @@ describe('production executable guard', () => {
 
     const plan = planProductionReelAnimations({
       reelId: 'reel-retired-rejected',
-      reelIndex: 24,
+      reelIndex: 25,
       entries: [retiredEntry],
       brain,
       maximumNewAnimationRatio: 1,
