@@ -208,8 +208,8 @@ const percentageForLabel = (
   if (normalizedLabel.length < 2) return null;
   const escapedLabel = escapeRegex(normalizedLabel).replace(/\s+/g, '\\s+');
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
-  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^,.!?;]{0,28}${number}\\s*(?:%|prozent)\\b`);
-  const before = new RegExp(`${number}\\s*(?:%|prozent)\\b[^,.!?;]{0,20}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,28}${number}\\s*(?:%|prozent)\\b`);
+  const before = new RegExp(`${number}\\s*(?:%|prozent)\\b[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
   const match = after.exec(text) ?? before.exec(text);
   if (!match) return null;
   const parsed = Number(match[1].replace(',', '.'));
