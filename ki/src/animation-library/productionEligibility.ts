@@ -29,6 +29,10 @@ export type ProductionRuntimeSceneLike = {
   catalogEntry: Pick<AnimationLibraryEntry, 'status'>;
 };
 
+const isReusableLibraryStatus = (
+  status: AnimationLibraryEntry['status'],
+): boolean => status === 'prototype' || status === 'verified';
+
 export const isProductionReadyLibraryAnimation = (
   animationId: string,
 ): boolean => productionReadyIds.has(animationId);
@@ -36,7 +40,8 @@ export const isProductionReadyLibraryAnimation = (
 export const isProductionReadyLibraryEntry = (
   entry: AnimationLibraryEntry,
 ): boolean =>
-  productionReadyIds.has(entry.animationId) && entry.status !== 'retired';
+  productionReadyIds.has(entry.animationId) &&
+  isReusableLibraryStatus(entry.status);
 
 export const getProductionReadyLibraryEntries = (
   entries: readonly AnimationLibraryEntry[],
@@ -44,9 +49,16 @@ export const getProductionReadyLibraryEntries = (
 
 export const isProductionRuntimeSceneReady = (
   scene: ProductionRuntimeSceneLike,
-): boolean =>
-  scene.catalogEntry.status !== 'retired' &&
-  isProductionReadyLibraryAnimation(scene.animationId);
+): boolean => {
+  if (!isProductionReadyLibraryAnimation(scene.animationId)) return false;
+  if (scene.source === 'library') {
+    return isReusableLibraryStatus(scene.catalogEntry.status);
+  }
+  // A historical new-build can still carry its old `concept` snapshot while the
+  // exact animation ID has already been implemented and registered in the current
+  // runtime. It may proceed to its first release review, but a retired build never can.
+  return scene.catalogEntry.status !== 'retired';
+};
 
 export const areProductionRuntimeScenesReady = (
   scenes: readonly ProductionRuntimeSceneLike[],
