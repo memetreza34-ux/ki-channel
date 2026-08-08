@@ -238,8 +238,8 @@ const winnerCueIndex = ({
     const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
     if (label.length < 2) continue;
     const escapedLabel = escapeRegex(label).replace(/\s+/g, '\\s+');
-    const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^.!?;]{0,36}\\b${cue}\\b`);
-    const cueBeforeLabel = new RegExp(`\\b${cue}\\b[^.!?;]{0,28}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+    const labelBeforeCue = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^,.!?;]{0,18}\\b${cue}\\b`);
+    const cueBeforeLabel = new RegExp(`\\b${cue}\\b[^,.!?;]{0,18}(?:^|\\b)${escapedLabel}(?:\\b|$)`);
     if (labelBeforeCue.test(text) || cueBeforeLabel.test(text)) return index;
   }
   return -1;
