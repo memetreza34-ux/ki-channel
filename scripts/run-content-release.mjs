@@ -26,7 +26,7 @@ const writeSummary = async ({status, error = null}) => {
         mode: requestedMode,
         status,
         startedAt,
-        completedAt: new Date().toISOString(),
+        completedAt: status === 'running' ? null : new Date().toISOString(),
         error,
         steps,
       },
@@ -137,6 +137,11 @@ const requestedSteps = [
   ...(requestedMode === 'smoke' ? smokeSteps : []),
   ...(requestedMode === 'full' ? fullSteps : []),
 ];
+
+// Invalidate any older successful report before starting the first child process.
+// If this run is interrupted externally, the current summary remains `running`
+// instead of leaving a stale `passed` result from an earlier release behind.
+await writeSummary({status: 'running'});
 
 try {
   for (const step of requestedSteps) {
