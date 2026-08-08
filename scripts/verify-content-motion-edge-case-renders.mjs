@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {
   assertMasterplanMp4,
   assertMasterplanPng,
+  getMasterplanContentSourceFingerprint,
 } from './masterplan-content-release-utils.mjs';
 
 const requestedMode = process.argv[2] ?? 'full';
@@ -32,11 +33,13 @@ const exists = async (path) => {
   }
 };
 
-const [summary, edgeConfig, renderConfig] = await Promise.all([
-  readJson(summaryPath),
-  readJson(edgeConfigPath),
-  readJson(renderConfigPath),
-]);
+const [summary, edgeConfig, renderConfig, currentSourceFingerprint] =
+  await Promise.all([
+    readJson(summaryPath),
+    readJson(edgeConfigPath),
+    readJson(renderConfigPath),
+    getMasterplanContentSourceFingerprint(),
+  ]);
 
 if (
   summary.version !== 1 ||
@@ -44,6 +47,14 @@ if (
   !Array.isArray(edgeConfig.cases)
 ) {
   throw new Error('Edge-Case-Render-Summary oder Edge-Case-Config ist ungültig.');
+}
+if (!summary.generatedAt || Number.isNaN(Date.parse(summary.generatedAt))) {
+  throw new Error('Edge-Case-Render-Summary benötigt einen gültigen generatedAt-Zeitstempel.');
+}
+if (summary.sourceFingerprint !== currentSourceFingerprint) {
+  throw new Error(
+    'Edge-Case-Render-Artefakte sind veraltet: Source-Fingerprint stimmt nicht mit dem aktuellen Produktionspfad überein.',
+  );
 }
 if (edgeConfig.cases.length !== 6) {
   throw new Error(
@@ -159,5 +170,5 @@ for (const edgeCase of edgeConfig.cases) {
 }
 
 console.log(
-  `[edge-case-render] ${requestedMode}-Verifikation bestanden: ${seen.size} Fälle, ${checkedPngs} PNGs, ${checkedVideos} Videos.`,
+  `[edge-case-render] ${requestedMode}-Verifikation bestanden: Source-Fingerprint ${summary.sourceFingerprint}, ${seen.size} Fälle, ${checkedPngs} PNGs, ${checkedVideos} Videos.`,
 );
