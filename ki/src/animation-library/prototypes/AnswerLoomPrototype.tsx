@@ -37,11 +37,16 @@ export const AnswerLoomPrototype: React.FC = () => {
     fallback: semanticAnswer,
   });
   const extractedWords = visibleWords(answerText);
-  const words = DEFAULT_WORDS.map((fallback, index) =>
+  const wordSlots = content
+    ? Math.max(1, extractedWords.length)
+    : DEFAULT_WORDS.length;
+  const words = Array.from({length: wordSlots}, (_, index) =>
     getPrototypeLabel({
       content,
       key: `word${index + 1}`,
-      fallback: extractedWords[index] ?? fallback,
+      fallback: content
+        ? extractedWords[index] ?? 'Antwort'
+        : DEFAULT_WORDS[index] ?? 'Wort',
     }),
   );
   const semanticThreads = content
@@ -55,7 +60,7 @@ export const AnswerLoomPrototype: React.FC = () => {
     getPrototypeLabel({
       content,
       key: `thread${index + 1}`,
-      fallback: semanticThreads[index] ?? fallback,
+      fallback: semanticThreads[index] ?? (content ? 'Kontextsignal' : fallback),
     }),
   );
   const answerLabel = getPrototypeLabel({
@@ -73,7 +78,7 @@ export const AnswerLoomPrototype: React.FC = () => {
     <PrototypeShell
       family="GENERATION"
       title="Answer Loom"
-      subtitle="Kontextsignale fließen in die Generierung; daraus erscheint die Antwort Wort für Wort statt den Erklärungssatz einfach zu wiederholen."
+      subtitle="Kontextsignale fließen in die Generierung; daraus erscheint die tatsächliche Antwort Wort für Wort. Demo-Wörter und interne Fortschrittszähler werden im Content-Modus nicht eingeblendet."
     >
       <GlassSurface style={{position: 'absolute', left: 72, right: 72, top: 390, bottom: 190, overflow: 'hidden'}}>
         <div style={{position: 'absolute', left: 70, top: 120, bottom: 170, width: 220, display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
@@ -98,7 +103,7 @@ export const AnswerLoomPrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 460, top: 270, width: 380, height: 560, borderRadius: 34, background: 'rgba(255,255,255,.68)', border: '3px solid rgba(135,87,232,.22)', boxShadow: '0 22px 60px rgba(55,38,83,.12)', overflow: 'hidden'}}>
           <div style={{position: 'absolute', left: 0, right: 0, top: interpolate(weave, [0, 1], [70, 475]), height: 38, borderRadius: 999, background: `linear-gradient(90deg, ${PROTOTYPE_PALETTE.accent}, ${PROTOTYPE_PALETTE.success})`, boxShadow: '0 0 28px rgba(135,87,232,.45)'}} />
           <div style={{position: 'absolute', right: 20, top: 18, padding: '8px 11px', borderRadius: 14, background: 'rgba(135,87,232,.08)', color: PROTOTYPE_PALETTE.accent, fontFamily: 'monospace', fontSize: 14, fontWeight: 900}}>
-            WORT {generatedWordCount}/{words.length}
+            {content ? 'WORT FÜR WORT' : `WORT ${generatedWordCount}/${words.length}`}
           </div>
           {words.map((word, index) => {
             const wordReveal = prototypeProgress(frame, 38 + index * 23, 63 + index * 23);
