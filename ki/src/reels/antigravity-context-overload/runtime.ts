@@ -57,11 +57,20 @@ export const buildContextOverloadSceneRuntime = (
     spokenText: scene.spokenText,
     content: sanitized,
   });
+
+  // Values remain fully grounded by the content pipeline. Only the visible copy is
+  // curated per reel so animation labels explain the mechanism instead of echoing
+  // the spoken sentence word-for-word.
+  const labels = {
+    ...associated.labels,
+    ...scene.visualLabels,
+  };
+
   const renderProps = createPrototypeRenderProps({
     spokenText: scene.spokenText,
     meaningContract,
-    title: scene.goal,
-    labels: associated.labels,
+    title: scene.headline,
+    labels,
     values: associated.values,
   });
 
