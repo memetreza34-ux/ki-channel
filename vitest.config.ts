@@ -1,11 +1,15 @@
 import { defineConfig } from 'vitest/config';
 
-// Nur unsere eigenen Tests ausführen. whisper.cpp und importierte Fremdvorlagen
-// bringen eigene Test-Suiten mit, die nicht Teil der Studio-Produktionslogik sind.
-// Eigene Core-, Kanal- und Script-Tests bleiben vollständig aktiv.
+// Nur repository-eigene Vitest-Suiten ausführen. Fremdvorlagen und generierte
+// Artefakte bleiben ausgeschlossen. Der aktive Kanal liegt unter `ki/`; die alte
+// `channels/*`-Struktur ist nicht mehr Teil dieses Repositories.
 export default defineConfig({
   test: {
-    include: ['core/**/*.{test,spec}.{ts,tsx}', 'channels/**/*.{test,spec}.{ts,tsx}', 'scripts/**/*.{test,spec}.{ts,tsx}'],
+    include: [
+      'core/**/*.{test,spec}.{ts,tsx}',
+      'ki/**/*.{test,spec}.{ts,tsx}',
+      'scripts/**/*.{test,spec}.{ts,tsx}',
+    ],
     exclude: [
       '**/node_modules/**',
       '**/whisper.cpp/**',
@@ -13,7 +17,6 @@ export default defineConfig({
       '**/out/**',
       '**/_archive/**',
       '**/vendor-templates/**',
-      '**/core/gehirn/templates/remotion-bits/**',
     ],
   },
 });
