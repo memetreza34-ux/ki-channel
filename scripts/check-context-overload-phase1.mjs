@@ -58,7 +58,7 @@ if (existsSync(resolve(`${SOURCE_ROOT}/ReelContextOverload.tsx`))) {
   if (!reelSource.includes('CONTEXT_OVERLOAD_SCENES.map')) {
     fail('ReelContextOverload.tsx: kanonische Szenen werden nicht sequenziert');
   }
-  if (!reelSource.includes('voiceoverSrc ? <Audio')) {
+  if (!reelSource.includes('voiceoverSrc ? <Html5Audio')) {
     fail('ReelContextOverload.tsx: optionaler Phase-2-Voiceover-Slot fehlt');
   }
   if (!reelSource.includes('ContextOverloadCaptions')) {
