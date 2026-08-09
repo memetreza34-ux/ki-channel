@@ -5,6 +5,8 @@
     "resolveJsonModule": true
   },
   "include": [
+    "src/index.ts",
+    "src/Root.tsx",
     "src/motion-system/**/*.ts",
     "src/motion-system/**/*.tsx",
     "src/motion-system/**/*.json",
