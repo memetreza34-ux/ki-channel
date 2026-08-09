@@ -47,40 +47,24 @@ jobs:
             echo "release_mode=${{ inputs.release_mode }}"
           } | tee ci-logs/environment.log
 
+      - name: Verify repository wiring before install
+        id: wiring
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run repo:wiring-check 2>&1 | tee ci-logs/repository-wiring.log
+
       - name: Install canonical workspaces
         id: install
+        if: always() && steps.wiring.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
           npm install --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
-      - name: Verify workspace wiring
-        id: workspaces
-        if: always() && steps.install.outcome == 'success'
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          node <<'NODE' 2>&1 | tee ci-logs/workspaces.log
-          const fs = require('node:fs');
-          const root = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-          const core = JSON.parse(fs.readFileSync('core/package.json', 'utf8'));
-          const ki = JSON.parse(fs.readFileSync('ki/package.json', 'utf8'));
-          const expected = ['core', 'ki'];
-          if (JSON.stringify(root.workspaces) !== JSON.stringify(expected)) {
-            throw new Error(`Root workspaces must be ${expected.join(', ')}`);
-          }
-          if (core.name !== '@studio/core') {
-            throw new Error('core/package.json must expose @studio/core');
-          }
-          if (ki.name !== '@studio/ki' || !ki.dependencies?.['@studio/core']) {
-            throw new Error('ki/package.json must depend on @studio/core');
-          }
-          console.log('Workspace wiring is canonical: core -> @studio/core, ki -> @studio/ki.');
-          NODE
-
       - name: Validate reel package structure
         id: structure
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.wiring.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
@@ -136,8 +120,8 @@ jobs:
         if: >-
           always() &&
           (
+            steps.wiring.outcome == 'failure' ||
             steps.install.outcome == 'failure' ||
-            steps.workspaces.outcome == 'failure' ||
             steps.structure.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
             steps.content_release.outcome == 'failure'
