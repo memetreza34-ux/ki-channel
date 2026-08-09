@@ -75,6 +75,28 @@ Verbindliche technische Quelle: `ki/brand/brand.ts`.
 
 Dunkle Tech-Decks dürfen Layout-Ideen liefern, aber **nicht** den tatsächlichen Standard-Look bestimmen. Kein Cyberpunk, keine Neon-Technikwelt und keine Roboterfigur als generisches KI-Symbol.
 
+## Text-Hierarchie — keine Dopplung
+
+Für Production-Reels gilt eine feste Aufgabenteilung. Die vier Ebenen dürfen sich ergänzen, aber nicht denselben Satz mehrfach anzeigen.
+
+1. **Sprechertext** = vollständige Aussage und Erklärung.
+2. **Untertitel/Caption** = exakter Sprechertext bzw. dessen zeitlich saubere Wortgruppen.
+3. **Überschrift** = kurze Einordnung der Szene, normalerweise 3–6 Wörter; niemals internes Szenenziel, Regieanweisung oder der komplette Sprecher-Satz.
+4. **Animationstext** = nur die Wörter, die die Grafik wirklich braucht: Objekte, Zustände, Kategorien, Prozessschritte oder kurze Labels.
+
+Verbindliche Regeln:
+
+- Im Production-Modus steht **kein zweiter Sprecher-Satz unter der Überschrift**. Ein zusätzlicher Untertitel im Animations-Header ist standardmäßig aus.
+- `goal`, `communicationGoal`, `startState`, `visibleChange`, `endState` und andere interne Planungsformulierungen dürfen niemals als Zuschauer-Überschrift erscheinen.
+- Animationstext darf nicht einfach Wörter aus dem aktiven Caption-Fenster in groß noch einmal wiederholen, wenn dadurch keine zusätzliche visuelle Bedeutung entsteht.
+- Einzelne unvermeidbare Fachbegriffe wie „Kontext“, „Token“ oder „Antwort“ dürfen gleichzeitig vorkommen; ganze Satzteile oder lange Wortketten nicht.
+- Bevorzugt werden visuelle Labels wie `Frage`, `Kerninfo`, `Quelle A`, `Signal`, `Rauschen`, `Auswahl`, `Ergebnis` statt einer Kopie des Voiceovers.
+- Wenn eine Animation ohne viel Text verständlich bleibt, **weniger Text verwenden**.
+- Die Überschrift muss Zuschauertext sein. Produktionsziele bleiben ausschließlich in `goal`, Szenenplan und Agent-Briefing.
+- Bei Content-aware Library-Animationen dürfen Demo-Titel/-Untertitel im fertigen Reel nicht sichtbar sein.
+
+**Merksatz:** Sprecher sagt die Aussage. Caption macht sie lesbar. Animation macht sie sichtbar. Überschrift ordnet sie ein.
+
 ## Untertitel
 
 - Jedes gesprochene Wort muss abgedeckt sein.
@@ -83,6 +105,7 @@ Dunkle Tech-Decks dürfen Layout-Ideen liefern, aber **nicht** den tatsächliche
 - Nur semantische Keywords stark animieren.
 - Untertitel nie in einem schweren schwarzen Kasten.
 - Caption-Zone von der Hauptvisualisierung trennen.
+- Caption ist die einzige Ebene, die den Sprechertext wortgetreu wiederholen soll.
 
 ## 🖼️ Bilder — nur wenn sie inhaltlich nötig sind
 
@@ -160,12 +183,13 @@ Wiederkehrende Reihen wie „KI-Basics“, „Tool der Woche“ oder „Mythos-C
 13. Zahlen, Rankings, Wahrscheinlichkeiten, Kosten und Latenzen dürfen nur als exakt dargestellt werden, wenn der Sprecherinhalt bzw. die Quelle sie trägt.
 14. Eine komplette Library-Animation innerhalb desselben Reels nicht zweimal wiederverwenden.
 15. Technisch erfolgreicher Render ≠ visuell freigegebener Render. Smoke-Frames und finales Video müssen tatsächlich geprüft werden.
+16. Vor Freigabe prüfen: Überschrift ≠ internes Szenenziel, Header-Unterzeile ≠ Sprechertext, Animationstext ≠ Caption-Kopie.
 
 ## Do / Don't
 
 **Do:** starker wahrer Hook, eine Idee, sichtbarer Mechanismus, echter Nutzen/Aha, klare Untertitel, geerdete Daten, faceless Premium-Look.
 
-**Don't:** Intro-Floskeln, Cringe-Hype, drei Themen gleichzeitig, flache Aufzählungen, Fake-Wunder, Angstporno, dekorative Bewegung, erfundene Werte, wiederholte Komplettanimationen oder Cyberpunk als KI-Standard.
+**Don't:** Intro-Floskeln, Cringe-Hype, drei Themen gleichzeitig, flache Aufzählungen, Fake-Wunder, Angstporno, dekorative Bewegung, erfundene Werte, wiederholte Komplettanimationen, doppelte Sprechertexte oder Cyberpunk als KI-Standard.
 
 ## Verbindliche Verweise
 
