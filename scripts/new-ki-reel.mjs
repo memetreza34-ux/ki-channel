@@ -76,9 +76,39 @@ for (const dir of requiredDirs) {
 }
 
 await writeFile(
+  resolve(reelRoot, '01-script-audio', 'README.md'),
+  '# AUDIO-HANDOFF — PHASE 2\n\n' +
+    'Der verbindliche 3-Phasen-Ablauf steht in `ki/gehirn/PRODUKTIONSABLAUF.md`.\n\n' +
+    'Phase 1 muss hier `voiceover.md` mit dem finalen wortgetreuen Sprechertext anlegen.\n' +
+    'Phase 2 ist ausschließlich der menschliche Audio-Schritt: `voiceover.md` verwenden und bevorzugt `voiceover.wav`, alternativ `voiceover.mp3`, in diesem Ordner ablegen.\n' +
+    'Danach übernimmt Phase 3 (Codex/Antigravity) Integration, Timing, Tests, Smoke Review und Final Render.\n',
+  'utf8',
+);
+
+await writeFile(
+  resolve(reelRoot, '06-projektdateien', 'PHASE-STATUS.md'),
+  `# Produktionsstatus — ${title}\n\n` +
+    '## Phase 1 — ChatGPT\n\n' +
+    '**Status:** OFFEN\n\n' +
+    'Phase 1 ist erst fertig, wenn Skript, Szenen-/Animationsplanung, Captions/Manifest, ausführbarer Remotion-Source unter `ki/src/reels/<slug>/`, Composition-Registrierung und fokussierte Checks vorhanden sind.\n\n' +
+    '## Phase 2 — Mensch\n\n' +
+    '**Status:** WARTET AUF PHASE 1\n\n' +
+    'Nur das finale Voiceover aus `01-script-audio/voiceover.md` erzeugen und als `voiceover.wav` oder `voiceover.mp3` dort ablegen.\n\n' +
+    '## Phase 3 — Codex / Antigravity\n\n' +
+    '**Status:** WARTET AUF PHASE 2\n\n' +
+    'Audio integrieren, reales Timing prüfen, Tests/Typecheck ausführen, Smoke-Frames visuell prüfen, finales MP4 rendern und Export verifizieren.\n',
+  'utf8',
+);
+
+await writeFile(
   resolve(reelRoot, 'README.md'),
   `# ${title}\n\n` +
     `**Woche:** ${weekName}\n\n` +
+    '## Verbindlicher 3-Phasen-Ablauf\n\n' +
+    '1. **Phase 1 — ChatGPT:** komplette Planung + ausführbare Code-Grundlage\n' +
+    '2. **Phase 2 — Mensch:** ausschließlich Voiceover erzeugen\n' +
+    '3. **Phase 3 — Codex/Antigravity:** Audio integrieren, prüfen, smoke-reviewen, final rendern\n\n' +
+    'Details: `ki/gehirn/PRODUKTIONSABLAUF.md`. Aktueller Reel-Status: `06-projektdateien/PHASE-STATUS.md`.\n\n' +
     '## Verbindliche Produktionsstruktur\n\n' +
     '1. `01-script-audio/` — Skript, Voiceover und Audio\n' +
     '2. `02-bilder/` — Bildprompts und Bilder\n' +
@@ -92,3 +122,4 @@ await writeFile(
 
 console.log(`KI-Reel angelegt: ${reelRoot}`);
 console.log('Nächster Pflichtcheck: node scripts/check-ki-reel-folder-structure.mjs');
+console.log('Produktionsvertrag: ki/gehirn/PRODUKTIONSABLAUF.md · Phase 1 muss vor Audio vollständig sein.');
