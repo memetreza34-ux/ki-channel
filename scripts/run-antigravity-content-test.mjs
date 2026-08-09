@@ -7,6 +7,7 @@ const summaryPath = resolve(outputRoot, 'summary.json');
 await mkdir(outputRoot, {recursive: true});
 
 const steps = [
+  ['reel-folder-structure', ['scripts/check-ki-reel-folder-structure.mjs']],
   ['workspace-contract', ['scripts/check-antigravity-content-test-contract.mjs']],
   ['production-inputs', ['scripts/check-masterplan-production-inputs.mjs']],
   ['first-test-contract', ['scripts/check-first-content-grounding-test-contract.mjs']],
@@ -25,11 +26,12 @@ const writeSummary = async (status, failure = null) => {
   await writeFile(
     summaryPath,
     `${JSON.stringify({
-      version: 1,
+      version: 2,
       status,
       generatedAt: new Date().toISOString(),
       expectedStepCount: steps.length,
       completedStepCount: results.length,
+      structureContract: 'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/01–06',
       steps: results,
       failure,
       costSummaryPath: resolve(
