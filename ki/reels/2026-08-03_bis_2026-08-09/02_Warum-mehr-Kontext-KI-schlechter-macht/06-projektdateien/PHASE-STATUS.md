@@ -2,7 +2,7 @@
 
 ## Aktueller Stand
 
-**Phase 1 — CODE- UND PLANUNGSGRUNDLAGE: VOLLSTÄNDIG ANGELEGT**
+**Phase 1 — CODE- UND PLANUNGSGRUNDLAGE: VOLLSTÄNDIG ANGELEGT UND TEXT-HIERARCHIE ÜBERARBEITET**
 
 Die Reel-Grundlage besteht aus:
 
@@ -21,7 +21,19 @@ Die Reel-Grundlage besteht aus:
 - dependency-freiem Phase-1-Source-Check
 - Phase-1-Check als Teil des Reel-Preflights
 
-**Prüfstatus:** Die Dateien und Verdrahtung sind im Repository angelegt und erneut aus dem Branch gelesen worden. Ein echter TypeScript-/Vitest-/Remotion-Lauf sowie Smoke-/Final-Render sind damit noch **nicht** behauptet; diese ausführbaren Prüfungen gehören spätestens zu Phase 3 und dürfen nur nach tatsächlicher Ausführung als bestanden markiert werden.
+### Nach visueller Review korrigiert
+
+Die erste gerenderte Fassung hatte eine zu starke Text-Dopplung. Deshalb wurde Phase 1 überarbeitet:
+
+- interne `goal`-Texte werden nicht mehr als Zuschauer-Überschrift verwendet
+- jede Szene besitzt jetzt eine kurze, eigene `headline`
+- der Sprechertext wird im Production-Modus nicht mehr automatisch ein zweites Mal direkt unter der Überschrift angezeigt
+- Bottom-Captions bleiben die wortgetreue Text-Ebene
+- Animationen verwenden kuratierte `visualLabels` für Objekte, Zustände und Prozessschritte statt langer Sprechertext-Kopien
+- die Anti-Dopplungs-Regel ist in `ki/gehirn/REELS.md` dauerhaft festgeschrieben
+- Phase-3-Agenten müssen diese Hierarchie bei Smoke-Review und Final-Render erhalten
+
+**Prüfstatus:** Die geänderten Dateien und die Verdrahtung sind im Repository angelegt. Ein neuer echter TypeScript-/Vitest-/Remotion-Lauf sowie ein neuer Smoke-/Final-Render nach dieser visuellen Korrektur sind noch **nicht** behauptet. Die bisherige MP4-Fassung gilt für diese Text-Hierarchie als veraltet und muss in Phase 3 neu gerendert werden.
 
 ---
 
@@ -57,9 +69,10 @@ Der Coding-Agent übernimmt:
 4. Struktur- und Reel-Checks
 5. fokussierte Tests und TypeScript-Prüfung
 6. 15 Smoke-Frames rendern und visuell prüfen
-7. Probleme beheben
-8. finales MP4 rendern
-9. finales MP4 technisch prüfen und ansehen
-10. Review-Checkliste und Exportstatus aktualisieren
+7. insbesondere Überschrift, fehlende Doppel-Unterzeile und Animation-vs.-Caption-Dopplung prüfen
+8. Probleme beheben
+9. finales MP4 neu rendern
+10. finales MP4 technisch prüfen und ansehen
+11. Review-Checkliste und Exportstatus aktualisieren
 
-Phase 3 darf den freigegebenen Sprechertext oder die fünf Animation-IDs nicht ohne echten Fehlergrund neu erfinden.
+Phase 3 darf den freigegebenen Sprechertext, die fünf Animation-IDs oder die neue Text-Hierarchie nicht ohne echten Fehlergrund neu erfinden.
