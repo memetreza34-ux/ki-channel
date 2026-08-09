@@ -52,6 +52,32 @@ describe('antigravity context overload reel contract', () => {
     }
   });
 
+  it('uses short viewer-facing headlines instead of internal scene goals', () => {
+    for (const scene of CONTEXT_OVERLOAD_SCENES) {
+      const runtime = buildContextOverloadSceneRuntime(scene);
+      expect(scene.headline.trim().length).toBeGreaterThan(0);
+      expect(scene.headline.length).toBeLessThanOrEqual(38);
+      expect(runtime.renderProps.content?.title).toBe(scene.headline);
+      expect(runtime.renderProps.content?.title).not.toBe(scene.goal);
+      expect(normalizeContextOverloadText(scene.headline)).not.toBe(
+        normalizeContextOverloadText(scene.spokenText),
+      );
+    }
+  });
+
+  it('keeps animation copy compact instead of copying the complete subtitle sentence', () => {
+    for (const scene of CONTEXT_OVERLOAD_SCENES) {
+      const spoken = normalizeContextOverloadText(scene.spokenText);
+      const labels = Object.values(scene.visualLabels);
+      expect(labels.length).toBeGreaterThan(0);
+      for (const label of labels) {
+        const normalizedLabel = normalizeContextOverloadText(label);
+        expect(normalizedLabel).not.toBe(spoken);
+        expect(label.length).toBeLessThanOrEqual(42);
+      }
+    }
+  });
+
   it('keeps subtitle cues inside scenes and covers every spoken word', () => {
     expect(CONTEXT_OVERLOAD_SUBTITLES).toHaveLength(10);
     for (const scene of CONTEXT_OVERLOAD_SCENES) {
