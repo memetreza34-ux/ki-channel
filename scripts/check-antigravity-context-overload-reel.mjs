@@ -21,10 +21,12 @@ for (const dir of requiredDirs) {
 
 const requiredFiles = [
   'README.md',
+  '01-script-audio/README.md',
   '01-script-audio/voiceover.md',
   '02-bilder/asset-manifest.json',
   '03-caption/subtitle-cues.json',
   '06-projektdateien/AGENTS.md',
+  '06-projektdateien/PHASE-STATUS.md',
   '06-projektdateien/reel.json',
   '06-projektdateien/scene-plan.md',
   '06-projektdateien/animation-plan.md',
@@ -38,6 +40,18 @@ for (const file of requiredFiles) {
   } catch {
     fail(`${file}: fehlt`);
   }
+}
+
+const voiceoverDocument = read(`${ROOT}/01-script-audio/voiceover.md`);
+const phaseStatusDocument = read(`${ROOT}/06-projektdateien/PHASE-STATUS.md`);
+if (!voiceoverDocument.includes('PHASE 2')) {
+  fail('voiceover.md muss den menschlichen Phase-2-Audio-Schritt eindeutig markieren');
+}
+if (!voiceoverDocument.includes('voiceover.wav')) {
+  fail('voiceover.md muss voiceover.wav als bevorzugten Audio-Dateinamen nennen');
+}
+if (!phaseStatusDocument.includes('PHASE 2') || !phaseStatusDocument.includes('PHASE 3')) {
+  fail('PHASE-STATUS.md muss den Audio-Handoff und die Agent-Phase ausweisen');
 }
 
 const reel = readJson(`${ROOT}/06-projektdateien/reel.json`);
@@ -102,5 +116,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Antigravity-Context-Overload-Reel-Paket bestanden: kanonische Wochen-/01–06-Struktur, 5 Szenen, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.',
+  'Antigravity-Context-Overload-Reel-Paket bestanden: kanonische Wochen-/01–06-Struktur, klarer Phase-2-Audio-Handoff, 5 Szenen, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.',
 );
