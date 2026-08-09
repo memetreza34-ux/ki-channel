@@ -56,7 +56,13 @@ export const PrototypeShell: React.FC<{
   const displayTitle = content
     ? content.title?.trim() || contentTitleFromMeaning(content)
     : title;
-  const displaySubtitle = content?.spokenText || subtitle;
+
+  // In a production reel the exact spoken sentence already belongs to the caption
+  // layer. Repeating it below the headline competes with the animation and creates
+  // the same information twice. A production subtitle is therefore opt-in only.
+  const displaySubtitle = content
+    ? content.labels.shellSubtitle?.trim() || null
+    : subtitle;
 
   return (
     <AbsoluteFill
@@ -117,22 +123,24 @@ export const PrototypeShell: React.FC<{
         >
           {displayTitle}
         </div>
-        <div
-          style={{
-            marginTop: 18,
-            fontSize: displaySubtitle.length > 120 ? 21 : 25,
-            lineHeight: 1.25,
-            fontWeight: 700,
-            color: PROTOTYPE_PALETTE.muted,
-            maxWidth: 860,
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {displaySubtitle}
-        </div>
+        {displaySubtitle ? (
+          <div
+            style={{
+              marginTop: 18,
+              fontSize: displaySubtitle.length > 120 ? 21 : 25,
+              lineHeight: 1.25,
+              fontWeight: 700,
+              color: PROTOTYPE_PALETTE.muted,
+              maxWidth: 860,
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {displaySubtitle}
+          </div>
+        ) : null}
       </div>
 
       {children}
