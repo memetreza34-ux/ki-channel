@@ -1,20 +1,40 @@
 # Antigravity Context Overload reel instructions
 
-This directory is an approved reel package for the first Antigravity production reel.
+This is the technical planning area of the approved reel package:
+
+`ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
+
+The package must remain in this weekly location permanently.
 
 ## Authority order
 
-1. repository root `AGENTS.md`
-2. repository root `GEMINI.md`
-3. this file
-4. `reel.json`
-5. `voiceover.md`
-6. `scene-plan.md`
-7. `animation-plan.md`
-8. `subtitle-cues.json`
-9. `asset-manifest.json`
-10. `CODEX_ASSEMBLY_TASK.md`
-11. `review-checklist.md`
+1. repository `AGENTS.md`
+2. `ki/AGENTS.md`
+3. `ki/reels/AGENTS.md`
+4. repository `GEMINI.md`
+5. this file
+6. `reel.json`
+7. `../01-script-audio/voiceover.md`
+8. `scene-plan.md`
+9. `animation-plan.md`
+10. `../03-caption/subtitle-cues.json`
+11. `../02-bilder/asset-manifest.json`
+12. `CODEX_ASSEMBLY_TASK.md`
+13. `review-checklist.md`
+
+## Structure lock
+
+Before and after package/source edits run:
+
+`node scripts/check-ki-reel-folder-structure.mjs`
+
+Never move this package to `ki/src/reels/`. Never flatten it. Never delete or rename the package's `01-script-audio` through `06-projektdateien` folders.
+
+Executable implementation may be created separately only after preflight at:
+
+`ki/src/reels/antigravity-context-overload/`
+
+That source directory must contain executable code/tests only, not copies of these planning documents.
 
 ## Fixed creative decisions
 
@@ -22,27 +42,21 @@ This directory is an approved reel package for the first Antigravity production 
 - Five scenes, 180 frames each, total 900 frames.
 - German voiceover text and scene order are approved and must not be rewritten casually.
 - Use exactly the five animation IDs in `reel.json` for the first implementation.
-- No external images, music, or SFX in the first pass.
+- No external images, music or SFX in the first pass.
 - Do not introduce exact numeric claims that are not spoken.
 
 ## Implementation priority
 
-Make the meaning visible. Do not replace the selected content-aware mechanisms with generic cards, decorative particles, or camera movement.
+Make the meaning visible. Do not replace selected content-aware mechanisms with generic cards, decorative particles or arbitrary camera movement.
 
-Every scene must show:
-
-1. a readable start state
-2. one dominant semantic change
-3. a readable result state
-
-Keep subtitles in a separate safe zone and preserve phone-size readability.
+Every scene must show a readable start state, one dominant semantic change and a readable result state. Keep subtitles in a separate safe zone and preserve phone-size readability.
 
 ## Required first command
 
-Before editing source code, run:
+Before editing executable source:
 
-`node scripts/run-antigravity-content-test.mjs`
+`node scripts/run-antigravity-context-overload-preflight.mjs`
 
-If that fails, diagnose the grounding system before building this reel.
+If that fails, fix folder structure or grounding before building this reel.
 
 Do not merge PR #3 or modify `main`.
