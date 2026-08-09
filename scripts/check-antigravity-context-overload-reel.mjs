@@ -1,22 +1,35 @@
-import {readFileSync} from 'node:fs';
+import {readFileSync, existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 
-const ROOT = 'ki/src/reels/antigravity-context-overload';
+const ROOT = 'ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht';
 const read = (path) => readFileSync(resolve(path), 'utf8');
 const readJson = (path) => JSON.parse(read(path));
 const failures = [];
 const fail = (message) => failures.push(message);
 
+const requiredDirs = [
+  '01-script-audio',
+  '02-bilder',
+  '03-caption',
+  '04-pdf',
+  '05-export',
+  '06-projektdateien',
+];
+for (const dir of requiredDirs) {
+  if (!existsSync(resolve(ROOT, dir))) fail(`${dir}/ fehlt`);
+}
+
 const requiredFiles = [
-  'AGENTS.md',
-  'reel.json',
-  'voiceover.md',
-  'scene-plan.md',
-  'animation-plan.md',
-  'subtitle-cues.json',
-  'asset-manifest.json',
-  'CODEX_ASSEMBLY_TASK.md',
-  'review-checklist.md',
+  'README.md',
+  '01-script-audio/voiceover.md',
+  '02-bilder/asset-manifest.json',
+  '03-caption/subtitle-cues.json',
+  '06-projektdateien/AGENTS.md',
+  '06-projektdateien/reel.json',
+  '06-projektdateien/scene-plan.md',
+  '06-projektdateien/animation-plan.md',
+  '06-projektdateien/CODEX_ASSEMBLY_TASK.md',
+  '06-projektdateien/review-checklist.md',
 ];
 for (const file of requiredFiles) {
   try {
@@ -27,9 +40,9 @@ for (const file of requiredFiles) {
   }
 }
 
-const reel = readJson(`${ROOT}/reel.json`);
-const subtitles = readJson(`${ROOT}/subtitle-cues.json`);
-const assets = readJson(`${ROOT}/asset-manifest.json`);
+const reel = readJson(`${ROOT}/06-projektdateien/reel.json`);
+const subtitles = readJson(`${ROOT}/03-caption/subtitle-cues.json`);
+const assets = readJson(`${ROOT}/02-bilder/asset-manifest.json`);
 const renderConfig = readJson('ki/src/animation-library/prototype-render-config.json');
 
 if (reel.slug !== 'antigravity-context-overload') fail('unerwarteter reel slug');
@@ -88,4 +101,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Antigravity-Context-Overload-Reel-Paket bestanden: 5 Szenen, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.');
+console.log(
+  'Antigravity-Context-Overload-Reel-Paket bestanden: kanonische Wochen-/01–06-Struktur, 5 Szenen, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.',
+);
