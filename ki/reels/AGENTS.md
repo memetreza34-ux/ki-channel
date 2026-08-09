@@ -1,74 +1,97 @@
-# Codex instructions for `ki/reels/`
+# Agent instructions for `ki/reels/`
 
-## Production package is the contract
+## Structure is a hard contract
 
-Each real hybrid reel should contain:
+Every production reel package MUST live at:
 
 ```text
-ki/reels/<slug>/
-├── README.md
-├── reel.json
-├── voiceover.md
-├── scene-plan.md
-├── image-prompts.md
-├── animation-plan.md
-├── subtitle-cues.json
-├── asset-manifest.json
-├── CODEX_ASSEMBLY_TASK.md
-├── review-checklist.md
-└── assets/
-    ├── images/
-    ├── layers/
-    ├── masks/
-    └── audio/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ```
 
-Read the named package only. Do not scan every historical reel unless the task explicitly asks for comparison.
+Every reel package MUST permanently contain:
 
-## Authority
+```text
+README.md
+01-script-audio/
+02-bilder/
+03-caption/
+04-pdf/
+05-export/
+06-projektdateien/
+```
 
-- `reel.json` controls format, duration, composition ID, scene order, and frame ranges.
-- `voiceover.md` controls narration wording.
-- `scene-plan.md` controls the intended explanation and visual hierarchy.
-- `image-prompts.md` documents how supplied generated images were designed.
-- `animation-plan.md` controls choreography, important-word reactions, and transitions.
-- `subtitle-cues.json` controls subtitle timing until final transcript timestamps replace it.
-- `asset-manifest.json` controls exact file paths, asset ownership, crop, anchor, role, and whether an asset is required.
-- `CODEX_ASSEMBLY_TASK.md` controls implementation scope and commands.
-- `review-checklist.md` records actual verification only.
+This mirrors the durable production convention used by FinanzNeo. Do not flatten, rename, relocate, or delete these six production areas.
 
-Do not silently resolve conflicts by choosing whichever file is easiest. Report the conflict and use this precedence order.
+## Never create these layouts
 
-## Asset readiness
+```text
+ki/<reel-name>/
+ki/reels/<reel-name>/
+ki/src/reels/<planning-package>/
+```
 
-Before coding, run:
+`ki/src/reels/<slug>/` is source-code-only. It may contain TS/TSX, contracts, helpers and tests after implementation begins, but never `reel.json`, voiceover, scene plans, captions, asset manifests or review documents.
+
+## Creating a reel
+
+Do not invent a path manually. Run:
 
 ```bash
-node scripts/prepare-codex-reel.mjs <slug> --ready
+node scripts/new-ki-reel.mjs "Reel Titel"
 ```
 
-Stop when required assets are missing, unreadable, duplicated, or declared outside the reel package. Do not make placeholder images and do not use unrelated repository images.
+The generator creates the correct Monday–Sunday folder, next `NN_` index and all six permanent directories.
 
-## Token-efficient work
+## Mandatory validation
 
-After validation, read the generated file:
+Before changing reel package structure and again before finishing the task, run:
+
+```bash
+node scripts/check-ki-reel-folder-structure.mjs
+```
+
+If it fails, fix the folder structure before content, tests, renders or release work continues. Never weaken or bypass this validator to make a task green.
+
+## File ownership by production area
+
+- `01-script-audio/`: script, voiceover text/audio, transcript, audio plan
+- `02-bilder/`: image prompts, images, layers, masks, asset manifest
+- `03-caption/`: subtitle cues/timestamps and social caption
+- `04-pdf/`: optional PDF source/final artifacts
+- `05-export/`: smoke frames and final export artifacts
+- `06-projektdateien/`: brief, `reel.json`, scene/motion/animation plans, implementation task and review checklist
+
+## Production package authority
+
+When present:
+
+- `06-projektdateien/reel.json` controls format, duration, composition ID, scene order and frame ranges.
+- `01-script-audio/voiceover.md` or the declared script controls narration wording.
+- `06-projektdateien/scene-plan.md` controls explanation and visual hierarchy.
+- `06-projektdateien/animation-plan.md` or remotion plan controls choreography.
+- `03-caption/subtitle-cues.json` controls subtitle timing until final transcript timestamps replace it.
+- `02-bilder/asset-manifest.json` controls exact asset requirements.
+- `06-projektdateien/CODEX_ASSEMBLY_TASK.md`/equivalent controls implementation scope.
+- `06-projektdateien/review-checklist.md` records only actually completed verification.
+
+Do not silently resolve contradictions by moving files to an easier location.
+
+## Assembly
+
+Executable Remotion implementation belongs separately at:
 
 ```text
-ki/reels/<slug>/CODEX-BRIEF.generated.md
+ki/src/reels/<slug>/
+├── index.ts
+├── contract.ts
+├── ReelComposition.tsx
+├── components/
+├── scenes/
+└── __tests__/
 ```
 
-Use it as the primary task context. Open the original files only when a section is ambiguous. This avoids repeatedly loading the complete package.
-
-## Assembly behavior
-
-- Implement exactly the declared scenes and frame ranges.
-- Use the supplied images and audio; do not redesign the reel.
-- Adapt existing primitives without copying a complete unrelated scene.
-- Follow the declared image treatment: flat, layered, masked, cutout, or Remotion-only.
-- Use `staticFile()` and central asset helpers.
-- Do not bake subtitles or headings into images.
-- Default to `soundMode: "off"` unless the package explicitly requests an A/B SFX variant.
+The production package stays in `ki/reels/<week>/<NN_reel>/`; implementation never replaces or relocates it.
 
 ## Completion
 
-A reel is not complete until current-source tests, smoke frames, all checkpoints, MP4, technical artifact validation, and manual visual review have been performed. Old renders are invalid after source changes.
+A reel is not complete until structure validation, focused tests, typecheck, smoke frames, technical artifact checks and manual visual review have actually succeeded. Old renders are invalid after relevant source changes.
