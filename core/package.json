@@ -1,0 +1,16 @@
+{
+  "name": "@studio/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Gemeinsames Remotion Brand-Kit und UI-Bausteine des KI-Kanals",
+  "main": "./brand-kit/index.ts",
+  "types": "./brand-kit/index.ts",
+  "exports": {
+    ".": {
+      "types": "./brand-kit/index.ts",
+      "import": "./brand-kit/index.ts",
+      "default": "./brand-kit/index.ts"
+    }
+  }
+}
