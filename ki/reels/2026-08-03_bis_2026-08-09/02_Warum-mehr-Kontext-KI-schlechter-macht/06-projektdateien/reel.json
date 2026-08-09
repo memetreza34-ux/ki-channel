@@ -22,6 +22,18 @@
       "endFrame": 180,
       "animationId": "context-window-context-window-train-v1",
       "spokenText": "Du gibst einer KI mehr Kontext – und die Antwort wird trotzdem schlechter? Genau das kann passieren.",
+      "headline": "Wenn mehr nicht mehr hilft",
+      "visualLabels": {
+        "contextLabel": "KONTEXT",
+        "message1": "Frage",
+        "message2": "Kerninfo",
+        "message3": "Nebeninfo",
+        "message4": "Beispiel",
+        "message5": "Verlauf",
+        "message6": "Extra",
+        "removedLabel": "FOKUS",
+        "removedResult": "wird verdrängt"
+      },
       "goal": "Hook und sichtbare Überlastung des begrenzten Kontextfensters"
     },
     {
@@ -30,6 +42,15 @@
       "endFrame": 360,
       "animationId": "relationship-network-dependency-bridge-builder-v1",
       "spokenText": "Im Kontext sind nicht alle Informationen gleich wichtig. Starke Beziehungen tragen die Antwort, schwache Details sollten weniger Gewicht bekommen.",
+      "headline": "Verbindungen entscheiden",
+      "visualLabels": {
+        "node1": "Frage",
+        "node2": "Kerninfo",
+        "node3": "Antwort",
+        "strongRelationship": "Frage → Kerninfo → Antwort",
+        "weakRelationship": "Nebenpfad",
+        "conclusion": "Tragende Pfade prägen das Ergebnis"
+      },
       "goal": "Relevanz als unterschiedlich starke Beziehungen sichtbar machen"
     },
     {
@@ -38,6 +59,18 @@
       "endFrame": 540,
       "animationId": "retrieval-search-knowledge-magnet-v1",
       "spokenText": "Gute Systeme laden deshalb nicht alles. Sie holen gezielt nur Quellen, die zur aktuellen Frage passen.",
+      "headline": "Nicht alles muss mit",
+      "visualLabels": {
+        "queryLabel": "AKTUELLE FRAGE",
+        "query": "Was passt hier?",
+        "source1": "Quelle A",
+        "source2": "Quelle B",
+        "source3": "Quelle C",
+        "source4": "Quelle D",
+        "source5": "Quelle E",
+        "source6": "Quelle F",
+        "resultLabel": "ausgewählt"
+      },
       "goal": "Gezielte Auswahl relevanter Quellen statt maximaler Kontextmenge"
     },
     {
@@ -46,6 +79,18 @@
       "endFrame": 720,
       "animationId": "input-output-funnel-compression-output-v1",
       "spokenText": "Dann fliegen unpassende Informationen raus. Relevante Fakten bleiben übrig und werden zu einem klaren Kern verdichtet.",
+      "headline": "Signal bleibt. Rauschen geht.",
+      "visualLabels": {
+        "input1": "Kernfakt",
+        "input2": "Nebeninfo",
+        "input3": "Passend",
+        "input4": "Unpassend",
+        "input5": "Kerninfo",
+        "input6": "Ballast",
+        "outputLabel": "KERN",
+        "outputTitle": "Bereinigter Kern",
+        "outputDetail": "kompakt für den nächsten Schritt"
+      },
       "goal": "Irrelevante Informationen entfernen und relevante Fakten verdichten"
     },
     {
@@ -54,6 +99,17 @@
       "endFrame": 900,
       "animationId": "generation-answer-loom-v1",
       "spokenText": "Mehr Kontext ist nicht automatisch besser. Besser ist: auswählen, verdichten und erst dann die Antwort erzeugen.",
+      "headline": "Qualität vor Menge",
+      "visualLabels": {
+        "thread1": "Frage",
+        "thread2": "Auswahl",
+        "thread3": "Verdichtung",
+        "thread4": "Ziel",
+        "word1": "Kern",
+        "word2": "Antwort",
+        "answerLabel": "ERGEBNIS",
+        "answer": "Klare Antwort"
+      },
       "goal": "Kernaussage als klare, schrittweise entstehende Antwort abschließen"
     }
   ]
