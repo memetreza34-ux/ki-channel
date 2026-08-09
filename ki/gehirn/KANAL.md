@@ -1,52 +1,95 @@
 # 🧠 KI-Kanal — Kanal-Gehirn (Identität)
 
-> Kanal-spezifisch. Ergänzt das geteilte `core/gehirn` (Regeln) + `core/brand-kit` (Bausteine).
-> Für Claude, Codex UND die Agenten: SO klingt & aussieht der KI-Kanal. Bei Zweifel hier nachschauen.
-> Brand-Technik: `channels/ki/brand/brand.ts` (🟣 Lila, „du").
+> Kanal-spezifische Identität für Claude, Codex, Antigravity und weitere Produktionsagenten.
+> Repository-Regeln: `AGENTS.md` + `ki/AGENTS.md`.
+> Gemeinsame visuelle Bausteine: `core/brand-kit/`.
+> Brand-Technik: `ki/brand/brand.ts`.
 
 ## Was ist der KI-Kanal
-Deutscher, animierter KI-Kanal (faceless, Arman vertont). **Breiter KI-Mix**: mal ein Tool, mal ein Konzept,
-mal News/Trends — flexibel je Thema. Roter Faden: **Künstliche Intelligenz verständlich UND praktisch machen,
-immer am Puls.**
+
+Deutscher, animierter und vollständig faceless KI-Kanal. Inhaltlich bleibt der Kanal bewusst breit: Tools, Konzepte, praktische Use-Cases, News/Trends und ehrliche Einordnung.
+
+Der rote Faden ist immer derselbe:
+
+**Künstliche Intelligenz verständlich, praktisch und visuell klar machen — ohne Hype-Lärm.**
 
 ## Zielgruppe
-**„Jeder, den KI betrifft."** — also praktisch alle. Breit, deutschsprachig.
-- **Persona:** sieht KI überall (ChatGPT, Bilder, Automatisierung), teils fasziniert, teils überfordert/skeptisch.
-  Will **verstehen** was das ist UND **nutzen** was ihm hilft — ohne Tech-Studium. Größte Angst: **abgehängt werden.**
-- **Was sie fühlen:** „KI verändert alles, ich sollte mitkommen — aber es ist so viel und so schnell."
-- **Unser Job:** Orientierung geben → verstehen → das Nützliche mitnehmen, ohne Hype-Lärm.
 
-## Ton & Stimme — „seriös aber modern" (neugierig, klar)
-- **Immer „du"**, nie „man"/„Sie". Neugierig, auf Augenhöhe, nie belehrend, nie überheblich-nerdig.
-- **Vertrauenswürdig & ehrlich** — kein Hype-Gerede, kein „KI wird dich ersetzen"-Angstporno, keine Fake-Wunder.
-- **Klar & modern** — kurze Sätze, gesprochene Sprache, hochwertig (nicht albern, nicht Cringe-Hype).
-- **Kompetent ohne Fachchinesisch** — Fachbegriff nur mit sofortiger Erklärung (am besten mit Bild/Metapher).
-- Faszination erlaubt (KI IST beeindruckend), aber **geerdet**: staunen + einordnen, nicht nur „wow".
+**„Jeder, den KI betrifft.“** — breit, deutschsprachig und nicht nur technisch vorgebildet.
 
-## USP — warum dieser KI-Kanal (3 Säulen)
-1. **Komplexe KI einfach erklärt** — mit Animationen statt Fachchinesisch (Kern, wie die Neural-Net-/Prompt-Reels).
-2. **Konkrete Tools & Use-Cases** — immer praktisch: welches Tool, wofür, wie — sofort nutzbar.
-3. **Immer aktuell** — Trends/News zuerst und **eingeordnet** (nicht nur nacherzählt).
+- Die Zielgruppe sieht KI überall, ist teils fasziniert und teils überfordert oder skeptisch.
+- Sie will verstehen, was hinter KI steckt und was davon im Alltag wirklich nützlich ist.
+- Fachwissen darf nie Voraussetzung sein.
+- Der Kanal gibt Orientierung, erklärt Zusammenhänge und zeigt konkrete Anwendung.
 
-## Content-Säulen (wiederkehrende Formate)
-1. **Konzept-Erklärer** — „Wie funktioniert ein LLM / Training / Prompting?" (Aha-Format, zeitlos)
-2. **Tool & Use-Case** — „Dieses KI-Tool macht X — so nutzt du's" (praktisch, konkret)
-3. **News eingeordnet** — „Das ist neu bei KI — und was es für dich bedeutet" (schnell, aktuell)
-4. **Prompt/Trick** — „So holst du 10× mehr aus ChatGPT raus"
-5. **Mythos/Einordnung** — „Kann KI das wirklich? Ehrlicher Check."
+## Ton & Stimme — seriös, modern, klar
 
-## 🎨 Visuelle Identität
-- **Lila** (`accent` #B98CFF, Signatur = premium/besonders), dunkel-lila BG. **Blau** = Tech/Info,
-  **Rot** = Warnung/Risiko/Grenze, **Grün** = Vorteil/Lösung. Immer semantisch.
-- Premium, futuristisch-clean, viel Luft. `ShaderBG`/`LivingBackground` in Lila. Kinetische Untertitel.
-- Kern-Bausteine: **`ChatUI`** (Chat-Demos), **`NeuralNet`** (wie KI denkt), Lucide-Icons (`brain-circuit`, `cpu`, `sparkles`).
+- Immer **„du“**, nie unnötig distanziert.
+- Neugierig und kompetent, aber nicht belehrend oder überheblich-nerdig.
+- Vertrauenswürdig und ehrlich: keine Fake-Wunder, keine erfundenen Fähigkeiten, keine Panikmache.
+- Kurze, gesprochene Sätze statt Fachtext.
+- Fachbegriffe nur verwenden, wenn sie sofort verständlich erklärt oder visualisiert werden.
+- Faszination ist erlaubt, muss aber eingeordnet werden.
+
+## USP — drei Säulen
+
+1. **Komplexe KI einfach erklären** — Animationen und klare Metaphern statt Fachchinesisch.
+2. **Konkrete Tools und Use-Cases** — welches Tool, wofür, wie und mit welchem realen Nutzen.
+3. **Aktuelle Entwicklungen einordnen** — nicht nur News wiederholen, sondern erklären, was sie bedeuten.
+
+## Content-Säulen
+
+1. **Konzept-Erklärer** — LLM, Training, Token, Kontext, Prompting, Agenten usw.
+2. **Tool & Use-Case** — konkrete Anwendung mit erkennbarem Nutzen.
+3. **News eingeordnet** — was ist neu und was bedeutet es wirklich?
+4. **Prompt / Trick** — bessere Nutzung statt leere „10×“-Versprechen.
+5. **Mythos / Einordnung** — Behauptung prüfen und ehrlich bewerten.
+
+## 🎨 Visuelle Identität — verbindlich
+
+Die technische Wahrheit liegt in `ki/brand/brand.ts` und der Bildstil in `ki/BILDSTIL.md`.
+
+- **Hintergrund:** weiß `#FFFFFF` oder sehr hell / leicht lila getönt `#F3F0FA`.
+- **Standardtext:** dunkel und kontrastreich (`ink` `#1A1A2E`).
+- **Marken-Lila:** `#B98CFF` als KI-, Fokus- und Premium-Akzent.
+- **Dunkles Lila:** `#6E45C9` für Tiefe und Kontrast.
+- **Grün:** Vorteil / Lösung.
+- **Rot:** Risiko / Grenze / Fehler.
+- **Blau:** nur gezielt für Tech-/Info-Kontext, nicht als zweite Hauptmarke.
+- Viel Luft, wenige große Elemente, klare Hierarchie und Smartphone-Lesbarkeit.
+- Faceless: keine Face-Cam und keine erkennbaren Gesichter.
+
+Der Standard ist **kein dunkler Cyberpunk-/Neon-Look**. Dunkle Tech-Deck-Referenzen dürfen höchstens als Layout-Inspiration dienen; die tatsächliche Kanaloberfläche bleibt hell, editorial und lila akzentuiert.
+
+## Kern-Bausteine
+
+Je nach Aussage bevorzugt vorhandene Bausteine aus `core/brand-kit/` und der Animation Library verwenden, z. B.:
+
+- `ChatUI` für Chat- und Prompt-Demos
+- `NeuralNet` für Modell-/Netzwerk-Erklärungen
+- `WindowMock`, `AppScreenDemo`, `PhoneMockup` für Tool-/UI-Demos
+- `BigStat`, `BarsPremium`, `Ranking` für geerdete Vergleiche
+- `KineticCaption` / Caption-Komponenten für Untertitel
+
+Animationen werden nicht dekorativ ausgewählt. Sprechertext, Meaning Contract und Production Eligibility bestimmen, ob eine Library-Animation wiederverwendet werden darf.
 
 ## 🚫 No-Gos
-- Kein **Hype-Clickbait mit Lüge** („KI löscht dein Gehirn") — Hooks stark, aber wahr.
-- Kein **Angstporno** als Selbstzweck (Risiken einordnen ja, Panik nein).
-- Kein **Tool-Spam** ohne echten Nutzen · kein **Fachchinesisch** ohne Erklärung.
-- Nicht albern/Cringe-Hype („🤯 INSANE AI!!"). Wir sind seriös-modern, geerdet.
 
-## Verweise
-- Reel-Strategie (TikTok/Insta): `channels/ki/gehirn/REELS.md`
-- Allgemeine Reel-Regeln: `core/gehirn/REEL-PRINZIPIEN.md` · Bausteine: `core/brand-kit/KATALOG.md`
+- Kein Hype-Clickbait mit falschem Versprechen.
+- Kein Angstporno als Selbstzweck.
+- Kein Tool-Spam ohne echten Nutzen.
+- Kein Fachchinesisch ohne Erklärung.
+- Keine erfundenen Zahlen oder Demo-Werte als Fakten.
+- Keine dekorative Animation, die dem Sprecherinhalt widerspricht.
+- Kein dunkler Cyberpunk-/Roboter-Look als Standardästhetik.
+- Keine erkennbaren Gesichter.
+
+## Verbindliche Verweise
+
+- Reel-Strategie: `ki/gehirn/REELS.md`
+- Bildstil: `ki/BILDSTIL.md`
+- Repository-/Produktionsregeln: `AGENTS.md`
+- KI-spezifische Strukturregeln: `ki/AGENTS.md`
+- Brand-Technik: `ki/brand/brand.ts`
+- Gemeinsamer Bausteinkatalog: `core/brand-kit/KATALOG.md`
+- Produktionsbereite Animationen werden technisch über `ki/src/animation-library/productionEligibility.ts` bestimmt.
