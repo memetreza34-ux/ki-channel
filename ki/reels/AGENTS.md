@@ -40,7 +40,39 @@ Do not invent a path manually. Run:
 node scripts/new-ki-reel.mjs "Reel Titel"
 ```
 
-The generator creates the correct Monday–Sunday folder, next `NN_` index and all six permanent directories.
+The generator creates the correct Monday–Sunday folder, next `NN_` index, all six permanent directories and the initial phase handoff files.
+
+## Mandatory 3-phase ownership
+
+The detailed production contract is `ki/gehirn/PRODUKTIONSABLAUF.md` and is binding.
+
+### Phase 1 — ChatGPT / planning + executable foundation
+
+Before handing work to the human, Phase 1 MUST provide:
+
+- final `01-script-audio/voiceover.md`
+- completed planning package and manifests
+- scene order and animation decisions
+- subtitle baseline
+- executable Remotion source under `ki/src/reels/<slug>/`
+- content-grounding/runtime wiring
+- Composition registration
+- focused contract/source checks
+- current `06-projektdateien/PHASE-STATUS.md`
+
+A script-only/planning-only reel is not Phase-1-complete.
+
+### Phase 2 — human / audio only
+
+The human should only need to create the real voiceover from `voiceover.md` and place `voiceover.wav` (preferred) or `voiceover.mp3` in `01-script-audio/`.
+
+Do not make the human finish code, captions, scene JSON or animation planning during the normal Phase-2 handoff.
+
+### Phase 3 — Codex or Antigravity / assembly + verification + render
+
+The coding agent reuses Phase-1 source rather than rebuilding from scratch. It integrates the real audio, measures and aligns timing, runs checks/tests/typecheck, renders and visually reviews smoke frames, fixes real defects, renders the final MP4, validates it and records only work actually completed.
+
+If Phase-2 audio is missing, Phase 3 must stop instead of fabricating audio.
 
 ## Mandatory validation
 
@@ -59,7 +91,7 @@ If it fails, fix the folder structure before content, tests, renders or release 
 - `03-caption/`: subtitle cues/timestamps and social caption
 - `04-pdf/`: optional PDF source/final artifacts
 - `05-export/`: smoke frames and final export artifacts
-- `06-projektdateien/`: brief, `reel.json`, scene/motion/animation plans, implementation task and review checklist
+- `06-projektdateien/`: brief, `reel.json`, scene/motion/animation plans, implementation task, phase status and review checklist
 
 ## Production package authority
 
@@ -72,6 +104,7 @@ When present:
 - `03-caption/subtitle-cues.json` controls subtitle timing until final transcript timestamps replace it.
 - `02-bilder/asset-manifest.json` controls exact asset requirements.
 - `06-projektdateien/CODEX_ASSEMBLY_TASK.md`/equivalent controls implementation scope.
+- `06-projektdateien/PHASE-STATUS.md` controls the current handoff stage.
 - `06-projektdateien/review-checklist.md` records only actually completed verification.
 
 Do not silently resolve contradictions by moving files to an easier location.
@@ -91,6 +124,8 @@ ki/src/reels/<slug>/
 ```
 
 The production package stays in `ki/reels/<week>/<NN_reel>/`; implementation never replaces or relocates it.
+
+Phase 3 should modify this source only when real audio integration, a failing check or visual review exposes an actual problem. It must not discard a valid Phase-1 implementation merely to rebuild it in another style.
 
 ## Completion
 
