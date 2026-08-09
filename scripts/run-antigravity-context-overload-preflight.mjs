@@ -18,6 +18,11 @@ const steps = [
     command: 'node',
     args: ['scripts/check-antigravity-context-overload-reel.mjs'],
   },
+  {
+    id: 'phase-1-source',
+    command: 'node',
+    args: ['scripts/check-context-overload-phase1.mjs'],
+  },
 ];
 
 const outputRoot = resolve('out/antigravity-context-overload-preflight');
@@ -58,17 +63,18 @@ try {
 }
 
 const summary = {
-  version: 2,
+  version: 3,
   reelSlug: 'antigravity-context-overload',
   planningPackage:
     'ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht',
   executableSourceTarget: 'ki/src/reels/antigravity-context-overload',
+  productionWorkflow: 'ki/gehirn/PRODUKTIONSABLAUF.md',
   status,
   generatedAt: new Date().toISOString(),
   steps: results,
   failure,
   nextAllowedAction: status === 'passed'
-    ? 'implement-reel-source-without-moving-planning-package'
+    ? 'await-phase-2-voiceover-then-run-phase-3-assembly'
     : 'fix-first-failing-preflight-step',
 };
 await writeFile(
@@ -83,6 +89,6 @@ if (status !== 'passed') {
 }
 
 console.log(
-  '\n[antigravity-reel-preflight] BESTANDEN · Folder-Struktur, Grounding-System und Reel-Paket sind bereit; Planung bleibt im Wochenordner, ausführbarer Source darf separat implementiert werden.',
+  '\n[antigravity-reel-preflight] BESTANDEN · Planung, Grounding und Phase-1-Source sind verdrahtet. Nächster manueller Schritt: Phase-2-Voiceover; danach übernimmt Phase 3 die Assembly und den Render.',
 );
 console.log(`[antigravity-reel-preflight] Summary: ${resolve(outputRoot, 'summary.json')}`);
