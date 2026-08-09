@@ -78,6 +78,14 @@ for (const [index, scene] of (reel.scenes ?? []).entries()) {
   if (scene.startFrame !== cursor) fail(`Szene ${index + 1}: startFrame ${scene.startFrame} statt ${cursor}`);
   if (scene.endFrame - scene.startFrame !== 180) fail(`Szene ${index + 1}: Dauer muss 180 Frames sein`);
   if (typeof scene.spokenText !== 'string' || scene.spokenText.trim().length < 20) fail(`Szene ${index + 1}: spokenText fehlt oder ist zu kurz`);
+  if (typeof scene.headline !== 'string' || !scene.headline.trim()) fail(`Szene ${index + 1}: viewer-facing headline fehlt`);
+  if ((scene.headline ?? '').length > 38) fail(`Szene ${index + 1}: headline ist zu lang`);
+  if (scene.headline === scene.goal) fail(`Szene ${index + 1}: internes goal darf nicht als headline erscheinen`);
+  if (!scene.visualLabels || Object.keys(scene.visualLabels).length === 0) fail(`Szene ${index + 1}: visualLabels fehlen`);
+  for (const [key, value] of Object.entries(scene.visualLabels ?? {})) {
+    if (typeof value !== 'string' || !value.trim()) fail(`Szene ${index + 1}: visualLabels.${key} ist leer`);
+    if (String(value).length > 42) fail(`Szene ${index + 1}: visualLabels.${key} ist zu lang`);
+  }
   cursor = scene.endFrame;
 }
 if (cursor !== 900) fail(`Szenen enden bei ${cursor} statt 900`);
@@ -103,6 +111,10 @@ for (const scene of reel.scenes ?? []) {
   const subtitleText = normalize(cues.sort((a, b) => a.startFrame - b.startFrame).map((cue) => cue.text).join(' '));
   const spokenText = normalize(scene.spokenText);
   if (subtitleText !== spokenText) fail(`${scene.sceneId}: Subtitle-Text deckt spokenText nicht exakt ab`);
+  if (normalize(scene.headline) === spokenText) fail(`${scene.sceneId}: headline kopiert den kompletten Sprechertext`);
+  for (const value of Object.values(scene.visualLabels ?? {})) {
+    if (normalize(String(value)) === spokenText) fail(`${scene.sceneId}: visualLabel kopiert den kompletten Sprechertext`);
+  }
 }
 
 if (assets.externalAssetsRequired !== false) fail('Erster Reel-Pass darf keine externen Assets benötigen');
@@ -116,5 +128,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Antigravity-Context-Overload-Reel-Paket bestanden: kanonische Wochen-/01–06-Struktur, klarer Phase-2-Audio-Handoff, 5 Szenen, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.',
+  'Antigravity-Context-Overload-Reel-Paket bestanden: kanonische Wochen-/01–06-Struktur, klarer Phase-2-Audio-Handoff, 5 Szenen, kurze Zuschauer-Headlines, kuratierte Visual-Labels, 900 Frames, 5 eindeutige production-ready Animationen, vollständige Subtitle-Abdeckung und keine externen Assets.',
 );
