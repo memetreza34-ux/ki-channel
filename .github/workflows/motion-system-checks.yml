@@ -1,16 +1,16 @@
-name: Motion and Content System Checks
+name: Repository and Content System Checks
 
-# Der private Repository-Runner beendet Jobs aktuell bereits vor Step 1, weil
-# GitHub Actions durch Billing/Spending-Limit blockiert ist. Deshalb bleibt der
-# Workflow bewusst manuell. Sobald Billing wieder funktioniert, nutzt CI exakt
-# denselben Content-Release-Runner wie die lokale Freigabe.
+# GitHub Actions for this private repository is currently blocked before Step 1
+# by the account's Actions billing/spending state. Keep this workflow manual until
+# the runner is available again. The commands below are the canonical repository
+# and content-release gates and can also be run locally.
 on:
   workflow_dispatch:
     inputs:
       release_mode:
         description: 'Content-Prüftiefe'
         required: true
-        default: 'smoke'
+        default: 'verify'
         type: choice
         options:
           - verify
@@ -47,14 +47,46 @@ jobs:
             echo "release_mode=${{ inputs.release_mode }}"
           } | tee ci-logs/environment.log
 
-      - name: Install root dependencies without legacy workspaces
+      - name: Install canonical workspaces
         id: install
         continue-on-error: true
         run: |
           set -o pipefail
-          npm install --workspaces=false --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
+          npm install --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
-      - name: Verify legacy motion system
+      - name: Verify workspace wiring
+        id: workspaces
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node <<'NODE' 2>&1 | tee ci-logs/workspaces.log
+          const fs = require('node:fs');
+          const root = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const core = JSON.parse(fs.readFileSync('core/package.json', 'utf8'));
+          const ki = JSON.parse(fs.readFileSync('ki/package.json', 'utf8'));
+          const expected = ['core', 'ki'];
+          if (JSON.stringify(root.workspaces) !== JSON.stringify(expected)) {
+            throw new Error(`Root workspaces must be ${expected.join(', ')}`);
+          }
+          if (core.name !== '@studio/core') {
+            throw new Error('core/package.json must expose @studio/core');
+          }
+          if (ki.name !== '@studio/ki' || !ki.dependencies?.['@studio/core']) {
+            throw new Error('ki/package.json must depend on @studio/core');
+          }
+          console.log('Workspace wiring is canonical: core -> @studio/core, ki -> @studio/ki.');
+          NODE
+
+      - name: Validate reel package structure
+        id: structure
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run ki:reel:structure-check 2>&1 | tee ci-logs/reel-structure.log
+
+      - name: Verify motion system
         id: motion_verify
         if: always() && steps.install.outcome == 'success'
         continue-on-error: true
@@ -68,7 +100,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          node scripts/run-content-release.mjs "${{ inputs.release_mode }}" 2>&1 | tee ci-logs/content-release.log
+          npm run "release:${{ inputs.release_mode }}" 2>&1 | tee ci-logs/content-release.log
 
       - name: Upload release summary and diagnostics
         if: always()
@@ -105,6 +137,8 @@ jobs:
           always() &&
           (
             steps.install.outcome == 'failure' ||
+            steps.workspaces.outcome == 'failure' ||
+            steps.structure.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
             steps.content_release.outcome == 'failure'
           )
