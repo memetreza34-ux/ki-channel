@@ -19,15 +19,16 @@ Do not move or flatten either location.
 3. `ki/reels/AGENTS.md`
 4. Repository `GEMINI.md`
 5. `ki/gehirn/PRODUKTIONSABLAUF.md`
-6. `06-projektdateien/AGENTS.md`
-7. `06-projektdateien/PHASE-STATUS.md`
-8. `06-projektdateien/reel.json`
-9. `01-script-audio/voiceover.md`
-10. `06-projektdateien/scene-plan.md`
-11. `06-projektdateien/animation-plan.md`
-12. `03-caption/subtitle-cues.json`
-13. `02-bilder/asset-manifest.json`
-14. `06-projektdateien/review-checklist.md`
+6. `ki/gehirn/REELS.md`
+7. `06-projektdateien/AGENTS.md`
+8. `06-projektdateien/PHASE-STATUS.md`
+9. `06-projektdateien/reel.json`
+10. `01-script-audio/voiceover.md`
+11. `06-projektdateien/scene-plan.md`
+12. `06-projektdateien/animation-plan.md`
+13. `03-caption/subtitle-cues.json`
+14. `02-bilder/asset-manifest.json`
+15. `06-projektdateien/review-checklist.md`
 
 ## Phase ownership
 
@@ -38,6 +39,7 @@ Phase 1 owns:
 - approved script
 - planning package
 - exact scene order and animation IDs
+- viewer-facing `headline` and `visualLabels` in `reel.json`
 - subtitle baseline
 - asset policy
 - content-grounded Remotion source
@@ -54,6 +56,19 @@ The human creates exactly one real voiceover from `01-script-audio/voiceover.md`
 
 Your job is to integrate the real audio, verify the existing Phase-1 implementation, adjust only what the real audio or actual failures require, visually review and export.
 
+## Text hierarchy is locked
+
+The revised production hierarchy is intentional and must survive Phase 3:
+
+- Top headline = `scene.headline` from `reel.json`.
+- Internal `goal` text is never viewer-facing.
+- There is no automatic second spoken sentence below the headline.
+- Bottom captions carry the exact spoken words.
+- Animation copy comes from the curated `visualLabels` layered over grounded runtime content.
+- Animation labels may name objects, states and process steps, but must not copy the current caption sentence merely for decoration.
+- Do not restore prototype demo titles/subtitles in the production reel.
+- Do not replace concise viewer-facing copy with internal meaning-contract prose.
+
 ## Required Phase-3 execution order
 
 1. Confirm branch is not `main`.
@@ -65,7 +80,7 @@ Your job is to integrate the real audio, verify the existing Phase-1 implementat
 7. If audio is absent, STOP with `PHASE 2 AUDIO FEHLT`. Never fabricate voiceover.
 8. Measure real audio duration.
 9. Integrate the audio in a Remotion-accessible location/configuration.
-10. Preserve the approved five spoken texts, scene order and exact five animation IDs.
+10. Preserve the approved five spoken texts, scene order, headlines, visual-label intent and exact five animation IDs.
 11. Keep every scene on the pipeline spokenText → meaning → derive → sanitize → associate → render-props.
 12. Align subtitle timing to the actual voiceover while retaining complete word coverage.
 13. If the audio does not fit the 900-frame contract naturally, do not silently time-stretch, truncate or rewrite speech. Report the mismatch and make only an explicit contract-safe change.
@@ -75,12 +90,13 @@ Your job is to integrate the real audio, verify the existing Phase-1 implementat
 17. Run relevant TypeScript checking.
 18. Render three smoke frames per scene: opening, midpoint and final readable hold.
 19. Inspect all 15 smoke frames visually.
-20. Fix actual overflow, overlap, empty opening state, misleading values, semantic mismatch or unreadable mobile text.
-21. Render the full reel only after smoke review is clean.
-22. Validate the MP4 technically and watch it at normal speed.
-23. Update `review-checklist.md` and `PHASE-STATUS.md` only for work actually completed.
-24. Run the folder validator once more.
-25. Report exact commands, test state, measured audio duration, smoke paths, final MP4 path and any remaining blocker.
+20. Fix actual overflow, overlap, empty opening state, misleading values, semantic mismatch, duplicated text hierarchy or unreadable mobile text.
+21. Specifically verify on all scenes: headline is short/correct, no duplicate top subtitle exists, animation words complement rather than copy the bottom caption.
+22. Render the full reel only after smoke review is clean.
+23. Validate the MP4 technically and watch it at normal speed.
+24. Update `review-checklist.md` and `PHASE-STATUS.md` only for work actually completed.
+25. Run the folder validator once more.
+26. Report exact commands, test state, measured audio duration, smoke paths, final MP4 path and any remaining blocker.
 
 ## Fixed production contract
 
@@ -105,7 +121,7 @@ Selected animation IDs:
 
 ## Stop conditions
 
-Do not claim completion if audio is missing, structure validation fails, tests fail, a scene uses ungrounded numeric facts, subtitles lose spoken words, text overlaps the explanation, a selected animation is replaced without a proven reason, smoke frames were not actually inspected, or the final MP4 was not actually rendered and watched.
+Do not claim completion if audio is missing, structure validation fails, tests fail, a scene uses ungrounded numeric facts, subtitles lose spoken words, headline/internal-copy leakage occurs, duplicate top spoken text returns, animation copy competes with captions, text overlaps the explanation, a selected animation is replaced without a proven reason, smoke frames were not actually inspected, or the final MP4 was not actually rendered and watched.
 
 Never create `ki/<reel-name>/`, never flatten the package into `ki/reels/<slug>/`, never relocate planning into `ki/src/reels/`, and never remove permanent 01–06 folders.
 
