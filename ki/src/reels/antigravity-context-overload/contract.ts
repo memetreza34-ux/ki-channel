@@ -7,6 +7,8 @@ export type ContextOverloadScene = {
   endFrame: number;
   animationId: string;
   spokenText: string;
+  headline: string;
+  visualLabels: Record<string, string>;
   goal: string;
 };
 
@@ -45,7 +47,7 @@ const subtitles = subtitleJson as {
 export const CONTEXT_OVERLOAD_COMPOSITION_ID = 'KI-ContextOverload';
 export const CONTEXT_OVERLOAD_REEL = Object.freeze(reel);
 export const CONTEXT_OVERLOAD_SCENES = Object.freeze(
-  reel.scenes.map((scene) => Object.freeze({...scene})),
+  reel.scenes.map((scene) => Object.freeze({...scene, visualLabels: Object.freeze({...scene.visualLabels})})),
 );
 export const CONTEXT_OVERLOAD_SUBTITLES = Object.freeze(
   subtitles.cues.map((cue) => Object.freeze({...cue})),
@@ -92,6 +94,11 @@ export const assertContextOverloadContract = (): void => {
       throw new Error(`invalid frame range for ${scene.sceneId}`);
     }
     if (!scene.spokenText.trim()) throw new Error(`missing spokenText for ${scene.sceneId}`);
+    if (!scene.headline.trim()) throw new Error(`missing production headline for ${scene.sceneId}`);
+    if (scene.headline.trim().length > 38) throw new Error(`production headline too long for ${scene.sceneId}`);
+    if (!scene.visualLabels || Object.keys(scene.visualLabels).length === 0) {
+      throw new Error(`missing visual labels for ${scene.sceneId}`);
+    }
     sceneIds.add(scene.sceneId);
     animationIds.add(scene.animationId);
     cursor = scene.endFrame;
