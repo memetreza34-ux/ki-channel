@@ -2,22 +2,26 @@
 
 ## Aktueller Stand
 
-**Phase 1 — GRUNDLAGE: angelegt**
+**Phase 1 — CODE- UND PLANUNGSGRUNDLAGE: VOLLSTÄNDIG ANGELEGT**
 
 Die Reel-Grundlage besteht aus:
 
 - finalem Sprechertext
 - 5 Szenen mit fester Reihenfolge
 - 5 eindeutigen production-ready Animationen
-- 1080 × 1920, 30 FPS, 900 Frames
+- 1080 × 1920, 30 FPS, 900 Frames als Audio-unabhängiger Basisvertrag
 - Subtitle-Grundcues
 - Asset-Manifest ohne externe Bilder/Videos
 - Remotion-Source unter `ki/src/reels/antigravity-context-overload/`
 - Content-Grounding über Meaning → Derive → Sanitize → Associate → Render-Props
+- Caption-Layer
+- optionalem Voiceover-Slot für Phase 3
 - registrierter Remotion-Composition `KI-ContextOverload`
-- fokussiertem Contract-Test und Phase-1-Source-Check
+- fokussiertem Contract-Test
+- dependency-freiem Phase-1-Source-Check
+- Phase-1-Check als Teil des Reel-Preflights
 
-**Wichtig:** Phase 1 ist die Code-/Planungsgrundlage. Sie bedeutet noch nicht, dass Tests, Smoke-Frames oder der finale Render bereits tatsächlich ausgeführt wurden.
+**Prüfstatus:** Die Dateien und Verdrahtung sind im Repository angelegt und erneut aus dem Branch gelesen worden. Ein echter TypeScript-/Vitest-/Remotion-Lauf sowie Smoke-/Final-Render sind damit noch **nicht** behauptet; diese ausführbaren Prüfungen gehören spätestens zu Phase 3 und dürfen nur nach tatsächlicher Ausführung als bestanden markiert werden.
 
 ---
 
