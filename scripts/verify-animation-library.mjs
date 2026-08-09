@@ -15,6 +15,8 @@ const run = (command, args) =>
   });
 
 const checks = [
+  ['node', ['--check', 'scripts/check-ki-reel-folder-structure.mjs']],
+  ['node', ['--check', 'scripts/new-ki-reel.mjs']],
   [
     'node',
     [
@@ -58,6 +60,7 @@ const checks = [
   ['node', ['--check', 'scripts/verify-all-content-release.mjs']],
   ['node', ['--check', 'scripts/render-complete-content-release.mjs']],
   ['node', ['--check', 'scripts/verify-complete-content-release.mjs']],
+  ['node', ['scripts/check-ki-reel-folder-structure.mjs']],
   ['node', ['scripts/check-masterplan-production-inputs.mjs']],
   ['node', ['scripts/check-masterplan-production-fixtures.mjs']],
   ['node', ['scripts/check-first-content-grounding-test-contract.mjs']],
