@@ -2,7 +2,32 @@
 
 This repository is compatible with Google Antigravity IDE/CLI.
 
-First read `AGENTS.md` for repository-wide production and Git safety rules. For content-matching, grounding, animation-library tests, or the first production render test, load and follow `.agents/skills/content-grounding-test/SKILL.md`.
+First read `AGENTS.md` and `ki/AGENTS.md`. For reel work also read `ki/reels/AGENTS.md`.
+
+## Permanent reel-folder contract
+
+Every production reel package lives only at:
+
+`ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/`
+
+with the permanent folders:
+
+- `01-script-audio/`
+- `02-bilder/`
+- `03-caption/`
+- `04-pdf/`
+- `05-export/`
+- `06-projektdateien/`
+
+Before and after reel/package changes run:
+
+`node scripts/check-ki-reel-folder-structure.mjs`
+
+Create new reels only with:
+
+`node scripts/new-ki-reel.mjs "Reel Titel"`
+
+Never create `ki/<reel-name>/`. Never place planning files in `ki/src/reels/`. `ki/src/reels/<slug>/` is only for executable TS/TSX source after implementation starts.
 
 ## First production reel
 
@@ -10,53 +35,63 @@ When asked to build, render, finish, or continue the first real reel, use:
 
 `.agents/skills/build-context-overload-reel/SKILL.md`
 
-Approved reel package:
+Approved planning package:
 
-`ki/src/reels/antigravity-context-overload/`
+`ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
 
 Topic: `Warum mehr Kontext eine KI schlechter machen kann`.
 
+Its files are distributed by production area:
+
+- voiceover: `01-script-audio/voiceover.md`
+- asset manifest: `02-bilder/asset-manifest.json`
+- subtitle cues: `03-caption/subtitle-cues.json`
+- reel/scene/animation/assembly/review: `06-projektdateien/`
+
 Before implementation run:
 
-`node scripts/check-antigravity-context-overload-reel.mjs`
+`node scripts/run-antigravity-context-overload-preflight.mjs`
 
-Then follow the reel package's nested `AGENTS.md` and `CODEX_ASSEMBLY_TASK.md`. Do not rewrite the approved five-scene voiceover casually, do not replace the selected production-ready animation mechanisms, and do not inject demo values.
+Only after preflight succeeds may executable implementation be created separately under:
 
-## Fastest first-test path
+`ki/src/reels/antigravity-context-overload/`
 
-For the complete first grounding sequence, run this one command from the repository root:
+Do not move the planning package there.
+
+## Fastest first grounding-test path
+
+For the complete first grounding sequence, run from repository root:
 
 `node scripts/run-antigravity-content-test.mjs`
 
-It self-checks the Antigravity workspace configuration, validates the 22 production inputs, validates the first-test contract, runs the exact cost grounding test, runs the exact latency grounding test, verifies both generated summaries, and writes:
+It validates the Antigravity test contract, the 22 production inputs, the exact cost grounding case and the exact latency grounding case, then writes:
 
 `out/antigravity-content-test/summary.json`
 
-## Expanded first-test sequence
+## Expanded grounding sequence
 
-When asked to "test", "run the first test", "continue until we can test", or verify the content-matched animation system, the one-command runner executes this sequence:
+1. `node scripts/check-ki-reel-folder-structure.mjs`
+2. `node scripts/check-antigravity-content-test-contract.mjs`
+3. `node scripts/check-masterplan-production-inputs.mjs`
+4. `node scripts/check-first-content-grounding-test-contract.mjs`
+5. `node scripts/run-first-content-grounding-test.mjs`
+6. Inspect the cost `test-summary.json`.
+7. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
+8. Inspect the latency `test-summary.json`.
+9. If all are green, run `node scripts/run-content-release.mjs verify`.
 
-1. `node scripts/check-antigravity-content-test-contract.mjs`
-2. `node scripts/check-masterplan-production-inputs.mjs`
-3. `node scripts/check-first-content-grounding-test-contract.mjs`
-4. `node scripts/run-first-content-grounding-test.mjs`
-5. Inspect `out/first-content-grounding-test/cost-efficiency-budget-leak-meter-v1/test-summary.json`.
-6. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
-7. Inspect the corresponding latency `test-summary.json`.
-8. If all are green, run `node scripts/run-content-release.mjs verify`.
-
-If dependencies are missing, install the declared repository dependencies without changing the lockfile:
+If declared dependencies are missing, install them without modifying the lockfile:
 
 `npm install --workspaces=false --package-lock=false --no-audit --no-fund`
 
-Do not bypass the canonical production pipeline, weaken assertions, inject demo values, modify `main`, merge PR #3, or claim unexecuted tests passed.
+Do not bypass canonical production paths, weaken assertions, inject demo values, modify `main`, merge PR #3, or claim unexecuted tests passed.
 
-The first official exact-value assertions are:
+The first exact-value assertions remain:
 
 - cost: `94 Cent -> 28 Cent`, `measurementExact = 1`, `cost-efficiency`
 - latency: `780 ms -> 340 ms`, `measurementExact = 1`, `scale-performance`
 
-Only after grounding tests and technical verify are green may a smoke render be started with:
+Only after grounding tests and technical verify are green may a smoke render start with:
 
 `node scripts/run-content-release.mjs smoke`
 
