@@ -1,24 +1,28 @@
 {
-  "name": "studio",
+  "name": "ki-channel",
   "version": "0.1.0",
   "private": true,
-  "description": "Content-Studio mit 1 Kanal: KI-Kanal (FinanzNeo wurde nach memetreza34-ux/finanzneo extrahiert)",
+  "description": "Produktionssystem für den deutschen faceless KI-Kanal mit Remotion",
+  "engines": {
+    "node": ">=20 <21"
+  },
   "workspaces": [
     "core",
-    "channels/*"
+    "ki"
   ],
   "scripts": {
-    "validate:worktrees": "node scripts/validate-worktree-rules.mjs",
-    "validate:channels": "node scripts/validate-channels.mjs",
-    "validate:skills": "node scripts/validate-studio-skills.mjs",
-    "validate:motion-router": "node scripts/validate-motion-router.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
-    "test": "npm run ki:reel:structure-check && npm run validate:worktrees && npm run validate:channels && npm run validate:skills && vitest run",
-    "typecheck": "node scripts/typecheck.mjs",
-    "typecheck:all": "node scripts/typecheck.mjs --all",
-    "new-channel": "bash scripts/new-channel.sh",
+    "test": "npm run ki:reel:structure-check && vitest run",
+    "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
+    "typecheck:animation-library": "tsc --noEmit -p ki/tsconfig.animation-library.json",
+    "typecheck": "npm run typecheck:motion && npm run typecheck:animation-library",
+    "typecheck:all": "npm run typecheck",
+    "content:runtime:verify": "node scripts/verify-content-matched-runtime.mjs",
+    "repo:verify": "npm run typecheck && npm test && npm run content:runtime:verify",
+    "release:verify": "node scripts/run-content-release.mjs verify",
+    "release:smoke": "node scripts/run-content-release.mjs smoke",
+    "release:full": "node scripts/run-content-release.mjs full",
     "new-video": "node scripts/new-ki-reel.mjs",
-    "motion:route": "node scripts/route-motion-beats.mjs",
     "motion:script-check": "node --check scripts/motion-render-config.mjs && node --check scripts/motion-source-fingerprint.mjs && node --check scripts/motion-artifact-validation.mjs && node --check scripts/motion-release-summary.mjs && node --check scripts/render-motion-system.mjs && node --check scripts/check-motion-renders.mjs && node --check scripts/combine-motion-release-reports.mjs && node --check scripts/why-ai-reel-config.mjs && node --check scripts/render-why-ai-reel.mjs && node --check scripts/check-why-ai-reel.mjs && node --check scripts/__tests__/motion-source-fingerprint.test.mjs && node --check scripts/__tests__/motion-artifact-validation.test.mjs && node --check scripts/__tests__/motion-release-summary.test.mjs && node --check scripts/__tests__/why-ai-reel-config.test.mjs",
     "motion:node-test": "node --test scripts/__tests__/motion-source-fingerprint.test.mjs scripts/__tests__/motion-artifact-validation.test.mjs scripts/__tests__/motion-release-summary.test.mjs scripts/__tests__/why-ai-reel-config.test.mjs",
     "motion:test": "vitest run ki/src/motion-system/__tests__ ki/src/reels/why-ai-reads-differently/__tests__ && npm run motion:node-test",
@@ -89,11 +93,7 @@
     "micro-motion:full-release-check": "npm run micro-motion:verify && npm run micro-motion:render && npm run micro-motion:check",
     "bits:find": "npx -y remotion-bits find",
     "bits:fetch": "npx -y remotion-bits fetch",
-    "bits:mcp": "npx -y remotion-bits mcp",
-    "voice:prepare": "node scripts/prepare-voiceover.mjs",
-    "transcribe": "node scripts/transcribe.mjs",
-    "ingest": "node scripts/ingest.mjs",
-    "icons-index": "node scripts/icons-index.mjs"
+    "bits:mcp": "npx -y remotion-bits mcp"
   },
   "dependencies": {
     "@react-three/fiber": "^8.17.10",
