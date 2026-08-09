@@ -29,6 +29,33 @@ Create new reels only with:
 
 Never create `ki/<reel-name>/`. Never place planning files in `ki/src/reels/`. `ki/src/reels/<slug>/` is only for executable TS/TSX source after implementation starts.
 
+## Repository verification
+
+The root workspaces are canonical and must resolve as:
+
+- `core/` -> `@studio/core`
+- `ki/` -> `@studio/ki`
+
+Install dependencies from repository root with:
+
+`npm install --package-lock=false --no-audit --no-fund`
+
+Do not bypass workspaces. A missing or broken workspace is a repository defect and must not be hidden with `--workspaces=false`.
+
+Canonical technical gates:
+
+- `npm run ki:reel:structure-check`
+- `npm run typecheck`
+- `npm test`
+- `npm run content:runtime:verify`
+- `npm run repo:verify`
+
+Canonical content-release commands:
+
+- `npm run release:verify`
+- `npm run release:smoke`
+- `npm run release:full`
+
 ## First production reel
 
 When asked to build, render, finish, or continue the first real reel, use:
@@ -78,11 +105,7 @@ It validates the Antigravity test contract, the 22 production inputs, the exact 
 6. Inspect the cost `test-summary.json`.
 7. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
 8. Inspect the latency `test-summary.json`.
-9. If all are green, run `node scripts/run-content-release.mjs verify`.
-
-If declared dependencies are missing, install them without modifying the lockfile:
-
-`npm install --workspaces=false --package-lock=false --no-audit --no-fund`
+9. If all are green, run `npm run release:verify`.
 
 Do not bypass canonical production paths, weaken assertions, inject demo values, modify `main`, merge PR #3, or claim unexecuted tests passed.
 
@@ -93,6 +116,6 @@ The first exact-value assertions remain:
 
 Only after grounding tests and technical verify are green may a smoke render start with:
 
-`node scripts/run-content-release.mjs smoke`
+`npm run release:smoke`
 
 Full release and merge remain separate explicit decisions.
