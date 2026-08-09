@@ -1,82 +1,79 @@
 # Antigravity Assembly Task — Context Overload Reel
 
-Build the first real five-scene production reel from this package.
+Build the first real five-scene production reel from the canonical planning package:
+
+`ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
+
+Do not move or flatten this package.
 
 ## Read first
 
-1. Repository root `AGENTS.md`
-2. Repository root `GEMINI.md`
-3. This reel package's `AGENTS.md`
-4. `reel.json`
-5. `voiceover.md`
-6. `scene-plan.md`
-7. `animation-plan.md`
-8. `subtitle-cues.json`
-9. `asset-manifest.json`
-10. `review-checklist.md`
+1. Repository `AGENTS.md`
+2. `ki/AGENTS.md`
+3. `ki/reels/AGENTS.md`
+4. Repository `GEMINI.md`
+5. `06-projektdateien/AGENTS.md`
+6. `06-projektdateien/reel.json`
+7. `01-script-audio/voiceover.md`
+8. `06-projektdateien/scene-plan.md`
+9. `06-projektdateien/animation-plan.md`
+10. `03-caption/subtitle-cues.json`
+11. `02-bilder/asset-manifest.json`
+12. `06-projektdateien/review-checklist.md`
 
 ## Goal
 
-Create one deterministic Remotion composition for `antigravity-context-overload` using the five already production-ready content-aware animation mechanisms defined in `reel.json`.
+Create one deterministic Remotion composition for `antigravity-context-overload` using the five already production-ready content-aware animation mechanisms defined in `06-projektdateien/reel.json`.
 
-Do not redesign the project architecture. Reuse the existing production runtime-grounding chain and prototype components.
+The planning package remains under `ki/reels/<week>/<NN_reel>/`. The executable implementation is separate under:
+
+`ki/src/reels/antigravity-context-overload/`
+
+Do not copy planning documents into the source folder.
 
 ## Required implementation
 
-- Create the reel-specific source under this directory without changing the approved spoken text or scene order.
-- Register exactly one production composition for this reel without breaking existing library previews.
+- First run `node scripts/check-ki-reel-folder-structure.mjs`.
+- Create reel-specific TS/TSX source only under `ki/src/reels/antigravity-context-overload/`.
+- Register exactly one production composition without breaking existing library previews.
 - Composition format: 1080 × 1920, 30 FPS, 900 frames.
-- Five scenes, exactly 180 frames each, with continuous frame ranges and no gaps.
-- Use the animation IDs declared in `reel.json`; do not substitute shell-only or concept variants.
-- Ground each scene from its `spokenText` through the canonical meaning → derive → sanitize → associate → render-props path.
+- Five scenes, exactly 180 frames each, continuous and gap-free.
+- Preserve approved spoken text and scene order.
+- Use the animation IDs declared in `06-projektdateien/reel.json`; do not substitute shell-only/concept variants.
+- Ground each scene from its `spokenText` through meaning → derive → sanitize → associate → render-props.
 - Do not inject direct `labels` or `values` from demo fixtures.
-- Render subtitles from `subtitle-cues.json` in a dedicated safe zone.
-- No music and no SFX for the first pass.
-- No external image assets are required.
+- Render subtitles from `03-caption/subtitle-cues.json` in a dedicated safe zone.
+- No music/SFX and no external image assets for the first pass.
 
 ## Required tests
 
-Add focused contract tests proving:
-
-- format is 1080 × 1920 at 30 FPS
-- duration is exactly 900 frames
-- exactly five unique scene IDs exist
-- scene frame ranges are continuous and non-overlapping
-- every selected animation ID is production-ready
-- every subtitle cue stays inside its scene
-- concatenated subtitle text covers the approved spoken text per scene
-- no animation ID is reused in the reel
-- no direct demo fixture values are imported into the reel
+Add focused contract tests proving format, exact 900-frame duration, five unique scene IDs, continuous non-overlapping scene ranges, production eligibility, subtitle bounds/coverage, animation uniqueness and demo-value isolation.
 
 ## Required execution order
 
 Before implementation:
 
-`node scripts/run-antigravity-content-test.mjs`
-
-Then implement the reel.
+1. `node scripts/check-ki-reel-folder-structure.mjs`
+2. `node scripts/run-antigravity-context-overload-preflight.mjs`
 
 After implementation:
 
-1. run the reel package validator
-2. run focused reel tests
-3. run TypeScript checking for the relevant Remotion/reel source
-4. render smoke frames at the beginning, midpoint, and end of every scene
-5. inspect all smoke frames visually
-6. fix any overflow, overlap, empty opening state, misleading value, or unclear motion
-7. render the full 900-frame MP4
-8. validate the MP4 technically
-9. update `review-checklist.md` only for items actually verified
+1. run `node scripts/check-ki-reel-folder-structure.mjs` again
+2. run `node scripts/check-antigravity-context-overload-reel.mjs`
+3. run focused reel tests
+4. run TypeScript checking for relevant Remotion/reel source
+5. render smoke frames at beginning, midpoint and end of every scene
+6. inspect all 15 smoke frames visually
+7. fix overflow, overlap, empty opening state, misleading values or unclear motion
+8. render the full 900-frame MP4
+9. validate the MP4 technically
+10. update `06-projektdateien/review-checklist.md` only for items actually verified
+11. run the folder-structure validator once more
 
 ## Stop conditions
 
-Do not claim completion if:
+Do not claim completion if structure validation fails, any test fails, any scene uses an ungrounded numeric fact, subtitles overlap the explanation, a full animation repeats, opening/final state is unreadable, or the full MP4 was not actually rendered and inspected.
 
-- any test is failing
-- any scene uses an ungrounded numeric fact
-- subtitles overlap the main explanation
-- any full animation is repeated
-- an opening or final state is unreadable
-- the full MP4 has not actually been rendered and inspected
+Never create `ki/<reel-name>/`, never flatten the package into `ki/reels/<slug>/`, never relocate planning into `ki/src/reels/`, and never remove the permanent 01–06 folders.
 
-Do not merge PR #3 or modify `main` as part of this task.
+Do not merge PR #3 or modify `main`.
