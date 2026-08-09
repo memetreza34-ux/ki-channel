@@ -7,6 +7,7 @@ const PACKAGE_ROOT =
 const failures = [];
 const fail = (message) => failures.push(message);
 const read = (path) => readFileSync(resolve(path), 'utf8');
+const readJson = (path) => JSON.parse(read(path));
 
 const requiredSourceFiles = [
   'contract.ts',
@@ -37,6 +38,25 @@ for (const file of requiredPackageFiles) {
   if (!existsSync(resolve(path))) fail(`${path} fehlt`);
 }
 
+const reelPath = `${PACKAGE_ROOT}/06-projektdateien/reel.json`;
+if (existsSync(resolve(reelPath))) {
+  const reel = readJson(reelPath);
+  for (const [index, scene] of (reel.scenes ?? []).entries()) {
+    if (typeof scene.headline !== 'string' || !scene.headline.trim()) {
+      fail(`reel.json Szene ${index + 1}: Zuschauer-Headline fehlt`);
+    }
+    if ((scene.headline ?? '').length > 38) {
+      fail(`reel.json Szene ${index + 1}: Zuschauer-Headline ist zu lang`);
+    }
+    if (!scene.visualLabels || Object.keys(scene.visualLabels).length === 0) {
+      fail(`reel.json Szene ${index + 1}: kuratierte visualLabels fehlen`);
+    }
+    if (scene.headline === scene.goal) {
+      fail(`reel.json Szene ${index + 1}: internes goal darf nicht als Headline verwendet werden`);
+    }
+  }
+}
+
 if (existsSync(resolve(`${SOURCE_ROOT}/runtime.ts`))) {
   const runtime = read(`${SOURCE_ROOT}/runtime.ts`);
   for (const stage of [
@@ -50,6 +70,28 @@ if (existsSync(resolve(`${SOURCE_ROOT}/runtime.ts`))) {
   }
   if (!runtime.includes('ANIMATION_PROTOTYPE_REGISTRY')) {
     fail('runtime.ts: production-ready Prototype-Registry wird nicht verwendet');
+  }
+  if (!runtime.includes('title: scene.headline')) {
+    fail('runtime.ts: Zuschauer-Headline wird nicht als Production-Titel verwendet');
+  }
+  if (!runtime.includes('...scene.visualLabels')) {
+    fail('runtime.ts: kuratierte visualLabels werden nicht über die abgeleiteten Labels gelegt');
+  }
+  if (runtime.includes('title: scene.goal')) {
+    fail('runtime.ts: internes Szenenziel wird noch als sichtbarer Titel verwendet');
+  }
+}
+
+const prototypeShellPath = 'ki/src/animation-library/prototypes/PrototypeShell.tsx';
+if (!existsSync(resolve(prototypeShellPath))) {
+  fail(`${prototypeShellPath} fehlt`);
+} else {
+  const shell = read(prototypeShellPath);
+  if (!shell.includes('content.labels.shellSubtitle')) {
+    fail('PrototypeShell: Production-Unterzeile ist nicht explizit opt-in');
+  }
+  if (shell.includes('content?.spokenText || subtitle')) {
+    fail('PrototypeShell: Sprechertext wird noch automatisch als zweite Unterzeile dupliziert');
   }
 }
 
@@ -89,6 +131,16 @@ if (!existsSync(resolve(workflowPath))) {
   }
 }
 
+const reelsBrainPath = 'ki/gehirn/REELS.md';
+if (!existsSync(resolve(reelsBrainPath))) {
+  fail(`${reelsBrainPath} fehlt`);
+} else {
+  const brain = read(reelsBrainPath);
+  if (!brain.includes('Text-Hierarchie — keine Dopplung')) {
+    fail(`${reelsBrainPath}: Anti-Dopplungs-Regel fehlt`);
+  }
+}
+
 const voiceoverPath = `${PACKAGE_ROOT}/01-script-audio/voiceover.md`;
 if (existsSync(resolve(voiceoverPath))) {
   const voiceover = read(voiceoverPath);
@@ -103,5 +155,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'Context-Overload Phase 1 vollständig verdrahtet: Wochenpaket, klarer Audio-Handoff, content-grounded Remotion-Source, Caption-Layer, Tests und Composition-Registrierung sind vorhanden.',
+  'Context-Overload Phase 1 vollständig verdrahtet: Wochenpaket, Audio-Handoff, content-grounded Remotion-Source, klare Text-Hierarchie, Caption-Layer, Tests und Composition-Registrierung sind vorhanden.',
 );
