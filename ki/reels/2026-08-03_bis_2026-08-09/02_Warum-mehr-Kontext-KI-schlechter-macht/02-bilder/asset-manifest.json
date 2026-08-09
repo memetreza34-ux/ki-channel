@@ -10,8 +10,10 @@
     "sfx": []
   },
   "notes": [
-    "The first implementation pass must work without external image assets.",
-    "Voiceover may be added later; timing currently follows the approved scene text and 180-frame scene durations.",
+    "Phase 1 requires no external image or video assets; the reel is built from production-ready Remotion mechanisms.",
+    "The null voiceover is intentional until the human completes Phase 2 by adding 01-script-audio/voiceover.wav or voiceover.mp3.",
+    "Phase 3 must integrate the real human-supplied voiceover and then update the audio declaration; it must never synthesize or invent a replacement asset.",
+    "Baseline timing follows the approved scene text and five 180-frame scene durations until the real audio is measured.",
     "Do not download or invent assets during render time."
   ]
 }
