@@ -4,6 +4,11 @@ import {resolve} from 'node:path';
 
 const steps = [
   {
+    id: 'folder-structure',
+    command: 'node',
+    args: ['scripts/check-ki-reel-folder-structure.mjs'],
+  },
+  {
     id: 'grounding-system',
     command: 'node',
     args: ['scripts/run-antigravity-content-test.mjs'],
@@ -53,14 +58,17 @@ try {
 }
 
 const summary = {
-  version: 1,
+  version: 2,
   reelSlug: 'antigravity-context-overload',
+  planningPackage:
+    'ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht',
+  executableSourceTarget: 'ki/src/reels/antigravity-context-overload',
   status,
   generatedAt: new Date().toISOString(),
   steps: results,
   failure,
   nextAllowedAction: status === 'passed'
-    ? 'implement-reel'
+    ? 'implement-reel-source-without-moving-planning-package'
     : 'fix-first-failing-preflight-step',
 };
 await writeFile(
@@ -74,5 +82,7 @@ if (status !== 'passed') {
   process.exit(1);
 }
 
-console.log('\n[antigravity-reel-preflight] BESTANDEN · Grounding-System und Reel-Paket sind bereit für die Implementierung.');
+console.log(
+  '\n[antigravity-reel-preflight] BESTANDEN · Folder-Struktur, Grounding-System und Reel-Paket sind bereit; Planung bleibt im Wochenordner, ausführbarer Source darf separat implementiert werden.',
+);
 console.log(`[antigravity-reel-preflight] Summary: ${resolve(outputRoot, 'summary.json')}`);
