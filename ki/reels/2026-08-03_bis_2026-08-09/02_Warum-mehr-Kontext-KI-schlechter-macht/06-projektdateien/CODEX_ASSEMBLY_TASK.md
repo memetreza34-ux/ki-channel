@@ -1,10 +1,16 @@
-# Antigravity Assembly Task — Context Overload Reel
+# Phase 3 Assembly Task — Context Overload Reel
 
-Build the first real five-scene production reel from the canonical planning package:
+This task starts **after Phase 1 is already implemented and after the human has supplied Phase-2 voiceover audio**.
+
+Planning package:
 
 `ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
 
-Do not move or flatten this package.
+Existing executable source:
+
+`ki/src/reels/antigravity-context-overload/`
+
+Do not move or flatten either location.
 
 ## Read first
 
@@ -12,68 +18,95 @@ Do not move or flatten this package.
 2. `ki/AGENTS.md`
 3. `ki/reels/AGENTS.md`
 4. Repository `GEMINI.md`
-5. `06-projektdateien/AGENTS.md`
-6. `06-projektdateien/reel.json`
-7. `01-script-audio/voiceover.md`
-8. `06-projektdateien/scene-plan.md`
-9. `06-projektdateien/animation-plan.md`
-10. `03-caption/subtitle-cues.json`
-11. `02-bilder/asset-manifest.json`
-12. `06-projektdateien/review-checklist.md`
+5. `ki/gehirn/PRODUKTIONSABLAUF.md`
+6. `06-projektdateien/AGENTS.md`
+7. `06-projektdateien/PHASE-STATUS.md`
+8. `06-projektdateien/reel.json`
+9. `01-script-audio/voiceover.md`
+10. `06-projektdateien/scene-plan.md`
+11. `06-projektdateien/animation-plan.md`
+12. `03-caption/subtitle-cues.json`
+13. `02-bilder/asset-manifest.json`
+14. `06-projektdateien/review-checklist.md`
 
-## Goal
+## Phase ownership
 
-Create one deterministic Remotion composition for `antigravity-context-overload` using the five already production-ready content-aware animation mechanisms defined in `06-projektdateien/reel.json`.
+### Phase 1 — already done before this task
 
-The planning package remains under `ki/reels/<week>/<NN_reel>/`. The executable implementation is separate under:
+Phase 1 owns:
 
-`ki/src/reels/antigravity-context-overload/`
+- approved script
+- planning package
+- exact scene order and animation IDs
+- subtitle baseline
+- asset policy
+- content-grounded Remotion source
+- Composition registration
+- focused source/contract checks
 
-Do not copy planning documents into the source folder.
+Do **not** rebuild this work from scratch.
 
-## Required implementation
+### Phase 2 — human
 
-- First run `node scripts/check-ki-reel-folder-structure.mjs`.
-- Create reel-specific TS/TSX source only under `ki/src/reels/antigravity-context-overload/`.
-- Register exactly one production composition without breaking existing library previews.
-- Composition format: 1080 × 1920, 30 FPS, 900 frames.
-- Five scenes, exactly 180 frames each, continuous and gap-free.
-- Preserve approved spoken text and scene order.
-- Use the animation IDs declared in `06-projektdateien/reel.json`; do not substitute shell-only/concept variants.
-- Ground each scene from its `spokenText` through meaning → derive → sanitize → associate → render-props.
-- Do not inject direct `labels` or `values` from demo fixtures.
-- Render subtitles from `03-caption/subtitle-cues.json` in a dedicated safe zone.
-- No music/SFX and no external image assets for the first pass.
+The human creates exactly one real voiceover from `01-script-audio/voiceover.md` and places it in `01-script-audio/`, preferably as `voiceover.wav`, alternatively `voiceover.mp3`.
 
-## Required tests
+### Phase 3 — this task
 
-Add focused contract tests proving format, exact 900-frame duration, five unique scene IDs, continuous non-overlapping scene ranges, production eligibility, subtitle bounds/coverage, animation uniqueness and demo-value isolation.
+Your job is to integrate the real audio, verify the existing Phase-1 implementation, adjust only what the real audio or actual failures require, visually review and export.
 
-## Required execution order
+## Required Phase-3 execution order
 
-Before implementation:
+1. Confirm branch is not `main`.
+2. Run `node scripts/check-ki-reel-folder-structure.mjs`.
+3. Run `node scripts/run-antigravity-context-overload-preflight.mjs`.
+4. Verify Phase-1 source exists under `ki/src/reels/antigravity-context-overload/`.
+5. Verify the `KI-ContextOverload` Composition remains registered in `ki/src/Root.tsx`.
+6. Locate `01-script-audio/voiceover.wav` or `voiceover.mp3`.
+7. If audio is absent, STOP with `PHASE 2 AUDIO FEHLT`. Never fabricate voiceover.
+8. Measure real audio duration.
+9. Integrate the audio in a Remotion-accessible location/configuration.
+10. Preserve the approved five spoken texts, scene order and exact five animation IDs.
+11. Keep every scene on the pipeline spokenText → meaning → derive → sanitize → associate → render-props.
+12. Align subtitle timing to the actual voiceover while retaining complete word coverage.
+13. If the audio does not fit the 900-frame contract naturally, do not silently time-stretch, truncate or rewrite speech. Report the mismatch and make only an explicit contract-safe change.
+14. Run the folder validator again.
+15. Run `node scripts/check-antigravity-context-overload-reel.mjs`.
+16. Run the focused reel tests.
+17. Run relevant TypeScript checking.
+18. Render three smoke frames per scene: opening, midpoint and final readable hold.
+19. Inspect all 15 smoke frames visually.
+20. Fix actual overflow, overlap, empty opening state, misleading values, semantic mismatch or unreadable mobile text.
+21. Render the full reel only after smoke review is clean.
+22. Validate the MP4 technically and watch it at normal speed.
+23. Update `review-checklist.md` and `PHASE-STATUS.md` only for work actually completed.
+24. Run the folder validator once more.
+25. Report exact commands, test state, measured audio duration, smoke paths, final MP4 path and any remaining blocker.
 
-1. `node scripts/check-ki-reel-folder-structure.mjs`
-2. `node scripts/run-antigravity-context-overload-preflight.mjs`
+## Fixed production contract
 
-After implementation:
+- Composition: `KI-ContextOverload`
+- Slug: `antigravity-context-overload`
+- 1080 × 1920
+- 30 FPS
+- baseline duration: 900 frames
+- five scenes
+- baseline scene duration: 180 frames each
+- no music
+- no SFX
+- no external image/video assets in the first production pass
 
-1. run `node scripts/check-ki-reel-folder-structure.mjs` again
-2. run `node scripts/check-antigravity-context-overload-reel.mjs`
-3. run focused reel tests
-4. run TypeScript checking for relevant Remotion/reel source
-5. render smoke frames at beginning, midpoint and end of every scene
-6. inspect all 15 smoke frames visually
-7. fix overflow, overlap, empty opening state, misleading values or unclear motion
-8. render the full 900-frame MP4
-9. validate the MP4 technically
-10. update `06-projektdateien/review-checklist.md` only for items actually verified
-11. run the folder-structure validator once more
+Selected animation IDs:
+
+1. `context-window-context-window-train-v1`
+2. `relationship-network-dependency-bridge-builder-v1`
+3. `retrieval-search-knowledge-magnet-v1`
+4. `input-output-funnel-compression-output-v1`
+5. `generation-answer-loom-v1`
 
 ## Stop conditions
 
-Do not claim completion if structure validation fails, any test fails, any scene uses an ungrounded numeric fact, subtitles overlap the explanation, a full animation repeats, opening/final state is unreadable, or the full MP4 was not actually rendered and inspected.
+Do not claim completion if audio is missing, structure validation fails, tests fail, a scene uses ungrounded numeric facts, subtitles lose spoken words, text overlaps the explanation, a selected animation is replaced without a proven reason, smoke frames were not actually inspected, or the final MP4 was not actually rendered and watched.
 
-Never create `ki/<reel-name>/`, never flatten the package into `ki/reels/<slug>/`, never relocate planning into `ki/src/reels/`, and never remove the permanent 01–06 folders.
+Never create `ki/<reel-name>/`, never flatten the package into `ki/reels/<slug>/`, never relocate planning into `ki/src/reels/`, and never remove permanent 01–06 folders.
 
 Do not merge PR #3 or modify `main`.
