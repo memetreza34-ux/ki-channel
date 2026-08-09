@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {
   AbsoluteFill,
-  Audio,
+  Html5Audio,
   Sequence,
   interpolate,
   useCurrentFrame,
@@ -96,7 +96,7 @@ export const ReelContextOverload: React.FC<ReelContextOverloadProps> = ({
         </Sequence>
       ))}
 
-      {voiceoverSrc ? <Audio src={voiceoverSrc} /> : null}
+      {voiceoverSrc ? <Html5Audio src={voiceoverSrc} /> : null}
       {showCaptions ? <ContextOverloadCaptions /> : null}
       {showDebugTimeline ? <DebugTimeline /> : null}
     </AbsoluteFill>
