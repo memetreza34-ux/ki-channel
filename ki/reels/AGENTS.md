@@ -23,7 +23,7 @@ Die sechs nummerierten Ordner niemals entfernen, umbenennen, verschieben oder fl
 
 - Phase 1 offen → Planung und Code-Grundlage vervollständigen
 - Phase 2 → Mensch macht ausschließlich Voiceover
-- Phase 3 → Agent integriert Audio, prüft und rendert
+- Phase 3 → Agent integriert Audio, synchronisiert, prüft und rendert
 
 Phase 3 darf kein Phase-1-Reel neu entwerfen.
 
@@ -78,6 +78,31 @@ Regeln:
 
 Phase 3 darf NEW_BUILD/REUSE_EXACT nicht aus Bequemlichkeit ändern.
 
+## Phase-3 Timeline Contract — Audio darf lokal feinjustiert werden
+
+Das echte Voiceover ist die akustische Grundlage. Der Agent muss die **gesamte audiovisuelle Timeline** optimieren, nicht nur Captions verschieben.
+
+Bei zu schnellem/zu langsamem Sprecherabschnitt gilt:
+
+1. zuerst Animation, Hold, Szenenlänge und Beat-Timing anpassen
+2. natürliche Pause an Phrase-/Satzgrenze leicht verkürzen oder verlängern
+3. wenn nötig eine komplette Phrase / einen Cue **pitch-erhaltend lokal time-stretchen**
+4. danach Caption-Cues und Wort-Timestamps auf das tatsächlich verwendete Audio neu synchronisieren
+
+Verbindlich:
+
+- Speedwechsel nur an natürlichen Phrasen-/Pausengrenzen, niemals mitten im Wort
+- keine abrupten Speed-Sprünge
+- Pitch erhalten
+- Sprechertext bleibt wortgleich und in gleicher Reihenfolge
+- bevorzugt ungefähr `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- über ungefähr ±6 % nicht weiter verzerren; stattdessen Phase-2-Voiceover neu erzeugen lassen
+- keine Wörter schneiden, duplizieren oder künstlich verlängern
+- keine starre Zielsekunde erzwingen, wenn Natürlichkeit leidet
+- verwendete lokale Retiming-Faktoren im Phase-3-Abschlussbericht nennen
+
+Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen denselben Moment.**
+
 ## Verbindliches sichtbares Textlayout
 
 Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
@@ -90,7 +115,7 @@ Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung
 - Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
 - Sans-Serif und smartphone-lesbar
 - aktive Sprecherposition in Marken-Lila hervorheben
-- finale Untertitel in Phase 3 mit dem echten Voiceover zeitlich abgleichen
+- finale Untertitel in Phase 3 mit dem **tatsächlich final verwendeten Audio** zeitlich abgleichen
 
 ## Harte Caption-Zone
 
@@ -163,10 +188,12 @@ Widerspruch erkennen, nicht verstecken.
 
 Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
 
-Zur visuellen Freigabe gehört ausdrücklich:
+Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 
 - Visual Beats passen exakt zum Sprecherinhalt
 - keine bequeme/ungefähre Library-Reuse
+- Sprecher, Visual Beat und Caption treffen zeitlich denselben Moment
+- lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
 - Header/Icon-Position
 - vollständige lila Zwischenüberschrift
 - Caption-Safe-Zone
