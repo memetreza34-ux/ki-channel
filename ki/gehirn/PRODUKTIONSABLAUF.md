@@ -1,6 +1,6 @@
 # KI-Kanal — verbindlicher 3-Phasen-Produktionsablauf
 
-Dieser Ablauf ist der Normalfall für jedes neue Reel.
+Dieser Ablauf ist der Normalfall für jedes neue Short-Form-Reel.
 
 ## Phase 1 — ChatGPT: komplette Grundlage
 
@@ -20,6 +20,7 @@ Phase 1 erstellt:
 - bei Bildbedarf hochwertige `02-bilder/image-prompts.md` nach `ki/BILDSTIL.md`
 - `02-bilder/asset-manifest.json`, auch wenn bewusst keine externen Assets nötig sind
 - `03-caption/subtitle-cues.json` als Audio-unabhängige Basis
+- `03-caption/platform-copy.md` für YouTube Shorts, Instagram, TikTok, Facebook und ggf. Snapchat
 - `06-projektdateien/reel.json`
 - Assembly-Auftrag und Review-Checkliste
 - ausführbaren Remotion-Source unter `ki/src/reels/<slug>/`
@@ -29,6 +30,8 @@ Phase 1 erstellt:
 - `PHASE-STATUS.md`
 
 **Phase 1 darf kein echtes Voiceover vortäuschen.** Fehlendes Audio ist hier normal.
+
+Plattform-Copy ist Packaging und darf die fachliche Aussage des Reels nicht verändern. Regeln: `PLATTFORMEN.md`.
 
 ### Phase-1-Fertigkriterium
 
@@ -46,7 +49,7 @@ Nur Skript/Plan ohne ausführbaren Source ist nicht Phase-1-fertig.
 2. Text wortgetreu mit der gewünschten Stimme erzeugen.
 3. bevorzugt `voiceover.wav`, alternativ `voiceover.mp3` speichern.
 4. Datei in `01-script-audio/` ablegen.
-5. keine JSON-, Caption-, Szenen-, Prompt- oder TS/TSX-Datei ändern.
+5. keine JSON-, Caption-, Szenen-, Prompt-, Plattform-Copy- oder TS/TSX-Datei ändern.
 
 Wenn der Text geändert werden soll, zurück zu Phase 1.
 
@@ -76,6 +79,7 @@ Pflichten:
 12. finales MP4 rendern.
 13. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
 14. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
+15. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
 
 ## Stop-Bedingungen
 
@@ -92,6 +96,7 @@ Nicht als fertig melden bei:
 - falscher Animation
 - ungeprüften Smoke-Frames
 - nicht angesehenem finalen MP4
+- fehlender/irreführender Plattform-Copy bei behaupteter Publishing-Bereitschaft
 
 ## Kurzform
 
@@ -104,4 +109,7 @@ nur Voiceover
         ↓
 PHASE 3 — Codex / Antigravity
 integrieren + prüfen + rendern
+        ↓
+PUBLISHING
+freigegebenen Master plattformgerecht verpacken
 ```

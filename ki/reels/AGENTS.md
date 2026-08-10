@@ -37,6 +37,7 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 - `scene-plan.md`
 - `animation-plan.md`
 - `03-caption/subtitle-cues.json`
+- `03-caption/platform-copy.md`
 - `02-bilder/asset-manifest.json`
 - bei Bildbedarf `02-bilder/image-prompts.md`
 - Assembly-/Agent-Auftrag
@@ -46,6 +47,21 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 - fokussierte Source-/Contract-Checks
 
 Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig.
+
+## Plattform-Copy
+
+`03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält mindestens getrennte Bereiche für:
+
+- neutralen Kerntitel
+- YouTube Shorts
+- Instagram
+- TikTok
+- Facebook Reels
+- Snapchat, falls genutzt
+
+Die Plattformtexte dürfen die fachliche Aussage nicht verändern oder mehr versprechen als das Reel liefert.
+
+Keine plattformspezifische Kopie des gesamten Produktionspakets anlegen. Publishing-Regeln: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
 
 ## Bildbereich
 
@@ -68,12 +84,15 @@ Wenn kein Bild nötig ist, ausdrücklich `BILDER NICHT ERFORDERLICH` dokumentier
 4. `scene-plan.md`
 5. `animation-plan.md`
 6. `subtitle-cues.json`
-7. `asset-manifest.json` / `image-prompts.md`
-8. `CODEX_ASSEMBLY_TASK.md`
-9. `review-checklist.md`
+7. `platform-copy.md`
+8. `asset-manifest.json` / `image-prompts.md`
+9. `CODEX_ASSEMBLY_TASK.md`
+10. `review-checklist.md`
 
 Widerspruch erkennen, nicht verstecken.
 
 ## Fertig bedeutet wirklich fertig
 
 Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
+
+`veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.

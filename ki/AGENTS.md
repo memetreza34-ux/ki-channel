@@ -4,14 +4,15 @@ Diese Datei erweitert `REPO-STATE.md` und `AGENTS.md`.
 
 ## Gehirn zuerst
 
-Für jede KI-Reel-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die vier autoritativen Bereiche:
+Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die autoritativen Bereiche:
 
 - `KANAL.md` — Identität und Ton
 - `REELS.md` — Reel- und Text-Hierarchie
+- `PLATTFORMEN.md` — Publishing, YouTube und weitere Plattformen
 - `PRODUKTIONSABLAUF.md` — 3 Phasen
 - `../BILDSTIL.md` — Bild-/Prompt-Qualität
 
-## Harte Ordnerstruktur
+## Harte Short-Form-Ordnerstruktur
 
 Jedes Produktionsreel liegt dauerhaft hier:
 
@@ -50,7 +51,7 @@ node scripts/check-ki-reel-folder-structure.mjs
 
 - `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
 - `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption
+- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
 - `04-pdf/` — optionale PDF-Assets
 - `05-export/` — Smoke-Frames, Review-Renders, finale MP4
 - `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
@@ -62,6 +63,20 @@ ki/src/reels/<slug>/
 ```
 
 Keine Planungsdokumente in den Source-Ordner kopieren.
+
+## Plattformbereich
+
+Publishing-Regeln liegen unter:
+
+```text
+ki/plattformen/
+```
+
+Bei Plattformaufgaben zusätzlich `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/AGENTS.md` lesen.
+
+Plattformordner dürfen kein zweites Skript, keinen zweiten Reel-Source und keine zweite Master-Wahrheit anlegen. Short-Form wird einmal produziert; YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden den freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
+
+YouTube Longform ist ein separates Format und wird nicht automatisch aus Reels erzeugt.
 
 ## Phasen
 
@@ -105,5 +120,6 @@ Mindestens prüfen:
 - Asset-Pfade
 - keine ungrounded Werte
 - visuelle Safe-Zones über reale Smoke-Frames
+- Plattform-Copy vorhanden, wenn das Reel Phase-1-fertig gemeldet wird
 
 Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.

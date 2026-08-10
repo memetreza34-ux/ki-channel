@@ -16,6 +16,17 @@ Ziel: minimalen, richtigen Kontext laden und keine historischen Branches/Docs al
 7. nächstes reel-spezifisches `AGENTS.md`
 8. nur die für die aktuelle Phase benötigten Reel-Dateien
 
+## Für Plattform / YouTube
+
+3. `ki/AGENTS.md`
+4. `ki/gehirn/MASTER.md`
+5. `ki/gehirn/PLATTFORMEN.md`
+6. `ki/plattformen/AGENTS.md`
+7. passender Plattformordner, bei YouTube `ki/plattformen/youtube/README.md`
+8. bei einem konkreten Reel dessen `03-caption/platform-copy.md`
+
+Keine Plattformkopie des gesamten Reel-Projekts anlegen.
+
 ## Branch-Regel
 
 `main` ist kanonisch. Historische `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches nicht laden, außer der Nutzer nennt sie ausdrücklich.
@@ -28,7 +39,7 @@ Wird normalerweise von ChatGPT abgeschlossen. Source-Ziel:
 ki/src/reels/<slug>/
 ```
 
-Planungsdateien bleiben im Wochenpaket.
+Planungsdateien bleiben im Wochenpaket. Plattform-Copy liegt in `03-caption/platform-copy.md`.
 
 ## Phase 2
 
@@ -70,4 +81,5 @@ technisch getestet
 gerendert
 visuell geprüft
 freigegeben
+veröffentlicht
 ```

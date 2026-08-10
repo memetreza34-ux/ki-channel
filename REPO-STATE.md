@@ -14,19 +14,21 @@ Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main
 
 ## 2. Verbindliche Lesereihenfolge
 
-Bei KI-Reel-Arbeit gilt:
+Bei KI-Kanal-Arbeit gilt:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
 3. `ki/AGENTS.md`
 4. `ki/gehirn/MASTER.md`
-5. `ki/reels/AGENTS.md`
-6. das ausdrücklich genannte Wochen-Reel und dessen nächstes `AGENTS.md`
-7. erst danach reel-spezifische Pläne und Source-Dateien
+5. danach die passende Domäne:
+   - Reel-Arbeit → `ki/reels/AGENTS.md`
+   - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
+6. das ausdrücklich genannte Reel/Format und dessen nächstes `AGENTS.md`
+7. erst danach konkrete Pläne, Source- oder Plattformdateien
 
 Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
 
-## 3. Kanonische Produktionsstruktur
+## 3. Kanonische Short-Form-Produktionsstruktur
 
 Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
 
@@ -49,11 +51,36 @@ ki/src/reels/<slug>/
 
 Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
 
-## 4. Verbindliches 3-Phasen-Modell
+## 4. Plattform-/Publishing-Struktur
+
+Plattformlogik liegt hier:
+
+```text
+ki/plattformen/
+├── youtube/
+├── instagram/
+├── tiktok/
+├── facebook/
+└── snapchat/
+```
+
+Diese Ordner enthalten **Publishing-Regeln und Templates, keine zweite Produktionswahrheit**.
+
+Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Plattform-spezifische Copy eines Reels gehört nach:
+
+```text
+03-caption/platform-copy.md
+```
+
+YouTube Longform ist ein separates Format und wird nicht automatisch aus Reels erzeugt.
+
+Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
+
+## 5. Verbindliches 3-Phasen-Modell
 
 ```text
 PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen + Animationen + Bildprompts/Manifest + Captions + Remotion-Code-Grundlage + Checks
+Idee + Fakten + Skript + Copy-Text + Szenen + Animationen + Bildprompts/Manifest + Captions + Plattform-Copy + Remotion-Code-Grundlage + Checks
 
 PHASE 2 — Mensch
 nur das echte Voiceover erzeugen und in 01-script-audio ablegen
@@ -64,7 +91,7 @@ Audio integrieren + Timing + Tests + Smoke-Review + Final-Render + Export
 
 Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Reel nicht neu von Null.
 
-## 5. Verbindliche visuelle Identität
+## 6. Verbindliche visuelle Identität
 
 - 1080 × 1920, 30 FPS, sofern der Reel-Vertrag nichts anderes festlegt
 - heller editorialer Look
@@ -75,10 +102,11 @@ Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Reel nicht 
 - keine Cyberpunk-/Neon-Standardästhetik
 - Sprechertext, Caption, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
 - Bilder erklären eine Aussage; sie sind nie reine Dekoration
+- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/BILDSTIL.md`.
+Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`.
 
-## 6. Statusbegriffe niemals vermischen
+## 7. Statusbegriffe niemals vermischen
 
 Diese Zustände sind getrennt:
 
@@ -89,11 +117,12 @@ technisch getestet
 gerendert
 visuell geprüft
 freigegeben
+veröffentlicht
 ```
 
-Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
+Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. `veröffentlicht` bedeutet nicht automatisch `fachlich freigegeben`, wenn der Freigabeprozess übersprungen wurde.
 
-## 7. Bekannte externe Einschränkungen
+## 8. Bekannte externe Einschränkungen
 
 - GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
 - Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
