@@ -1,202 +1,122 @@
-# 📱 KI-Kanal — Reel-Strategie (TikTok / Instagram / Shorts)
+# 📱 KI-Kanal — Reel-Gehirn
 
-> KI- und plattformspezifische Content-Regeln. Technische und strukturelle Pflichten stehen in `AGENTS.md` und `ki/AGENTS.md`; Bildregeln in `ki/BILDSTIL.md`.
-> Ton: seriös, modern, neugierig, klar, immer „du“ und inhaltlich geerdet.
+## Ziel
 
-## Reel ≠ langes Video
+Ein Reel erklärt **eine** KI-Idee mit einem klaren Spannungsbogen und einem sichtbaren Mechanismus. Kein Mini-Vortrag, keine Feature-Liste.
 
-| | **Reel / Short** | **Langes YouTube-Video** |
-|---|---|---|
-| Ziel | Reichweite + Neugier + ein klarer Aha-Moment | Tiefe + Vertrauen + Watchtime |
-| Länge | meist 15–45 s, maximal 60 s | meist 5–12 min |
-| Inhalt | **eine** Kernidee / ein Tool / ein Konzept | mehrere zusammenhängende Punkte |
-| Einstieg | Spannung ab Sekunde 0, kein Intro | ruhigerer Einstieg möglich |
-| Ton-aus | Untertitel müssen den Inhalt tragen | Audio kann stärker führen |
-
-**Merke:** Ein Reel ist ein präzise visualisierter KI-Gedanke mit Spannung — kein Mini-Vortrag und keine Feature-Liste.
+Typische Länge: 15–45 Sekunden, maximal 60 Sekunden, sofern der konkrete Reel-Vertrag nichts anderes festlegt.
 
 ## Spannungsbogen
 
 ```text
-0–2 s       HOOK       starke, wahre Reibung / Fähigkeit / Frage
-2–6 s       EINSATZ    warum betrifft das den Zuschauer?
-6–X s       AUFBAU     Ursache, Mechanismus oder konkrete Anwendung sichtbar machen
-letzter Beat REVEAL    Ergebnis / Aha / ehrliche Einordnung
-Ende         LOOP/CTA   nur wenn es natürlich zum Inhalt passt
+HOOK      Reibung, Frage oder überraschender wahrer Effekt
+EINSATZ   warum betrifft das den Zuschauer?
+MECHANIK  Ursache / Ablauf / Vergleich sichtbar machen
+AHA       klare Einordnung oder Ergebnis
+ENDE      kurzer Hold; CTA nur wenn natürlich
 ```
 
-Bei KI gilt: **erst Aufmerksamkeit, dann Erklärung und Einordnung.** Der Hook darf stark sein, aber nie mehr versprechen als das Reel tatsächlich liefert.
+## Szenenregel
 
-## Geeignete KI-Hooks
+Jede Szene braucht genau einen dominanten Erklärgedanken:
 
-- **Fähigkeit + Grenze:** „Diese KI baut dir X — aber genau hier liegt der Haken.“
-- **Fehlanwendung:** „Du benutzt ChatGPT an dieser Stelle falsch.“
-- **Einordnung:** „Alle reden von X. Das kann es wirklich.“
-- **Neugier-Lücke:** „Es gibt einen Grund, warum KI manchmal überzeugend falsch liegt.“
-- **Use-Case:** „Wenn du diese Aufgabe noch komplett von Hand machst, lohnt sich dieser KI-Schritt.“
+```text
+Startzustand
+→ sichtbare Veränderung
+→ Ergebniszustand
+```
 
-Keine erfundenen Gratis-Versprechen, Zeitangaben, Leistungswerte oder Superlative nur für den Hook.
-
-## Wiederkehrende Reel-Formate
-
-1. **Konzept in kurzer Form erklärt** — z. B. Token, Kontext, LLM, Training, Agenten.
-2. **Tool + konkreter Use-Case** — was macht es, wann hilft es, wo sind Grenzen?
-3. **News eingeordnet** — was ist neu und was bedeutet es für den Zuschauer?
-4. **Prompt / Workflow-Trick** — schlechter Ansatz vs. besserer Ansatz mit sichtbarem Unterschied.
-5. **Mythos / Kann KI das wirklich?** — Behauptung → Prüfung → Einordnung.
-
-## Visualisierung — Bedeutung vor Dekoration
-
-Jede dominante Bewegung muss eine Aussage erklären.
-
-- Sprechertext und `SceneMeaningContract` bestimmen die sichtbare Logik.
-- Library-Reuse nur bei Production Eligibility und echter semantischer Passung.
-- Bei schwacher Passung lieber `new-build` als eine falsche Animation erzwingen.
-- `ChatUI` für Chat-/Prompt-Demos.
-- `NeuralNet`, Token-/Vektor-Visuals oder semantische Cluster für Modellkonzepte.
-- `WindowMock`, `AppScreenDemo`, `PhoneMockup` für Tool-/UI-Erklärungen.
-- `BigStat`, `BarsPremium`, `Ranking`, Charts nur mit geerdeten Werten oder klar als relative Darstellung.
-- Keine Demo-Zahlen als angebliche Fakten.
-- Maximal drei starke gleichzeitige Bewegungen; meist reicht eine dominante Erklärbewegung pro Satz.
-
-## Visuelle Identität
-
-Verbindliche technische Quelle: `ki/brand/brand.ts`.
-
-- Hintergrund weiß `#FFFFFF` oder sehr hell / leicht lila getönt `#F3F0FA`.
-- Standardtext dunkel (`#1A1A2E`) und auf Smartphone klar lesbar.
-- Marken-Lila `#B98CFF` = KI / Fokus / Premium.
-- Dunkles Lila `#6E45C9` = Tiefe / Kontrast.
-- Grün = Vorteil / Lösung.
-- Rot = Risiko / Grenze / Fehler.
-- Blau = gezielte Tech-/Info-Semantik, nicht zweite Hauptmarke.
-- Faceless: niemals Face-Cam oder erkennbare Gesichter.
-- Viel Weißraum, wenige große Elemente, klare visuelle Hierarchie.
-
-Dunkle Tech-Decks dürfen Layout-Ideen liefern, aber **nicht** den tatsächlichen Standard-Look bestimmen. Kein Cyberpunk, keine Neon-Technikwelt und keine Roboterfigur als generisches KI-Symbol.
+Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 
 ## Text-Hierarchie — keine Dopplung
 
-Für Production-Reels gilt eine feste Aufgabenteilung. Die vier Ebenen dürfen sich ergänzen, aber nicht denselben Satz mehrfach anzeigen.
+### Überschrift
 
-1. **Sprechertext** = vollständige Aussage und Erklärung.
-2. **Untertitel/Caption** = exakter Sprechertext bzw. dessen zeitlich saubere Wortgruppen.
-3. **Überschrift** = kurze Einordnung der Szene, normalerweise 3–6 Wörter; niemals internes Szenenziel, Regieanweisung oder der komplette Sprecher-Satz.
-4. **Animationstext** = nur die Wörter, die die Grafik wirklich braucht: Objekte, Zustände, Kategorien, Prozessschritte oder kurze Labels.
+- 3–7 Wörter
+- natürliche Zuschauer-Sprache
+- ordnet die Szene ein
+- niemals interner `goal`, Planner- oder Regietext
 
-Verbindliche Regeln:
+### Caption
 
-- Im Production-Modus steht **kein zweiter Sprecher-Satz unter der Überschrift**. Ein zusätzlicher Untertitel im Animations-Header ist standardmäßig aus.
-- `goal`, `communicationGoal`, `startState`, `visibleChange`, `endState` und andere interne Planungsformulierungen dürfen niemals als Zuschauer-Überschrift erscheinen.
-- Animationstext darf nicht einfach Wörter aus dem aktiven Caption-Fenster in groß noch einmal wiederholen, wenn dadurch keine zusätzliche visuelle Bedeutung entsteht.
-- Einzelne unvermeidbare Fachbegriffe wie „Kontext“, „Token“ oder „Antwort“ dürfen gleichzeitig vorkommen; ganze Satzteile oder lange Wortketten nicht.
-- Bevorzugt werden visuelle Labels wie `Frage`, `Kerninfo`, `Quelle A`, `Signal`, `Rauschen`, `Auswahl`, `Ergebnis` statt einer Kopie des Voiceovers.
-- Wenn eine Animation ohne viel Text verständlich bleibt, **weniger Text verwenden**.
-- Die Überschrift muss Zuschauertext sein. Produktionsziele bleiben ausschließlich in `goal`, Szenenplan und Agent-Briefing.
-- Bei Content-aware Library-Animationen dürfen Demo-Titel/-Untertitel im fertigen Reel nicht sichtbar sein.
+- deckt den gesprochenen Text vollständig ab
+- mit echtem Audio finale Wort-/Cue-Timestamps verwenden
+- aktive Fenster kompakt halten, normalerweise 7–10 Wörter
 
-**Merksatz:** Sprecher sagt die Aussage. Caption macht sie lesbar. Animation macht sie sichtbar. Überschrift ordnet sie ein.
+### Animationstext
 
-## Untertitel
+- 0–3 kurze Labels als Standard
+- benennt Objekt, Zustand oder Kategorie
+- keine Satzkopie des Voiceovers
+- keine langen Erklärsätze
 
-- Jedes gesprochene Wort muss abgedeckt sein.
-- Finale Audio-/Wort-Timestamps verwenden, wenn vorhanden; sonst explizite manuelle Cue-Frames.
-- Aktives Fenster kompakt halten, normalerweise etwa 7–10 Wörter.
-- Nur semantische Keywords stark animieren.
-- Untertitel nie in einem schweren schwarzen Kasten.
-- Caption-Zone von der Hauptvisualisierung trennen.
-- Caption ist die einzige Ebene, die den Sprechertext wortgetreu wiederholen soll.
+### Verbotene Dopplung
 
-## 🖼️ Bilder — nur wenn sie inhaltlich nötig sind
+Nicht gleichzeitig denselben Gedanken als Überschrift + Unterzeile + Animationssatz + Caption zeigen. Der Sprecher sagt, die Caption macht lesbar, die Animation erklärt, die Überschrift ordnet ein.
 
-Standard bleibt Motion/UI/Diagramm, wenn die Aussage damit ehrlich und klar erklärt werden kann.
+## Visualisierung
 
-Wenn eine Szene echtes Bildmaterial braucht:
+Bevorzugte Reihenfolge:
 
-1. Bildbedarf ausdrücklich festhalten — nicht still durch eine unpassende Animation ersetzen.
-2. `ki/BILDSTIL.md` verbindlich anwenden.
-3. Planung und Assets im Wochen-Reel unter `02-bilder/` ablegen.
-4. Ausführbaren TS/TSX-Code ausschließlich unter `ki/src/reels/<slug>/` ablegen.
-5. Fehlende Pflicht-Assets niemals erfinden oder still ersetzen.
+1. passende production-ready Library-Animation
+2. vorhandene Low-Level-Primitives
+3. reel-spezifischer New-Build
+4. Bild/Hybrid, wenn räumliche/illustrative Komplexität echten Mehrwert bringt
 
-Verbindliche Produktionsstruktur pro Reel:
+Keine generische Animation nur wegen Wiederverwendung. Keine komplette Animation zweimal im selben Reel.
 
-```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-bilder/
-├── 03-caption/
-├── 04-pdf/
-├── 05-export/
-└── 06-projektdateien/
-```
+## Bewegungsqualität
 
-Neue Pakete nur mit:
+- eine dominante Bewegung pro Satz
+- maximal drei starke gleichzeitige Bewegungen
+- öffnender Zustand muss sofort lesbar sein
+- Endzustand braucht Hold
+- Hard Cut ist Standard
+- Übergang nur bei echter Objekt-/Form-/Zustandskontinuität
+- Zoom nur bei tatsächlichem Fokuswechsel
+- keine dekorativen Partikel-/Glow-Schichten als Ersatz für Inhalt
 
-```bash
-node scripts/new-ki-reel.mjs "Reel Titel"
-```
+## Bilder
 
-Danach immer:
+Bildbedarf in Phase 1 ausdrücklich entscheiden.
 
-```bash
-node scripts/check-ki-reel-folder-structure.mjs
-```
+Wenn Bild:
 
-## Übergänge und Kamera
+- `ki/BILDSTIL.md` anwenden
+- Prompt unter `02-bilder/image-prompts.md`
+- Asset in `asset-manifest.json`
+- Bild-KI baut 3D-/räumliche Szene
+- Remotion baut Überschrift, Caption, Zahlen, Pfeile, Diagramme und präzise Labels
 
-- **Hard Cut ist der Default.**
-- Einen Übergang nur einsetzen, wenn Objekt, Form, Richtung oder Zustand sinnvoll über die Beat-Grenze weitergeführt werden kann.
-- Kein Übergang darf ein wichtiges gesprochenes Wort oder Ergebnis verdecken.
-- Zoom / Push-in nur dann, wenn Fokus oder Bedeutungswechsel dadurch klarer wird.
-- Kein mechanischer Zoom auf jede Szene.
-- Öffnungs- und Ergebnis-Holds müssen lesbar bleiben.
+Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 
-## Aktualität
+## Brand
 
-KI-News altern schnell. Für News-Reels:
+- 1080 × 1920 / 30 FPS als Standard
+- weiß/hell
+- dunkler Text
+- Marken-Lila `#B98CFF`
+- faceless
+- Smartphone zuerst
 
-- ein klarer Kernpunkt statt drei Meldungen gleichzeitig,
-- Veröffentlichung schnell, aber keine ungeprüften Aussagen,
-- reale Produktnamen, Funktionen, Preise, Limits und Verfügbarkeiten vor Veröffentlichung aktuell prüfen,
-- News immer mit Bedeutung für den Zuschauer einordnen.
+## Fakten und Grounding
 
-## Serien-Denken
+- sichtbare Zahlen nur, wenn Sprechertext/Quelle sie trägt
+- Gewinner/Ranking/Prozent nur bei echter Grounding-Grundlage
+- illustrative interne Motion-Werte dürfen nicht als Fakten sichtbar werden
+- Sprechertext → Meaning Contract → derive → sanitize → associate → Render-Props
 
-Wiederkehrende Reihen wie „KI-Basics“, „Tool der Woche“ oder „Mythos-Check“ können Bindung schaffen. Jeder einzelne Short muss trotzdem eigenständig verständlich und nützlich sein.
+## Qualitätsgate
 
-## Verbindliche Qualitätslektionen
+Vor Freigabe tatsächlich prüfen:
 
-1. **Format immer 1080 × 1920, 30 FPS**, sofern der Reel-Vertrag nichts anderes ausdrücklich festlegt.
-2. **Kontrast prüfen:** dunkler Text auf hellem Hintergrund; keine hell-auf-hell Kombination.
-3. Für flache Bilder nur ehrliche Transformationen verwenden: Cover/Contain, Crop, Masken, Fokus, deklarierte Ebenen, Overlays, Connectoren und sinnvolle Kamerabewegung. Keine erfundene Objekttrennung.
-4. **Safe-Zones:** oben ungefähr 96 px frei für die Kopfzeile, unten ungefähr 195 px frei für Captions; genaue Reel-Konstanten respektieren.
-5. Kopfzeile darf pro Beat/Kapitel wechseln, aber nicht mit auslaufendem Content kollidieren.
-6. Untertitel bleiben außerhalb der Hauptvisualisierung und bekommen keinen dominanten dunklen Kasten.
-7. Hard Cuts sind Standard; Transition nur mit semantischer Kontinuität.
-8. Zoom und Push-in nicht mechanisch wiederholen.
-9. Animation ohne sofort verständlichen Bezug zum Sprechertext entfernen oder neu bauen.
-10. Vor Fertigmeldung die deklarierten Audio-/Bild-Assets erneut prüfen; Assets können während des Baus ergänzt worden sein.
-11. Keine Platzhalter als echte Assets ausgeben. Wenn ein Pflicht-Asset fehlt, ist das ein Blocker.
-12. Generierte Bilder auf eingebrannten Text, Wasserzeichen und versehentliche Prompt-/Layout-Hinweise prüfen.
-13. Zahlen, Rankings, Wahrscheinlichkeiten, Kosten und Latenzen dürfen nur als exakt dargestellt werden, wenn der Sprecherinhalt bzw. die Quelle sie trägt.
-14. Eine komplette Library-Animation innerhalb desselben Reels nicht zweimal wiederverwenden.
-15. Technisch erfolgreicher Render ≠ visuell freigegebener Render. Smoke-Frames und finales Video müssen tatsächlich geprüft werden.
-16. Vor Freigabe prüfen: Überschrift ≠ internes Szenenziel, Header-Unterzeile ≠ Sprechertext, Animationstext ≠ Caption-Kopie.
-
-## Do / Don't
-
-**Do:** starker wahrer Hook, eine Idee, sichtbarer Mechanismus, echter Nutzen/Aha, klare Untertitel, geerdete Daten, faceless Premium-Look.
-
-**Don't:** Intro-Floskeln, Cringe-Hype, drei Themen gleichzeitig, flache Aufzählungen, Fake-Wunder, Angstporno, dekorative Bewegung, erfundene Werte, wiederholte Komplettanimationen, doppelte Sprechertexte oder Cyberpunk als KI-Standard.
-
-## Verbindliche Verweise
-
-- Kanalidentität: `ki/gehirn/KANAL.md`
-- Bildstil: `ki/BILDSTIL.md`
-- Root-Produktionsvertrag: `AGENTS.md`
-- KI-Strukturvertrag: `ki/AGENTS.md`
-- Brand-Code: `ki/brand/brand.ts`
-- Bausteinkatalog: `core/brand-kit/KATALOG.md`
-- Production Eligibility: `ki/src/animation-library/productionEligibility.ts`
+- keine abgeschnittene Schrift
+- keine Überschriften-/Caption-/Visual-Überlappung
+- keine internen Regietexte sichtbar
+- keine unnötige Textdopplung
+- keine leere erste Sekunde
+- klarer End-Hold
+- mobile Lesbarkeit
+- Motion passt semantisch
+- Bilder frei von Wasserzeichen, Prompttext, zufälliger Schrift und Gesichtern
+- finale MP4 normal abspielen und ansehen

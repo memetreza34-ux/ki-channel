@@ -1,141 +1,111 @@
-# Codex operating instructions
+# KI-Channel — Agent Operating Contract
+
+## Start here
+
+Vor jeder Arbeit zuerst `REPO-STATE.md` lesen. Bei Dateien unter `ki/` danach `ki/AGENTS.md` und `ki/gehirn/MASTER.md`; bei Reel-Arbeit zusätzlich `ki/reels/AGENTS.md` und das nächstgelegene reel-spezifische `AGENTS.md`.
 
 ## Mission
 
-This repository produces premium German vertical AI explainer reels with Remotion. Work as a production engineer, not as an unconstrained creative writer. Planning files define the content; Codex turns the approved plan and supplied assets into deterministic code, tests, renders, and an honest report.
+Dieses Repository produziert hochwertige deutsche faceless KI-Erklärreels mit Remotion. Agenten arbeiten als Produktionsingenieure: bestehende Verträge respektieren, semantisch passende Visualisierung bauen, prüfen und wahrheitsgemäß berichten.
 
-## Instruction order
+## Git und Branches
 
-1. Read this file.
-2. Read the nearest nested `AGENTS.md` for the files you will edit.
-3. Read only the reel package named in the task.
-4. Read `docs/CODEX_REEL_WORKFLOW.md` when assembling a hybrid reel.
-5. Use existing components and animation-library entries before inventing infrastructure.
+- `main` ist der kanonische Produktionsstand.
+- Historische `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches niemals als aktuelle Wahrheit behandeln, wenn der Nutzer sie nicht ausdrücklich nennt.
+- Für normale Arbeit von `main` einen Arbeitsbranch verwenden.
+- `main` nicht direkt verändern, außer der Nutzer verlangt ausdrücklich Repository-Stabilisierung/Kanonisierung.
+- Keine PRs mergen, schließen oder als ready markieren, außer die Aufgabe umfasst das ausdrücklich.
+- Keine unrelated Dateien anfassen.
 
-Do not repeatedly reread the whole repository. Build a short working index of relevant files, commands, assets, and unresolved blockers.
+## Verbindliches 3-Phasen-Modell
 
-## Git safety
+### Phase 1 — ChatGPT
 
-- Never modify `main`.
-- Work only on the branch named by the user or task.
-- Do not create, merge, close, or mark a pull request ready unless explicitly requested.
-- Do not rewrite unrelated files.
-- Keep commits focused and descriptive.
-- Before editing, run `git status`, `git branch --show-current`, and `git log -5 --oneline`.
-- Report the current branch and final commit SHA.
+Phase 1 liefert die komplette Produktionsgrundlage vor dem Audio:
 
-## Truthfulness
-
-- Never claim tests, typecheck, screenshots, audio checks, renders, or visual review succeeded unless you actually ran and inspected them.
-- A generated file is not a verified file.
-- A technically valid MP4 is not visually approved.
-- When blocked, include the exact failing command, relevant error, affected file, and next action.
-- Do not hide failures with `any`, `@ts-ignore`, disabled tests, placeholder assets, fake reports, or weakened validators.
-
-## Reel production contract
-
-For a named reel, treat these files as authoritative when present:
-
+- finales Voiceover-Skript
+- zusätzlich reiner Fließtext `VOICEOVER-ZUM-KOPIEREN.txt`
+- Szenen-, Animations- und Caption-Planung
+- Bildentscheidung, hochwertige Bildprompts und Asset-Manifest, falls Bilder nötig sind
 - `reel.json`
-- `voiceover.md`
-- `scene-plan.md`
-- `image-prompts.md`
-- `animation-plan.md`
-- `subtitle-cues.json`
-- `asset-manifest.json`
-- `CODEX_ASSEMBLY_TASK.md`
-- `review-checklist.md`
+- ausführbare Remotion-Code-Grundlage unter `ki/src/reels/<slug>/`
+- Composition-Registrierung
+- Content-Grounding und fokussierte Checks
+- klarer `PHASE-STATUS.md`
 
-Do not rewrite approved voiceover, scene order, image prompts, or semantic timing unless a contradiction makes implementation impossible. Document the contradiction before changing it.
+Fehlendes Voiceover-Audio ist in Phase 1 normal und kein Grund, die Code-Grundlage aufzuschieben.
 
-## Remotion rules
+### Phase 2 — Mensch
 
-- Use `useCurrentFrame()`, `interpolate()`, `spring()`, `Sequence`, and deterministic helpers.
-- No `Math.random()` during rendering.
-- No real-time timers, CSS transitions, network calls, external APIs, or render-time downloads.
-- Use `staticFile()` for repository assets.
-- Every composition must render correctly when seeking directly to any frame.
-- Keep all event times within their scene duration.
-- Default reel format is 1080 × 1920, 30 FPS.
-- Preserve readable opening and result holds.
-- Hard cuts are the default. Use a transition only when an object, shape, direction, or state can continue meaningfully.
+Der Mensch erzeugt ausschließlich das echte Voiceover aus dem freigegebenen Fließtext und legt `voiceover.wav` bevorzugt, alternativ `voiceover.mp3`, in `01-script-audio/` ab.
 
-## Hybrid image and animation quality
+### Phase 3 — Codex / Antigravity
 
-- A supplied image must not be presented with only a generic slow zoom.
-- Animate meaningful regions using masks, parallax, depth separation, object cutouts, light changes, connectors, callouts, charts, counters, or state changes.
-- One dominant explanatory motion per sentence.
-- Maximum three strong simultaneous motions per scene.
-- Every spoken word appears in subtitles, but only important words receive strong emphasis.
-- Keep headline, main visual, annotations, and subtitles in separate safe zones.
-- Avoid repeated center cards, repeated fade-and-scale entrances, decorative particles, continuous glow, and unnecessary camera movement.
-- Reuse low-level primitives, not complete scene compositions.
-- Do not use the same full animation twice in one reel.
+Phase 3 beginnt erst mit echtem Audio. Der Agent:
 
-## Images and assets
+- verwendet die vorhandene Phase-1-Source
+- integriert Audio
+- misst reale Dauer
+- synchronisiert Captions/Timing
+- führt Struktur-, TypeScript- und fokussierte Tests aus
+- rendert und prüft Smoke-Frames
+- rendert erst danach das finale MP4
+- prüft das finale Video technisch und visuell
 
-- Never invent a missing asset or silently substitute an unrelated image.
-- Validate all required files from `asset-manifest.json` before implementation.
-- Respect declared crop mode, anchor point, safe area, layer role, and scene ownership.
-- Do not bake long headings, subtitles, arrows, diagrams, or statistics into generated images; Remotion should render them.
-- If an image needs independent object motion, use the declared layered assets or masks. Do not pretend a flat image contains separable layers.
+Fehlt Audio, mit `PHASE 2 AUDIO FEHLT` stoppen. Kein Audio erfinden und das Reel nicht von Null neu bauen.
 
-## Audio
+## Autoritative Reel-Dateien
 
-- Voiceover is the primary audio track.
-- Default SFX mode is off.
-- Do not generate synthetic beeps, noise sweeps, or a sound for every word.
-- Add SFX only when explicitly requested in the reel package and only for a visible major action.
-- Keep the final version without SFX unless an A/B comparison clearly improves it.
-- Never claim voice synchronization is exact without the final audio file or word timestamps.
+Wenn vorhanden, gelten in dieser Reihenfolge:
 
-## Required implementation sequence
+1. `06-projektdateien/PHASE-STATUS.md`
+2. `06-projektdateien/reel.json`
+3. `01-script-audio/voiceover.md`
+4. `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
+5. `06-projektdateien/scene-plan.md`
+6. `06-projektdateien/animation-plan.md`
+7. `03-caption/subtitle-cues.json`
+8. `02-bilder/asset-manifest.json`
+9. `02-bilder/image-prompts.md`, wenn Bilder benötigt werden
+10. `06-projektdateien/CODEX_ASSEMBLY_TASK.md`
+11. `06-projektdateien/review-checklist.md`
 
-1. Validate branch and working tree.
-2. Read the reel package and nearest `AGENTS.md` files.
-3. Run the Codex reel package validator.
-4. Confirm every required image and audio asset exists.
-5. Create the reel-specific Remotion source under `ki/src/reels/<slug>/`.
-6. Register exactly one production composition without breaking existing previews.
-7. Add contract tests for format, duration, unique scene IDs, continuous frame ranges, asset paths, cue bounds, and animation uniqueness.
-8. Run typecheck and focused tests.
-9. Render smoke frames.
-10. Inspect every smoke frame visually.
-11. Fix layout and choreography issues at their cause.
-12. Render all checkpoints and the full MP4.
-13. Watch the MP4 at normal speed and inspect it at phone size.
-14. Run technical artifact validation.
-15. Update only genuinely completed checklist items.
+Widersprüche nicht still auflösen. Höher priorisierte Quelle erhalten und den Konflikt an der Ursache korrigieren.
 
-## Visual review gates
+## Remotion-Regeln
 
-Do not approve a scene when any of these are present:
+- deterministisch: `useCurrentFrame()`, `interpolate()`, `spring()`, `Sequence`
+- kein `Math.random()` im Render
+- keine Render-Time-Netzwerkaufrufe oder Downloads
+- Assets über Repository/staticFile-Pfade
+- direkte Frame-Seeks müssen funktionieren
+- Hard Cut ist Standard; Übergang nur bei echter semantischer Kontinuität
+- eine dominante erklärende Bewegung pro Satz, maximal drei starke Bewegungen gleichzeitig
+- keine Demo-Zahlen als Fakten
+- keine vollständige Library-Animation zweimal im selben Reel
 
-- clipped or unreadable text
-- headline, animation, or subtitles overlapping
-- empty opening state
-- unfinished final frame
-- static image with generic zoom only
-- more than three competing strong motions
-- unclear relationship between narration and movement
-- repeated layout or complete animation
-- low contrast on phone size
-- transition covering an important word
-- fake or misleading data presentation
+## Text-Hierarchie
 
-## Final response format
+- Überschrift: 3–7 Wörter, ordnet die Szene ein
+- Caption: gesprochener Text
+- Animationstext: nur kurze Objekt-/Zustandslabels
+- Animation: zeigt Mechanismus oder Zustandsänderung
 
-Report:
+Interne `goal`, `communicationGoal`, Debug- oder Regietexte dürfen nie im finalen Video sichtbar werden. Sprechertext nicht zusätzlich als langen Untertitel oben oder innerhalb der Animation duplizieren.
 
-1. branch and commit SHA
-2. files changed
-3. commands run and exact results
-4. assets found and assets missing
-5. implementation summary per scene
-6. visual issues found and fixes applied
-7. audio status
-8. rendered artifact paths
-9. technical validation result
-10. remaining known issues
-11. confirmation that `main` was not modified
-12. pull request state, only when a PR is part of the task
+## Bildregeln
+
+`ki/BILDSTIL.md` ist verbindlich. Bilder werden nur eingesetzt, wenn sie die Aussage besser erklären als reine Remotion-Grafik. Generierte Bilder enthalten keine Überschrift, keine Untertitel, keine Wasserzeichen und keine langen Texte. Sichtbare Bildlabels sind selten, kurz und deutsch; Prompt-Text ist standardmäßig Englisch für Modellpräzision.
+
+## Wahrheitspflicht
+
+Nie behaupten, dass Tests, Typecheck, Audio-Sync, Smoke-Frames, Render oder visuelle Prüfung bestanden sind, wenn sie nicht tatsächlich ausgeführt wurden. Ein technisch gültiges MP4 ist nicht automatisch visuell freigegeben.
+
+Bei einem Blocker immer nennen:
+
+- exakter Befehl
+- Fehler
+- betroffene Datei
+- nächste sinnvolle Aktion
+
+Keine Fehler mit `any`, `@ts-ignore`, deaktivierten Tests, Fake-Assets, Fake-Berichten oder geschwächten Validatoren verstecken.

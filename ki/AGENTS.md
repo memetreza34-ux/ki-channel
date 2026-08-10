@@ -1,21 +1,19 @@
-# Codex instructions for `ki/`
+# KI-Channel — Regeln unter `ki/`
 
-## Scope
+Diese Datei erweitert `REPO-STATE.md` und `AGENTS.md`.
 
-These instructions apply to all files below `ki/` and extend the repository-level `AGENTS.md`.
+## Gehirn zuerst
 
-## Architecture map
+Für jede KI-Reel-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die vier autoritativen Bereiche:
 
-- `ki/reels/`: approved reel production packages, grouped by week and fixed production folders
-- `ki/src/reels/`: reel-specific **executable Remotion source only**
-- `ki/src/motion-system/`: shared deterministic motion infrastructure
-- `ki/src/animation-library/`: reusable visual families, planners, prototypes and micro-motion grammar
-- `ki/animation-library/`: documentation and production rules
-- `ki/brand/`, `ki/bausteine/`, `ki/gehirn/`, `ki/agents/`, `ki/public/`: persistent channel infrastructure, never reel project folders
+- `KANAL.md` — Identität und Ton
+- `REELS.md` — Reel- und Text-Hierarchie
+- `PRODUKTIONSABLAUF.md` — 3 Phasen
+- `../BILDSTIL.md` — Bild-/Prompt-Qualität
 
-## Repository structure lock
+## Harte Ordnerstruktur
 
-The canonical planning/package location for every real reel is permanently:
+Jedes Produktionsreel liegt dauerhaft hier:
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -28,84 +26,84 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Never create a reel project directly under `ki/`. Never create a flat production reel directly under `ki/reels/`. Never place a planning package under `ki/src/reels/`.
+Nicht zulässig:
 
-New reel packages MUST be created with:
+```text
+ki/<reel-name>/
+ki/reels/<slug>/
+ki/src/reels/<planning-package>/
+```
+
+Neue Pakete nur mit:
 
 ```bash
 node scripts/new-ki-reel.mjs "Reel Titel"
 ```
 
-Before and after any reel-structure change MUST run:
+Vor und nach Strukturänderungen:
 
 ```bash
 node scripts/check-ki-reel-folder-structure.mjs
 ```
 
-Do not remove, rename or flatten the six numbered production folders. Do not weaken the structure validator.
+## Datei-Eigentum
 
-## Planning versus executable source
+- `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
+- `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
+- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption
+- `04-pdf/` — optionale PDF-Assets
+- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
+- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
 
-Planning/package files stay permanently under the weekly reel package. Examples:
-
-- script/voiceover/audio -> `01-script-audio/`
-- images/prompts/assets -> `02-bilder/`
-- captions/subtitle cues -> `03-caption/`
-- PDFs -> `04-pdf/`
-- renders/exports -> `05-export/`
-- brief, reel manifest, scene plan, animation plan, implementation task and review -> `06-projektdateien/`
-
-Executable reel code is separate and only created when implementation starts:
+Ausführbarer TS/TSX-Code ausschließlich separat:
 
 ```text
 ki/src/reels/<slug>/
-├── index.ts
-├── contract.ts
-├── ReelComposition.tsx
-├── assets.ts
-├── style.ts
-├── components/
-├── scenes/
-└── __tests__/
 ```
 
-`ki/src/reels/<slug>/` must not contain `reel.json`, `voiceover.md`, `scene-plan.md`, `animation-plan.md`, `subtitle-cues.json`, `asset-manifest.json`, `CODEX_ASSEMBLY_TASK.md`, `review-checklist.md` or research briefs.
+Keine Planungsdokumente in den Source-Ordner kopieren.
 
-## Implementation choice
+## Phasen
 
-For a real reel, prefer this order:
+Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten. Phase 2 ist nur das menschliche Voiceover. Phase 3 integriert das Audio in den vorhandenen Source, testet, smoke-reviewt und rendert.
 
-1. reel-specific composition matching its approved plan
-2. reusable low-level primitives from the motion system
-3. an animation-library mechanism adapted to the sentence
-4. a new reel-specific mechanism when none is semantically suitable
+Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler.
 
-Never replace an approved reel-specific scene with a generic preview stage merely because it is faster.
+## Visual Standard
 
-## Visual standard
+- heller oder weißer editorialer Hintergrund
+- dunkle, mobile-lesbare Typografie
+- `#B98CFF` primärer Fokus-Akzent
+- `#6E45C9` Tiefe/Kontrast
+- faceless
+- keine generische Cyberpunk-/Neon-Ästhetik
+- eine dominante erklärende Bewegung pro Satz
+- maximal drei starke Bewegungen gleichzeitig
+- keine erfundenen Zahlen
 
-- white or near-white editorial background
-- dark, high-contrast typography
-- violet primary accent
-- simplified premium 3D/editorial imagery when assets are supplied
-- no childish, neon-futuristic, photorealistic, or overloaded default styling
-- no more than 1–3 short labels inside the main visual
-- long text, subtitles, arrows, charts and measurements belong in Remotion
+## Text-Hierarchie
 
-## Image treatment
+- Überschrift: kurz, Zuschauer-Sprache
+- Caption: Sprechertext
+- Animationslabels: kurze Objekt-/Zustandsbegriffe
+- interne Regie-/Goal-Texte: niemals sichtbar
 
-When using a flat image, animate only transformations the asset can honestly support: crop/reveal, masked focus, declared depth layers, narration-tied camera movement, light/color emphasis, overlays, connectors, charts, counters and labels. Do not fake independent object motion when no separate layer or mask exists.
+Kein langer Sprechertext doppelt oben und unten. Keine wortweise Kopie des Untertitels in die Animation.
 
-## Subtitles
+## Bilder
 
-- Every spoken word must be represented.
-- Use final audio timestamps when available; otherwise explicit manual cue frames.
-- Show only already-spoken words in the active subtitle window.
-- Keep the window compact, normally 7–10 words.
-- Strongly animate only semantic keywords.
+Bilder nur, wenn sie echten Mehrwert gegenüber Remotion liefern. `ki/BILDSTIL.md` bestimmt Prompt-Aufbau, Safe-Zones, Dateinamen und Qualitätsgate. Bild-KI erzeugt räumliche/illustrative Komplexität; Remotion erzeugt Überschriften, Captions, Zahlen, Pfeile, Diagramme und präzise UI-Texte.
 
 ## Testing
 
-At minimum add focused tests for composition dimensions/FPS/duration, continuous scene ranges, unique scene/animation IDs, subtitle bounds, required assets, final scene ownership and animation/layout uniqueness.
+Mindestens prüfen:
 
-Structure validation is a prerequisite, not an optional lint step. Do not mark visual review complete from tests alone.
+- Format/FPS/Dauer
+- kontinuierliche Szenenbereiche
+- eindeutige Scene-/Animation-IDs
+- Subtitle-Bounds und vollständige Textabdeckung
+- Asset-Pfade
+- keine ungrounded Werte
+- visuelle Safe-Zones über reale Smoke-Frames
+
+Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.

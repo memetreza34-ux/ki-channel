@@ -1,115 +1,73 @@
-# Codex context index
+# Codex Context Index
 
-Use this file to locate the minimum context needed for a task. Do not load every file listed here automatically.
+Ziel: minimalen, richtigen Kontext laden und keine historischen Branches/Docs als Wahrheit verwenden.
 
-## Real reel assembly
+## Immer zuerst
 
-Read in order:
+1. `REPO-STATE.md`
+2. `AGENTS.md`
 
-1. `/AGENTS.md`
-2. `/ki/AGENTS.md`
-3. `/ki/reels/AGENTS.md`
-4. `/docs/CODEX_REEL_WORKFLOW.md`
-5. the named weekly reel package under `/ki/reels/<week>/<NN_Reel-Titel>/`
-6. when generated, `/ki/reels/<week>/<NN_Reel-Titel>/06-projektdateien/CODEX-BRIEF.generated.md`
+## Für KI-Reels
 
-Implement executable code separately under:
+3. `ki/AGENTS.md`
+4. `ki/gehirn/MASTER.md`
+5. `ki/reels/AGENTS.md`
+6. named weekly reel `06-projektdateien/PHASE-STATUS.md`
+7. nächstes reel-spezifisches `AGENTS.md`
+8. nur die für die aktuelle Phase benötigten Reel-Dateien
 
-```text
-ki/src/reels/<reel-slug>/
-```
+## Branch-Regel
 
-The reel slug comes from `06-projektdateien/reel.json`; it is not assumed to be identical to the human-readable weekly folder name.
+`main` ist kanonisch. Historische `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches nicht laden, außer der Nutzer nennt sie ausdrücklich.
 
-## Package preparation
+## Phase 1
 
-Use the canonical weekly package reference:
-
-```bash
-node scripts/prepare-codex-reel.mjs \
-  2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht
-```
-
-Strict asset readiness validation:
-
-```bash
-node scripts/prepare-codex-reel.mjs \
-  2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht \
-  --ready
-```
-
-Validation without regenerating the brief:
-
-```bash
-node scripts/prepare-codex-reel.mjs \
-  2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht \
-  --validate-only
-```
-
-Outputs:
+Wird normalerweise von ChatGPT abgeschlossen. Source-Ziel:
 
 ```text
-ki/reels/<week>/<NN_Reel-Titel>/06-projektdateien/CODEX-BRIEF.generated.md
-ki/reels/<week>/<NN_Reel-Titel>/06-projektdateien/codex-package-report.json
+ki/src/reels/<slug>/
 ```
 
-The helper first runs the repository reel-structure validator. It must never be used to bypass the weekly 01–06 package contract.
+Planungsdateien bleiben im Wochenpaket.
 
-## Shared motion infrastructure
+## Phase 2
 
-- `ki/src/motion-system/`: deterministic shared primitives and production APIs
-- `ki/src/animation-library/`: visual-family catalog, planners, prototypes and micro-motion grammar
-- `ki/animation-library/`: animation-system documentation and production rules
-- `core/brand-kit/`: shared visual primitives and UI components exposed as `@studio/core`
+Nur menschliches Voiceover. Kein Coding-Kontext nötig.
 
-Read only the specific registry, primitive or prototype referenced by the reel plan.
+## Phase 3
 
-## Current real production package
+Codex/Antigravity liest `docs/CODEX_REEL_WORKFLOW.md` und verwendet den vorhandenen Phase-1-Source. Fehlendes Audio ist ein Stop-Blocker.
 
-Planning:
+## Gemeinsame technische Quellen
+
+Nur bei Bedarf öffnen:
+
+- `ki/src/animation-library/productionEligibility.ts`
+- konkret verwendete Registry/Prototype-Dateien
+- `ki/src/motion-system/`
+- `core/brand-kit/`
+- `ki/brand/brand.ts`
+
+Nicht automatisch die komplette Animation Library lesen.
+
+## Bilder
+
+Bei Asset-/Bildfragen:
+
+- `ki/BILDSTIL.md`
+- named reel `02-bilder/README.md`
+- `02-bilder/image-prompts.md`
+- `02-bilder/asset-manifest.json`
+
+## Statussprache
+
+Immer getrennt halten:
 
 ```text
-ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/
+geplant
+implementiert
+technisch getestet
+gerendert
+visuell geprüft
+freigegeben
 ```
-
-Executable source target:
-
-```text
-ki/src/reels/antigravity-context-overload/
-```
-
-Existing reference implementation source:
-
-```text
-ki/src/reels/why-ai-reads-differently/
-```
-
-Reference source is for architecture and review discipline, not a scene-for-scene template.
-
-## Quality principles
-
-- supplied planning is authoritative
-- supplied assets are mandatory when declared required
-- no generic image zoom as the only image treatment
-- one dominant explanatory motion per sentence
-- maximum three strong motions at once
-- every spoken word subtitled
-- only important words strongly animated
-- voiceover first, SFX off by default
-- hard cuts unless semantic continuation is real
-- no fake or ungrounded measurements
-- no success claims without actual current-source tests and renders
-
-## Final status
-
-Always distinguish:
-
-```text
-implemented
-technically tested
-rendered
-visually reviewed
-approved
-```
-
-These are separate states and must never be collapsed into one claim.

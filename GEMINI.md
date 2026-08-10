@@ -1,121 +1,88 @@
-# Antigravity workspace instructions
+# Antigravity / Gemini — KI-Channel Contract
 
-This repository is compatible with Google Antigravity IDE/CLI.
+Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen. Für KI-Reels zusätzlich `ki/AGENTS.md`, `ki/gehirn/MASTER.md` und `ki/reels/AGENTS.md`.
 
-First read `AGENTS.md` and `ki/AGENTS.md`. For reel work also read `ki/reels/AGENTS.md`.
+## Kanonischer Stand
 
-## Permanent reel-folder contract
+`main` ist die aktuelle Produktionswahrheit. Andere Branches sind Historie/Backup, außer der Nutzer nennt sie ausdrücklich.
 
-Every production reel package lives only at:
+Normale Änderungen auf einem Arbeitsbranch von `main`; `main` nur bei ausdrücklich verlangter Repository-Kanonisierung direkt aktualisieren.
+
+## 3 Phasen
+
+### Phase 1 — ChatGPT
+
+Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Animationen, Bildprompts/Manifest falls nötig, Captions, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
+
+**Audio darf in Phase 1 fehlen.** Das ist normal.
+
+### Phase 2 — Mensch
+
+Der Mensch erzeugt nur `voiceover.wav` oder `voiceover.mp3` aus dem freigegebenen Text.
+
+### Phase 3 — Antigravity / Codex
+
+Antigravity arbeitet auf der vorhandenen Phase-1-Implementierung. Nicht von Null neu bauen.
+
+Ablauf:
+
+1. `PHASE-STATUS.md` lesen.
+2. Struktur prüfen.
+3. vorhandenen Source und Composition prüfen.
+4. echtes Voiceover suchen.
+5. fehlt Audio: `PHASE 2 AUDIO FEHLT` und stoppen.
+6. Audio-Dauer messen und integrieren.
+7. Captions/Timing an echtes Audio anpassen, ohne Text umzuschreiben.
+8. genehmigte Animationen und Grounding-Pipeline erhalten.
+9. fokussierte Tests und TypeScript ausführen.
+10. drei Smoke-Frames pro Szene rendern und visuell prüfen.
+11. echte Probleme beheben.
+12. finales MP4 rendern, technisch prüfen und in normaler Geschwindigkeit ansehen.
+13. Checkliste/Status nur für tatsächlich ausgeführte Prüfungen aktualisieren.
+
+## Repository-Struktur
+
+Planung:
 
 `ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/`
 
-with the permanent folders:
+Source:
 
-- `01-script-audio/`
-- `02-bilder/`
-- `03-caption/`
-- `04-pdf/`
-- `05-export/`
-- `06-projektdateien/`
+`ki/src/reels/<slug>/`
 
-Before and after reel/package changes run:
+Nie Planung nach `ki/src/reels/` verschieben. Nie flache Reel-Pakete unter `ki/reels/<slug>/` erzeugen.
 
-`node scripts/check-ki-reel-folder-structure.mjs`
+## Bilder
 
-Create new reels only with:
+`ki/BILDSTIL.md` ist verbindlich. Phase 1 entscheidet zuerst, ob ein Bild überhaupt nötig ist. Falls ja, liegt der Prompt unter `02-bilder/image-prompts.md`; der Prompt ist standardmäßig Englisch, sichtbare Labels im Bild nur kurz und deutsch. Überschriften, Captions, Pfeile, Zahlen und längere Texte gehören in Remotion.
 
-`node scripts/new-ki-reel.mjs "Reel Titel"`
+## Aktuelles Context-Overload-Reel
 
-Never create `ki/<reel-name>/`. Never place planning files in `ki/src/reels/`. `ki/src/reels/<slug>/` is only for executable TS/TSX source after implementation starts.
-
-## Repository verification
-
-The root workspaces are canonical and must resolve as:
-
-- `core/` -> `@studio/core`
-- `ki/` -> `@studio/ki`
-
-Install dependencies from repository root with:
-
-`npm install --package-lock=false --no-audit --no-fund`
-
-Do not bypass workspaces. A missing or broken workspace is a repository defect and must not be hidden with `--workspaces=false`.
-
-Canonical technical gates:
-
-- `npm run ki:reel:structure-check`
-- `npm run typecheck`
-- `npm test`
-- `npm run content:runtime:verify`
-- `npm run repo:verify`
-
-Canonical content-release commands:
-
-- `npm run release:verify`
-- `npm run release:smoke`
-- `npm run release:full`
-
-## First production reel
-
-When asked to build, render, finish, or continue the first real reel, use:
-
-`.agents/skills/build-context-overload-reel/SKILL.md`
-
-Approved planning package:
+Wenn ausdrücklich dieses Reel fortgesetzt/fertiggestellt wird:
 
 `ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
 
-Topic: `Warum mehr Kontext eine KI schlechter machen kann`.
+Phase-3-Skill:
 
-Its files are distributed by production area:
+`.agents/skills/build-context-overload-reel/SKILL.md`
 
-- voiceover: `01-script-audio/voiceover.md`
-- asset manifest: `02-bilder/asset-manifest.json`
-- subtitle cues: `03-caption/subtitle-cues.json`
-- reel/scene/animation/assembly/review: `06-projektdateien/`
-
-Before implementation run:
-
-`node scripts/run-antigravity-context-overload-preflight.mjs`
-
-Only after preflight succeeds may executable implementation be created separately under:
+Der vorhandene Source liegt unter:
 
 `ki/src/reels/antigravity-context-overload/`
 
-Do not move the planning package there.
+Er wird wiederverwendet und nicht neu erfunden.
 
-## Fastest first grounding-test path
+## Verifikation
 
-For the complete first grounding sequence, run from repository root:
+Canonical gates:
 
-`node scripts/run-antigravity-content-test.mjs`
+```bash
+npm run repo:wiring-check
+npm run ki:reel:structure-check
+npm run typecheck
+npm test
+npm run content:runtime:verify
+npm run repo:verify
+```
 
-It validates the Antigravity test contract, the 22 production inputs, the exact cost grounding case and the exact latency grounding case, then writes:
-
-`out/antigravity-content-test/summary.json`
-
-## Expanded grounding sequence
-
-1. `node scripts/check-ki-reel-folder-structure.mjs`
-2. `node scripts/check-antigravity-content-test-contract.mjs`
-3. `node scripts/check-masterplan-production-inputs.mjs`
-4. `node scripts/check-first-content-grounding-test-contract.mjs`
-5. `node scripts/run-first-content-grounding-test.mjs`
-6. Inspect the cost `test-summary.json`.
-7. `node scripts/run-first-content-grounding-test.mjs scale-performance-latency-tunnel-race-v1`
-8. Inspect the latency `test-summary.json`.
-9. If all are green, run `npm run release:verify`.
-
-Do not bypass canonical production paths, weaken assertions, inject demo values, modify `main`, merge PR #3, or claim unexecuted tests passed.
-
-The first exact-value assertions remain:
-
-- cost: `94 Cent -> 28 Cent`, `measurementExact = 1`, `cost-efficiency`
-- latency: `780 ms -> 340 ms`, `measurementExact = 1`, `scale-performance`
-
-Only after grounding tests and technical verify are green may a smoke render start with:
-
-`npm run release:smoke`
-
-Full release and merge remain separate explicit decisions.
+Workspaces nie mit `--workspaces=false` umgehen. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.
