@@ -2,6 +2,19 @@
 
 Longform ist ein **eigenes Content-Format**. Es wird nicht automatisch aus einem Reel verlängert.
 
+## Aktuelle Startlänge
+
+Für die erste YouTube-Longform-Phase gilt verbindlich:
+
+- Zielkorridor pro Video: **5:00 bis 6:00 Minuten**
+- Skript, Dramaturgie und Visual-Plan werden von Anfang an für diesen Korridor gebaut
+- nicht erst ein längeres Video schreiben und danach künstlich kürzen
+- keine Wiederholungen oder Füllsätze nur, um die Laufzeit zu erreichen
+- die reale Laufzeit wird nach dem fertigen Voiceover gemessen; die finale Fassung bleibt im 5–6-Minuten-Korridor
+- längere Formate erst einführen, wenn der Nutzer das ausdrücklich ändert
+
+Dieser Korridor ist eine aktuelle Kanalentscheidung, keine allgemeine YouTube-Regel.
+
 ## Wann Longform sinnvoll ist
 
 Longform eignet sich, wenn ein Thema echte Tiefe braucht, zum Beispiel:
