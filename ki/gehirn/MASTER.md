@@ -1,17 +1,18 @@
 # 🧠 KI-Channel — MASTER-GEHIRN
 
-Diese Datei verbindet Identität, Reel-Logik, Bildstil und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
+Diese Datei verbindet Identität, Reel-Logik, Bildstil, Plattformen und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
 
 ## Autoritative Quellen
 
 1. `REPO-STATE.md` — Repository-Wahrheit und Branch
 2. `AGENTS.md` / `ki/AGENTS.md` — technische und strukturelle Regeln
-3. **diese Datei** — Kanalweite Entscheidungslogik
+3. **diese Datei** — kanalweite Entscheidungslogik
 4. `KANAL.md` — Identität, Zielgruppe, Ton
 5. `REELS.md` — Reel-Struktur, Text-Hierarchie, Visualisierung
-6. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
-7. `../BILDSTIL.md` — Bild- und Prompt-Qualität
-8. named reel package — konkrete Inhalte
+6. `PLATTFORMEN.md` — Publishing und YouTube/Instagram/TikTok/Facebook/Snapchat
+7. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
+8. `../BILDSTIL.md` — Bild- und Prompt-Qualität
+9. named reel package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
@@ -19,7 +20,16 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
 > Komplexe KI so erklären, dass ein normaler deutschsprachiger Zuschauer den Mechanismus innerhalb weniger Sekunden versteht — visuell stark, sachlich geerdet und ohne Hype-Lärm.
 
-## Entscheidungsreihenfolge für jede Szene
+## Kanalprinzipien
+
+- deutsch
+- vollständig faceless
+- verständlich vor technisch beeindruckend
+- Nutzen/Aha vor Feature-Liste
+- Wahrheit vor Reichweitenversprechen
+- ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
+
+## Entscheidungsreihenfolge für jede Reel-Szene
 
 ```text
 1. Was ist die eine Aussage?
@@ -82,6 +92,14 @@ Jede Szene braucht:
 - eindeutige Beziehung zum Sprechertext
 - keine unnötige Textdopplung
 - keine erfundenen Fakten
+
+## Publishing-Modell
+
+Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
+
+Plattform-spezifische Titel/Captions gehören in `03-caption/platform-copy.md`. Strategie: `PLATTFORMEN.md` und `ki/plattformen/`.
+
+YouTube Longform ist ein eigenes Format und darf nicht automatisch aus Reels aufgeblasen werden.
 
 ## Produktionsmodell
 
