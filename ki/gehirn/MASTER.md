@@ -40,7 +40,8 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 6. Welche kurze Zwischenüberschrift ordnet ein, ohne den Sprecher zu kopieren?
 7. Welches semantisch passende Icon gehört zu dieser Zwischenüberschrift?
 8. Welche 0–3 Animationslabels sind wirklich nötig?
-9. Ist alles auf Smartphone-Größe lesbar und innerhalb der Safe Zones?
+9. Ist die Hauptanimation hoch genug, damit Untertitel nichts Wichtiges verdecken?
+10. Ist alles auf Smartphone-Größe lesbar und innerhalb der Safe Zones?
 ```
 
 ## Visual Hierarchy
@@ -48,10 +49,13 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 ```text
 ZWISCHENÜBERSCHRIFT + ICON
 = oben mittig; kompakter Kapitel-/Kerngedanke
+= komplette Überschrift in dunklem Marken-Lila #6E45C9
+= Icon ebenfalls lila und deutlich genug sichtbar
 = keine zusätzliche Unterzeile darunter
 
 ANIMATION / BILD
 = Mechanismus oder Zustandsänderung
+= kritische Inhalte enden oberhalb der Untertitelzone
 
 ANIMATIONSTEXT
 = nur Objekt-/Zustandslabels, keine Satzkopie
@@ -59,7 +63,7 @@ ANIMATIONSTEXT
 UNTERTITEL / CAPTION
 = unten in sicherer Zone, ohne Hintergrundkarte
 = exakt am echten Sprecher ausgerichtet
-= aktives Wort / aktive Wortgruppe in Marken-Lila
+= nur aktueller Sprechfokus in Marken-Lila
 ```
 
 Interne Regie-, `goal`-, Debug- und Planner-Texte sind niemals Zuschauertext.
@@ -73,6 +77,10 @@ Bei vertikalem 1080 × 1920 Short-Form gilt:
 - Untertitel deutlich oberhalb der unteren Plattform-UI halten
 - ungefähr die untersten 220 px nicht für kritischen Text nutzen
 - Untertitel ohne weißen Kasten oder andere flächige Caption-Card
+- Hauptanimation samt wichtiger Labels sichtbar oberhalb der Untertitel halten
+- als Richtwert kritische Animationslabels möglichst oberhalb von ungefähr y=1450 beenden
+- ungefähr 80–120 px Luft zwischen Hauptanimation und Untertitel anstreben
+- wenn es eng wird, Animation höher/kompakter machen; Untertitel nicht in die Plattform-UI drücken
 - finale Wort-/Cue-Synchronität wird in Phase 3 gegen das echte Voiceover geprüft
 
 Die Detailwerte und Qualitätschecks stehen in `REELS.md`.
@@ -91,11 +99,12 @@ Kein Bild nur, weil ein Bild hübsch aussieht.
 - Text: `#1A1A2E`
 - primärer KI-/Fokus-Akzent: `#B98CFF`
 - Tiefe/Kontrast: `#6E45C9`
+- Reel-Zwischenüberschrift: vollständig `#6E45C9`
 - Grün: Vorteil/Lösung
 - Rot: Risiko/Fehler/Grenze
 - Blau: seltene Info-/Tech-Semantik
 
-Lila wird gezielt akzentuiert, nicht flächig überall verteilt. Bei Untertiteln ist die aktive Sprecherposition ein erlaubter und gewünschter Lila-Fokus.
+Lila wird gezielt akzentuiert. Die Zwischenüberschrift ist bewusst vollständig lila; bei Untertiteln ist nur die aktive Sprecherposition der Lila-Fokus.
 
 ## Qualitätsregel
 
@@ -109,6 +118,7 @@ Jede Szene braucht:
 - eindeutige Beziehung zum Sprechertext
 - keine unnötige Textdopplung
 - keine erfundenen Fakten
+- genügend Abstand zwischen Hauptanimation und Untertitel
 
 ## Publishing-Modell
 

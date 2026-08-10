@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {BRAND} from '../../../brand/brand';
 import {usePrototypeContent} from './PrototypeContentContext';
 
 export const PROTOTYPE_PALETTE = {
@@ -14,6 +15,8 @@ export const PROTOTYPE_PALETTE = {
   white: '#FFFFFF',
   line: '#DED7EA',
 } as const;
+
+const PRODUCTION_CONTENT_LIFT_PX = 96;
 
 export const prototypeProgress = (
   frame: number,
@@ -71,20 +74,20 @@ const ProductionSceneIcon: React.FC<{icon: string}> = ({icon}) => {
   return (
     <div
       style={{
-        width: 58,
-        height: 58,
-        borderRadius: 18,
+        width: 72,
+        height: 72,
+        borderRadius: 22,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: PROTOTYPE_PALETTE.accent,
-        background: 'rgba(135,87,232,.10)',
-        border: '1.5px solid rgba(135,87,232,.20)',
-        boxShadow: '0 10px 26px rgba(135,87,232,.10)',
+        color: BRAND.accentDk,
+        background: 'rgba(185,140,255,.16)',
+        border: '1.5px solid rgba(110,69,201,.22)',
+        boxShadow: '0 12px 30px rgba(110,69,201,.14)',
         flex: '0 0 auto',
       }}
     >
-      <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+      <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true">
         {icon === 'context' ? (
           <>
             <rect x="5" y="7" width="22" height="18" rx="4" {...common} />
@@ -170,14 +173,14 @@ export const PrototypeShell: React.FC<{
         <div
           style={{
             position: 'absolute',
-            left: 78,
-            right: 78,
-            top: 118,
+            left: 64,
+            right: 64,
+            top: 104,
             zIndex: 20,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 18,
+            gap: 22,
             textAlign: 'center',
             opacity: titleEnter,
             transform: `translateY(${(1 - titleEnter) * -24}px)`,
@@ -186,12 +189,14 @@ export const PrototypeShell: React.FC<{
           <ProductionSceneIcon icon={productionIcon} />
           <div
             style={{
-              maxWidth: 790,
-              fontFamily: 'Arial Narrow, Arial, sans-serif',
-              fontSize: displayTitle.length > 30 ? 46 : 52,
+              maxWidth: 820,
+              color: BRAND.accentDk,
+              fontFamily: BRAND.font,
+              fontSize: displayTitle.length > 30 ? 50 : 58,
               lineHeight: 1.02,
               fontWeight: 900,
-              letterSpacing: -1.7,
+              letterSpacing: -1.8,
+              textShadow: '0 7px 22px rgba(110,69,201,.12)',
             }}
           >
             {displayTitle}
@@ -252,7 +257,15 @@ export const PrototypeShell: React.FC<{
         </div>
       )}
 
-      {children}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          transform: content ? `translateY(-${PRODUCTION_CONTENT_LIFT_PX}px)` : undefined,
+        }}
+      >
+        {children}
+      </div>
 
       {!content ? (
         <div
