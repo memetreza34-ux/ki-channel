@@ -56,7 +56,10 @@ const activeWordIndex = ({
     );
     if (exact >= 0) return exact;
 
-    const previous = cue.words.findLastIndex((word) => frame >= word.endFrame);
+    let previous = -1;
+    for (let index = 0; index < cue.words.length; index += 1) {
+      if (frame >= cue.words[index].endFrame) previous = index;
+    }
     if (previous >= 0) return previous;
   }
 
