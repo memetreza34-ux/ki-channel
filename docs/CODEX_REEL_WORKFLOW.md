@@ -47,11 +47,33 @@ Fehlt beides: `PHASE 2 AUDIO FEHLT`.
 
 Danach:
 
-- Dauer messen
+- reale Dauer messen
 - Audio render-sicher integrieren
-- Caption-/Szenen-Timing an reales Audio anpassen
+- Captions, Szenen und Visual Beats an reales Audio anpassen
 - Sprechertext nicht umschreiben
-- nicht heimlich time-stretchen oder abschneiden
+- natürliche Pausen bei Bedarf an Phrase-/Satzgrenzen leicht verkürzen/verlängern
+- falls danach eine Phrase sichtbar zu schnell oder zu langsam für den geplanten Beat ist: pitch-erhaltend lokal time-stretchen
+
+### Zulässiges lokales Voice-Retiming
+
+Nicht pauschal die komplette Stimme beschleunigen/verlangsamen. Nur problematische **Phrasen oder Cues** feinjustieren.
+
+Regeln:
+
+- niemals Speedwechsel mitten im Wort
+- nur an natürlichen Pausen-/Phrasengrenzen
+- keine abrupten hörbaren Sprünge
+- Pitch erhalten
+- Wortlaut und Reihenfolge 1:1 erhalten
+- bevorzugt `0.97x–1.03x`
+- bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- stärkere Korrektur → nicht weiter verzerren; neues Voiceover/Phase 2 verlangen
+- keine Wörter abschneiden/duplizieren/ergänzen
+- nicht auf exakt 60 Sekunden zwingen, wenn Stimme unnatürlich würde
+
+Nach jeder Audioänderung Caption-Cues und Wort-Timestamps gegen **das tatsächlich verwendete Audio** neu bestimmen.
+
+Im Abschlussbericht lokale Retiming-Stellen und Faktoren nennen. Wenn kein Retiming nötig war, ebenfalls kurz sagen.
 
 ## Bilder
 
@@ -70,19 +92,22 @@ Zeitabhängige Plattformregeln werden erst bei konkreter Veröffentlichung aktue
 3. reel-spezifischen Preflight.
 4. Phase-1-Source/Composition bestätigen.
 5. Audio prüfen und messen.
-6. Audio/Timing integrieren.
-7. fokussierte Tests und TypeScript.
-8. drei Smoke-Frames pro Szene: Opening, Midpoint, End-Hold.
-9. alle Smoke-Frames visuell prüfen.
-10. Textüberlauf, Dopplung, semantische Motion-Fehler und Safe-Zones an der Ursache beheben.
-11. finales MP4 rendern.
-12. technische Artefaktprüfung.
-13. Video normal und auf Smartphone-Größe ansehen.
-14. Checkliste/Status ehrlich aktualisieren.
-15. `platform-copy.md` als Publishing-Handoff bestätigen.
-16. finaler Strukturcheck.
+6. Audio integrieren.
+7. Visual Beats, Pausen, Szenen und Animationen an reales Voiceover ausrichten.
+8. nur falls nötig lokale Phrase-/Cue-Speedkorrektur innerhalb des Qualitätskorridors anwenden.
+9. Caption-/Wort-Timestamps gegen das finale Audio synchronisieren.
+10. fokussierte Tests und TypeScript.
+11. drei Smoke-Frames pro Szene plus relevante Beat-Wechsel.
+12. alle Smoke-Frames visuell prüfen.
+13. Textüberlauf, Dopplung, semantische Motion-Fehler und Safe-Zones an der Ursache beheben.
+14. finales MP4 rendern.
+15. technische Artefaktprüfung.
+16. Video normal und auf Smartphone-Größe ansehen und dabei auch auf unnatürliche Voice-Speed-Stellen hören.
+17. Checkliste/Status ehrlich aktualisieren.
+18. `platform-copy.md` als Publishing-Handoff bestätigen.
+19. finaler Strukturcheck.
 
-## Visuelle Pflichtprüfung
+## Visuelle/akustische Pflichtprüfung
 
 Nicht freigeben bei:
 
@@ -93,6 +118,8 @@ Nicht freigeben bei:
 - leerer Opening-Phase
 - unfertigem Endframe
 - falscher/unverständlicher Motion
+- Visual Beat nicht zeitgleich zur gemeinten Sprecherphrase
+- hörbar künstlichem, hektischem oder gedehntem Voiceover-Retiming
 - ungrounded Zahlen
 - Wasserzeichen oder zufälligem Text in Bildern
 - fehlender mobiler Lesbarkeit
@@ -103,9 +130,12 @@ Getrennt berichten:
 
 ```text
 implementiert
+Audio integriert
+Timeline synchronisiert
+lokales Retiming: keines / Stellen + Faktoren
 technisch getestet
 gerendert
-visuell geprüft
+visuell + akustisch geprüft
 freigegeben
 publishing-bereit
 ```
