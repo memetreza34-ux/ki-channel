@@ -17,6 +17,8 @@ export const PROTOTYPE_PALETTE = {
 } as const;
 
 const PRODUCTION_CONTENT_LIFT_PX = 96;
+const PRODUCTION_ANIMATION_CUTOFF_Y = 1440;
+const PRODUCTION_ANIMATION_CLIP_BOTTOM_PX = 1920 - PRODUCTION_ANIMATION_CUTOFF_Y;
 
 export const prototypeProgress = (
   frame: number,
@@ -261,10 +263,20 @@ export const PrototypeShell: React.FC<{
         style={{
           position: 'absolute',
           inset: 0,
-          transform: content ? `translateY(-${PRODUCTION_CONTENT_LIFT_PX}px)` : undefined,
+          clipPath: content
+            ? `inset(0 0 ${PRODUCTION_ANIMATION_CLIP_BOTTOM_PX}px 0)`
+            : undefined,
         }}
       >
-        {children}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: content ? `translateY(-${PRODUCTION_CONTENT_LIFT_PX}px)` : undefined,
+          }}
+        >
+          {children}
+        </div>
       </div>
 
       {!content ? (
