@@ -71,6 +71,31 @@ Echte Audiodatei liegt neben dem finalen Skript.
 
 Phase 3 verwendet die vorhandene Phase-1-Grundlage und baut nicht neu von Null.
 
+### Timeline-Prinzip — natürliches Audio, perfekte Synchronität
+
+Das echte Voiceover ist der akustische Master. Die Timeline wird **an der realen Stimme feinjustiert**; die Stimme muss aber nicht starr unverändert bleiben, wenn einzelne Stellen hörbar zu schnell oder zu langsam für die geplanten Visual Beats sind.
+
+Reihenfolge für jeden problematischen Abschnitt:
+
+1. zuerst Visual-Beat-, Szenen-, Hold- und Animations-Timing an die echte Stimme anpassen
+2. natürliche Pausen an Satz-/Phrasengrenzen leicht verkürzen oder verlängern
+3. wenn danach ein lokaler Abschnitt noch sichtbar zu schnell/zu langsam ist: **pitch-erhaltendes Time-Stretching auf Phrase-/Cue-Ebene** verwenden
+4. Captions und Wort-Timestamps anschließend exakt auf das tatsächlich verwendete Audio legen
+
+Regeln für Audio-Retiming:
+
+- niemals mitten in einem Wort die Geschwindigkeit wechseln
+- keine abrupten Speed-Sprünge; nur an natürlichen Phrasen-/Pausengrenzen
+- Pitch/Stimmhöhe erhalten
+- Wortlaut, Wortreihenfolge und Bedeutung niemals verändern
+- keine Wörter abschneiden, verschlucken, duplizieren oder künstlich ergänzen
+- normale Korrektur möglichst ungefähr `0.97x–1.03x`
+- bei Bedarf bis ungefähr `0.94x–1.06x`; stärkere Änderung gilt als Qualitätswarnung und soll normalerweise durch neues Voiceover/Phase 2 gelöst werden statt die Stimme hörbar zu verzerren
+- nicht auf eine exakte Gesamtlänge zwingen, wenn dadurch die Stimme unnatürlich klingt
+- Ziel ist eine **natürliche Stimme + semantisch perfekte Visual-Beat-Timeline**, nicht eine mathematisch starre Sekundenmarke
+
+Wenn ein Abschnitt retimed wurde, muss Phase 3 im Abschlussbericht kurz nennen, **welcher Abschnitt und welcher Faktor** verwendet wurde.
+
 Pflichten:
 
 1. Branch/Status prüfen.
@@ -79,18 +104,20 @@ Pflichten:
 4. echtes Voiceover finden; bei Fehlen mit `PHASE 2 AUDIO FEHLT` stoppen.
 5. reale Audio-Dauer messen.
 6. Audio render-sicher integrieren.
-7. Timing/Captions an reales Audio anpassen, ohne Sprechertext zu ändern.
+7. Timeline nach obigem Prinzip an reales Audio anpassen; Sprechertext nicht umschreiben.
 8. Visual Beats am echten Sprecher ausrichten; sichtbare Zustandswechsel müssen zur gemeinten Phrase/Satzstelle passen.
-9. genehmigte `REUSE_EXACT`-/`NEW_BUILD`-Entscheidungen erhalten; keine bequemere Library-Animation einsetzen.
-10. prüfen, dass **ab ungefähr y=1440 keinerlei Animation sichtbar ist** und die Caption die unterste Inhaltsebene bleibt.
-11. falls der technische Clip-Guard wichtigen Inhalt abschneidet: Animation neu layouten, nicht als bestanden akzeptieren.
-12. Strukturcheck, fokussierte Tests und TypeScript ausführen.
-13. pro Szene Opening/Mid/End-Hold sowie relevante Beat-Wechsel in Smoke-Frames rendern.
-14. Smoke-Frames tatsächlich visuell prüfen und Fehler beheben.
-15. finales MP4 rendern.
-16. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
-17. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
-18. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
+9. lokale Pausen/Speed nur dort korrigieren, wo die audiovisuelle Timeline dadurch klarer wird; danach Caption-/Wort-Timestamps neu ausrichten.
+10. genehmigte `REUSE_EXACT`-/`NEW_BUILD`-Entscheidungen erhalten; keine bequemere Library-Animation einsetzen.
+11. prüfen, dass **ab ungefähr y=1440 keinerlei Animation sichtbar ist** und die Caption die unterste Inhaltsebene bleibt.
+12. falls der technische Clip-Guard wichtigen Inhalt abschneidet: Animation neu layouten, nicht als bestanden akzeptieren.
+13. Strukturcheck, fokussierte Tests und TypeScript ausführen.
+14. pro Szene Opening/Mid/End-Hold sowie relevante Beat-Wechsel in Smoke-Frames rendern.
+15. Smoke-Frames tatsächlich visuell prüfen und Fehler beheben.
+16. finales MP4 rendern.
+17. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
+18. bei normaler Wiedergabe zusätzlich prüfen, dass Voiceover-Retiming nirgends künstlich, hektisch oder gedehnt klingt.
+19. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
+20. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
 
 ## Stop-Bedingungen
 
@@ -100,6 +127,8 @@ Nicht als fertig melden bei:
 - fehlender Phase-1-Source
 - fehlgeschlagenen Tests/Strukturchecks
 - Text-/Caption-Mismatch
+- hörbar künstlichem oder abruptem Voiceover-Speedwechsel
+- Audio-Retiming außerhalb des Qualitätskorridors ohne neue Phase-2-Aufnahme
 - überlappender oder abgeschnittener Typografie
 - internen Regie-/Goal-Texten im Video
 - unnötiger Caption-/Animations-Textdopplung
@@ -122,7 +151,7 @@ PHASE 2 — Mensch
 nur Voiceover
         ↓
 PHASE 3 — Codex / Antigravity
-synchronisieren + prüfen + rendern
+Audio analysieren → Timeline/Visual Beats anpassen → bei Bedarf lokal natürlich retimen → Captions exakt synchronisieren → prüfen → rendern
         ↓
 PUBLISHING
 freigegebenen Master plattformgerecht verpacken
