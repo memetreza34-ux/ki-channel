@@ -12,11 +12,18 @@ export type ContextOverloadScene = {
   goal: string;
 };
 
+export type ContextOverloadSubtitleWord = {
+  text: string;
+  startFrame: number;
+  endFrame: number;
+};
+
 export type ContextOverloadSubtitleCue = {
   sceneId: string;
   startFrame: number;
   endFrame: number;
   text: string;
+  words?: ContextOverloadSubtitleWord[];
 };
 
 const reel = reelJson as {
@@ -50,7 +57,10 @@ export const CONTEXT_OVERLOAD_SCENES = Object.freeze(
   reel.scenes.map((scene) => Object.freeze({...scene, visualLabels: Object.freeze({...scene.visualLabels})})),
 );
 export const CONTEXT_OVERLOAD_SUBTITLES = Object.freeze(
-  subtitles.cues.map((cue) => Object.freeze({...cue})),
+  subtitles.cues.map((cue) => Object.freeze({
+    ...cue,
+    words: cue.words?.map((word) => Object.freeze({...word})),
+  })),
 );
 
 export const CONTEXT_OVERLOAD_WIDTH = reel.format.width;
@@ -67,6 +77,31 @@ export const normalizeContextOverloadText = (value: string): string =>
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .replace(/\s+/g, ' ');
+
+const assertWordTiming = (cue: ContextOverloadSubtitleCue): void => {
+  if (!cue.words || cue.words.length === 0) return;
+
+  let cursor = cue.startFrame;
+  for (const word of cue.words) {
+    if (!word.text.trim()) throw new Error(`empty subtitle word in ${cue.sceneId}`);
+    if (word.startFrame < cue.startFrame || word.endFrame > cue.endFrame) {
+      throw new Error(`subtitle word outside cue in ${cue.sceneId}`);
+    }
+    if (word.endFrame <= word.startFrame) {
+      throw new Error(`invalid subtitle word duration in ${cue.sceneId}`);
+    }
+    if (word.startFrame < cursor) {
+      throw new Error(`overlapping subtitle word timing in ${cue.sceneId}`);
+    }
+    cursor = word.endFrame;
+  }
+
+  const wordText = normalizeContextOverloadText(cue.words.map((word) => word.text).join(' '));
+  const cueText = normalizeContextOverloadText(cue.text);
+  if (wordText !== cueText) {
+    throw new Error(`subtitle word coverage mismatch for ${cue.sceneId}`);
+  }
+};
 
 export const assertContextOverloadContract = (): void => {
   if (CONTEXT_OVERLOAD_REEL.slug !== 'antigravity-context-overload') {
@@ -99,6 +134,9 @@ export const assertContextOverloadContract = (): void => {
     if (!scene.visualLabels || Object.keys(scene.visualLabels).length === 0) {
       throw new Error(`missing visual labels for ${scene.sceneId}`);
     }
+    if (!scene.visualLabels.shellIcon?.trim()) {
+      throw new Error(`missing semantic shellIcon for ${scene.sceneId}`);
+    }
     sceneIds.add(scene.sceneId);
     animationIds.add(scene.animationId);
     cursor = scene.endFrame;
@@ -115,6 +153,7 @@ export const assertContextOverloadContract = (): void => {
     if (cues.some((cue) => cue.startFrame < scene.startFrame || cue.endFrame > scene.endFrame)) {
       throw new Error(`subtitle cue outside ${scene.sceneId}`);
     }
+    cues.forEach(assertWordTiming);
     const captionText = normalizeContextOverloadText(cues.map((cue) => cue.text).join(' '));
     const spokenText = normalizeContextOverloadText(scene.spokenText);
     if (captionText !== spokenText) {
