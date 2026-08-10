@@ -28,7 +28,7 @@ Startzustand
 
 Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 
-## Text-Hierarchie — verbindliches Produktionslayout
+## Text-Hierarchie — keine Dopplung
 
 ### Zwischenüberschrift oben
 
