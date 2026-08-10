@@ -48,6 +48,22 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 
 Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig.
 
+## Verbindliches sichtbares Textlayout
+
+Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
+
+- pro Szene eine kurze **Zwischenüberschrift oben mittig**
+- zur Zwischenüberschrift ein semantisch passendes Icon
+- keine zusätzliche Header-Unterzeile
+- Untertitel unten in der sicheren Zone, nicht an der Displaykante
+- Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
+- Sans-Serif und smartphone-lesbar
+- aktive Sprecherposition in Marken-Lila hervorheben
+- finale Untertitel in Phase 3 mit dem echten Voiceover zeitlich abgleichen
+- unterste ca. 220 px und seitliche Randzonen nicht für kritischen Text verwenden
+
+Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
+
 ## Plattform-Copy
 
 `03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält mindestens getrennte Bereiche für:
@@ -94,5 +110,7 @@ Widerspruch erkennen, nicht verstecken.
 ## Fertig bedeutet wirklich fertig
 
 Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
+
+Zur visuellen Freigabe gehört ausdrücklich: Header/Icon-Position, Safe Zones, transparente Untertitel und die Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung prüfen.
 
 `veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.
