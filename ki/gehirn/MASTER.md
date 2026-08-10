@@ -137,3 +137,7 @@ Phase 3 — Codex/Antigravity: Audio + Verifikation + Render
 ```
 
 Phase 3 darf die Phase-1-Kreativentscheidung nur ändern, wenn ein nachweisbarer technischer oder visueller Fehler vorliegt.
+
+
+## STRIKE KI-Regel (Keine künstlichen Assets)
+Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!

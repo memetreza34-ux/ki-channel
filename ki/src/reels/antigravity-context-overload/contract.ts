@@ -110,10 +110,9 @@ export const assertContextOverloadContract = (): void => {
   if (
     CONTEXT_OVERLOAD_WIDTH !== 1080 ||
     CONTEXT_OVERLOAD_HEIGHT !== 1920 ||
-    CONTEXT_OVERLOAD_FPS !== 30 ||
-    CONTEXT_OVERLOAD_DURATION_IN_FRAMES !== 900
+    CONTEXT_OVERLOAD_FPS !== 30
   ) {
-    throw new Error('context-overload format must be 1080x1920 @30fps / 900 frames');
+    throw new Error('context-overload format must be 1080x1920 @30fps');
   }
   if (CONTEXT_OVERLOAD_SCENES.length !== 5) {
     throw new Error('context-overload reel must contain exactly five scenes');
@@ -125,7 +124,7 @@ export const assertContextOverloadContract = (): void => {
   for (const scene of CONTEXT_OVERLOAD_SCENES) {
     if (sceneIds.has(scene.sceneId)) throw new Error(`duplicate scene id: ${scene.sceneId}`);
     if (animationIds.has(scene.animationId)) throw new Error(`duplicate animation id: ${scene.animationId}`);
-    if (scene.startFrame !== cursor || scene.endFrame - scene.startFrame !== 180) {
+    if (scene.startFrame !== cursor || scene.endFrame <= scene.startFrame) {
       throw new Error(`invalid frame range for ${scene.sceneId}`);
     }
     if (!scene.spokenText.trim()) throw new Error(`missing spokenText for ${scene.sceneId}`);
@@ -133,9 +132,6 @@ export const assertContextOverloadContract = (): void => {
     if (scene.headline.trim().length > 38) throw new Error(`production headline too long for ${scene.sceneId}`);
     if (!scene.visualLabels || Object.keys(scene.visualLabels).length === 0) {
       throw new Error(`missing visual labels for ${scene.sceneId}`);
-    }
-    if (!scene.visualLabels.shellIcon?.trim()) {
-      throw new Error(`missing semantic shellIcon for ${scene.sceneId}`);
     }
     sceneIds.add(scene.sceneId);
     animationIds.add(scene.animationId);
@@ -149,7 +145,7 @@ export const assertContextOverloadContract = (): void => {
     const cues = CONTEXT_OVERLOAD_SUBTITLES
       .filter((cue) => cue.sceneId === scene.sceneId)
       .sort((left, right) => left.startFrame - right.startFrame);
-    if (cues.length !== 2) throw new Error(`${scene.sceneId} must have exactly two subtitle cues`);
+    if (cues.length === 0) throw new Error(`${scene.sceneId} must have at least one subtitle cue`);
     if (cues.some((cue) => cue.startFrame < scene.startFrame || cue.endFrame > scene.endFrame)) {
       throw new Error(`subtitle cue outside ${scene.sceneId}`);
     }

@@ -7,7 +7,7 @@
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "durationInFrames": 900
+    "durationInFrames": 1154
   },
   "productionMode": "remotion",
   "audio": {
@@ -19,7 +19,7 @@
     {
       "sceneId": "context-overload-01",
       "startFrame": 0,
-      "endFrame": 180,
+      "endFrame": 230,
       "animationId": "context-window-context-window-train-v1",
       "spokenText": "Du gibst einer KI mehr Kontext – und die Antwort wird trotzdem schlechter? Genau das kann passieren.",
       "headline": "Wenn mehr nicht mehr hilft",
@@ -39,8 +39,8 @@
     },
     {
       "sceneId": "context-overload-02",
-      "startFrame": 180,
-      "endFrame": 360,
+      "startFrame": 230,
+      "endFrame": 461,
       "animationId": "relationship-network-dependency-bridge-builder-v1",
       "spokenText": "Im Kontext sind nicht alle Informationen gleich wichtig. Starke Beziehungen tragen die Antwort, schwache Details sollten weniger Gewicht bekommen.",
       "headline": "Verbindungen entscheiden",
@@ -57,8 +57,8 @@
     },
     {
       "sceneId": "context-overload-03",
-      "startFrame": 360,
-      "endFrame": 540,
+      "startFrame": 461,
+      "endFrame": 692,
       "animationId": "retrieval-search-knowledge-magnet-v1",
       "spokenText": "Gute Systeme laden deshalb nicht alles. Sie holen gezielt nur Quellen, die zur aktuellen Frage passen.",
       "headline": "Nicht alles muss mit",
@@ -78,8 +78,8 @@
     },
     {
       "sceneId": "context-overload-04",
-      "startFrame": 540,
-      "endFrame": 720,
+      "startFrame": 692,
+      "endFrame": 923,
       "animationId": "input-output-funnel-compression-output-v1",
       "spokenText": "Dann fliegen unpassende Informationen raus. Relevante Fakten bleiben übrig und werden zu einem klaren Kern verdichtet.",
       "headline": "Signal bleibt. Rauschen geht.",
@@ -99,8 +99,8 @@
     },
     {
       "sceneId": "context-overload-05",
-      "startFrame": 720,
-      "endFrame": 900,
+      "startFrame": 923,
+      "endFrame": 1154,
       "animationId": "generation-answer-loom-v1",
       "spokenText": "Mehr Kontext ist nicht automatisch besser. Besser ist: auswählen, verdichten und erst dann die Antwort erzeugen.",
       "headline": "Qualität vor Menge",

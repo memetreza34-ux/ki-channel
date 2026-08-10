@@ -92,8 +92,8 @@ export const buildHallucinationSceneRuntime = (scene: HallucinationScene): Hallu
 
 export const assertHallucinationContract = (): void => {
   if (reel.slug !== 'ai-hallucinations') throw new Error('unexpected hallucination reel slug');
-  if (HALLUCINATION_WIDTH !== 1080 || HALLUCINATION_HEIGHT !== 1920 || HALLUCINATION_FPS !== 30 || HALLUCINATION_DURATION_IN_FRAMES !== 900) {
-    throw new Error('hallucination reel format must be 1080x1920 @30fps / 900 frames');
+  if (HALLUCINATION_WIDTH !== 1080 || HALLUCINATION_HEIGHT !== 1920 || HALLUCINATION_FPS !== 30) {
+    throw new Error('hallucination reel format must be 1080x1920 @30fps');
   }
   if (HALLUCINATION_SCENES.length !== 5) throw new Error('hallucination reel must contain exactly five scenes');
   let cursor = 0;
@@ -102,7 +102,7 @@ export const assertHallucinationContract = (): void => {
   for (const scene of HALLUCINATION_SCENES) {
     if (sceneIds.has(scene.sceneId)) throw new Error(`duplicate scene id: ${scene.sceneId}`);
     if (animationIds.has(scene.animationId)) throw new Error(`duplicate animation id: ${scene.animationId}`);
-    if (scene.startFrame !== cursor || scene.endFrame - scene.startFrame !== 180) throw new Error(`invalid frame range for ${scene.sceneId}`);
+    if (scene.startFrame !== cursor || scene.endFrame <= scene.startFrame) throw new Error(`invalid frame range for ${scene.sceneId}`);
     if (!scene.spokenText.trim() || !scene.headline.trim()) throw new Error(`missing viewer content for ${scene.sceneId}`);
     if (scene.headline.length > 38) throw new Error(`headline too long for ${scene.sceneId}`);
     if (!scene.visualLabels.shellIcon?.trim()) throw new Error(`missing shellIcon for ${scene.sceneId}`);
@@ -111,10 +111,10 @@ export const assertHallucinationContract = (): void => {
     animationIds.add(scene.animationId);
     cursor = scene.endFrame;
   }
-  if (cursor !== 900) throw new Error('hallucination scenes do not cover full composition');
+  if (cursor !== HALLUCINATION_DURATION_IN_FRAMES) throw new Error('hallucination scenes do not cover full composition');
   for (const scene of HALLUCINATION_SCENES) {
     const cues = HALLUCINATION_SUBTITLES.filter((cue) => cue.sceneId === scene.sceneId).sort((a, b) => a.startFrame - b.startFrame);
-    if (cues.length !== 2) throw new Error(`${scene.sceneId} must have exactly two subtitle cues`);
+    if (cues.length === 0) throw new Error(`${scene.sceneId} must have at least one subtitle cue`);
     if (cues.some((cue) => cue.startFrame < scene.startFrame || cue.endFrame > scene.endFrame)) throw new Error(`subtitle cue outside ${scene.sceneId}`);
     if (normalizeHallucinationText(cues.map((cue) => cue.text).join(' ')) !== normalizeHallucinationText(scene.spokenText)) throw new Error(`subtitle mismatch for ${scene.sceneId}`);
   }

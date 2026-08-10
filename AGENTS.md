@@ -126,3 +126,7 @@ Bei einem Blocker immer nennen:
 - nächste sinnvolle Aktion
 
 Keine Fehler mit `any`, `@ts-ignore`, deaktivierten Tests, Fake-Assets, Fake-Berichten oder geschwächten Validatoren verstecken.
+
+
+## STRIKE KI-Regel (Keine künstlichen Assets)
+Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!

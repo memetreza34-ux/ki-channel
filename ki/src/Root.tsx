@@ -1,8 +1,7 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
-import {ThreeDemo} from '@studio/core/three';
-import {BRAND} from '../brand/brand';
-import {MotionPreviewRoot} from './motion-system/MotionPreviewRoot';
+import voiceoverContext from '../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/01-script-audio/voiceover.wav';
+import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -21,37 +20,31 @@ import {
 } from './reels/ai-hallucinations';
 
 export const RemotionRoot: React.FC = () => (
-  <>
-    <Folder name="KI-Production-Reels">
-      <Composition
-        id={CONTEXT_OVERLOAD_COMPOSITION_ID}
-        component={ReelContextOverload}
-        defaultProps={{showCaptions: true, showDebugTimeline: false}}
-        durationInFrames={CONTEXT_OVERLOAD_DURATION_IN_FRAMES}
-        fps={CONTEXT_OVERLOAD_FPS}
-        width={CONTEXT_OVERLOAD_WIDTH}
-        height={CONTEXT_OVERLOAD_HEIGHT}
-      />
-      <Composition
-        id={HALLUCINATION_COMPOSITION_ID}
-        component={ReelHallucinations}
-        defaultProps={{showCaptions: true}}
-        durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
-        fps={HALLUCINATION_FPS}
-        width={HALLUCINATION_WIDTH}
-        height={HALLUCINATION_HEIGHT}
-      />
-    </Folder>
-
+  <Folder name="KI-Production-Reels">
     <Composition
-      id="Three3D"
-      component={ThreeDemo as React.FC}
-      defaultProps={{color: BRAND.accent}}
-      durationInFrames={150}
-      fps={30}
-      width={1920}
-      height={1080}
+      id={CONTEXT_OVERLOAD_COMPOSITION_ID}
+      component={ReelContextOverload}
+      defaultProps={{
+        voiceoverSrc: voiceoverContext,
+        showCaptions: true,
+        showDebugTimeline: false,
+      }}
+      durationInFrames={CONTEXT_OVERLOAD_DURATION_IN_FRAMES}
+      fps={CONTEXT_OVERLOAD_FPS}
+      width={CONTEXT_OVERLOAD_WIDTH}
+      height={CONTEXT_OVERLOAD_HEIGHT}
     />
-    <MotionPreviewRoot />
-  </>
+    <Composition
+      id={HALLUCINATION_COMPOSITION_ID}
+      component={ReelHallucinations}
+      defaultProps={{
+        voiceoverSrc: voiceoverHallucination,
+        showCaptions: true
+      }}
+      durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
+      fps={HALLUCINATION_FPS}
+      width={HALLUCINATION_WIDTH}
+      height={HALLUCINATION_HEIGHT}
+    />
+  </Folder>
 );

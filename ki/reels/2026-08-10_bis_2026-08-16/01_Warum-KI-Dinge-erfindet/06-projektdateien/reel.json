@@ -3,12 +3,12 @@
   "slug": "ai-hallucinations",
   "title": "Warum KI Dinge erfindet, die echt klingen",
   "language": "de-DE",
-  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":900},
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1295},
   "productionMode": "remotion",
   "audio": {"voiceoverRequired":true,"music":false,"sfx":false},
   "scenes": [
     {
-      "sceneId":"hallucination-01","startFrame":0,"endFrame":180,
+      "sceneId":"hallucination-01","startFrame":0,"endFrame":259,
       "animationId":"generation-answer-loom-v1",
       "spokenText":"Eine KI kann sicher klingen und trotzdem etwas erfinden. Genau deshalb wirken manche falschen Antworten erstaunlich glaubwürdig.",
       "headline":"Klingt echt. Ist es nicht.",
@@ -16,7 +16,7 @@
       "goal":"Hook: überzeugende Sprache und faktischer Fehler können gleichzeitig auftreten"
     },
     {
-      "sceneId":"hallucination-02","startFrame":180,"endFrame":360,
+      "sceneId":"hallucination-02","startFrame":259,"endFrame":518,
       "animationId":"probability-probability-fluid-columns-v1",
       "spokenText":"Ein Sprachmodell sucht keine fertige Antwort nach. Es berechnet Schritt für Schritt, welcher Textbaustein wahrscheinlich als Nächstes passt.",
       "headline":"Wahrscheinlichkeit statt Wissen",
@@ -24,7 +24,7 @@
       "goal":"Token-/Textfortsetzung als Wahrscheinlichkeitsprozess statt Datenbankabruf sichtbar machen"
     },
     {
-      "sceneId":"hallucination-03","startFrame":360,"endFrame":540,
+      "sceneId":"hallucination-03","startFrame":518,"endFrame":777,
       "animationId":"risk-contrast-confidence-glass-crack-v1",
       "spokenText":"Das Problem: sprachliche Sicherheit ist kein Wahrheitsbeweis. Eine perfekt formulierte Antwort kann fachlich trotzdem falsch sein.",
       "headline":"Sicher heißt nicht richtig",
@@ -32,7 +32,7 @@
       "goal":"Selbstsicherer sprachlicher Eindruck von faktischer Korrektheit trennen"
     },
     {
-      "sceneId":"hallucination-04","startFrame":540,"endFrame":720,
+      "sceneId":"hallucination-04","startFrame":777,"endFrame":1036,
       "animationId":"retrieval-search-knowledge-magnet-v1",
       "spokenText":"Passende Quellen helfen. Das Modell bekommt gezielten Kontext und muss weniger aus allgemeinen Mustern ergänzen.",
       "headline":"Quellen geben Halt",
@@ -40,7 +40,7 @@
       "goal":"Grounding durch passende externe Quellen als stabilisierenden Kontext zeigen"
     },
     {
-      "sceneId":"hallucination-05","startFrame":720,"endFrame":900,
+      "sceneId":"hallucination-05","startFrame":1036,"endFrame":1295,
       "animationId":"error-detection-anomaly-xray-scanner-v1",
       "spokenText":"Bei wichtigen Fakten gilt trotzdem: Quelle öffnen, Zahl kontrollieren, Aussage prüfen. Gute KI-Nutzung heißt gezielt verifizieren.",
       "headline":"Prüfen statt blind glauben",
