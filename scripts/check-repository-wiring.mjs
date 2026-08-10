@@ -51,14 +51,24 @@ const core = await readJson('core/package.json');
 const ki = await readJson('ki/package.json');
 const vitest = await readText('vitest.config.ts');
 const repoState = await readText('REPO-STATE.md');
+const rootReadme = await readText('README.md');
+const kiReadme = await readText('ki/README.md');
 const agents = await readText('AGENTS.md');
 const kiAgents = await readText('ki/AGENTS.md');
 const reelAgents = await readText('ki/reels/AGENTS.md');
+const platformAgents = await readText('ki/plattformen/AGENTS.md');
 const gemini = await readText('GEMINI.md');
 const master = await readText('ki/gehirn/MASTER.md');
+const channel = await readText('ki/gehirn/KANAL.md');
 const production = await readText('ki/gehirn/PRODUKTIONSABLAUF.md');
 const reels = await readText('ki/gehirn/REELS.md');
+const platforms = await readText('ki/gehirn/PLATTFORMEN.md');
 const imageStyle = await readText('ki/BILDSTIL.md');
+const youtubeReadme = await readText('ki/plattformen/youtube/README.md');
+const youtubeShorts = await readText('ki/plattformen/youtube/SHORTS.md');
+const youtubeLongform = await readText('ki/plattformen/youtube/LONGFORM.md');
+const youtubeThumbnails = await readText('ki/plattformen/youtube/THUMBNAILS.md');
+const youtubeUpload = await readText('ki/plattformen/youtube/UPLOAD.md');
 const codexWorkflow = await readText('docs/CODEX_REEL_WORKFLOW.md');
 const contextIndex = await readText('docs/CODEX_CONTEXT_INDEX.md');
 const generator = await readText('scripts/new-ki-reel.mjs');
@@ -103,31 +113,45 @@ if (ki) {
 if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
 if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts enthält wieder channels/**.');
 
-requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','PHASE 1 — ChatGPT','PHASE 2 — Mensch','PHASE 3 — Codex / Antigravity']);
-requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen']);
-requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
-requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
+requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','PHASE 1 — ChatGPT','PHASE 2 — Mensch','PHASE 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
+requireMarkers('README.md', rootReadme, ['REPO-STATE.md','ki/plattformen/','YouTube Shorts','platform-copy.md']);
+requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
+requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
+requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
+requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
+requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
-requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT']);
-requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT']);
+requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
+requireMarkers('KANAL.md', channel, ['YouTube Shorts','Instagram Reels','TikTok','Facebook Reels','PLATTFORMEN.md']);
+requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT','platform-copy.md']);
 requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','niemals interner `goal`','BILDER NICHT ERFORDERLICH']);
+requireMarkers('PLATTFORMEN.md', platforms, ['Content einmal, Publishing mehrfach','03-caption/platform-copy.md','YouTube Shorts','YouTube Longform']);
 requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
+requireMarkers('YouTube README', youtubeReadme, ['YouTube — Kanalstruktur','SHORTS.md','LONGFORM.md','THUMBNAILS.md','UPLOAD.md']);
+requireMarkers('YouTube SHORTS', youtubeShorts, ['03-caption/platform-copy.md','kein eigenes Produktionsprojekt','UPLOAD.md']);
+requireMarkers('YouTube LONGFORM', youtubeLongform, ['eigenes Content-Format','nicht automatisch aus einem Reel verlängert','THUMBNAILS.md']);
+requireMarkers('YouTube THUMBNAILS', youtubeThumbnails, ['faceless','#B98CFF','kein visuelles Rätsel']);
+requireMarkers('YouTube UPLOAD', youtubeUpload, ['03-caption/platform-copy.md','zeitabhängige Plattformfakten','freigegebenen Master']);
 requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
 requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
 requireMarkers('Phase-3-Skill', phase3Skill, ['not** a from-scratch builder','PHASE 2 AUDIO FEHLT','do not rebuild the reel from zero']);
 
 forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
 forbidMarkers('GEMINI.md', gemini, ['channels/ki','--workspaces=false','Only after preflight may executable implementation be created']);
+forbidMarkers('ki/README.md', kiReadme, ['channels/ki','agent/ki-reel-builder-v1','CHATGPT_START_HIER.md','Draft-PR']);
 forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template']);
 
-for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", "'05-export'", 'PHASE-STATUS.md']) {
+for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platform-copy.md', "'05-export'", 'PHASE-STATUS.md']) {
   if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
 }
 
 for (const path of [
   'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
-  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/AGENTS.md','ki/reels/AGENTS.md',
-  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
+  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md',
+  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
+  'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
+  'ki/plattformen/youtube/README.md','ki/plattformen/youtube/SHORTS.md','ki/plattformen/youtube/LONGFORM.md','ki/plattformen/youtube/THUMBNAILS.md','ki/plattformen/youtube/UPLOAD.md',
+  'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
   'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
   'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
   'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
@@ -146,4 +170,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Gehirn, Bildprompt-System und Agent-Handoffs stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Gehirn, Bildprompt-System, Plattformstruktur, YouTube-Handoff und Agent-Verträge stimmen überein.');
