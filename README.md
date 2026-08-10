@@ -1,10 +1,10 @@
 # KI Channel
 
-Produktions-Repository für einen deutschen, vollständig faceless KI-Erklärkanal mit Remotion.
+Produktions-Repository für einen deutschen, vollständig faceless KI-Erklärkanal mit Remotion und klarer Multi-Plattform-Publishing-Struktur.
 
 ## Für neue Chats und Agenten
 
-**Immer zuerst `REPO-STATE.md` lesen.** Dort steht der kanonische Branch, die aktuelle Architektur und die verbindliche Produktionslogik.
+**Immer zuerst `REPO-STATE.md` lesen.** Dort stehen kanonischer Branch, aktuelle Architektur und verbindliche Produktionslogik.
 
 `main` ist der kanonische Produktionsstand. Historische Arbeits-/Backup-Branches sind keine aktuelle Quelle, solange der Nutzer sie nicht ausdrücklich nennt.
 
@@ -15,15 +15,22 @@ Produktions-Repository für einen deutschen, vollständig faceless KI-Erklärkan
 ├── REPO-STATE.md
 ├── AGENTS.md
 ├── core/                         # @studio/core – Brand/UI-Bausteine
-├── ki/                           # @studio/ki – Kanal und Reel-System
+├── ki/                           # @studio/ki – Kanal- und Content-System
 │   ├── brand/
 │   ├── gehirn/
 │   │   ├── MASTER.md
 │   │   ├── KANAL.md
 │   │   ├── REELS.md
+│   │   ├── PLATTFORMEN.md
 │   │   └── PRODUKTIONSABLAUF.md
 │   ├── animation-library/
-│   ├── reels/                    # Planung, Audio, Assets, Export
+│   ├── reels/                    # kanonische Short-Form-Produktion
+│   ├── plattformen/              # Publishing-Regeln, keine Medien-Duplikate
+│   │   ├── youtube/
+│   │   ├── instagram/
+│   │   ├── tiktok/
+│   │   ├── facebook/
+│   │   └── snapchat/
 │   └── src/
 │       ├── animation-library/
 │       ├── motion-system/
@@ -38,7 +45,7 @@ Workspaces:
 - `core` → `@studio/core`
 - `ki` → `@studio/ki`
 
-## Produktionspaket
+## Short-Form-Produktionspaket
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -65,11 +72,34 @@ Strukturprüfung:
 npm run ki:reel:structure-check
 ```
 
+## Publishing / Plattformen
+
+Ein Short-Form-Reel wird **einmal** produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
+
+Plattform-spezifische Copy liegt pro Reel in:
+
+```text
+03-caption/platform-copy.md
+```
+
+YouTube-Regeln:
+
+```text
+ki/plattformen/youtube/
+├── README.md
+├── SHORTS.md
+├── LONGFORM.md
+├── THUMBNAILS.md
+└── UPLOAD.md
+```
+
+YouTube Longform ist ein eigenes Format und wird nicht automatisch aus Reels aufgeblasen.
+
 ## Produktionsphasen
 
 ```text
 Phase 1 — ChatGPT
-komplette Planung + Skript + Bildprompts/Manifest + Captions + ausführbare Code-Grundlage
+komplette Planung + Skript + Bildprompts/Manifest + Captions + Plattform-Copy + ausführbare Code-Grundlage
 
 Phase 2 — Mensch
 nur Voiceover
@@ -90,8 +120,9 @@ Details: `ki/gehirn/PRODUKTIONSABLAUF.md`.
 - Animation erklärt statt dekoriert
 - Bildprompts erklären genau eine Aussage
 - Überschrift, Caption und Animationstext duplizieren sich nicht unnötig
+- Plattformtitel/Thumbnail versprechen nie mehr als der Inhalt liefert
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/BILDSTIL.md`.
+Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`.
 
 ## Technische Gates
 
@@ -116,4 +147,4 @@ Ein technischer Render ist keine visuelle Freigabe.
 
 ## Bekannte Betriebsgrenzen
 
-GitHub Actions ist derzeit auf Konto-/Billing-/Runner-Ebene blockiert und läuft deshalb nur manuell, sobald der Runner wieder verfügbar ist. Außerdem ist noch kein vertrauenswürdig erzeugter `package-lock.json` committed; ein Lockfile darf erst nach einem echten npm-Installationslauf erzeugt werden.
+GitHub Actions ist derzeit auf Konto-/Billing-/Runner-Ebene blockiert und läuft deshalb nur, sobald der Runner wieder verfügbar ist. Außerdem ist noch kein vertrauenswürdig erzeugter `package-lock.json` committed; ein Lockfile darf erst nach einem echten npm-Installationslauf erzeugt werden.
