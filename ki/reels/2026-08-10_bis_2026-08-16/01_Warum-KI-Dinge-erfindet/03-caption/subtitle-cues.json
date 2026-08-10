@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "fps": 30,
+  "cues": [
+    {"sceneId":"hallucination-01","startFrame":0,"endFrame":90,"text":"Eine KI kann sicher klingen und trotzdem etwas erfinden."},
+    {"sceneId":"hallucination-01","startFrame":90,"endFrame":180,"text":"Genau deshalb wirken manche falschen Antworten erstaunlich glaubwürdig."},
+    {"sceneId":"hallucination-02","startFrame":180,"endFrame":270,"text":"Ein Sprachmodell sucht keine fertige Antwort nach."},
+    {"sceneId":"hallucination-02","startFrame":270,"endFrame":360,"text":"Es berechnet Schritt für Schritt, welcher Textbaustein wahrscheinlich als Nächstes passt."},
+    {"sceneId":"hallucination-03","startFrame":360,"endFrame":450,"text":"Das Problem: sprachliche Sicherheit ist kein Wahrheitsbeweis."},
+    {"sceneId":"hallucination-03","startFrame":450,"endFrame":540,"text":"Eine perfekt formulierte Antwort kann fachlich trotzdem falsch sein."},
+    {"sceneId":"hallucination-04","startFrame":540,"endFrame":630,"text":"Passende Quellen helfen."},
+    {"sceneId":"hallucination-04","startFrame":630,"endFrame":720,"text":"Das Modell bekommt gezielten Kontext und muss weniger aus allgemeinen Mustern ergänzen."},
+    {"sceneId":"hallucination-05","startFrame":720,"endFrame":810,"text":"Bei wichtigen Fakten gilt trotzdem: Quelle öffnen, Zahl kontrollieren, Aussage prüfen."},
+    {"sceneId":"hallucination-05","startFrame":810,"endFrame":900,"text":"Gute KI-Nutzung heißt gezielt verifizieren."}
+  ]
+}

@@ -11,6 +11,14 @@ import {
   CONTEXT_OVERLOAD_WIDTH,
   ReelContextOverload,
 } from './reels/antigravity-context-overload';
+import {
+  HALLUCINATION_COMPOSITION_ID,
+  HALLUCINATION_DURATION_IN_FRAMES,
+  HALLUCINATION_FPS,
+  HALLUCINATION_HEIGHT,
+  HALLUCINATION_WIDTH,
+  ReelHallucinations,
+} from './reels/ai-hallucinations';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -18,14 +26,20 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={CONTEXT_OVERLOAD_COMPOSITION_ID}
         component={ReelContextOverload}
-        defaultProps={{
-          showCaptions: true,
-          showDebugTimeline: false,
-        }}
+        defaultProps={{showCaptions: true, showDebugTimeline: false}}
         durationInFrames={CONTEXT_OVERLOAD_DURATION_IN_FRAMES}
         fps={CONTEXT_OVERLOAD_FPS}
         width={CONTEXT_OVERLOAD_WIDTH}
         height={CONTEXT_OVERLOAD_HEIGHT}
+      />
+      <Composition
+        id={HALLUCINATION_COMPOSITION_ID}
+        component={ReelHallucinations}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
+        fps={HALLUCINATION_FPS}
+        width={HALLUCINATION_WIDTH}
+        height={HALLUCINATION_HEIGHT}
       />
     </Folder>
 

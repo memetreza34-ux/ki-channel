@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "slug": "ai-hallucinations",
+  "title": "Warum KI Dinge erfindet, die echt klingen",
+  "language": "de-DE",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":900},
+  "productionMode": "remotion",
+  "audio": {"voiceoverRequired":true,"music":false,"sfx":false},
+  "scenes": [
+    {
+      "sceneId":"hallucination-01","startFrame":0,"endFrame":180,
+      "animationId":"generation-answer-loom-v1",
+      "spokenText":"Eine KI kann sicher klingen und trotzdem etwas erfinden. Genau deshalb wirken manche falschen Antworten erstaunlich glaubwürdig.",
+      "headline":"Klingt echt. Ist es nicht.",
+      "visualLabels":{"shellIcon":"spark"},
+      "goal":"Hook: überzeugende Sprache und faktischer Fehler können gleichzeitig auftreten"
+    },
+    {
+      "sceneId":"hallucination-02","startFrame":180,"endFrame":360,
+      "animationId":"probability-probability-fluid-columns-v1",
+      "spokenText":"Ein Sprachmodell sucht keine fertige Antwort nach. Es berechnet Schritt für Schritt, welcher Textbaustein wahrscheinlich als Nächstes passt.",
+      "headline":"Wahrscheinlichkeit statt Wissen",
+      "visualLabels":{"shellIcon":"filter"},
+      "goal":"Token-/Textfortsetzung als Wahrscheinlichkeitsprozess statt Datenbankabruf sichtbar machen"
+    },
+    {
+      "sceneId":"hallucination-03","startFrame":360,"endFrame":540,
+      "animationId":"risk-contrast-confidence-glass-crack-v1",
+      "spokenText":"Das Problem: sprachliche Sicherheit ist kein Wahrheitsbeweis. Eine perfekt formulierte Antwort kann fachlich trotzdem falsch sein.",
+      "headline":"Sicher heißt nicht richtig",
+      "visualLabels":{"shellIcon":"focus"},
+      "goal":"Selbstsicherer sprachlicher Eindruck von faktischer Korrektheit trennen"
+    },
+    {
+      "sceneId":"hallucination-04","startFrame":540,"endFrame":720,
+      "animationId":"retrieval-search-knowledge-magnet-v1",
+      "spokenText":"Passende Quellen helfen. Das Modell bekommt gezielten Kontext und muss weniger aus allgemeinen Mustern ergänzen.",
+      "headline":"Quellen geben Halt",
+      "visualLabels":{"shellIcon":"search"},
+      "goal":"Grounding durch passende externe Quellen als stabilisierenden Kontext zeigen"
+    },
+    {
+      "sceneId":"hallucination-05","startFrame":720,"endFrame":900,
+      "animationId":"error-detection-anomaly-xray-scanner-v1",
+      "spokenText":"Bei wichtigen Fakten gilt trotzdem: Quelle öffnen, Zahl kontrollieren, Aussage prüfen. Gute KI-Nutzung heißt gezielt verifizieren.",
+      "headline":"Prüfen statt blind glauben",
+      "visualLabels":{"shellIcon":"context"},
+      "goal":"Verifikation als finalen Nutzer-Schritt statt blindem Vertrauen zeigen"
+    }
+  ]
+}
