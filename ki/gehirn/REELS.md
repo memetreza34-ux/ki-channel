@@ -71,6 +71,41 @@ Eine Szene darf deshalb mehrere aufeinanderfolgende Micro-Animationen enthalten.
 
 Keine dekorative Füllanimation. Keine Animation nur wegen Wiederverwendung. Keine semantisch falsche Library-Animation.
 
+## Timeline-Regel — Stimme und Animation werden gemeinsam feinjustiert
+
+Das finale Voiceover ist kein starres Hindernis, sondern der akustische Master für die reale Timeline.
+
+Phase 3 muss für jeden Visual Beat prüfen:
+
+```text
+gesprochene Phrase
+→ tatsächliche Start-/Endzeit
+→ sichtbarer Beat-Start
+→ Zustandswechsel
+→ Hold / Übergang
+→ Caption-/Wort-Timing
+```
+
+Wenn die Stimme an einer einzelnen Stelle zu schnell oder zu langsam für die geplante visuelle Erklärung ist, gilt diese Reihenfolge:
+
+1. Animation, Hold, Szenenlänge und Übergänge anpassen.
+2. Natürliche Pause vor/nach der Phrase leicht verkürzen oder verlängern.
+3. Nur wenn nötig die **ganze Phrase / den ganzen Cue pitch-erhaltend leicht schneller oder langsamer machen**.
+4. Danach Untertitel und aktive Wortmarkierung exakt auf die tatsächlich verwendete Audiospur synchronisieren.
+
+Audio-Retiming:
+
+- nicht innerhalb eines Wortes
+- nicht mit abrupten Speed-Sprüngen
+- bevorzugt ungefähr `0.97x–1.03x`
+- bei echtem Bedarf ungefähr bis `0.94x–1.06x`
+- Pitch erhalten
+- niemals Wörter schneiden, ersetzen, umstellen oder hinzufügen
+- stärkere Änderung als ungefähr ±6 % bedeutet: lieber Voiceover neu erzeugen als hörbare Audio-Verzerrung akzeptieren
+- Gesamtdauer nicht künstlich auf exakt 60 Sekunden zwingen
+
+**Perfekte Timeline bedeutet:** Sprecherbedeutung, Animation, Zustandswechsel, Untertitel und Pausen fühlen sich gleichzeitig richtig an. Natürlichkeit der Stimme hat Vorrang vor einer starren Sekundenmarke.
+
 ## Text-Hierarchie — keine Dopplung
 
 ### Zwischenüberschrift oben
@@ -214,6 +249,8 @@ Vor Freigabe tatsächlich prüfen:
 - jeder bedeutungstragende Sprecherabschnitt hat einen dokumentierten Visual Beat
 - keine Animation wurde nur gewählt, weil sie bereits existierte
 - REUSE nur bei exaktem semantischem Fit; sonst NEW_BUILD
+- Voiceover, Visual Beats, Szenenwechsel und Captions sind auf derselben realen Timeline synchron
+- lokale Voiceover-Speedkorrekturen sind unhörbar/natürlich, pitch-erhaltend und innerhalb des Qualitätskorridors
 - Zwischenüberschrift oben mittig, vollständig lila und mit deutlich lesbarem passendem Icon
 - keine zusätzliche Header-Unterzeile
 - Untertitel ohne Hintergrundkarte
