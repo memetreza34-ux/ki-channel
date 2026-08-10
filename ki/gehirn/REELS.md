@@ -36,6 +36,9 @@ Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 - **oben mittig** statt linksbündiger großer Headline
 - direkt mit einem **semantisch passenden Icon** kombinieren
 - Icon und Zwischenüberschrift bilden zusammen einen kompakten Kapitelmarker
+- die komplette Zuschauer-Zwischenüberschrift ist **Lila**, bevorzugt dunkles Marken-Lila `#6E45C9`
+- das Icon ist ebenfalls lila, visuell deutlich genug und etwas größer als ein normales UI-Icon
+- Richtwert bei 1080 × 1920: Icon-Container ungefähr 68–76 px, Icon selbst ungefähr 38–44 px
 - keine zweite Unterzeile direkt unter der Zwischenüberschrift
 - keine lange Erklärung im Header
 - niemals interner `goal`, Planner-, Debug- oder Regietext
@@ -51,7 +54,7 @@ Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 - links/rechts mindestens ungefähr 70 px Sicherheitsabstand
 - Untertitel sind klarer Sans-Serif-Text, keine dekorative Serifenschrift
 - aktives Wort bzw. aktive Wortgruppe wird synchron zum Sprecher in Marken-Lila hervorgehoben
-- bereits gesprochene Wörter dürfen dezenter lila bleiben; noch nicht gesprochene Wörter bleiben dunkel
+- bereits gesprochene Wörter bleiben normal dunkel; nur der aktuelle Sprechfokus wird lila
 - mit echtem Audio in Phase 3 echte Cue-/Wort-Timestamps an das Voiceover anpassen; nur proportional geschätzte Wortzeiten sind niemals die finale Freigabe
 - aktive Textfenster kompakt halten und auf dem Smartphone schnell erfassbar machen
 
@@ -75,7 +78,7 @@ Zwischenüberschrift + Icon = Kapitel/Kerngedanke
 
 ## Safe Zones — 1080 × 1920
 
-Die Plattform-UI darf keine wichtigen Informationen verdecken.
+Die Plattform-UI und die Untertitel dürfen keine wichtigen Animationsteile verdecken.
 
 Als dauerhafte Produktionsrichtlinie:
 
@@ -84,6 +87,11 @@ Als dauerhafte Produktionsrichtlinie:
 - seitlich mindestens ca. 70 px Luft für kritischen Text
 - unteren Bereich von ungefähr 0–220 px nicht für wichtige Untertitel oder Kernlabels verwenden
 - Untertitel bevorzugt oberhalb dieser No-Go-Zone platzieren
+- **kritische Remotion-Animationen und deren wichtige Labels müssen oberhalb des Untertitelbereichs enden**
+- bei 1080 × 1920 kritische Animationslabels möglichst nicht tiefer als ungefähr y=1450 platzieren
+- zwischen Hauptanimation und Untertitel möglichst ungefähr 80–120 px sichtbare Luft lassen
+- Library-Animationen im Production-Shell werden standardmäßig etwas nach oben versetzt; nicht zusätzlich blind doppelt verschieben
+- wenn ein Mechanismus trotzdem in die Caption-Zone ragt, zuerst Animation höher setzen oder leicht kompakter machen statt Untertitel nach unten zu drücken
 - Hauptanimation darf nicht dauerhaft von Untertiteln verdeckt werden
 - dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
 
@@ -129,9 +137,9 @@ Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 
 - 1080 × 1920 / 30 FPS als Standard
 - weiß/hell
-- dunkler Text
+- dunkler Fließ-/Animations-Text
 - Marken-Lila `#B98CFF`
-- dunkles Lila `#6E45C9` für aktiven Fokus
+- dunkles Lila `#6E45C9` für Zwischenüberschrift und aktiven Fokus
 - faceless
 - Smartphone zuerst
 
@@ -146,11 +154,12 @@ Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 
 Vor Freigabe tatsächlich prüfen:
 
-- Zwischenüberschrift oben mittig und mit passendem Icon
+- Zwischenüberschrift oben mittig, vollständig lila und mit deutlich lesbarem passendem Icon
 - keine zusätzliche Header-Unterzeile
 - Untertitel ohne Hintergrundkarte
 - Untertitel nicht zu tief und nicht von Plattform-UI gefährdet
 - aktive lila Hervorhebung folgt dem echten Sprecher
+- Hauptanimation und wichtige Animationslabels enden sichtbar oberhalb der Untertitelzone
 - keine abgeschnittene Schrift
 - keine Zwischenüberschriften-/Caption-/Visual-Überlappung
 - keine internen Regietexte sichtbar
