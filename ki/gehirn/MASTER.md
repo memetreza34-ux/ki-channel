@@ -64,6 +64,35 @@ Nicht jedes Wort muss wackeln oder springen. Aber wenn sich die Bedeutung änder
 
 Bei mehreren Aussagen innerhalb einer Szene sind mehrere Micro-Animationen ausdrücklich erwünscht.
 
+## Timeline Contract
+
+Die finale Phase behandelt Stimme, Visual Beats, Animation, Pausen und Untertitel als **eine gemeinsame Timeline**.
+
+Grundsatz:
+
+```text
+Gesprochene Bedeutung
+= sichtbarer Zustandswechsel
+= Caption-Fokus
+= Beat-Timing
+```
+
+Phase 3 passt zuerst Animation/Holds/Szenen an die echte Stimme an. Wenn eine einzelne Phrase danach noch zu schnell oder zu langsam wirkt, darf der Agent:
+
+1. natürliche Pausen an Phrase-/Satzgrenzen leicht verändern
+2. bei Bedarf die ganze Phrase / den ganzen Cue **pitch-erhaltend lokal retimen**
+
+Dabei gilt:
+
+- niemals Speedwechsel mitten im Wort
+- keine abrupt hörbaren Sprünge
+- Wortlaut/Reihenfolge bleiben unverändert
+- bevorzugt `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- stärkere Abweichung → neues Voiceover statt hörbarer Verzerrung
+- Captions/Wort-Timestamps immer gegen das final verwendete Audio neu synchronisieren
+
+**Perfekte Timeline heißt nicht exakt 60,0 Sekunden.** Sie heißt: Stimme klingt natürlich und alle visuellen Beats treffen die gemeinte Sprecherstelle präzise.
+
 ## Visual Hierarchy
 
 ```text
@@ -82,7 +111,7 @@ ANIMATIONSTEXT
 
 UNTERTITEL / CAPTION
 = unten in eigener sicherer Zone, ohne Hintergrundkarte
-= exakt am echten Sprecher ausgerichtet
+= exakt am final verwendeten Audio ausgerichtet
 = nur aktueller Sprechfokus in Marken-Lila
 = unterste inhaltliche Ebene des Videos
 ```
@@ -133,6 +162,7 @@ Jede Szene braucht:
 - eine dominante Veränderung pro Visual Beat
 - lesbaren End-Hold
 - eindeutige Beziehung zum Sprechertext
+- zeitliche Übereinstimmung von Sprecher, Beat und Caption
 - keine unnötige Textdopplung
 - keine erfundenen Fakten
 - keine zufällige Reuse-Animation
@@ -151,7 +181,7 @@ YouTube Longform ist ein eigenes Format und darf nicht automatisch aus Reels auf
 ```text
 Phase 1 — ChatGPT: alles außer echtem Audio
 Phase 2 — Mensch: nur Voiceover
-Phase 3 — Codex/Antigravity: Audio + Verifikation + Render
+Phase 3 — Codex/Antigravity: Audio + Timeline-Synchronisierung + Verifikation + Render
 ```
 
 Phase 1 entscheidet Inhalt und individuelle Visual Beats. Phase 3 darf diese Kreativentscheidung nicht durch bequemere vorhandene Animationen ersetzen, außer ein nachweisbarer technischer oder visueller Fehler verlangt eine Korrektur.

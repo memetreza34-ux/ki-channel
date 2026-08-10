@@ -2,19 +2,24 @@
 
 - [ ] Voiceover exakt wie freigegeben
 - [ ] reale Dauer gemessen
+- [ ] Visual Beats treffen die gemeinte Sprecherphrase exakt
+- [ ] natürliche Pausen passend gesetzt
+- [ ] lokale Audio-Retiming-Stellen nur falls nötig und innerhalb des erlaubten Qualitätskorridors
+- [ ] keine hörbaren abrupten/unnatürlichen Speedwechsel
+- [ ] verwendete Retiming-Faktoren dokumentiert oder `kein Retiming nötig`
 - [ ] fünf eindeutige Animationen korrekt
 - [ ] Zwischenüberschrift oben mittig, komplett `#6E45C9`
 - [ ] großes passendes lila Icon
 - [ ] keine Header-Unterzeile
 - [ ] Untertitel ohne Hintergrundkarte
 - [ ] nur aktueller Sprechfokus lila
-- [ ] Wort-/Cue-Timing am echten Audio
+- [ ] Wort-/Cue-Timing am final tatsächlich verwendeten Audio
 - [ ] Hauptanimation/Labels oberhalb der Caption-Zone
 - [ ] ca. 80–120 px sichtbare Luft Animation↔Untertitel, wo praktisch möglich
 - [ ] keine abgeschnittene Schrift
 - [ ] keine internen goal-/Debug-Texte sichtbar
 - [ ] keine unnötige Textdopplung
-- [ ] 15 Smoke-Frames visuell geprüft
+- [ ] Smoke-Frames inkl. relevanter Beat-Wechsel visuell geprüft
 - [ ] TypeScript/Tests tatsächlich bestanden
 - [ ] finaler MP4 gerendert
-- [ ] finaler MP4 normal und smartphone-groß angesehen
+- [ ] finaler MP4 normal und smartphone-groß angesehen und angehört

@@ -1,6 +1,6 @@
 ---
 name: build-context-overload-reel
-description: Performs Phase 3 for the approved reel "Warum mehr Kontext eine KI schlechter machen kann" by integrating the human voiceover into the existing Phase-1 implementation, verifying, visually reviewing and exporting it.
+description: Performs Phase 3 for the approved reel "Warum mehr Kontext eine KI schlechter machen kann" by integrating the human voiceover into the existing Phase-1 implementation, synchronizing the audiovisual timeline, verifying, visually reviewing and exporting it.
 ---
 
 # Context Overload Reel — Phase 3
@@ -43,21 +43,27 @@ Composition:
 8. Integrate audio without moving the planning package.
 9. Preserve approved script, scene order and five animation IDs.
 10. Preserve spokenText → meaning → derive → sanitize → associate → render-props.
-11. Align subtitle timing to real audio without dropping words.
-12. Run structure check, focused tests and TypeScript.
-13. Render opening, midpoint and readable end-hold for each scene.
-14. Inspect all 15 smoke frames visually.
-15. Fix clipping, overlap, internal goal text, text duplication, misleading values, weak motion and mobile readability.
-16. Render full MP4 only after smoke review is clean.
-17. Validate MP4 technically and watch it at normal speed/phone scale.
-18. Update review checklist and phase status only for work actually completed.
-19. Final structure check and honest report.
+11. Align Visual Beats, animation timing, holds and scene boundaries to the real voiceover.
+12. If a local spoken phrase is still too fast/slow for the intended beat, first adjust a natural pause; only then use pitch-preserving phrase/cue-level time-stretching.
+13. Voice retiming must happen only at natural phrase/pause boundaries, never inside a word, with no abrupt speed jumps; preserve wording/order/pitch.
+14. Prefer roughly `0.97x–1.03x`; only when needed up to about `0.94x–1.06x`. Beyond that, stop and require a better Phase-2 voiceover instead of audibly distorting speech.
+15. Rebuild subtitle/word timing against the final actually-used audio without dropping words.
+16. Run structure check, focused tests and TypeScript.
+17. Render opening, midpoint, readable end-hold and relevant Visual-Beat transitions.
+18. Inspect all required smoke frames visually.
+19. Fix clipping, overlap, internal goal text, text duplication, misleading values, weak motion and mobile readability.
+20. Render full MP4 only after smoke review is clean.
+21. Validate MP4 technically and watch/listen at normal speed/phone scale; reject audible rushed/stretched retiming.
+22. Update review checklist and phase status only for work actually completed.
+23. Final structure check and honest report, including local retiming segments/factors or `kein Retiming nötig`.
 
 ## Hard constraints
 
 - do not rebuild the reel from zero
 - do not fabricate audio
 - do not rewrite the approved speaker text to fit timing
+- controlled phrase-level retiming is allowed only under the central Phase-3 timing rules
+- do not cut, duplicate, reorder or synthesize words to repair timing
 - do not silently replace animation IDs
 - no external images, music or SFX for this reel unless the package is explicitly changed in Phase 1
 - no invented capacities, percentages, token counts or other numeric facts
