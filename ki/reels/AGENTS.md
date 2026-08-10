@@ -53,7 +53,8 @@ Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig.
 Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
 
 - pro Szene eine kurze **Zwischenüberschrift oben mittig**
-- zur Zwischenüberschrift ein semantisch passendes Icon
+- komplette Zwischenüberschrift in dunklem Marken-Lila `#6E45C9`
+- zur Zwischenüberschrift ein semantisch passendes, deutlich lesbares und eher größeres Icon
 - keine zusätzliche Header-Unterzeile
 - Untertitel unten in der sicheren Zone, nicht an der Displaykante
 - Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
@@ -61,6 +62,9 @@ Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung
 - aktive Sprecherposition in Marken-Lila hervorheben
 - finale Untertitel in Phase 3 mit dem echten Voiceover zeitlich abgleichen
 - unterste ca. 220 px und seitliche Randzonen nicht für kritischen Text verwenden
+- Hauptanimation und wichtige Animationslabels so hoch/kompakt platzieren, dass sie nicht in die Untertitelzone ragen
+- bei 1080 × 1920 kritische Animationslabels möglichst oberhalb von ungefähr y=1450 halten
+- wenn Untertitel und Animation konkurrieren, Animation nach oben bzw. kompakter setzen; Untertitel nicht nach unten in die Plattform-UI drücken
 
 Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
 
@@ -111,6 +115,6 @@ Widerspruch erkennen, nicht verstecken.
 
 Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
 
-Zur visuellen Freigabe gehört ausdrücklich: Header/Icon-Position, Safe Zones, transparente Untertitel und die Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung prüfen.
+Zur visuellen Freigabe gehört ausdrücklich: Header/Icon-Position, vollständige lila Zwischenüberschrift, Caption-Safe-Zone, Abstand zwischen Animation und Untertitel, transparente Untertitel und die Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung prüfen.
 
 `veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.
