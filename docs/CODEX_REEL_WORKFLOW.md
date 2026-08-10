@@ -10,7 +10,7 @@ Ein benanntes Wochenpaket existiert unter:
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ```
 
-und enthält `PHASE-STATUS.md`, Skript, Planung, Captions und Asset-Manifest. Der ausführbare Source existiert bereits unter:
+und enthält `PHASE-STATUS.md`, Skript, Planung, Captions, `platform-copy.md` und Asset-Manifest. Der ausführbare Source existiert bereits unter:
 
 ```text
 ki/src/reels/<slug>/
@@ -25,7 +25,7 @@ ki/src/reels/<slug>/
 5. `ki/reels/AGENTS.md`
 6. named reel `PHASE-STATUS.md`
 7. reel-spezifisches `AGENTS.md`
-8. `reel.json`, Skript, Szene/Animation, Captions, Manifest, Assembly-Auftrag
+8. `reel.json`, Skript, Szene/Animation, Captions, `platform-copy.md`, Manifest, Assembly-Auftrag
 
 ## Phase-3-Regel
 
@@ -57,6 +57,12 @@ Danach:
 
 Nur Assets aus `asset-manifest.json` verwenden. Nichts still substituieren oder herunterladen. Bildprompt-Arbeit ist Phase 1; Phase 3 repariert nur nachweisbare Asset-/Layout-Probleme.
 
+## Plattform-Copy
+
+`03-caption/platform-copy.md` ist Publishing-Metadaten-Handoff. Phase 3 ändert diese Datei nur, wenn sich durch die finale technische Fassung ein nachweisbarer Sach-/Titelkonflikt ergibt. Nicht das Reel für einzelne Plattformen neu bauen.
+
+Zeitabhängige Plattformregeln werden erst bei konkreter Veröffentlichung aktuell verifiziert.
+
 ## Technische Reihenfolge
 
 1. Branch und Worktree prüfen.
@@ -73,7 +79,8 @@ Nur Assets aus `asset-manifest.json` verwenden. Nichts still substituieren oder 
 12. technische Artefaktprüfung.
 13. Video normal und auf Smartphone-Größe ansehen.
 14. Checkliste/Status ehrlich aktualisieren.
-15. finaler Strukturcheck.
+15. `platform-copy.md` als Publishing-Handoff bestätigen.
+16. finaler Strukturcheck.
 
 ## Visuelle Pflichtprüfung
 
@@ -100,6 +107,7 @@ technisch getestet
 gerendert
 visuell geprüft
 freigegeben
+publishing-bereit
 ```
 
-Keinen dieser Zustände ohne tatsächlichen Nachweis behaupten.
+Keinen dieser Zustände ohne tatsächlichen Nachweis behaupten. `publishing-bereit` bedeutet nicht automatisch `veröffentlicht`.
