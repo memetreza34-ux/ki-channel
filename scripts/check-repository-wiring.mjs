@@ -110,7 +110,7 @@ requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-Z
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT']);
 requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT']);
-requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','Interne `goal`','BILDER NICHT ERFORDERLICH']);
+requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','niemals interner `goal`','BILDER NICHT ERFORDERLICH']);
 requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
 requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
 requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
@@ -120,7 +120,7 @@ forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
 forbidMarkers('GEMINI.md', gemini, ['channels/ki','--workspaces=false','Only after preflight may executable implementation be created']);
 forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template']);
 
-for (const marker of ['02-bilder\', 'image-prompts.md', '03-caption\', '05-export\', 'PHASE-STATUS.md']) {
+for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", "'05-export'", 'PHASE-STATUS.md']) {
   if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
 }
 
