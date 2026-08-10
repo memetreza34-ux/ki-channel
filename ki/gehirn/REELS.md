@@ -28,20 +28,32 @@ Startzustand
 
 Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 
-## Text-Hierarchie — keine Dopplung
+## Text-Hierarchie — verbindliches Produktionslayout
 
-### Überschrift
+### Zwischenüberschrift oben
 
-- 3–7 Wörter
-- natürliche Zuschauer-Sprache
-- ordnet die Szene ein
-- niemals interner `goal`, Planner- oder Regietext
+- pro Szene genau eine kurze Zwischenüberschrift, normalerweise 3–7 Wörter
+- **oben mittig** statt linksbündiger großer Headline
+- direkt mit einem **semantisch passenden Icon** kombinieren
+- Icon und Zwischenüberschrift bilden zusammen einen kompakten Kapitelmarker
+- keine zweite Unterzeile direkt unter der Zwischenüberschrift
+- keine lange Erklärung im Header
+- niemals interner `goal`, Planner-, Debug- oder Regietext
+- Zwischenüberschrift ordnet die Szene ein, sie kopiert nicht den gesprochenen Satz
 
-### Caption
+### Untertitel unten
 
-- deckt den gesprochenen Text vollständig ab
-- mit echtem Audio finale Wort-/Cue-Timestamps verwenden
-- aktive Fenster kompakt halten, normalerweise 7–10 Wörter
+- Untertitel decken den gesprochenen Text vollständig ab
+- **kein weißer Kasten, keine Caption-Card, kein flächiger Hintergrund**
+- Text steht frei auf dem Bild und erhält nur so viel Schatten/Outline, wie für Lesbarkeit nötig ist
+- Untertitel liegen in einer sicheren unteren Zone, **nicht am unteren Bildschirmrand**
+- bei 1080 × 1920 gilt als Produktionsrichtwert: kritischen Untertiteltext ungefähr 240–380 px über dem unteren Rand halten
+- links/rechts mindestens ungefähr 70 px Sicherheitsabstand
+- Untertitel sind klarer Sans-Serif-Text, keine dekorative Serifenschrift
+- aktives Wort bzw. aktive Wortgruppe wird synchron zum Sprecher in Marken-Lila hervorgehoben
+- bereits gesprochene Wörter dürfen dezenter lila bleiben; noch nicht gesprochene Wörter bleiben dunkel
+- mit echtem Audio in Phase 3 echte Cue-/Wort-Timestamps an das Voiceover anpassen; nur proportional geschätzte Wortzeiten sind niemals die finale Freigabe
+- aktive Textfenster kompakt halten und auf dem Smartphone schnell erfassbar machen
 
 ### Animationstext
 
@@ -52,7 +64,30 @@ Wenn die Bewegung keinen Inhalt erklärt, entfernen.
 
 ### Verbotene Dopplung
 
-Nicht gleichzeitig denselben Gedanken als Überschrift + Unterzeile + Animationssatz + Caption zeigen. Der Sprecher sagt, die Caption macht lesbar, die Animation erklärt, die Überschrift ordnet ein.
+Nicht gleichzeitig denselben Gedanken als Zwischenüberschrift + zusätzliche Unterzeile + Animationssatz + Untertitel zeigen.
+
+```text
+Sprecher = Aussage
+Untertitel = sprachliche Lesbarkeit + Sprechersynchronität
+Animation = visuelle Erklärung
+Zwischenüberschrift + Icon = Kapitel/Kerngedanke
+```
+
+## Safe Zones — 1080 × 1920
+
+Die Plattform-UI darf keine wichtigen Informationen verdecken.
+
+Als dauerhafte Produktionsrichtlinie:
+
+- keine kritische Schrift direkt am oberen Rand
+- Zwischenüberschrift + Icon kompakt im oberen sicheren Bereich platzieren
+- seitlich mindestens ca. 70 px Luft für kritischen Text
+- unteren Bereich von ungefähr 0–220 px nicht für wichtige Untertitel oder Kernlabels verwenden
+- Untertitel bevorzugt oberhalb dieser No-Go-Zone platzieren
+- Hauptanimation darf nicht dauerhaft von Untertiteln verdeckt werden
+- dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
+
+Vor finaler Freigabe zusätzlich den tatsächlichen Plattform-Crop bzw. die UI-Safe-Zone visuell prüfen.
 
 ## Visualisierung
 
@@ -86,7 +121,7 @@ Wenn Bild:
 - Prompt unter `02-bilder/image-prompts.md`
 - Asset in `asset-manifest.json`
 - Bild-KI baut 3D-/räumliche Szene
-- Remotion baut Überschrift, Caption, Zahlen, Pfeile, Diagramme und präzise Labels
+- Remotion baut Zwischenüberschrift + Icon, Untertitel, Zahlen, Pfeile, Diagramme und präzise Labels
 
 Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 
@@ -96,6 +131,7 @@ Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 - weiß/hell
 - dunkler Text
 - Marken-Lila `#B98CFF`
+- dunkles Lila `#6E45C9` für aktiven Fokus
 - faceless
 - Smartphone zuerst
 
@@ -110,8 +146,13 @@ Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
 
 Vor Freigabe tatsächlich prüfen:
 
+- Zwischenüberschrift oben mittig und mit passendem Icon
+- keine zusätzliche Header-Unterzeile
+- Untertitel ohne Hintergrundkarte
+- Untertitel nicht zu tief und nicht von Plattform-UI gefährdet
+- aktive lila Hervorhebung folgt dem echten Sprecher
 - keine abgeschnittene Schrift
-- keine Überschriften-/Caption-/Visual-Überlappung
+- keine Zwischenüberschriften-/Caption-/Visual-Überlappung
 - keine internen Regietexte sichtbar
 - keine unnötige Textdopplung
 - keine leere erste Sekunde
