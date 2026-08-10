@@ -24,6 +24,7 @@
       "spokenText": "Du gibst einer KI mehr Kontext – und die Antwort wird trotzdem schlechter? Genau das kann passieren.",
       "headline": "Wenn mehr nicht mehr hilft",
       "visualLabels": {
+        "shellIcon": "context",
         "contextLabel": "KONTEXT",
         "message1": "Frage",
         "message2": "Kerninfo",
@@ -44,6 +45,7 @@
       "spokenText": "Im Kontext sind nicht alle Informationen gleich wichtig. Starke Beziehungen tragen die Antwort, schwache Details sollten weniger Gewicht bekommen.",
       "headline": "Verbindungen entscheiden",
       "visualLabels": {
+        "shellIcon": "connections",
         "node1": "Frage",
         "node2": "Kerninfo",
         "node3": "Antwort",
@@ -61,6 +63,7 @@
       "spokenText": "Gute Systeme laden deshalb nicht alles. Sie holen gezielt nur Quellen, die zur aktuellen Frage passen.",
       "headline": "Nicht alles muss mit",
       "visualLabels": {
+        "shellIcon": "search",
         "queryLabel": "AKTUELLE FRAGE",
         "query": "Was passt hier?",
         "source1": "Quelle A",
@@ -81,6 +84,7 @@
       "spokenText": "Dann fliegen unpassende Informationen raus. Relevante Fakten bleiben übrig und werden zu einem klaren Kern verdichtet.",
       "headline": "Signal bleibt. Rauschen geht.",
       "visualLabels": {
+        "shellIcon": "filter",
         "input1": "Kernfakt",
         "input2": "Nebeninfo",
         "input3": "Passend",
@@ -101,6 +105,7 @@
       "spokenText": "Mehr Kontext ist nicht automatisch besser. Besser ist: auswählen, verdichten und erst dann die Antwort erzeugen.",
       "headline": "Qualität vor Menge",
       "visualLabels": {
+        "shellIcon": "spark",
         "thread1": "Frage",
         "thread2": "Auswahl",
         "thread3": "Verdichtung",

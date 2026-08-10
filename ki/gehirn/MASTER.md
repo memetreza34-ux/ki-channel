@@ -37,16 +37,18 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 3. Reicht Remotion/UI/Diagramm?
 4. Wenn nein: welches Bild erklärt die räumliche/illustrative Komplexität besser?
 5. Welche vorhandene production-ready Animation passt semantisch wirklich?
-6. Welche kurze Überschrift ordnet ein, ohne Caption zu kopieren?
-7. Welche 0–3 Animationslabels sind wirklich nötig?
-8. Ist alles auf Smartphone-Größe lesbar und geerdet?
+6. Welche kurze Zwischenüberschrift ordnet ein, ohne den Sprecher zu kopieren?
+7. Welches semantisch passende Icon gehört zu dieser Zwischenüberschrift?
+8. Welche 0–3 Animationslabels sind wirklich nötig?
+9. Ist alles auf Smartphone-Größe lesbar und innerhalb der Safe Zones?
 ```
 
 ## Visual Hierarchy
 
 ```text
-ÜBERSCHRIFT
-= Kapitel/Kerngedanke, 3–7 Wörter
+ZWISCHENÜBERSCHRIFT + ICON
+= oben mittig; kompakter Kapitel-/Kerngedanke
+= keine zusätzliche Unterzeile darunter
 
 ANIMATION / BILD
 = Mechanismus oder Zustandsänderung
@@ -54,11 +56,26 @@ ANIMATION / BILD
 ANIMATIONSTEXT
 = nur Objekt-/Zustandslabels, keine Satzkopie
 
-CAPTION
-= gesprochener Text
+UNTERTITEL / CAPTION
+= unten in sicherer Zone, ohne Hintergrundkarte
+= exakt am echten Sprecher ausgerichtet
+= aktives Wort / aktive Wortgruppe in Marken-Lila
 ```
 
 Interne Regie-, `goal`-, Debug- und Planner-Texte sind niemals Zuschauertext.
+
+## Reel-Safe-Zone-Grundsatz
+
+Bei vertikalem 1080 × 1920 Short-Form gilt:
+
+- wichtige Texte niemals direkt an obere oder untere Displaykante setzen
+- Zwischenüberschrift + Icon oben mittig in der sicheren Kopfzone
+- Untertitel deutlich oberhalb der unteren Plattform-UI halten
+- ungefähr die untersten 220 px nicht für kritischen Text nutzen
+- Untertitel ohne weißen Kasten oder andere flächige Caption-Card
+- finale Wort-/Cue-Synchronität wird in Phase 3 gegen das echte Voiceover geprüft
+
+Die Detailwerte und Qualitätschecks stehen in `REELS.md`.
 
 ## Remotion oder Bild?
 
@@ -78,7 +95,7 @@ Kein Bild nur, weil ein Bild hübsch aussieht.
 - Rot: Risiko/Fehler/Grenze
 - Blau: seltene Info-/Tech-Semantik
 
-Lila wird gezielt akzentuiert, nicht flächig überall verteilt.
+Lila wird gezielt akzentuiert, nicht flächig überall verteilt. Bei Untertiteln ist die aktive Sprecherposition ein erlaubter und gewünschter Lila-Fokus.
 
 ## Qualitätsregel
 
