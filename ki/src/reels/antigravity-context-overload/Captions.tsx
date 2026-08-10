@@ -1,7 +1,10 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
-import {CONTEXT_OVERLOAD_SUBTITLES} from './contract';
+import {
+  CONTEXT_OVERLOAD_SUBTITLES,
+  type ContextOverloadSubtitleCue,
+} from './contract';
 
 const edgeFade = (frame: number, startFrame: number, endFrame: number): number => {
   const fadeFrames = 4;
@@ -17,7 +20,7 @@ const edgeFade = (frame: number, startFrame: number, endFrame: number): number =
   );
 };
 
-const activeWordIndex = ({
+const proportionalActiveWordIndex = ({
   frame,
   startFrame,
   endFrame,
@@ -38,6 +41,33 @@ const activeWordIndex = ({
   return Math.min(wordCount - 1, Math.floor(progress * wordCount));
 };
 
+const activeWordIndex = ({
+  frame,
+  cue,
+  wordCount,
+}: {
+  frame: number;
+  cue: ContextOverloadSubtitleCue;
+  wordCount: number;
+}): number => {
+  if (cue.words && cue.words.length === wordCount) {
+    const exact = cue.words.findIndex(
+      (word) => frame >= word.startFrame && frame < word.endFrame,
+    );
+    if (exact >= 0) return exact;
+
+    const previous = cue.words.findLastIndex((word) => frame >= word.endFrame);
+    if (previous >= 0) return previous;
+  }
+
+  return proportionalActiveWordIndex({
+    frame,
+    startFrame: cue.startFrame,
+    endFrame: cue.endFrame,
+    wordCount,
+  });
+};
+
 export const ContextOverloadCaptions: React.FC = () => {
   const frame = useCurrentFrame();
   const cue = CONTEXT_OVERLOAD_SUBTITLES.find(
@@ -45,13 +75,10 @@ export const ContextOverloadCaptions: React.FC = () => {
   );
   if (!cue) return null;
 
-  const words = cue.text.trim().split(/\s+/).filter(Boolean);
-  const activeIndex = activeWordIndex({
-    frame,
-    startFrame: cue.startFrame,
-    endFrame: cue.endFrame,
-    wordCount: words.length,
-  });
+  const words = cue.words?.length
+    ? cue.words.map((word) => word.text)
+    : cue.text.trim().split(/\s+/).filter(Boolean);
+  const activeIndex = activeWordIndex({frame, cue, wordCount: words.length});
 
   return (
     <div
@@ -78,7 +105,6 @@ export const ContextOverloadCaptions: React.FC = () => {
           lineHeight: 1.18,
           letterSpacing: -0.9,
           textAlign: 'center',
-          textWrap: 'balance',
           textShadow:
             '0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)',
         }}
