@@ -8,7 +8,7 @@ Deutscher, animierter, vollständig faceless KI-Kanal für Tools, Konzepte, prak
 
 ## Zielgruppe
 
-Breit deutschsprachig. Fachwissen ist keine Voraussetzung. Der Zuschauer soll nach jedem Reel mindestens eines haben:
+Breit deutschsprachig. Fachwissen ist keine Voraussetzung. Der Zuschauer soll nach jedem Inhalt mindestens eines haben:
 
 - einen klaren Aha-Moment
 - einen praktischen Nutzen
@@ -34,6 +34,22 @@ Breit deutschsprachig. Fachwissen ist keine Voraussetzung. Der Zuschauer soll na
 4. Prompt-/Workflow-Verbesserung
 5. Mythos / Grenze / ehrliche Einordnung
 
+## Formate und Plattformen
+
+Short-Form ist das aktuelle Kernformat. Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für:
+
+- YouTube Shorts
+- Instagram Reels
+- TikTok
+- Facebook Reels
+- Snapchat, falls genutzt
+
+Die Plattform ist **nicht** die Quelle der inhaltlichen Wahrheit. Das Produktionspaket unter `ki/reels/` bleibt kanonisch; Titel, Captions und Cover dürfen plattformspezifisch sein.
+
+YouTube Longform ist ein separates Format und wird nur aufgebaut, wenn ein Thema echte zusätzliche Tiefe rechtfertigt.
+
+Details: `PLATTFORMEN.md` und `../plattformen/`.
+
 ## Visuelle Identität
 
 Technische Farbquelle: `ki/brand/brand.ts`.
@@ -56,9 +72,10 @@ Kein Cyberpunk, keine dunkle Neon-Technikwelt und keine Roboterfigur als generis
 - aktuelles Produkt-/Preis-/News-Wissen vor Veröffentlichung prüfen
 - Animation muss die gesprochene Aussage tragen
 - bei schwacher Library-Passung lieber New-Build als falsche Animation
+- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
 
 ## Priorität
 
 Bedeutung > Verständlichkeit > mobile Lesbarkeit > Markenstil > dekorative Schönheit.
 
-Details: `MASTER.md`, `REELS.md`, `PRODUKTIONSABLAUF.md`, `../BILDSTIL.md`.
+Details: `MASTER.md`, `REELS.md`, `PLATTFORMEN.md`, `PRODUKTIONSABLAUF.md`, `../BILDSTIL.md`.
