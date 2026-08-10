@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "externalAssetsRequired": false,
+  "images": [],
+  "videos": [],
+  "audio": {
+    "voiceover": "01-script-audio/voiceover.wav",
+    "music": null,
+    "sfx": []
+  }
+}
