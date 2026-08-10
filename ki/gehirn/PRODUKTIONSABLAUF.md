@@ -13,8 +13,12 @@ Phase 1 erstellt:
 - Wochenpaket mit 01–06-Struktur
 - finalen Sprechertext in `01-script-audio/voiceover.md`
 - denselben Sprechertext **ohne Szenen, Überschriften oder Anweisungen** als `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
+- Short-Form standardmäßig ausführlicher planen: ungefähr **50–60 Sekunden** und meist ungefähr **120–150 gesprochene Wörter**, wenn der Inhalt das trägt
 - Szenenplan
-- Animationen / New-Build-Entscheidung
+- Sprechertext in bedeutungstragende **Visual Beats** zerlegen
+- für jeden Visual Beat zuerst die individuelle visuelle Mechanik bestimmen
+- für jeden Beat `REUSE_EXACT` oder `NEW_BUILD` begründen; bestehende Animation nur bei exaktem semantischem Fit
+- `animation-plan.md` mit Sprecherstelle → Bedeutung → Startzustand → sichtbare Veränderung → Endzustand → Umsetzung → Timing
 - Zuschauer-Überschriften und kurze Animationslabels ohne Caption-Dopplung
 - Bildbedarf pro Szene
 - bei Bildbedarf hochwertige `02-bilder/image-prompts.md` nach `ki/BILDSTIL.md`
@@ -24,12 +28,16 @@ Phase 1 erstellt:
 - `06-projektdateien/reel.json`
 - Assembly-Auftrag und Review-Checkliste
 - ausführbaren Remotion-Source unter `ki/src/reels/<slug>/`
-- Content-Grounding: Sprechertext → Meaning → Derive → Sanitize → Associate → Render-Props
+- individuelle Micro-Animationen im Source, wenn Sprecherinhalt innerhalb einer Szene mehrere sichtbare Beats verlangt
+- Content-Grounding: Sprechertext → Meaning → Visual Beats → Mechanik → Render-Props
 - Composition-Registrierung
+- harte Caption-Zone berücksichtigen: bei 1080 × 1920 keine sichtbare Animation ab ungefähr `y=1440`
 - fokussierte Source-/Contract-Checks
 - `PHASE-STATUS.md`
 
 **Phase 1 darf kein echtes Voiceover vortäuschen.** Fehlendes Audio ist hier normal.
+
+**Verboten:** erst eine vorhandene Library-Animation wählen und dann den Inhalt darauf anpassen. Die Library wird erst nach der inhaltlichen Visual-Beat-Planung geprüft.
 
 Plattform-Copy ist Packaging und darf die fachliche Aussage des Reels nicht verändern. Regeln: `PLATTFORMEN.md`.
 
@@ -72,14 +80,17 @@ Pflichten:
 5. reale Audio-Dauer messen.
 6. Audio render-sicher integrieren.
 7. Timing/Captions an reales Audio anpassen, ohne Sprechertext zu ändern.
-8. genehmigte Animationen und Bildassets erhalten, außer ein nachweisbarer Fehler verlangt Korrektur.
-9. Strukturcheck, fokussierte Tests und TypeScript ausführen.
-10. pro Szene Opening/Mid/End-Hold Smoke-Frames rendern.
-11. Smoke-Frames tatsächlich visuell prüfen und Fehler beheben.
-12. finales MP4 rendern.
-13. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
-14. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
-15. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
+8. Visual Beats am echten Sprecher ausrichten; sichtbare Zustandswechsel müssen zur gemeinten Phrase/Satzstelle passen.
+9. genehmigte `REUSE_EXACT`-/`NEW_BUILD`-Entscheidungen erhalten; keine bequemere Library-Animation einsetzen.
+10. prüfen, dass **ab ungefähr y=1440 keinerlei Animation sichtbar ist** und die Caption die unterste Inhaltsebene bleibt.
+11. falls der technische Clip-Guard wichtigen Inhalt abschneidet: Animation neu layouten, nicht als bestanden akzeptieren.
+12. Strukturcheck, fokussierte Tests und TypeScript ausführen.
+13. pro Szene Opening/Mid/End-Hold sowie relevante Beat-Wechsel in Smoke-Frames rendern.
+14. Smoke-Frames tatsächlich visuell prüfen und Fehler beheben.
+15. finales MP4 rendern.
+16. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
+17. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
+18. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
 
 ## Stop-Bedingungen
 
@@ -93,7 +104,10 @@ Nicht als fertig melden bei:
 - internen Regie-/Goal-Texten im Video
 - unnötiger Caption-/Animations-Textdopplung
 - ungrounded Zahlen
-- falscher Animation
+- einer Animation, die nur „ungefähr“ statt exakt zum Sprecherinhalt passt
+- fehlenden Visual Beats für bedeutungstragende Sprecherstellen
+- sichtbarer Animation in/unter der Caption-Zone
+- wichtigem Inhalt, der vom Caption-Clip abgeschnitten wird
 - ungeprüften Smoke-Frames
 - nicht angesehenem finalen MP4
 - fehlender/irreführender Plattform-Copy bei behaupteter Publishing-Bereitschaft
@@ -102,13 +116,13 @@ Nicht als fertig melden bei:
 
 ```text
 PHASE 1 — ChatGPT
-alles außer echtem Audio
+Inhalt + individuelle Visual Beats + Source, alles außer echtem Audio
         ↓
 PHASE 2 — Mensch
 nur Voiceover
         ↓
 PHASE 3 — Codex / Antigravity
-integrieren + prüfen + rendern
+synchronisieren + prüfen + rendern
         ↓
 PUBLISHING
 freigegebenen Master plattformgerecht verpacken
