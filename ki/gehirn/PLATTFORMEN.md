@@ -79,6 +79,8 @@ Details: `../plattformen/youtube/SHORTS.md`.
 
 Longform ist **ein eigenes Format** und darf nicht automatisch aus einem Reel aufgeblasen werden.
 
+Für die aktuelle Startphase des Kanals werden Longform-Videos auf **5:00 bis 6:00 Minuten** geplant und final gehalten. Das ist eine bewusste Kanalentscheidung; längere Laufzeiten erst verwenden, wenn der Nutzer diese Vorgabe ausdrücklich ändert.
+
 Wenn der Nutzer ausdrücklich ein längeres YouTube-Video verlangt, zuerst die Longform-Regeln unter `ki/plattformen/youtube/LONGFORM.md` lesen. Erst dann ein eigenes Produktionspaket planen.
 
 Bis ein Longform-Workflow ausdrücklich aktiviert wird, bleibt `ki/reels/` ausschließlich Short-Form.
