@@ -56,7 +56,7 @@ ANIMATION / BILD
 ANIMATIONSTEXT
 = nur Objekt-/Zustandslabels, keine Satzkopie
 
-UNTERTITEL
+UNTERTITEL / CAPTION
 = unten in sicherer Zone, ohne Hintergrundkarte
 = exakt am echten Sprecher ausgerichtet
 = aktives Wort / aktive Wortgruppe in Marken-Lila
