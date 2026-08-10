@@ -114,18 +114,12 @@ export const ContextOverloadCaptions: React.FC = () => {
       >
         {words.map((word, index) => {
           const isActive = index === activeIndex;
-          const isSpoken = index < activeIndex;
           return (
             <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${index}-${word}`}>
               <span
                 style={{
                   display: 'inline-block',
-                  color: isActive
-                    ? BRAND.accentDk
-                    : isSpoken
-                      ? BRAND.accent
-                      : BRAND.ink,
-                  opacity: isSpoken ? 0.86 : 1,
+                  color: isActive ? BRAND.accentDk : BRAND.ink,
                   transform: `scale(${isActive ? 1.035 : 1})`,
                   transformOrigin: '50% 70%',
                 }}
