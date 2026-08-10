@@ -130,8 +130,8 @@ requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf En
 requireMarkers('YouTube README', youtubeReadme, ['YouTube — Kanalstruktur','SHORTS.md','LONGFORM.md','THUMBNAILS.md','UPLOAD.md']);
 requireMarkers('YouTube SHORTS', youtubeShorts, ['03-caption/platform-copy.md','kein eigenes Produktionsprojekt','UPLOAD.md']);
 requireMarkers('YouTube LONGFORM', youtubeLongform, ['eigenes Content-Format','nicht automatisch aus einem Reel verlängert','THUMBNAILS.md']);
-requireMarkers('YouTube THUMBNAILS', youtubeThumbnails, ['faceless','#B98CFF','kein visuelles Rätsel']);
-requireMarkers('YouTube UPLOAD', youtubeUpload, ['03-caption/platform-copy.md','zeitabhängige Plattformfakten','freigegebenen Master']);
+requireMarkers('YouTube THUMBNAILS', youtubeThumbnails, ['faceless','#B98CFF','Kein visuelles Rätsel']);
+requireMarkers('YouTube UPLOAD', youtubeUpload, ['03-caption/platform-copy.md','Zeitabhängige Plattformfakten','freigegebenen Master']);
 requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
 requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
 requireMarkers('Phase-3-Skill', phase3Skill, ['not** a from-scratch builder','PHASE 2 AUDIO FEHLT','do not rebuild the reel from zero']);
