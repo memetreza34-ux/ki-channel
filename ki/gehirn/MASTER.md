@@ -28,21 +28,41 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 - Nutzen/Aha vor Feature-Liste
 - Wahrheit vor Reichweitenversprechen
 - ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
+- Short-Form-Skripte standardmäßig ausführlicher: ungefähr 50–60 Sekunden statt unnötig kurz
 
 ## Entscheidungsreihenfolge für jede Reel-Szene
 
 ```text
-1. Was ist die eine Aussage?
-2. Was muss sich sichtbar verändern, damit man sie versteht?
-3. Reicht Remotion/UI/Diagramm?
-4. Wenn nein: welches Bild erklärt die räumliche/illustrative Komplexität besser?
-5. Welche vorhandene production-ready Animation passt semantisch wirklich?
-6. Welche kurze Zwischenüberschrift ordnet ein, ohne den Sprecher zu kopieren?
-7. Welches semantisch passende Icon gehört zu dieser Zwischenüberschrift?
-8. Welche 0–3 Animationslabels sind wirklich nötig?
-9. Ist die Hauptanimation hoch genug, damit Untertitel nichts Wichtiges verdecken?
-10. Ist alles auf Smartphone-Größe lesbar und innerhalb der Safe Zones?
+1. Was sagt der Sprecher genau?
+2. In welche bedeutungstragenden Visual Beats zerfällt Satz/Phrase/Wortfolge?
+3. Was muss bei jedem Beat sichtbar passieren, damit die Aussage verstanden wird?
+4. Welcher individuelle Remotion-Mechanismus erklärt genau diesen Beat?
+5. Gibt es dafür bereits eine Animation mit EXAKTEM semantischem Fit?
+6. Wenn nein: NEW_BUILD statt Kompromiss-Reuse.
+7. Welche kurze Zwischenüberschrift ordnet die Szene ein?
+8. Welches passende Icon gehört dazu?
+9. Welche wenigen Labels sind wirklich nötig?
+10. Endet jede Animation oberhalb der Caption-Zone?
+11. Ist alles smartphone-lesbar und geerdet?
 ```
+
+**Verboten:** „Diese Animation haben wir schon, also benutzen wir sie irgendwie.“
+
+Die Library wird erst nach der visuellen Mechanik geprüft. Sie ist Werkzeugkasten, nicht Quelle der kreativen Entscheidung.
+
+## Visual Beat Contract
+
+Jede bedeutungstragende Sprecherstelle erhält eine bewusste visuelle Reaktion. Die passende Einheit kann sein:
+
+- Wort
+- Phrase
+- Halbsatz
+- Satz
+- zusammenhängende Satzgruppe
+
+Nicht jedes Wort muss wackeln oder springen. Aber wenn sich die Bedeutung ändert, muss sich sichtbar Fokus, Zustand, Objektbeziehung oder Mechanik passend ändern.
+
+Bei mehreren Aussagen innerhalb einer Szene sind mehrere Micro-Animationen ausdrücklich erwünscht.
 
 ## Visual Hierarchy
 
@@ -50,44 +70,41 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 ZWISCHENÜBERSCHRIFT + ICON
 = oben mittig; kompakter Kapitel-/Kerngedanke
 = komplette Überschrift in dunklem Marken-Lila #6E45C9
-= Icon ebenfalls lila und deutlich genug sichtbar
+= Icon ebenfalls lila und deutlich sichtbar
 = keine zusätzliche Unterzeile darunter
 
 ANIMATION / BILD
-= Mechanismus oder Zustandsänderung
-= kritische Inhalte enden oberhalb der Untertitelzone
+= individuelle visuelle Erklärung des aktuellen Sprecher-Beats
+= kritische Inhalte enden vollständig oberhalb der Caption-Zone
 
 ANIMATIONSTEXT
 = nur Objekt-/Zustandslabels, keine Satzkopie
 
 UNTERTITEL / CAPTION
-= unten in sicherer Zone, ohne Hintergrundkarte
+= unten in eigener sicherer Zone, ohne Hintergrundkarte
 = exakt am echten Sprecher ausgerichtet
 = nur aktueller Sprechfokus in Marken-Lila
+= unterste inhaltliche Ebene des Videos
 ```
 
 Interne Regie-, `goal`-, Debug- und Planner-Texte sind niemals Zuschauertext.
 
-## Reel-Safe-Zone-Grundsatz
+## Harte Reel-Caption-Zone
 
 Bei vertikalem 1080 × 1920 Short-Form gilt:
 
-- wichtige Texte niemals direkt an obere oder untere Displaykante setzen
-- Zwischenüberschrift + Icon oben mittig in der sicheren Kopfzone
-- Untertitel deutlich oberhalb der unteren Plattform-UI halten
-- ungefähr die untersten 220 px nicht für kritischen Text nutzen
-- Untertitel ohne weißen Kasten oder andere flächige Caption-Card
-- Hauptanimation samt wichtiger Labels sichtbar oberhalb der Untertitel halten
-- als Richtwert kritische Animationslabels möglichst oberhalb von ungefähr y=1450 beenden
-- ungefähr 80–120 px Luft zwischen Hauptanimation und Untertitel anstreben
-- wenn es eng wird, Animation höher/kompakter machen; Untertitel nicht in die Plattform-UI drücken
-- finale Wort-/Cue-Synchronität wird in Phase 3 gegen das echte Voiceover geprüft
-
-Die Detailwerte und Qualitätschecks stehen in `REELS.md`.
+- ungefähr ab `y=1440` beginnt die reservierte Caption-/Bottom-Safe-Zone
+- **unterhalb dieser Grenze darf keine Remotion-Animation sichtbar sein**
+- keine Karte, Linie, Node, Partikel, Illustration oder Animationsbeschriftung hinter oder unter den Untertiteln
+- Animation höher, kleiner oder individuell neu komponieren, wenn sie nicht in den oberen Bereich passt
+- Untertitel nicht nach unten verdrängen
+- die technische Production-Shell clippt als letzte Sicherung; sichtbares Abschneiden ist trotzdem ein Review-Fehler und muss im Layout behoben werden
 
 ## Remotion oder Bild?
 
 **Remotion zuerst**, wenn die Aussage mit UI, Diagramm, Prozess, Vergleich, Daten, Text, Karten, Pfeilen, Netzwerk oder Motion-Mechanismus klar erklärt werden kann.
+
+Dabei zuerst eine **inhaltsspezifische Mechanik** entwerfen. Bestehende Library-Komponenten nur bei exaktem Fit nutzen; ansonsten reel-spezifisch bauen.
 
 **Bild-KI**, wenn eine hochwertige räumliche 3D-Editorial-Szene, Objektgruppe oder Alltagssituation die Aussage deutlich besser und schneller verständlich macht.
 
@@ -113,12 +130,13 @@ Eine Szene ist nicht gut, weil sie viel Bewegung hat. Sie ist gut, wenn Startzus
 Jede Szene braucht:
 
 - klare Startlage
-- eine dominante Veränderung
+- eine dominante Veränderung pro Visual Beat
 - lesbaren End-Hold
 - eindeutige Beziehung zum Sprechertext
 - keine unnötige Textdopplung
 - keine erfundenen Fakten
-- genügend Abstand zwischen Hauptanimation und Untertitel
+- keine zufällige Reuse-Animation
+- keine Animation in oder unter der Caption-Zone
 
 ## Publishing-Modell
 
@@ -136,4 +154,4 @@ Phase 2 — Mensch: nur Voiceover
 Phase 3 — Codex/Antigravity: Audio + Verifikation + Render
 ```
 
-Phase 3 darf die Phase-1-Kreativentscheidung nur ändern, wenn ein nachweisbarer technischer oder visueller Fehler vorliegt.
+Phase 1 entscheidet Inhalt und individuelle Visual Beats. Phase 3 darf diese Kreativentscheidung nicht durch bequemere vorhandene Animationen ersetzen, außer ein nachweisbarer technischer oder visueller Fehler verlangt eine Korrektur.
