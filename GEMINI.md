@@ -1,6 +1,6 @@
 # Antigravity / Gemini — KI-Channel Contract
 
-Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen. Für KI-Reels zusätzlich `ki/AGENTS.md`, `ki/gehirn/MASTER.md` und `ki/reels/AGENTS.md`.
+Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen. Für KI-Reels zusätzlich `ki/AGENTS.md`, `ki/gehirn/MASTER.md` und `ki/reels/AGENTS.md`. Für Plattform-/YouTube-Aufgaben zusätzlich `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/AGENTS.md`.
 
 ## Kanonischer Stand
 
@@ -12,7 +12,7 @@ Normale Änderungen auf einem Arbeitsbranch von `main`; `main` nur bei ausdrück
 
 ### Phase 1 — ChatGPT
 
-Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Animationen, Bildprompts/Manifest falls nötig, Captions, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
+Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Animationen, Bildprompts/Manifest falls nötig, Captions, `03-caption/platform-copy.md`, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
 
 **Audio darf in Phase 1 fehlen.** Das ist normal.
 
@@ -51,6 +51,18 @@ Source:
 `ki/src/reels/<slug>/`
 
 Nie Planung nach `ki/src/reels/` verschieben. Nie flache Reel-Pakete unter `ki/reels/<slug>/` erzeugen.
+
+## Publishing / Plattformen
+
+Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technische Anpassung erforderlich ist.
+
+Plattform-Copy liegt im Reel unter:
+
+`03-caption/platform-copy.md`
+
+Keine zweite Skript-/Source-Kopie in `ki/plattformen/` erzeugen. YouTube Longform ist ein separates Format und wird nicht automatisch aus einem Reel verlängert.
+
+Aktuelle Plattformlimits/Monetarisierungsregeln bei konkreter Veröffentlichung neu prüfen.
 
 ## Bilder
 
