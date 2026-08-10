@@ -14,30 +14,19 @@ const parseDate = (value) => {
   if (Number.isNaN(parsed.getTime())) throw new Error('Ungültiges Datum.');
   return parsed;
 };
-
 const iso = (date) => date.toISOString().slice(0, 10);
-const addDays = (date, days) => {
-  const copy = new Date(date);
-  copy.setUTCDate(copy.getUTCDate() + days);
-  return copy;
-};
+const addDays = (date, days) => { const copy = new Date(date); copy.setUTCDate(copy.getUTCDate() + days); return copy; };
 const weekBounds = (date) => {
   const utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12));
   const weekday = utc.getUTCDay();
-  const mondayOffset = weekday === 0 ? -6 : 1 - weekday;
-  const monday = addDays(utc, mondayOffset);
+  const monday = addDays(utc, weekday === 0 ? -6 : 1 - weekday);
   return {monday, sunday: addDays(monday, 6)};
 };
-const slugify = (title) => title
-  .trim()
-  .replace(/[–—]/g, '-')
-  .replace(/[^\p{L}\p{N}]+/gu, '-')
-  .replace(/^-+|-+$/g, '')
-  .replace(/-+/g, '-');
+const slugify = (title) => title.trim().replace(/[–—]/g, '-').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
 
 const title = rawTitle.trim();
 const slug = slugify(title);
-if (!slug) throw new Error('Aus dem Titel konnte kein gültiger Ordnername gebildet werden.');
+if (!slug) throw new Error('Kein gültiger Ordnername aus Titel erzeugbar.');
 
 const {monday, sunday} = weekBounds(parseDate(rawDate));
 const weekName = `${iso(monday)}_bis_${iso(sunday)}`;
@@ -45,81 +34,36 @@ const weekRoot = resolve('ki', 'reels', weekName);
 await mkdir(weekRoot, {recursive: true});
 
 const existing = await readdir(weekRoot, {withFileTypes: true});
-const usedIndexes = existing
-  .filter((entry) => entry.isDirectory())
-  .map((entry) => Number(entry.name.match(/^(\d{2})_/)?.[1]))
-  .filter(Number.isFinite);
+const used = existing.filter((entry) => entry.isDirectory()).map((entry) => Number(entry.name.match(/^(\d{2})_/)?.[1])).filter(Number.isFinite);
 let index = 1;
-while (usedIndexes.includes(index)) index += 1;
-if (index > 99) throw new Error(`Wochenordner ${weekName} enthält bereits 99 Reel-Slots.`);
+while (used.includes(index)) index += 1;
+if (index > 99) throw new Error(`${weekName} enthält bereits 99 Reel-Slots.`);
 
 const reelName = `${String(index).padStart(2, '0')}_${slug}`;
 const reelRoot = resolve(weekRoot, reelName);
-const requiredDirs = [
-  '01-script-audio',
-  '02-bilder',
-  '03-caption',
-  '04-pdf',
-  '05-export',
-  '06-projektdateien',
-];
-
+const dirs = ['01-script-audio','02-bilder','03-caption','04-pdf','05-export','06-projektdateien'];
 await mkdir(reelRoot, {recursive: false});
-for (const dir of requiredDirs) {
-  const path = resolve(reelRoot, dir);
-  await mkdir(path, {recursive: false});
-  await writeFile(
-    resolve(path, '.gitkeep'),
-    'Dieser Ordner ist Bestandteil der verbindlichen KI-Reel-Produktionsstruktur und darf nicht entfernt werden.\n',
-    'utf8',
-  );
+for (const dir of dirs) {
+  await mkdir(resolve(reelRoot, dir), {recursive: false});
+  await writeFile(resolve(reelRoot, dir, '.gitkeep'), 'Verbindlicher Produktionsordner — nicht entfernen.\n', 'utf8');
 }
 
-await writeFile(
-  resolve(reelRoot, '01-script-audio', 'README.md'),
-  '# AUDIO-HANDOFF — PHASE 2\n\n' +
-    'Der verbindliche 3-Phasen-Ablauf steht in `ki/gehirn/PRODUKTIONSABLAUF.md`.\n\n' +
-    'Phase 1 muss hier `voiceover.md` mit dem finalen wortgetreuen Sprechertext anlegen.\n' +
-    'Phase 2 ist ausschließlich der menschliche Audio-Schritt: `voiceover.md` verwenden und bevorzugt `voiceover.wav`, alternativ `voiceover.mp3`, in diesem Ordner ablegen.\n' +
-    'Danach übernimmt Phase 3 (Codex/Antigravity) Integration, Timing, Tests, Smoke Review und Final Render.\n',
-  'utf8',
-);
+const files = {
+  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n\n## 3 Phasen\n\n1. **Phase 1 — ChatGPT:** komplette Planung + ausführbare Remotion-Code-Grundlage\n2. **Phase 2 — Mensch:** nur echtes Voiceover\n3. **Phase 3 — Codex/Antigravity:** Audio integrieren + prüfen + rendern\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
+  '01-script-audio/README.md': `# 01 — Script & Audio\n\nPhase 1 muss hier \`voiceover.md\` und den reinen Fließtext \`VOICEOVER-ZUM-KOPIEREN.txt\` anlegen.\n\nPhase 2 erzeugt ausschließlich \`voiceover.wav\` (bevorzugt) oder \`voiceover.mp3\`. Keine Planungs-/Code-Dateien in Phase 2 ändern.\n`,
+  '02-bilder/README.md': `# 02 — Bilder\n\nPhase 1 entscheidet zuerst ausdrücklich: **BILDER ERFORDERLICH** oder **BILDER NICHT ERFORDERLICH**.\n\nBei Bildbedarf: \`ki/BILDSTIL.md\` anwenden, finale Prompts in \`image-prompts.md\`, Assets in \`asset-manifest.json\`. Bild-KI baut räumliche/illustrative Komplexität; Überschriften, Captions, Zahlen, Pfeile und präzise UI-Texte bleiben Remotion.\n`,
+  '02-bilder/image-prompts.md': `# Image Prompts\n\n**Status:** OFFEN — Phase 1 muss entscheiden: BILDER ERFORDERLICH / BILDER NICHT ERFORDERLICH.\n\nWenn Bilder nötig sind, pro Asset dokumentieren:\n\n- sceneId\n- Zweck / eine Kernaussage\n- erwarteter Dateiname \`scene-XX-kurzname.png\`\n- was Bild-KI erzeugt\n- was Remotion später ergänzt\n- vollständiger englischer Premium-Prompt nach \`ki/BILDSTIL.md\`\n- Crop/Fokus/Layers, falls relevant\n\nKeine dekorativen Füllbilder.\n`,
+  '03-caption/README.md': `# 03 — Captions\n\nPhase 1 legt Audio-unabhängige Basiscues an. Phase 3 ersetzt/justiert sie mit realem Audio-Timing. Jeder gesprochene Inhalt bleibt vollständig abgedeckt; aktive Fenster kompakt halten.\n`,
+  '04-pdf/README.md': `# 04 — PDF\n\nOptional. Nur reel-bezogene PDF-Quellen/Exports ablegen. Keine Reel-Planung hierhin verschieben.\n`,
+  '05-export/README.md': `# 05 — Export\n\nPhase 3 legt hier reel-bezogene Smoke-Frames, Review-Renders und finale Exporte ab, sofern der reel-spezifische Vertrag keinen anderen Pfad festlegt. Ein gerendertes MP4 ist erst nach technischer und visueller Prüfung freigegeben.\n`,
+  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nHier liegen \`PHASE-STATUS.md\`, \`reel.json\`, Szene-/Animationsplan, Assembly-Auftrag und Review-Checkliste. Ausführbarer TS/TSX-Code gehört **nicht** hierhin, sondern nach \`ki/src/reels/<slug>/\`.\n`,
+  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1 — ChatGPT\n\n**Status:** OFFEN\n\nFertig erst mit finalem Skript + Copy-Fließtext, Szenen/Animationen, Bildentscheidung/Prompts/Manifest, Captions, \`reel.json\`, ausführbarem Source unter \`ki/src/reels/<slug>/\`, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nNur echtes Voiceover aus \`VOICEOVER-ZUM-KOPIEREN.txt\` erzeugen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render und visuelle Freigabe.\n`,
+};
 
-await writeFile(
-  resolve(reelRoot, '06-projektdateien', 'PHASE-STATUS.md'),
-  `# Produktionsstatus — ${title}\n\n` +
-    '## Phase 1 — ChatGPT\n\n' +
-    '**Status:** OFFEN\n\n' +
-    'Phase 1 ist erst fertig, wenn Skript, Szenen-/Animationsplanung, Captions/Manifest, ausführbarer Remotion-Source unter `ki/src/reels/<slug>/`, Composition-Registrierung und fokussierte Checks vorhanden sind.\n\n' +
-    '## Phase 2 — Mensch\n\n' +
-    '**Status:** WARTET AUF PHASE 1\n\n' +
-    'Nur das finale Voiceover aus `01-script-audio/voiceover.md` erzeugen und als `voiceover.wav` oder `voiceover.mp3` dort ablegen.\n\n' +
-    '## Phase 3 — Codex / Antigravity\n\n' +
-    '**Status:** WARTET AUF PHASE 2\n\n' +
-    'Audio integrieren, reales Timing prüfen, Tests/Typecheck ausführen, Smoke-Frames visuell prüfen, finales MP4 rendern und Export verifizieren.\n',
-  'utf8',
-);
-
-await writeFile(
-  resolve(reelRoot, 'README.md'),
-  `# ${title}\n\n` +
-    `**Woche:** ${weekName}\n\n` +
-    '## Verbindlicher 3-Phasen-Ablauf\n\n' +
-    '1. **Phase 1 — ChatGPT:** komplette Planung + ausführbare Code-Grundlage\n' +
-    '2. **Phase 2 — Mensch:** ausschließlich Voiceover erzeugen\n' +
-    '3. **Phase 3 — Codex/Antigravity:** Audio integrieren, prüfen, smoke-reviewen, final rendern\n\n' +
-    'Details: `ki/gehirn/PRODUKTIONSABLAUF.md`. Aktueller Reel-Status: `06-projektdateien/PHASE-STATUS.md`.\n\n' +
-    '## Verbindliche Produktionsstruktur\n\n' +
-    '1. `01-script-audio/` — Skript, Voiceover und Audio\n' +
-    '2. `02-bilder/` — Bildprompts und Bilder\n' +
-    '3. `03-caption/` — Untertitel und Social-Caption\n' +
-    '4. `04-pdf/` — optionale PDF-Inhalte\n' +
-    '5. `05-export/` — finale Exporte und Kontrollframes\n' +
-    '6. `06-projektdateien/` — Briefing, Storyboard, Motion Design und technische Planungsdateien\n\n' +
-    'Planungsdateien niemals direkt unter `ki/` oder `ki/src/reels/` ablegen. Ausführbarer Remotion-Code entsteht separat unter `ki/src/reels/<slug>/`.\n',
-  'utf8',
-);
+for (const [relative, content] of Object.entries(files)) {
+  await writeFile(resolve(reelRoot, relative), content, 'utf8');
+}
 
 console.log(`KI-Reel angelegt: ${reelRoot}`);
-console.log('Nächster Pflichtcheck: node scripts/check-ki-reel-folder-structure.mjs');
-console.log('Produktionsvertrag: ki/gehirn/PRODUKTIONSABLAUF.md · Phase 1 muss vor Audio vollständig sein.');
+console.log('Pflicht: node scripts/check-ki-reel-folder-structure.mjs');
+console.log('Phase 1 muss alles außer dem echten Audio vervollständigen.');

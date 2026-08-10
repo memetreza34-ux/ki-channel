@@ -21,11 +21,28 @@ const readText = async (path) => {
   }
 };
 
-const assertFile = async (path) => {
+const exists = async (path) => {
   try {
     await access(path);
+    return true;
   } catch {
-    failures.push(`Pflichtdatei fehlt: ${path}`);
+    return false;
+  }
+};
+
+const assertFile = async (path) => {
+  if (!(await exists(path))) failures.push(`Pflichtdatei fehlt: ${path}`);
+};
+
+const requireMarkers = (label, text, markers) => {
+  for (const marker of markers) {
+    if (!text.includes(marker)) failures.push(`${label}: Pflichtmarker fehlt: ${marker}`);
+  }
+};
+
+const forbidMarkers = (label, text, markers) => {
+  for (const marker of markers) {
+    if (text.includes(marker)) failures.push(`${label}: veralteter/unerlaubter Marker gefunden: ${marker}`);
   }
 };
 
@@ -33,7 +50,19 @@ const root = await readJson('package.json');
 const core = await readJson('core/package.json');
 const ki = await readJson('ki/package.json');
 const vitest = await readText('vitest.config.ts');
+const repoState = await readText('REPO-STATE.md');
+const agents = await readText('AGENTS.md');
+const kiAgents = await readText('ki/AGENTS.md');
+const reelAgents = await readText('ki/reels/AGENTS.md');
 const gemini = await readText('GEMINI.md');
+const master = await readText('ki/gehirn/MASTER.md');
+const production = await readText('ki/gehirn/PRODUKTIONSABLAUF.md');
+const reels = await readText('ki/gehirn/REELS.md');
+const imageStyle = await readText('ki/BILDSTIL.md');
+const codexWorkflow = await readText('docs/CODEX_REEL_WORKFLOW.md');
+const contextIndex = await readText('docs/CODEX_CONTEXT_INDEX.md');
+const generator = await readText('scripts/new-ki-reel.mjs');
+const phase3Skill = await readText('.agents/skills/build-context-overload-reel/SKILL.md');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -41,9 +70,7 @@ if (root) {
     failures.push(`package.json workspaces müssen exakt ${expectedWorkspaces.join(', ')} sein.`);
   }
   if (root.name !== 'ki-channel') failures.push('package.json name muss ki-channel sein.');
-  if (root.engines?.node !== '>=20 <21') {
-    failures.push('package.json muss Node 20 als kanonische Engine festlegen (>=20 <21).');
-  }
+  if (root.engines?.node !== '>=20 <21') failures.push('package.json muss Node 20 festlegen (>=20 <21).');
 
   const requiredScripts = {
     'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
@@ -55,87 +82,68 @@ if (root) {
     'new-video': 'node scripts/new-ki-reel.mjs',
   };
   for (const [name, command] of Object.entries(requiredScripts)) {
-    if (root.scripts?.[name] !== command) {
-      failures.push(`package.json script ${name} muss exakt "${command}" sein.`);
-    }
+    if (root.scripts?.[name] !== command) failures.push(`package.json script ${name} muss exakt "${command}" sein.`);
   }
 
   const serializedScripts = JSON.stringify(root.scripts ?? {});
-  const deadLegacyTargets = [
-    'validate-worktree-rules.mjs',
-    'validate-channels.mjs',
-    'validate-studio-skills.mjs',
-    'validate-motion-router.mjs',
-    'scripts/typecheck.mjs',
-    'scripts/new-channel.sh',
-    'route-motion-beats.mjs',
-    'prepare-voiceover.mjs',
-    'transcribe.mjs',
-    'ingest.mjs',
-    'icons-index.mjs',
-  ];
-  for (const target of deadLegacyTargets) {
+  for (const target of ['validate-worktree-rules.mjs','validate-channels.mjs','validate-studio-skills.mjs','scripts/typecheck.mjs','scripts/new-channel.sh','prepare-voiceover.mjs','transcribe.mjs']) {
     if (serializedScripts.includes(target)) failures.push(`Totes Legacy-Skript ist wieder eingetragen: ${target}`);
   }
 }
 
 if (core) {
   if (core.name !== '@studio/core') failures.push('core/package.json name muss @studio/core sein.');
-  if (core.exports?.['.']?.import !== './brand-kit/index.ts') {
-    failures.push('core/package.json muss @studio/core auf ./brand-kit/index.ts exportieren.');
-  }
+  if (core.exports?.['.']?.import !== './brand-kit/index.ts') failures.push('core/package.json muss @studio/core auf ./brand-kit/index.ts exportieren.');
 }
-
 if (ki) {
   if (ki.name !== '@studio/ki') failures.push('ki/package.json name muss @studio/ki sein.');
-  if (ki.dependencies?.['@studio/core'] !== '*') {
-    failures.push('ki/package.json muss @studio/core als Workspace-Abhängigkeit deklarieren.');
-  }
+  if (ki.dependencies?.['@studio/core'] !== '*') failures.push('ki/package.json muss @studio/core als Workspace-Abhängigkeit deklarieren.');
 }
 
-if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) {
-  failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
-}
-if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
-  failures.push('vitest.config.ts enthält wieder den entfernten channels/** Legacy-Testpfad.');
-}
+if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
+if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts enthält wieder channels/**.');
 
-if (gemini.includes('--workspaces=false')) {
-  failures.push('GEMINI.md darf Workspace-Fehler nicht mit --workspaces=false umgehen.');
-}
-if (gemini.includes('channels/ki')) {
-  failures.push('GEMINI.md enthält den entfernten channels/ki Legacy-Pfad.');
+requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','PHASE 1 — ChatGPT','PHASE 2 — Mensch','PHASE 3 — Codex / Antigravity']);
+requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen']);
+requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
+requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
+requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
+requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT']);
+requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT']);
+requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','Interne `goal`','BILDER NICHT ERFORDERLICH']);
+requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
+requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
+requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
+requireMarkers('Phase-3-Skill', phase3Skill, ['not** a from-scratch builder','PHASE 2 AUDIO FEHLT','do not rebuild the reel from zero']);
+
+forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
+forbidMarkers('GEMINI.md', gemini, ['channels/ki','--workspaces=false','Only after preflight may executable implementation be created']);
+forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template']);
+
+for (const marker of ['02-bilder\', 'image-prompts.md', '03-caption\', '05-export\', 'PHASE-STATUS.md']) {
+  if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
 }
 
 for (const path of [
-  'core/brand-kit/index.ts',
-  'ki/brand/brand.ts',
-  'ki/AGENTS.md',
-  'ki/reels/AGENTS.md',
-  'ki/tsconfig.motion.json',
-  'ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs',
-  'scripts/prepare-codex-reel.mjs',
-  'scripts/verify-content-matched-runtime.mjs',
-  'scripts/run-content-release.mjs',
-]) {
-  await assertFile(path);
-}
+  'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
+  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/AGENTS.md','ki/reels/AGENTS.md',
+  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
+  'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
+  'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
+  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
+  '.agents/skills/build-context-overload-reel/SKILL.md'
+]) await assertFile(path);
 
-try {
-  await access('package-lock.json');
-} catch {
-  warnings.push('package-lock.json fehlt noch; Installationen sind bis zur Lockfile-Erzeugung nicht vollständig reproduzierbar.');
-}
+if (await exists('ki/reels/_codex-hybrid-template')) failures.push('Veralteter ki/reels/_codex-hybrid-template darf nicht mehr existieren.');
+if (await exists('ki/reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/PHASE-2-IMPLEMENTATION.md')) failures.push('Legacy-Datei PHASE-2-IMPLEMENTATION.md darf nicht mehr existieren.');
 
-if (warnings.length > 0) {
-  for (const warning of warnings) console.warn(`WARN: ${warning}`);
-}
+if (!(await exists('package-lock.json'))) warnings.push('package-lock.json fehlt noch; erst nach echtem npm-Installationslauf vertrauenswürdig erzeugen.');
 
+for (const warning of warnings) console.warn(`WARN: ${warning}`);
 if (failures.length > 0) {
-  console.error('Repository-Wiring fehlgeschlagen:');
+  console.error('Repository-Wiring/Agent-Contract fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log('Repository-Wiring bestanden: Workspaces, Kernpfade, Testpfade und kanonische Entry-Points sind konsistent.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Gehirn, Bildprompt-System und Agent-Handoffs stimmen überein.');

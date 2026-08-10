@@ -1,75 +1,44 @@
-# Context Overload reel instructions
+# Context Overload Reel — Agent Contract
 
-This is the technical planning area of the approved reel package:
+Package:
 
 `ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
 
-The package must remain in this weekly location permanently.
-
-## Authority order
-
-1. repository `AGENTS.md`
-2. `ki/AGENTS.md`
-3. `ki/reels/AGENTS.md`
-4. repository `GEMINI.md`
-5. `ki/gehirn/PRODUKTIONSABLAUF.md`
-6. this file
-7. `PHASE-STATUS.md`
-8. `reel.json`
-9. `../01-script-audio/voiceover.md`
-10. `scene-plan.md`
-11. `animation-plan.md`
-12. `../03-caption/subtitle-cues.json`
-13. `../02-bilder/asset-manifest.json`
-14. `CODEX_ASSEMBLY_TASK.md`
-15. `review-checklist.md`
-
-## Current ownership
-
-- **Phase 1:** planning and executable Remotion foundation are present under `ki/src/reels/antigravity-context-overload/`.
-- **Phase 2:** the human only creates the real voiceover from `../01-script-audio/voiceover.md` and places `voiceover.wav` or `voiceover.mp3` in that folder.
-- **Phase 3:** Codex/Antigravity integrates the real audio, verifies timing/source/tests, smoke-reviews and final-renders.
-
-Do not force the human to finish code or technical planning during Phase 2. Do not let Phase 3 discard the approved Phase-1 source and rebuild from scratch without a real defect.
-
-## Structure lock
-
-Before and after package/source edits run:
-
-`node scripts/check-ki-reel-folder-structure.mjs`
-
-Never move this package to `ki/src/reels/`. Never flatten it. Never delete or rename the package's `01-script-audio` through `06-projektdateien` folders.
-
-Executable implementation lives separately at:
+Source:
 
 `ki/src/reels/antigravity-context-overload/`
 
-That source directory contains executable code/tests only, not copies of these planning documents.
+## Read order
 
-## Fixed creative decisions
+1. `REPO-STATE.md`
+2. root `AGENTS.md`
+3. `ki/AGENTS.md`
+4. `ki/gehirn/MASTER.md`
+5. `ki/reels/AGENTS.md`
+6. this package `PHASE-STATUS.md`
+7. this file
+8. `reel.json`, script, scene/animation, captions, manifest, assembly task, checklist
 
-- Topic: why too much context can make an AI answer worse.
-- Five scenes, 180 frames each, total 900 frames as the Phase-1 baseline.
-- German voiceover text and scene order are approved and must not be rewritten casually.
-- Use exactly the five animation IDs in `reel.json` for the first implementation.
-- No external images, music or SFX in the first pass.
-- Do not introduce exact numeric claims that are not spoken.
+## Current phase model
 
-## Implementation priority
+Phase 1 owns the existing plan and executable source. Phase 2 is only the human voiceover. Phase 3 integrates audio and verifies/renders.
 
-Make the meaning visible. Do not replace selected content-aware mechanisms with generic cards, decorative particles or arbitrary camera movement.
+Do not interpret missing audio as permission to rebuild source. If Phase 3 is requested and no `voiceover.wav`/`voiceover.mp3` exists, stop with `PHASE 2 AUDIO FEHLT`.
 
-Every scene must show a readable start state, one dominant semantic change and a readable result state. Keep subtitles in a separate safe zone and preserve phone-size readability.
+## Fixed creative contract
 
-## Phase-3 first commands
+- topic: why more context can make an AI answer worse
+- five scenes
+- approved speaker text remains authoritative
+- five approved production-ready animation IDs from `reel.json`
+- no external images in this pass
+- no music/SFX
+- no invented numeric capacities/weights/counts
+- headline, animation labels and caption must not redundantly copy one another
+- internal `goal` values are never viewer-facing text
 
-After the human has added the real Phase-2 voiceover, Codex/Antigravity starts with:
+## Structure
 
-1. `node scripts/check-ki-reel-folder-structure.mjs`
-2. `node scripts/run-antigravity-context-overload-preflight.mjs`
+Never move or flatten the weekly package. Planning stays here; executable code stays in `ki/src/reels/antigravity-context-overload/`.
 
-If preflight fails, fix the first actual structure, grounding, package or Phase-1-source failure before render work.
-
-If no `voiceover.wav` or `voiceover.mp3` exists in `01-script-audio/`, Phase 3 must stop with `PHASE 2 AUDIO FEHLT` instead of fabricating audio.
-
-Do not merge PR #3 or modify `main`.
+Before/after relevant work run the structure validator. Phase-3 execution follows `CODEX_ASSEMBLY_TASK.md` and `.agents/skills/build-context-overload-reel/SKILL.md`.

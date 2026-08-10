@@ -1,71 +1,67 @@
 ---
 name: build-context-overload-reel
-description: Builds and verifies the first Antigravity production reel "Warum mehr Kontext eine KI schlechter machen kann" from the approved five-scene package.
+description: Performs Phase 3 for the approved reel "Warum mehr Kontext eine KI schlechter machen kann" by integrating the human voiceover into the existing Phase-1 implementation, verifying, visually reviewing and exporting it.
 ---
 
-# Build Context Overload Reel
+# Context Overload Reel — Phase 3
 
-Use this skill when the user asks Antigravity to build, render, test, finish, or continue the first production reel.
+This skill is **not** a from-scratch builder. Phase 1 already exists.
 
-## Planning package
+## Read first
+
+1. `REPO-STATE.md`
+2. `AGENTS.md`
+3. `ki/AGENTS.md`
+4. `ki/gehirn/MASTER.md`
+5. `ki/reels/AGENTS.md`
+6. package `06-projektdateien/PHASE-STATUS.md`
+7. package `06-projektdateien/AGENTS.md`
+8. `06-projektdateien/reel.json`
+9. script/captions/manifest/scene/animation/assembly/review files
+
+Planning package:
 
 `ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
 
-The planning package must remain there permanently. Read:
-
-- `README.md`
-- `01-script-audio/voiceover.md`
-- `02-bilder/asset-manifest.json`
-- `03-caption/subtitle-cues.json`
-- `06-projektdateien/AGENTS.md`
-- `06-projektdateien/reel.json`
-- `06-projektdateien/scene-plan.md`
-- `06-projektdateien/animation-plan.md`
-- `06-projektdateien/CODEX_ASSEMBLY_TASK.md`
-- `06-projektdateien/review-checklist.md`
-
-Executable implementation, once allowed, is separate:
+Existing source:
 
 `ki/src/reels/antigravity-context-overload/`
 
-Never move planning files into the executable source folder.
+Composition:
 
-## Required order
+`KI-ContextOverload`
 
-1. Confirm branch is not `main` and inspect `git status --short`.
+## Required Phase-3 order
+
+1. Work from canonical `main` on a task branch unless the user explicitly specifies another branch.
 2. Run `node scripts/check-ki-reel-folder-structure.mjs`.
-3. Run `node scripts/run-antigravity-content-test.mjs`.
-4. Run `node scripts/check-antigravity-context-overload-reel.mjs`.
-5. Only if all preflight checks pass, create/update executable code under `ki/src/reels/antigravity-context-overload/`.
-6. Implement one 1080x1920, 30 FPS, 900-frame Remotion composition from the approved package.
-7. Use exactly the five animation IDs in `06-projektdateien/reel.json` and the canonical spokenText-grounding pipeline.
-8. Add focused package/composition tests.
-9. Run `node scripts/check-ki-reel-folder-structure.mjs` again, then focused tests and TypeScript checking.
-10. Render 15 smoke frames: start, midpoint and end for each scene.
-11. Inspect all 15 frames visually and fix real layout/motion issues.
-12. Render the full MP4 and run technical validation.
-13. Watch the MP4 at normal speed and phone-size scale.
-14. Update `06-projektdateien/review-checklist.md` only for checks actually completed.
-15. Run the structure validator once more before reporting completion.
+3. Run `node scripts/run-antigravity-context-overload-preflight.mjs`.
+4. Confirm existing Phase-1 source and Composition registration.
+5. Locate `01-script-audio/voiceover.wav`, otherwise `voiceover.mp3`.
+6. If neither exists, stop with `PHASE 2 AUDIO FEHLT`.
+7. Measure real audio duration.
+8. Integrate audio without moving the planning package.
+9. Preserve approved script, scene order and five animation IDs.
+10. Preserve spokenText → meaning → derive → sanitize → associate → render-props.
+11. Align subtitle timing to real audio without dropping words.
+12. Run structure check, focused tests and TypeScript.
+13. Render opening, midpoint and readable end-hold for each scene.
+14. Inspect all 15 smoke frames visually.
+15. Fix clipping, overlap, internal goal text, text duplication, misleading values, weak motion and mobile readability.
+16. Render full MP4 only after smoke review is clean.
+17. Validate MP4 technically and watch it at normal speed/phone scale.
+18. Update review checklist and phase status only for work actually completed.
+19. Final structure check and honest report.
 
-## Fixed content
+## Hard constraints
 
-Do not casually rewrite the approved voiceover or reorder scenes. Do not inject demo values. No external images, music or SFX are required for the first pass.
-
-The five mechanisms are:
-
-1. context window overload
-2. relationship weighting
-3. relevant-source retrieval
-4. information filtering/compression
-5. answer generation
-
-## Structure safety
-
-Never create a reel folder directly under `ki/`. Never flatten a weekly reel into `ki/reels/<slug>`. Never delete or rename `01-script-audio` through `06-projektdateien`. New reels are created only with `node scripts/new-ki-reel.mjs "Titel"`.
-
-## Failure handling
-
-If a command fails, stop at the first real failure, classify it as environment or source, fix the source cause when appropriate, rerun the narrow command, then rerun the required sequence. Never weaken assertions or structure rules just to get green.
-
-Do not merge PR #3 or modify `main`.
+- do not rebuild the reel from zero
+- do not fabricate audio
+- do not rewrite the approved speaker text to fit timing
+- do not silently replace animation IDs
+- no external images, music or SFX for this reel unless the package is explicitly changed in Phase 1
+- no invented capacities, percentages, token counts or other numeric facts
+- internal `goal`/planner text never appears in the final reel
+- caption, headline and animation labels must not redundantly repeat the same sentence
+- never weaken validators to obtain green output
+- never claim unexecuted checks passed
