@@ -12,7 +12,7 @@ Normale Änderungen auf einem Arbeitsbranch von `main`; `main` nur bei ausdrück
 
 ### Phase 1 — ChatGPT
 
-Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Animationen, Bildprompts/Manifest falls nötig, Captions, `03-caption/platform-copy.md`, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
+Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Visual Beats, individuelle Animationen/New-Build-Entscheidungen, Bildprompts/Manifest falls nötig, Captions, `03-caption/platform-copy.md`, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
 
 **Audio darf in Phase 1 fehlen.** Das ist normal.
 
@@ -32,13 +32,18 @@ Ablauf:
 4. echtes Voiceover suchen.
 5. fehlt Audio: `PHASE 2 AUDIO FEHLT` und stoppen.
 6. Audio-Dauer messen und integrieren.
-7. Captions/Timing an echtes Audio anpassen, ohne Text umzuschreiben.
-8. genehmigte Animationen und Grounding-Pipeline erhalten.
-9. fokussierte Tests und TypeScript ausführen.
-10. drei Smoke-Frames pro Szene rendern und visuell prüfen.
-11. echte Probleme beheben.
-12. finales MP4 rendern, technisch prüfen und in normaler Geschwindigkeit ansehen.
-13. Checkliste/Status nur für tatsächlich ausgeführte Prüfungen aktualisieren.
+7. Visual Beats, Animation, Holds und Szenenwechsel an die reale Stimme anpassen.
+8. falls ein lokaler Sprecherabschnitt danach noch zu schnell/zu langsam für den geplanten Beat ist: zuerst Pause an natürlicher Grenze korrigieren, dann bei Bedarf die komplette Phrase/den Cue **pitch-erhaltend leicht time-stretchen**.
+9. Speedwechsel niemals mitten im Wort oder abrupt; Wortlaut/Reihenfolge unverändert lassen.
+10. bevorzugter Retiming-Bereich `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`; stärkere Korrektur → neues Phase-2-Voiceover statt hörbarer Verzerrung.
+11. Captions und Wort-Timestamps gegen das **final tatsächlich verwendete Audio** ausrichten.
+12. genehmigte Visual Beats, `REUSE_EXACT`/`NEW_BUILD` und Grounding-Pipeline erhalten.
+13. fokussierte Tests und TypeScript ausführen.
+14. drei Smoke-Frames pro Szene plus relevante Beat-Wechsel rendern und visuell prüfen.
+15. echte Probleme beheben.
+16. finales MP4 rendern, technisch prüfen und in normaler Geschwindigkeit ansehen; auch akustisch auf unnatürliche Speed-Stellen prüfen.
+17. Checkliste/Status nur für tatsächlich ausgeführte Prüfungen aktualisieren.
+18. im Abschlussbericht lokale Audio-Retiming-Stellen + Faktoren nennen oder `kein Retiming nötig` melden.
 
 ## Repository-Struktur
 

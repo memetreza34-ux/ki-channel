@@ -23,7 +23,7 @@ Die sechs nummerierten Ordner niemals entfernen, umbenennen, verschieben oder fl
 
 - Phase 1 offen → Planung und Code-Grundlage vervollständigen
 - Phase 2 → Mensch macht ausschließlich Voiceover
-- Phase 3 → Agent integriert Audio, prüft und rendert
+- Phase 3 → Agent integriert Audio, synchronisiert, prüft und rendert
 
 Phase 3 darf kein Phase-1-Reel neu entwerfen.
 
@@ -33,6 +33,7 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 
 - finaler Sprechertext in `01-script-audio/voiceover.md`
 - reiner Copy-Fließtext in `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
+- Standardziel Short-Form: ungefähr **50–60 Sekunden** bzw. meist ungefähr **120–150 gesprochene Wörter**, wenn die Idee das trägt
 - `06-projektdateien/reel.json`
 - `scene-plan.md`
 - `animation-plan.md`
@@ -48,6 +49,60 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 
 Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig.
 
+## Animation Contract — individuell vor Reuse
+
+Vor Implementierung muss der Sprechertext in **Visual Beats** zerlegt werden. Ein Beat kann je nach Bedeutung ein Wort, eine Phrase, ein Halbsatz, ein Satz oder eine zusammenhängende Satzgruppe sein.
+
+Für jeden Beat muss `animation-plan.md` festhalten:
+
+```text
+Sprecherstelle
+→ Aussage/Bedeutung
+→ Startzustand
+→ sichtbare Veränderung
+→ Endzustand
+→ REUSE_EXACT oder NEW_BUILD
+→ Sprecher-Timing
+```
+
+Regeln:
+
+- **nicht zuerst in der Library stöbern und danach Inhalt daraufbiegen**
+- bestehende Animation nur als `REUSE_EXACT`, wenn sie die Aussage wirklich exakt erklärt
+- „ähnlich“, „haben wir schon“ oder „passt ungefähr“ ist nicht ausreichend
+- ohne exakten Fit: **individuelle reel-spezifische Remotion-Animation bauen**
+- eine Szene darf mehrere Micro-Animationen enthalten
+- wenn sich die Aussage innerhalb eines Satzes sichtbar ändert, muss der visuelle Zustand passend reagieren
+- nicht jedes Wort braucht Bewegung; jedes bedeutungstragende Wort/jede Phrase braucht aber eine bewusste visuelle Entscheidung
+- keine dekorative Füllanimation
+
+Phase 3 darf NEW_BUILD/REUSE_EXACT nicht aus Bequemlichkeit ändern.
+
+## Phase-3 Timeline Contract — Audio darf lokal feinjustiert werden
+
+Das echte Voiceover ist die akustische Grundlage. Der Agent muss die **gesamte audiovisuelle Timeline** optimieren, nicht nur Captions verschieben.
+
+Bei zu schnellem/zu langsamem Sprecherabschnitt gilt:
+
+1. zuerst Animation, Hold, Szenenlänge und Beat-Timing anpassen
+2. natürliche Pause an Phrase-/Satzgrenze leicht verkürzen oder verlängern
+3. wenn nötig eine komplette Phrase / einen Cue **pitch-erhaltend lokal time-stretchen**
+4. danach Caption-Cues und Wort-Timestamps auf das tatsächlich verwendete Audio neu synchronisieren
+
+Verbindlich:
+
+- Speedwechsel nur an natürlichen Phrasen-/Pausengrenzen, niemals mitten im Wort
+- keine abrupten Speed-Sprünge
+- Pitch erhalten
+- Sprechertext bleibt wortgleich und in gleicher Reihenfolge
+- bevorzugt ungefähr `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- über ungefähr ±6 % nicht weiter verzerren; stattdessen Phase-2-Voiceover neu erzeugen lassen
+- keine Wörter schneiden, duplizieren oder künstlich verlängern
+- keine starre Zielsekunde erzwingen, wenn Natürlichkeit leidet
+- verwendete lokale Retiming-Faktoren im Phase-3-Abschlussbericht nennen
+
+Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen denselben Moment.**
+
 ## Verbindliches sichtbares Textlayout
 
 Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
@@ -60,11 +115,29 @@ Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung
 - Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
 - Sans-Serif und smartphone-lesbar
 - aktive Sprecherposition in Marken-Lila hervorheben
-- finale Untertitel in Phase 3 mit dem echten Voiceover zeitlich abgleichen
-- unterste ca. 220 px und seitliche Randzonen nicht für kritischen Text verwenden
-- Hauptanimation und wichtige Animationslabels so hoch/kompakt platzieren, dass sie nicht in die Untertitelzone ragen
-- bei 1080 × 1920 kritische Animationslabels möglichst oberhalb von ungefähr y=1450 halten
-- wenn Untertitel und Animation konkurrieren, Animation nach oben bzw. kompakter setzen; Untertitel nicht nach unten in die Plattform-UI drücken
+- finale Untertitel in Phase 3 mit dem **tatsächlich final verwendeten Audio** zeitlich abgleichen
+
+## Harte Caption-Zone
+
+Bei 1080 × 1920 gilt ab ungefähr `y=1440` die reservierte Caption-/Bottom-Safe-Zone.
+
+**Dort und darunter ist sichtbare Animation verboten.**
+
+Das bedeutet:
+
+- keine Animationskarte
+- kein Node
+- keine Linie
+- kein Partikel
+- keine Illustration
+- kein Animationslabel
+- keine dekorative UI
+
+unter/ hinter den Untertiteln.
+
+Animationen müssen vorher enden. Wenn Platz fehlt, Animation höher, kompakter oder individuell neu bauen. Untertitel nicht nach unten verschieben.
+
+Die gemeinsame Production-Shell darf zusätzlich clippen. Wird dadurch wichtiger Inhalt abgeschnitten, ist das ein Layoutfehler und keine akzeptable Lösung.
 
 Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
 
@@ -115,6 +188,18 @@ Widerspruch erkennen, nicht verstecken.
 
 Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
 
-Zur visuellen Freigabe gehört ausdrücklich: Header/Icon-Position, vollständige lila Zwischenüberschrift, Caption-Safe-Zone, Abstand zwischen Animation und Untertitel, transparente Untertitel und die Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung prüfen.
+Zur visuellen/akustischen Freigabe gehört ausdrücklich:
+
+- Visual Beats passen exakt zum Sprecherinhalt
+- keine bequeme/ungefähre Library-Reuse
+- Sprecher, Visual Beat und Caption treffen zeitlich denselben Moment
+- lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
+- Header/Icon-Position
+- vollständige lila Zwischenüberschrift
+- Caption-Safe-Zone
+- **keinerlei sichtbare Animation unter der Caption-Zone**
+- keine Clip-bedingt abgeschnittenen wichtigen Inhalte
+- transparente Untertitel
+- Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung
 
 `veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.
