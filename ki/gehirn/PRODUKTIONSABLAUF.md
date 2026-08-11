@@ -104,9 +104,9 @@ Pflichten:
 4. echtes Voiceover finden; bei Fehlen mit `PHASE 2 AUDIO FEHLT` stoppen.
 5. reale Audio-Dauer messen.
 6. Audio render-sicher integrieren.
-7. Timeline nach obigem Prinzip an reales Audio anpassen; Sprechertext nicht umschreiben.
+7. Timeline nach obigem Prinzip an reales Audio anpassen; Sprechertext nicht umschreiben. **WICHTIG:** Keine rein mathematische/lineare Aufteilung der Gesamt-Frames auf die Szenen oder Cues! Die Szenen-Grenzen und Cues (in `reel.json` und `subtitle-cues.json`) müssen zwingend auf Basis einer Audio-Analyse (z.B. Extrahieren der Timestamps aus den Audio-Metadaten oder einem ersten Test-Render) an die realen Sprechpausen und -geschwindigkeit gekoppelt werden.
 8. Visual Beats am echten Sprecher ausrichten; sichtbare Zustandswechsel müssen zur gemeinten Phrase/Satzstelle passen.
-9. lokale Pausen/Speed nur dort korrigieren, wo die audiovisuelle Timeline dadurch klarer wird; danach Caption-/Wort-Timestamps neu ausrichten.
+9. lokale Pausen/Speed nur dort korrigieren, wo die audiovisuelle Timeline dadurch klarer wird; danach Caption-/Wort-Timestamps exakt und asymmetrisch (anhand der realen Sprechpausen) neu ausrichten.
 10. genehmigte `REUSE_EXACT`-/`NEW_BUILD`-Entscheidungen erhalten; keine bequemere Library-Animation einsetzen.
 11. prüfen, dass **ab ungefähr y=1440 keinerlei Animation sichtbar ist** und die Caption die unterste Inhaltsebene bleibt.
 12. falls der technische Clip-Guard wichtigen Inhalt abschneidet: Animation neu layouten, nicht als bestanden akzeptieren.
