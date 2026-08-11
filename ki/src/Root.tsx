@@ -19,6 +19,14 @@ import {
   HALLUCINATION_WIDTH,
   ReelHallucinations,
 } from './reels/ai-hallucinations';
+import {
+  AMBIGUOUS_PROMPTS_COMPOSITION_ID,
+  AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES,
+  AMBIGUOUS_PROMPTS_FPS,
+  AMBIGUOUS_PROMPTS_HEIGHT,
+  AMBIGUOUS_PROMPTS_WIDTH,
+  ReelAmbiguousPrompts,
+} from './reels/ambiguous-prompts';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -40,6 +48,15 @@ export const RemotionRoot: React.FC = () => (
         fps={HALLUCINATION_FPS}
         width={HALLUCINATION_WIDTH}
         height={HALLUCINATION_HEIGHT}
+      />
+      <Composition
+        id={AMBIGUOUS_PROMPTS_COMPOSITION_ID}
+        component={ReelAmbiguousPrompts}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES}
+        fps={AMBIGUOUS_PROMPTS_FPS}
+        width={AMBIGUOUS_PROMPTS_WIDTH}
+        height={AMBIGUOUS_PROMPTS_HEIGHT}
       />
     </Folder>
 
