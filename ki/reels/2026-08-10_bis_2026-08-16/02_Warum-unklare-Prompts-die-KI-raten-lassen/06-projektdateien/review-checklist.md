@@ -1,0 +1,25 @@
+# Review Checklist
+
+- [ ] Voiceover wortgetreu
+- [ ] reale Audio-Dauer gemessen
+- [ ] Visual Beats B1–B12 am echten Sprecher ausgerichtet
+- [ ] alle Visuals weiterhin inhaltsspezifische NEW_BUILDs
+- [ ] keine Library-Substitution nur wegen Wiederverwendung
+- [ ] Zwischenüberschrift oben mittig und komplett `#6E45C9`
+- [ ] großes semantisches Icon
+- [ ] Untertitel ohne Hintergrundkarte
+- [ ] nur aktueller Sprechfokus lila
+- [ ] exakte Cue-/Wort-Timestamps am final verwendeten Audio
+- [ ] ab y=1440 keinerlei sichtbare Animation
+- [ ] keine abgeschnittenen wichtigen Visuals durch Clip-Guard
+- [ ] natürliche Pausen zuerst zur Timeline-Korrektur genutzt
+- [ ] falls Voice-Retiming: nur ganze Phrase/Cue, pitch-erhaltend und natürliche Grenzen
+- [ ] Retiming bevorzugt 0.97x–1.03x, niemals stärker als ca. 0.94x–1.06x
+- [ ] keine hörbaren abrupten Speed-Sprünge
+- [ ] kein Retiming mitten im Wort
+- [ ] keine abgeschnittene Schrift / kein interner Debugtext
+- [ ] relevante Beat-Wechsel + Opening/Mid/End als Smoke-Frames visuell geprüft
+- [ ] TypeScript/Tests/Strukturchecks tatsächlich bestanden
+- [ ] finaler MP4 gerendert
+- [ ] finaler MP4 normal + smartphone-groß angesehen und angehört
+- [ ] Abschluss nennt Retiming-Stellen/Faktoren oder `kein Retiming nötig`
