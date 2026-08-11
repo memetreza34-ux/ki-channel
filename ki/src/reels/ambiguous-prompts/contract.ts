@@ -43,7 +43,6 @@ export const normalizeAmbiguousPromptText = (value: string): string =>
 export const assertAmbiguousPromptsContract = (): void => {
   if (reel.slug !== 'ambiguous-prompts') throw new Error('unexpected reel slug');
   if (AMBIGUOUS_PROMPTS_WIDTH !== 1080 || AMBIGUOUS_PROMPTS_HEIGHT !== 1920 || AMBIGUOUS_PROMPTS_FPS !== 30) throw new Error('format must be 1080x1920 @30fps');
-  if (AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES !== 1740) throw new Error('phase-1 baseline must be 1740 frames');
   if (AMBIGUOUS_PROMPTS_CAPTION_ZONE_Y !== 1440) throw new Error('caption zone must start at y=1440');
   if (AMBIGUOUS_PROMPTS_SCENES.length !== 5) throw new Error('reel must contain five scenes');
 

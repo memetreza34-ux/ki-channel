@@ -2,17 +2,32 @@
   "version": 1,
   "fps": 30,
   "cues": [
-    {"sceneId":"ambiguous-01","startFrame":0,"endFrame":165,"text":"Wenn dein Prompt zu offen ist, bekommt die KI nicht eine klare Aufgabe, sondern mehrere plausible Bedeutungen."},
-    {"sceneId":"ambiguous-01","startFrame":165,"endFrame":330,"text":"Aus einem Satz wie „Mach das besser“ kann sie Ton, Länge, Struktur oder Inhalt verändern."},
-    {"sceneId":"ambiguous-02","startFrame":330,"endFrame":445,"text":"Du weißt dann nicht, welche Richtung sie wählt."},
-    {"sceneId":"ambiguous-02","startFrame":445,"endFrame":565,"text":"Das Modell versucht aus deinem Text die wahrscheinlichste Absicht abzuleiten."},
-    {"sceneId":"ambiguous-02","startFrame":565,"endFrame":690,"text":"Je mehr Möglichkeiten offenbleiben, desto größer wird der Spielraum für eine Antwort, die an deinem Ziel vorbeigeht."},
-    {"sceneId":"ambiguous-03","startFrame":690,"endFrame":870,"text":"Sobald du Ziel, Kontext und Grenzen ergänzt, verschwinden viele dieser Abzweigungen."},
-    {"sceneId":"ambiguous-03","startFrame":870,"endFrame":1050,"text":"Aus mehreren möglichen Wegen wird Schritt für Schritt eine deutlich klarere Richtung."},
-    {"sceneId":"ambiguous-04","startFrame":1050,"endFrame":1230,"text":"Noch stärker wird der Prompt mit einem kurzen Beispiel:"},
-    {"sceneId":"ambiguous-04","startFrame":1230,"endFrame":1410,"text":"Es zeigt nicht nur, was du willst, sondern auch, wie das Ergebnis aussehen soll."},
-    {"sceneId":"ambiguous-05","startFrame":1410,"endFrame":1510,"text":"Die praktische Regel ist deshalb simpel:"},
-    {"sceneId":"ambiguous-05","startFrame":1510,"endFrame":1660,"text":"Sag der KI, was sie erreichen soll, was sie wissen muss und in welchem Format du die Antwort brauchst."},
-    {"sceneId":"ambiguous-05","startFrame":1660,"endFrame":1740,"text":"Weniger Rätsel, mehr Richtung."}
+    {"sceneId":"ambiguous-01","startFrame":0,"endFrame":66,"text":"Wenn dein Prompt zu offen ist,"},
+    {"sceneId":"ambiguous-01","startFrame":66,"endFrame":132,"text":"bekommt die KI nicht eine klare Aufgabe,"},
+    {"sceneId":"ambiguous-01","startFrame":132,"endFrame":198,"text":"sondern mehrere plausible Bedeutungen."},
+    {"sceneId":"ambiguous-01","startFrame":198,"endFrame":264,"text":"Aus einem Satz wie „Mach das besser“"},
+    {"sceneId":"ambiguous-01","startFrame":264,"endFrame":331,"text":"kann sie Ton, Länge, Struktur oder Inhalt verändern."},
+
+    {"sceneId":"ambiguous-02","startFrame":331,"endFrame":386,"text":"Du weißt dann nicht, welche Richtung sie wählt."},
+    {"sceneId":"ambiguous-02","startFrame":386,"endFrame":441,"text":"Das Modell versucht aus deinem Text"},
+    {"sceneId":"ambiguous-02","startFrame":441,"endFrame":496,"text":"die wahrscheinlichste Absicht abzuleiten."},
+    {"sceneId":"ambiguous-02","startFrame":496,"endFrame":551,"text":"Je mehr Möglichkeiten offenbleiben,"},
+    {"sceneId":"ambiguous-02","startFrame":551,"endFrame":606,"text":"desto größer wird der Spielraum für eine Antwort,"},
+    {"sceneId":"ambiguous-02","startFrame":606,"endFrame":662,"text":"die an deinem Ziel vorbeigeht."},
+
+    {"sceneId":"ambiguous-03","startFrame":662,"endFrame":745,"text":"Sobald du Ziel, Kontext und Grenzen ergänzt,"},
+    {"sceneId":"ambiguous-03","startFrame":745,"endFrame":828,"text":"verschwinden viele dieser Abzweigungen."},
+    {"sceneId":"ambiguous-03","startFrame":828,"endFrame":911,"text":"Aus mehreren möglichen Wegen"},
+    {"sceneId":"ambiguous-03","startFrame":911,"endFrame":993,"text":"wird Schritt für Schritt eine deutlich klarere Richtung."},
+
+    {"sceneId":"ambiguous-04","startFrame":993,"endFrame":1103,"text":"Noch stärker wird der Prompt mit einem kurzen Beispiel:"},
+    {"sceneId":"ambiguous-04","startFrame":1103,"endFrame":1213,"text":"Es zeigt nicht nur, was du willst,"},
+    {"sceneId":"ambiguous-04","startFrame":1213,"endFrame":1324,"text":"sondern auch, wie das Ergebnis aussehen soll."},
+
+    {"sceneId":"ambiguous-05","startFrame":1324,"endFrame":1390,"text":"Die praktische Regel ist deshalb simpel:"},
+    {"sceneId":"ambiguous-05","startFrame":1390,"endFrame":1456,"text":"Sag der KI, was sie erreichen soll,"},
+    {"sceneId":"ambiguous-05","startFrame":1456,"endFrame":1522,"text":"was sie wissen muss"},
+    {"sceneId":"ambiguous-05","startFrame":1522,"endFrame":1588,"text":"und in welchem Format du die Antwort brauchst."},
+    {"sceneId":"ambiguous-05","startFrame":1588,"endFrame":1654,"text":"Weniger Rätsel, mehr Richtung."}
   ]
 }
