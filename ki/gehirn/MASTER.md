@@ -188,3 +188,6 @@ Phase 1 entscheidet Inhalt und individuelle Visual Beats. Phase 3 darf diese Kre
 
 ## STRIKE KI-Regel (Keine künstlichen Assets)
 Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!
+
+## STRIKE Speichern-Regel (Jedes Ergebnis speichern)
+Alle Ergebnisse, Zwischenschritte, generierten Dateien (wie exportierte Videos, Cover-Bilder, Timings in JSON-Dateien) und sonstige Ausgaben müssen JEDEN Wochentag ausnahmslos und sofort in das Repository gespeichert und als Git-Commit gesichert werden. Egal was es ist, jedes Ergebnis wird unwiderruflich versioniert und festgehalten!
