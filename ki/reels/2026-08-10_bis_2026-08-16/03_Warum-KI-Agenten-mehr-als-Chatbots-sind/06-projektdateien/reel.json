@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "slug": "ai-agents",
+  "title": "Warum KI-Agenten mehr als Chatbots sind",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1740},
+  "captionZoneStartY": 1440,
+  "scenes": [
+    {"sceneId":"agents-01","startFrame":0,"endFrame":330,"headline":"Chatten vs. Handeln","icon":"split","implementation":"NEW_BUILD","spokenText":"Ein Chatbot wartet auf deine nächste Nachricht. Ein KI-Agent kann dagegen ein Ziel bekommen und mehrere Schritte selbst planen.","beatIds":["A1","A2","A3"]},
+    {"sceneId":"agents-02","startFrame":330,"endFrame":690,"headline":"Werkzeuge statt nur Text","icon":"tools","implementation":"NEW_BUILD","spokenText":"Statt nur Text zu liefern, kann er je nach System Werkzeuge benutzen: suchen, Dateien lesen, Code ausführen oder Daten verarbeiten.","beatIds":["A4","A5","A6"]},
+    {"sceneId":"agents-03","startFrame":690,"endFrame":1050,"headline":"Planen, prüfen, weiter","icon":"loop","implementation":"NEW_BUILD","spokenText":"Danach prüft er das Ergebnis und entscheidet, welcher Schritt als Nächstes sinnvoll ist. Genau das macht Agenten mächtig – und gleichzeitig riskanter.","beatIds":["A7","A8","A9"]},
+    {"sceneId":"agents-04","startFrame":1050,"endFrame":1410,"headline":"Mehr Macht, mehr Risiko","icon":"risk","implementation":"NEW_BUILD","spokenText":"Wenn Ziel oder Berechtigungen zu weit gefasst sind, kann ein Fehler mehrere Aktionen hintereinander auslösen. Deshalb braucht ein guter Agent klare Grenzen, erlaubte Tools und Prüfpunkte vor wichtigen Aktionen.","beatIds":["A10","A11"]},
+    {"sceneId":"agents-05","startFrame":1410,"endFrame":1740,"headline":"Kontrolle gehört dazu","icon":"guard","implementation":"NEW_BUILD","spokenText":"Die einfache Faustregel: Je mehr ein System selbst handeln darf, desto genauer musst du festlegen, was es darf, wann es stoppen soll und was ein Mensch bestätigen muss. KI-Agenten sind also nicht einfach bessere Chatbots. Sie verbinden Sprache mit Planung, Werkzeugen und echten Aktionen.","beatIds":["A12","A13","A14"]}
+  ]
+}

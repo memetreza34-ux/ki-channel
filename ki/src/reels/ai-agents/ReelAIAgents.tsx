@@ -1,0 +1,32 @@
+import React, {useMemo} from 'react';
+import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
+import {BRAND} from '../../../brand/brand';
+import {AI_AGENTS_CAPTION_ZONE_Y, AI_AGENTS_SCENES, AI_AGENTS_SUBTITLES, type AIAgentCue, type AIAgentScene} from './contract';
+import {ChatVsAgentVisual, GuardrailVisual, PermissionCascadeVisual, PlanLoopVisual, ToolUseVisual} from './Visuals';
+
+const visualByScene:Record<string,React.FC>={
+  'agents-01':ChatVsAgentVisual,
+  'agents-02':ToolUseVisual,
+  'agents-03':PlanLoopVisual,
+  'agents-04':PermissionCascadeVisual,
+  'agents-05':GuardrailVisual,
+};
+
+const iconPaths:Record<string,React.ReactNode>={
+  split:<><rect x="3" y="6" width="11" height="19" rx="3"/><path d="M8 12h3M8 17h3"/><circle cx="23" cy="10" r="4"/><path d="M23 14v11M19 21h8"/></>,
+  tools:<><path d="M6 8h20M9 8v17M23 8v17"/><circle cx="9" cy="14" r="3"/><circle cx="23" cy="19" r="3"/></>,
+  loop:<><path d="M8 8h12a6 6 0 0 1 6 6v1"/><path d="M23 12l3 3 3-3"/><path d="M24 24H12a6 6 0 0 1-6-6v-1"/><path d="M9 20l-3-3-3 3"/></>,
+  risk:<><path d="M16 4l12 22H4z"/><path d="M16 11v7M16 22v.5"/></>,
+  guard:<><path d="M16 4l10 4v7c0 6-4 10-10 13C10 25 6 21 6 15V8z"/><path d="M11 16l3 3 7-8"/></>,
+};
+
+const Header:React.FC<{scene:AIAgentScene}>=({scene})=>{const frame=useCurrentFrame();const enter=interpolate(frame,[0,18],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return <div style={{position:'absolute',left:64,right:64,top:92,zIndex:50,display:'flex',justifyContent:'center',alignItems:'center',gap:22,opacity:enter,transform:`translateY(${(1-enter)*-20}px)`}}><div style={{width:72,height:72,borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(185,140,255,.16)',border:'1.5px solid rgba(110,69,201,.25)',color:BRAND.accentDk,boxShadow:'0 12px 30px rgba(110,69,201,.12)'}}><svg width="42" height="42" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{iconPaths[scene.icon]??iconPaths.tools}</svg></div><div style={{maxWidth:820,textAlign:'center',fontFamily:BRAND.font,fontSize:scene.headline.length>25?50:58,lineHeight:1.02,fontWeight:900,letterSpacing:-1.8,color:BRAND.accentDk,textShadow:'0 7px 22px rgba(110,69,201,.11)'}}>{scene.headline}</div></div>};
+
+const activeWordIndex=(frame:number,cue:AIAgentCue,count:number):number=>{if(count<=1)return 0;if(cue.words?.length===count){const exact=cue.words.findIndex((w)=>frame>=w.startFrame&&frame<w.endFrame);if(exact>=0)return exact;}const prog=interpolate(frame,[cue.startFrame,Math.max(cue.startFrame+1,cue.endFrame-1)],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return Math.min(count-1,Math.floor(prog*count));};
+
+const Captions:React.FC=()=>{const frame=useCurrentFrame();const cue=AI_AGENTS_SUBTITLES.find((c)=>frame>=c.startFrame&&frame<c.endFrame);if(!cue)return null;const words=cue.words?.length?cue.words.map((w)=>w.text):cue.text.trim().split(/\s+/).filter(Boolean);const active=activeWordIndex(frame,cue,words.length);const fade=Math.min(interpolate(frame,[cue.startFrame,cue.startFrame+4],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),interpolate(frame,[cue.endFrame-4,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));return <div style={{position:'absolute',left:76,right:76,bottom:270,zIndex:200,display:'flex',justifyContent:'center',opacity:fade,pointerEvents:'none'}}><div style={{width:'100%',maxWidth:900,textAlign:'center',fontFamily:BRAND.font,fontSize:47,fontWeight:850,lineHeight:1.18,letterSpacing:-.8,color:BRAND.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>{words.map((word,i)=><React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${i}`}><span style={{display:'inline-block',color:i===active?BRAND.accentDk:BRAND.ink,transform:`scale(${i===active?1.035:1})`,transformOrigin:'50% 70%'}}>{word}</span>{i<words.length-1?' ':null}</React.Fragment>)}</div></div>};
+
+const SceneLayer:React.FC<{scene:AIAgentScene}>=({scene})=>{const Visual=visualByScene[scene.sceneId];if(!Visual)throw new Error(`missing NEW_BUILD visual for ${scene.sceneId}`);return <AbsoluteFill><Header scene={scene}/><div style={{position:'absolute',left:0,right:0,top:225,height:AI_AGENTS_CAPTION_ZONE_Y-225-30,overflow:'hidden',zIndex:20}}><Visual/></div></AbsoluteFill>};
+
+export type ReelAIAgentsProps={voiceoverSrc?:string;showCaptions?:boolean};
+export const ReelAIAgents:React.FC<ReelAIAgentsProps>=({voiceoverSrc,showCaptions=true})=>{const scenes=useMemo(()=>AI_AGENTS_SCENES,[]);return <AbsoluteFill style={{background:'radial-gradient(circle at 50% 35%, #FFFFFF 0%, #FAF8FC 58%, #F1EDF6 100%)',color:BRAND.ink,overflow:'hidden',fontFamily:BRAND.font}}><div style={{position:'absolute',inset:0,background:'linear-gradient(rgba(110,69,201,.025) 1px, transparent 1px),linear-gradient(90deg,rgba(110,69,201,.025) 1px,transparent 1px)',backgroundSize:'72px 72px',maskImage:'linear-gradient(to bottom,transparent 0%,black 14%,black 72%,transparent 88%)'}}/>{scenes.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`${scene.sceneId}-NEW_BUILD`}><SceneLayer scene={scene}/></Sequence>)}{voiceoverSrc?<Html5Audio src={voiceoverSrc}/>:null}{showCaptions?<Captions/>:null}</AbsoluteFill>};

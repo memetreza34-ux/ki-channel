@@ -27,6 +27,14 @@ import {
   AMBIGUOUS_PROMPTS_WIDTH,
   ReelAmbiguousPrompts,
 } from './reels/ambiguous-prompts';
+import {
+  AI_AGENTS_COMPOSITION_ID,
+  AI_AGENTS_DURATION_IN_FRAMES,
+  AI_AGENTS_FPS,
+  AI_AGENTS_HEIGHT,
+  AI_AGENTS_WIDTH,
+  ReelAIAgents,
+} from './reels/ai-agents';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -67,6 +75,15 @@ export const RemotionRoot: React.FC = () => (
         fps={AMBIGUOUS_PROMPTS_FPS}
         width={AMBIGUOUS_PROMPTS_WIDTH}
         height={AMBIGUOUS_PROMPTS_HEIGHT}
+      />
+      <Composition
+        id={AI_AGENTS_COMPOSITION_ID}
+        component={ReelAIAgents}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={AI_AGENTS_DURATION_IN_FRAMES}
+        fps={AI_AGENTS_FPS}
+        width={AI_AGENTS_WIDTH}
+        height={AI_AGENTS_HEIGHT}
       />
     </Folder>
   </>
