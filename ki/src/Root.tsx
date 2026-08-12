@@ -3,6 +3,7 @@ import {Composition, Folder} from 'remotion';
 import voiceoverContext from '../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/01-script-audio/voiceover.wav';
 import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/01-script-audio/voiceover.mp4';
 import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/01-script-audio/voiceover.mp4';
+import voiceoverAgents from '../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -79,7 +80,10 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_AGENTS_COMPOSITION_ID}
         component={ReelAIAgents}
-        defaultProps={{showCaptions: true}}
+        defaultProps={{
+          voiceoverSrc: voiceoverAgents,
+          showCaptions: true
+        }}
         durationInFrames={AI_AGENTS_DURATION_IN_FRAMES}
         fps={AI_AGENTS_FPS}
         width={AI_AGENTS_WIDTH}

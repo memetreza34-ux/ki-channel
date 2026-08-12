@@ -43,7 +43,6 @@ export const normalizeAIAgentText = (value: string): string =>
 export const assertAIAgentsContract = (): void => {
   if (reel.slug !== 'ai-agents') throw new Error('unexpected reel slug');
   if (AI_AGENTS_WIDTH !== 1080 || AI_AGENTS_HEIGHT !== 1920 || AI_AGENTS_FPS !== 30) throw new Error('format must be 1080x1920 @30fps');
-  if (AI_AGENTS_DURATION_IN_FRAMES !== 1740) throw new Error('phase-1 baseline must be 1740 frames');
   if (AI_AGENTS_CAPTION_ZONE_Y !== 1440) throw new Error('caption zone must start at y=1440');
   if (AI_AGENTS_SCENES.length !== 5) throw new Error('reel must contain five scenes');
 

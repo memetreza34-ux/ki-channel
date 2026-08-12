@@ -2,16 +2,32 @@
   "version": 1,
   "fps": 30,
   "cues": [
-    {"sceneId":"agents-01","startFrame":0,"endFrame":125,"text":"Ein Chatbot wartet auf deine nächste Nachricht."},
-    {"sceneId":"agents-01","startFrame":125,"endFrame":330,"text":"Ein KI-Agent kann dagegen ein Ziel bekommen und mehrere Schritte selbst planen."},
-    {"sceneId":"agents-02","startFrame":330,"endFrame":495,"text":"Statt nur Text zu liefern, kann er je nach System Werkzeuge benutzen:"},
-    {"sceneId":"agents-02","startFrame":495,"endFrame":690,"text":"suchen, Dateien lesen, Code ausführen oder Daten verarbeiten."},
-    {"sceneId":"agents-03","startFrame":690,"endFrame":885,"text":"Danach prüft er das Ergebnis und entscheidet, welcher Schritt als Nächstes sinnvoll ist."},
-    {"sceneId":"agents-03","startFrame":885,"endFrame":1050,"text":"Genau das macht Agenten mächtig – und gleichzeitig riskanter."},
-    {"sceneId":"agents-04","startFrame":1050,"endFrame":1235,"text":"Wenn Ziel oder Berechtigungen zu weit gefasst sind, kann ein Fehler mehrere Aktionen hintereinander auslösen."},
-    {"sceneId":"agents-04","startFrame":1235,"endFrame":1410,"text":"Deshalb braucht ein guter Agent klare Grenzen, erlaubte Tools und Prüfpunkte vor wichtigen Aktionen."},
-    {"sceneId":"agents-05","startFrame":1410,"endFrame":1585,"text":"Die einfache Faustregel: Je mehr ein System selbst handeln darf, desto genauer musst du festlegen, was es darf, wann es stoppen soll und was ein Mensch bestätigen muss."},
-    {"sceneId":"agents-05","startFrame":1585,"endFrame":1665,"text":"KI-Agenten sind also nicht einfach bessere Chatbots."},
-    {"sceneId":"agents-05","startFrame":1665,"endFrame":1740,"text":"Sie verbinden Sprache mit Planung, Werkzeugen und echten Aktionen."}
+    {"sceneId":"agents-01","startFrame":0,"endFrame":93,"text":"Ein Chatbot wartet auf deine nächste Nachricht."},
+    {"sceneId":"agents-01","startFrame":93,"endFrame":178,"text":"Ein KI-Agent kann dagegen ein Ziel bekommen"},
+    {"sceneId":"agents-01","startFrame":178,"endFrame":251,"text":"und mehrere Schritte selbst planen."},
+
+    {"sceneId":"agents-02","startFrame":251,"endFrame":306,"text":"Statt nur Text zu liefern,"},
+    {"sceneId":"agents-02","startFrame":306,"endFrame":395,"text":"kann er je nach System Werkzeuge benutzen:"},
+    {"sceneId":"agents-02","startFrame":395,"endFrame":469,"text":"suchen, Dateien lesen, Code ausführen"},
+    {"sceneId":"agents-02","startFrame":469,"endFrame":518,"text":"oder Daten verarbeiten."},
+
+    {"sceneId":"agents-03","startFrame":518,"endFrame":576,"text":"Danach prüft er das Ergebnis"},
+    {"sceneId":"agents-03","startFrame":576,"endFrame":694,"text":"und entscheidet, welcher Schritt als Nächstes sinnvoll ist."},
+    {"sceneId":"agents-03","startFrame":694,"endFrame":762,"text":"Genau das macht Agenten mächtig –"},
+    {"sceneId":"agents-03","startFrame":762,"endFrame":818,"text":"und gleichzeitig riskanter."},
+
+    {"sceneId":"agents-04","startFrame":818,"endFrame":923,"text":"Wenn Ziel oder Berechtigungen zu weit gefasst sind,"},
+    {"sceneId":"agents-04","startFrame":923,"endFrame":1037,"text":"kann ein Fehler mehrere Aktionen hintereinander auslösen."},
+    {"sceneId":"agents-04","startFrame":1037,"endFrame":1132,"text":"Deshalb braucht ein guter Agent klare Grenzen,"},
+    {"sceneId":"agents-04","startFrame":1132,"endFrame":1241,"text":"erlaubte Tools und Prüfpunkte vor wichtigen Aktionen."},
+
+    {"sceneId":"agents-05","startFrame":1241,"endFrame":1290,"text":"Die einfache Faustregel:"},
+    {"sceneId":"agents-05","startFrame":1290,"endFrame":1370,"text":"Je mehr ein System selbst handeln darf,"},
+    {"sceneId":"agents-05","startFrame":1370,"endFrame":1464,"text":"desto genauer musst du festlegen, was es darf,"},
+    {"sceneId":"agents-05","startFrame":1464,"endFrame":1505,"text":"wann es stoppen soll"},
+    {"sceneId":"agents-05","startFrame":1505,"endFrame":1576,"text":"und was ein Mensch bestätigen muss."},
+    {"sceneId":"agents-05","startFrame":1576,"endFrame":1682,"text":"KI-Agenten sind also nicht einfach bessere Chatbots."},
+    {"sceneId":"agents-05","startFrame":1682,"endFrame":1751,"text":"Sie verbinden Sprache mit Planung,"},
+    {"sceneId":"agents-05","startFrame":1751,"endFrame":1810,"text":"Werkzeugen und echten Aktionen."}
   ]
 }
