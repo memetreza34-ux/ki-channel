@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "fps": 30,
+  "cues": [
+    {"sceneId":"agents-01","startFrame":0,"endFrame":125,"text":"Ein Chatbot wartet auf deine nächste Nachricht."},
+    {"sceneId":"agents-01","startFrame":125,"endFrame":330,"text":"Ein KI-Agent kann dagegen ein Ziel bekommen und mehrere Schritte selbst planen."},
+    {"sceneId":"agents-02","startFrame":330,"endFrame":495,"text":"Statt nur Text zu liefern, kann er je nach System Werkzeuge benutzen:"},
+    {"sceneId":"agents-02","startFrame":495,"endFrame":690,"text":"suchen, Dateien lesen, Code ausführen oder Daten verarbeiten."},
+    {"sceneId":"agents-03","startFrame":690,"endFrame":885,"text":"Danach prüft er das Ergebnis und entscheidet, welcher Schritt als Nächstes sinnvoll ist."},
+    {"sceneId":"agents-03","startFrame":885,"endFrame":1050,"text":"Genau das macht Agenten mächtig – und gleichzeitig riskanter."},
+    {"sceneId":"agents-04","startFrame":1050,"endFrame":1235,"text":"Wenn Ziel oder Berechtigungen zu weit gefasst sind, kann ein Fehler mehrere Aktionen hintereinander auslösen."},
+    {"sceneId":"agents-04","startFrame":1235,"endFrame":1410,"text":"Deshalb braucht ein guter Agent klare Grenzen, erlaubte Tools und Prüfpunkte vor wichtigen Aktionen."},
+    {"sceneId":"agents-05","startFrame":1410,"endFrame":1585,"text":"Die einfache Faustregel: Je mehr ein System selbst handeln darf, desto genauer musst du festlegen, was es darf, wann es stoppen soll und was ein Mensch bestätigen muss."},
+    {"sceneId":"agents-05","startFrame":1585,"endFrame":1665,"text":"KI-Agenten sind also nicht einfach bessere Chatbots."},
+    {"sceneId":"agents-05","startFrame":1665,"endFrame":1740,"text":"Sie verbinden Sprache mit Planung, Werkzeugen und echten Aktionen."}
+  ]
+}
