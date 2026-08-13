@@ -2,7 +2,7 @@ export const AI_APP_COMPOSITION_ID = 'KI-AIAppPrototype';
 export const AI_APP_WIDTH = 1080;
 export const AI_APP_HEIGHT = 1920;
 export const AI_APP_FPS = 30;
-export const AI_APP_DURATION_IN_FRAMES = 1800;
+export const AI_APP_DURATION_IN_FRAMES = 1887;
 export const AI_APP_CAPTION_ZONE_Y = 1440;
 
 export type AIAppScene = {
@@ -22,27 +22,36 @@ export type AIAppCue = {
 };
 
 export const AI_APP_SCENES: AIAppScene[] = [
-  {sceneId:'app-01',startFrame:0,endFrame:330,headline:'Von Idee zu Prototyp',icon:'spark'},
-  {sceneId:'app-02',startFrame:330,endFrame:630,headline:'Erst Struktur, dann Code',icon:'plan'},
-  {sceneId:'app-03',startFrame:630,endFrame:960,headline:'Code wird zusammengesetzt',icon:'blocks'},
-  {sceneId:'app-04',startFrame:960,endFrame:1320,headline:'Der erste Entwurf scheitert',icon:'test'},
-  {sceneId:'app-05',startFrame:1320,endFrame:1800,headline:'Testen macht ihn brauchbar',icon:'check'},
+  {sceneId:'app-01',startFrame:0,endFrame:324,headline:'Von Idee zu Prototyp',icon:'spark'},
+  {sceneId:'app-02',startFrame:324,endFrame:638,headline:'Erst Struktur, dann Code',icon:'plan'},
+  {sceneId:'app-03',startFrame:638,endFrame:986,headline:'Code wird zusammengesetzt',icon:'blocks'},
+  {sceneId:'app-04',startFrame:986,endFrame:1366,headline:'Der erste Entwurf scheitert',icon:'test'},
+  {sceneId:'app-05',startFrame:1366,endFrame:1887,headline:'Testen macht ihn brauchbar',icon:'check'},
 ];
 
 export const AI_APP_SUBTITLES: AIAppCue[] = [
-  {sceneId:'app-01',startFrame:0,endFrame:170,text:'Aus einer einfachen Idee kannst du mit KI heute erstaunlich schnell einen ersten App-Prototyp bauen.'},
-  {sceneId:'app-01',startFrame:170,endFrame:330,text:'Aber „Schreib mir eine App“ ist dafür meistens noch viel zu ungenau.'},
-  {sceneId:'app-02',startFrame:330,endFrame:485,text:'Zuerst braucht die KI ein klares Ziel, die wichtigsten Funktionen und den gewünschten Ablauf.'},
-  {sceneId:'app-02',startFrame:485,endFrame:630,text:'Daraus entsteht ein Plan für Oberfläche, Eingaben, Logik und Ergebnis.'},
-  {sceneId:'app-03',startFrame:630,endFrame:770,text:'Danach wird der Code nicht als ein riesiger Block gebaut.'},
-  {sceneId:'app-03',startFrame:770,endFrame:960,text:'Einzelne Bausteine für Oberfläche, Daten und Funktionen entstehen nacheinander und werden zu einem ersten Prototyp verbunden.'},
-  {sceneId:'app-04',startFrame:960,endFrame:1060,text:'Jetzt kommt der Teil, den viele überspringen: testen.'},
-  {sceneId:'app-04',startFrame:1060,endFrame:1140,text:'Ein Button kann falsch reagieren,'},
-  {sceneId:'app-04',startFrame:1140,endFrame:1210,text:'Daten können fehlen'},
-  {sceneId:'app-04',startFrame:1210,endFrame:1290,text:'oder die Ansicht kann auf dem Handy brechen.'},
-  {sceneId:'app-04',startFrame:1290,endFrame:1320,text:'Genau hier beginnt die eigentliche Verbesserung.'},
-  {sceneId:'app-05',startFrame:1320,endFrame:1475,text:'Die KI kann Fehler finden und Änderungen vorschlagen,'},
-  {sceneId:'app-05',startFrame:1475,endFrame:1585,text:'aber du entscheidest, was wirklich richtig ist.'},
-  {sceneId:'app-05',startFrame:1585,endFrame:1740,text:'Der beste Workflow lautet deshalb: Idee präzisieren, Struktur bauen, Code erzeugen, testen und korrigieren.'},
-  {sceneId:'app-05',startFrame:1740,endFrame:1800,text:'So wird aus KI-Code Schritt für Schritt ein brauchbarer Prototyp.'},
+  {sceneId:'app-01',startFrame:0,endFrame:88,text:'Aus einer einfachen Idee kannst du mit KI heute'},
+  {sceneId:'app-01',startFrame:88,endFrame:186,text:'erstaunlich schnell einen ersten App-Prototyp bauen.'},
+  {sceneId:'app-01',startFrame:186,endFrame:259,text:'Aber „Schreib mir eine App“ ist dafür'},
+  {sceneId:'app-01',startFrame:259,endFrame:324,text:'meistens noch viel zu ungenau.'},
+  {sceneId:'app-02',startFrame:324,endFrame:399,text:'Zuerst braucht die KI ein klares Ziel,'},
+  {sceneId:'app-02',startFrame:399,endFrame:501,text:'die wichtigsten Funktionen und den gewünschten Ablauf.'},
+  {sceneId:'app-02',startFrame:501,endFrame:580,text:'Daraus entsteht ein Plan für Oberfläche,'},
+  {sceneId:'app-02',startFrame:580,endFrame:638,text:'Eingaben, Logik und Ergebnis.'},
+  {sceneId:'app-03',startFrame:638,endFrame:745,text:'Danach wird der Code nicht als ein riesiger Block gebaut.'},
+  {sceneId:'app-03',startFrame:745,endFrame:809,text:'Einzelne Bausteine für Oberfläche,'},
+  {sceneId:'app-03',startFrame:809,endFrame:890,text:'Daten und Funktionen entstehen nacheinander'},
+  {sceneId:'app-03',startFrame:890,endFrame:986,text:'und werden zu einem ersten Prototyp verbunden.'},
+  {sceneId:'app-04',startFrame:986,endFrame:1086,text:'Jetzt kommt der Teil, den viele überspringen: testen.'},
+  {sceneId:'app-04',startFrame:1086,endFrame:1148,text:'Ein Button kann falsch reagieren,'},
+  {sceneId:'app-04',startFrame:1148,endFrame:1225,text:'Daten können fehlen oder die Ansicht kann'},
+  {sceneId:'app-04',startFrame:1225,endFrame:1266,text:'auf dem Handy brechen.'},
+  {sceneId:'app-04',startFrame:1266,endFrame:1366,text:'Genau hier beginnt die eigentliche Verbesserung.'},
+  {sceneId:'app-05',startFrame:1366,endFrame:1466,text:'Die KI kann Fehler finden und Änderungen vorschlagen,'},
+  {sceneId:'app-05',startFrame:1466,endFrame:1554,text:'aber du entscheidest, was wirklich richtig ist.'},
+  {sceneId:'app-05',startFrame:1554,endFrame:1618,text:'Der beste Workflow lautet deshalb:'},
+  {sceneId:'app-05',startFrame:1618,endFrame:1712,text:'Idee präzisieren, Struktur bauen, Code erzeugen,'},
+  {sceneId:'app-05',startFrame:1712,endFrame:1755,text:'testen und korrigieren.'},
+  {sceneId:'app-05',startFrame:1755,endFrame:1829,text:'So wird aus KI-Code Schritt für Schritt'},
+  {sceneId:'app-05',startFrame:1829,endFrame:1887,text:'ein brauchbarer Prototyp.'},
 ];
