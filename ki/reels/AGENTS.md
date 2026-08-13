@@ -141,6 +141,22 @@ Die gemeinsame Production-Shell darf zusätzlich clippen. Wird dadurch wichtiger
 
 Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
 
+## Post-Render-Qualität ist verbindlich
+
+Zusätzlich gilt für **jedes** Reel `ki/gehirn/POST_RENDER_REVIEW.md`.
+
+Insbesondere:
+
+- erster visueller Zustand sofort bzw. innerhalb der ersten ungefähr `0.2–0.4 s` lesbar; kein leer wirkender weißer Einstieg
+- Hauptmechanik groß genug für Smartphone statt kleiner UI-Insel in viel Leerraum
+- kritische interne Labels kurz und in der Regel mindestens ungefähr `28–32 px` bei 1080 × 1920
+- vorhandene sinnvolle Mechanik vergrößern statt Leerraum mit Deko zu füllen
+- neue Sprecherbedeutung darf nicht über mehrere Sekunden auf praktisch unverändertem Bild liegen; ungefähr `>2.5 s` ist ein Review-Warnsignal, sofern kein bewusster End-Hold vorliegt
+- die letzte Szene muss bis zur letzten inhaltlichen Phrase sichtbar weiterentwickelt werden
+- nach jeder Source-Änderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht; ein alter MP4 darf nie den neuen Source-Stand freigeben
+
+Wenn ein Nutzer einen gerenderten MP4 zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md` oder diesem Vertrag verankert werden müssen.
+
 ## Plattform-Copy
 
 `03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält mindestens getrennte Bereiche für:
@@ -198,8 +214,14 @@ Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 - vollständige lila Zwischenüberschrift
 - Caption-Safe-Zone
 - **keinerlei sichtbare Animation unter der Caption-Zone**
+- Hauptvisual auf Smartphone ausreichend groß
+- wichtige interne Labels auf Smartphone lesbar
+- keine unnötig große Leere bei gleichzeitig kleiner Kernanimation
+- kein langer statischer Abschnitt während neue Sprecherbedeutung weiterläuft
+- Schluss trägt sichtbar bis zur letzten inhaltlichen Phrase
 - keine Clip-bedingt abgeschnittenen wichtigen Inhalte
 - transparente Untertitel
 - Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung
+- aktueller Render gehört exakt zum aktuell geprüften Source-Stand
 
 `veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.

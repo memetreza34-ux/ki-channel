@@ -36,6 +36,14 @@ import {
   AI_AGENTS_WIDTH,
   ReelAIAgents,
 } from './reels/ai-agents';
+import {
+  AI_APP_COMPOSITION_ID,
+  AI_APP_DURATION_IN_FRAMES,
+  AI_APP_FPS,
+  AI_APP_HEIGHT,
+  AI_APP_WIDTH,
+  ReelAIAppPrototype,
+} from './reels/ai-app-prototype';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -88,6 +96,15 @@ export const RemotionRoot: React.FC = () => (
         fps={AI_AGENTS_FPS}
         width={AI_AGENTS_WIDTH}
         height={AI_AGENTS_HEIGHT}
+      />
+      <Composition
+        id={AI_APP_COMPOSITION_ID}
+        component={ReelAIAppPrototype}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={AI_APP_DURATION_IN_FRAMES}
+        fps={AI_APP_FPS}
+        width={AI_APP_WIDTH}
+        height={AI_APP_HEIGHT}
       />
     </Folder>
   </>
