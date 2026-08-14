@@ -1,0 +1,49 @@
+import React from 'react';
+import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {BRAND} from '../../../brand/brand';
+
+const purple = BRAND.accentDk;
+const soft = '#EFE7FF';
+const ink = BRAND.ink;
+const muted = '#746E7D';
+const line = '#DDD4E8';
+const danger = '#D85D67';
+const success = '#36A779';
+const clamp = {extrapolateLeft:'clamp' as const, extrapolateRight:'clamp' as const};
+const p = (f:number,a:number,b:number) => interpolate(f,[a,b],[0,1],clamp);
+
+const Card:React.FC<React.PropsWithChildren<{style?:React.CSSProperties}>>=({children,style})=><div style={{background:'#fff',border:'2px solid #E9E1F2',borderRadius:34,boxShadow:'0 20px 52px rgba(48,30,75,.11)',...style}}>{children}</div>;
+
+const Product:React.FC<{scale?:number;accent?:string;label?:string}>=({scale=1,accent=purple,label='NOVA'})=><div style={{width:210*scale,height:350*scale,borderRadius:48*scale,background:`linear-gradient(160deg,#fff 0%,${soft} 52%,#fff 100%)`,border:`5px solid ${accent}`,boxShadow:'0 22px 45px rgba(61,42,89,.13)',position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{position:'absolute',top:24*scale,width:96*scale,height:14*scale,borderRadius:999,background:accent,opacity:.25}}/><div style={{fontSize:42*scale,fontWeight:950,letterSpacing:1.5,color:accent}}>{label}</div><div style={{position:'absolute',bottom:36*scale,width:70*scale,height:70*scale,borderRadius:'50%',background:accent,opacity:.15}}/></div>;
+
+export const VaguePromptVisual:React.FC=()=>{const f=useCurrentFrame();const {fps}=useVideoConfig();const enter=spring({frame:f+4,fps,config:{damping:20,stiffness:130}});const variant=p(f,145,315);return <div style={{position:'absolute',inset:0}}>
+  <div style={{position:'absolute',left:90,top:120,opacity:.3+.7*enter,transform:`scale(${.9+.1*enter})`}}><Product scale={1.25}/></div>
+  <Card style={{position:'absolute',left:465,top:150,width:520,padding:'30px 34px',opacity:p(f,30,75),borderColor:BRAND.accent}}><div style={{fontSize:26,fontWeight:900,color:muted}}>PROMPT</div><div style={{fontSize:38,fontWeight:950,marginTop:8}}>„Mach daraus Werbung“</div></Card>
+  <div style={{position:'absolute',left:450,right:70,top:350,display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>{[
+    ['Luxus', '#6E45C9'],['Neon', '#9A50E8'],['Natur', '#4F8F72']
+  ].map(([name,color],i)=>{const show=p(f,90+i*45,130+i*45);const drift=variant*(i-1)*18;return <Card key={name} style={{height:220,padding:22,opacity:show,transform:`translateX(${drift}px)`,borderColor:i===0?String(color):'#E9E1F2'}}><div style={{display:'flex',alignItems:'center',gap:18}}><Product scale=.42 accent={String(color)} label={i===1?'N0VA':'NOVA'}/><div><div style={{fontSize:32,fontWeight:950}}>{name}</div><div style={{fontSize:27,fontWeight:850,color:i===1?danger:muted,marginTop:10}}>{i===1?'Form driftet':'sieht gut aus'}</div></div></div></Card>})}</div>
+  <div style={{position:'absolute',left:500,right:90,top:865,fontSize:34,fontWeight:950,color:danger,textAlign:'center',opacity:p(f,245,325)}}>schön ≠ gezielt</div>
+</div>};
+
+export const CreativeBriefVisual:React.FC=()=>{const f=useCurrentFrame();const items=[['PRODUKT','klarer Nutzen'],['ZIELGRUPPE','für wen?'],['STIMMUNG','clean · premium']] as const;return <div style={{position:'absolute',inset:0}}>
+  <div style={{position:'absolute',left:70,right:70,top:90,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>{items.map(([k,v],i)=>{const show=p(f,20+i*42,65+i*42);return <Card key={k} style={{height:210,padding:26,opacity:show,borderColor:show>.8?BRAND.accent:'#E9E1F2'}}><div style={{fontSize:25,fontWeight:900,color:purple}}>{k}</div><div style={{fontSize:31,fontWeight:950,marginTop:30}}>{v}</div><div style={{height:10,borderRadius:999,background:show>.8?purple:line,marginTop:30}}/></Card>})}</div>
+  <Card style={{position:'absolute',left:110,right:110,top:365,height:180,padding:30,opacity:p(f,145,205),borderColor:BRAND.accent}}><div style={{fontSize:26,fontWeight:900,color:purple}}>CREATIVE BRIEF</div><div style={{fontSize:38,fontWeight:950,marginTop:16}}>Produkt + Zielgruppe + Stimmung</div></Card>
+  <div style={{position:'absolute',left:80,right:80,top:620,display:'flex',gap:16,justifyContent:'center'}}>{['Einstieg','Produkt','Nutzen','Detail','Abschluss'].map((x,i)=>{const show=p(f,200+i*26,240+i*26);return <div key={x} style={{width:178,height:180,borderRadius:28,background:i===1?soft:'#fff',border:`2px solid ${i===1?BRAND.accent:'#E9E1F2'}`,boxShadow:'0 14px 34px rgba(48,30,75,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:29,fontWeight:900,textAlign:'center',opacity:show,transform:`translateY(${(1-show)*24}px)`}}>{x}</div>})}</div>
+</div>};
+
+export const ConsistentKeyframesVisual:React.FC=()=>{const f=useCurrentFrame();const hold=p(f,60,135);const correct=p(f,175,255);return <div style={{position:'absolute',inset:0}}>
+  <div style={{position:'absolute',left:70,right:70,top:115,display:'grid',gridTemplateColumns:'1fr 1fr',gap:24}}>{['Hero','Nutzen','Detail','Finale'].map((x,i)=>{const show=p(f,25+i*28,60+i*28);const bad=i===2&&correct<.6;return <Card key={x} style={{height:330,padding:24,opacity:show,borderColor:bad?danger:hold>.6?BRAND.accent:'#E9E1F2'}}><div style={{fontSize:26,fontWeight:900,color:muted}}>{x}</div><div style={{height:240,display:'flex',alignItems:'center',justifyContent:'center'}}><Product scale={.62} accent={bad?danger:purple} label={bad?'N0VA':'NOVA'}/></div></Card>})}</div>
+  <div style={{position:'absolute',left:150,right:150,top:845,height:8,borderRadius:999,background:line,overflow:'hidden',opacity:p(f,125,165)}}><div style={{height:'100%',width:`${(55+45*correct)}%`,background:correct>.8?success:purple,borderRadius:999}}/></div>
+  <div style={{position:'absolute',left:160,right:160,top:885,textAlign:'center',fontSize:34,fontWeight:950,color:correct>.8?success:danger,opacity:p(f,145,195)}}>{correct>.8?'Produkt bleibt konsistent ✓':'Detail driftet → korrigieren'}</div>
+</div>};
+
+export const MotionAssemblyVisual:React.FC=()=>{const f=useCurrentFrame();const clips=['Hero','Drehung','Detail','Finale'];const play=p(f,65,175);return <div style={{position:'absolute',inset:0}}>
+  <Card style={{position:'absolute',left:95,right:95,top:110,height:500,padding:30,borderColor:BRAND.accent}}><div style={{fontSize:27,fontWeight:900,color:purple}}>KEYFRAME → MOTION</div><div style={{height:390,display:'flex',alignItems:'center',justifyContent:'center',gap:52}}><Product scale={.84}/><div style={{fontSize:72,fontWeight:700,color:purple,transform:`translateX(${play*12}px)`}}>→</div><div style={{position:'relative'}}><Product scale={.84}/><div style={{position:'absolute',left:-35,right:-35,top:120,height:7,background:purple,borderRadius:999,transform:`scaleX(${.25+.75*play})`}}/></div></div></Card>
+  <div style={{position:'absolute',left:80,right:80,top:700}}><div style={{display:'flex',gap:14}}>{clips.map((x,i)=>{const show=p(f,105+i*24,140+i*24);return <div key={x} style={{flex:1,height:120,borderRadius:24,background:i<=Math.floor(play*3.99)?soft:'#F6F3F8',border:`2px solid ${i<=Math.floor(play*3.99)?BRAND.accent:'#E9E1F2'}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:29,fontWeight:900,opacity:show}}>{x}</div>})}</div><div style={{height:12,borderRadius:999,background:line,marginTop:28,overflow:'hidden'}}><div style={{height:'100%',width:`${play*100}%`,background:purple,borderRadius:999}}/></div></div>
+</div>};
+
+export const QualityControlVisual:React.FC=()=>{const f=useCurrentFrame();const checks=['Logo','Text','Produkt','Übergang'];const scan=p(f,20,185);const fix=p(f,185,300);const workflow=p(f,300,415);const finish=p(f,415,465);return <div style={{position:'absolute',inset:0}}>
+  <Card style={{position:'absolute',left:70,top:80,width:440,height:650,padding:28,borderColor:finish>.75?success:BRAND.accent}}><div style={{fontSize:26,fontWeight:900,color:purple}}>WERBECLIP-CHECK</div><div style={{height:365,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}><Product scale={.88}/><div style={{position:'absolute',left:20,right:20,top:`${40+250*scan}px`,height:8,borderRadius:999,background:fix>.55?success:danger,boxShadow:'0 0 28px currentColor'}}/></div><div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>{checks.map((x,i)=>{const reached=scan>(i+1)/checks.length*.8;const ok=fix>(i+1)/checks.length*.75;return <div key={x} style={{padding:'16px 12px',borderRadius:18,background:ok?'rgba(54,167,121,.10)':reached?'rgba(216,93,103,.10)':'#F6F3F8',fontSize:28,fontWeight:900,color:ok?success:reached?danger:muted,textAlign:'center'}}>{ok?'✓ ':reached?'! ':''}{x}</div>})}</div></Card>
+  <div style={{position:'absolute',left:545,right:60,top:95}}><div style={{fontSize:27,fontWeight:900,color:muted,marginBottom:18}}>WORKFLOW</div>{['Produkt','Bildsprache','Keyframes','Bewegung','Korrektur'].map((x,i)=>{const active=workflow>(i+1)/5*.82;return <div key={x} style={{height:105,borderRadius:24,background:active?soft:'#fff',border:`2px solid ${active?BRAND.accent:'#E9E1F2'}`,marginBottom:16,padding:'0 24px',display:'flex',alignItems:'center',gap:18,opacity:p(f,245+i*18,275+i*18)}}><div style={{width:46,height:46,borderRadius:15,background:active?purple:'#D9D1E1',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:950}}>{i+1}</div><div style={{fontSize:31,fontWeight:950}}>{x}</div></div>})}</div>
+  <Card style={{position:'absolute',left:180,right:180,top:825,padding:'26px 32px',textAlign:'center',opacity:finish,borderColor:success,transform:`scale(${.96+.04*finish})`}}><div style={{fontSize:25,fontWeight:900,color:success}}>FINALER ZUSTAND</div><div style={{fontSize:38,fontWeight:950,marginTop:8}}>gezielt aufgebaute KI-Werbung</div></Card>
+</div>};
