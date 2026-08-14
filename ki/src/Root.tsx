@@ -45,6 +45,14 @@ import {
   AI_APP_WIDTH,
   ReelAIAppPrototype,
 } from './reels/ai-app-prototype';
+import {
+  AI_PRODUCT_AD_COMPOSITION_ID,
+  AI_PRODUCT_AD_DURATION_IN_FRAMES,
+  AI_PRODUCT_AD_FPS,
+  AI_PRODUCT_AD_HEIGHT,
+  AI_PRODUCT_AD_WIDTH,
+  ReelAIProductAd,
+} from './reels/ai-product-ad';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -110,6 +118,18 @@ export const RemotionRoot: React.FC = () => (
         width={AI_APP_WIDTH}
         height={AI_APP_HEIGHT}
       />
+      <Composition 
+        id={AI_PRODUCT_AD_COMPOSITION_ID} 
+        component={ReelAIProductAd} 
+        defaultProps={{showCaptions: true}} 
+        durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} 
+        fps={AI_PRODUCT_AD_FPS} 
+        width={AI_PRODUCT_AD_WIDTH} 
+        height={AI_PRODUCT_AD_HEIGHT}
+      />
     </Folder>
+
+    <Composition id="Three3D" component={ThreeDemo as React.FC} defaultProps={{color: BRAND.accent}} durationInFrames={150} fps={30} width={1920} height={1080}/>
+    <MotionPreviewRoot />
   </>
 );

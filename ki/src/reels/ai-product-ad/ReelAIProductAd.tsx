@@ -1,0 +1,32 @@
+import React, {useMemo} from 'react';
+import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
+import {BRAND} from '../../../brand/brand';
+import {AI_PRODUCT_AD_CAPTION_ZONE_Y, AI_PRODUCT_AD_SCENES, AI_PRODUCT_AD_SUBTITLES, type AIProductAdCue, type AIProductAdScene} from './contract';
+import {ConsistentKeyframesVisual, CreativeBriefVisual, MotionAssemblyVisual, QualityControlVisual, VaguePromptVisual} from './Visuals';
+
+const visualByScene:Record<string,React.FC>={
+  'ad-01':VaguePromptVisual,
+  'ad-02':CreativeBriefVisual,
+  'ad-03':ConsistentKeyframesVisual,
+  'ad-04':MotionAssemblyVisual,
+  'ad-05':QualityControlVisual,
+};
+
+const iconPaths:Record<string,React.ReactNode>={
+  spark:<><path d="M16 3l2.5 7.5L26 13l-7.5 2.5L16 23l-2.5-7.5L6 13l7.5-2.5z"/><path d="M25 4v5M22.5 6.5h5"/></>,
+  brief:<><rect x="5" y="6" width="22" height="20" rx="4"/><path d="M10 12h12M10 17h8M10 22h10"/></>,
+  frames:<><rect x="4" y="7" width="15" height="18" rx="3"/><rect x="13" y="4" width="15" height="18" rx="3"/></>,
+  motion:<><path d="M5 16h18"/><path d="M18 10l6 6-6 6"/><path d="M6 9h7M6 23h7"/></>,
+  check:<><circle cx="16" cy="16" r="12"/><path d="M10 16l4 4 8-9"/></>,
+};
+
+const Header:React.FC<{scene:AIProductAdScene}>=({scene})=>{const frame=useCurrentFrame();const enter=interpolate(frame,[0,14],[.35,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return <div style={{position:'absolute',left:64,right:64,top:92,zIndex:50,display:'flex',justifyContent:'center',alignItems:'center',gap:22,opacity:enter,transform:`translateY(${(1-enter)*-12}px)`}}><div style={{width:74,height:74,borderRadius:23,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(185,140,255,.16)',border:'1.5px solid rgba(110,69,201,.25)',color:BRAND.accentDk,boxShadow:'0 12px 30px rgba(110,69,201,.12)'}}><svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{iconPaths[scene.icon]??iconPaths.spark}</svg></div><div style={{maxWidth:820,textAlign:'center',fontFamily:BRAND.font,fontSize:scene.headline.length>24?49:57,lineHeight:1.02,fontWeight:900,letterSpacing:-1.7,color:BRAND.accentDk,textShadow:'0 7px 22px rgba(110,69,201,.10)'}}>{scene.headline}</div></div>};
+
+const activeWordIndex=(frame:number,cue:AIProductAdCue,count:number):number=>{if(count<=1)return 0;if(cue.words?.length===count){const exact=cue.words.findIndex((w)=>frame>=w.startFrame&&frame<w.endFrame);if(exact>=0)return exact;}const prog=interpolate(frame,[cue.startFrame,Math.max(cue.startFrame+1,cue.endFrame-1)],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return Math.min(count-1,Math.floor(prog*count));};
+
+const Captions:React.FC=()=>{const frame=useCurrentFrame();const cue=AI_PRODUCT_AD_SUBTITLES.find((c)=>frame>=c.startFrame&&frame<c.endFrame);if(!cue)return null;const words=cue.words?.length?cue.words.map((w)=>w.text):cue.text.trim().split(/\s+/).filter(Boolean);const active=activeWordIndex(frame,cue,words.length);const fade=Math.min(interpolate(frame,[cue.startFrame,cue.startFrame+4],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),interpolate(frame,[cue.endFrame-4,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));return <div style={{position:'absolute',left:76,right:76,bottom:270,zIndex:200,display:'flex',justifyContent:'center',opacity:fade,pointerEvents:'none'}}><div style={{width:'100%',maxWidth:900,textAlign:'center',fontFamily:BRAND.font,fontSize:47,fontWeight:850,lineHeight:1.18,letterSpacing:-.8,color:BRAND.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>{words.map((word,i)=><React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${i}`}><span style={{display:'inline-block',color:i===active?BRAND.accentDk:BRAND.ink,transform:`scale(${i===active?1.035:1})`,transformOrigin:'50% 70%'}}>{word}</span>{i<words.length-1?' ':null}</React.Fragment>)}</div></div>};
+
+const SceneLayer:React.FC<{scene:AIProductAdScene}>=({scene})=>{const Visual=visualByScene[scene.sceneId];if(!Visual)throw new Error(`missing NEW_BUILD visual for ${scene.sceneId}`);return <AbsoluteFill><Header scene={scene}/><div style={{position:'absolute',left:0,right:0,top:225,height:AI_PRODUCT_AD_CAPTION_ZONE_Y-225-30,overflow:'hidden',zIndex:20}}><Visual/></div></AbsoluteFill>};
+
+export type ReelAIProductAdProps={voiceoverSrc?:string;showCaptions?:boolean};
+export const ReelAIProductAd:React.FC<ReelAIProductAdProps>=({voiceoverSrc,showCaptions=true})=>{const scenes=useMemo(()=>AI_PRODUCT_AD_SCENES,[]);return <AbsoluteFill style={{background:'radial-gradient(circle at 50% 35%, #FFFFFF 0%, #FAF8FC 58%, #F1EDF6 100%)',color:BRAND.ink,overflow:'hidden',fontFamily:BRAND.font}}><div style={{position:'absolute',inset:0,background:'linear-gradient(rgba(110,69,201,.024) 1px, transparent 1px),linear-gradient(90deg,rgba(110,69,201,.024) 1px,transparent 1px)',backgroundSize:'72px 72px',maskImage:'linear-gradient(to bottom,transparent 0%,black 14%,black 72%,transparent 88%)'}}/>{scenes.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`${scene.sceneId}-NEW_BUILD`}><SceneLayer scene={scene}/></Sequence>)}{voiceoverSrc?<Html5Audio src={voiceoverSrc}/>:null}{showCaptions?<Captions/>:null}</AbsoluteFill>};
