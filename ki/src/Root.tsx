@@ -51,6 +51,14 @@ import {
   AI_PRODUCT_AD_WIDTH,
   ReelAIProductAd,
 } from './reels/ai-product-ad';
+import {
+  AI_BUG_FIX_COMPOSITION_ID,
+  AI_BUG_FIX_DURATION_IN_FRAMES,
+  AI_BUG_FIX_FPS,
+  AI_BUG_FIX_HEIGHT,
+  AI_BUG_FIX_WIDTH,
+  ReelAIBugFix,
+} from './reels/ai-bug-fix';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -61,6 +69,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id={AI_AGENTS_COMPOSITION_ID} component={ReelAIAgents} defaultProps={{showCaptions: true}} durationInFrames={AI_AGENTS_DURATION_IN_FRAMES} fps={AI_AGENTS_FPS} width={AI_AGENTS_WIDTH} height={AI_AGENTS_HEIGHT}/>
       <Composition id={AI_APP_COMPOSITION_ID} component={ReelAIAppPrototype} defaultProps={{showCaptions: true}} durationInFrames={AI_APP_DURATION_IN_FRAMES} fps={AI_APP_FPS} width={AI_APP_WIDTH} height={AI_APP_HEIGHT}/>
       <Composition id={AI_PRODUCT_AD_COMPOSITION_ID} component={ReelAIProductAd} defaultProps={{showCaptions: true}} durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} fps={AI_PRODUCT_AD_FPS} width={AI_PRODUCT_AD_WIDTH} height={AI_PRODUCT_AD_HEIGHT}/>
+      <Composition id={AI_BUG_FIX_COMPOSITION_ID} component={ReelAIBugFix} defaultProps={{showCaptions: true}} durationInFrames={AI_BUG_FIX_DURATION_IN_FRAMES} fps={AI_BUG_FIX_FPS} width={AI_BUG_FIX_WIDTH} height={AI_BUG_FIX_HEIGHT}/>
     </Folder>
 
     <Composition id="Three3D" component={ThreeDemo as React.FC} defaultProps={{color: BRAND.accent}} durationInFrames={150} fps={30} width={1920} height={1080}/>
