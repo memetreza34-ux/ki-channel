@@ -7,6 +7,7 @@ import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-
 import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/01-script-audio/voiceover.mp4';
 import voiceoverAgents from '../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/01-script-audio/voiceover.mp4';
 import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-einer-Idee-eine-Mini-App/01-script-audio/voiceover.mp4';
+import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -123,7 +124,10 @@ export const RemotionRoot: React.FC = () => (
       <Composition 
         id={AI_PRODUCT_AD_COMPOSITION_ID} 
         component={ReelAIProductAd} 
-        defaultProps={{showCaptions: true}} 
+        defaultProps={{
+          voiceoverSrc: voiceoverProductAd,
+          showCaptions: true
+        }} 
         durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} 
         fps={AI_PRODUCT_AD_FPS} 
         width={AI_PRODUCT_AD_WIDTH} 
