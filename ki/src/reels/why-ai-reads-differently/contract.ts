@@ -1,4 +1,4 @@
-import rawReel from '../../../reels/2026-08-04-warum-ki-text-anders-liest/reel.json';
+import rawReel from '../../../reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json';
 
 export type ReelSceneId =
   | 'scene-01'

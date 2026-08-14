@@ -2,13 +2,14 @@
   "version": 1,
   "slug": "ai-product-ad",
   "title": "So wird aus einem Produktfoto ein KI-Werbeclip",
-  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1800},
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":2021},
   "captionZoneStartY": 1440,
+  "audio": {"voiceoverRequired":true,"music":false,"sfx":false,"adaptivePhraseRetiming":true},
   "scenes": [
-    {"sceneId":"ad-01","startFrame":0,"endFrame":380,"headline":"Ein Prompt reicht nicht","icon":"spark","implementation":"NEW_BUILD","beatIds":["P1","P2","P3"]},
-    {"sceneId":"ad-02","startFrame":380,"endFrame":800,"headline":"Bildsprache zuerst","icon":"brief","implementation":"NEW_BUILD","beatIds":["P4","P5","P6","P7"]},
-    {"sceneId":"ad-03","startFrame":800,"endFrame":1110,"headline":"Konsistenz vor Bewegung","icon":"frames","implementation":"NEW_BUILD","beatIds":["P8","P9","P10"]},
-    {"sceneId":"ad-04","startFrame":1110,"endFrame":1320,"headline":"Keyframes werden Bewegung","icon":"motion","implementation":"NEW_BUILD","beatIds":["P11","P12"]},
-    {"sceneId":"ad-05","startFrame":1320,"endFrame":1800,"headline":"Prüfen macht den Unterschied","icon":"check","implementation":"NEW_BUILD","beatIds":["P13","P14","P15","P16"]}
+    {"sceneId":"ad-01","startFrame":0,"endFrame":440,"headline":"Ein Prompt reicht nicht","icon":"spark","implementation":"NEW_BUILD","spokenText":"Ein normales Produktfoto kann mit KI zur Grundlage für einen ganzen Werbeclip werden. Der Fehler beginnt aber oft beim ersten Prompt: Wer nur „Mach daraus Werbung“ schreibt, bekommt schnell schöne, aber beliebige Ergebnisse.","beatIds":["P1","P2"]},
+    {"sceneId":"ad-02","startFrame":440,"endFrame":930,"headline":"Bildsprache zuerst","icon":"brief","implementation":"NEW_BUILD","spokenText":"Zuerst muss klar sein, was verkauft wird, für wen der Clip gedacht ist und welche Stimmung er haben soll. Daraus entsteht ein visueller Plan mit Einstieg, Produktmoment, Nutzen, Detailaufnahme und Abschluss.","beatIds":["P3","P4"]},
+    {"sceneId":"ad-03","startFrame":930,"endFrame":1173,"headline":"Konsistenz vor Bewegung","icon":"frames","implementation":"NEW_BUILD","spokenText":"Danach wird nicht sofort alles animiert. Die KI erzeugt zuerst konsistente Schlüsselbilder, damit Produktform, Farben und Umgebung nicht von Szene zu Szene springen.","beatIds":["P5","P6"]},
+    {"sceneId":"ad-04","startFrame":1173,"endFrame":1341,"headline":"Keyframes werden Bewegung","icon":"motion","implementation":"NEW_BUILD","spokenText":"Erst dann werden diese Bilder in kurze Bewegungen verwandelt und zu einem Ablauf zusammengesetzt.","beatIds":["P7"]},
+    {"sceneId":"ad-05","startFrame":1341,"endFrame":2021,"headline":"Prüfen macht den Unterschied","icon":"check","implementation":"NEW_BUILD","spokenText":"Jetzt kommt die Kontrolle: Logo, Text, Produktdetails und Übergänge müssen geprüft werden, weil kleine Fehler sofort billig wirken. Der starke Workflow ist deshalb: Produkt verstehen, Bildsprache planen, Schlüsselbilder bauen, animieren und korrigieren. So entsteht aus einem einfachen Foto kein Zufallsclip, sondern eine gezielt aufgebaute KI-Werbung.","beatIds":["P8","P9","P10"]}
   ]
 }

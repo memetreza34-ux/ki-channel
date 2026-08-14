@@ -1,5 +1,7 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
+import {BRAND} from '../brand/brand';
+import {MotionPreviewRoot} from './motion-system/MotionPreviewRoot';
 import voiceoverContext from '../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/01-script-audio/voiceover.wav';
 import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/01-script-audio/voiceover.mp4';
 import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/01-script-audio/voiceover.mp4';
@@ -129,7 +131,6 @@ export const RemotionRoot: React.FC = () => (
       />
     </Folder>
 
-    <Composition id="Three3D" component={ThreeDemo as React.FC} defaultProps={{color: BRAND.accent}} durationInFrames={150} fps={30} width={1920} height={1080}/>
     <MotionPreviewRoot />
   </>
 );
