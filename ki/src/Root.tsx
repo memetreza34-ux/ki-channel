@@ -59,6 +59,14 @@ import {
   AI_BUG_FIX_WIDTH,
   ReelAIBugFix,
 } from './reels/ai-bug-fix';
+import {
+  AI_SKETCH_WEBSITE_COMPOSITION_ID,
+  AI_SKETCH_WEBSITE_DURATION_IN_FRAMES,
+  AI_SKETCH_WEBSITE_FPS,
+  AI_SKETCH_WEBSITE_HEIGHT,
+  AI_SKETCH_WEBSITE_WIDTH,
+  ReelAISketchWebsite,
+} from './reels/ai-sketch-website';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -70,6 +78,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id={AI_APP_COMPOSITION_ID} component={ReelAIAppPrototype} defaultProps={{showCaptions: true}} durationInFrames={AI_APP_DURATION_IN_FRAMES} fps={AI_APP_FPS} width={AI_APP_WIDTH} height={AI_APP_HEIGHT}/>
       <Composition id={AI_PRODUCT_AD_COMPOSITION_ID} component={ReelAIProductAd} defaultProps={{showCaptions: true}} durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} fps={AI_PRODUCT_AD_FPS} width={AI_PRODUCT_AD_WIDTH} height={AI_PRODUCT_AD_HEIGHT}/>
       <Composition id={AI_BUG_FIX_COMPOSITION_ID} component={ReelAIBugFix} defaultProps={{showCaptions: true}} durationInFrames={AI_BUG_FIX_DURATION_IN_FRAMES} fps={AI_BUG_FIX_FPS} width={AI_BUG_FIX_WIDTH} height={AI_BUG_FIX_HEIGHT}/>
+      <Composition id={AI_SKETCH_WEBSITE_COMPOSITION_ID} component={ReelAISketchWebsite} defaultProps={{showCaptions: true}} durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} fps={AI_SKETCH_WEBSITE_FPS} width={AI_SKETCH_WEBSITE_WIDTH} height={AI_SKETCH_WEBSITE_HEIGHT}/>
     </Folder>
 
     <Composition id="Three3D" component={ThreeDemo as React.FC} defaultProps={{color: BRAND.accent}} durationInFrames={150} fps={30} width={1920} height={1080}/>
