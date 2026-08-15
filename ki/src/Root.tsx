@@ -64,6 +64,22 @@ import {
   ReelWhyAIReadsDifferently,
 } from './reels/why-ai-reads-differently';
 import voiceoverWhyAi from '../reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/01-script-audio/voiceover.mp4';
+import {
+  AI_BUG_FIX_COMPOSITION_ID,
+  AI_BUG_FIX_DURATION_IN_FRAMES,
+  AI_BUG_FIX_FPS,
+  AI_BUG_FIX_HEIGHT,
+  AI_BUG_FIX_WIDTH,
+  ReelAIBugFix,
+} from './reels/ai-bug-fix';
+import {
+  AI_SKETCH_WEBSITE_COMPOSITION_ID,
+  AI_SKETCH_WEBSITE_DURATION_IN_FRAMES,
+  AI_SKETCH_WEBSITE_FPS,
+  AI_SKETCH_WEBSITE_HEIGHT,
+  AI_SKETCH_WEBSITE_WIDTH,
+  ReelAISketchWebsite,
+} from './reels/ai-sketch-website';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -151,6 +167,24 @@ export const RemotionRoot: React.FC = () => (
         fps={WHY_AI_FPS}
         width={WHY_AI_WIDTH}
         height={WHY_AI_HEIGHT}
+      />
+      <Composition 
+        id={AI_BUG_FIX_COMPOSITION_ID} 
+        component={ReelAIBugFix} 
+        defaultProps={{showCaptions: true}} 
+        durationInFrames={AI_BUG_FIX_DURATION_IN_FRAMES} 
+        fps={AI_BUG_FIX_FPS} 
+        width={AI_BUG_FIX_WIDTH} 
+        height={AI_BUG_FIX_HEIGHT}
+      />
+      <Composition 
+        id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
+        component={ReelAISketchWebsite} 
+        defaultProps={{showCaptions: true}} 
+        durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} 
+        fps={AI_SKETCH_WEBSITE_FPS} 
+        width={AI_SKETCH_WEBSITE_WIDTH} 
+        height={AI_SKETCH_WEBSITE_HEIGHT}
       />
     </Folder>
 
