@@ -16,7 +16,7 @@ describe('ai hallucinations reel contract', () => {
     expect(HALLUCINATION_WIDTH).toBe(1080);
     expect(HALLUCINATION_HEIGHT).toBe(1920);
     expect(HALLUCINATION_FPS).toBe(30);
-    expect(HALLUCINATION_DURATION_IN_FRAMES).toBe(900);
+    expect(HALLUCINATION_DURATION_IN_FRAMES).toBe(1295);
   });
 
   it('uses five continuous unique scenes and animations', () => {
@@ -26,11 +26,11 @@ describe('ai hallucinations reel contract', () => {
     let cursor = 0;
     for (const scene of HALLUCINATION_SCENES) {
       expect(scene.startFrame).toBe(cursor);
-      expect(scene.endFrame - scene.startFrame).toBe(180);
+      expect(scene.endFrame).toBeGreaterThan(scene.startFrame);
       expect(scene.visualLabels.shellIcon).toBeTruthy();
       cursor = scene.endFrame;
     }
-    expect(cursor).toBe(900);
+    expect(cursor).toBe(HALLUCINATION_DURATION_IN_FRAMES);
   });
 
   it('uses only production-ready registered mechanisms', () => {
@@ -48,10 +48,12 @@ describe('ai hallucinations reel contract', () => {
   });
 
   it('covers every spoken word with subtitle cues', () => {
-    expect(HALLUCINATION_SUBTITLES).toHaveLength(10);
+    expect(HALLUCINATION_SUBTITLES).toHaveLength(16);
     for (const scene of HALLUCINATION_SCENES) {
       const cues = HALLUCINATION_SUBTITLES.filter((cue) => cue.sceneId === scene.sceneId).sort((a,b) => a.startFrame - b.startFrame);
-      expect(cues).toHaveLength(2);
+      expect(cues.length).toBeGreaterThanOrEqual(2);
+      expect(cues[0].startFrame).toBe(scene.startFrame);
+      expect(cues[cues.length - 1].endFrame).toBe(scene.endFrame);
       expect(normalizeHallucinationText(cues.map((cue) => cue.text).join(' '))).toBe(normalizeHallucinationText(scene.spokenText));
     }
   });

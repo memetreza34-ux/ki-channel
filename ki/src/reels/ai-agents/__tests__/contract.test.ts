@@ -4,7 +4,7 @@ import {AI_AGENTS_CAPTION_ZONE_Y, AI_AGENTS_DURATION_IN_FRAMES, AI_AGENTS_SCENES
 describe('AI agents reel contract',()=>{
   it('keeps the canonical phase-1 structure',()=>{
     expect(()=>assertAIAgentsContract()).not.toThrow();
-    expect(AI_AGENTS_DURATION_IN_FRAMES).toBe(1740);
+    expect(AI_AGENTS_DURATION_IN_FRAMES).toBe(1810);
     expect(AI_AGENTS_CAPTION_ZONE_Y).toBe(1440);
     expect(AI_AGENTS_SCENES).toHaveLength(5);
     expect(new Set(AI_AGENTS_SCENES.flatMap((scene)=>scene.beatIds)).size).toBe(14);

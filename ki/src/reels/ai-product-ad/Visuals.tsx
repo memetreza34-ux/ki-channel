@@ -4,7 +4,6 @@ import {BRAND} from '../../../brand/brand';
 
 const purple = BRAND.accentDk;
 const soft = '#EFE7FF';
-const ink = BRAND.ink;
 const muted = '#746E7D';
 const line = '#DDD4E8';
 const danger = '#D85D67';

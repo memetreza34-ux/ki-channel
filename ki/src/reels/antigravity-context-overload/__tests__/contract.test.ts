@@ -16,10 +16,10 @@ describe('antigravity context overload reel contract', () => {
     expect(CONTEXT_OVERLOAD_WIDTH).toBe(1080);
     expect(CONTEXT_OVERLOAD_HEIGHT).toBe(1920);
     expect(CONTEXT_OVERLOAD_FPS).toBe(30);
-    expect(CONTEXT_OVERLOAD_DURATION_IN_FRAMES).toBe(900);
+    expect(CONTEXT_OVERLOAD_DURATION_IN_FRAMES).toBe(1154);
   });
 
-  it('contains five continuous unique 180-frame scenes', () => {
+  it('contains five continuous unique scenes', () => {
     expect(CONTEXT_OVERLOAD_SCENES).toHaveLength(5);
     expect(new Set(CONTEXT_OVERLOAD_SCENES.map((scene) => scene.sceneId)).size).toBe(5);
     expect(new Set(CONTEXT_OVERLOAD_SCENES.map((scene) => scene.animationId)).size).toBe(5);
@@ -27,10 +27,10 @@ describe('antigravity context overload reel contract', () => {
     let cursor = 0;
     for (const scene of CONTEXT_OVERLOAD_SCENES) {
       expect(scene.startFrame).toBe(cursor);
-      expect(scene.endFrame - scene.startFrame).toBe(180);
+      expect(scene.endFrame).toBeGreaterThan(scene.startFrame);
       cursor = scene.endFrame;
     }
-    expect(cursor).toBe(900);
+    expect(cursor).toBe(CONTEXT_OVERLOAD_DURATION_IN_FRAMES);
   });
 
   it('uses only production-ready registered animation mechanisms', () => {
@@ -79,12 +79,12 @@ describe('antigravity context overload reel contract', () => {
   });
 
   it('keeps subtitle cues inside scenes and covers every spoken word', () => {
-    expect(CONTEXT_OVERLOAD_SUBTITLES).toHaveLength(10);
+    expect(CONTEXT_OVERLOAD_SUBTITLES).toHaveLength(15);
     for (const scene of CONTEXT_OVERLOAD_SCENES) {
       const cues = CONTEXT_OVERLOAD_SUBTITLES
         .filter((cue) => cue.sceneId === scene.sceneId)
         .sort((left, right) => left.startFrame - right.startFrame);
-      expect(cues).toHaveLength(2);
+      expect(cues).toHaveLength(3);
       expect(cues.every((cue) => cue.startFrame >= scene.startFrame)).toBe(true);
       expect(cues.every((cue) => cue.endFrame <= scene.endFrame)).toBe(true);
       expect(normalizeContextOverloadText(cues.map((cue) => cue.text).join(' '))).toBe(

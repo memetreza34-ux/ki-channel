@@ -1,6 +1,5 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
-import {BRAND} from '../brand/brand';
 import {MotionPreviewRoot} from './motion-system/MotionPreviewRoot';
 import voiceoverContext from '../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/01-script-audio/voiceover.wav';
 import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/01-script-audio/voiceover.mp4';

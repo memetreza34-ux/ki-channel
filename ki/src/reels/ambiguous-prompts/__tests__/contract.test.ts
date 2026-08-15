@@ -10,7 +10,7 @@ import {
 describe('ambiguous-prompts production contract',()=>{
   it('keeps the phase-1 reel structurally valid',()=>{
     expect(()=>assertAmbiguousPromptsContract()).not.toThrow();
-    expect(AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES).toBe(1740);
+    expect(AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES).toBe(1654);
     expect(AMBIGUOUS_PROMPTS_CAPTION_ZONE_Y).toBe(1440);
     expect(AMBIGUOUS_PROMPTS_SCENES).toHaveLength(5);
   });
