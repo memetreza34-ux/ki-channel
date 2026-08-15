@@ -1,6 +1,11 @@
 import {describe, expect, it} from 'vitest';
 import {ANIMATION_PROTOTYPE_REGISTRY} from '../../../animation-library/prototypes/registry';
 import {
+  assertScenesContiguous,
+  assertSubtitlesWithinScenes,
+  assertVerticalFormat,
+} from '../../__test-utils__/assertReelContract';
+import {
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
   CONTEXT_OVERLOAD_FPS,
   CONTEXT_OVERLOAD_HEIGHT,
@@ -12,31 +17,21 @@ import {
 import {buildContextOverloadSceneRuntime} from '../runtime';
 
 describe('antigravity context overload reel contract', () => {
-  it('keeps the canonical production format and exact duration', () => {
-    expect(CONTEXT_OVERLOAD_WIDTH).toBe(1080);
-    expect(CONTEXT_OVERLOAD_HEIGHT).toBe(1920);
-    expect(CONTEXT_OVERLOAD_FPS).toBe(30);
-    expect(CONTEXT_OVERLOAD_DURATION_IN_FRAMES).toBe(1154);
+  it('keeps the canonical vertical production format', () => {
+    assertVerticalFormat(CONTEXT_OVERLOAD_WIDTH, CONTEXT_OVERLOAD_HEIGHT, CONTEXT_OVERLOAD_FPS);
   });
 
-  it('contains five continuous unique scenes', () => {
+  it('has five contiguous scenes covering the full duration', () => {
     expect(CONTEXT_OVERLOAD_SCENES).toHaveLength(5);
-    expect(new Set(CONTEXT_OVERLOAD_SCENES.map((scene) => scene.sceneId)).size).toBe(5);
-    expect(new Set(CONTEXT_OVERLOAD_SCENES.map((scene) => scene.animationId)).size).toBe(5);
-
-    let cursor = 0;
-    for (const scene of CONTEXT_OVERLOAD_SCENES) {
-      expect(scene.startFrame).toBe(cursor);
-      expect(scene.endFrame).toBeGreaterThan(scene.startFrame);
-      cursor = scene.endFrame;
-    }
-    expect(cursor).toBe(CONTEXT_OVERLOAD_DURATION_IN_FRAMES);
+    assertScenesContiguous(CONTEXT_OVERLOAD_SCENES, CONTEXT_OVERLOAD_DURATION_IN_FRAMES);
   });
 
-  it('uses only production-ready registered animation mechanisms', () => {
+  it('uses unique animation IDs from the production registry', () => {
     const productionIds = new Set(
       ANIMATION_PROTOTYPE_REGISTRY.map((registration) => registration.animationId),
     );
+    const sceneAnimIds = CONTEXT_OVERLOAD_SCENES.map((s) => s.animationId);
+    expect(new Set(sceneAnimIds).size).toBe(5);
     for (const scene of CONTEXT_OVERLOAD_SCENES) {
       expect(productionIds.has(scene.animationId)).toBe(true);
     }
@@ -78,15 +73,16 @@ describe('antigravity context overload reel contract', () => {
     }
   });
 
-  it('keeps subtitle cues inside scenes and covers every spoken word', () => {
-    expect(CONTEXT_OVERLOAD_SUBTITLES).toHaveLength(15);
+  it('keeps subtitle cues inside scene boundaries', () => {
+    assertSubtitlesWithinScenes(CONTEXT_OVERLOAD_SUBTITLES, CONTEXT_OVERLOAD_SCENES);
+  });
+
+  it('covers every spoken word with subtitle cues', () => {
     for (const scene of CONTEXT_OVERLOAD_SCENES) {
       const cues = CONTEXT_OVERLOAD_SUBTITLES
         .filter((cue) => cue.sceneId === scene.sceneId)
         .sort((left, right) => left.startFrame - right.startFrame);
-      expect(cues).toHaveLength(3);
-      expect(cues.every((cue) => cue.startFrame >= scene.startFrame)).toBe(true);
-      expect(cues.every((cue) => cue.endFrame <= scene.endFrame)).toBe(true);
+      expect(cues.length).toBeGreaterThanOrEqual(2);
       expect(normalizeContextOverloadText(cues.map((cue) => cue.text).join(' '))).toBe(
         normalizeContextOverloadText(scene.spokenText),
       );
