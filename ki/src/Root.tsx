@@ -55,6 +55,15 @@ import {
   AI_PRODUCT_AD_WIDTH,
   ReelAIProductAd,
 } from './reels/ai-product-ad';
+import {
+  WHY_AI_COMPOSITION_ID,
+  WHY_AI_DURATION_IN_FRAMES,
+  WHY_AI_FPS,
+  WHY_AI_HEIGHT,
+  WHY_AI_WIDTH,
+  ReelWhyAIReadsDifferently,
+} from './reels/why-ai-reads-differently';
+import voiceoverWhyAi from '../reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/01-script-audio/voiceover.mp4';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -131,6 +140,17 @@ export const RemotionRoot: React.FC = () => (
         fps={AI_PRODUCT_AD_FPS} 
         width={AI_PRODUCT_AD_WIDTH} 
         height={AI_PRODUCT_AD_HEIGHT}
+      />
+      <Composition
+        id={WHY_AI_COMPOSITION_ID}
+        component={ReelWhyAIReadsDifferently}
+        defaultProps={{
+          voiceoverSrc: voiceoverWhyAi,
+        }}
+        durationInFrames={WHY_AI_DURATION_IN_FRAMES}
+        fps={WHY_AI_FPS}
+        width={WHY_AI_WIDTH}
+        height={WHY_AI_HEIGHT}
       />
     </Folder>
 
