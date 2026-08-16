@@ -78,6 +78,39 @@ Regeln:
 
 Phase 3 darf NEW_BUILD/REUSE_EXACT nicht aus Bequemlichkeit ändern.
 
+## Remotion-native Visual Contract — Code vor Bild
+
+Zusätzlich gilt dauerhaft `REMOTION_NATIVE_VISUALS.md` und für ausführbaren Source `ki/src/reels/AGENTS.md`.
+
+**Wenn Symbole, UI oder erklärende Grafiken sauber mit React, SVG, CSS und Remotion gebaut werden können, werden sie direkt in Code gebaut.** Ein generiertes PNG/JPG ist dafür kein gleichwertiger Ersatz.
+
+Standardmäßig `REMOTION_NATIVE`:
+
+- Icons und Symbole
+- App-/Browser-/Smartphone-/Desktop-UI
+- Buttons, Inputs, Cards, Tabs, Menüs und Dialoge
+- Code-/Terminal-Fenster und Dateibäume
+- Charts, Diagramme, Timelines und Prozessgrafiken
+- Nodes, Connectoren, Pfeile, Linien und Statuspunkte
+- Tabellen, Badges, Labels und Fortschrittsanzeigen
+- Branches, Commits, Pull Requests und andere Git-/GitHub-Mechaniken
+- abstrakte technische Formen und einfache 2D-/2.5D-Objekte
+- Before/After- und Zustandswechsel
+
+Bilder sind nur vorzuziehen, wenn Fotografie, komplexe organische Motive, reale Menschen/Hände, Materialien, Produkte oder aufwendige räumliche 3D-Umgebungen einen echten Mehrwert liefern. Dann möglichst `HYBRID`: komplexes Motiv als Bild, präzise Informationsschichten weiterhin Remotion-native.
+
+Für jeden Visual Beat zusätzlich zur `NEW_BUILD`-/`REUSE_EXACT`-Entscheidung das Medium festlegen:
+
+```text
+REMOTION_NATIVE
+IMAGE_REQUIRED
+HYBRID
+```
+
+`REMOTION_NATIVE` ist der Default. `IMAGE_REQUIRED` oder `HYBRID` brauchen eine konkrete Begründung.
+
+Nicht in ein generiertes Bild backen, wenn Remotion es kontrollierter übernehmen kann: Überschriften, Untertitel, UI-Text, Zahlen, Code, Buttons, Pfeile, Diagramme, Labels, Statusanzeigen oder animierte Fokuszustände.
+
 ## Phase-3 Timeline Contract — Audio darf lokal feinjustiert werden
 
 Das echte Voiceover ist die akustische Grundlage. Der Agent muss die **gesamte audiovisuelle Timeline** optimieren, nicht nur Captions verschieben.
@@ -174,9 +207,12 @@ Keine plattformspezifische Kopie des gesamten Produktionspakets anlegen. Publish
 
 ## Bildbereich
 
+Vor jedem externen Bild zuerst `REMOTION_NATIVE_VISUALS.md` anwenden.
+
 `02-bilder/README.md` und `ki/BILDSTIL.md` beachten. In `image-prompts.md` pro benötigtem Bild immer festhalten:
 
 - sceneId und Zweck
+- warum `REMOTION_NATIVE` hier nicht die bessere Lösung ist
 - was die Bild-KI erzeugt
 - was bewusst Remotion übernimmt
 - vollständiger hochwertiger Prompt
@@ -208,6 +244,8 @@ Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 
 - Visual Beats passen exakt zum Sprecherinhalt
 - keine bequeme/ungefähre Library-Reuse
+- Symbole, UI und erklärende Grafiken sind Remotion-native, sofern technisch vernünftig möglich
+- `IMAGE_REQUIRED` / `HYBRID` ist bei externen Bildern nachvollziehbar begründet
 - Sprecher, Visual Beat und Caption treffen zeitlich denselben Moment
 - lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
 - Header/Icon-Position
