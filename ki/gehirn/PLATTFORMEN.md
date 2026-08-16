@@ -42,7 +42,7 @@ ki/plattformen/
 └── snapchat/
 ```
 
-Diese Ordner enthalten Regeln und Templates, **nicht** duplizierte Reel-Masterdateien.
+Diese Ordner enthalten Regeln und Templates, **nicht** duplizierte Reel- oder Longform-Masterdateien.
 
 ## Reel-Publishing-Metadaten
 
@@ -75,19 +75,37 @@ Plattformtexte dürfen die inhaltliche Aussage nicht verändern oder sensationel
 
 Details: `../plattformen/youtube/SHORTS.md`.
 
-## YouTube Longform
+## YouTube Longform — aktiv
 
-Longform ist **ein eigenes Format** und darf nicht automatisch aus einem Reel aufgeblasen werden.
+Longform ist **ein eigenes aktives Format** und darf nicht automatisch aus einem Reel aufgeblasen werden.
 
-Für die aktuelle Startphase des Kanals werden Longform-Videos auf **5:00 bis 6:00 Minuten** geplant und final gehalten. Das ist eine bewusste Kanalentscheidung; längere Laufzeiten erst verwenden, wenn der Nutzer diese Vorgabe ausdrücklich ändert.
+Kanonisches Produktionspaket:
 
-Wenn der Nutzer ausdrücklich ein längeres YouTube-Video verlangt, zuerst die Longform-Regeln unter `ki/plattformen/youtube/LONGFORM.md` lesen. Erst dann ein eigenes Produktionspaket planen.
+```text
+ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
+```
 
-Bis ein Longform-Workflow ausdrücklich aktiviert wird, bleibt `ki/reels/` ausschließlich Short-Form.
+Kanonischer Source:
+
+```text
+ki/src/longform/<slug>/
+```
+
+Für die aktuelle Startphase werden Longform-Videos auf **5:00 bis 6:00 Minuten** geplant und final gehalten. Das ist eine bewusste Kanalentscheidung; längere Laufzeiten erst verwenden, wenn der Nutzer diese Vorgabe ausdrücklich ändert.
+
+Vor jeder Longform-Produktion zuerst `ki/plattformen/youtube/LONGFORM.md`, danach `ki/youtube-longform/AGENTS.md` und den lokalen Paketvertrag lesen.
+
+Aktives erstes Video:
+
+```text
+ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
+```
+
+Longform besitzt eigenes Skript, Kapitel, Visualplan, Thumbnail, Metadaten, Export und Source. Der Plattformordner `ki/plattformen/youtube/` bleibt Regel-/Template-Ebene und darf keine zweite Produktionswahrheit anlegen.
 
 ## Instagram / TikTok / Facebook / Snapchat
 
-Diese Plattformen dürfen denselben freigegebenen Master verwenden. Unterschiedlich sind primär Hook-Verpackung, Caption und CTA. Die fachliche Aussage, Animation und Voiceover-Wahrheit bleiben gleich.
+Diese Plattformen dürfen denselben freigegebenen Short-Form-Master verwenden. Unterschiedlich sind primär Hook-Verpackung, Caption und CTA. Die fachliche Aussage, Animation und Voiceover-Wahrheit bleiben gleich.
 
 ## Aktualitätsregel
 
@@ -97,9 +115,10 @@ Plattformregeln, Upload-Limits, Monetarisierungsbedingungen und Produktfunktione
 
 Publishing ist erst sauber, wenn:
 
-- nur ein kanonischer Master existiert
+- nur ein kanonischer Master pro Format existiert
 - keine Plattformkopie die Produktionswahrheit ersetzt
 - Titel/Captions keine falschen Versprechen enthalten
 - Cover/Thumbnail der tatsächlichen Aussage entspricht
 - Plattformtexte nicht unnötig denselben Sprechertext vollständig wiederholen
+- bei Longform finale Kapitelzeitstempel aus dem tatsächlich verwendeten Audio stammen
 - aktuelle Plattformregeln bei Bedarf separat verifiziert wurden

@@ -1,0 +1,21 @@
+{
+  "id": "ai-app-workflow",
+  "compositionId": "KI-Longform-AIAppWorkflow",
+  "thumbnailCompositionId": "KI-Longform-AIAppWorkflow-Thumbnail",
+  "title": "Mit KI eine App bauen: Der komplette Workflow (ohne Chaos)",
+  "format": {"width": 1920, "height": 1080, "fps": 30, "baselineDurationInFrames": 9900},
+  "targetDurationSeconds": {"min": 300, "max": 360, "baseline": 330},
+  "wordCount": 737,
+  "visualPolicy": "REMOTION_NATIVE_MAXIMUM",
+  "externalAssets": false,
+  "chapters": [
+    {"id":"hook","startFrame":0,"endFrame":750,"title":"Ein Prompt ist noch keine App"},
+    {"id":"scope","startFrame":750,"endFrame":2100,"title":"Problem eingrenzen"},
+    {"id":"flow","startFrame":2100,"endFrame":3300,"title":"Nutzerfluss und Zustände"},
+    {"id":"repo","startFrame":3300,"endFrame":4500,"title":"Repository als Gedächtnis"},
+    {"id":"build","startFrame":4500,"endFrame":6150,"title":"Kontext und kleine Schritte"},
+    {"id":"test","startFrame":6150,"endFrame":7650,"title":"Testen und Fehler beheben"},
+    {"id":"branch","startFrame":7650,"endFrame":8550,"title":"Branches für Experimente"},
+    {"id":"finish","startFrame":8550,"endFrame":9900,"title":"Fertig bedeutet überprüfbar"}
+  ]
+}
