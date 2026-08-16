@@ -7,6 +7,7 @@ import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unkl
 import voiceoverAgents from '../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/01-script-audio/voiceover.mp4';
 import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-einer-Idee-eine-Mini-App/01-script-audio/voiceover.mp4';
 import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
+import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -63,7 +64,6 @@ import {
   WHY_AI_WIDTH,
   ReelWhyAIReadsDifferently,
 } from './reels/why-ai-reads-differently';
-import voiceoverWhyAi from '../reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/01-script-audio/voiceover.mp4';
 import {
   AI_BUG_FIX_COMPOSITION_ID,
   AI_BUG_FIX_DURATION_IN_FRAMES,
@@ -160,9 +160,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={WHY_AI_COMPOSITION_ID}
         component={ReelWhyAIReadsDifferently}
-        defaultProps={{
-          voiceoverSrc: voiceoverWhyAi,
-        }}
+        defaultProps={{}}
         durationInFrames={WHY_AI_DURATION_IN_FRAMES}
         fps={WHY_AI_FPS}
         width={WHY_AI_WIDTH}
@@ -180,7 +178,10 @@ export const RemotionRoot: React.FC = () => (
       <Composition 
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
         component={ReelAISketchWebsite} 
-        defaultProps={{showCaptions: true}} 
+        defaultProps={{
+          voiceoverSrc: voiceoverSketchWebsite,
+          showCaptions: true
+        }} 
         durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} 
         fps={AI_SKETCH_WEBSITE_FPS} 
         width={AI_SKETCH_WEBSITE_WIDTH} 

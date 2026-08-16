@@ -1,18 +1,94 @@
 {
-  "version": 1,
-  "fps": 30,
   "cues": [
-    {"sceneId":"sketch-01","startFrame":0,"endFrame":185,"text":"Eine grobe Skizze auf Papier kann heute reichen, um mit KI den ersten Entwurf einer echten Website zu bauen."},
-    {"sceneId":"sketch-01","startFrame":185,"endFrame":360,"text":"Aber die KI sieht nicht einfach nur Kästen. Sie muss verstehen, was Navigation, Überschrift, Eingabefeld und Button bedeuten."},
-    {"sceneId":"sketch-02","startFrame":360,"endFrame":505,"text":"Deshalb beginnt der Prozess mit Struktur:"},
-    {"sceneId":"sketch-02","startFrame":505,"endFrame":750,"text":"Welche Bereiche gibt es, welche Elemente gehören zusammen und was soll passieren, wenn jemand klickt?"},
-    {"sceneId":"sketch-03","startFrame":750,"endFrame":885,"text":"Danach wird aus der Skizze ein sauberes Layout."},
-    {"sceneId":"sketch-03","startFrame":885,"endFrame":1080,"text":"Abstände, Größen, Farben und Hierarchie werden festgelegt, bevor Code entsteht."},
-    {"sceneId":"sketch-04","startFrame":1080,"endFrame":1205,"text":"Erst dann baut die KI Komponenten und verbindet die Funktionen."},
-    {"sceneId":"sketch-04","startFrame":1205,"endFrame":1380,"text":"Ein Button muss nicht nur aussehen wie ein Button, sondern tatsächlich etwas auslösen."},
-    {"sceneId":"sketch-05","startFrame":1380,"endFrame":1465,"text":"Jetzt folgt der wichtigste Schritt: testen."},
-    {"sceneId":"sketch-05","startFrame":1465,"endFrame":1565,"text":"Stimmen Mobilansicht, Eingaben, Zustände und Fehlermeldungen?"},
-    {"sceneId":"sketch-05","startFrame":1565,"endFrame":1675,"text":"Wenn etwas nicht passt, wird nicht alles neu gebaut. Die KI korrigiert gezielt die betroffene Stelle."},
-    {"sceneId":"sketch-05","startFrame":1675,"endFrame":1800,"text":"So wird aus einer schnellen Zeichnung kein perfektes Produkt auf Knopfdruck, aber ein funktionierender Prototyp, den du weiter verbessern kannst."}
+    {
+      "sceneId": "sketch-website-01",
+      "startFrame": 0,
+      "endFrame": 160,
+      "text": "Eine grobe Skizze auf Papier kann heute reichen,"
+    },
+    {
+      "sceneId": "sketch-website-01",
+      "startFrame": 160,
+      "endFrame": 280,
+      "text": "um mit KI den ersten Entwurf einer echten Website zu bauen."
+    },
+    {
+      "sceneId": "sketch-website-01",
+      "startFrame": 280,
+      "endFrame": 380,
+      "text": "Aber die KI sieht nicht einfach nur Kästen."
+    },
+    {
+      "sceneId": "sketch-website-01",
+      "startFrame": 380,
+      "endFrame": 477,
+      "text": "Sie muss verstehen, was Navigation, Überschrift, Eingabefeld und Button bedeuten."
+    },
+    {
+      "sceneId": "sketch-website-02",
+      "startFrame": 477,
+      "endFrame": 600,
+      "text": "Deshalb beginnt der Prozess mit Struktur:"
+    },
+    {
+      "sceneId": "sketch-website-02",
+      "startFrame": 600,
+      "endFrame": 735,
+      "text": "Welche Bereiche gibt es, welche Elemente gehören zusammen und was soll passieren, wenn jemand klickt?"
+    },
+    {
+      "sceneId": "sketch-website-03",
+      "startFrame": 735,
+      "endFrame": 860,
+      "text": "Danach wird aus der Skizze ein sauberes Layout."
+    },
+    {
+      "sceneId": "sketch-website-03",
+      "startFrame": 860,
+      "endFrame": 996,
+      "text": "Abstände, Größen, Farben und Hierarchie werden festgelegt, bevor Code entsteht."
+    },
+    {
+      "sceneId": "sketch-website-04",
+      "startFrame": 996,
+      "endFrame": 1130,
+      "text": "Erst dann baut die KI Komponenten und verbindet die Funktionen."
+    },
+    {
+      "sceneId": "sketch-website-04",
+      "startFrame": 1130,
+      "endFrame": 1262,
+      "text": "Ein Button muss nicht nur aussehen wie ein Button, sondern tatsächlich etwas auslösen."
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1262,
+      "endFrame": 1350,
+      "text": "Jetzt folgt der wichtigste Schritt: testen."
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1350,
+      "endFrame": 1470,
+      "text": "Stimmen Mobilansicht, Eingaben, Zustände und Fehlermeldungen?"
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1470,
+      "endFrame": 1580,
+      "text": "Wenn etwas nicht passt, wird nicht alles neu gebaut."
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1580,
+      "endFrame": 1680,
+      "text": "Die KI korrigiert gezielt die betroffene Stelle."
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1680,
+      "endFrame": 1879,
+      "text": "So wird aus einer schnellen Zeichnung kein perfektes Produkt auf Knopfdruck, aber ein funktionierender Prototyp, den du weiter verbessern kannst."
+    }
   ]
 }

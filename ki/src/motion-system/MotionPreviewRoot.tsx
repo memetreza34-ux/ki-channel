@@ -1,14 +1,6 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
 import {
-  ReelWhyAIReadsDifferently,
-  WHY_AI_COMPOSITION_ID,
-  WHY_AI_DURATION_IN_FRAMES,
-  WHY_AI_FPS,
-  WHY_AI_HEIGHT,
-  WHY_AI_WIDTH,
-} from '../reels/why-ai-reads-differently';
-import {
   MOTION_TIMELINE_COMPOSITION_ID,
   toMotionCompositionId,
 } from './compositionIds';
@@ -67,18 +59,6 @@ export const MotionPreviewRoot: React.FC = () => (
         fps={MOTION_TIMELINE_EXAMPLE.fps}
         width={MOTION_CANVAS.width}
         height={MOTION_CANVAS.height}
-      />
-    </Folder>
-
-    <Folder name="Reels-Phase-2">
-      <Composition
-        id={WHY_AI_COMPOSITION_ID}
-        component={ReelWhyAIReadsDifferently}
-        defaultProps={{showDebugTimeline: false}}
-        durationInFrames={WHY_AI_DURATION_IN_FRAMES}
-        fps={WHY_AI_FPS}
-        width={WHY_AI_WIDTH}
-        height={WHY_AI_HEIGHT}
       />
     </Folder>
   </>

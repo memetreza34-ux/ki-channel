@@ -1,22 +1,62 @@
 {
-  "version": 1,
-  "id": "ai-sketch-website",
   "compositionId": "KI-AISketchWebsite",
-  "title": "So wird aus einer Skizze mit KI eine echte Website",
-  "contentPillar": "Mit KI programmieren / praktische KI-Anwendung",
-  "fps": 30,
-  "width": 1080,
-  "height": 1920,
-  "durationInFrames": 1800,
-  "captionZoneY": 1440,
-  "wordCount": 147,
-  "visualBeatCount": 16,
-  "coverHook": "SKIZZE → WEBSITE",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 1879
+  },
+  "audio": {
+    "voiceoverRequired": true,
+    "music": false,
+    "sfx": false,
+    "adaptivePhraseRetiming": true
+  },
   "scenes": [
-    {"sceneId":"sketch-01","startFrame":0,"endFrame":360,"headline":"KI liest mehr als Kästen","icon":"sketch"},
-    {"sceneId":"sketch-02","startFrame":360,"endFrame":750,"headline":"Struktur vor Design","icon":"structure"},
-    {"sceneId":"sketch-03","startFrame":750,"endFrame":1080,"headline":"Aus Wireframe wird Layout","icon":"layout"},
-    {"sceneId":"sketch-04","startFrame":1080,"endFrame":1380,"headline":"Design wird Funktion","icon":"code"},
-    {"sceneId":"sketch-05","startFrame":1380,"endFrame":1800,"headline":"Testen macht es echt","icon":"verify"}
+    {
+      "sceneId": "sketch-website-01",
+      "startFrame": 0,
+      "endFrame": 477,
+      "headline": "VON SKIZZE ZU STRUKTUR",
+      "spokenText": "Eine grobe Skizze auf Papier kann heute reichen, um mit KI den ersten Entwurf einer echten Website zu bauen. Aber die KI sieht nicht einfach nur Kästen. Sie muss verstehen, was Navigation, Überschrift, Eingabefeld und Button bedeuten.",
+      "implementation": "NEW_BUILD",
+      "animationId": "sketch-to-structure"
+    },
+    {
+      "sceneId": "sketch-website-02",
+      "startFrame": 477,
+      "endFrame": 735,
+      "headline": "STRUKTUR ERKENNEN",
+      "spokenText": "Deshalb beginnt der Prozess mit Struktur: Welche Bereiche gibt es, welche Elemente gehören zusammen und was soll passieren, wenn jemand klickt?",
+      "implementation": "NEW_BUILD",
+      "animationId": "structure-recognition"
+    },
+    {
+      "sceneId": "sketch-website-03",
+      "startFrame": 735,
+      "endFrame": 996,
+      "headline": "SAUBERES LAYOUT",
+      "spokenText": "Danach wird aus der Skizze ein sauberes Layout. Abstände, Größen, Farben und Hierarchie werden festgelegt, bevor Code entsteht.",
+      "implementation": "NEW_BUILD",
+      "animationId": "layout-generation"
+    },
+    {
+      "sceneId": "sketch-website-04",
+      "startFrame": 996,
+      "endFrame": 1262,
+      "headline": "CODE UND FUNKTIONEN",
+      "spokenText": "Erst dann baut die KI Komponenten und verbindet die Funktionen. Ein Button muss nicht nur aussehen wie ein Button, sondern tatsächlich etwas auslösen.",
+      "implementation": "NEW_BUILD",
+      "animationId": "code-components"
+    },
+    {
+      "sceneId": "sketch-website-05",
+      "startFrame": 1262,
+      "endFrame": 1879,
+      "headline": "TESTEN UND KORRIGIEREN",
+      "spokenText": "Jetzt folgt der wichtigste Schritt: testen. Stimmen Mobilansicht, Eingaben, Zustände und Fehlermeldungen? Wenn etwas nicht passt, wird nicht alles neu gebaut. Die KI korrigiert gezielt die betroffene Stelle. So wird aus einer schnellen Zeichnung kein perfektes Produkt auf Knopfdruck, aber ein funktionierender Prototyp, den du weiter verbessern kannst.",
+      "implementation": "NEW_BUILD",
+      "animationId": "test-and-iterate"
+    }
   ]
 }
