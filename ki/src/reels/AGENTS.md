@@ -2,9 +2,11 @@
 
 Gilt für **alle** ausführbaren Reel-Sources unter `ki/src/reels/`.
 
-## Grundregel — Code vor Bild
+## Grundregel — maximal Code vor Bild
 
-Wenn ein visueller Bestandteil sauber mit React, SVG, CSS und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
+Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
+
+Das gilt nicht nur für UI und technische Grafiken. Ziel ist, **so viel wie möglich vom gesamten sichtbaren Reel Remotion-native zu bauen**, inklusive stilisierter Illustrationen, Hero-Motive, Cover-Kompositionen, Mockups und pseudo-3D-Szenen.
 
 Das betrifft insbesondere:
 
@@ -18,54 +20,75 @@ Das betrifft insbesondere:
 - Tabellen, Badges, Statusanzeigen und Labels
 - abstrakte technische Objekte und einfache 2D-/2.5D-Formen
 - Zustandswechsel, Before/After-Mechaniken und interaktive Abläufe
+- illustrative Hero-Motive und Cover-Kompositionen
+- Geräte, Ordner, Dokumente, Clouds, Server, Datenpakete und ähnliche Erklärobjekte
+- stilisierte Produktdarstellungen, wenn echte Fotorealistik nicht notwendig ist
+- pseudo-3D mit Layering, CSS-Transforms, SVG, Schatten, Gradients und Perspektive
+- visuelle Metaphern wie Wege, Türen, Trichter, Schichten, Container, Netzwerke und Waagen
+- einfache stilisierte Räume, Schreibtische, Bühnen und technische Umgebungen
+- Licht-, Glas-, Material- und Tiefenillusionen, soweit sauber kontrollierbar
 
-**Für diese Kategorien sind statische KI-Bilder als Ersatz grundsätzlich nicht erlaubt, wenn der Code-Nachbau technisch vernünftig möglich ist.**
+**Für diese Kategorien sind statische KI-Bilder als Ersatz grundsätzlich nicht erlaubt, wenn der Code-Nachbau technisch und gestalterisch vernünftig möglich ist.**
 
 ## Bevorzugte Technik
 
 Reihenfolge:
 
 1. React-Komponenten für semantische Struktur
-2. SVG für Icons, Linien, Diagramme und frei skalierbare Formen
-3. CSS für Layout, Flächen, Schatten, Karten, Geräte-/Fensterrahmen und einfache Perspektive
-4. Remotion für Timing, Interpolation, Sequenzen, Zustände und Sprecher-Synchronität
-5. Canvas/WebGL/3D nur dann, wenn die Aussage es wirklich braucht
+2. SVG für Icons, Illustrationen, Linien, Diagramme, Masken und frei skalierbare Formen
+3. CSS für Layout, Flächen, Schatten, Karten, Geräte-/Fensterrahmen, Perspektive und pseudo-3D
+4. Remotion für Timing, Interpolation, Sequenzen, Zustände, Kamera und Sprecher-Synchronität
+5. Canvas für komplexere 2D-Zeichenlogik
+6. WebGL / Three.js, wenn echte räumliche Tiefe die Aussage verbessert
+7. externes Bild erst als letzte Option
 
 Alle wichtigen visuellen Bestandteile sollen skalierbar, deterministisch und framegenau steuerbar bleiben.
 
 ## Wann ein Bild trotzdem sinnvoll ist
 
-Externe oder generierte Bilder sind nur bevorzugt, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
+Externe oder generierte Bilder sind nur zulässig, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
 
-- echte oder stilisierte Fotografie
+- echte Fotorealistik
 - komplexe organische Motive
-- Menschen/Hände, wenn inhaltlich unvermeidbar
-- aufwendige physische Produkte oder Materialien
+- reale Menschen/Hände, wenn inhaltlich unvermeidbar
+- ein konkretes reales Produkt, das exakt erkennbar sein muss
+- komplexe physische Materialien/Naturdetails
 - komplexe räumliche 3D-Umgebungen
-- sehr detailreiche natürliche Szenen
 - bewusst fotografischer / cinematic Look
 
-Auch dann gilt: **Text, UI, Pfeile, Zahlen, Diagramme, Labels und präzise Zustände nicht in das Bild backen.** Diese Ebenen bleiben Remotion-native.
+Vorher muss geprüft werden, ob eine **stilisierte Remotion-Illustration** die Aussage nicht genauso gut oder besser erklärt.
+
+Auch bei externem Bild gilt: **Text, UI, Pfeile, Zahlen, Diagramme, Labels, Geräte-/Browserrahmen und präzise Zustände nicht in das Bild backen.** Diese Ebenen bleiben Remotion-native.
+
+## Cover-Regel
+
+Cover werden standardmäßig ebenfalls in Remotion gebaut, wenn der Hook als kontrollierte Hero-Komposition mit Typografie, SVG, Devices, UI, Before/After, pseudo-3D und Schatten umsetzbar ist.
+
+Ein externes Cover-Bild ist nur dann gerechtfertigt, wenn echte Fotografie, ein reales Produkt oder eine komplexe organische Szene notwendig ist.
 
 ## Medium-Entscheidung pro Visual Beat
 
-Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung gedanklich unterschieden werden:
+Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden werden:
 
-- `REMOTION_NATIVE` — vollständig React/SVG/CSS/Remotion
+- `REMOTION_NATIVE` — vollständig React/SVG/CSS/Canvas/WebGL/Remotion
 - `IMAGE_REQUIRED` — externes Bild ist inhaltlich wirklich erforderlich
-- `HYBRID` — Bild nur für komplexes Motiv; alle steuerbaren Informationsschichten in Remotion
+- `HYBRID` — Bild nur für komplexen unvermeidbaren Motivteil; alle steuerbaren Informationsschichten in Remotion
 
-Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum `REMOTION_NATIVE` nicht die bessere kontrollierbare Lösung ist.
+`REMOTION_NATIVE` ist der Default und soll maximal ausgereizt werden.
+
+Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
 
 ## Qualitätsregeln
 
 - keine Screenshot-Optik, wenn dieselbe UI sauber nativ nachgebaut werden kann
 - keine zufälligen AI-generierten Symbole oder UI-Texte
 - keine Bitmap-Icons, wenn SVG möglich ist
+- keine KI-generierten Illustrationen aus Bequemlichkeit, wenn eine gute Code-Illustration möglich ist
 - keine unnötigen Asset-Abhängigkeiten
 - keine visuelle Deko ohne erklärende Funktion
 - Smartphone-Lesbarkeit vor Detailreichtum
 - kritische Labels kurz und groß genug
+- Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
 - Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
 - Caption-Zone und alle übergeordneten Reel-Verträge bleiben vollständig gültig
 
@@ -73,8 +96,10 @@ Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, w
 
 Vor jedem Bildasset zuerst fragen:
 
-> **Kann ich das sauber, hochwertig und kontrollierbar mit React/SVG/CSS in Remotion bauen?**
+> **Kann ich das als hochwertige stilisierte Illustration, pseudo-3D-Szene, SVG, UI, Objektkomposition oder Motion-Graphic direkt in Remotion bauen?**
 
 Wenn **ja** → in Remotion bauen.
 
-Wenn **nein** → Bild/Hybrid begründen und nur den wirklich notwendigen Bildanteil extern erzeugen.
+Wenn **teilweise** → Hybrid, aber nur den unvermeidbaren externen Motivteil als Bild nutzen.
+
+Wenn **nein** → Bild konkret begründen.
