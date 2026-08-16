@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-10
+**Status:** 2026-08-16
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -22,9 +22,15 @@ Bei KI-Kanal-Arbeit gilt:
 4. `ki/gehirn/MASTER.md`
 5. danach die passende Domäne:
    - Reel-Arbeit → `ki/reels/AGENTS.md`
+   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
    - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
-6. das ausdrücklich genannte Reel/Format und dessen nächstes `AGENTS.md`
+6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
 7. erst danach konkrete Pläne, Source- oder Plattformdateien
+
+Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
+
+- Reels → `ki/src/reels/AGENTS.md`
+- Longform → `ki/src/longform/AGENTS.md`
 
 Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
 
@@ -51,7 +57,48 @@ ki/src/reels/<slug>/
 
 Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
 
-## 4. Plattform-/Publishing-Struktur
+## 4. Kanonische YouTube-Longform-Struktur
+
+YouTube Longform ist seit 2026-08-16 als eigenes Produktionsformat aktiv.
+
+Produktionspakete liegen hier:
+
+```text
+ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
+├── README.md
+├── 01-script-audio/
+├── 02-visuals/
+├── 03-thumbnail/
+├── 04-metadata/
+├── 05-export/
+└── 06-projektdateien/
+```
+
+Ausführbarer Source:
+
+```text
+ki/src/longform/<slug>/
+```
+
+Aktive Startvorgabe:
+
+- 1920 × 1080
+- 30 FPS
+- 16:9
+- finale Laufzeit nach echtem Voiceover: 5:00–6:00 Minuten
+- `REMOTION_NATIVE_MAXIMUM`
+- Thumbnail als eigene Composition
+
+Aktives erstes Video:
+
+```text
+ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
+```
+
+Video-Composition: `KI-Longform-AIAppWorkflow`
+Thumbnail-Composition: `KI-Longform-AIAppWorkflow-Thumbnail`
+
+## 5. Plattform-/Publishing-Struktur
 
 Plattformlogik liegt hier:
 
@@ -72,41 +119,47 @@ Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Face
 03-caption/platform-copy.md
 ```
 
-YouTube Longform ist ein separates Format und wird nicht automatisch aus Reels erzeugt.
+YouTube Longform ist ein separates Format unter `ki/youtube-longform/` und wird nicht automatisch aus Reels erzeugt.
 
 Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
 
-## 5. Verbindliches 3-Phasen-Modell
+## 6. Verbindliches 3-Phasen-Modell
+
+Für Short-Form und Longform gilt derselbe Verantwortungsrahmen:
 
 ```text
 PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen + Animationen + Bildprompts/Manifest + Captions + Plattform-Copy + Remotion-Code-Grundlage + Checks
+Idee + Fakten + Skript + Copy-Text + Szenen/Kapitel + Visual Beats + Visual-/Asset-Entscheidungen + Packaging + Remotion-Code-Grundlage + Checks
 
 PHASE 2 — Mensch
 nur das echte Voiceover erzeugen und in 01-script-audio ablegen
 
 PHASE 3 — Codex / Antigravity
-Audio integrieren + Timing + Tests + Smoke-Review + Final-Render + Export
+Audio integrieren + echte Timeline synchronisieren + Tests + Smoke-Review + Final-Render + Export
 ```
 
-Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Reel nicht neu von Null.
+Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Format nicht neu von Null.
 
-## 6. Verbindliche visuelle Identität
+Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
 
-- 1080 × 1920, 30 FPS, sofern der Reel-Vertrag nichts anderes festlegt
+## 7. Verbindliche visuelle Identität
+
+- Short-Form standardmäßig 1080 × 1920 / 30 FPS
+- Longform aktuell 1920 × 1080 / 30 FPS
 - heller editorialer Look
 - dunkle Schrift
 - Marken-Lila `#B98CFF` als primärer Akzent
 - dunkles Lila `#6E45C9` für Tiefe/Kontrast
 - faceless, keine erkennbaren Gesichter
 - keine Cyberpunk-/Neon-Standardästhetik
-- Sprechertext, Caption, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
-- Bilder erklären eine Aussage; sie sind nie reine Dekoration
+- `REMOTION_NATIVE_MAXIMUM`: sichtbare Inhalte so weit wie technisch und gestalterisch sinnvoll in React/SVG/CSS/Canvas/WebGL/Remotion bauen
+- externe Bilder nur als begründete Ausnahme; keine erfundenen Assets
+- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
 - Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`.
+Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`, `ki/reels/REMOTION_NATIVE_VISUALS_MAXIMUM.md`.
 
-## 7. Statusbegriffe niemals vermischen
+## 8. Statusbegriffe niemals vermischen
 
 Diese Zustände sind getrennt:
 
@@ -122,7 +175,7 @@ veröffentlicht
 
 Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. `veröffentlicht` bedeutet nicht automatisch `fachlich freigegeben`, wenn der Freigabeprozess übersprungen wurde.
 
-## 8. Bekannte externe Einschränkungen
+## 9. Bekannte externe Einschränkungen
 
 - GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
 - Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
