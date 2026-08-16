@@ -2,6 +2,33 @@
 
 Longform ist ein **eigenes Content-Format**. Es wird nicht automatisch aus einem Reel verlängert.
 
+## Status — aktiv
+
+YouTube Longform ist ab 2026-08-16 als kanonischer Produktionsbereich aktiviert.
+
+Kanonisches Produktionspaket:
+
+```text
+ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
+```
+
+Ausführbarer Remotion-Source:
+
+```text
+ki/src/longform/<slug>/
+```
+
+Verbindlicher Formatvertrag: `ki/youtube-longform/AGENTS.md`.
+
+Aktives erstes Paket:
+
+```text
+ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
+```
+
+Video-Composition: `KI-Longform-AIAppWorkflow`
+Thumbnail-Composition: `KI-Longform-AIAppWorkflow-Thumbnail`
+
 ## Aktuelle Startlänge
 
 Für die erste YouTube-Longform-Phase gilt verbindlich:
@@ -46,25 +73,54 @@ Kein künstliches Strecken, keine Wiederholung zur Laufzeitverlängerung.
 
 ## Produktionsstruktur
 
-Solange Longform noch nicht aktiv produziert wird, **keine leeren Serienordner erzeugen**.
+Die aktive Struktur lautet:
 
-Sobald der Nutzer ausdrücklich ein Longform-Video beauftragt, wird ein eigenes Formatpaket angelegt und dokumentiert. Es darf nicht in die bestehende Reel-01–06-Struktur gezwungen werden, wenn dadurch Recherche, Thumbnail, Kapitel oder Longform-Edit vermischt würden.
+```text
+ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
+├── README.md
+├── 01-script-audio/
+├── 02-visuals/
+├── 03-thumbnail/
+├── 04-metadata/
+├── 05-export/
+└── 06-projektdateien/
+```
 
-Vor Einführung eines Longform-Generators zuerst den konkreten Produktionsbedarf festlegen und den neuen Vertrag in `REPO-STATE.md`, `ki/AGENTS.md` und `ki/gehirn/MASTER.md` kanonisch ergänzen.
+Longform wird ausdrücklich **nicht** in die Reel-01–06-Struktur gezwungen. Recherche, Kapitel, Thumbnail, Metadaten und Longform-Edit besitzen einen eigenen Vertrag.
+
+## Produktionsphasen
+
+```text
+PHASE 1 — ChatGPT
+Thema + Skript + Kapitel + Visual Beats + Thumbnail + Metadaten + Remotion-Source
+
+PHASE 2 — Mensch
+nur echtes Voiceover
+
+PHASE 3 — Codex / Antigravity
+Audio analysieren + Timeline synchronisieren + prüfen + Thumbnail/Video rendern
+```
+
+Fehlt in Phase 3 das Audio, gilt exakt: `PHASE 2 AUDIO FEHLT`.
 
 ## Visuals
 
 - faceless
 - gleiche Markenfarben wie Short-Form
+- `REMOTION_NATIVE_MAXIMUM`: möglichst den gesamten sichtbaren Inhalt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
+- externe Bilder/Medien nur bei echtem inhaltlichem Zwang und nur, wenn sie tatsächlich bereitgestellt wurden
 - Visuals erklären, nicht dekorieren
 - Bildschirm-/UI-Demos nur mit lesbarer Skalierung
 - Kapitel brauchen eigene visuelle Zustände
 - keine durchgehende Bewegungsüberladung
+- bei zu flachen Code-Visuals zuerst Tiefe, Perspektive, Layering und Komposition verbessern statt auf KI-Bilder auszuweichen
 
 ## Wahrheit
 
 Aktuelle Tools, Preise, Modelle, Regeln oder News vor Veröffentlichung neu prüfen. Longform darf aus mehr Laufzeit nicht mehr unbelegte Behauptungen machen.
 
+Tests, Audio-Sync, Thumbnail-Export, Render und visuelle Freigabe nur als erledigt markieren, wenn sie tatsächlich ausgeführt wurden.
+
 ## Thumbnail
 
-`THUMBNAILS.md` ist verbindlich.
+`THUMBNAILS.md` ist verbindlich. Das Thumbnail ist ein eigener Deliverable und wird standardmäßig ebenfalls Remotion-native gebaut, solange kein echtes Foto-/Produktasset zwingend nötig ist.
