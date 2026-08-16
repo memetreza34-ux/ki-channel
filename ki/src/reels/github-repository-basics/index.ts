@@ -1,0 +1,8 @@
+export {ReelGitHubRepository} from './ReelGitHubRepository';
+export {
+  GITHUB_REPOSITORY_COMPOSITION_ID,
+  GITHUB_REPOSITORY_DURATION_IN_FRAMES,
+  GITHUB_REPOSITORY_FPS,
+  GITHUB_REPOSITORY_HEIGHT,
+  GITHUB_REPOSITORY_WIDTH,
+} from './contract';

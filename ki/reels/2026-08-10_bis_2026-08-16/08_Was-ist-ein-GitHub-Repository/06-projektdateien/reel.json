@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "id": "github-repository-basics",
+  "compositionId": "KI-GitHubRepository",
+  "title": "Was ist ein GitHub Repository?",
+  "contentPillar": "KI / Coding / GitHub-Grundlagen",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 1800,
+  "captionZoneY": 1440,
+  "wordCount": 137,
+  "visualBeatCount": 16,
+  "coverHook": "GITHUB-REPO EINFACH ERKLÄRT",
+  "scenes": [
+    {"sceneId":"repo-01","startFrame":0,"endFrame":340,"headline":"Ein Ordner mit Gedächtnis","icon":"folder","implementation":"NEW_BUILD"},
+    {"sceneId":"repo-02","startFrame":340,"endFrame":690,"headline":"Alles gehört ins Repo","icon":"files","implementation":"NEW_BUILD"},
+    {"sceneId":"repo-03","startFrame":690,"endFrame":1040,"headline":"Commits schreiben Geschichte","icon":"history","implementation":"NEW_BUILD"},
+    {"sceneId":"repo-04","startFrame":1040,"endFrame":1430,"headline":"Branches schützen den Stand","icon":"branch","implementation":"NEW_BUILD"},
+    {"sceneId":"repo-05","startFrame":1430,"endFrame":1800,"headline":"Mehr als nur Code","icon":"repo","implementation":"NEW_BUILD"}
+  ]
+}
