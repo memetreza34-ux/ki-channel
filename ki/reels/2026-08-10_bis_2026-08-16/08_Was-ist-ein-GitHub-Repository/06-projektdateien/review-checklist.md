@@ -5,6 +5,8 @@
 - [x] 137-Wörter-Sprechertext angelegt
 - [x] 16 Visual Beats dokumentiert
 - [x] alle Visuals `NEW_BUILD`
+- [x] Repository-Mechaniken als `REMOTION_NATIVE` geplant/gebaut: Ordner, Dateien, Commits, Timeline, Branches, Pull Request, Merge, Statuspunkte, Pfeile und Labels
+- [x] keine generierten Screenshots/Bitmap-UI für technisch sauber nachbaubare Grafiken vorgesehen
 - [x] kein leerer Opening-Zustand geplant
 - [x] Smartphone-First-Größen festgelegt
 - [x] kritische interne Labels kurz und ungefähr 30 px oder größer
@@ -32,6 +34,8 @@
 - [ ] Frame 0 wirkt nicht leer
 - [ ] Hauptvisuals auf Smartphone ausreichend groß
 - [ ] keine wichtige interne Beschriftung zu klein
+- [ ] alle UI-/Symbol-/Grafikbestandteile bleiben React/SVG/CSS/Remotion-native; keine unnötige Bitmap-Ersetzung
+- [ ] bei externen Bildern ist `IMAGE_REQUIRED`/`HYBRID` nachvollziehbar begründet
 - [ ] keine Animation ab `y=1440` sichtbar
 - [ ] Überschriften komplett lila, Icon groß und semantisch
 - [ ] Captions transparent, aktiver Fokus lila
