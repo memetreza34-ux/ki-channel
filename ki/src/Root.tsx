@@ -65,14 +65,7 @@ import {
   WHY_AI_WIDTH,
   ReelWhyAIReadsDifferently,
 } from './reels/why-ai-reads-differently';
-import {
-  AI_BUG_FIX_COMPOSITION_ID,
-  AI_BUG_FIX_DURATION_IN_FRAMES,
-  AI_BUG_FIX_FPS,
-  AI_BUG_FIX_HEIGHT,
-  AI_BUG_FIX_WIDTH,
-  ReelAIBugFix,
-} from './reels/ai-bug-fix';
+
 import {
   AI_SKETCH_WEBSITE_COMPOSITION_ID,
   AI_SKETCH_WEBSITE_DURATION_IN_FRAMES,
@@ -175,15 +168,7 @@ export const RemotionRoot: React.FC = () => (
         width={WHY_AI_WIDTH}
         height={WHY_AI_HEIGHT}
       />
-      <Composition 
-        id={AI_BUG_FIX_COMPOSITION_ID} 
-        component={ReelAIBugFix} 
-        defaultProps={{showCaptions: true}} 
-        durationInFrames={AI_BUG_FIX_DURATION_IN_FRAMES} 
-        fps={AI_BUG_FIX_FPS} 
-        width={AI_BUG_FIX_WIDTH} 
-        height={AI_BUG_FIX_HEIGHT}
-      />
+
       <Composition 
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
         component={ReelAISketchWebsite} 
