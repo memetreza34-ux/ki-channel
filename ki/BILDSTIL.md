@@ -4,31 +4,53 @@
 
 Generierte Bilder sind **Erklärassets**, keine Dekoration. Ein Bild wird nur eingesetzt, wenn eine räumliche, objektbasierte oder alltägliche Szene die Aussage schneller verständlich macht als reine Remotion-Grafik.
 
-Standardstil:
+**Ab sofort gilt zusätzlich:** Symbole, UI, Diagramme und erklärende Grafiken werden bevorzugt **direkt mit React, SVG, CSS und Remotion** gebaut. Sie dürfen nicht aus Bequemlichkeit als KI-Bild erzeugt werden, wenn ein sauberer Code-Nachbau technisch vernünftig möglich ist.
+
+Standardstil für wirklich notwendige Bilder:
 
 > hochwertige vereinfachte 3D-Editorial-Illustration, hell, faceless, wenige große Objekte, klare Tiefenwirkung, kontrollierter Marken-Lila-Akzent.
 
-## Erst entscheiden: Bild oder Remotion?
+## Erst entscheiden: Remotion-native, Hybrid oder Bild?
 
-### Remotion übernimmt bevorzugt
+Vor **jedem** geplanten Bildasset zuerst prüfen:
+
+> Kann dieser visuelle Bestandteil sauber, hochwertig, skalierbar und kontrollierbar mit React/SVG/CSS in Remotion gebaut werden?
+
+Wenn **ja** → `REMOTION_NATIVE` und **kein Bild erzeugen**.
+
+Wenn **teilweise** → `HYBRID`: nur das komplexe Motiv als Bild; Text, UI, Pfeile, Zustände, Diagramme und andere präzise Informationsschichten bleiben Remotion-native.
+
+Nur wenn Remotion inhaltlich oder qualitativ klar unterlegen wäre → `IMAGE_REQUIRED`.
+
+### Remotion übernimmt standardmäßig
 
 - Überschriften und Captions
-- Zahlen, Rankings, Charts
-- Pfeile, Connectoren, Prozessdiagramme
+- Icons und Symbole
+- Zahlen, Rankings und Charts
+- Pfeile, Connectoren und Prozessdiagramme
+- App-, Browser-, Smartphone- und Desktop-UI
+- Buttons, Inputs, Cards, Tabs, Dialoge und Menüs
+- Code-/Terminal-Fenster und Dateibäume
+- Nodes, Timelines, Branches, Commits und Statusanzeigen
 - präzise UI/Chat/App-Texte
 - Karten, Labels und Callouts
-- animierte Fokuswechsel
+- animierte Fokuswechsel und Zustandsänderungen
+- einfache 2D-/2.5D-Objekte und technische Formen
 
-### Bild-KI übernimmt bevorzugt
+### Bild-KI übernimmt nur bei echtem Mehrwert
 
 - hochwertige räumliche 3D-Szenen
 - reale/stilisierte Alltagssituationen
-- komplexe Objektgruppen
-- visuelle Metaphern
-- Material, Licht, Schatten, Perspektive
-- Umgebungen, die mit CSS/SVG unnötig teuer wären
+- komplexe organische Objektgruppen
+- visuelle Metaphern, die als physische Szene funktionieren
+- Material, Licht, Schatten und Perspektive bei komplexen physischen Motiven
+- aufwendige Produkte oder Umgebungen
+- Umgebungen, die mit CSS/SVG unverhältnismäßig teuer wären
+- fotografische/cinematic Motive
 
 Kein Bild erzeugen, wenn Remotion dieselbe Aussage klarer und kontrollierter bauen kann.
+
+**Bitmap-Icons, Screenshot-UI oder generierte Interface-Bilder sind nicht erlaubt, wenn SVG/React/CSS dieselbe Funktion sauber übernehmen kann.**
 
 ## Feste visuelle Regeln
 
@@ -65,7 +87,7 @@ Kein Bild erzeugen, wenn Remotion dieselbe Aussage klarer und kontrollierter bau
 
 Standard: **kein Text im Bild**.
 
-Nur wenn ein Objektlabel für das Verständnis unverzichtbar ist:
+Nur wenn ein Objektlabel für das Verständnis unverzichtbar ist und nicht sinnvoll als Remotion-Ebene darüberliegen kann:
 
 - maximal 0–3 Labels
 - Deutsch
@@ -86,17 +108,18 @@ Sichtbarer Text im Bild bleibt, falls unvermeidbar, ausschließlich deutsch.
 Jeder finale Prompt in `02-bilder/image-prompts.md` muss diese Informationen enthalten:
 
 1. **Scene intent** — eine Aussage, die das Bild erklären soll
-2. **Visual metaphor / situation** — eine einzige klare Bildidee
-3. **Main subjects** — wenige konkrete Objekte
-4. **State / relationship** — was zwischen den Objekten sichtbar wahr sein muss
-5. **Composition** — Vordergrund/Mitte/Hintergrund, Fokus und freie Bereiche
-6. **Camera** — vertikal, Perspektive, Brennweitencharakter ohne extreme Verzerrung
-7. **Materials and lighting** — hochwertig, editorial, weiche Schatten
-8. **Brand accents** — Lila gezielt, nicht alles lila
-9. **Safe zones** — oben/unten frei
-10. **Negative constraints** — Gesichter, Cyberpunk, Wasserzeichen, zufälliger Text usw.
-11. **Remotion separation** — ausdrücklich nennen, welche Texte/Overlays später Remotion baut
-12. **Output filename** — erwarteter Asset-Name
+2. **Why image is required** — warum `REMOTION_NATIVE` nicht die bessere Lösung ist
+3. **Visual metaphor / situation** — eine einzige klare Bildidee
+4. **Main subjects** — wenige konkrete Objekte
+5. **State / relationship** — was zwischen den Objekten sichtbar wahr sein muss
+6. **Composition** — Vordergrund/Mitte/Hintergrund, Fokus und freie Bereiche
+7. **Camera** — vertikal, Perspektive, Brennweitencharakter ohne extreme Verzerrung
+8. **Materials and lighting** — hochwertig, editorial, weiche Schatten
+9. **Brand accents** — Lila gezielt, nicht alles lila
+10. **Safe zones** — oben/unten frei
+11. **Negative constraints** — Gesichter, Cyberpunk, Wasserzeichen, zufälliger Text usw.
+12. **Remotion separation** — ausdrücklich nennen, welche Texte/Overlays später Remotion baut
+13. **Output filename** — erwarteter Asset-Name
 
 ## Canonical Prompt-Template
 
@@ -105,6 +128,9 @@ Create a premium stylized 3D editorial illustration for a German AI explainer re
 
 SCENE INTENT:
 [one precise idea the viewer must understand]
+
+WHY IMAGE IS REQUIRED:
+[one concrete reason why React/SVG/CSS/Remotion alone is not the better visual solution]
 
 VISUAL CONCEPT:
 [one simple physical scene or metaphor; no infographic collage]
@@ -134,10 +160,10 @@ SAFE ZONES:
 keep approximately the top 110 px and bottom 220 px visually calm and free of essential objects or labels. Do not draw guides or safe-zone lines.
 
 REMOTION WILL ADD:
-[headline / captions / arrows / exact numbers / UI labels / NONE]. Do not bake these elements into the image.
+[headline / captions / arrows / exact numbers / UI / labels / state changes / NONE]. Do not bake these elements into the image.
 
 AVOID:
-cyberpunk, neon sci-fi, dark server rooms, generic robots, overloaded infographic layouts, tiny objects, excessive icons, excessive arrows, random text, watermarks, distorted hands, cropped key objects, duplicate objects, inconsistent perspective.
+cyberpunk, neon sci-fi, dark server rooms, generic robots, overloaded infographic layouts, tiny objects, excessive icons, excessive arrows, random text, watermarks, distorted hands, cropped key objects, duplicate objects, inconsistent perspective, generated UI that should have been built in Remotion.
 
 OUTPUT:
 clean premium 3D editorial image, mobile-readable composition, filename: [scene-XX-description.png].
@@ -167,11 +193,13 @@ Keine Namen wie `final2.png`, `image123.png` oder `neu.png`.
 
 Vor Freigabe tatsächlich prüfen:
 
+- Bildbedarf gegenüber `REMOTION_NATIVE` konkret begründet
 - Aussage ohne Überschrift erkennbar
 - richtige 9:16-Komposition
 - keine erkennbaren Gesichter
 - kein Wasserzeichen
 - kein zufälliger/fehlerhafter Text
+- keine generierte UI, die besser als React/SVG/CSS gebaut worden wäre
 - keine abgeschnittenen Hauptobjekte
 - keine deformierten Hände/Objekte
 - konsistente Perspektive und Schatten
