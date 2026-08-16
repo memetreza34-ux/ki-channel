@@ -6,7 +6,7 @@ import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-
 import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/01-script-audio/voiceover.mp4';
 import voiceoverAgents from '../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/01-script-audio/voiceover.mp4';
 import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-einer-Idee-eine-Mini-App/01-script-audio/voiceover.mp4';
-import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
+import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfot-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
 import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
@@ -80,6 +80,14 @@ import {
   AI_SKETCH_WEBSITE_WIDTH,
   ReelAISketchWebsite,
 } from './reels/ai-sketch-website';
+import {
+  GITHUB_REPOSITORY_COMPOSITION_ID,
+  GITHUB_REPOSITORY_DURATION_IN_FRAMES,
+  GITHUB_REPOSITORY_FPS,
+  GITHUB_REPOSITORY_HEIGHT,
+  GITHUB_REPOSITORY_WIDTH,
+  ReelGitHubRepository,
+} from './reels/github-repository-basics';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -186,6 +194,15 @@ export const RemotionRoot: React.FC = () => (
         fps={AI_SKETCH_WEBSITE_FPS} 
         width={AI_SKETCH_WEBSITE_WIDTH} 
         height={AI_SKETCH_WEBSITE_HEIGHT}
+      />
+      <Composition
+        id={GITHUB_REPOSITORY_COMPOSITION_ID}
+        component={ReelGitHubRepository}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES}
+        fps={GITHUB_REPOSITORY_FPS}
+        width={GITHUB_REPOSITORY_WIDTH}
+        height={GITHUB_REPOSITORY_HEIGHT}
       />
     </Folder>
 

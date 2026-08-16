@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "cover-github-repository",
+      "required": true,
+      "file": "cover.jpg",
+      "purpose": "eigenständiges Social-Media-Hero-Cover",
+      "source": "image-generation",
+      "status": "planned"
+    }
+  ]
+}
