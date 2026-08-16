@@ -1,6 +1,6 @@
 # 🧠 KI-Channel — MASTER-GEHIRN
 
-Diese Datei verbindet Identität, Reel-Logik, Bildstil, Plattformen und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
+Diese Datei verbindet Identität, Reel-Logik, Longform, Bildstil, Plattformen und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
 
 ## Autoritative Quellen
 
@@ -9,16 +9,17 @@ Diese Datei verbindet Identität, Reel-Logik, Bildstil, Plattformen und Produkti
 3. **diese Datei** — kanalweite Entscheidungslogik
 4. `KANAL.md` — Identität, Zielgruppe, Ton
 5. `REELS.md` — Reel-Struktur, Text-Hierarchie, Visualisierung
-6. `PLATTFORMEN.md` — Publishing und YouTube/Instagram/TikTok/Facebook/Snapchat
-7. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
-8. `../BILDSTIL.md` — Bild- und Prompt-Qualität
-9. named reel package — konkrete Inhalte
+6. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
+7. `PLATTFORMEN.md` — Publishing und YouTube/Instagram/TikTok/Facebook/Snapchat
+8. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
+9. `../BILDSTIL.md` — Bild- und Prompt-Qualität
+10. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
 ## Kernziel
 
-> Komplexe KI so erklären, dass ein normaler deutschsprachiger Zuschauer den Mechanismus innerhalb weniger Sekunden versteht — visuell stark, sachlich geerdet und ohne Hype-Lärm.
+> Komplexe KI so erklären, dass ein normaler deutschsprachiger Zuschauer den Mechanismus schnell versteht — visuell stark, sachlich geerdet und ohne Hype-Lärm.
 
 ## Kanalprinzipien
 
@@ -28,7 +29,9 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 - Nutzen/Aha vor Feature-Liste
 - Wahrheit vor Reichweitenversprechen
 - ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
-- Short-Form-Skripte standardmäßig ausführlicher: ungefähr 50–60 Sekunden statt unnötig kurz
+- Short-Form-Skripte standardmäßig ungefähr 50–60 Sekunden, wenn der Inhalt das trägt
+- YouTube Longform ist eigenständig und aktuell auf 5:00–6:00 Minuten ausgelegt
+- Longform wird nie bloß aus einem Reel aufgeblasen
 
 ## Entscheidungsreihenfolge für jede Reel-Szene
 
@@ -50,6 +53,30 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
 Die Library wird erst nach der visuellen Mechanik geprüft. Sie ist Werkzeugkasten, nicht Quelle der kreativen Entscheidung.
 
+## Entscheidungsreihenfolge für YouTube Longform
+
+```text
+1. Braucht das Thema wirklich mehrere zusammenhängende Schritte/Mechanismen?
+2. Was ist das klare Versprechen des Videos?
+3. Welche Kapitel ergeben einen logischen Erkenntnisweg statt bloßer Länge?
+4. Welche bedeutungsgetriebenen Visual Beats braucht jedes Kapitel?
+5. Wie wird jeder Beat mit REMOTION_NATIVE_MAXIMUM sichtbar erklärt?
+6. Welche UI/Diagramme/Illustrationen müssen für 16:9 groß und lesbar sein?
+7. Welche Grenzen/Fehler/Gegenposition gehören zwingend hinein?
+8. Welche Schlussprüfung zeigt, dass das Versprechen wirklich eingelöst wurde?
+9. Welches eigenständige Thumbnail ergänzt den Titel statt ihn nur zu wiederholen?
+```
+
+Aktueller Longform-Standard:
+
+- 1920 × 1080
+- 30 FPS
+- 16:9
+- finale Dauer nach echtem Voiceover 5:00–6:00 Minuten
+- Produktion unter `ki/youtube-longform/`
+- Source unter `ki/src/longform/`
+- Thumbnail als eigene Remotion-Composition
+
 ## Visual Beat Contract
 
 Jede bedeutungstragende Sprecherstelle erhält eine bewusste visuelle Reaktion. Die passende Einheit kann sein:
@@ -62,22 +89,22 @@ Jede bedeutungstragende Sprecherstelle erhält eine bewusste visuelle Reaktion. 
 
 Nicht jedes Wort muss wackeln oder springen. Aber wenn sich die Bedeutung ändert, muss sich sichtbar Fokus, Zustand, Objektbeziehung oder Mechanik passend ändern.
 
-Bei mehreren Aussagen innerhalb einer Szene sind mehrere Micro-Animationen ausdrücklich erwünscht.
+Bei mehreren Aussagen innerhalb einer Szene oder eines Longform-Kapitels sind mehrere Micro-Animationen ausdrücklich erwünscht.
 
 ## Timeline Contract
 
-Die finale Phase behandelt Stimme, Visual Beats, Animation, Pausen und Untertitel als **eine gemeinsame Timeline**.
+Die finale Phase behandelt Stimme, Visual Beats, Animation, Pausen und Untertitel/Transcript-Timing als **eine gemeinsame Timeline**.
 
 Grundsatz:
 
 ```text
 Gesprochene Bedeutung
 = sichtbarer Zustandswechsel
-= Caption-Fokus
+= Text-/Caption-Fokus, falls verwendet
 = Beat-Timing
 ```
 
-Phase 3 passt zuerst Animation/Holds/Szenen an die echte Stimme an. Wenn eine einzelne Phrase danach noch zu schnell oder zu langsam wirkt, darf der Agent:
+Phase 3 passt zuerst Animation/Holds/Szenen bzw. Kapitel an die echte Stimme an. Wenn eine einzelne Phrase danach noch zu schnell oder zu langsam wirkt, darf der Agent:
 
 1. natürliche Pausen an Phrase-/Satzgrenzen leicht verändern
 2. bei Bedarf die ganze Phrase / den ganzen Cue **pitch-erhaltend lokal retimen**
@@ -89,11 +116,11 @@ Dabei gilt:
 - Wortlaut/Reihenfolge bleiben unverändert
 - bevorzugt `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`
 - stärkere Abweichung → neues Voiceover statt hörbarer Verzerrung
-- Captions/Wort-Timestamps immer gegen das final verwendete Audio neu synchronisieren
+- finale Text-/Caption-Timestamps immer gegen das tatsächlich verwendete Audio synchronisieren
 
-**Perfekte Timeline heißt nicht exakt 60,0 Sekunden.** Sie heißt: Stimme klingt natürlich und alle visuellen Beats treffen die gemeinte Sprecherstelle präzise.
+Short-Form wird nicht künstlich auf exakt 60,0 Sekunden gezwungen. Longform wird nicht durch unnatürliches Retiming in 5–6 Minuten gepresst; bei deutlicher Abweichung zurück zu Phase 2.
 
-## Visual Hierarchy
+## Visual Hierarchy Short-Form
 
 ```text
 ZWISCHENÜBERSCHRIFT + ICON
@@ -118,6 +145,16 @@ UNTERTITEL / CAPTION
 
 Interne Regie-, `goal`-, Debug- und Planner-Texte sind niemals Zuschauertext.
 
+## Visual Hierarchy Longform
+
+- Kapitelmarker kurz und sparsam statt permanenter großer Titel
+- UI, Diagramme und Illustrationen groß genug für 16:9/Laptop/TV
+- keine dauerhaft eingebrannten Volltext-Untertitel als Standard
+- Animationstext nur für Objekt, Zustand, echte UI oder kurze Orientierung
+- kein Transcript als Design-Ersatz
+- pro Kapitel klare Zustandsentwicklung, aber keine Dauerbewegung ohne Erklärfunktion
+- End-Hold vor Kapitelwechsel
+
 ## Harte Reel-Caption-Zone
 
 Bei vertikalem 1080 × 1920 Short-Form gilt:
@@ -129,15 +166,26 @@ Bei vertikalem 1080 × 1920 Short-Form gilt:
 - Untertitel nicht nach unten verdrängen
 - die technische Production-Shell clippt als letzte Sicherung; sichtbares Abschneiden ist trotzdem ein Review-Fehler und muss im Layout behoben werden
 
-## Remotion oder Bild?
+Diese spezifische Caption-Zone gilt nicht als Longform-Layoutregel; dort gelten 16:9-Komposition, Titel-/Thumbnail-Verträge und realer Sichttest.
 
-**Remotion zuerst**, wenn die Aussage mit UI, Diagramm, Prozess, Vergleich, Daten, Text, Karten, Pfeilen, Netzwerk oder Motion-Mechanismus klar erklärt werden kann.
+## Maximum-Remotion oder externes Asset?
 
-Dabei zuerst eine **inhaltsspezifische Mechanik** entwerfen. Bestehende Library-Komponenten nur bei exaktem Fit nutzen; ansonsten reel-spezifisch bauen.
+**Maximum-Remotion zuerst.** Nicht nur UI, Diagramme und Prozesse, sondern auch Icons, Hero-Motive, Mockups, Cover, technische Illustrationen, visuelle Metaphern, pseudo-3D-Objekte und einfache Umgebungen werden so weit wie sinnvoll mit React/SVG/CSS/Canvas/WebGL/Remotion gebaut.
 
-**Bild-KI**, wenn eine hochwertige räumliche 3D-Editorial-Szene, Objektgruppe oder Alltagssituation die Aussage deutlich besser und schneller verständlich macht.
+Wenn das Ergebnis zu flach wirkt, zuerst verbessern:
 
-Kein Bild nur, weil ein Bild hübsch aussieht.
+- Perspektive
+- Layering
+- Schatten
+- Tiefe
+- Materialwirkung
+- Objektgröße
+- Komposition
+- Motion
+
+Bestehende Library-Komponenten nur bei exaktem semantischem Fit nutzen; ansonsten formatspezifisch bauen.
+
+Externe Bilder/Medien nur, wenn ein Motiv realistisch/organisch/physisch so komplex ist, dass Code klar schlechter wäre, und nur wenn das Asset tatsächlich bereitgestellt wurde. Keine künstlichen Assets erfinden.
 
 ## Markenakzent
 
@@ -150,23 +198,24 @@ Kein Bild nur, weil ein Bild hübsch aussieht.
 - Rot: Risiko/Fehler/Grenze
 - Blau: seltene Info-/Tech-Semantik
 
-Lila wird gezielt akzentuiert. Die Zwischenüberschrift ist bewusst vollständig lila; bei Untertiteln ist nur die aktive Sprecherposition der Lila-Fokus.
+Lila wird gezielt akzentuiert. Bei Short-Form ist die Zwischenüberschrift bewusst vollständig lila; bei Captions ist nur die aktive Sprecherposition der Lila-Fokus.
 
 ## Qualitätsregel
 
-Eine Szene ist nicht gut, weil sie viel Bewegung hat. Sie ist gut, wenn Startzustand → sichtbare Veränderung → Ergebnis ohne Erklärung neben dem Video verstanden werden können.
+Eine Szene oder ein Longform-Kapitel ist nicht gut, weil es viel Bewegung hat. Es ist gut, wenn Startzustand → sichtbare Veränderung → Ergebnis ohne Zusatz-Erklärung verstanden werden kann.
 
-Jede Szene braucht:
+Pflicht:
 
 - klare Startlage
-- eine dominante Veränderung pro Visual Beat
-- lesbaren End-Hold
+- dominante, bedeutungsgetriebene Veränderungen
+- lesbarer End-Hold
 - eindeutige Beziehung zum Sprechertext
-- zeitliche Übereinstimmung von Sprecher, Beat und Caption
+- zeitliche Übereinstimmung von Sprecher und Beat
 - keine unnötige Textdopplung
 - keine erfundenen Fakten
 - keine zufällige Reuse-Animation
-- keine Animation in oder unter der Caption-Zone
+- formatgerechte Lesbarkeit
+- aktueller Render gehört exakt zum geprüften Source-Stand
 
 ## Publishing-Modell
 
@@ -174,7 +223,7 @@ Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram R
 
 Plattform-spezifische Titel/Captions gehören in `03-caption/platform-copy.md`. Strategie: `PLATTFORMEN.md` und `ki/plattformen/`.
 
-YouTube Longform ist ein eigenes Format und darf nicht automatisch aus Reels aufgeblasen werden.
+YouTube Longform ist ein eigenes aktives Format unter `ki/youtube-longform/`. Titel, Beschreibung, Kapitel und Thumbnail gehören in das jeweilige Longform-Paket; `ki/plattformen/youtube/` bleibt die Regel-/Template-Ebene.
 
 ## Produktionsmodell
 
@@ -185,6 +234,8 @@ Phase 3 — Codex/Antigravity: Audio + Timeline-Synchronisierung + Verifikation 
 ```
 
 Phase 1 entscheidet Inhalt und individuelle Visual Beats. Phase 3 darf diese Kreativentscheidung nicht durch bequemere vorhandene Animationen ersetzen, außer ein nachweisbarer technischer oder visueller Fehler verlangt eine Korrektur.
+
+Bei fehlendem Phase-3-Audio exakt: `PHASE 2 AUDIO FEHLT`.
 
 ## STRIKE KI-Regel (Keine künstlichen Assets)
 Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!
