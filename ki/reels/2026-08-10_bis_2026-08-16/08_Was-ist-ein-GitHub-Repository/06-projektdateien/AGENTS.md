@@ -1,6 +1,6 @@
 # Reel-spezifischer Agent-Vertrag
 
-Zusätzlich zu `ki/reels/AGENTS.md` und `ki/gehirn/POST_RENDER_REVIEW.md` gilt:
+Zusätzlich zu `ki/reels/AGENTS.md`, `ki/reels/REMOTION_NATIVE_VISUALS.md`, `ki/src/reels/AGENTS.md` und `ki/gehirn/POST_RENDER_REVIEW.md` gilt:
 
 - Sprechertext und Wortreihenfolge nicht umschreiben.
 - alle 16 Visual Beats sind `NEW_BUILD`; keine ungefähre Library-Substitution.
@@ -13,6 +13,9 @@ Zusätzlich zu `ki/reels/AGENTS.md` und `ki/gehirn/POST_RENDER_REVIEW.md` gilt:
 - Untertitel als kurze semantische Gruppen, normalerweise 4–6 Wörter, maximal 2 Zeilen; niemals zwei komplette Sätze gleichzeitig.
 - Cover ist kein Reel-Frame: eigenständiges Hero-Cover nach `../02-bilder/cover-brief.md`.
 - keine unnötigen GitHub-Logo-Kopien; die Repository-Idee muss über Mechanik verständlich sein.
+- Ordner, Dateien, Commits, Timeline, Branches, Pull Request, Merge, Statuspunkte, Pfeile, Labels und sonstige UI-/Grafikbestandteile bleiben **Remotion-native** mit React/SVG/CSS; nicht durch generierte Screenshots oder KI-Bilder ersetzen.
+- Bitmap-Icons und generierte UI sind verboten, wenn SVG/React/CSS dieselbe Aussage sauber abbilden kann.
+- externe Bilder nur bei echtem `IMAGE_REQUIRED`-/`HYBRID`-Bedarf; präzise Informationsschichten bleiben immer Remotion-native.
 - Phase 3 darf Szenenlängen, Holds und natürliche Pausen an echtes Audio anpassen.
 - lokales Phrase-/Cue-Retiming nur pitch-erhaltend: bevorzugt 0.97x–1.03x, bei echtem Bedarf bis ca. 0.94x–1.06x.
 - keine Speedänderung mitten im Wort; stärkere Korrektur → neues Phase-2-Voiceover.
