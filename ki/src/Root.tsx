@@ -65,7 +65,6 @@ import {
   WHY_AI_WIDTH,
   ReelWhyAIReadsDifferently,
 } from './reels/why-ai-reads-differently';
-
 import {
   AI_SKETCH_WEBSITE_COMPOSITION_ID,
   AI_SKETCH_WEBSITE_DURATION_IN_FRAMES,
@@ -82,6 +81,16 @@ import {
   GITHUB_REPOSITORY_WIDTH,
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
+import {
+  AI_APP_WORKFLOW_COMPOSITION_ID,
+  AI_APP_WORKFLOW_DURATION_IN_FRAMES,
+  AI_APP_WORKFLOW_FPS,
+  AI_APP_WORKFLOW_HEIGHT,
+  AI_APP_WORKFLOW_THUMBNAIL_ID,
+  AI_APP_WORKFLOW_WIDTH,
+  LongformAIAppWorkflow,
+  ThumbnailAIAppWorkflow,
+} from './longform/ai-app-workflow';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -168,7 +177,6 @@ export const RemotionRoot: React.FC = () => (
         width={WHY_AI_WIDTH}
         height={WHY_AI_HEIGHT}
       />
-
       <Composition 
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
         component={ReelAISketchWebsite} 
@@ -192,6 +200,27 @@ export const RemotionRoot: React.FC = () => (
         fps={GITHUB_REPOSITORY_FPS} 
         width={GITHUB_REPOSITORY_WIDTH} 
         height={GITHUB_REPOSITORY_HEIGHT}
+      />
+    </Folder>
+
+    <Folder name="KI-YouTube-Longform">
+      <Composition
+        id={AI_APP_WORKFLOW_COMPOSITION_ID}
+        component={LongformAIAppWorkflow}
+        defaultProps={{}}
+        durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES}
+        fps={AI_APP_WORKFLOW_FPS}
+        width={AI_APP_WORKFLOW_WIDTH}
+        height={AI_APP_WORKFLOW_HEIGHT}
+      />
+      <Composition
+        id={AI_APP_WORKFLOW_THUMBNAIL_ID}
+        component={ThumbnailAIAppWorkflow}
+        defaultProps={{}}
+        durationInFrames={1}
+        fps={AI_APP_WORKFLOW_FPS}
+        width={AI_APP_WORKFLOW_WIDTH}
+        height={AI_APP_WORKFLOW_HEIGHT}
       />
     </Folder>
 
