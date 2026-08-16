@@ -123,14 +123,19 @@ npx tsx ki/scripts/validate-reel.ts <composition-id>
 
 Erst wenn ALLE Checks grün sind, weiter mit Schritt 6.
 
-### Schritt 6: Rendern
+### Schritt 6: Rendern und Exportieren
+
+**WICHTIG:** Das finale Video und ein ansprechendes Cover-Bild MÜSSEN im `05-export` Ordner gespeichert werden.
 
 ```bash
-# Video rendern
+# Video rendern (speichert normalerweise in out/ oder direkt im Ordner)
 npx remotion render ki/src/index.ts <CompositionId> ki/reels/<woche>/<reel>/05-export/<name>.mp4
 
-# Cover generieren
-npx remotion still ki/src/index.ts <CompositionId> ki/reels/<woche>/<reel>/05-export/cover.jpg --frame=<markanter-frame>
+# Wenn der Render nach out/ ging, MUSS er kopiert werden:
+cp out/<name>.mp4 ki/reels/<woche>/<reel>/05-export/
+
+# Ein repräsentatives Frame als cover.jpg extrahieren (falls nicht anders möglich)
+ffmpeg -y -ss 00:00:10 -i ki/reels/<woche>/<reel>/05-export/<name>.mp4 -frames:v 1 -q:v 2 ki/reels/<woche>/<reel>/05-export/cover.jpg
 ```
 
 ### Schritt 7: Verifizieren
@@ -145,9 +150,14 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 <output.mp4>
 
 ### Schritt 8: Git Commit (STRIKE-Regel!)
 
+Da `.mp4`-Dateien und `images` in der `.gitignore` stehen, **MÜSSEN** die Exporte im Ordner `05-export/` zwingend per `-f` (force) hinzugefügt werden, damit sie auf GitHub laden:
+
 ```bash
+git add -f ki/reels/<woche>/<reel>/05-export/<name>.mp4
+git add -f ki/reels/<woche>/<reel>/05-export/cover.jpg
 git add .
-git commit -m "feat(reel): render <reel-titel> with audio-synced timings"
+git commit -m "feat(reel): render <reel-titel> with audio-synced timings and export cover"
+git push
 ```
 
 ---
@@ -161,7 +171,8 @@ git commit -m "feat(reel): render <reel-titel> with audio-synced timings"
 - [ ] `Root.tsx` hat Voiceover-Import UND `voiceoverSrc` in defaultProps
 - [ ] Pre-Render Validation bestanden
 - [ ] Render hat Audio-Spur
-- [ ] Git Commit erstellt
+- [ ] Finale .mp4 und cover.jpg im `05-export/` Verzeichnis abgelegt
+- [ ] Exporte per `git add -f` hinzugefügt und Commit/Push erstellt
 
 ## Häufige Fehler (die dieser Skill verhindert)
 
