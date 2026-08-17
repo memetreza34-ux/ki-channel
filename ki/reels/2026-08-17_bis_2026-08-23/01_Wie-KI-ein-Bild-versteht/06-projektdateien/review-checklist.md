@@ -20,9 +20,10 @@
 ## Layout
 
 - [ ] 1080×1920 / 30 FPS
-- [ ] Überschriften komplett `#6E45C9`
+- [ ] Überschriften komplett `#6E45C9`, sofern die freigegebene helle Brand-Composition verwendet wird
 - [ ] semantisches Icon groß und sichtbar
-- [ ] Animation endet oberhalb Caption-Zone y=1440
+- [ ] Hauptvisual konkurriert nicht mit dem höheren Caption-Block
+- [ ] neue kritische Visuals möglichst bis ungefähr y≈1280–1320 abgeschlossen
 - [ ] kein wichtiger Inhalt durch Clip-Guard abgeschnitten
 - [ ] kritische Labels etwa ≥28–32 px
 - [ ] Hauptvisual nutzt die obere Fläche sinnvoll
@@ -31,14 +32,28 @@
 
 - [ ] echte Audio-Dauer gemessen
 - [ ] Captions gegen final verwendetes Audio synchron
-- [ ] lila Wort-/Phrasenfokus trifft Sprecher
+- [ ] Caption-Wrapper bei 1080×1920 `bottom: 460px`
+- [ ] Caption sichtbar ungefähr im unteren Mittelbereich statt im unteren Plattform-UI-Bereich
+- [ ] 4–6 Wörter pro sichtbarem Sinnblock
+- [ ] maximal 2 Caption-Zeilen gleichzeitig
+- [ ] letzte ungefähr 360px unten frei von Caption und anderer kritischer Information
+- [ ] lila Wort-/Phrasenfokus trifft Sprecher, sofern die kanonische Brand-Caption verwendet wird
 - [ ] lokale Retimings, falls nötig, natürlich und dokumentiert
+
+## Feed-/Smartphone-Review
+
+- [ ] Caption wirkt weder zu tief noch an Accountname/Beschreibung/CTA gedrückt
+- [ ] rechte Interaktions-UI überlagert keine kritischen Inhalte
+- [ ] Caption und Hauptvisual haben ausreichend sichtbare Trennung
+- [ ] bei Kollision wurde das Visual geändert, nicht die Caption nach unten verschoben
 
 ## Final
 
 - [ ] TypeScript/Tests tatsächlich ausgeführt
+- [ ] neuer Smoke-Render **nach** Caption-Positionsänderung erstellt
 - [ ] Smoke-Frames visuell geprüft
 - [ ] finaler Render gehört exakt zum aktuellen Source-Stand
 - [ ] MP4 in normaler Geschwindigkeit angesehen
-- [ ] Smartphone-Größe geprüft
+- [ ] Smartphone-/Feed-Größe geprüft
+- [ ] ein Render vor der Caption-Revision wird nicht als aktuelle Freigabe verwendet
 - [ ] Status nur nach tatsächlicher Prüfung auf gerendert/visuell geprüft/freigegeben setzen
