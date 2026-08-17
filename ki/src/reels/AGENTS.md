@@ -80,15 +80,18 @@ Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, w
 
 ## Caption-Position ist Source-Vertrag
 
-Für 1080 × 1920 Production-Reels ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich.
+Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
 
-- Caption-Wrapper standardmäßig **`bottom: 460px`**
-- links/rechts mindestens ungefähr `70–76px`
+- neue Reel-Sources müssen `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE` aus `../captionSafe` verwenden
+- Standard: **`bottom: 520px`**
+- horizontaler Sicherheitsabstand: **`104px` links/rechts**
+- bevorzugte maximale Caption-Breite: **`820px`**
 - sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
-- die letzten ungefähr 360px unten nicht für Caption oder kritische Information verwenden
+- die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
+- Bereich 420–500px vom unteren Rand nur als Puffer behandeln
 - Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr y≈1280–1320 abschließen
-- den Caption-Wrapper **nicht** auf 264/270px oder ähnlich tiefe Altwerte zurücksetzen
+- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
+- keine Altwerte wie 264/270/360/440/460px als neue Caption-Position hart codieren
 - wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
 
 Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
