@@ -124,24 +124,25 @@ Audio-Retiming:
 
 ### Untertitel — plattformsicherer Feed-Bereich
 
-`CAPTION_SAFE_POSITION.md` ist für die genaue Position verbindlich.
+`CAPTION_SAFE_POSITION.md` ist für die genaue Position verbindlich. Die aktuelle Geometrie wurde zusätzlich anhand eines echten veröffentlichten Instagram-Feed-Screenshots des Kanals kalibriert.
 
 - Untertitel decken den gesprochenen Text vollständig ab
 - **kein weißer Kasten, keine Caption-Card, kein flächiger Hintergrund**
 - Text steht frei auf dem Bild und erhält nur so viel Schatten/Outline, wie für Lesbarkeit nötig ist
-- bei 1080 × 1920 gilt als Standard **`bottom: 460px`**
-- der sichtbare Caption-Block liegt dadurch typischerweise ungefähr im Bereich **y≈1340–1470**, abhängig von Schriftgröße und Zeilenanzahl
-- die letzten ungefähr **360 px** am unteren Rand sind für Untertitel und andere kritische Informationen tabu
-- ungefähr **360–440 px Abstand vom unteren Rand** gelten nur als Puffer, nicht als bevorzugte Caption-Position
+- bei 1080 × 1920 gilt als Standard **`bottom: 520px`**
+- horizontal **104px Sicherheitsabstand** links und rechts; bevorzugte maximale Caption-Breite **820px**
+- der sichtbare Caption-Block liegt typischerweise ungefähr im Bereich **y≈1260–1400**, abhängig von Schriftgröße und Zeilenanzahl
+- die letzten ungefähr **420 px** am unteren Rand sind für Untertitel und andere kritische Informationen tabu
+- ungefähr **420–500 px Abstand vom unteren Rand** gelten nur als Puffer, nicht als bevorzugte Caption-Position
 - Untertitel normalerweise als **4–6 Wörter pro sichtbarem Sinnblock**, maximal **2 Zeilen gleichzeitig**
-- links/rechts mindestens ungefähr 70 px Sicherheitsabstand
 - Untertitel sind klarer Sans-Serif-Text, keine dekorative Serifenschrift
 - aktives Wort bzw. aktive Wortgruppe wird synchron zum Sprecher in Marken-Lila hervorgehoben
 - bereits gesprochene Wörter bleiben normal dunkel; nur der aktuelle Sprechfokus wird lila
 - mit echtem Audio in Phase 3 echte Cue-/Wort-Timestamps an das Voiceover anpassen; nur proportional geschätzte Wortzeiten sind niemals die finale Freigabe
 - die Caption darf **nicht nach unten verschoben werden**, um Platz für ein zu tiefes Visual zu schaffen
+- neue Reel-Sources verwenden die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`
 
-Die genaue Plattform-UI kann sich je nach App, Gerät, Caption-Länge und Oberfläche verändern. Deshalb ist `bottom: 460px` ein konservativer kanalinterner Cross-Platform-Standard und kein behaupteter universeller Plattformwert.
+Die genaue Plattform-UI kann sich je nach App, Gerät, Caption-Länge und Oberfläche verändern. Deshalb ist `bottom: 520px` ein konservativer kanalinterner Cross-Platform-Standard und kein behaupteter universeller Plattformwert.
 
 ### Animationstext
 
@@ -167,11 +168,12 @@ Für Production-Reels gilt eine **harte Trennung** zwischen erklärendem Visual 
 
 Bei 1080 × 1920:
 
-- die Caption sitzt standardmäßig mit `bottom: 460px`
-- neue bedeutungstragende Hauptvisuals sollen nach Möglichkeit bis ungefähr **y≈1280–1320** abgeschlossen sein
+- die Caption sitzt standardmäßig mit `bottom: 520px`
+- neue bedeutungstragende Hauptvisuals sollen nach Möglichkeit bis ungefähr **y≈1240–1280** abgeschlossen sein
 - zwischen Hauptvisual und Caption ungefähr **80–120 px** sichtbare Luft anstreben
 - der bestehende technische Clip-Guard um ungefähr `y=1440` bleibt eine letzte Sicherung, ist aber **nicht** die eigentliche Caption-Positionsregel
 - kein wichtiges Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
+- rechts die Feed-Interaktionsleiste mitdenken; Caption und kritische Labels nicht bis an die rechte Kante ziehen
 - wenn eine Animation zu tief reicht: Animation höher setzen, neu komponieren oder kompakter bauen
 - **Untertitel niemals nach unten verschieben, nur um Platz für eine Animation zu schaffen**
 - wenn der Clip-Guard wichtigen Inhalt abschneidet, ist das Reel **nicht freigabefähig** und muss neu layoutet werden
@@ -184,11 +186,11 @@ Als dauerhafte Produktionsrichtlinie:
 
 - keine kritische Schrift direkt am oberen Rand
 - Zwischenüberschrift + Icon kompakt im oberen sicheren Bereich platzieren
-- seitlich mindestens ca. 70 px Luft für kritischen Text
-- die letzten ungefähr **360 px** unten nicht für Untertitel oder andere kritische Informationen verwenden
-- Bereich **360–440 px vom unteren Rand** nur als Sicherheits-Puffer behandeln
-- Caption standardmäßig bei **`bottom: 460px`**
-- Hauptvisuals für neue Reels möglichst bis ungefähr **y≈1280–1320** abschließen
+- seitlich für Caption ungefähr **104px**, für andere kritische Texte mindestens ca. 70px Luft
+- die letzten ungefähr **420 px** unten nicht für Untertitel oder andere kritische Informationen verwenden
+- Bereich **420–500 px vom unteren Rand** nur als Sicherheits-Puffer behandeln
+- Caption standardmäßig bei **`bottom: 520px`**
+- Hauptvisuals für neue Reels möglichst bis ungefähr **y≈1240–1280** abschließen
 - zwischen Hauptanimation und Untertitel möglichst ungefähr 80–120 px sichtbare Luft lassen
 - wenn ein Mechanismus in den Caption-Bereich ragt: Animation höher/kompakter/new-build; Untertitel bleiben an ihrer sicheren Position
 - dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
@@ -263,7 +265,8 @@ Vor Freigabe tatsächlich prüfen:
 - Zwischenüberschrift oben mittig, vollständig lila und mit deutlich lesbarem passendem Icon
 - keine zusätzliche Header-Unterzeile
 - Untertitel ohne Hintergrundkarte
-- Caption bei 1080×1920 standardmäßig `bottom: 460px`
+- Caption bei 1080×1920 standardmäßig `bottom: 520px`
+- horizontaler Caption-Sicherheitsabstand 104px links/rechts; bevorzugte maximale Breite 820px
 - maximal 2 Zeilen und kompakte 4–6-Wort-Sinnblöcke, sofern der reel-spezifische Text nichts Begründetes anderes verlangt
 - Untertitel nicht von Plattform-UI gefährdet
 - aktive lila Hervorhebung folgt dem echten Sprecher
