@@ -1,0 +1,20 @@
+# Voiceover — Wie KI ein Bild versteht
+
+**Wortzahl:** 133
+**Baseline:** ca. 57 Sekunden bei natürlichem Short-Form-Sprechtempo
+
+## Finaler Sprechertext
+
+Für eine KI ist ein Foto nicht zuerst Katze, Auto oder Text. Es beginnt als Bilddaten: viele Zahlen für Helligkeit und Farbe.
+
+Moderne Bildmodelle zerlegen diese Daten häufig in kleinere Bereiche und übersetzen sie in interne Zahlenrepräsentationen. Dadurch entstehen Merkmale für Formen, Kanten, Farben und Beziehungen zwischen Bildteilen.
+
+Diese visuellen Informationen werden anschließend mit Sprache verknüpft. Deshalb kann ein multimodales Modell beschreiben, was es erkennt, Fragen zum Bild beantworten oder Text im Bild einordnen.
+
+Aber das ist kein menschliches Sehen. Kleine Schrift, ungewöhnliche Perspektiven, verdeckte Objekte oder komplizierte räumliche Beziehungen können das Modell trotzdem verwirren.
+
+Genau deshalb hilft ein präziser Bild-Prompt: Sag, welche Aufgabe du hast, welcher Bereich wichtig ist und in welchem Format du die Antwort brauchst. Je klarer der Fokus, desto weniger muss die KI aus dem gesamten Bild selbst erraten.
+
+## Grounding-Hinweis
+
+Die Formulierung „häufig in kleinere Bereiche“ ist bewusst architektur-neutral: konkrete Bildencoder unterscheiden sich. Das Reel behauptet nicht, dass jedes multimodale Modell exakt dieselbe interne Pipeline verwendet.

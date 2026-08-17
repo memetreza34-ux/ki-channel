@@ -1,0 +1,22 @@
+{
+  "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+  "title": "Wie KI ein Bild versteht",
+  "compositionId": "KI-AIImageUnderstanding",
+  "sourceSlug": "ai-image-understanding",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "baselineDurationInFrames": 1710,
+  "baselineDurationSeconds": 57,
+  "spokenWords": 133,
+  "captionZoneStartY": 1440,
+  "visualBeatCount": 15,
+  "imageDecision": "BILDER NICHT ERFORDERLICH",
+  "scenes": [
+    {"sceneId":"image-01","startFrame":0,"endFrame":285,"headline":"Ein Bild beginnt als Zahlen","icon":"image"},
+    {"sceneId":"image-02","startFrame":285,"endFrame":620,"headline":"Bildteile werden Merkmale","icon":"grid"},
+    {"sceneId":"image-03","startFrame":620,"endFrame":955,"headline":"Sehen trifft Sprache","icon":"link"},
+    {"sceneId":"image-04","startFrame":955,"endFrame":1225,"headline":"Auch Bild-KI irrt","icon":"warning"},
+    {"sceneId":"image-05","startFrame":1225,"endFrame":1710,"headline":"Gib der KI Fokus","icon":"target"}
+  ]
+}
