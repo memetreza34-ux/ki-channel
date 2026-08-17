@@ -85,7 +85,7 @@ const Captions: React.FC = () => {
     interpolate(frame, [cue.endFrame - 4, cue.endFrame], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
   );
 
-  return <div style={{position: 'absolute', left: 76, right: 76, bottom: 270, zIndex: 200, display: 'flex', justifyContent: 'center', opacity: fade, pointerEvents: 'none'}}>
+  return <div style={{position: 'absolute', left: 76, right: 76, bottom: 460, zIndex: 200, display: 'flex', justifyContent: 'center', opacity: fade, pointerEvents: 'none'}}>
     <div style={{width: '100%', maxWidth: 860, textAlign: 'center', fontFamily: BRAND.font, fontSize: 52, fontWeight: 850, lineHeight: 1.14, letterSpacing: -.9, color: BRAND.ink, textShadow: '0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>
       {visibleGroup.map((wordIndex, i) => <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${wordIndex}`}>
         <span style={{display: 'inline-block', color: wordIndex === active ? BRAND.accentDk : BRAND.ink, transform: `scale(${wordIndex === active ? 1.04 : 1})`, transformOrigin: '50% 70%'}}>{words[wordIndex]}</span>
