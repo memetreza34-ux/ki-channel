@@ -8,18 +8,122 @@
     "minimumVisualFamiliesPerReel": 4
   },
   "animations": [
-    {"animationId":"sentence-token-shatter-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-01","visualFamily":"tokenization","layoutFamily":"center-to-scatter","motionSignature":"sentence-lock-shatter-magnetic-tiles","firstUsedAt":"2026-08-04"},
-    {"animationId":"token-vector-scanner-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-02","visualFamily":"data-transformation","layoutFamily":"vertical-machine","motionSignature":"tokens-descend-scan-convert-numbers","firstUsedAt":"2026-08-04"},
-    {"animationId":"embedding-cluster-orbit-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-03","visualFamily":"semantic-space","layoutFamily":"depth-field","motionSignature":"vectors-fly-cluster-camera-orbit","firstUsedAt":"2026-08-04"},
-    {"animationId":"attention-thread-weave-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-04","visualFamily":"relationship-network","layoutFamily":"distributed-nodes","motionSignature":"keywords-anchor-threads-weave-pulse","firstUsedAt":"2026-08-04"},
-    {"animationId":"next-token-branch-race-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-05","visualFamily":"probability","layoutFamily":"branching-paths","motionSignature":"candidate-paths-race-probability-shift","firstUsedAt":"2026-08-04"},
-    {"animationId":"transformer-layer-elevator-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-06","visualFamily":"model-processing","layoutFamily":"stacked-layers","motionSignature":"candidate-rises-through-layers-refines","firstUsedAt":"2026-08-04"},
-    {"animationId":"answer-word-assembly-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-07","visualFamily":"generation","layoutFamily":"left-to-right-build","motionSignature":"word-capsules-snap-into-answer","firstUsedAt":"2026-08-04"},
-    {"animationId":"brilliant-wrong-split-balance-v1","reelId":"2026-08-04-warum-ki-text-anders-liest","sceneId":"scene-08","visualFamily":"risk-contrast","layoutFamily":"split-balance","motionSignature":"answer-splits-correct-wrong-balance-tilts","firstUsedAt":"2026-08-04"},
-    {"animationId":"photo-pixel-grid-v1","reelId":"2026-08-17-wie-ki-ein-bild-versteht","sceneId":"image-01","visualFamily":"vision-input","layoutFamily":"hero-card-to-grid","motionSignature":"photo-category-fade-grid-data-reveal","firstUsedAt":"2026-08-17"},
-    {"animationId":"image-feature-vector-v1","reelId":"2026-08-17-wie-ki-ein-bild-versteht","sceneId":"image-02","visualFamily":"vision-representation","layoutFamily":"tiles-to-feature-matrix","motionSignature":"tiles-vectorize-feature-cards-connect","firstUsedAt":"2026-08-17"},
-    {"animationId":"vision-language-bridge-v1","reelId":"2026-08-17-wie-ki-ein-bild-versteht","sceneId":"image-03","visualFamily":"multimodal-alignment","layoutFamily":"two-column-bridge","motionSignature":"visual-language-bridge-answer-task-switch","firstUsedAt":"2026-08-17"},
-    {"animationId":"vision-limit-matrix-v1","reelId":"2026-08-17-wie-ki-ein-bild-versteht","sceneId":"image-04","visualFamily":"risk-contrast","layoutFamily":"two-by-two-risk-matrix","motionSignature":"human-model-split-risk-cards-alert","firstUsedAt":"2026-08-17"},
-    {"animationId":"focus-prompt-funnel-v1","reelId":"2026-08-17-wie-ki-ein-bild-versteht","sceneId":"image-05","visualFamily":"guidance-flow","layoutFamily":"focus-window-to-result","motionSignature":"requirements-activate-focus-tighten-clear-result","firstUsedAt":"2026-08-17"}
+    {
+      "animationId": "sentence-token-shatter-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-01",
+      "visualFamily": "tokenization",
+      "layoutFamily": "center-to-scatter",
+      "motionSignature": "sentence-lock-shatter-magnetic-tiles",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "token-vector-scanner-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-02",
+      "visualFamily": "data-transformation",
+      "layoutFamily": "vertical-machine",
+      "motionSignature": "tokens-descend-scan-convert-numbers",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "embedding-cluster-orbit-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-03",
+      "visualFamily": "semantic-space",
+      "layoutFamily": "depth-field",
+      "motionSignature": "vectors-fly-cluster-camera-orbit",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "attention-thread-weave-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-04",
+      "visualFamily": "relationship-network",
+      "layoutFamily": "distributed-nodes",
+      "motionSignature": "keywords-anchor-threads-weave-pulse",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "next-token-branch-race-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-05",
+      "visualFamily": "probability",
+      "layoutFamily": "branching-paths",
+      "motionSignature": "candidate-paths-race-probability-shift",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "transformer-layer-elevator-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-06",
+      "visualFamily": "model-processing",
+      "layoutFamily": "stacked-layers",
+      "motionSignature": "candidate-rises-through-layers-refines",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "answer-word-assembly-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-07",
+      "visualFamily": "generation",
+      "layoutFamily": "left-to-right-build",
+      "motionSignature": "word-capsules-snap-into-answer",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "brilliant-wrong-split-balance-v1",
+      "reelId": "2026-08-04-warum-ki-text-anders-liest",
+      "sceneId": "scene-08",
+      "visualFamily": "risk-contrast",
+      "layoutFamily": "split-balance",
+      "motionSignature": "answer-splits-correct-wrong-balance-tilts",
+      "firstUsedAt": "2026-08-04"
+    },
+    {
+      "animationId": "photo-pixel-grid-v1",
+      "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+      "sceneId": "image-01",
+      "visualFamily": "vision-input",
+      "layoutFamily": "hero-card-to-grid",
+      "motionSignature": "photo-category-fade-grid-data-reveal",
+      "firstUsedAt": "2026-08-17"
+    },
+    {
+      "animationId": "image-feature-vector-v1",
+      "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+      "sceneId": "image-02",
+      "visualFamily": "vision-representation",
+      "layoutFamily": "tiles-to-feature-matrix",
+      "motionSignature": "tiles-vectorize-feature-cards-connect",
+      "firstUsedAt": "2026-08-17"
+    },
+    {
+      "animationId": "vision-language-bridge-v1",
+      "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+      "sceneId": "image-03",
+      "visualFamily": "multimodal-alignment",
+      "layoutFamily": "two-column-bridge",
+      "motionSignature": "visual-language-bridge-answer-task-switch",
+      "firstUsedAt": "2026-08-17"
+    },
+    {
+      "animationId": "vision-limit-matrix-v1",
+      "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+      "sceneId": "image-04",
+      "visualFamily": "risk-contrast",
+      "layoutFamily": "two-by-two-risk-matrix",
+      "motionSignature": "human-model-split-risk-cards-alert",
+      "firstUsedAt": "2026-08-17"
+    },
+    {
+      "animationId": "focus-prompt-funnel-v1",
+      "reelId": "2026-08-17-wie-ki-ein-bild-versteht",
+      "sceneId": "image-05",
+      "visualFamily": "guidance-flow",
+      "layoutFamily": "focus-window-to-result",
+      "motionSignature": "requirements-activate-focus-tighten-clear-result",
+      "firstUsedAt": "2026-08-17"
+    }
   ]
 }
