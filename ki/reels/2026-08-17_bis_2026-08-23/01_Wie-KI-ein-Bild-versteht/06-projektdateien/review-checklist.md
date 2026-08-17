@@ -23,7 +23,7 @@
 - [ ] Überschriften komplett `#6E45C9`, sofern die freigegebene helle Brand-Composition verwendet wird
 - [ ] semantisches Icon groß und sichtbar
 - [ ] Hauptvisual konkurriert nicht mit dem höheren Caption-Block
-- [ ] neue kritische Visuals möglichst bis ungefähr y≈1280–1320 abgeschlossen
+- [ ] neue kritische Visuals möglichst bis ungefähr y≈1240–1280 abgeschlossen
 - [ ] kein wichtiger Inhalt durch Clip-Guard abgeschnitten
 - [ ] kritische Labels etwa ≥28–32 px
 - [ ] Hauptvisual nutzt die obere Fläche sinnvoll
@@ -32,25 +32,28 @@
 
 - [ ] echte Audio-Dauer gemessen
 - [ ] Captions gegen final verwendetes Audio synchron
-- [ ] Caption-Wrapper bei 1080×1920 `bottom: 460px`
-- [ ] Caption sichtbar ungefähr im unteren Mittelbereich statt im unteren Plattform-UI-Bereich
+- [ ] Caption-Wrapper bei 1080×1920 `bottom: 520px`
+- [ ] horizontal ungefähr 104px Sicherheitsabstand links/rechts
+- [ ] Caption maximal ungefähr 820px breit
+- [ ] Caption sichtbar ungefähr bei y≈1260–1400 statt im unteren Plattform-UI-Bereich
 - [ ] 4–6 Wörter pro sichtbarem Sinnblock
 - [ ] maximal 2 Caption-Zeilen gleichzeitig
-- [ ] letzte ungefähr 360px unten frei von Caption und anderer kritischer Information
+- [ ] letzte ungefähr 420px unten frei von Caption und anderer kritischer Information
+- [ ] Bereich 420–500px vom unteren Rand nur als Puffer genutzt
 - [ ] lila Wort-/Phrasenfokus trifft Sprecher, sofern die kanonische Brand-Caption verwendet wird
 - [ ] lokale Retimings, falls nötig, natürlich und dokumentiert
 
 ## Feed-/Smartphone-Review
 
-- [ ] Caption wirkt weder zu tief noch an Accountname/Beschreibung/CTA gedrückt
-- [ ] rechte Interaktions-UI überlagert keine kritischen Inhalte
-- [ ] Caption und Hauptvisual haben ausreichend sichtbare Trennung
+- [ ] Caption wirkt klar oberhalb von Accountname/Beschreibung/CTA
+- [ ] rechte Like-/Kommentar-/Share-UI überlagert oder bedrängt keine Caption/kritischen Inhalte
+- [ ] Caption und Hauptvisual haben ungefähr 80–120px sichtbare Trennung
 - [ ] bei Kollision wurde das Visual geändert, nicht die Caption nach unten verschoben
 
 ## Final
 
 - [ ] TypeScript/Tests tatsächlich ausgeführt
-- [ ] neuer Smoke-Render **nach** Caption-Positionsänderung erstellt
+- [ ] neuer Smoke-Render **nach** der 520px-Caption-Positionsänderung erstellt
 - [ ] Smoke-Frames visuell geprüft
 - [ ] finaler Render gehört exakt zum aktuellen Source-Stand
 - [ ] MP4 in normaler Geschwindigkeit angesehen
