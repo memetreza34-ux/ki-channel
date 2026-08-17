@@ -122,19 +122,26 @@ Audio-Retiming:
 - niemals interner `goal`, Planner-, Debug- oder Regietext
 - Zwischenüberschrift ordnet die Szene ein, sie kopiert nicht den gesprochenen Satz
 
-### Untertitel unten
+### Untertitel — plattformsicherer Feed-Bereich
+
+`CAPTION_SAFE_POSITION.md` ist für die genaue Position verbindlich.
 
 - Untertitel decken den gesprochenen Text vollständig ab
 - **kein weißer Kasten, keine Caption-Card, kein flächiger Hintergrund**
 - Text steht frei auf dem Bild und erhält nur so viel Schatten/Outline, wie für Lesbarkeit nötig ist
-- Untertitel liegen in einer sicheren unteren Zone, **nicht am unteren Bildschirmrand**
-- bei 1080 × 1920 gilt als Produktionsrichtwert: kritischen Untertiteltext ungefähr 240–380 px über dem unteren Rand halten
+- bei 1080 × 1920 gilt als Standard **`bottom: 460px`**
+- der sichtbare Caption-Block liegt dadurch typischerweise ungefähr im Bereich **y≈1340–1470**, abhängig von Schriftgröße und Zeilenanzahl
+- die letzten ungefähr **360 px** am unteren Rand sind für Untertitel und andere kritische Informationen tabu
+- ungefähr **360–440 px Abstand vom unteren Rand** gelten nur als Puffer, nicht als bevorzugte Caption-Position
+- Untertitel normalerweise als **4–6 Wörter pro sichtbarem Sinnblock**, maximal **2 Zeilen gleichzeitig**
 - links/rechts mindestens ungefähr 70 px Sicherheitsabstand
 - Untertitel sind klarer Sans-Serif-Text, keine dekorative Serifenschrift
 - aktives Wort bzw. aktive Wortgruppe wird synchron zum Sprecher in Marken-Lila hervorgehoben
 - bereits gesprochene Wörter bleiben normal dunkel; nur der aktuelle Sprechfokus wird lila
 - mit echtem Audio in Phase 3 echte Cue-/Wort-Timestamps an das Voiceover anpassen; nur proportional geschätzte Wortzeiten sind niemals die finale Freigabe
-- aktive Textfenster kompakt halten und auf dem Smartphone schnell erfassbar machen
+- die Caption darf **nicht nach unten verschoben werden**, um Platz für ein zu tiefes Visual zu schaffen
+
+Die genaue Plattform-UI kann sich je nach App, Gerät, Caption-Länge und Oberfläche verändern. Deshalb ist `bottom: 460px` ein konservativer kanalinterner Cross-Platform-Standard und kein behaupteter universeller Plattformwert.
 
 ### Animationstext
 
@@ -154,21 +161,22 @@ Animation = visuelle Erklärung
 Zwischenüberschrift + Icon = Kapitel/Kerngedanke
 ```
 
-## Harte Caption-Zone — unter Untertiteln keine Animation
+## Caption-/Visual-Trennung
 
-Für Production-Reels gilt ab jetzt eine **harte Trennung** zwischen Animation und Caption-Bereich.
+Für Production-Reels gilt eine **harte Trennung** zwischen erklärendem Visual und Caption-/Feed-Bereich.
 
 Bei 1080 × 1920:
 
-- der Bereich ab ungefähr **y=1440 bis zum unteren Rand gehört Caption + Plattform-Safe-Zone**
-- **kein Remotion-Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel und kein Animationslabel darf dort sichtbar sein**
-- Untertitel sind die unterste inhaltliche Ebene des Videos
-- Animationen müssen oberhalb davon enden und möglichst ungefähr 80–120 px sichtbare Luft zum Untertitel lassen
+- die Caption sitzt standardmäßig mit `bottom: 460px`
+- neue bedeutungstragende Hauptvisuals sollen nach Möglichkeit bis ungefähr **y≈1280–1320** abgeschlossen sein
+- zwischen Hauptvisual und Caption ungefähr **80–120 px** sichtbare Luft anstreben
+- der bestehende technische Clip-Guard um ungefähr `y=1440` bleibt eine letzte Sicherung, ist aber **nicht** die eigentliche Caption-Positionsregel
+- kein wichtiges Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
 - wenn eine Animation zu tief reicht: Animation höher setzen, neu komponieren oder kompakter bauen
 - **Untertitel niemals nach unten verschieben, nur um Platz für eine Animation zu schaffen**
-- die Production-Shell besitzt zusätzlich einen technischen Clip-Guard; wenn dadurch Inhalt abgeschnitten würde, ist die Animation **nicht freigabefähig** und muss neu layoutet werden
+- wenn der Clip-Guard wichtigen Inhalt abschneidet, ist das Reel **nicht freigabefähig** und muss neu layoutet werden
 
-Diese Regel ist härter als ein bloßer Überlappungscheck: **unterhalb der Caption darf überhaupt keine Animation weiterlaufen.**
+Die reale Kollision im Render entscheidet. Ein Element kann technisch oberhalb einer alten Clip-Grenze liegen und trotzdem visuell zu nah an der höher positionierten Caption sein.
 
 ## Safe Zones — 1080 × 1920
 
@@ -177,14 +185,15 @@ Als dauerhafte Produktionsrichtlinie:
 - keine kritische Schrift direkt am oberen Rand
 - Zwischenüberschrift + Icon kompakt im oberen sicheren Bereich platzieren
 - seitlich mindestens ca. 70 px Luft für kritischen Text
-- unteren Bereich von ungefähr 0–220 px nicht für wichtige Untertitel oder Kernlabels verwenden
-- Untertitel bevorzugt oberhalb dieser No-Go-Zone platzieren
-- kritische Remotion-Animationen und deren wichtige Labels müssen oberhalb von ungefähr y=1440 enden
+- die letzten ungefähr **360 px** unten nicht für Untertitel oder andere kritische Informationen verwenden
+- Bereich **360–440 px vom unteren Rand** nur als Sicherheits-Puffer behandeln
+- Caption standardmäßig bei **`bottom: 460px`**
+- Hauptvisuals für neue Reels möglichst bis ungefähr **y≈1280–1320** abschließen
 - zwischen Hauptanimation und Untertitel möglichst ungefähr 80–120 px sichtbare Luft lassen
-- wenn ein Mechanismus in die Caption-Zone ragt, Animation höher/kompakter/new-build; Untertitel bleiben an ihrer sicheren Position
+- wenn ein Mechanismus in den Caption-Bereich ragt: Animation höher/kompakter/new-build; Untertitel bleiben an ihrer sicheren Position
 - dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
 
-Vor finaler Freigabe zusätzlich den tatsächlichen Plattform-Crop bzw. die UI-Safe-Zone visuell prüfen.
+Vor finaler Freigabe den tatsächlichen Plattform-/Feed-Eindruck auf Smartphone-Größe prüfen. Ein Source-Change der Caption-Position macht eine frühere Render-Freigabe ungültig.
 
 ## Visualisierung
 
@@ -254,10 +263,11 @@ Vor Freigabe tatsächlich prüfen:
 - Zwischenüberschrift oben mittig, vollständig lila und mit deutlich lesbarem passendem Icon
 - keine zusätzliche Header-Unterzeile
 - Untertitel ohne Hintergrundkarte
-- Untertitel nicht zu tief und nicht von Plattform-UI gefährdet
+- Caption bei 1080×1920 standardmäßig `bottom: 460px`
+- maximal 2 Zeilen und kompakte 4–6-Wort-Sinnblöcke, sofern der reel-spezifische Text nichts Begründetes anderes verlangt
+- Untertitel nicht von Plattform-UI gefährdet
 - aktive lila Hervorhebung folgt dem echten Sprecher
-- **unterhalb der Caption-Zone ist keinerlei Animation sichtbar**
-- Hauptanimation und wichtige Animationslabels enden sichtbar oberhalb der Caption-Zone
+- Hauptanimation und wichtige Animationslabels konkurrieren nicht mit dem Caption-Block
 - technische Clip-Grenze schneidet keinen wichtigen Inhalt ab
 - keine abgeschnittene Schrift
 - keine Zwischenüberschriften-/Caption-/Visual-Überlappung
@@ -269,3 +279,4 @@ Vor Freigabe tatsächlich prüfen:
 - Motion passt semantisch exakt
 - Bilder frei von Wasserzeichen, Prompttext, zufälliger Schrift und Gesichtern
 - finale MP4 normal abspielen und ansehen
+- nach jeder Caption-Positionsänderung neu rendern und erneut auf Smartphone-/Feed-Größe prüfen
