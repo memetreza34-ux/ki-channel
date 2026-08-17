@@ -78,6 +78,21 @@ Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden 
 
 Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
 
+## Caption-Position ist Source-Vertrag
+
+Für 1080 × 1920 Production-Reels ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich.
+
+- Caption-Wrapper standardmäßig **`bottom: 460px`**
+- links/rechts mindestens ungefähr `70–76px`
+- sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
+- die letzten ungefähr 360px unten nicht für Caption oder kritische Information verwenden
+- Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
+- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr y≈1280–1320 abschließen
+- den Caption-Wrapper **nicht** auf 264/270px oder ähnlich tiefe Altwerte zurücksetzen
+- wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
+
+Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
+
 ## Qualitätsregeln
 
 - keine Screenshot-Optik, wenn dieselbe UI sauber nativ nachgebaut werden kann
@@ -90,7 +105,7 @@ Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, w
 - kritische Labels kurz und groß genug
 - Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
 - Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
-- Caption-Zone und alle übergeordneten Reel-Verträge bleiben vollständig gültig
+- Caption-Safe-Position und alle übergeordneten Reel-Verträge bleiben vollständig gültig
 
 ## Entscheidungsfrage
 
