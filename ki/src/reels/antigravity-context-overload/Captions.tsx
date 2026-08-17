@@ -89,7 +89,7 @@ export const ContextOverloadCaptions: React.FC = () => {
         position: 'absolute',
         left: 76,
         right: 76,
-        bottom: 264,
+        bottom: 460,
         zIndex: 200,
         display: 'flex',
         justifyContent: 'center',
