@@ -78,6 +78,24 @@ Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden 
 
 Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
 
+## Caption-Position ist Source-Vertrag
+
+Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
+
+- neue Reel-Sources müssen `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE` aus `../captionSafe` verwenden
+- Standard: **`bottom: 520px`**
+- horizontaler Sicherheitsabstand: **`104px` links/rechts**
+- bevorzugte maximale Caption-Breite: **`820px`**
+- sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
+- die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
+- Bereich 420–500px vom unteren Rand nur als Puffer behandeln
+- Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
+- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
+- keine Altwerte wie 264/270/360/440/460px als neue Caption-Position hart codieren
+- wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
+
+Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
+
 ## Qualitätsregeln
 
 - keine Screenshot-Optik, wenn dieselbe UI sauber nativ nachgebaut werden kann
@@ -90,7 +108,7 @@ Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, w
 - kritische Labels kurz und groß genug
 - Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
 - Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
-- Caption-Zone und alle übergeordneten Reel-Verträge bleiben vollständig gültig
+- Caption-Safe-Position und alle übergeordneten Reel-Verträge bleiben vollständig gültig
 
 ## Entscheidungsfrage
 

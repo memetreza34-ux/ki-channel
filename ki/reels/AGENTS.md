@@ -138,39 +138,39 @@ Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen dens
 
 ## Verbindliches sichtbares Textlayout
 
-Für Production-Reels gilt `ki/gehirn/REELS.md` ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
+Für Production-Reels gelten `ki/gehirn/REELS.md`, **`ki/gehirn/CAPTION_SAFE_POSITION.md`** und für Source **`ki/src/reels/captionSafe.ts`** ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
 
 - pro Szene eine kurze **Zwischenüberschrift oben mittig**
 - komplette Zwischenüberschrift in dunklem Marken-Lila `#6E45C9`
 - zur Zwischenüberschrift ein semantisch passendes, deutlich lesbares und eher größeres Icon
 - keine zusätzliche Header-Unterzeile
-- Untertitel unten in der sicheren Zone, nicht an der Displaykante
 - Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
 - Sans-Serif und smartphone-lesbar
 - aktive Sprecherposition in Marken-Lila hervorheben
+- Untertitel bei 1080×1920 standardmäßig mit **`bottom: 520px`** positionieren
+- horizontal **104px Sicherheitsabstand** links und rechts
+- bevorzugte maximale Caption-Breite **820px**
+- Caption-Fenster normalerweise **4–6 Wörter**, maximal **2 Zeilen gleichzeitig**
+- die letzten ungefähr **420px** unten niemals für Untertitel oder andere kritische Informationen verwenden
+- `420–500px` vom unteren Rand nur als Puffer behandeln
+- neue Reel-Sources verwenden die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`; keine Altwerte neu hart codieren
 - finale Untertitel in Phase 3 mit dem **tatsächlich final verwendeten Audio** zeitlich abgleichen
 
-## Harte Caption-Zone
+## Caption-/Visual-Safe-Zone
 
-Bei 1080 × 1920 gilt ab ungefähr `y=1440` die reservierte Caption-/Bottom-Safe-Zone.
+Bei 1080 × 1920 gilt:
 
-**Dort und darunter ist sichtbare Animation verboten.**
+- Caption-Position: standardmäßig **`bottom: 520px`**
+- sichtbarer Caption-Block typischerweise ungefähr **y≈1260–1400**
+- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
+- ungefähr **80–120px** Luft zwischen Hauptvisual und Caption anstreben
+- der bestehende technische Clip-Guard um `y≈1440` ist nur eine letzte Sicherung und **nicht** die Caption-Positionsregel
+- kein Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel, keine Illustration und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
+- rechts Interaktions-UI gedanklich mitprüfen; Caption/Labels nicht unnötig bis an die rechte Kante führen
 
-Das bedeutet:
+Wenn Platz fehlt: Animation höher, kompakter oder individuell neu bauen. **Untertitel nicht nach unten verschieben.**
 
-- keine Animationskarte
-- kein Node
-- keine Linie
-- kein Partikel
-- keine Illustration
-- kein Animationslabel
-- keine dekorative UI
-
-unter/ hinter den Untertiteln.
-
-Animationen müssen vorher enden. Wenn Platz fehlt, Animation höher, kompakter oder individuell neu bauen. Untertitel nicht nach unten verschieben.
-
-Die gemeinsame Production-Shell darf zusätzlich clippen. Wird dadurch wichtiger Inhalt abgeschnitten, ist das ein Layoutfehler und keine akzeptable Lösung.
+Wird wichtiger Inhalt durch den technischen Clip-Guard abgeschnitten oder kollidiert er trotz technischer Bounds mit der Caption, ist das ein Layoutfehler und keine akzeptable Lösung.
 
 Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
 
@@ -186,9 +186,11 @@ Insbesondere:
 - vorhandene sinnvolle Mechanik vergrößern statt Leerraum mit Deko zu füllen
 - neue Sprecherbedeutung darf nicht über mehrere Sekunden auf praktisch unverändertem Bild liegen; ungefähr `>2.5 s` ist ein Review-Warnsignal, sofern kein bewusster End-Hold vorliegt
 - die letzte Szene muss bis zur letzten inhaltlichen Phrase sichtbar weiterentwickelt werden
-- nach jeder Source-Änderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht; ein alter MP4 darf nie den neuen Source-Stand freigeben
+- Caption im Feed-Eindruck klar oberhalb von Beschreibung/Account-/Interaktions-UI halten
+- rechte Feed-Interaktionsleiste darf Caption oder kritische Visual-Labels nicht bedrängen
+- nach jeder Source- oder Caption-Positionsänderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht; ein alter MP4 darf nie den neuen Source-Stand freigeben
 
-Wenn ein Nutzer einen gerenderten MP4 zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md` oder diesem Vertrag verankert werden müssen.
+Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md`, `CAPTION_SAFE_POSITION.md` oder diesem Vertrag verankert werden müssen.
 
 ## Plattform-Copy
 
@@ -238,7 +240,7 @@ Widerspruch erkennen, nicht verstecken.
 
 ## Fertig bedeutet wirklich fertig
 
-Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-Größe angesehen wurde.
+Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-/Feed-Größe angesehen wurde.
 
 Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 
@@ -250,8 +252,11 @@ Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 - lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
 - Header/Icon-Position
 - vollständige lila Zwischenüberschrift
-- Caption-Safe-Zone
-- **keinerlei sichtbare Animation unter der Caption-Zone**
+- Caption standardmäßig `bottom: 520px` bei 1080×1920
+- Caption verwendet die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`
+- horizontaler Caption-Sicherheitsabstand zur Feed-UI ist eingehalten
+- maximal 2 Caption-Zeilen gleichzeitig
+- Caption nicht im unteren Plattform-/Feed-UI-Bereich
 - Hauptvisual auf Smartphone ausreichend groß
 - wichtige interne Labels auf Smartphone lesbar
 - keine unnötig große Leere bei gleichzeitig kleiner Kernanimation
