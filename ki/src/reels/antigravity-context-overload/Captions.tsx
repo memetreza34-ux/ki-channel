@@ -87,9 +87,9 @@ export const ContextOverloadCaptions: React.FC = () => {
     <div
       style={{
         position: 'absolute',
-        left: 76,
-        right: 76,
-        bottom: 460,
+        left: 104,
+        right: 104,
+        bottom: 520,
         zIndex: 200,
         display: 'flex',
         justifyContent: 'center',
@@ -100,7 +100,7 @@ export const ContextOverloadCaptions: React.FC = () => {
       <div
         style={{
           width: '100%',
-          maxWidth: 880,
+          maxWidth: 820,
           color: BRAND.ink,
           fontFamily: BRAND.font,
           fontSize: 48,
