@@ -9,6 +9,8 @@ import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-e
 import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
 import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
 import voiceoverGithubRepo from '../reels/2026-08-10_bis_2026-08-16/08_Was-ist-ein-GitHub-Repository/01-script-audio/voiceover.mp4';
+import voiceoverHowAISees from '../reels/2026-08-17_bis_2026-08-23/01_Wie-KI-ein-Bild-versteht/01-script-audio/voiceover.mp4';
+
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -81,6 +83,16 @@ import {
   GITHUB_REPOSITORY_WIDTH,
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
+
+import {
+  HOW_AI_SEES_COMPOSITION_ID,
+  HOW_AI_SEES_DURATION_IN_FRAMES,
+  HOW_AI_SEES_FPS,
+  HOW_AI_SEES_HEIGHT,
+  HOW_AI_SEES_WIDTH,
+  ReelHowAISees,
+} from './reels/how-ai-sees';
+
 import {
   AI_IMAGE_UNDERSTANDING_COMPOSITION_ID,
   AI_IMAGE_UNDERSTANDING_DURATION_IN_FRAMES,
@@ -200,15 +212,23 @@ export const RemotionRoot: React.FC = () => (
       <Composition 
         id={GITHUB_REPOSITORY_COMPOSITION_ID} 
         component={ReelGitHubRepository} 
-        defaultProps={{
-          voiceoverSrc: voiceoverGithubRepo,
-          showCaptions: true
-        }} 
+        defaultProps={{showCaptions: true, voiceoverSrc: voiceoverGithubRepo}} 
         durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} 
         fps={GITHUB_REPOSITORY_FPS} 
         width={GITHUB_REPOSITORY_WIDTH} 
         height={GITHUB_REPOSITORY_HEIGHT}
       />
+
+      <Composition 
+        id={HOW_AI_SEES_COMPOSITION_ID} 
+        component={ReelHowAISees} 
+        defaultProps={{showCaptions: true, voiceoverSrc: voiceoverHowAISees}} 
+        durationInFrames={HOW_AI_SEES_DURATION_IN_FRAMES} 
+        fps={HOW_AI_SEES_FPS} 
+        width={HOW_AI_SEES_WIDTH} 
+        height={HOW_AI_SEES_HEIGHT}
+      />
+      
       <Composition
         id={AI_IMAGE_UNDERSTANDING_COMPOSITION_ID}
         component={ReelAIImageUnderstanding}

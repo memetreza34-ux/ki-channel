@@ -1,12 +1,76 @@
-[
-  {"sceneId":"image-01","startFrame":0,"endFrame":145,"text":"Für eine KI ist ein Foto nicht zuerst Katze, Auto oder Text."},
-  {"sceneId":"image-01","startFrame":145,"endFrame":285,"text":"Es beginnt als Bilddaten: viele Zahlen für Helligkeit und Farbe."},
-  {"sceneId":"image-02","startFrame":285,"endFrame":460,"text":"Moderne Bildmodelle zerlegen diese Daten häufig in kleinere Bereiche und übersetzen sie in interne Zahlenrepräsentationen."},
-  {"sceneId":"image-02","startFrame":460,"endFrame":620,"text":"Dadurch entstehen Merkmale für Formen, Kanten, Farben und Beziehungen zwischen Bildteilen."},
-  {"sceneId":"image-03","startFrame":620,"endFrame":760,"text":"Diese visuellen Informationen werden anschließend mit Sprache verknüpft."},
-  {"sceneId":"image-03","startFrame":760,"endFrame":955,"text":"Deshalb kann ein multimodales Modell beschreiben, was es erkennt, Fragen zum Bild beantworten oder Text im Bild einordnen."},
-  {"sceneId":"image-04","startFrame":955,"endFrame":1060,"text":"Aber das ist kein menschliches Sehen."},
-  {"sceneId":"image-04","startFrame":1060,"endFrame":1225,"text":"Kleine Schrift, ungewöhnliche Perspektiven, verdeckte Objekte oder komplizierte räumliche Beziehungen können das Modell trotzdem verwirren."},
-  {"sceneId":"image-05","startFrame":1225,"endFrame":1465,"text":"Genau deshalb hilft ein präziser Bild-Prompt: Sag, welche Aufgabe du hast, welcher Bereich wichtig ist und in welchem Format du die Antwort brauchst."},
-  {"sceneId":"image-05","startFrame":1465,"endFrame":1710,"text":"Je klarer der Fokus, desto weniger muss die KI aus dem gesamten Bild selbst erraten."}
-]
+{
+  "cues": [
+    {
+      "sceneId": "see-01",
+      "startFrame": 0,
+      "endFrame": 117,
+      "text": "Für eine KI ist ein Foto nicht zuerst Katze, Auto oder Text."
+    },
+    {
+      "sceneId": "see-01",
+      "startFrame": 117,
+      "endFrame": 241,
+      "text": "Es beginnt als Bilddaten: viele Zahlen für Helligkeit und Farbe."
+    },
+    {
+      "sceneId": "see-01",
+      "startFrame": 241,
+      "endFrame": 373,
+      "text": "Moderne Bildmodelle zerlegen diese Daten häufig in kleinere Bereiche"
+    },
+    {
+      "sceneId": "see-02",
+      "startFrame": 373,
+      "endFrame": 476,
+      "text": "und übersetzen sie in interne Zahlenrepräsentationen."
+    },
+    {
+      "sceneId": "see-02",
+      "startFrame": 476,
+      "endFrame": 651,
+      "text": "Dadurch entstehen Merkmale für Formen, Kanten, Farben und Beziehungen zwischen Bildteilen."
+    },
+    {
+      "sceneId": "see-02",
+      "startFrame": 651,
+      "endFrame": 791,
+      "text": "Diese visuellen Informationen werden anschließend mit Sprache verknüpft."
+    },
+    {
+      "sceneId": "see-03",
+      "startFrame": 791,
+      "endFrame": 1029,
+      "text": "Deshalb kann ein multimodales Modell beschreiben, was es erkennt, Fragen zum Bild beantworten oder Text im Bild einordnen."
+    },
+    {
+      "sceneId": "see-03",
+      "startFrame": 1029,
+      "endFrame": 1101,
+      "text": "Aber das ist kein menschliches Sehen."
+    },
+    {
+      "sceneId": "see-04",
+      "startFrame": 1101,
+      "endFrame": 1372,
+      "text": "Kleine Schrift, ungewöhnliche Perspektiven, verdeckte Objekte oder komplizierte räumliche Beziehungen können das Modell trotzdem verwirren."
+    },
+    {
+      "sceneId": "see-04",
+      "startFrame": 1372,
+      "endFrame": 1459,
+      "text": "Genau deshalb hilft ein präziser Bild-Prompt:"
+    },
+    {
+      "sceneId": "see-05",
+      "startFrame": 1459,
+      "endFrame": 1660,
+      "text": "Sag, welche Aufgabe du hast, welcher Bereich wichtig ist und in welchem Format du die Antwort brauchst."
+    },
+    {
+      "sceneId": "see-05",
+      "startFrame": 1660,
+      "endFrame": 1851,
+      "text": "Je klarer der Fokus, desto weniger muss die KI aus dem gesamten Bild selbst erraten."
+    }
+  ]
+}
