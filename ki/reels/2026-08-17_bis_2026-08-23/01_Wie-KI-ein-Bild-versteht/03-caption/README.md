@@ -4,14 +4,18 @@ Die Cues müssen gegen das tatsächlich verwendete Voiceover synchronisiert blei
 
 ## Position
 
-Für 1080×1920 gilt ab dieser Revision:
+Für 1080×1920 gilt nach dem echten Instagram-Feed-Check:
 
-- Caption-Wrapper standardmäßig `bottom: 460px`
-- sichtbarer Caption-Bereich typischerweise ungefähr y≈1340–1470
+- Caption-Wrapper standardmäßig `bottom: 520px`
+- horizontal ungefähr `104px` Sicherheitsabstand links/rechts
+- bevorzugte maximale Caption-Breite `820px`
+- sichtbarer Caption-Bereich typischerweise ungefähr y≈1260–1400
 - 4–6 Wörter pro sichtbarem Sinnblock
 - maximal 2 Zeilen gleichzeitig
-- letzte ungefähr 360px unten nicht für Caption oder andere kritische Informationen verwenden
+- letzte ungefähr 420px unten nicht für Caption oder andere kritische Informationen verwenden
+- Bereich 420–500px vom unteren Rand nur als Puffer behandeln
 - Caption niemals wieder nach unten verschieben, um Platz für Visuals zu schaffen
+- rechte Feed-Interaktionsleiste im Smartphone-Review mitprüfen
 
 Der technische Clip-Guard um y≈1440 bleibt nur eine letzte Sicherung. Entscheidend ist, dass Visual und höher liegende Caption im realen Render nicht konkurrieren.
 
