@@ -1,8 +1,8 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Diese Datei ergänzt `ki/gehirn/REELS.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
+Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
 
-Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-Größe geprüft wurde.
+Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
 
 ## 1. Kein leerer Einstieg
 
@@ -24,14 +24,19 @@ Die Animation soll die verfügbare Fläche **nutzen**, statt wie ein kleines Des
 - Wenn ein Zuschauer Kleinsttext nicht liest, muss die Kernmechanik trotzdem verständlich bleiben.
 - Leere Fläche nicht mit Deko füllen: lieber die vorhandene sinnvolle Mechanik größer und klarer komponieren.
 
-## 3. Vertikale Fläche bewusst nutzen
+## 3. Caption- und Feed-Sicherheit
 
-Die harte Caption-Zone bleibt unverändert geschützt.
+Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich.
 
-- Animation darf den Raum oberhalb `y≈1440` aktiv nutzen.
-- Zwischen Hauptvisual und Caption möglichst ungefähr `80–120 px` sichtbare Luft.
-- Wenn viel ungenutzter Weißraum entsteht, zuerst Hauptvisual vergrößern/neu komponieren — niemals Caption nach unten verschieben.
-- Keine wichtige Karte, Linie, Beschriftung oder Bewegung in/unter der Caption-Zone.
+- Caption standardmäßig mit **`bottom: 460px`** platzieren.
+- Der sichtbare Caption-Block liegt dadurch typischerweise ungefähr bei **y≈1340–1470**.
+- Die letzten ungefähr **360 px** unten sind für Untertitel und andere kritische Informationen tabu.
+- Der Bereich ungefähr **360–440 px vom unteren Rand** ist nur Puffer, keine bevorzugte Caption-Fläche.
+- Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
+- Neue bedeutungstragende Visuals sollen möglichst bis ungefähr **y≈1280–1320** abgeschlossen sein.
+- Zwischen Hauptvisual und Caption ungefähr `80–120 px` Luft anstreben.
+- Wenn viel ungenutzter Weißraum entsteht, Hauptvisual vergrößern/neu komponieren — **niemals Caption nach unten verschieben**.
+- Der technische Clip-Guard um y≈1440 ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
 
 ## 4. Kein langer statischer Sprecherabschnitt
 
@@ -69,7 +74,9 @@ Mindestens prüfen:
 - letzte `8–12 s` besonders dicht
 - normale Wiedergabegeschwindigkeit
 - Smartphone-Größe / kleine Vorschau
-- Caption-Lesbarkeit
+- Feed-Eindruck mit gedanklich reservierter Plattform-UI unten/rechts
+- Caption-Lesbarkeit und Caption-Höhe
+- maximal 2 Caption-Zeilen
 - interne Label-Lesbarkeit
 - Animation/Caption-Abstand
 - leere Flächen
@@ -91,7 +98,7 @@ Render ansehen
 
 Ein alter Render darf **nicht** als visuelle Freigabe für eine danach geänderte Source verwendet werden.
 
-Nach Source-Änderungen sind frühere Häkchen für neuen Smoke-/Final-Render und visuelle Endfreigabe nicht mehr gültig.
+Das gilt ausdrücklich auch für reine Caption-Positionsänderungen. Nach einer Änderung von `bottom`, Caption-Größe, Zeilenlogik oder Safe-Zone sind frühere Render-/Review-Häkchen nicht mehr gültig.
 
 ## 8. Freigabe-Gate
 
@@ -103,8 +110,11 @@ Nicht `approved`, wenn mindestens eines davon zutrifft:
 - große ungenutzte Fläche trotz kleiner Kernanimation
 - mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
 - Schluss steht sichtbar zu früh still
-- Animation ragt in Caption-Zone
+- Caption liegt sichtbar zu tief im Plattform-/Feed-UI-Bereich
+- Caption wurde unter `bottom: 440px` geschoben, um Platz für Visuals zu gewinnen
 - Caption und Animation konkurrieren
+- mehr als 2 Caption-Zeilen stehen gleichzeitig sichtbar
+- wichtiger Inhalt wird vom Clip-Guard abgeschnitten
 - neuer Source-Stand wurde nach letzter visueller Prüfung verändert
 
-Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung**.
+Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung bei sicher lesbarer Caption**.
