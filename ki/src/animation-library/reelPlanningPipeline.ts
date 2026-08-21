@@ -45,11 +45,11 @@ const synchronizeEnhancedAnalysis = (
     analysis.familyScores.map((score) => score.visualFamily),
   );
   const preferredVisualFamilies = unique([
+    ...analysis.preferredVisualFamilies,
     ...meaningContract.preferredVisualFamilies.filter(
       (family): family is AnimationFamilyName =>
         validFamilies.has(family as AnimationFamilyName),
     ),
-    ...analysis.preferredVisualFamilies,
   ]).slice(0, 3);
   const semanticTags = unique([
     ...analysis.semanticTags,

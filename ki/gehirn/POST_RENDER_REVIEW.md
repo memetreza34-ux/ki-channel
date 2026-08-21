@@ -30,12 +30,13 @@ Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktu
 
 - Caption standardmäßig mit **`bottom: 520px`** platzieren.
 - Horizontal ungefähr **104px** Abstand links/rechts und bevorzugt maximal **820px** Caption-Breite.
-- Der sichtbare Caption-Block liegt dadurch typischerweise ungefähr bei **y≈1260–1400**.
+- Der sichtbare Caption-Block liegt dadurch typischerweise ungefähr bei **y≈1280–1400**.
 - Die letzten ungefähr **420 px** unten sind für Untertitel und andere kritische Informationen tabu.
 - Der Bereich ungefähr **420–500 px vom unteren Rand** ist nur Puffer, keine bevorzugte Caption-Fläche.
 - Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
-- Neue bedeutungstragende Visuals sollen möglichst bis ungefähr **y≈1240–1280** abgeschlossen sein.
-- Zwischen Hauptvisual und Caption ungefähr `80–120 px` Luft anstreben.
+- Header vollständig in **y=110–260**, Animation ausschließlich in **y=300–1160**.
+- Zwischen Animationsende und konservativer Zwei-Zeilen-Caption mindestens **100px** freie Luft.
+- Zwischen Hauptvisual und konservativer Zwei-Zeilen-Caption mindestens `100 px` Luft sicherstellen.
 - Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen; kritischer Caption-Text darf nicht an die rechte Kante gedrängt sein.
 - Wenn viel ungenutzter Weißraum entsteht, Hauptvisual vergrößern/neu komponieren — **niemals Caption nach unten verschieben**.
 - Der technische Clip-Guard um y≈1440 ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.

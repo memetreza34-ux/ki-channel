@@ -24,7 +24,7 @@ Phase 1 erstellt:
 - bei Bildbedarf hochwertige `02-bilder/image-prompts.md` nach `ki/BILDSTIL.md`
 - `02-bilder/asset-manifest.json`, auch wenn bewusst keine externen Assets nötig sind
 - `03-caption/subtitle-cues.json` als Audio-unabhängige Basis
-- `03-caption/platform-copy.md` für YouTube Shorts, Instagram, TikTok, Facebook und ggf. Snapchat
+- `03-caption/platform-copy.md` mit einer gemeinsamen, direkt kopierbaren Caption für YouTube Shorts, Instagram, TikTok, Facebook und Snapchat sowie genau fünf Hashtags
 - `06-projektdateien/reel.json`
 - Assembly-Auftrag und Review-Checkliste
 - ausführbaren Remotion-Source unter `ki/src/reels/<slug>/`
@@ -39,7 +39,7 @@ Phase 1 erstellt:
 
 **Verboten:** erst eine vorhandene Library-Animation wählen und dann den Inhalt darauf anpassen. Die Library wird erst nach der inhaltlichen Visual-Beat-Planung geprüft.
 
-Plattform-Copy ist Packaging und darf die fachliche Aussage des Reels nicht verändern. Regeln: `PLATTFORMEN.md`.
+Die universelle Social Caption ist Packaging und darf die fachliche Aussage des Reels nicht verändern. Keine Plattformvarianten und keine PDF erstellen. Regeln: `PLATTFORMEN.md`.
 
 ### Phase-1-Fertigkriterium
 

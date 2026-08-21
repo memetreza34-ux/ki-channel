@@ -1,14 +1,6 @@
 import React from 'react';
-import {Composition, Folder} from 'remotion';
+import {Composition, Folder, staticFile} from 'remotion';
 import {MotionPreviewRoot} from './motion-system/MotionPreviewRoot';
-import voiceoverContext from '../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/01-script-audio/voiceover.wav';
-import voiceoverHallucination from '../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/01-script-audio/voiceover.mp4';
-import voiceoverAmbiguous from '../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/01-script-audio/voiceover.mp4';
-import voiceoverAgents from '../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/01-script-audio/voiceover.mp4';
-import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-einer-Idee-eine-Mini-App/01-script-audio/voiceover.mp4';
-import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
-import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
-import voiceoverGithubRepo from '../reels/2026-08-10_bis_2026-08-16/08_Was-ist-ein-GitHub-Repository/01-script-audio/voiceover.mp4';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -82,6 +74,16 @@ import {
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
 import {
+  CoverWhyAIDoesNotKnowToday,
+  ReelWhyAIDoesNotKnowToday,
+  TODAY_COMPOSITION_ID,
+  TODAY_COVER_ID,
+  TODAY_DURATION,
+  TODAY_FPS,
+  TODAY_HEIGHT,
+  TODAY_WIDTH,
+} from './reels/why-ai-does-not-know-today';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -99,7 +101,7 @@ export const RemotionRoot: React.FC = () => (
         id={CONTEXT_OVERLOAD_COMPOSITION_ID}
         component={ReelContextOverload}
         defaultProps={{
-          voiceoverSrc: voiceoverContext,
+          voiceoverSrc: staticFile('reels/antigravity-context-overload/audio/voiceover.wav'),
           showCaptions: true,
           showDebugTimeline: false,
         }}
@@ -112,7 +114,7 @@ export const RemotionRoot: React.FC = () => (
         id={HALLUCINATION_COMPOSITION_ID}
         component={ReelHallucinations}
         defaultProps={{
-          voiceoverSrc: voiceoverHallucination,
+          voiceoverSrc: staticFile('reels/ai-hallucinations/audio/voiceover.mp4'),
           showCaptions: true
         }}
         durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
@@ -124,7 +126,7 @@ export const RemotionRoot: React.FC = () => (
         id={AMBIGUOUS_PROMPTS_COMPOSITION_ID}
         component={ReelAmbiguousPrompts}
         defaultProps={{
-          voiceoverSrc: voiceoverAmbiguous,
+          voiceoverSrc: staticFile('reels/ambiguous-prompts/audio/voiceover.mp4'),
           showCaptions: true
         }}
         durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES}
@@ -136,7 +138,7 @@ export const RemotionRoot: React.FC = () => (
         id={AI_AGENTS_COMPOSITION_ID}
         component={ReelAIAgents}
         defaultProps={{
-          voiceoverSrc: voiceoverAgents,
+          voiceoverSrc: staticFile('reels/ai-agents/audio/voiceover.mp4'),
           showCaptions: true
         }}
         durationInFrames={AI_AGENTS_DURATION_IN_FRAMES}
@@ -148,7 +150,7 @@ export const RemotionRoot: React.FC = () => (
         id={AI_APP_COMPOSITION_ID}
         component={ReelAIAppPrototype}
         defaultProps={{
-          voiceoverSrc: voiceoverApp,
+          voiceoverSrc: staticFile('reels/ai-app-prototype/audio/voiceover.mp4'),
           showCaptions: true
         }}
         durationInFrames={AI_APP_DURATION_IN_FRAMES}
@@ -160,7 +162,7 @@ export const RemotionRoot: React.FC = () => (
         id={AI_PRODUCT_AD_COMPOSITION_ID} 
         component={ReelAIProductAd} 
         defaultProps={{
-          voiceoverSrc: voiceoverProductAd,
+          voiceoverSrc: staticFile('reels/ai-product-ad/audio/voiceover.mp4'),
           showCaptions: true
         }} 
         durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} 
@@ -181,7 +183,7 @@ export const RemotionRoot: React.FC = () => (
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
         component={ReelAISketchWebsite} 
         defaultProps={{
-          voiceoverSrc: voiceoverSketchWebsite,
+          voiceoverSrc: staticFile('reels/ai-sketch-website/audio/voiceover.mp4'),
           showCaptions: true
         }} 
         durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} 
@@ -193,13 +195,31 @@ export const RemotionRoot: React.FC = () => (
         id={GITHUB_REPOSITORY_COMPOSITION_ID} 
         component={ReelGitHubRepository} 
         defaultProps={{
-          voiceoverSrc: voiceoverGithubRepo,
+          voiceoverSrc: staticFile('reels/github-repository-basics/audio/voiceover.mp4'),
           showCaptions: true
         }} 
         durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} 
         fps={GITHUB_REPOSITORY_FPS} 
         width={GITHUB_REPOSITORY_WIDTH} 
         height={GITHUB_REPOSITORY_HEIGHT}
+      />
+      <Composition
+        id={TODAY_COMPOSITION_ID}
+        component={ReelWhyAIDoesNotKnowToday}
+        defaultProps={{}}
+        durationInFrames={TODAY_DURATION}
+        fps={TODAY_FPS}
+        width={TODAY_WIDTH}
+        height={TODAY_HEIGHT}
+      />
+      <Composition
+        id={TODAY_COVER_ID}
+        component={CoverWhyAIDoesNotKnowToday}
+        defaultProps={{}}
+        durationInFrames={1}
+        fps={TODAY_FPS}
+        width={TODAY_WIDTH}
+        height={TODAY_HEIGHT}
       />
     </Folder>
 

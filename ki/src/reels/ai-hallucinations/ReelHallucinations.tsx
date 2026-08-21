@@ -20,6 +20,7 @@ import type {PrototypeRenderProps} from '../../animation-library/prototypes/Prot
 import reelJson from '../../../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/03-caption/subtitle-cues.json';
 import type {ComponentType} from 'react';
+import {getVisibleCaptionWordIndices, REEL_CAPTION_SAFE} from '../captionSafe';
 
 export type HallucinationScene = {
   sceneId: string;
@@ -146,13 +147,14 @@ const HallucinationCaptions: React.FC = () => {
   if (!cue) return null;
   const words = cue.words?.length ? cue.words.map((word) => word.text) : cue.text.trim().split(/\s+/).filter(Boolean);
   const activeIndex = activeWordIndex(frame, cue, words.length);
+  const visibleIndices = getVisibleCaptionWordIndices(words, activeIndex);
   return (
-    <div style={{position:'absolute',left:104,right:104,bottom:520,zIndex:200,display:'flex',justifyContent:'center',pointerEvents:'none',opacity:edgeFade(frame,cue.startFrame,cue.endFrame)}}>
-      <div style={{width:'100%',maxWidth:820,color:BRAND.ink,fontFamily:BRAND.font,fontSize:48,fontWeight:850,lineHeight:1.18,letterSpacing:-0.9,textAlign:'center',textShadow:'0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)'}}>
-        {words.map((word, index) => (
-          <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${index}-${word}`}>
-            <span style={{display:'inline-block',color:index === activeIndex ? BRAND.accentDk : BRAND.ink,transform:`scale(${index === activeIndex ? 1.035 : 1})`,transformOrigin:'50% 70%'}}>{word}</span>
-            {index < words.length - 1 ? ' ' : null}
+    <div style={{position:'absolute',left:REEL_CAPTION_SAFE.horizontalInset,right:REEL_CAPTION_SAFE.horizontalInset,bottom:REEL_CAPTION_SAFE.bottom,zIndex:200,display:'flex',justifyContent:'center',pointerEvents:'none',opacity:edgeFade(frame,cue.startFrame,cue.endFrame)}}>
+      <div style={{width:'100%',maxWidth:REEL_CAPTION_SAFE.maxWidth,color:BRAND.ink,fontFamily:BRAND.font,fontSize:48,fontWeight:850,lineHeight:1.18,letterSpacing:-0.9,textAlign:'center',textShadow:'0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)'}}>
+        {visibleIndices.map((index, visibleIndex) => (
+          <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${index}-${words[index]}`}>
+            <span style={{display:'inline-block',color:index === activeIndex ? BRAND.accentDk : BRAND.ink,transform:`scale(${index === activeIndex ? 1.035 : 1})`,transformOrigin:'50% 70%'}}>{words[index]}</span>
+            {visibleIndex < visibleIndices.length - 1 ? ' ' : null}
           </React.Fragment>
         ))}
       </div>

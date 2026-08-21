@@ -15,7 +15,7 @@ Für 1080×1920 gilt ab jetzt:
 - **Standard Caption Bottom Offset: `520px`**
 - horizontaler Sicherheitsabstand: **`104px` links und rechts**
 - bevorzugte maximale Textbreite: **`820px`**
-- sichtbarer Untertitelblock typischerweise ungefähr **y=1260–1400**, abhängig von Schriftgröße und 1–2 Zeilen
+- sichtbarer Untertitelblock typischerweise ungefähr **y=1280–1400**, abhängig von Schriftgröße und 1–2 Zeilen
 - normalerweise **4–6 Wörter pro sichtbarem Sinnblock**
 - maximal **2 Zeilen gleichzeitig**
 - kein Hintergrundkasten; Lesbarkeit über kontrollierten Halo/Schatten
@@ -47,7 +47,7 @@ Wenn ein Hauptvisual mit der Caption konkurriert:
 
 **Nicht:** Caption wieder in den unteren Feed-/UI-Bereich verschieben.
 
-Für neue Reels soll der bedeutungstragende Hauptinhalt nach Möglichkeit bis ungefähr `y=1240–1280` abgeschlossen sein. So bleiben etwa 80–120px sichtbare Luft zum Caption-Bereich. Der technische Clip-Guard ist nur die letzte Sicherung und ersetzt keinen realen Kollisionscheck.
+Für neue Reels gilt eine harte vertikale Trennung: Header `y=110–260`, Animation ausschließlich `y=300–1160`, danach mindestens `100px` freie Luft bis zur konservativen Zwei-Zeilen-Caption. Der technische Clip-Guard ist nur die letzte Sicherung und ersetzt keinen realen Kollisionscheck.
 
 ## Source-Gate für zukünftige Reels
 

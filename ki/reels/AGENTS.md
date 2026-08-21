@@ -2,6 +2,8 @@
 
 Gilt für alle Produktionspakete unter `ki/reels/` und erweitert `REPO-STATE.md`, `AGENTS.md`, `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.
 
+Numerische Produktionswerte stammen verbindlich aus `ki/reels/production-standard.json`. Dieser Vertrag erklärt sie; er definiert keine abweichende zweite Zahlenquelle.
+
 ## Struktur ist unveränderlich
 
 ```text
@@ -10,7 +12,6 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ├── 01-script-audio/
 ├── 02-bilder/
 ├── 03-caption/
-├── 04-pdf/
 ├── 05-export/
 └── 06-projektdateien/
 ```
@@ -161,9 +162,12 @@ Für Production-Reels gelten `ki/gehirn/REELS.md`, **`ki/gehirn/CAPTION_SAFE_POS
 Bei 1080 × 1920 gilt:
 
 - Caption-Position: standardmäßig **`bottom: 520px`**
-- sichtbarer Caption-Block typischerweise ungefähr **y≈1260–1400**
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
-- ungefähr **80–120px** Luft zwischen Hauptvisual und Caption anstreben
+- sichtbarer Caption-Block typischerweise ungefähr **y≈1280–1400**
+- Überschrift nicht an den oberen Rand kleben: Header beginnt bei **y=110**, ist **150px** hoch und endet vor der Animation
+- Hauptanimation ausschließlich zwischen **y=300 und y=1160**; nichts darf in Header oder Caption hineinragen
+- neue bedeutungstragende Visuals zwischen ungefähr **y≈1120–1160** abschließen
+- zwischen Animationsende und einer zweizeiligen Caption mindestens **100px** freie Luft halten
+- mindestens **100px** Luft zwischen Hauptvisual und konservativer Zwei-Zeilen-Caption sicherstellen
 - der bestehende technische Clip-Guard um `y≈1440` ist nur eine letzte Sicherung und **nicht** die Caption-Positionsregel
 - kein Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel, keine Illustration und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
 - rechts Interaktions-UI gedanklich mitprüfen; Caption/Labels nicht unnötig bis an die rechte Kante führen
@@ -192,18 +196,15 @@ Insbesondere:
 
 Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md`, `CAPTION_SAFE_POSITION.md` oder diesem Vertrag verankert werden müssen.
 
-## Plattform-Copy
+## Universelle Social-Media-Caption
 
-`03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält mindestens getrennte Bereiche für:
+`03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält genau **eine** direkt kopierbare Caption für YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat.
 
-- neutralen Kerntitel
-- YouTube Shorts
-- Instagram
-- TikTok
-- Facebook Reels
-- Snapchat, falls genutzt
-
-Die Plattformtexte dürfen die fachliche Aussage nicht verändern oder mehr versprechen als das Reel liefert.
+- keine Überschriften, Labels oder Plattformabschnitte in der Datei
+- keine plattformspezifischen Textvarianten
+- genau fünf thematisch passende Hashtags am Ende
+- kein Transcript-Dump, Fake-Hype oder falsches Versprechen
+- keine PDF erstellen oder einen `04-pdf/`-Ordner für neue Reels anlegen
 
 Keine plattformspezifische Kopie des gesamten Produktionspakets anlegen. Publishing-Regeln: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
 

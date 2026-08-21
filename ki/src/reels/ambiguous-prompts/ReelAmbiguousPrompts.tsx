@@ -9,6 +9,7 @@ import {
   type AmbiguousPromptScene,
 } from './contract';
 import {BranchingPromptVisual, ChoiceVisual, ConstraintCollapseVisual, ExampleAnchorVisual, ThreeStepPromptVisual} from './Visuals';
+import {getVisibleCaptionWordIndices, REEL_CAPTION_SAFE} from '../captionSafe';
 
 const visualByScene: Record<string, React.FC> = {
   'ambiguous-01': BranchingPromptVisual,
@@ -44,8 +45,9 @@ const activeWordIndex=(frame:number,cue:AmbiguousPromptCue,count:number):number=
 const Captions: React.FC = () => {
   const frame=useCurrentFrame(); const cue=AMBIGUOUS_PROMPTS_SUBTITLES.find((c)=>frame>=c.startFrame&&frame<c.endFrame); if(!cue)return null;
   const words=cue.words?.length?cue.words.map((w)=>w.text):cue.text.trim().split(/\s+/).filter(Boolean); const active=activeWordIndex(frame,cue,words.length);
+  const visible=getVisibleCaptionWordIndices(words,active);
   const fade=Math.min(interpolate(frame,[cue.startFrame,cue.startFrame+4],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),interpolate(frame,[cue.endFrame-4,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
-  return <div style={{position:'absolute',left:104,right:104,bottom:520,zIndex:200,display:'flex',justifyContent:'center',opacity:fade,pointerEvents:'none'}}><div style={{width:'100%',maxWidth:820,textAlign:'center',fontFamily:BRAND.font,fontSize:47,fontWeight:850,lineHeight:1.18,letterSpacing:-.8,color:BRAND.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>{words.map((word,i)=><React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${i}`}><span style={{display:'inline-block',color:i===active?BRAND.accentDk:BRAND.ink,transform:`scale(${i===active?1.035:1})`,transformOrigin:'50% 70%'}}>{word}</span>{i<words.length-1?' ':null}</React.Fragment>)}</div></div>;
+  return <div style={{position:'absolute',left:REEL_CAPTION_SAFE.horizontalInset,right:REEL_CAPTION_SAFE.horizontalInset,bottom:REEL_CAPTION_SAFE.bottom,zIndex:200,display:'flex',justifyContent:'center',opacity:fade,pointerEvents:'none'}}><div style={{width:'100%',maxWidth:REEL_CAPTION_SAFE.maxWidth,textAlign:'center',fontFamily:BRAND.font,fontSize:47,fontWeight:850,lineHeight:1.18,letterSpacing:-.8,color:BRAND.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>{visible.map((wordIndex,i)=><React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${wordIndex}`}><span style={{display:'inline-block',color:wordIndex===active?BRAND.accentDk:BRAND.ink,transform:`scale(${wordIndex===active?1.035:1})`,transformOrigin:'50% 70%'}}>{words[wordIndex]}</span>{i<visible.length-1?' ':null}</React.Fragment>)}</div></div>;
 };
 
 const SceneLayer: React.FC<{scene: AmbiguousPromptScene}> = ({scene}) => {const Visual=visualByScene[scene.sceneId]; if(!Visual) throw new Error(`missing NEW_BUILD visual for ${scene.sceneId}`); return <AbsoluteFill><Header scene={scene}/><div style={{position:'absolute',left:0,right:0,top:225,height:AMBIGUOUS_PROMPTS_CAPTION_ZONE_Y-225-30,overflow:'hidden',zIndex:20}}><Visual/></div></AbsoluteFill>};

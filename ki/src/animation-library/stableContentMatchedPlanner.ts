@@ -28,7 +28,8 @@ const hasGoalIncompatibleShortcut = ({
   scene: ReelSceneBrief;
   entry: AnimationLibraryEntry;
 }): boolean => {
-  const contract = enhanceSceneMeaning(scene.spokenText, scene.meaningContract);
+  const contract =
+    scene.meaningContract ?? enhanceSceneMeaning(scene.spokenText);
   const corpus = normalize(
     [
       entry.title,
@@ -129,10 +130,8 @@ export const planReelChoreography = ({
 }): ReelChoreographyPlan => {
   const enrichedScenes = scenes.map((scene) => ({
     ...scene,
-    meaningContract: enhanceSceneMeaning(
-      scene.spokenText,
-      scene.meaningContract,
-    ),
+    meaningContract:
+      scene.meaningContract ?? enhanceSceneMeaning(scene.spokenText),
   }));
   const selections: PlannedAnimationSelection[] = [];
   const acceptedEntries: AnimationLibraryEntry[] = [];
@@ -267,7 +266,15 @@ export const planReelChoreography = ({
 
   processSegment(enrichedScenes);
 
-  const visualFamilies = acceptedEntries.map((entry) => entry.visualFamily);
+  const visualFamilies = selections.flatMap((selection) => {
+    if (selection.newAnimationProposal) {
+      return [selection.newAnimationProposal.suggestedVisualFamily];
+    }
+    const entry = acceptedEntries.find(
+      (candidate) => candidate.animationId === selection.animationId,
+    );
+    return entry ? [entry.visualFamily] : [];
+  });
   const layoutFamilies = acceptedEntries.map((entry) => entry.layoutFamily);
   const motionSignatures = acceptedEntries.map((entry) => entry.motionSignature);
   const warnings: string[] = [];

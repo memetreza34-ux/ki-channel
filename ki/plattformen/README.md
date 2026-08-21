@@ -19,6 +19,6 @@ ki/plattformen/
 
 Ein freigegebenes Short-Form-Reel wird einmal unter `ki/reels/` produziert. Plattformen erhalten denselben Master, solange keine technisch notwendige Anpassung erforderlich ist.
 
-Plattform-spezifische Copy für ein konkretes Reel gehört in dessen `03-caption/platform-copy.md`.
+Die gemeinsame, direkt kopierbare Caption für alle Short-Form-Plattformen gehört in `03-caption/platform-copy.md` und endet mit genau fünf Hashtags. Keine Plattformvarianten.
 
 Strategie und Qualitätsregeln: `ki/gehirn/PLATTFORMEN.md`.

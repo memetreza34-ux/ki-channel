@@ -2,6 +2,7 @@
   "name": "ki-channel",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Produktionssystem für den deutschen faceless KI-Kanal mit Remotion",
   "engines": {
     "node": ">=20 <21"
@@ -13,7 +14,9 @@
   "scripts": {
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
-    "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run",
+    "ki:reel:layout-lock": "node scripts/check-ki-reel-production-standard.mjs",
+    "ki:reel:standard-check": "node scripts/check-ki-reel-production-standard.mjs",
+    "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && npm run ki:reel:standard-check && vitest run",
     "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
     "typecheck:animation-library": "tsc --noEmit -p ki/tsconfig.animation-library.json",
     "typecheck": "npm run typecheck:motion && npm run typecheck:animation-library",
@@ -52,6 +55,9 @@
     "reel:why-ai:check": "node scripts/check-why-ai-reel.mjs",
     "reel:why-ai:verify": "npm run motion:script-check && npm run reel:why-ai:test && npm run motion:node-test && npm run motion:typecheck && npm run reel:why-ai:plan",
     "reel:why-ai:full-release-check": "npm run reel:why-ai:verify && npm run reel:why-ai:render && npm run reel:why-ai:check",
+    "reel:today:test": "vitest run ki/src/reels/why-ai-does-not-know-today/__tests__/contract.test.ts",
+    "reel:today:typecheck": "tsc --noEmit --jsx react-jsx --target ES2022 --module ESNext --moduleResolution Bundler --resolveJsonModule --esModuleInterop --skipLibCheck ki/src/reels/why-ai-does-not-know-today/index.ts ki/src/reels/FeedSafeActiveWordCaption.tsx",
+    "reel:today:verify": "npm run ki:reel:standard-check && npm run reel:today:test && npm run reel:today:typecheck",
     "animation-library:verify": "node scripts/verify-animation-library.mjs",
     "animation-library:plan": "node scripts/render-animation-library.mjs plan",
     "animation-library:smoke": "node scripts/render-animation-library.mjs smoke",
@@ -124,7 +130,7 @@
     "remotion": "4.0.488",
     "rough-notation": "0.5.1",
     "roughjs": "4.6.6",
-    "sharp": "^0.33.5",
+    "sharp": "^0.35.3",
     "three": "^0.171.0",
     "zod": "4.3.6"
   },

@@ -31,7 +31,7 @@ Phase 1 liefert die komplette Produktionsgrundlage vor dem Audio:
 - finales Voiceover-Skript
 - zusätzlich reiner Fließtext `VOICEOVER-ZUM-KOPIEREN.txt`
 - Szenen-, Animations- und Caption-Planung
-- Plattform-Copy in `03-caption/platform-copy.md`
+- eine universelle, direkt kopierbare Social Caption mit genau fünf Hashtags in `03-caption/platform-copy.md`
 - Bildentscheidung, hochwertige Bildprompts und Asset-Manifest, falls Bilder nötig sind
 - `reel.json`
 - ausführbare Remotion-Code-Grundlage unter `ki/src/reels/<slug>/`
@@ -83,7 +83,7 @@ Widersprüche nicht still auflösen. Höher priorisierte Quelle erhalten und den
 
 Plattformordner sind Packaging, keine zweite Produktionswahrheit. Kein zweites Skript, `reel.json` oder Remotion-Projekt nur für YouTube/TikTok/Instagram/Facebook/Snapchat anlegen.
 
-Short-Form-Master bleibt unter `ki/reels/`. Plattform-spezifische Copy gehört in `03-caption/platform-copy.md`.
+Short-Form-Master bleibt unter `ki/reels/`. Dieselbe Caption wird für alle Social-Plattformen verwendet; sie gehört in `03-caption/platform-copy.md`. Keine PDF für Short-Form anlegen.
 
 YouTube Longform ist ein separates Format und darf nicht automatisch aus einem Short künstlich verlängert werden.
 

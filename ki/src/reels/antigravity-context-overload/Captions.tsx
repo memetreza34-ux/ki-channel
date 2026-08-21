@@ -5,6 +5,7 @@ import {
   CONTEXT_OVERLOAD_SUBTITLES,
   type ContextOverloadSubtitleCue,
 } from './contract';
+import {getVisibleCaptionWordIndices, REEL_CAPTION_SAFE} from '../captionSafe';
 
 const edgeFade = (frame: number, startFrame: number, endFrame: number): number => {
   const fadeFrames = 4;
@@ -82,14 +83,15 @@ export const ContextOverloadCaptions: React.FC = () => {
     ? cue.words.map((word) => word.text)
     : cue.text.trim().split(/\s+/).filter(Boolean);
   const activeIndex = activeWordIndex({frame, cue, wordCount: words.length});
+  const visibleIndices = getVisibleCaptionWordIndices(words, activeIndex);
 
   return (
     <div
       style={{
         position: 'absolute',
-        left: 104,
-        right: 104,
-        bottom: 520,
+        left: REEL_CAPTION_SAFE.horizontalInset,
+        right: REEL_CAPTION_SAFE.horizontalInset,
+        bottom: REEL_CAPTION_SAFE.bottom,
         zIndex: 200,
         display: 'flex',
         justifyContent: 'center',
@@ -100,7 +102,7 @@ export const ContextOverloadCaptions: React.FC = () => {
       <div
         style={{
           width: '100%',
-          maxWidth: 820,
+          maxWidth: REEL_CAPTION_SAFE.maxWidth,
           color: BRAND.ink,
           fontFamily: BRAND.font,
           fontSize: 48,
@@ -112,7 +114,8 @@ export const ContextOverloadCaptions: React.FC = () => {
             '0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)',
         }}
       >
-        {words.map((word, index) => {
+        {visibleIndices.map((index, visibleIndex) => {
+          const word = words[index];
           const isActive = index === activeIndex;
           return (
             <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${index}-${word}`}>
@@ -126,7 +129,7 @@ export const ContextOverloadCaptions: React.FC = () => {
               >
                 {word}
               </span>
-              {index < words.length - 1 ? ' ' : null}
+              {visibleIndex < visibleIndices.length - 1 ? ' ' : null}
             </React.Fragment>
           );
         })}

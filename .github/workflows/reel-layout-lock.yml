@@ -1,0 +1,50 @@
+name: Reel Layout Lock
+
+on:
+  pull_request:
+    paths:
+      - '.github/CODEOWNERS'
+      - '.github/workflows/reel-layout-lock.yml'
+      - 'ki/reels/production-standard.json'
+      - 'ki/src/reels/captionSafe.ts'
+      - 'ki/src/reels/reelLayout.ts'
+      - 'ki/src/reels/FeedSafeActiveWordCaption.tsx'
+      - 'ki/src/reels/why-ai-does-not-know-today/components.tsx'
+      - 'scripts/check-ki-reel-production-standard.mjs'
+      - 'ki/gehirn/CAPTION_SAFE_POSITION.md'
+      - 'ki/gehirn/REELS.md'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/CODEOWNERS'
+      - '.github/workflows/reel-layout-lock.yml'
+      - 'ki/reels/production-standard.json'
+      - 'ki/src/reels/captionSafe.ts'
+      - 'ki/src/reels/reelLayout.ts'
+      - 'ki/src/reels/FeedSafeActiveWordCaption.tsx'
+      - 'ki/src/reels/why-ai-does-not-know-today/components.tsx'
+      - 'scripts/check-ki-reel-production-standard.mjs'
+      - 'ki/gehirn/CAPTION_SAFE_POSITION.md'
+      - 'ki/gehirn/REELS.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  layout-lock:
+    name: Verify immutable reel layout zones
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify locked layout contract
+        run: node scripts/check-ki-reel-production-standard.mjs

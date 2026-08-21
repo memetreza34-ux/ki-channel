@@ -1,0 +1,175 @@
+{
+  "version": 8,
+  "standardId": "ki-short-form-canonical-v1",
+  "standardConformance": {
+    "status": "blocked",
+    "reasons": [
+      "Das vorhandene Voiceover dauert 67.99 Sekunden und überschreitet das kanonische Maximum von 60 Sekunden.",
+      "Die nötige Beschleunigung auf 60 Sekunden wäre größer als das erlaubte Retiming-Limit von 1.06x; deshalb ist eine neue Aufnahme nötig."
+    ]
+  },
+  "timelineStatus": "final-transcript-aligned",
+  "slug": "warum-ki-nicht-weiss-was-heute-passiert",
+  "title": "Warum weiß deine KI nicht automatisch, was heute passiert?",
+  "composition": {
+    "id": "Reel-WhyAIDoesNotKnowToday",
+    "coverId": "Cover-WhyAIDoesNotKnowToday",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetDurationSeconds": 60,
+    "durationInFrames": 2091,
+    "durationSource": "final-voiceover-transcript"
+  },
+  "editorial": {
+    "wordCount": 144,
+    "sentenceCount": 16,
+    "targetWordsMin": 125,
+    "targetWordsMax": 145,
+    "sceneCount": 8,
+    "plannedSentencesPerScene": 2,
+    "visibleSentencesAtOnce": 1
+  },
+  "audio": {
+    "sourceFolder": "01-script-audio",
+    "playbackRate": 1,
+    "preservePitch": true,
+    "soundMode": "off",
+    "music": false,
+    "finalTimingSource": "06-projektdateien/final-sync.json"
+  },
+  "media": {
+    "generatedSceneImagesAllowed": false,
+    "stockSceneImagesAllowed": false,
+    "requiredImageScenes": [],
+    "coverAssetCount": 1,
+    "coverCanRenderWithoutExternalImage": true
+  },
+  "visual": {
+    "primaryObjectsPerScene": 1,
+    "maximumSupportingElementsPerScene": 2,
+    "miniDashboardsAllowed": false,
+    "repeatedStageFrameAllowed": false,
+    "primaryVisualAreaPercentMin": 68,
+    "primaryVisualAreaPercentMax": 82,
+    "headingIconRequired": true,
+    "headingIconType": "semantic-vector",
+    "antiRepetitionReviewRequired": true
+  },
+  "captions": {
+    "mode": "feed-safe-active-word-groups",
+    "sentencesVisible": 1,
+    "fullTextVisibleImmediately": false,
+    "defaultFontSizePx": 48,
+    "minimumFontSizePx": 44,
+    "bottomPx": 520,
+    "horizontalInsetPx": 104,
+    "maxWidthPx": 820,
+    "maximumWordsVisible": 6,
+    "wordByWordRevealAllowed": false,
+    "activeWordHighlight": "violet",
+    "wordHighlightSizeChangeAllowed": false,
+    "progressIndicator": "none",
+    "largeBackgroundBoxAllowed": false,
+    "timingSource": "06-projektdateien/final-sync.json"
+  },
+  "motion": {
+    "dominantMotionsPerScene": 1,
+    "maximumStrongSimultaneousMotions": 2,
+    "maximumSemanticBeatsPerScene": 3,
+    "minimumResultHoldSeconds": 1,
+    "hardCutsDefault": true,
+    "triggerToleranceFrames": 5,
+    "reusedPrimaryMechanismsFromPreviousReel": 0
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "type": "remotion",
+      "start": 0,
+      "end": 240,
+      "purpose": "Warum kennt KI das Heute nicht automatisch?",
+      "headingIcon": "broken-live-clock",
+      "primaryObject": "Archivkern und Live-Welt",
+      "primaryMotion": "connection-grows-and-stops-before-live-world",
+      "resultState": "visible-live-connection-gap"
+    },
+    {
+      "id": "scene-02",
+      "type": "remotion",
+      "start": 240,
+      "end": 480,
+      "purpose": "Training friert Wissen zu einem Datenstand ein",
+      "headingIcon": "frozen-archive",
+      "primaryObject": "großer Datenkristall",
+      "primaryMotion": "data-stream-compresses-and-freezes",
+      "resultState": "fixed-training-snapshot"
+    },
+    {
+      "id": "scene-03",
+      "type": "remotion",
+      "start": 480,
+      "end": 750,
+      "purpose": "Die Welt läuft nach dem Datenstand weiter",
+      "headingIcon": "future-gate",
+      "primaryObject": "Zeitlinie mit Wissensgrenze",
+      "primaryMotion": "new-events-pass-gate-while-ai-signal-stops",
+      "resultState": "new-world-outside-knowledge"
+    },
+    {
+      "id": "scene-04",
+      "type": "remotion",
+      "start": 750,
+      "end": 960,
+      "purpose": "Alte Muster füllen fehlende Informationen",
+      "headingIcon": "pattern-gap",
+      "primaryObject": "großes Antwortmosaik",
+      "primaryMotion": "old-pattern-fills-gap-and-cracks-confidence",
+      "resultState": "plausible-but-outdated"
+    },
+    {
+      "id": "scene-05",
+      "type": "remotion",
+      "start": 960,
+      "end": 1200,
+      "purpose": "Webzugriff holt aktuelle Quellen in den Kontext",
+      "headingIcon": "web-retrieval",
+      "primaryObject": "Live-Globus und Suchlinse",
+      "primaryMotion": "search-beam-pulls-current-sources-into-context",
+      "resultState": "fresh-source-loaded"
+    },
+    {
+      "id": "scene-06",
+      "type": "remotion",
+      "start": 1200,
+      "end": 1470,
+      "purpose": "Datum, Quelle und Originalseite sichtbar machen",
+      "headingIcon": "original-source",
+      "primaryObject": "entfaltete Originalseite",
+      "primaryMotion": "summary-unfolds-and-receives-source-pins",
+      "resultState": "original-source-open"
+    },
+    {
+      "id": "scene-07",
+      "type": "remotion",
+      "start": 1470,
+      "end": 1740,
+      "purpose": "Mehrere Quellen prüfen, bevor du entscheidest",
+      "headingIcon": "cross-check",
+      "primaryObject": "zwei Quellen und Prüfprisma",
+      "primaryMotion": "source-facts-converge-and-lock-as-match",
+      "resultState": "fact-confirmed-by-two-sources"
+    },
+    {
+      "id": "scene-08",
+      "type": "remotion",
+      "start": 1740,
+      "end": 2091,
+      "purpose": "Aktuelle Sicherheit braucht einen sichtbaren Beweis",
+      "headingIcon": "freshness-scanner",
+      "primaryObject": "Sicherheitsblock und Drei-Schritt-Prüfweg",
+      "primaryMotion": "confidence-is-invalidated-and-verification-path-builds",
+      "resultState": "search-date-original-rule"
+    }
+  ]
+}

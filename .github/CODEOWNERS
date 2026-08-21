@@ -1,0 +1,11 @@
+# Kritischer Reel-Layoutvertrag: Änderungen benötigen Armans Freigabe.
+/.github/CODEOWNERS @memetreza34-ux
+/.github/workflows/reel-layout-lock.yml @memetreza34-ux
+/ki/reels/production-standard.json @memetreza34-ux
+/ki/src/reels/captionSafe.ts @memetreza34-ux
+/ki/src/reels/reelLayout.ts @memetreza34-ux
+/ki/src/reels/FeedSafeActiveWordCaption.tsx @memetreza34-ux
+/ki/src/reels/why-ai-does-not-know-today/components.tsx @memetreza34-ux
+/scripts/check-ki-reel-production-standard.mjs @memetreza34-ux
+/ki/gehirn/CAPTION_SAFE_POSITION.md @memetreza34-ux
+/ki/gehirn/REELS.md @memetreza34-ux

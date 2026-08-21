@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
+import {loadSceneMeaningEnhancer} from './load-scene-meaning-enhancer.mjs';
 
 const PROTOTYPE_SOURCES = new Map([
   ['error-detection-anomaly-xray-scanner-v1', 'AnomalyXRayScannerPrototype.tsx'],
@@ -76,6 +77,7 @@ const sanitizePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentSanitizer();
 const associatePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentAssociation();
+const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 const failures = [];
 let checkedLabels = 0;
 let checkedValues = 0;
@@ -89,10 +91,12 @@ for (const fixture of fixtures) {
     continue;
   }
   const content = fixture.content ?? fixture.props?.content;
-  if (!content?.spokenText || !content?.meaningContract) {
-    failures.push(`${fixture.animationId}: Fixture ohne spokenText/meaningContract`);
+  if (!content?.spokenText) {
+    failures.push(`${fixture.animationId}: Fixture ohne spokenText`);
     continue;
   }
+  const meaningContract =
+    content.meaningContract ?? enhanceSceneMeaning(content.spokenText);
 
   const source = readFileSync(
     resolve('ki/src/animation-library/prototypes', fileName),
@@ -102,7 +106,7 @@ for (const fixture of fixtures) {
   const derived = derivePrototypeRuntimeContent({
     animationId: fixture.animationId,
     spokenText: content.spokenText,
-    meaningContract: content.meaningContract,
+    meaningContract,
   });
   const sanitized = sanitizePrototypeRuntimeContent({
     animationId: fixture.animationId,

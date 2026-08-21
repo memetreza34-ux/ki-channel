@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-16
+**Status:** 2026-08-21
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -44,7 +44,6 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ├── 01-script-audio/
 ├── 02-bilder/
 ├── 03-caption/
-├── 04-pdf/
 ├── 05-export/
 └── 06-projektdateien/
 ```
@@ -113,11 +112,13 @@ ki/plattformen/
 
 Diese Ordner enthalten **Publishing-Regeln und Templates, keine zweite Produktionswahrheit**.
 
-Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Plattform-spezifische Copy eines Reels gehört nach:
+Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master und dieselbe universelle Caption. Sie gehört nach:
 
 ```text
 03-caption/platform-copy.md
 ```
+
+Die Datei enthält nur den direkt kopierbaren Caption-Text und genau fünf Hashtags. Es gibt keine Plattformvarianten und keinen PDF-Ordner für Short-Form.
 
 YouTube Longform ist ein separates Format unter `ki/youtube-longform/` und wird nicht automatisch aus Reels erzeugt.
 
@@ -159,6 +160,12 @@ Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
 
 Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`, `ki/reels/REMOTION_NATIVE_VISUALS_MAXIMUM.md`.
 
+Numerische Short-Form-Produktionswerte werden einmalig in `ki/reels/production-standard.json` definiert. Dokumentation, `ki/src/reels/captionSafe.ts` und neue Reel-Sources dürfen davon nicht abweichen. Prüfung:
+
+```bash
+npm run ki:reel:standard-check
+```
+
 ## 8. Statusbegriffe niemals vermischen
 
 Diese Zustände sind getrennt:
@@ -178,6 +185,10 @@ Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. 
 ## 9. Bekannte externe Einschränkungen
 
 - GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
+- `package-lock.json` ist kanonisch vorhanden; `npm audit` meldet am 2026-08-21 keine bekannte Schwachstelle.
+- `npm test` ist vollständig grün: 111 Testdateien und 550 Einzeltests bestehen.
+- Der globale Typecheck für Motion und Animation-Library ist vollständig grün.
+- Die 22 Kernprototypen bestehen die technische Content-Runtime-Prüfung. Echte Kontrollframes und Videos sowie die abschließende manuelle `visual-review.json` bleiben ein separater Freigabeschritt.
+- `Reel-WhyAIDoesNotKnowToday` bündelt technisch, liegt mit 69,70 Sekunden aber über dem Short-Form-Ziel. Für eine finale Freigabe wird ein echtes, gekürztes Voiceover benötigt; künstliches starkes Beschleunigen ist keine zulässige Abkürzung.
 
-Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
+Diese Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.

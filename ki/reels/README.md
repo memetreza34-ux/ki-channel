@@ -10,7 +10,6 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ├── 01-script-audio/
 ├── 02-bilder/
 ├── 03-caption/
-├── 04-pdf/
 ├── 05-export/
 └── 06-projektdateien/
 ```
@@ -37,13 +36,13 @@ Details: `ki/gehirn/PRODUKTIONSABLAUF.md`.
 
 ## Plattform-Publishing
 
-Ein Reel wird einmal produziert. Plattform-spezifische Titel/Captions liegen pro Reel unter:
+Ein Reel wird einmal produziert. Seine gemeinsame Social-Media-Caption liegt unter:
 
 ```text
 03-caption/platform-copy.md
 ```
 
-YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Kein zweites Produktionspaket pro Plattform anlegen.
+YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master und exakt dieselbe Caption. `platform-copy.md` enthält nur kopierfertigen Text plus genau fünf Hashtags. Keine Plattformvarianten und keine PDFs anlegen.
 
 Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
 

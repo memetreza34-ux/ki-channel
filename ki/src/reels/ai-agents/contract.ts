@@ -9,7 +9,7 @@ export type AIAgentScene = {
   icon: string;
   implementation: 'NEW_BUILD';
   spokenText: string;
-  beatIds: string[];
+  beatIds: readonly string[];
 };
 
 export type AIAgentCue = {

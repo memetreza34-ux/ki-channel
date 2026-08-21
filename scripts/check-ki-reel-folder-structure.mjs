@@ -1,4 +1,4 @@
-import {readdir, stat} from 'node:fs/promises';
+import {readFile, readdir} from 'node:fs/promises';
 import {resolve, relative, basename} from 'node:path';
 
 const repoRoot = resolve(process.env.KI_REEL_STRUCTURE_ROOT ?? '.');
@@ -12,7 +12,6 @@ const REQUIRED_REEL_DIRS = [
   '01-script-audio',
   '02-bilder',
   '03-caption',
-  '04-pdf',
   '05-export',
   '06-projektdateien',
 ];
@@ -45,6 +44,9 @@ const ALLOWED_REELS_ROOT_FILES = new Set([
   'README.md',
   'AGENTS.md',
   'animation-history.json',
+  'production-standard.json',
+  'REMOTION_NATIVE_VISUALS.md',
+  'REMOTION_NATIVE_VISUALS_MAXIMUM.md',
   '.gitkeep',
 ]);
 
@@ -148,11 +150,28 @@ for (const entry of await readDirSafe(reelsRoot)) {
       if (!childDirs.has(required)) failures.push(`${display(reelRoot)}: Pflichtordner ${required}/ fehlt.`);
     }
 
+    // Packages without the legacy 04-pdf/ folder follow the current publishing contract.
+    if (!childDirs.has('04-pdf')) {
+      const platformCopyPath = resolve(reelRoot, '03-caption', 'platform-copy.md');
+      try {
+        const platformCopy = await readFile(platformCopyPath, 'utf8');
+        const hashtags = platformCopy.match(/(?:^|\s)#[\p{L}\p{N}_]+/gu) ?? [];
+        if (hashtags.length !== 5) {
+          failures.push(`${display(platformCopyPath)}: universelle Caption benötigt genau fünf Hashtags, gefunden: ${hashtags.length}.`);
+        }
+        if (/^#{1,3}\s+/m.test(platformCopy) || /\*\*(Caption|Titel|Beschreibung):\*\*/i.test(platformCopy)) {
+          failures.push(`${display(platformCopyPath)}: nur kopierfertigen Caption-Text ablegen, keine Überschriften oder Feldlabels.`);
+        }
+      } catch (error) {
+        failures.push(`${display(platformCopyPath)} fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+
     const flatPlanning = [...ROOT_REEL_MARKERS].filter((name) => childFiles.has(name));
     if (flatPlanning.length > 0) {
       failures.push(
         `${display(reelRoot)} enthält flache Planungsdateien (${flatPlanning.join(', ')}). ` +
-        'Skript/Audio -> 01, Bilder -> 02, Caption -> 03, PDF -> 04, Export -> 05, Planung/Technik -> 06.',
+        'Skript/Audio -> 01, Bilder -> 02, Caption/Social Copy -> 03, Export -> 05, Planung/Technik -> 06.',
       );
     }
   }
@@ -165,5 +184,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'KI-Reel-Strukturvertrag bestanden: keine Reel-Projekte im ki/-Root, Source und Planung getrennt, Wochenordner gültig und jedes Reel besitzt die feste 01–06-Produktionsstruktur.',
+  'KI-Reel-Strukturvertrag bestanden: keine Reel-Projekte im ki/-Root, Source und Planung getrennt, Wochenordner gültig und jedes Reel besitzt die kanonische Produktionsstruktur ohne PDF-Ordner.',
 );

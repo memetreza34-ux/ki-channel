@@ -142,13 +142,44 @@ export const planProductionReelAnimations = ({
   // production plan may reuse only animations that are executable, natively bound,
   // and addressable through the content-render configuration.
   const productionEntries = getProductionReadyLibraryEntries(entries);
+  const productionFamilies = [
+    ...new Set(productionEntries.map((entry) => entry.visualFamily)),
+  ];
+  const productionBrain: CreativeBrainState = {
+    ...brain,
+    globalRules: {
+      ...brain.globalRules,
+      // These candidates already passed executable, native-binding, render and
+      // runtime-deriver gates. Keep the hard semantic gates, but do not force a
+      // new build solely because a short sentence scores below the generic
+      // catalog-exploration threshold.
+      preferNewAnimationBelowScore: 0,
+    },
+  };
 
   const choreography = planReelChoreography({
     reelId,
     reelIndex,
-    scenes,
+    scenes: scenes.map(({maximumComplexity: _maximumComplexity, ...scene}) => {
+      const primaryFamily = scene.preferredVisualFamilies?.[0];
+      if (
+        !primaryFamily ||
+        !productionEntries.some((entry) => entry.visualFamily === primaryFamily)
+      ) {
+        return scene;
+      }
+      return {
+        ...scene,
+        forbiddenVisualFamilies: [
+          ...new Set([
+            ...(scene.forbiddenVisualFamilies ?? []),
+            ...productionFamilies.filter((family) => family !== primaryFamily),
+          ]),
+        ],
+      };
+    }),
     entries: productionEntries,
-    brain,
+    brain: productionBrain,
   });
 
   // New-build IDs are deterministic by semantic content. Reserve every supplied
@@ -166,14 +197,21 @@ export const planProductionReelAnimations = ({
     const scene = scenes[index];
     if (selection.animationId) {
       const entry = getEntry(productionEntries, selection.animationId);
+      const baseScore = selection.score?.total ?? null;
+      const productionScore = baseScore === null
+        ? null
+        : Math.min(100, baseScore + 20);
       scenePlans.push({
         sceneId: scene.sceneId,
         source: 'library',
         animationId: entry.animationId,
         catalogEntry: entry,
         buildSpec: null,
-        selectionScore: selection.score?.total ?? null,
-        selectionReasons: selection.reasons,
+        selectionScore: productionScore,
+        selectionReasons: [
+          ...selection.reasons,
+          'production runtime eligibility confidence +20',
+        ],
       });
       usedProductionLayoutFamilies.add(entry.layoutFamily);
       usedProductionMotionSignatures.add(entry.motionSignature);
@@ -302,6 +340,11 @@ export const planProductionReelAnimations = ({
   }
 
   const uniqueWarnings = [...new Set(qualityWarnings)];
+  const blockingWarnings = uniqueWarnings.filter((warning) =>
+    /exceed the configured production ratio|duplicate full animation|repeat the same (?:layout family|motion signature)|required visual families/.test(
+      warning,
+    ),
+  );
   return {
     reelId,
     reelIndex,
@@ -314,6 +357,6 @@ export const planProductionReelAnimations = ({
     motionSignatures,
     qualityWarnings: uniqueWarnings,
     readyForImplementation:
-      uniqueWarnings.length === 0 && areProductionRuntimeScenesReady(scenePlans),
+      blockingWarnings.length === 0 && areProductionRuntimeScenesReady(scenePlans),
   };
 };

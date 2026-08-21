@@ -71,6 +71,9 @@ const youtubeThumbnails = await readText('ki/plattformen/youtube/THUMBNAILS.md')
 const youtubeUpload = await readText('ki/plattformen/youtube/UPLOAD.md');
 const codexWorkflow = await readText('docs/CODEX_REEL_WORKFLOW.md');
 const contextIndex = await readText('docs/CODEX_CONTEXT_INDEX.md');
+const layoutLockDocs = await readText('docs/REEL-LAYOUT-LOCK.md');
+const layoutLockWorkflow = await readText('.github/workflows/reel-layout-lock.yml');
+const codeowners = await readText('.github/CODEOWNERS');
 const generator = await readText('scripts/new-ki-reel.mjs');
 const phase3Skill = await readText('.agents/skills/build-context-overload-reel/SKILL.md');
 
@@ -84,6 +87,8 @@ if (root) {
 
   const requiredScripts = {
     'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
+    'ki:reel:layout-lock': 'node scripts/check-ki-reel-production-standard.mjs',
+    'ki:reel:standard-check': 'node scripts/check-ki-reel-production-standard.mjs',
     'repo:wiring-check': 'node scripts/check-repository-wiring.mjs',
     'content:runtime:verify': 'node scripts/verify-content-matched-runtime.mjs',
     'release:verify': 'node scripts/run-content-release.mjs verify',
@@ -118,14 +123,14 @@ requireMarkers('README.md', rootReadme, ['REPO-STATE.md','ki/plattformen/','YouT
 requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
 requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
 requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
-requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
+requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','genau fünf','keine PDF','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
 requireMarkers('KANAL.md', channel, ['YouTube Shorts','Instagram Reels','TikTok','Facebook Reels','PLATTFORMEN.md']);
 requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT','platform-copy.md']);
 requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','niemals interner `goal`','BILDER NICHT ERFORDERLICH']);
-requireMarkers('PLATTFORMEN.md', platforms, ['Content einmal, Publishing mehrfach','03-caption/platform-copy.md','YouTube Shorts','YouTube Longform']);
+requireMarkers('PLATTFORMEN.md', platforms, ['Content einmal, Publishing mehrfach','03-caption/platform-copy.md','genau fünf','keine PDF','YouTube Shorts','YouTube Longform']);
 requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
 requireMarkers('YouTube README', youtubeReadme, ['YouTube — Kanalstruktur','SHORTS.md','LONGFORM.md','THUMBNAILS.md','UPLOAD.md']);
 requireMarkers('YouTube SHORTS', youtubeShorts, ['03-caption/platform-copy.md','kein eigenes Produktionsprojekt','UPLOAD.md']);
@@ -134,6 +139,9 @@ requireMarkers('YouTube THUMBNAILS', youtubeThumbnails, ['faceless','#B98CFF','K
 requireMarkers('YouTube UPLOAD', youtubeUpload, ['03-caption/platform-copy.md','Zeitabhängige Plattformfakten','freigegebenen Master']);
 requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
 requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
+requireMarkers('REEL-LAYOUT-LOCK.md', layoutLockDocs, ['Header: `y=110–260`','Animation: ausschließlich `y=300–1160`','Mindestabstand','Require review from Code Owners','Verify immutable reel layout zones']);
+requireMarkers('Reel Layout Lock Workflow', layoutLockWorkflow, ['pull_request:','branches:','main','node-version: 20','node scripts/check-ki-reel-production-standard.mjs']);
+requireMarkers('CODEOWNERS', codeowners, ['@memetreza34-ux','/ki/reels/production-standard.json','/ki/src/reels/reelLayout.ts','/scripts/check-ki-reel-production-standard.mjs','/.github/workflows/reel-layout-lock.yml']);
 requireMarkers('Phase-3-Skill', phase3Skill, ['not** a from-scratch builder','PHASE 2 AUDIO FEHLT','do not rebuild the reel from zero']);
 
 forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
@@ -144,9 +152,16 @@ forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template'
 for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platform-copy.md', "'05-export'", 'PHASE-STATUS.md']) {
   if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
 }
+if (generator.includes("'04-pdf'") || generator.includes("'04-pdf/README.md'")) {
+  failures.push('new-ki-reel.mjs: neue Short-Form-Pakete dürfen keinen PDF-Ordner erzeugen.');
+}
+for (const marker of ['genau fünf Hashtags', '#KI #KuenstlicheIntelligenz #Tech #DigitalWissen #Zukunft']) {
+  if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: universeller Caption-Marker fehlt: ${marker}`);
+}
 
 for (const path of [
   'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
+  '.github/CODEOWNERS','.github/workflows/reel-layout-lock.yml','docs/REEL-LAYOUT-LOCK.md',
   'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md',
   'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
   'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
@@ -154,7 +169,8 @@ for (const path of [
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
   'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
   'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
+  'ki/reels/production-standard.json','ki/src/reels/captionSafe.ts','ki/src/reels/reelLayout.ts',
+  'scripts/check-ki-reel-folder-structure.mjs','scripts/check-ki-reel-production-standard.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
   '.agents/skills/build-context-overload-reel/SKILL.md'
 ]) await assertFile(path);
 

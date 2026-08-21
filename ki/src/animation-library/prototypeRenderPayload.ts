@@ -71,9 +71,9 @@ export const createPrototypeRenderProps = ({
   return {content};
 };
 
-export const assertPrototypeRenderProps = (
+export const assertPrototypeRenderProps: (
   props: PrototypeRenderProps,
-): asserts props is {content: PrototypeContentInput} => {
+) => asserts props is {content: PrototypeContentInput} = (props) => {
   if (!props.content) {
     throw new Error('content-matched prototype render requires content props');
   }

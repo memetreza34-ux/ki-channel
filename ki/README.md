@@ -50,7 +50,7 @@ Der ausführbare Source liegt getrennt unter:
 ki/src/reels/<slug>/
 ```
 
-YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master-Export verwenden. Plattform-spezifische Titel, Beschreibungen, Hashtags oder Hinweise werden als Publishing-Metadaten gepflegt; das Reel wird dafür nicht kopiert oder neu erfunden.
+YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master-Export und dieselbe kopierfertige Caption mit genau fünf Hashtags. Keine Plattformvarianten und keine Short-Form-PDFs.
 
 ## 3-Phasen-Modell
 

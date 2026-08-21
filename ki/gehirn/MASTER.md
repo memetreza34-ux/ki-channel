@@ -221,7 +221,7 @@ Pflicht:
 
 Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
 
-Plattform-spezifische Titel/Captions gehören in `03-caption/platform-copy.md`. Strategie: `PLATTFORMEN.md` und `ki/plattformen/`.
+Eine universelle, direkt kopierbare Caption mit genau fünf Hashtags gehört in `03-caption/platform-copy.md` und wird auf allen Short-Form-Plattformen identisch verwendet. Keine PDF für Short-Form. Strategie: `PLATTFORMEN.md` und `ki/plattformen/`.
 
 YouTube Longform ist ein eigenes aktives Format unter `ki/youtube-longform/`. Titel, Beschreibung, Kapitel und Thumbnail gehören in das jeweilige Longform-Paket; `ki/plattformen/youtube/` bleibt die Regel-/Template-Ebene.
 
@@ -240,5 +240,6 @@ Bei fehlendem Phase-3-Audio exakt: `PHASE 2 AUDIO FEHLT`.
 ## STRIKE KI-Regel (Keine künstlichen Assets)
 Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!
 
-## STRIKE Speichern-Regel (Jedes Ergebnis speichern)
-Alle Ergebnisse, Zwischenschritte, generierten Dateien (wie exportierte Videos, Cover-Bilder, Timings in JSON-Dateien) und sonstige Ausgaben müssen JEDEN Wochentag ausnahmslos und sofort in das Repository gespeichert und als Git-Commit gesichert werden. Egal was es ist, jedes Ergebnis wird unwiderruflich versioniert und festgehalten!
+## Speichern- und Commit-Regel
+
+Dauerhafte Produktionsgrundlagen und freigaberelevante Ergebnisse werden in den kanonischen Reel-Pfaden gespeichert. Temporäre Frames, Caches, Diagnoseausgaben und ersetzte Zwischenstände werden nicht allein deshalb versioniert. Git-Commits bündeln einen klaren, geprüften Zweck, vermischen keine unabhängigen Arbeiten und werden erst nach den zugehörigen Prüfungen erstellt.

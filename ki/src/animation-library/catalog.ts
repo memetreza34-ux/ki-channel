@@ -188,7 +188,10 @@ const FAMILY_SEEDS: FamilySeed[] = [
   },
   {
     family: 'semantic-space',
-    tags: ['meaning', 'embedding', 'similarity', 'cluster', 'concept', 'semantic'],
+    tags: [
+      'meaning', 'embedding', 'similarity', 'cluster', 'concept', 'semantic',
+      'bedeutung', 'bedeutungsraum', 'ähnlich', 'begriff', 'nähe',
+    ],
     variants: [
       {
         slug: 'meaning-terrain',
@@ -263,7 +266,10 @@ const FAMILY_SEEDS: FamilySeed[] = [
   },
   {
     family: 'relationship-network',
-    tags: ['attention', 'relationship', 'graph', 'connection', 'dependency', 'context'],
+    tags: [
+      'attention', 'relationship', 'graph', 'connection', 'dependency', 'context',
+      'beziehung', 'verbindung', 'verbindet', 'wörter', 'wichtig',
+    ],
     variants: [
       {
         slug: 'dependency-bridge-builder',
@@ -881,7 +887,6 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'dynamic',
         density: 'minimal',
         complexity: 'medium',
-        status: 'prototype',
       },
       {
         slug: 'transformation-portal',
@@ -916,6 +921,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'measured',
         density: 'dense',
         complexity: 'medium',
+        status: 'prototype',
       },
       {
         slug: 'machine-blueprint-reveal',
@@ -1163,7 +1169,11 @@ const FAMILY_SEEDS: FamilySeed[] = [
   },
   {
     family: 'scale-performance',
-    tags: ['performance', 'latency', 'scale', 'throughput', 'load', 'speed'],
+    tags: [
+      'performance', 'latency', 'scale', 'throughput', 'load', 'speed',
+      'latenz', 'millisekunden', 'pfad', 'last', 'kapazität', 'engpass',
+      'schneller', 'langsamer',
+    ],
     variants: [
       {
         slug: 'latency-tunnel-race',

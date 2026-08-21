@@ -26,7 +26,7 @@ export type ContextOverloadSubtitleCue = {
   words?: ContextOverloadSubtitleWord[];
 };
 
-const reel = reelJson as {
+const reel = reelJson as unknown as {
   version: number;
   slug: string;
   title: string;
@@ -46,7 +46,7 @@ const reel = reelJson as {
   scenes: ContextOverloadScene[];
 };
 
-const subtitles = subtitleJson as {
+const subtitles = subtitleJson as unknown as {
   fps: number;
   cues: ContextOverloadSubtitleCue[];
 };

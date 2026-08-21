@@ -131,7 +131,7 @@ Audio-Retiming:
 - Text steht frei auf dem Bild und erhält nur so viel Schatten/Outline, wie für Lesbarkeit nötig ist
 - bei 1080 × 1920 gilt als Standard **`bottom: 520px`**
 - horizontal **104px Sicherheitsabstand** links und rechts; bevorzugte maximale Caption-Breite **820px**
-- der sichtbare Caption-Block liegt typischerweise ungefähr im Bereich **y≈1260–1400**, abhängig von Schriftgröße und Zeilenanzahl
+- der sichtbare Caption-Block liegt typischerweise ungefähr im Bereich **y≈1280–1400**, abhängig von Schriftgröße und Zeilenanzahl
 - die letzten ungefähr **420 px** am unteren Rand sind für Untertitel und andere kritische Informationen tabu
 - ungefähr **420–500 px Abstand vom unteren Rand** gelten nur als Puffer, nicht als bevorzugte Caption-Position
 - Untertitel normalerweise als **4–6 Wörter pro sichtbarem Sinnblock**, maximal **2 Zeilen gleichzeitig**
@@ -169,8 +169,11 @@ Für Production-Reels gilt eine **harte Trennung** zwischen erklärendem Visual 
 Bei 1080 × 1920:
 
 - die Caption sitzt standardmäßig mit `bottom: 520px`
-- neue bedeutungstragende Hauptvisuals sollen nach Möglichkeit bis ungefähr **y≈1240–1280** abgeschlossen sein
-- zwischen Hauptvisual und Caption ungefähr **80–120 px** sichtbare Luft anstreben
+- Headerzone: **y=110–260**; Überschrift und Icon dürfen nicht höher stehen
+- Animationszone: ausschließlich **y=300–1160**
+- neue bedeutungstragende Hauptvisuals müssen bis spätestens **y=1160** abgeschlossen sein
+- zwischen Animation und konservativer Zwei-Zeilen-Caption mindestens **100px** freie Luft halten
+- zwischen Hauptvisual und konservativer Zwei-Zeilen-Caption mindestens **100 px** sichtbare Luft sicherstellen
 - der bestehende technische Clip-Guard um ungefähr `y=1440` bleibt eine letzte Sicherung, ist aber **nicht** die eigentliche Caption-Positionsregel
 - kein wichtiges Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
 - rechts die Feed-Interaktionsleiste mitdenken; Caption und kritische Labels nicht bis an die rechte Kante ziehen
@@ -190,8 +193,8 @@ Als dauerhafte Produktionsrichtlinie:
 - die letzten ungefähr **420 px** unten nicht für Untertitel oder andere kritische Informationen verwenden
 - Bereich **420–500 px vom unteren Rand** nur als Sicherheits-Puffer behandeln
 - Caption standardmäßig bei **`bottom: 520px`**
-- Hauptvisuals für neue Reels möglichst bis ungefähr **y≈1240–1280** abschließen
-- zwischen Hauptanimation und Untertitel möglichst ungefähr 80–120 px sichtbare Luft lassen
+- Hauptvisuals für neue Reels ausschließlich innerhalb **y=300–1160** platzieren
+- zwischen Hauptanimation und konservativer Zwei-Zeilen-Caption mindestens 100 px sichtbare Luft lassen
 - wenn ein Mechanismus in den Caption-Bereich ragt: Animation höher/kompakter/new-build; Untertitel bleiben an ihrer sicheren Position
 - dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
 

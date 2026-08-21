@@ -8,19 +8,13 @@ Keine zweite Kopie von Skript, Szenenplan oder Remotion-Source anlegen.
 
 ## Verpackung
 
-Für ein konkretes Reel kommen die YouTube-spezifischen Texte in:
+Für ein konkretes Reel liegt die universelle Social-Media-Caption in:
 
 ```text
 03-caption/platform-copy.md
 ```
 
-Dort mindestens:
-
-- Short-Titel
-- kurze Beschreibung
-- optionale Keywords/Hashtags
-- optionaler CTA
-- Hinweis, ob ein eigenes Cover sinnvoll ist
+Dort steht nur ein direkt kopierbarer Text mit genau fünf Hashtags. Derselbe Text wird auch auf Instagram Reels, TikTok, Facebook Reels und Snapchat verwendet. Als YouTube-Titel dient der freigegebene Reel-Titel.
 
 ## Titelregel
 
@@ -34,7 +28,7 @@ Ein guter Short-Titel:
 
 ## Beschreibung
 
-Die Beschreibung ergänzt Kontext oder Nutzen knapp. Sie ist kein Transcript-Dump.
+Die universelle Caption wird unverändert als Beschreibung eingesetzt. Sie ist kein Transcript-Dump.
 
 ## Cover
 

@@ -61,9 +61,11 @@ Nie Planung nach `ki/src/reels/` verschieben. Nie flache Reel-Pakete unter `ki/r
 
 Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technische Anpassung erforderlich ist.
 
-Plattform-Copy liegt im Reel unter:
+Die universelle, direkt kopierbare Caption für alle Short-Form-Plattformen liegt im Reel unter:
 
 `03-caption/platform-copy.md`
+
+Sie endet mit genau fünf Hashtags. Keine Plattformvarianten und keine PDFs für Short-Form anlegen.
 
 Keine zweite Skript-/Source-Kopie in `ki/plattformen/` erzeugen. YouTube Longform ist ein separates Format und wird nicht automatisch aus einem Reel verlängert.
 
@@ -102,4 +104,4 @@ npm run content:runtime:verify
 npm run repo:verify
 ```
 
-Workspaces nie mit `--workspaces=false` umgehen. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.
+Workspaces niemals deaktivieren oder umgehen. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.

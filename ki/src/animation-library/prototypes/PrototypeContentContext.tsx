@@ -59,7 +59,7 @@ const likelyEnglishState = (value: string): boolean => {
 
   const weakMarkerCount = matchCount(
     value,
-    /\b(the|a|an|one|state|result|input|output|and)\b/gi,
+    /\b(the|a|one|state|result|input|output|and)\b/gi,
   );
   return weakMarkerCount >= 2;
 };

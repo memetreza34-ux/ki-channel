@@ -2,13 +2,6 @@
 
 Instagram verwendet grundsätzlich denselben freigegebenen Short-Form-Master aus `ki/reels/`.
 
-Plattform-spezifisch sind primär:
-
-- Caption
-- optionaler CTA
-- Cover-Auswahl
-- aktuelle Upload-/Feature-Regeln
-
-Konkrete Texte liegen im jeweiligen Reel unter `03-caption/platform-copy.md`.
+Die Caption liegt im jeweiligen Reel unter `03-caption/platform-copy.md`. Sie wird unverändert auf allen Short-Form-Plattformen verwendet und endet mit genau fünf Hashtags. Keine eigene Instagram-Variante. Nur Cover-Auswahl und technisch aktuelle Upload-Regeln können abweichen.
 
 Keine zweite Produktionskopie des Reels anlegen. Inhaltliche Aussage, Voiceover und Visual-Wahrheit bleiben identisch.

@@ -2,13 +2,6 @@
 
 TikTok verwendet grundsätzlich denselben freigegebenen Short-Form-Master aus `ki/reels/`.
 
-Plattform-spezifisch sind primär:
-
-- kurze Caption
-- optionaler CTA
-- Cover-/Startframe-Auswahl
-- aktuelle Upload-/Feature-Regeln
-
-Konkrete Texte liegen im jeweiligen Reel unter `03-caption/platform-copy.md`.
+Die Caption liegt im jeweiligen Reel unter `03-caption/platform-copy.md`. Sie wird unverändert auf allen Short-Form-Plattformen verwendet und endet mit genau fünf Hashtags. Keine eigene TikTok-Variante. Nur Cover-/Startframe-Auswahl und technisch aktuelle Upload-Regeln können abweichen.
 
 Kein zweites Skript und keinen zweiten Remotion-Source nur für TikTok anlegen. Die fachliche Aussage bleibt unverändert.

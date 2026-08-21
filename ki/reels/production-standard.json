@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "standardId": "ki-short-form-canonical-v1",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetDurationSeconds": {
+      "min": 50,
+      "max": 60
+    },
+    "targetSpokenWords": {
+      "min": 120,
+      "max": 150
+    }
+  },
+  "caption": {
+    "bottomPx": 520,
+    "horizontalInsetPx": 104,
+    "maxWidthPx": 820,
+    "fontSizePx": 48,
+    "lineHeight": 1.18,
+    "wordsPerVisibleGroup": {
+      "min": 4,
+      "max": 6
+    },
+    "maxVisibleLines": 2,
+    "lowerCriticalDeadZonePx": 420,
+    "lowerBufferEndPx": 500,
+    "preferredVisualEndYPx": {
+      "min": 1120,
+      "max": 1160
+    },
+    "backgroundCardAllowed": false,
+    "activeFocusColor": "#6E45C9"
+  },
+  "layout": {
+    "header": {
+      "topPx": 110,
+      "horizontalInsetPx": 58,
+      "heightPx": 150,
+      "headingFontSizePx": 51,
+      "iconSizePx": 90,
+      "gapPx": 24
+    },
+    "animation": {
+      "topPx": 300,
+      "endYPx": 1160,
+      "horizontalInsetPx": 42,
+      "minimumCaptionGapPx": 100
+    }
+  },
+  "voiceover": {
+    "preferredRetimingFactor": {
+      "min": 0.97,
+      "max": 1.03
+    },
+    "absoluteRetimingFactor": {
+      "min": 0.94,
+      "max": 1.06
+    },
+    "pitchPreserving": true,
+    "wordOrderMutable": false
+  },
+  "visual": {
+    "headingWords": {
+      "min": 3,
+      "max": 7
+    },
+    "headingColor": "#6E45C9",
+    "semanticHeadingIconRequired": true,
+    "maximumStrongSimultaneousMotions": 3,
+    "remotionNativeDefault": true
+  }
+}

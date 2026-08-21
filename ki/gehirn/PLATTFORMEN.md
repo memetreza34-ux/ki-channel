@@ -18,14 +18,14 @@ Kanonischer ausführbarer Source:
 ki/src/reels/<slug>/
 ```
 
-Plattformen verändern nur, was wirklich plattformspezifisch ist:
+Für Short-Form wird nur angepasst, was technisch zwingend ist. Inhaltlich gelten überall:
 
-- Titel
-- Beschreibung / Caption
-- Hashtags / Keywords
-- Cover-/Thumbnail-Auswahl
-- CTA, falls sinnvoll
-- ggf. technisch notwendiger Export, wenn eine Plattform ihn verlangt
+- derselbe freigegebene Master
+- dieselbe direkt kopierbare Caption
+- genau dieselben fünf Hashtags
+- keine PDF
+
+Cover-/Startframe-Auswahl oder Exportformat dürfen nur bei technischer Notwendigkeit abweichen.
 
 Keine zweite Kopie des Skripts, der Szenenlogik oder des Remotion-Sources anlegen.
 
@@ -52,24 +52,14 @@ Jedes neue Reel erhält in Phase 1:
 03-caption/platform-copy.md
 ```
 
-Darin werden getrennt vorbereitet:
-
-- neutraler Kerntitel
-- YouTube-Shorts-Titel/Beschreibung
-- Instagram-Caption
-- TikTok-Caption
-- Facebook-Reels-Caption
-- Snapchat-Kurztext, falls genutzt
-- optionale Hashtags/Keywords
-
-Plattformtexte dürfen die inhaltliche Aussage nicht verändern oder sensationeller machen als das Reel selbst.
+Darin steht ausschließlich eine gemeinsame, kopierfertige Caption für YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat. Sie endet mit genau fünf thematisch passenden Hashtags. Keine Überschriften, Labels oder Plattformvarianten in dieser Datei.
 
 ## YouTube Shorts
 
 - verwendet den freigegebenen vertikalen Reel-Master aus `05-export/`
 - kein zweiter Source-Ordner
-- Titel soll die Kernfrage oder den Aha-Effekt klar machen
-- Beschreibung ergänzt knapp, statt den Sprechertext vollständig zu kopieren
+- als Upload-Titel den freigegebenen Reel-Titel verwenden
+- die universelle Caption unverändert als Beschreibung verwenden
 - Thumbnail/Cover nur separat erzeugen, wenn es einen echten Mehrwert hat
 - keine erfundenen Superlative oder irreführenden Versprechen
 
@@ -105,7 +95,7 @@ Longform besitzt eigenes Skript, Kapitel, Visualplan, Thumbnail, Metadaten, Expo
 
 ## Instagram / TikTok / Facebook / Snapchat
 
-Diese Plattformen dürfen denselben freigegebenen Short-Form-Master verwenden. Unterschiedlich sind primär Hook-Verpackung, Caption und CTA. Die fachliche Aussage, Animation und Voiceover-Wahrheit bleiben gleich.
+Diese Plattformen verwenden denselben freigegebenen Short-Form-Master und dieselbe universelle Caption mit genau fünf Hashtags. Keine eigenen Hook-, Caption- oder CTA-Varianten anlegen.
 
 ## Aktualitätsregel
 
@@ -117,7 +107,8 @@ Publishing ist erst sauber, wenn:
 
 - nur ein kanonischer Master pro Format existiert
 - keine Plattformkopie die Produktionswahrheit ersetzt
-- Titel/Captions keine falschen Versprechen enthalten
+- Reel-Titel und universelle Caption keine falschen Versprechen enthalten
+- `platform-copy.md` direkt kopierbar ist und genau fünf Hashtags enthält
 - Cover/Thumbnail der tatsächlichen Aussage entspricht
 - Plattformtexte nicht unnötig denselben Sprechertext vollständig wiederholen
 - bei Longform finale Kapitelzeitstempel aus dem tatsächlich verwendeten Audio stammen

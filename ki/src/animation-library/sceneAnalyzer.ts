@@ -33,6 +33,7 @@ export type AnimationFamilyName =
 export type AnimationFamilyScore = {
   visualFamily: AnimationFamilyName;
   score: number;
+  lexicalScore: number;
   matchedTerms: string[];
   matchedPhrases: string[];
   explanationPatterns: string[];
@@ -63,14 +64,14 @@ type FamilyRule = {
 
 const FAMILY_RULES: readonly FamilyRule[] = [
   {family: 'tokenization', terms: {token: 8, tokens: 8, wortteil: 7, textbaustein: 7, zerlegen: 5, splitten: 5}, phrases: {'in tokens': 12, 'text wird zerlegt': 11, 'kleine textbausteine': 12}, patterns: ['segmentation', 'part-to-whole'], defaultEnergy: 'dynamic'},
-  {family: 'data-transformation', terms: {zahl: 6, zahlen: 7, vektor: 9, umwandeln: 6, übersetzen: 5, konvertieren: 7, datenformat: 7}, phrases: {'wird zu zahlen': 13, 'in einen vektor': 13, 'format umwandeln': 11}, patterns: ['visible-transformation', 'representation-change'], defaultEnergy: 'dynamic'},
+  {family: 'data-transformation', terms: {zahl: 6, zahlen: 7, zahlenvektor: 14, vektor: 9, umwandeln: 6, umgewandelt: 8, übersetzen: 5, konvertieren: 7, datenformat: 7}, phrases: {'wird zu zahlen': 13, 'in einen vektor': 13, 'format umwandeln': 11}, patterns: ['visible-transformation', 'representation-change'], defaultEnergy: 'dynamic'},
   {family: 'semantic-space', terms: {bedeutung: 8, ähnlich: 6, nähe: 6, embedding: 10, begriff: 4, cluster: 8}, phrases: {'bedeutungsraum': 14, 'liegen näher': 11, 'ähnliche begriffe': 12}, patterns: ['semantic-proximity', 'clustering'], defaultEnergy: 'calm'},
   {family: 'relationship-network', terms: {attention: 12, beziehung: 8, verbinden: 6, zusammenhang: 7, abhängig: 7, netzwerk: 6}, phrases: {'wörter zusammengehören': 13, 'starke verbindung': 11, 'gewichtete beziehung': 13}, patterns: ['relationship-weighting', 'dependency'], defaultEnergy: 'dynamic'},
   {family: 'probability', terms: {wahrscheinlichkeit: 12, wahrscheinlich: 10, kandidat: 7, prozent: 5, vorhersagen: 7, nächstes: 4}, phrases: {'nächstes wort': 13, 'am wahrscheinlichsten': 14, 'mehrere kandidaten': 10}, patterns: ['candidate-selection', 'probability-shift'], defaultEnergy: 'dynamic'},
   {family: 'model-processing', terms: {modell: 5, layer: 9, schicht: 8, transformer: 11, verarbeiten: 6, inference: 9, expert: 7}, phrases: {'durch mehrere schichten': 13, 'im modell': 8, 'schrittweise verarbeiten': 11}, patterns: ['layered-processing', 'iterative-refinement'], defaultEnergy: 'measured'},
   {family: 'generation', terms: {antwort: 7, generieren: 9, erzeugen: 7, output: 6, wortweise: 9, vervollständigen: 8}, phrases: {'wort für wort': 14, 'antwort entsteht': 12, 'text generieren': 11}, patterns: ['sequential-generation', 'construction'], defaultEnergy: 'measured'},
   {family: 'risk-contrast', terms: {falsch: 10, halluzination: 13, risiko: 9, prüfen: 6, wahrheit: 9, überzeugend: 5, unsicher: 7}, phrases: {'kann falsch sein': 14, 'klingt richtig': 11, 'quelle prüfen': 12}, patterns: ['appearance-vs-reality', 'verification'], defaultEnergy: 'impact'},
-  {family: 'comparison', terms: {vergleich: 9, versus: 10, besser: 6, schlechter: 6, unterschied: 8, schneller: 5, alternative: 5}, phrases: {'im vergleich': 11, 'a gegen b': 12, 'zwei optionen': 10}, patterns: ['comparison', 'tradeoff'], defaultEnergy: 'dynamic'},
+  {family: 'comparison', terms: {vergleich: 9, verglichen: 12, versus: 10, besser: 6, schlechter: 6, unterschied: 8, schneller: 5, alternative: 5}, phrases: {'im vergleich': 11, 'a gegen b': 12, 'zwei optionen': 10}, patterns: ['comparison', 'tradeoff'], defaultEnergy: 'dynamic'},
   {family: 'ranking', terms: {ranking: 12, top: 6, reihenfolge: 9, platz: 6, score: 8, priorität: 8, beste: 6}, phrases: {'top drei': 12, 'auf platz': 10, 'nach priorität': 11}, patterns: ['ordering', 'priority'], defaultEnergy: 'impact'},
   {family: 'input-output', terms: {input: 8, output: 8, eingabe: 7, ergebnis: 5, verdichten: 7, zusammenfassen: 8, quellen: 5}, phrases: {'viele zu einem': 12, 'eingabe zu ausgabe': 13, 'zu einem ergebnis': 10}, patterns: ['many-to-one', 'input-to-output'], defaultEnergy: 'dynamic'},
   {family: 'process-flow', terms: {prozess: 9, workflow: 11, schritt: 6, station: 7, ablauf: 8, pipeline: 9, automation: 7}, phrases: {'schritt für schritt': 12, 'mehrere stationen': 11, 'automatischer ablauf': 12}, patterns: ['process', 'handoff'], defaultEnergy: 'dynamic'},
@@ -128,17 +129,23 @@ export const analyzeSceneForAnimation = ({
   if (!normalizedText) throw new Error('scene analyzer requires spokenText');
   const tokenList = tokenize(spokenText);
   const meaningContract = analyzeSceneMeaning(spokenText);
+  const hasCostReductionSignal =
+    /\b(?:spar\w*|senk\w*|weniger|günstig\w*|gunstig\w*|reduzier\w*|verringer\w*|halbier\w*|einspar\w*|nur\s+noch)\b/i.test(
+      normalizedText,
+    );
 
   const familyScores = FAMILY_RULES.map((rule) => {
-    const matchedTerms = Object.keys(rule.terms)
+    const ruleActive =
+      rule.family !== 'cost-efficiency' || hasCostReductionSignal;
+    const matchedTerms = ruleActive ? Object.keys(rule.terms)
       .map((term) => tokenList.find((token) => tokenMatches(token, term)))
-      .filter((token): token is string => Boolean(token));
-    const matchedRuleTerms = Object.keys(rule.terms).filter((term) =>
+      .filter((token): token is string => Boolean(token)) : [];
+    const matchedRuleTerms = ruleActive ? Object.keys(rule.terms).filter((term) =>
       tokenList.some((token) => tokenMatches(token, term)),
-    );
-    const matchedPhrases = Object.keys(rule.phrases).filter((phrase) =>
+    ) : [];
+    const matchedPhrases = ruleActive ? Object.keys(rule.phrases).filter((phrase) =>
       normalizedText.includes(normalize(phrase)),
-    );
+    ) : [];
     const meaningBonus = meaningContract.preferredVisualFamilies.indexOf(rule.family);
     const lexicalScore =
       matchedRuleTerms.reduce((sum, term) => sum + rule.terms[term], 0) +
@@ -150,6 +157,7 @@ export const analyzeSceneForAnimation = ({
     return {
       visualFamily: rule.family,
       score,
+      lexicalScore,
       matchedTerms: unique(matchedTerms),
       matchedPhrases,
       explanationPatterns: [...rule.patterns],
@@ -162,13 +170,25 @@ export const analyzeSceneForAnimation = ({
     (family) => family.matchedTerms.length > 0 || family.matchedPhrases.length > 0,
   );
   const positive = familyScores.filter((family) => family.score > 0);
+  const directlyMatchedFamilies = familyScores
+    .filter(
+      (family) =>
+        family.matchedTerms.length > 0 || family.matchedPhrases.length > 0,
+    )
+    .sort((left, right) =>
+      right.lexicalScore - left.lexicalScore ||
+      left.visualFamily.localeCompare(right.visualFamily),
+    );
+  const rankedPreferredFamilies = directlyMatchedFamilies.length > 0
+    ? directlyMatchedFamilies
+    : positive;
   const validFamilies = new Set(FAMILY_RULES.map((rule) => rule.family));
   const fallback: AnimationFamilyName = 'input-output';
   const preferredVisualFamilies = unique([
+    ...rankedPreferredFamilies.map((family) => family.visualFamily),
     ...meaningContract.preferredVisualFamilies.filter(
       (family): family is AnimationFamilyName => validFamilies.has(family as AnimationFamilyName),
     ),
-    ...positive.map((family) => family.visualFamily),
   ]).slice(0, 3);
   if (preferredVisualFamilies.length === 0) preferredVisualFamilies.push(fallback);
 

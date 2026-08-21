@@ -6,7 +6,8 @@ export const BRAND = {
   handle:   '@ki',
   topic:    'Künstliche Intelligenz verständlich erklärt (Tools, Konzepte, News)',
   voice:    'neugierig, klar — immer „du"',
-  font:     FONT,
+  font:     FONT.body,
+  fonts:    FONT,
   // Theme:
   accent:   '#B98CFF',       // 🟣 Lila — premium/besonders
   accentDk: '#6E45C9',

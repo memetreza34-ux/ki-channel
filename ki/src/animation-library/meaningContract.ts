@@ -151,7 +151,7 @@ const MEANING_RULES: readonly MeaningRule[] = [
   },
   {
     id: 'comparison',
-    terms: ['vergleich', 'unterschied', 'besser', 'schlechter', 'versus', 'alternative'],
+    terms: ['vergleich', 'verglich', 'unterschied', 'besser', 'schlechter', 'versus', 'alternative'],
     phrases: ['im vergleich', 'a gegen b', 'zwei optionen'],
     families: ['comparison', 'ranking'],
     patterns: ['comparison', 'tradeoff', 'ordering'],
@@ -205,7 +205,7 @@ const STOP_WORDS = new Set([
 
 const ACTION_ROOTS = [
   'such', 'filter', 'zerleg', 'split', 'umwandel', 'konvertier', 'verbind',
-  'vergleich', 'wahl', 'entscheid', 'generier', 'erzeug', 'pruf', 'vergess',
+  'vergleich', 'verglich', 'wahl', 'entscheid', 'generier', 'erzeug', 'pruf', 'vergess',
   'aktualisier', 'lern', 'schutz', 'verschlussel', 'skalier', 'verarbeit',
   'sortier', 'rank', 'beweg', 'wachst', 'sink', 'steig',
 ];

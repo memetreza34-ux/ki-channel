@@ -27,7 +27,6 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ├── 01-script-audio/
 ├── 02-bilder/
 ├── 03-caption/
-├── 04-pdf/
 ├── 05-export/
 └── 06-projektdateien/
 ```
@@ -79,8 +78,7 @@ Aktueller Formatstandard: 1920×1080, 30 FPS, 16:9, 5:00–6:00 Minuten nach ech
 
 - `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
 - `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
-- `04-pdf/` — optionale PDF-Assets
+- `03-caption/` — Subtitle-Cues, Wort-Timestamps und genau eine universelle, direkt kopierbare Social Caption mit fünf Hashtags
 - `05-export/` — Smoke-Frames, Review-Renders, finale MP4
 - `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
 

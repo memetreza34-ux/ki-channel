@@ -30,6 +30,12 @@ const ENTITY_STOPWORDS = new Set([
   'im', 'in', 'ist', 'mit', 'nach', 'nur', 'oder', 'ohne', 'sich', 'sie',
   'sind', 'so', 'und', 'von', 'vor', 'während', 'weil', 'wenn', 'wie',
   'wird', 'werden', 'zu', 'zum', 'zur',
+  'prozent', 'wahrscheinlichkeit',
+]);
+
+const GENERIC_ENTITY_LABELS = new Set([
+  'prozent',
+  'wahrscheinlichkeit',
 ]);
 
 const capitalizedEntities = (spokenText: string): string[] => {
@@ -94,7 +100,18 @@ const repairEntityLabels = ({
       if (priorityEntityAnimations.has(animationId)) {
         const numericIndex = Number(key.match(/\d+/)?.[0] ?? '0') - 1;
         const preferred = preferredCandidates[numericIndex];
-        if (preferred) return [key, preferred];
+        const earlierCandidates = preferredCandidates
+          .slice(0, numericIndex)
+          .map(normalize);
+        if (preferred && !earlierCandidates.includes(normalize(preferred))) {
+          return [key, preferred];
+        }
+        if (
+          GENERIC_ENTITY_LABELS.has(normalize(value)) ||
+          earlierCandidates.includes(normalize(value))
+        ) {
+          return [key, `Kandidat ${String.fromCharCode(65 + numericIndex)}`];
+        }
       }
 
       if (!suspiciousArticleFragment(value)) return [key, value];
@@ -196,20 +213,29 @@ const latencyMeasurements = (spokenText: string, unit: string): number[] => {
 
 const explicitPercentages = (spokenText: string): number[] =>
   collectMeasurements(spokenText, [
-    /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/gi,
+    /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent\b)/gi,
   ]).filter((value) => value >= 0 && value <= 100);
 
 const percentageForLabel = (
   spokenText: string,
   label: string,
+  otherLabels: readonly string[],
 ): number | null => {
   const text = normalize(spokenText);
   const normalizedLabel = normalize(label);
   if (normalizedLabel.length < 2) return null;
   const escapedLabel = escapeRegex(normalizedLabel).replace(/\s+/g, '\\s+');
+  const peerPatterns = otherLabels
+    .map(normalize)
+    .filter((peer) => peer.length >= 2)
+    .map((peer) => escapeRegex(peer).replace(/\s+/g, '\\s+'));
+  const peerGuard = peerPatterns.length > 0
+    ? `(?!\\b(?:${peerPatterns.join('|')})\\b)`
+    : '';
+  const gap = `(?:${peerGuard}[^0-9,.!?;]){0,28}`;
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
-  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,28}${number}\\s*(?:%|prozent)\\b`);
-  const before = new RegExp(`${number}\\s*(?:%|prozent)\\b[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${number}\\s*(?:%|prozent\\b)`);
+  const before = new RegExp(`${number}\\s*(?:%|prozent\\b)[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
   const match = after.exec(text) ?? before.exec(text);
   if (!match) return null;
   const parsed = Number(match[1].replace(',', '.'));
@@ -274,7 +300,7 @@ const distributeProbabilityRemainder = ({
   exactValues: readonly (number | null)[];
   fallbackValues: readonly number[];
 }): number[] => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -310,8 +336,14 @@ const sanitizeProbability = (
 ): Record<string, string | number> => {
   const sequentialPercentages = explicitPercentages(spokenText);
   const candidateLabels = [labels.candidate1, labels.candidate2, labels.candidate3];
-  let exactValues = candidateLabels.map((label) =>
-    label ? percentageForLabel(spokenText, label) : null,
+  let exactValues = candidateLabels.map((label, index) =>
+    label
+      ? percentageForLabel(
+          spokenText,
+          label,
+          candidateLabels.filter((_, labelIndex) => labelIndex !== index),
+        )
+      : null,
   );
   const associatedCount = exactValues.filter((value) => value !== null).length;
   if (associatedCount === 0 && sequentialPercentages.length > 0) {
@@ -326,7 +358,7 @@ const sanitizeProbability = (
   });
   const fallbackPercentage = explicitPercentage(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {...values};
+  const nextValues: Record<string, string | number> = {...values};
 
   for (let index = 0; index < 3; index += 1) {
     const exact = exactValues[index] !== null;
@@ -375,7 +407,7 @@ const sanitizeRanking = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     rankingOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -405,7 +437,7 @@ const sanitizeComparison = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'competitor', count: 2});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     comparisonOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -435,7 +467,10 @@ const sanitizeCost = (
     values.initialCost !== undefined &&
     values.optimizedCost !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {
+    ...values,
+    measurementExact: exact ? 1 : 0,
+  };
 
   if (boundMeasurements.length >= 2) {
     const initial = Math.max(boundMeasurements[0], boundMeasurements[1]);
@@ -478,7 +513,10 @@ const sanitizeLatency = (
     values.slowLatency !== undefined &&
     values.fastLatency !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {
+    ...values,
+    measurementExact: exact ? 1 : 0,
+  };
 
   if (boundMeasurements.length >= 2) {
     nextValues.slowLatency = boundMeasurements[0];

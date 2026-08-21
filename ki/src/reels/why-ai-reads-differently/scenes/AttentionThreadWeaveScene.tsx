@@ -90,7 +90,10 @@ export const AttentionThreadWeaveScene: React.FC = () => {
                   zIndex: 4,
                 }}
               >
-                <TokenCapsule text={node.label} accent={node.accent} />
+                <TokenCapsule
+                  text={node.label}
+                  accent={'accent' in node ? node.accent : false}
+                />
                 <div
                   style={{
                     marginTop: 10,

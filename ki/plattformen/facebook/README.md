@@ -2,13 +2,6 @@
 
 Facebook verwendet grundsätzlich denselben freigegebenen Short-Form-Master aus `ki/reels/`.
 
-Plattform-spezifisch sind primär:
-
-- Begleittext
-- optionaler CTA
-- Cover-Auswahl
-- aktuelle Upload-/Feature-Regeln
-
-Konkrete Texte liegen im jeweiligen Reel unter `03-caption/platform-copy.md`.
+Die Caption liegt im jeweiligen Reel unter `03-caption/platform-copy.md`. Sie wird unverändert auf allen Short-Form-Plattformen verwendet und endet mit genau fünf Hashtags. Keine eigene Facebook-Variante. Nur Cover-Auswahl und technisch aktuelle Upload-Regeln können abweichen.
 
 Keine eigene Produktionswahrheit für Facebook erzeugen. Änderungen am Inhalt nur, wenn der Nutzer ausdrücklich eine eigene Plattformversion verlangt.

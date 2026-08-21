@@ -1,0 +1,727 @@
+{
+  "version": 1,
+  "source": "01-script-audio/voiceover.wav",
+  "duration": 67.988042,
+  "words": [
+    {
+      "word": "Warum",
+      "start": 0.35,
+      "end": 0.44
+    },
+    {
+      "word": "weiß",
+      "start": 0.44,
+      "end": 0.84
+    },
+    {
+      "word": "deine",
+      "start": 0.84,
+      "end": 1.26
+    },
+    {
+      "word": "KI",
+      "start": 1.26,
+      "end": 1.47
+    },
+    {
+      "word": "nicht",
+      "start": 1.47,
+      "end": 1.85
+    },
+    {
+      "word": "automatisch,",
+      "start": 1.85,
+      "end": 3
+    },
+    {
+      "word": "was",
+      "start": 3,
+      "end": 3.22
+    },
+    {
+      "word": "heute",
+      "start": 3.22,
+      "end": 3.62
+    },
+    {
+      "word": "passiert?",
+      "start": 3.62,
+      "end": 4.44
+    },
+    {
+      "word": "Weil",
+      "start": 4.44,
+      "end": 4.7
+    },
+    {
+      "word": "ihr",
+      "start": 4.7,
+      "end": 4.9
+    },
+    {
+      "word": "wissen",
+      "start": 4.9,
+      "end": 5.26
+    },
+    {
+      "word": "meistens",
+      "start": 5.26,
+      "end": 5.77
+    },
+    {
+      "word": "nicht",
+      "start": 5.77,
+      "end": 6.11
+    },
+    {
+      "word": "live",
+      "start": 6.11,
+      "end": 6.34
+    },
+    {
+      "word": "mit",
+      "start": 6.34,
+      "end": 6.53
+    },
+    {
+      "word": "der",
+      "start": 6.53,
+      "end": 6.72
+    },
+    {
+      "word": "Welt",
+      "start": 6.72,
+      "end": 6.98
+    },
+    {
+      "word": "verbunden",
+      "start": 6.98,
+      "end": 7.54
+    },
+    {
+      "word": "ist.",
+      "start": 7.54,
+      "end": 8
+    },
+    {
+      "word": "Beim",
+      "start": 8,
+      "end": 8.32
+    },
+    {
+      "word": "Training",
+      "start": 8.32,
+      "end": 8.9
+    },
+    {
+      "word": "lernt",
+      "start": 8.9,
+      "end": 9.3
+    },
+    {
+      "word": "sie",
+      "start": 9.3,
+      "end": 9.49
+    },
+    {
+      "word": "Muster",
+      "start": 9.49,
+      "end": 9.93
+    },
+    {
+      "word": "aus",
+      "start": 9.93,
+      "end": 10.15
+    },
+    {
+      "word": "einem",
+      "start": 10.15,
+      "end": 10.52
+    },
+    {
+      "word": "festen",
+      "start": 10.52,
+      "end": 10.97
+    },
+    {
+      "word": "Datenstand.",
+      "start": 10.97,
+      "end": 12
+    },
+    {
+      "word": "Dieser",
+      "start": 12,
+      "end": 12.44
+    },
+    {
+      "word": "Stand",
+      "start": 12.44,
+      "end": 12.81
+    },
+    {
+      "word": "ist",
+      "start": 12.81,
+      "end": 13.03
+    },
+    {
+      "word": "eher",
+      "start": 13.03,
+      "end": 13.33
+    },
+    {
+      "word": "ein",
+      "start": 13.33,
+      "end": 13.55
+    },
+    {
+      "word": "eingefrorenes",
+      "start": 13.55,
+      "end": 14.49
+    },
+    {
+      "word": "Archiv",
+      "start": 14.49,
+      "end": 15
+    },
+    {
+      "word": "als",
+      "start": 15,
+      "end": 15.15
+    },
+    {
+      "word": "ein",
+      "start": 15.15,
+      "end": 15.29
+    },
+    {
+      "word": "Live-Ticker.",
+      "start": 15.29,
+      "end": 16
+    },
+    {
+      "word": "Danach",
+      "start": 16,
+      "end": 16.54
+    },
+    {
+      "word": "entstehen",
+      "start": 16.54,
+      "end": 17.18
+    },
+    {
+      "word": "neue",
+      "start": 17.18,
+      "end": 17.5
+    },
+    {
+      "word": "Updates,",
+      "start": 17.5,
+      "end": 18.19
+    },
+    {
+      "word": "Preise",
+      "start": 18.19,
+      "end": 18.66
+    },
+    {
+      "word": "und",
+      "start": 18.66,
+      "end": 18.9
+    },
+    {
+      "word": "Ereignisse.",
+      "start": 18.9,
+      "end": 20
+    },
+    {
+      "word": "Ohne",
+      "start": 20,
+      "end": 20.57
+    },
+    {
+      "word": "Webzugriff",
+      "start": 20.57,
+      "end": 21.25
+    },
+    {
+      "word": "sieht",
+      "start": 21.25,
+      "end": 21.54
+    },
+    {
+      "word": "die",
+      "start": 21.54,
+      "end": 21.84
+    },
+    {
+      "word": "KI",
+      "start": 21.84,
+      "end": 21.95
+    },
+    {
+      "word": "diese",
+      "start": 21.95,
+      "end": 22.36
+    },
+    {
+      "word": "Veränderungen",
+      "start": 22.36,
+      "end": 23.51
+    },
+    {
+      "word": "nicht",
+      "start": 23.51,
+      "end": 23.92
+    },
+    {
+      "word": "von",
+      "start": 23.92,
+      "end": 24.19
+    },
+    {
+      "word": "selbst.",
+      "start": 24.19,
+      "end": 25
+    },
+    {
+      "word": "Dann",
+      "start": 25,
+      "end": 25.27
+    },
+    {
+      "word": "ergänzt",
+      "start": 25.27,
+      "end": 25.8
+    },
+    {
+      "word": "sie",
+      "start": 25.8,
+      "end": 26.04
+    },
+    {
+      "word": "Lücken",
+      "start": 26.04,
+      "end": 26.48
+    },
+    {
+      "word": "mit",
+      "start": 26.48,
+      "end": 26.68
+    },
+    {
+      "word": "älteren",
+      "start": 26.68,
+      "end": 27.48
+    },
+    {
+      "word": "Mustern.",
+      "start": 27.48,
+      "end": 28
+    },
+    {
+      "word": "Das",
+      "start": 28.04,
+      "end": 28.21
+    },
+    {
+      "word": "kann",
+      "start": 28.21,
+      "end": 28.5
+    },
+    {
+      "word": "eine",
+      "start": 28.5,
+      "end": 28.77
+    },
+    {
+      "word": "veraltete",
+      "start": 28.77,
+      "end": 29.4
+    },
+    {
+      "word": "Aussage",
+      "start": 29.4,
+      "end": 29.96
+    },
+    {
+      "word": "trotzdem",
+      "start": 29.96,
+      "end": 30.45
+    },
+    {
+      "word": "überzeugend",
+      "start": 30.45,
+      "end": 31.36
+    },
+    {
+      "word": "klingen.",
+      "start": 31.36,
+      "end": 32
+    },
+    {
+      "word": "Mit",
+      "start": 32,
+      "end": 32.27
+    },
+    {
+      "word": "Webzugriff",
+      "start": 32.27,
+      "end": 33.13
+    },
+    {
+      "word": "kann",
+      "start": 33.13,
+      "end": 33.29
+    },
+    {
+      "word": "sie",
+      "start": 33.29,
+      "end": 33.53
+    },
+    {
+      "word": "aktuelle",
+      "start": 33.53,
+      "end": 34.14
+    },
+    {
+      "word": "Quellen",
+      "start": 34.14,
+      "end": 34.66
+    },
+    {
+      "word": "gezielt",
+      "start": 34.66,
+      "end": 35.19
+    },
+    {
+      "word": "abrufen.",
+      "start": 35.19,
+      "end": 36
+    },
+    {
+      "word": "Entscheidend",
+      "start": 36,
+      "end": 36.84
+    },
+    {
+      "word": "ist,",
+      "start": 36.84,
+      "end": 37.18
+    },
+    {
+      "word": "welche",
+      "start": 37.18,
+      "end": 37.56
+    },
+    {
+      "word": "Seite",
+      "start": 37.56,
+      "end": 37.9
+    },
+    {
+      "word": "sie",
+      "start": 37.9,
+      "end": 38.19
+    },
+    {
+      "word": "findet",
+      "start": 38.19,
+      "end": 38.57
+    },
+    {
+      "word": "und",
+      "start": 38.57,
+      "end": 38.71
+    },
+    {
+      "word": "wie",
+      "start": 38.71,
+      "end": 38.91
+    },
+    {
+      "word": "frisch",
+      "start": 38.91,
+      "end": 39.25
+    },
+    {
+      "word": "sie",
+      "start": 39.25,
+      "end": 39.5
+    },
+    {
+      "word": "ist.",
+      "start": 39.5,
+      "end": 40
+    },
+    {
+      "word": "Frage",
+      "start": 40,
+      "end": 40.36
+    },
+    {
+      "word": "bei",
+      "start": 40.36,
+      "end": 40.62
+    },
+    {
+      "word": "aktuellen",
+      "start": 40.62,
+      "end": 41.23
+    },
+    {
+      "word": "Themen",
+      "start": 41.23,
+      "end": 41.81
+    },
+    {
+      "word": "nach",
+      "start": 41.81,
+      "end": 41.96
+    },
+    {
+      "word": "Datum,",
+      "start": 41.96,
+      "end": 42.53
+    },
+    {
+      "word": "Quelle",
+      "start": 42.53,
+      "end": 42.9
+    },
+    {
+      "word": "und",
+      "start": 42.9,
+      "end": 43.2
+    },
+    {
+      "word": "Veröffentlichungszeit.",
+      "start": 43.2,
+      "end": 45
+    },
+    {
+      "word": "Öffne",
+      "start": 45,
+      "end": 45.35
+    },
+    {
+      "word": "die",
+      "start": 45.35,
+      "end": 45.55
+    },
+    {
+      "word": "Originalseite",
+      "start": 45.55,
+      "end": 46.3
+    },
+    {
+      "word": "statt",
+      "start": 46.3,
+      "end": 46.7
+    },
+    {
+      "word": "nur",
+      "start": 46.7,
+      "end": 46.8
+    },
+    {
+      "word": "einer",
+      "start": 46.8,
+      "end": 47.11
+    },
+    {
+      "word": "Zusammenfassung",
+      "start": 47.11,
+      "end": 48.05
+    },
+    {
+      "word": "zu",
+      "start": 48.05,
+      "end": 48.17
+    },
+    {
+      "word": "vertrauen.",
+      "start": 48.17,
+      "end": 49
+    },
+    {
+      "word": "Vergleiche",
+      "start": 49,
+      "end": 49.63
+    },
+    {
+      "word": "zwei",
+      "start": 49.63,
+      "end": 49.88
+    },
+    {
+      "word": "seriöse",
+      "start": 49.88,
+      "end": 50.37
+    },
+    {
+      "word": "Quellen,",
+      "start": 50.37,
+      "end": 50.93
+    },
+    {
+      "word": "wenn",
+      "start": 50.93,
+      "end": 51.18
+    },
+    {
+      "word": "die",
+      "start": 51.18,
+      "end": 51.37
+    },
+    {
+      "word": "Entscheidung",
+      "start": 51.37,
+      "end": 52.13
+    },
+    {
+      "word": "wichtig",
+      "start": 52.13,
+      "end": 52.57
+    },
+    {
+      "word": "ist.",
+      "start": 52.57,
+      "end": 53
+    },
+    {
+      "word": "Prüfe",
+      "start": 53.03,
+      "end": 53.39
+    },
+    {
+      "word": "besonders",
+      "start": 53.39,
+      "end": 54
+    },
+    {
+      "word": "zahlen,",
+      "start": 54,
+      "end": 54.53
+    },
+    {
+      "word": "Termine,",
+      "start": 54.53,
+      "end": 55.22
+    },
+    {
+      "word": "Preise,",
+      "start": 55.22,
+      "end": 55.66
+    },
+    {
+      "word": "Versionen",
+      "start": 55.66,
+      "end": 56.27
+    },
+    {
+      "word": "und",
+      "start": 56.27,
+      "end": 56.47
+    },
+    {
+      "word": "öffentliche",
+      "start": 56.47,
+      "end": 57.28
+    },
+    {
+      "word": "Ämter.",
+      "start": 57.28,
+      "end": 58
+    },
+    {
+      "word": "Ohne",
+      "start": 58,
+      "end": 58.49
+    },
+    {
+      "word": "aktuelle",
+      "start": 58.49,
+      "end": 58.84
+    },
+    {
+      "word": "Quelle",
+      "start": 58.84,
+      "end": 59.26
+    },
+    {
+      "word": "ist",
+      "start": 59.26,
+      "end": 59.47
+    },
+    {
+      "word": "Sicherheit",
+      "start": 59.47,
+      "end": 60.25
+    },
+    {
+      "word": "nur",
+      "start": 60.25,
+      "end": 60.39
+    },
+    {
+      "word": "Tonfall,",
+      "start": 60.39,
+      "end": 61.02
+    },
+    {
+      "word": "kein",
+      "start": 61.02,
+      "end": 61.3
+    },
+    {
+      "word": "Beweis.",
+      "start": 61.3,
+      "end": 62
+    },
+    {
+      "word": "Für",
+      "start": 62,
+      "end": 62.29
+    },
+    {
+      "word": "heutige",
+      "start": 62.29,
+      "end": 63.04
+    },
+    {
+      "word": "Fakten",
+      "start": 63.04,
+      "end": 63.6
+    },
+    {
+      "word": "gilt",
+      "start": 63.6,
+      "end": 64.08
+    },
+    {
+      "word": "\"Suchen,",
+      "start": 64.08,
+      "end": 64.73
+    },
+    {
+      "word": "Datum",
+      "start": 64.73,
+      "end": 65.3
+    },
+    {
+      "word": "prüfen,",
+      "start": 65.3,
+      "end": 65.94
+    },
+    {
+      "word": "Originalquelle",
+      "start": 65.94,
+      "end": 67.01
+    },
+    {
+      "word": "öffnen\".",
+      "start": 67.01,
+      "end": 68
+    }
+  ]
+}

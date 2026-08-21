@@ -53,7 +53,6 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ├── 01-script-audio/
 ├── 02-bilder/
 ├── 03-caption/
-├── 04-pdf/
 ├── 05-export/
 └── 06-projektdateien/
 ```
@@ -76,11 +75,13 @@ npm run ki:reel:structure-check
 
 Ein Short-Form-Reel wird **einmal** produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
 
-Plattform-spezifische Copy liegt pro Reel in:
+Eine gemeinsame, direkt kopierbare Social-Media-Caption liegt pro Reel in:
 
 ```text
 03-caption/platform-copy.md
 ```
+
+Sie wird unverändert für YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwendet und endet mit genau fünf Hashtags. Short-Form erzeugt keine PDFs.
 
 YouTube-Regeln:
 

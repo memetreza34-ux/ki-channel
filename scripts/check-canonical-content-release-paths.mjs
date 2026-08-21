@@ -128,7 +128,7 @@ for (const required of [
   '- verify',
   '- smoke',
   '- full',
-  'node scripts/run-content-release.mjs "${{ inputs.release_mode }}"',
+  'npm run "release:${{ inputs.release_mode }}"',
   'out/content-release-run/',
 ]) {
   requireContains(actionsWorkflow, required, 'motion-system-checks workflow');

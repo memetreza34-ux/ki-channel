@@ -1,0 +1,1172 @@
+{
+  "version": 4,
+  "status": "final-transcript-aligned",
+  "fps": 30,
+  "audio": {
+    "durationSeconds": 67.988042,
+    "speechStartSeconds": 0.35,
+    "speechEndSeconds": 68
+  },
+  "composition": {
+    "durationInFrames": 2091,
+    "outroHoldFrames": 51
+  },
+  "captionPairs": [
+    {
+      "id": "pair-01",
+      "sceneId": "scene-01",
+      "startFrame": 0,
+      "endFrame": 240,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-01",
+          "text": "Warum weiß deine KI nicht automatisch, was heute passiert?",
+          "startFrame": 11,
+          "endFrame": 133,
+          "words": [
+            {
+              "text": "Warum",
+              "startFrame": 11,
+              "endFrame": 13
+            },
+            {
+              "text": "weiß",
+              "startFrame": 13,
+              "endFrame": 25
+            },
+            {
+              "text": "deine",
+              "startFrame": 25,
+              "endFrame": 38
+            },
+            {
+              "text": "KI",
+              "startFrame": 38,
+              "endFrame": 44
+            },
+            {
+              "text": "nicht",
+              "startFrame": 44,
+              "endFrame": 56
+            },
+            {
+              "text": "automatisch,",
+              "startFrame": 56,
+              "endFrame": 90
+            },
+            {
+              "text": "was",
+              "startFrame": 90,
+              "endFrame": 97
+            },
+            {
+              "text": "heute",
+              "startFrame": 97,
+              "endFrame": 109
+            },
+            {
+              "text": "passiert?",
+              "startFrame": 109,
+              "endFrame": 133
+            }
+          ]
+        },
+        {
+          "id": "sentence-02",
+          "text": "Weil ihr Wissen meistens nicht live mit der Welt verbunden ist.",
+          "startFrame": 133,
+          "endFrame": 240,
+          "words": [
+            {
+              "text": "Weil",
+              "startFrame": 133,
+              "endFrame": 141
+            },
+            {
+              "text": "ihr",
+              "startFrame": 141,
+              "endFrame": 147
+            },
+            {
+              "text": "Wissen",
+              "startFrame": 147,
+              "endFrame": 158
+            },
+            {
+              "text": "meistens",
+              "startFrame": 158,
+              "endFrame": 173
+            },
+            {
+              "text": "nicht",
+              "startFrame": 173,
+              "endFrame": 183
+            },
+            {
+              "text": "live",
+              "startFrame": 183,
+              "endFrame": 190
+            },
+            {
+              "text": "mit",
+              "startFrame": 190,
+              "endFrame": 196
+            },
+            {
+              "text": "der",
+              "startFrame": 196,
+              "endFrame": 202
+            },
+            {
+              "text": "Welt",
+              "startFrame": 202,
+              "endFrame": 209
+            },
+            {
+              "text": "verbunden",
+              "startFrame": 209,
+              "endFrame": 226
+            },
+            {
+              "text": "ist.",
+              "startFrame": 226,
+              "endFrame": 240
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-02",
+      "sceneId": "scene-02",
+      "startFrame": 240,
+      "endFrame": 480,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-03",
+          "text": "Beim Training lernt sie Muster aus einem festen Datenstand.",
+          "startFrame": 240,
+          "endFrame": 360,
+          "words": [
+            {
+              "text": "Beim",
+              "startFrame": 240,
+              "endFrame": 250
+            },
+            {
+              "text": "Training",
+              "startFrame": 250,
+              "endFrame": 267
+            },
+            {
+              "text": "lernt",
+              "startFrame": 267,
+              "endFrame": 279
+            },
+            {
+              "text": "sie",
+              "startFrame": 279,
+              "endFrame": 285
+            },
+            {
+              "text": "Muster",
+              "startFrame": 285,
+              "endFrame": 298
+            },
+            {
+              "text": "aus",
+              "startFrame": 298,
+              "endFrame": 305
+            },
+            {
+              "text": "einem",
+              "startFrame": 305,
+              "endFrame": 316
+            },
+            {
+              "text": "festen",
+              "startFrame": 316,
+              "endFrame": 329
+            },
+            {
+              "text": "Datenstand.",
+              "startFrame": 329,
+              "endFrame": 360
+            }
+          ]
+        },
+        {
+          "id": "sentence-04",
+          "text": "Dieser Stand ist eher ein eingefrorenes Archiv als ein Liveticker.",
+          "startFrame": 360,
+          "endFrame": 480,
+          "words": [
+            {
+              "text": "Dieser",
+              "startFrame": 360,
+              "endFrame": 373
+            },
+            {
+              "text": "Stand",
+              "startFrame": 373,
+              "endFrame": 384
+            },
+            {
+              "text": "ist",
+              "startFrame": 384,
+              "endFrame": 391
+            },
+            {
+              "text": "eher",
+              "startFrame": 391,
+              "endFrame": 400
+            },
+            {
+              "text": "ein",
+              "startFrame": 400,
+              "endFrame": 407
+            },
+            {
+              "text": "eingefrorenes",
+              "startFrame": 407,
+              "endFrame": 435
+            },
+            {
+              "text": "Archiv",
+              "startFrame": 435,
+              "endFrame": 450
+            },
+            {
+              "text": "als",
+              "startFrame": 450,
+              "endFrame": 455
+            },
+            {
+              "text": "ein",
+              "startFrame": 455,
+              "endFrame": 459
+            },
+            {
+              "text": "Liveticker.",
+              "startFrame": 459,
+              "endFrame": 480
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-03",
+      "sceneId": "scene-03",
+      "startFrame": 480,
+      "endFrame": 750,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-05",
+          "text": "Danach entstehen neue Updates, Preise und Ereignisse.",
+          "startFrame": 480,
+          "endFrame": 600,
+          "words": [
+            {
+              "text": "Danach",
+              "startFrame": 480,
+              "endFrame": 496
+            },
+            {
+              "text": "entstehen",
+              "startFrame": 496,
+              "endFrame": 515
+            },
+            {
+              "text": "neue",
+              "startFrame": 515,
+              "endFrame": 525
+            },
+            {
+              "text": "Updates,",
+              "startFrame": 525,
+              "endFrame": 546
+            },
+            {
+              "text": "Preise",
+              "startFrame": 546,
+              "endFrame": 560
+            },
+            {
+              "text": "und",
+              "startFrame": 560,
+              "endFrame": 567
+            },
+            {
+              "text": "Ereignisse.",
+              "startFrame": 567,
+              "endFrame": 600
+            }
+          ]
+        },
+        {
+          "id": "sentence-06",
+          "text": "Ohne Webzugriff sieht die KI diese Veränderungen nicht von selbst.",
+          "startFrame": 600,
+          "endFrame": 750,
+          "words": [
+            {
+              "text": "Ohne",
+              "startFrame": 600,
+              "endFrame": 617
+            },
+            {
+              "text": "Webzugriff",
+              "startFrame": 617,
+              "endFrame": 638
+            },
+            {
+              "text": "sieht",
+              "startFrame": 638,
+              "endFrame": 646
+            },
+            {
+              "text": "die",
+              "startFrame": 646,
+              "endFrame": 655
+            },
+            {
+              "text": "KI",
+              "startFrame": 655,
+              "endFrame": 659
+            },
+            {
+              "text": "diese",
+              "startFrame": 659,
+              "endFrame": 671
+            },
+            {
+              "text": "Veränderungen",
+              "startFrame": 671,
+              "endFrame": 705
+            },
+            {
+              "text": "nicht",
+              "startFrame": 705,
+              "endFrame": 718
+            },
+            {
+              "text": "von",
+              "startFrame": 718,
+              "endFrame": 726
+            },
+            {
+              "text": "selbst.",
+              "startFrame": 726,
+              "endFrame": 750
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-04",
+      "sceneId": "scene-04",
+      "startFrame": 750,
+      "endFrame": 960,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-07",
+          "text": "Dann ergänzt sie Lücken mit älteren Mustern.",
+          "startFrame": 750,
+          "endFrame": 840,
+          "words": [
+            {
+              "text": "Dann",
+              "startFrame": 750,
+              "endFrame": 758
+            },
+            {
+              "text": "ergänzt",
+              "startFrame": 758,
+              "endFrame": 774
+            },
+            {
+              "text": "sie",
+              "startFrame": 774,
+              "endFrame": 781
+            },
+            {
+              "text": "Lücken",
+              "startFrame": 781,
+              "endFrame": 794
+            },
+            {
+              "text": "mit",
+              "startFrame": 794,
+              "endFrame": 800
+            },
+            {
+              "text": "älteren",
+              "startFrame": 800,
+              "endFrame": 824
+            },
+            {
+              "text": "Mustern.",
+              "startFrame": 824,
+              "endFrame": 840
+            }
+          ]
+        },
+        {
+          "id": "sentence-08",
+          "text": "Das kann eine veraltete Aussage trotzdem überzeugend klingen.",
+          "startFrame": 841,
+          "endFrame": 960,
+          "words": [
+            {
+              "text": "Das",
+              "startFrame": 841,
+              "endFrame": 846
+            },
+            {
+              "text": "kann",
+              "startFrame": 846,
+              "endFrame": 855
+            },
+            {
+              "text": "eine",
+              "startFrame": 855,
+              "endFrame": 863
+            },
+            {
+              "text": "veraltete",
+              "startFrame": 863,
+              "endFrame": 882
+            },
+            {
+              "text": "Aussage",
+              "startFrame": 882,
+              "endFrame": 899
+            },
+            {
+              "text": "trotzdem",
+              "startFrame": 899,
+              "endFrame": 914
+            },
+            {
+              "text": "überzeugend",
+              "startFrame": 914,
+              "endFrame": 941
+            },
+            {
+              "text": "klingen.",
+              "startFrame": 941,
+              "endFrame": 960
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-05",
+      "sceneId": "scene-05",
+      "startFrame": 960,
+      "endFrame": 1200,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-09",
+          "text": "Mit Webzugriff kann sie aktuelle Quellen gezielt abrufen.",
+          "startFrame": 960,
+          "endFrame": 1080,
+          "words": [
+            {
+              "text": "Mit",
+              "startFrame": 960,
+              "endFrame": 968
+            },
+            {
+              "text": "Webzugriff",
+              "startFrame": 968,
+              "endFrame": 994
+            },
+            {
+              "text": "kann",
+              "startFrame": 994,
+              "endFrame": 999
+            },
+            {
+              "text": "sie",
+              "startFrame": 999,
+              "endFrame": 1006
+            },
+            {
+              "text": "aktuelle",
+              "startFrame": 1006,
+              "endFrame": 1024
+            },
+            {
+              "text": "Quellen",
+              "startFrame": 1024,
+              "endFrame": 1040
+            },
+            {
+              "text": "gezielt",
+              "startFrame": 1040,
+              "endFrame": 1056
+            },
+            {
+              "text": "abrufen.",
+              "startFrame": 1056,
+              "endFrame": 1080
+            }
+          ]
+        },
+        {
+          "id": "sentence-10",
+          "text": "Entscheidend ist, welche Seite sie findet und wie frisch sie ist.",
+          "startFrame": 1080,
+          "endFrame": 1200,
+          "words": [
+            {
+              "text": "Entscheidend",
+              "startFrame": 1080,
+              "endFrame": 1105
+            },
+            {
+              "text": "ist,",
+              "startFrame": 1105,
+              "endFrame": 1115
+            },
+            {
+              "text": "welche",
+              "startFrame": 1115,
+              "endFrame": 1127
+            },
+            {
+              "text": "Seite",
+              "startFrame": 1127,
+              "endFrame": 1137
+            },
+            {
+              "text": "sie",
+              "startFrame": 1137,
+              "endFrame": 1146
+            },
+            {
+              "text": "findet",
+              "startFrame": 1146,
+              "endFrame": 1157
+            },
+            {
+              "text": "und",
+              "startFrame": 1157,
+              "endFrame": 1161
+            },
+            {
+              "text": "wie",
+              "startFrame": 1161,
+              "endFrame": 1167
+            },
+            {
+              "text": "frisch",
+              "startFrame": 1167,
+              "endFrame": 1178
+            },
+            {
+              "text": "sie",
+              "startFrame": 1178,
+              "endFrame": 1185
+            },
+            {
+              "text": "ist.",
+              "startFrame": 1185,
+              "endFrame": 1200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-06",
+      "sceneId": "scene-06",
+      "startFrame": 1200,
+      "endFrame": 1470,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-11",
+          "text": "Frage bei aktuellen Themen nach Datum, Quelle und Veröffentlichungszeit.",
+          "startFrame": 1200,
+          "endFrame": 1350,
+          "words": [
+            {
+              "text": "Frage",
+              "startFrame": 1200,
+              "endFrame": 1211
+            },
+            {
+              "text": "bei",
+              "startFrame": 1211,
+              "endFrame": 1219
+            },
+            {
+              "text": "aktuellen",
+              "startFrame": 1219,
+              "endFrame": 1237
+            },
+            {
+              "text": "Themen",
+              "startFrame": 1237,
+              "endFrame": 1254
+            },
+            {
+              "text": "nach",
+              "startFrame": 1254,
+              "endFrame": 1259
+            },
+            {
+              "text": "Datum,",
+              "startFrame": 1259,
+              "endFrame": 1276
+            },
+            {
+              "text": "Quelle",
+              "startFrame": 1276,
+              "endFrame": 1287
+            },
+            {
+              "text": "und",
+              "startFrame": 1287,
+              "endFrame": 1296
+            },
+            {
+              "text": "Veröffentlichungszeit.",
+              "startFrame": 1296,
+              "endFrame": 1350
+            }
+          ]
+        },
+        {
+          "id": "sentence-12",
+          "text": "Öffne die Originalseite statt nur einer Zusammenfassung zu vertrauen.",
+          "startFrame": 1350,
+          "endFrame": 1470,
+          "words": [
+            {
+              "text": "Öffne",
+              "startFrame": 1350,
+              "endFrame": 1361
+            },
+            {
+              "text": "die",
+              "startFrame": 1361,
+              "endFrame": 1367
+            },
+            {
+              "text": "Originalseite",
+              "startFrame": 1367,
+              "endFrame": 1389
+            },
+            {
+              "text": "statt",
+              "startFrame": 1389,
+              "endFrame": 1401
+            },
+            {
+              "text": "nur",
+              "startFrame": 1401,
+              "endFrame": 1404
+            },
+            {
+              "text": "einer",
+              "startFrame": 1404,
+              "endFrame": 1413
+            },
+            {
+              "text": "Zusammenfassung",
+              "startFrame": 1413,
+              "endFrame": 1442
+            },
+            {
+              "text": "zu",
+              "startFrame": 1442,
+              "endFrame": 1445
+            },
+            {
+              "text": "vertrauen.",
+              "startFrame": 1445,
+              "endFrame": 1470
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-07",
+      "sceneId": "scene-07",
+      "startFrame": 1470,
+      "endFrame": 1740,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-13",
+          "text": "Vergleiche zwei seriöse Quellen, wenn die Entscheidung wichtig ist.",
+          "startFrame": 1470,
+          "endFrame": 1590,
+          "words": [
+            {
+              "text": "Vergleiche",
+              "startFrame": 1470,
+              "endFrame": 1489
+            },
+            {
+              "text": "zwei",
+              "startFrame": 1489,
+              "endFrame": 1496
+            },
+            {
+              "text": "seriöse",
+              "startFrame": 1496,
+              "endFrame": 1511
+            },
+            {
+              "text": "Quellen,",
+              "startFrame": 1511,
+              "endFrame": 1528
+            },
+            {
+              "text": "wenn",
+              "startFrame": 1528,
+              "endFrame": 1535
+            },
+            {
+              "text": "die",
+              "startFrame": 1535,
+              "endFrame": 1541
+            },
+            {
+              "text": "Entscheidung",
+              "startFrame": 1541,
+              "endFrame": 1564
+            },
+            {
+              "text": "wichtig",
+              "startFrame": 1564,
+              "endFrame": 1577
+            },
+            {
+              "text": "ist.",
+              "startFrame": 1577,
+              "endFrame": 1590
+            }
+          ]
+        },
+        {
+          "id": "sentence-14",
+          "text": "Prüfe besonders Zahlen, Termine, Preise, Versionen und öffentliche Ämter.",
+          "startFrame": 1591,
+          "endFrame": 1740,
+          "words": [
+            {
+              "text": "Prüfe",
+              "startFrame": 1591,
+              "endFrame": 1602
+            },
+            {
+              "text": "besonders",
+              "startFrame": 1602,
+              "endFrame": 1620
+            },
+            {
+              "text": "Zahlen,",
+              "startFrame": 1620,
+              "endFrame": 1636
+            },
+            {
+              "text": "Termine,",
+              "startFrame": 1636,
+              "endFrame": 1657
+            },
+            {
+              "text": "Preise,",
+              "startFrame": 1657,
+              "endFrame": 1670
+            },
+            {
+              "text": "Versionen",
+              "startFrame": 1670,
+              "endFrame": 1688
+            },
+            {
+              "text": "und",
+              "startFrame": 1688,
+              "endFrame": 1694
+            },
+            {
+              "text": "öffentliche",
+              "startFrame": 1694,
+              "endFrame": 1718
+            },
+            {
+              "text": "Ämter.",
+              "startFrame": 1718,
+              "endFrame": 1740
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pair-08",
+      "sceneId": "scene-08",
+      "startFrame": 1740,
+      "endFrame": 2091,
+      "bottomPx": 520,
+      "mode": "feed-safe-active-word-groups",
+      "sentences": [
+        {
+          "id": "sentence-15",
+          "text": "Ohne aktuelle Quelle ist Sicherheit nur Tonfall, kein Beweis.",
+          "startFrame": 1740,
+          "endFrame": 1860,
+          "words": [
+            {
+              "text": "Ohne",
+              "startFrame": 1740,
+              "endFrame": 1755
+            },
+            {
+              "text": "aktuelle",
+              "startFrame": 1755,
+              "endFrame": 1765
+            },
+            {
+              "text": "Quelle",
+              "startFrame": 1765,
+              "endFrame": 1778
+            },
+            {
+              "text": "ist",
+              "startFrame": 1778,
+              "endFrame": 1784
+            },
+            {
+              "text": "Sicherheit",
+              "startFrame": 1784,
+              "endFrame": 1808
+            },
+            {
+              "text": "nur",
+              "startFrame": 1808,
+              "endFrame": 1812
+            },
+            {
+              "text": "Tonfall,",
+              "startFrame": 1812,
+              "endFrame": 1831
+            },
+            {
+              "text": "kein",
+              "startFrame": 1831,
+              "endFrame": 1839
+            },
+            {
+              "text": "Beweis.",
+              "startFrame": 1839,
+              "endFrame": 1860
+            }
+          ]
+        },
+        {
+          "id": "sentence-16",
+          "text": "Für heutige Fakten gilt: suchen, Datum prüfen, Originalquelle öffnen.",
+          "startFrame": 1860,
+          "endFrame": 2040,
+          "words": [
+            {
+              "text": "Für",
+              "startFrame": 1860,
+              "endFrame": 1869
+            },
+            {
+              "text": "heutige",
+              "startFrame": 1869,
+              "endFrame": 1891
+            },
+            {
+              "text": "Fakten",
+              "startFrame": 1891,
+              "endFrame": 1908
+            },
+            {
+              "text": "gilt:",
+              "startFrame": 1908,
+              "endFrame": 1922
+            },
+            {
+              "text": "suchen,",
+              "startFrame": 1922,
+              "endFrame": 1942
+            },
+            {
+              "text": "Datum",
+              "startFrame": 1942,
+              "endFrame": 1959
+            },
+            {
+              "text": "prüfen,",
+              "startFrame": 1959,
+              "endFrame": 1978
+            },
+            {
+              "text": "Originalquelle",
+              "startFrame": 1978,
+              "endFrame": 2010
+            },
+            {
+              "text": "öffnen.",
+              "startFrame": 2010,
+              "endFrame": 2040
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene-01",
+      "startFrame": 0,
+      "endFrame": 240,
+      "speechStartFrame": 11,
+      "speechEndFrame": 240,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 240,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-02",
+      "startFrame": 240,
+      "endFrame": 480,
+      "speechStartFrame": 240,
+      "speechEndFrame": 480,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 480,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-03",
+      "startFrame": 480,
+      "endFrame": 750,
+      "speechStartFrame": 480,
+      "speechEndFrame": 750,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 750,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-04",
+      "startFrame": 750,
+      "endFrame": 960,
+      "speechStartFrame": 750,
+      "speechEndFrame": 960,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 960,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-05",
+      "startFrame": 960,
+      "endFrame": 1200,
+      "speechStartFrame": 960,
+      "speechEndFrame": 1200,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 1200,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-06",
+      "startFrame": 1200,
+      "endFrame": 1470,
+      "speechStartFrame": 1200,
+      "speechEndFrame": 1470,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 1470,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-07",
+      "startFrame": 1470,
+      "endFrame": 1740,
+      "speechStartFrame": 1470,
+      "speechEndFrame": 1740,
+      "resultHoldFrames": 30,
+      "boundaryReferenceFrame": 1740,
+      "boundaryOffsetFrames": 0
+    },
+    {
+      "id": "scene-08",
+      "startFrame": 1740,
+      "endFrame": 2091,
+      "speechStartFrame": 1740,
+      "speechEndFrame": 2040,
+      "resultHoldFrames": 51,
+      "boundaryReferenceFrame": 2091,
+      "boundaryOffsetFrames": 0
+    }
+  ],
+  "beats": [
+    {
+      "id": "s1-today",
+      "sceneId": "scene-01",
+      "expression": "heute",
+      "transcriptStartFrame": 97,
+      "animationStartFrame": 97,
+      "resultFrame": 144
+    },
+    {
+      "id": "s1-live-gap",
+      "sceneId": "scene-01",
+      "expression": "live",
+      "transcriptStartFrame": 183,
+      "animationStartFrame": 183,
+      "resultFrame": 225
+    },
+    {
+      "id": "s2-training",
+      "sceneId": "scene-02",
+      "expression": "Training",
+      "transcriptStartFrame": 250,
+      "animationStartFrame": 250,
+      "resultFrame": 302
+    },
+    {
+      "id": "s2-freeze",
+      "sceneId": "scene-02",
+      "expression": "Datenstand",
+      "transcriptStartFrame": 329,
+      "animationStartFrame": 329,
+      "resultFrame": 395
+    },
+    {
+      "id": "s3-updates",
+      "sceneId": "scene-03",
+      "expression": "Updates",
+      "transcriptStartFrame": 525,
+      "animationStartFrame": 525,
+      "resultFrame": 581
+    },
+    {
+      "id": "s3-blocked",
+      "sceneId": "scene-03",
+      "expression": "Webzugriff",
+      "transcriptStartFrame": 617,
+      "animationStartFrame": 617,
+      "resultFrame": 673
+    },
+    {
+      "id": "s4-gap",
+      "sceneId": "scene-04",
+      "expression": "Lücken",
+      "transcriptStartFrame": 781,
+      "animationStartFrame": 781,
+      "resultFrame": 829
+    },
+    {
+      "id": "s4-confident",
+      "sceneId": "scene-04",
+      "expression": "überzeugend",
+      "transcriptStartFrame": 914,
+      "animationStartFrame": 914,
+      "resultFrame": 959
+    },
+    {
+      "id": "s5-web",
+      "sceneId": "scene-05",
+      "expression": "Webzugriff",
+      "transcriptStartFrame": 968,
+      "animationStartFrame": 968,
+      "resultFrame": 1029
+    },
+    {
+      "id": "s5-retrieve",
+      "sceneId": "scene-05",
+      "expression": "Quellen",
+      "transcriptStartFrame": 1024,
+      "animationStartFrame": 1024,
+      "resultFrame": 1075
+    },
+    {
+      "id": "s5-fresh",
+      "sceneId": "scene-05",
+      "expression": "frisch",
+      "transcriptStartFrame": 1167,
+      "animationStartFrame": 1167,
+      "resultFrame": 1199
+    },
+    {
+      "id": "s6-date",
+      "sceneId": "scene-06",
+      "expression": "Datum",
+      "transcriptStartFrame": 1259,
+      "animationStartFrame": 1259,
+      "resultFrame": 1311
+    },
+    {
+      "id": "s6-original",
+      "sceneId": "scene-06",
+      "expression": "Originalseite",
+      "transcriptStartFrame": 1367,
+      "animationStartFrame": 1367,
+      "resultFrame": 1424
+    },
+    {
+      "id": "s7-compare",
+      "sceneId": "scene-07",
+      "expression": "Vergleiche",
+      "transcriptStartFrame": 1470,
+      "animationStartFrame": 1470,
+      "resultFrame": 1524
+    },
+    {
+      "id": "s7-check",
+      "sceneId": "scene-07",
+      "expression": "Prüfe",
+      "transcriptStartFrame": 1591,
+      "animationStartFrame": 1591,
+      "resultFrame": 1637
+    },
+    {
+      "id": "s8-source",
+      "sceneId": "scene-08",
+      "expression": "Quelle",
+      "transcriptStartFrame": 1765,
+      "animationStartFrame": 1765,
+      "resultFrame": 1813
+    },
+    {
+      "id": "s8-proof",
+      "sceneId": "scene-08",
+      "expression": "Beweis",
+      "transcriptStartFrame": 1839,
+      "animationStartFrame": 1839,
+      "resultFrame": 1895
+    },
+    {
+      "id": "s8-original",
+      "sceneId": "scene-08",
+      "expression": "Originalquelle",
+      "transcriptStartFrame": 1978,
+      "animationStartFrame": 1978,
+      "resultFrame": 2045
+    }
+  ]
+}

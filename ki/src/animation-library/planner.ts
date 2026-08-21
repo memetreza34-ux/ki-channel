@@ -27,7 +27,18 @@ const resolvePlannerMeaningContract = (
   scene: ReelSceneBrief,
 ): ReelSceneBrief['meaningContract'] => {
   if (!scene.meaningContract) {
-    return enhanceSceneMeaning(scene.spokenText);
+    const enhanced = enhanceSceneMeaning(scene.spokenText);
+    return scene.preferredVisualFamilies?.length
+      ? {
+          ...enhanced,
+          preferredVisualFamilies: [
+            ...new Set([
+              ...scene.preferredVisualFamilies,
+              ...enhanced.preferredVisualFamilies,
+            ]),
+          ],
+        }
+      : enhanced;
   }
 
   const automaticallyGeneratedBase = analyzeSceneMeaning(scene.spokenText);

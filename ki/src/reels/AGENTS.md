@@ -2,6 +2,8 @@
 
 Gilt für **alle** ausführbaren Reel-Sources unter `ki/src/reels/`.
 
+Numerische Short-Form-Werte stammen aus `ki/reels/production-standard.json`. Source verwendet für Caption-Geometrie ausschließlich `captionSafe.ts`; Abweichungen werden mit `npm run ki:reel:standard-check` blockiert.
+
 ## Grundregel — maximal Code vor Bild
 
 Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
@@ -46,7 +48,7 @@ Alle wichtigen visuellen Bestandteile sollen skalierbar, deterministisch und fra
 
 ## Wann ein Bild trotzdem sinnvoll ist
 
-Externe oder generierte Bilder sind nur zulässig, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
+Vom Nutzer bereitgestellte externe oder extern erzeugte Bilder sind nur zulässig, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
 
 - echte Fotorealistik
 - komplexe organische Motive
@@ -76,7 +78,7 @@ Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden 
 
 `REMOTION_NATIVE` ist der Default und soll maximal ausgereizt werden.
 
-Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
+Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist. Der Agent darf Prompts und Asset-Verträge schreiben, aber keine nicht vom Nutzer bereitgestellten Medien als vorhanden behandeln.
 
 ## Caption-Position ist Source-Vertrag
 
@@ -90,7 +92,9 @@ Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und
 - die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
 - Bereich 420–500px vom unteren Rand nur als Puffer behandeln
 - Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
+- Headerzone aus `reelLayout.ts`: **y=110–260**
+- Animationszone aus `reelLayout.ts`: ausschließlich **y=300–1160**
+- zwischen Animation und konservativer Zwei-Zeilen-Caption mindestens **100px** freie Luft
 - keine Altwerte wie 264/270/360/440/460px als neue Caption-Position hart codieren
 - wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
 
