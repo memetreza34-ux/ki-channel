@@ -17,6 +17,11 @@ Danach den passenden Produktionsvertrag lesen:
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
 
+Für **jedes Short-Form-Reel** sind zusätzlich diese beiden Repo-Skills Pflichtlektüre:
+
+- `ki/skills/high-energy-remotion-reels/SKILL.md` — visuelle Dichte, Full-Frame-Motion, Kamera, Tiefe, Logo-/Bildanimation
+- `ki/skills/voice-locked-captions/SKILL.md` — echtes Audio als Autorität für Caption, Wort-Timing, Visual Beat und Szenengrenzen
+
 ## Harte Short-Form-Ordnerstruktur
 
 Jedes Produktionsreel liegt dauerhaft hier:
@@ -122,22 +127,36 @@ YouTube Longform wird separat unter `ki/youtube-longform/` produziert und nicht 
 Für Short-Form und Longform gilt:
 
 - Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten.
+- Phase 1 darf Caption-/Szenen-Timings schätzen, aber diese Werte sind ausdrücklich nur Preview-/Planwerte.
 - Phase 2 ist nur das menschliche Voiceover.
 - Phase 3 integriert das Audio in den vorhandenen Source, synchronisiert an die reale Stimme, testet, smoke-reviewt und rendert.
+- Sobald echtes Audio vorliegt, ist **dieses Audio die Zeit-Autorität**: Wort-Timestamps, Caption-Gruppen, Visual Beats, Szenengrenzen und Composition-Dauer werden daran neu ausgerichtet.
+- Ein proportionaler Caption-Fallback ist nur für Phase-1-Preview zulässig und darf nicht als finale Phase-3-Synchronisation durchrutschen.
 
-Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler.
+Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler. Eine **gezielte visuelle Revision nach echtem Render-Feedback** ist dagegen ausdrücklich erlaubt und soll als dauerhafte Regel zurück in Gehirn/Skills fließen.
 
 Wenn Phase-3-Audio fehlt: `PHASE 2 AUDIO FEHLT`.
 
+Für Production-Captions nach echtem Audio zusätzlich ausführen:
+
+```bash
+node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+```
+
 ## Visual Standard
 
-- heller oder weißer editorialer Hintergrund
+- heller oder weißer editorialer Hintergrund ist erlaubt, darf aber nicht wie tote Leerfläche wirken
 - dunkle, formatgerecht lesbare Typografie
 - `#B98CFF` primärer Fokus-Akzent
 - `#6E45C9` Tiefe/Kontrast
 - faceless
 - keine generische Cyberpunk-/Neon-Ästhetik
 - `REMOTION_NATIVE_MAXIMUM`: möglichst alles Sichtbare direkt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
+- Hauptmechanik auf Smartphone groß und dominant; keine kleine Card-Insel in riesigem Leerraum
+- solange neue Sprecherbedeutung kommt, ungefähr alle `0.6–1.5 s` einen semantischen sichtbaren Micro-Beat anstreben
+- Full-Frame-Komposition, Kamera, Parallax, pseudo-3D, Masken, SVG-Pfade, Zustandswechsel und Transformationen aktiv prüfen
+- Logos und echte lokale Markenassets bei Relevanz animieren statt nur statisch einblenden
+- Bilder/Screenshots bei Relevanz mit Fokus-Zoom, Masken, 2.5D, Parallax oder nativen Overlay-Ebenen in die Erklärung integrieren
 - bei zu flachen Code-Visuals zuerst Komposition, Perspektive, Schatten, Tiefe und Layering verbessern
 - externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
 - keine erfundenen Zahlen
@@ -156,6 +175,8 @@ Kein langer Sprechertext doppelt als Headline und Animationstext. Keine wortweis
 
 Bilder nur, wenn sie echten Mehrwert gegenüber Maximum-Remotion liefern. `ki/BILDSTIL.md` bestimmt Prompt-Aufbau, Safe-Zones, Dateinamen und Qualitätsgate. Für UI, Icons, Diagramme, technische Illustrationen, Mockups, Cover und pseudo-3D zuerst Remotion ausreizen.
 
+Wenn ein Bild oder reales Markenasset verwendet wird, soll es nicht automatisch statisch bleiben. `ki/skills/high-energy-remotion-reels/SKILL.md` bestimmt die zulässigen Motion-Techniken für Logos, Bilder, Screenshots und Layer.
+
 ## Testing
 
 Mindestens formatbezogen prüfen:
@@ -167,6 +188,9 @@ Mindestens formatbezogen prüfen:
 - keine ungrounded Werte
 - Visual-Safe-Zones über reale Smoke-Frames
 - Packaging/Metadaten vorhanden
+- bei Phase 3: Caption-Worttimings gegen reales Audio validiert
+- bei Phase 3: natürliche Sprechpausen erzeugen keine falschen aktiven Caption-Wörter
+- bei Phase 3: Szenengrenzen liegen auf echten Sprecher-/Bedeutungsgrenzen
 - Thumbnail bei Longform separat und in kleiner Darstellung geprüft
 - finaler Render gehört exakt zum aktuellen Source-Stand
 
