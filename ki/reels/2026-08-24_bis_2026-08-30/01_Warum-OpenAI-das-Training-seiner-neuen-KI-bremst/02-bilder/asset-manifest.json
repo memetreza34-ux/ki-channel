@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "productionMode": "REMOTION_NATIVE",
+  "externalAssetsRequired": false,
+  "assets": [],
+  "note": "BILDER NICHT ERFORDERLICH — alle erklärenden Visuals werden React/SVG/CSS/Remotion-native gebaut."
+}
