@@ -1,0 +1,78 @@
+{
+  "version": 3,
+  "reelId": "chatgpt-for-teens",
+  "compositionId": "KI-ChatGPTForTeens",
+  "title": "ChatGPT schätzt dein Alter und schaltet Teen-Schutz ein",
+  "publishDate": "2026-08-26",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_MAXIMUM_ENTERTAINMENT_FIRST",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 1643,
+    "durationSeconds": 54.7667
+  },
+  "audio": {
+    "file": "01-script-audio/voiceover.mp3",
+    "status": "GENERATED_AND_INCLUDED",
+    "observedAudioDurationSeconds": 54.432,
+    "timingAuthority": true,
+    "language": "de",
+    "masteringTarget": "approximately -16 LUFS / -1.5 dBTP"
+  },
+  "captions": {
+    "status": "VOICE_LOCKED_TO_GENERATED_AUDIO",
+    "file": "03-caption/subtitle-cues.json",
+    "cueCount": 32,
+    "activeWordColor": "#6E45C9"
+  },
+  "scenes": [
+    {
+      "sceneId": "scene1",
+      "title": "ChatGPT schaltet um",
+      "icon": "Sparkles",
+      "startFrame": 0,
+      "endFrame": 220,
+      "heroMoment": "STANDARD UI morphs into TEEN experience"
+    },
+    {
+      "sceneId": "scene2",
+      "title": "So wird Alter geschätzt",
+      "icon": "ScanSearch",
+      "startFrame": 220,
+      "endFrame": 751,
+      "heroMoment": "age signal meter lands below 18 and triggers Teen mode"
+    },
+    {
+      "sceneId": "scene3",
+      "title": "Lernen statt Abkürzen",
+      "icon": "GraduationCap",
+      "startFrame": 751,
+      "endFrame": 1103,
+      "heroMoment": "direct-answer card transforms into Study Mode steps and quiz"
+    },
+    {
+      "sceneId": "scene4",
+      "title": "Schutz + Pause",
+      "icon": "ShieldCheck",
+      "startFrame": 1103,
+      "endFrame": 1236,
+      "heroMoment": "sensitive-content panel is sealed, then break reminder takes focus"
+    },
+    {
+      "sceneId": "scene5",
+      "title": "Eltern steuern – Chats privat",
+      "icon": "LockKeyhole",
+      "startFrame": 1236,
+      "endFrame": 1643,
+      "heroMoment": "parent controls remain active while chat access visibly stays locked"
+    }
+  ],
+  "sources": [
+    "https://openai.com/index/introducing-chatgpt-for-teens/",
+    "https://help.openai.com/en/articles/12652064-age-prediction-in-chatgpt",
+    "https://help.openai.com/en/articles/12315553-parental-controls-on-chatgpt-faq",
+    "https://help.openai.com/en/articles/11780217-chatgpt-study-mode-faq"
+  ]
+}
