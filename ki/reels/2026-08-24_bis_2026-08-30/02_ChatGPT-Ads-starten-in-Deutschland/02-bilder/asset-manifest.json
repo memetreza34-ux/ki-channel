@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "assets": [],
+  "decision": "REMOTION_NATIVE_ONLY",
+  "reason": "All required visuals can be built controllably in React/SVG/CSS/Remotion. No external image or invented brand-logo asset is required."
+}
