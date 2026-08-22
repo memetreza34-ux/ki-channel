@@ -1,8 +1,33 @@
 # CODEX ASSEMBLY TASK — KI-ChatGPTForTeens
 
+## Status
+
+**FULL VISUAL REBUILD REQUIRED**
+
+Der echte Render wurde geprüft und ist semantisch durchgefallen. Die bisherige Anweisung, den vorhandenen Visual-Source nur technisch zu prüfen, gilt für diesen Stand **nicht mehr**.
+
 ## Ziel
 
-Den vorhandenen Reel-Source **nicht neu entwerfen**, sondern den aktuellen Audio-locked Stand technisch prüfen, rendern und nur auf Basis echter Renderfehler gezielt korrigieren.
+Das Teen-Reel visuell neu aufbauen, ohne den Sprechertext in ein altes Werbe-/Produkt-/Motion-Template zu pressen.
+
+Jede sichtbare Mechanik muss direkt zur aktuell gesprochenen Aussage passen.
+
+## Harte Verbote für diesen Rebuild
+
+Nicht wiederverwenden oder sichtbar übernehmen:
+
+- `NOVA`
+- `Mach daraus Werbung`
+- `PRODUKT`
+- `ZIELGRUPPE`
+- `STIMMUNG`
+- `CREATIVE BRIEF`
+- `Produkt bleibt konsistent`
+- `KEYFRAME → MOTION`
+- `WERBECLIP-CHECK`
+- generische `WORKFLOW`-/Werbeclip-Prüfkarten
+
+Auch andere Altkomponenten sind nur zulässig, wenn **alle sichtbaren Labels, Zustände und Mechaniken** exakt zur Teen-Szene passen. Unrelated Reuse ist ein Stop-Fehler.
 
 ## Pflichtlektüre
 
@@ -10,41 +35,77 @@ Den vorhandenen Reel-Source **nicht neu entwerfen**, sondern den aktuellen Audio
 - `ki/skills/high-energy-remotion-reels/SKILL.md`
 - `ki/skills/voice-locked-captions/SKILL.md`
 - `ki/skills/final-video-delivery/SKILL.md`
+- `06-projektdateien/ENTERTAINMENT-REVIEW.md`
+- `06-projektdateien/POST-RENDER-DIAGNOSIS.md`
 
-## Reihenfolge
+## Neuaufbau pro Szene
 
-1. prüfen, dass `01-script-audio/voiceover.mp3` vorhanden und hörbar ist
-2. echte Audio-Dauer mit ffprobe gegen 54.432 s prüfen
-3. `subtitle-cues.json` gegen `voiceover.mp3` stichprobenartig hörbar prüfen
-4. `validate-entertainment-review.mjs` ausführen
-5. `validate-voice-locked-captions.mjs` ausführen
-6. Reel-Contract-Test + TypeScript-Typecheck ausführen
-7. Remotion-Bundle/Composition-Auflösung prüfen
-8. Smoke-Frames mindestens an Hook, jedem Hero-Moment und Schluss rendern
-9. Smoke-Frames in Smartphone-Größe prüfen
-10. Contact Sheet über die gesamte Timeline erzeugen; fünf unterschiedliche visuelle Zustände müssen klar erkennbar sein
-11. bei Problemen Source gezielt korrigieren; kein Card-Only-Fallback
-12. finalen MP4 mit eingebettetem Voiceover rendern
-13. `validate-final-video.mjs` ausführen
-14. finalen MP4 vollständig in normaler Geschwindigkeit ansehen und anhören
-15. erst danach `FINAL VIDEO READY`
+### Szene 1 — ChatGPT schaltet um
 
-## Entertainment-Gate
+Nur Teen-/ChatGPT-nahe UI:
 
-Nicht freigeben, wenn:
+- große mobile Chatoberfläche
+- sichtbarer Account-/Age-State
+- `STANDARD` kippt zu `TEEN`
+- komplette UI reagiert auf den Switch
+- Hero-Moment: halb transformierter Zustand / klarer Teen-Schutz aktiv
 
-- Hook zuerst wie eine leere weiße Fläche wirkt
-- ChatGPT-/Produktbezug erst spät erkennbar wird
-- zwei oder mehr Szenen wie dieselbe Card-Komposition aussehen
-- Visuals länger stehen, während neue Sprecherbedeutung weiterläuft
-- Hero-Momente im echten Render klein oder unlesbar sind
-- Szene 3 nicht wie echte Chat-/Study-UI wirkt
-- Szene 5 den Unterschied `Eltern steuern Einstellungen` vs. `Chats bleiben privat` nicht ohne Caption verständlich macht
+### Szene 2 — Altersentscheidung
 
-## Brand-Gate
+- Account-/Safety-Oberfläche
+- Signale fließen sichtbar in Altersentscheidung
+- `<18`-Schwelle
+- Teen Experience aktiviert sich
+- kein Creative Brief, keine Produkt-Taxonomie
 
-Kein OpenAI-/ChatGPT-Logo aus Erinnerung erzeugen. Solange kein offizielles zulässiges Asset lokal existiert, nur Textreferenz `ChatGPT`/`OpenAI` und eigenständig gebaute Produkt-UI verwenden.
+### Szene 3 — Study Mode
 
-## Audio-Gate
+- echte Lernfrage im Chat
+- Shortcut zur bloßen fertigen Lösung wird gestoppt
+- Antwort transformiert in Lernschritte / Rückfrage / Mini-Quiz
+- klarer Endzustand: `VERSTEHEN` statt bloß `KOPIEREN`
 
-Kein stummer Preview-Export als Abgabe. Audio muss im finalen MP4 hörbar sein, Caption und Voice müssen zusammenlaufen und der letzte Sprechsatz muss vor dem End-Hold vollständig enden.
+### Szene 4 — Schutz + Pause
+
+- sensible Anfrage sichtbar
+- Safety-Layer blockiert/limitiert die Antwort
+- danach separater Break-Reminder
+- Schutzfunktion und Pausenfunktion klar voneinander unterscheidbar
+
+### Szene 5 — Eltern steuern, Chats privat
+
+- Parent-Control-Settings links
+- Teen-Chat rechts
+- Quiet-/Study-Hours veränderbar
+- Versuch, Chatinhalt zu öffnen, wird verriegelt
+- End-Payoff: Einstellungen steuerbar, Chatinhalt privat
+
+## Semantic Visual Gate
+
+Vor jedem Render für **jedes sichtbare Element** fragen:
+
+1. Welche Sprecherphrase erklärt dieses Element?
+2. Würde ein Zuschauer ohne Caption verstehen, warum es hier ist?
+3. Stammt Text/Mechanik aus genau diesem Teen-Reel oder aus einem alten Template?
+
+Wenn Frage 1 oder 2 nicht klar beantwortbar ist oder Frage 3 auf Alt-Template zeigt: Element entfernen/neu bauen.
+
+## Render-Reihenfolge
+
+1. echte Audio-Datei im Repo verifizieren
+2. Audio-Dauer messen
+3. Voice-Lock gegen genau diese Datei erzeugen/validieren
+4. neue Teen-spezifische Source implementieren
+5. TypeScript + fokussierte Tests
+6. Smoke-Frames an Hook, jedem Hero-Moment und Schluss
+7. Contact Sheet erzeugen
+8. Contact Sheet auf Fremdlabels/Fremdmechaniken prüfen
+9. Entertainment-Score erneut vergeben; mindestens 8/10, keine 0-Kategorie
+10. finalen MP4 mit Audio rendern
+11. `validate-final-video.mjs`
+12. vollständigen MP4 ansehen und anhören
+13. erst dann `FINAL VIDEO READY`
+
+## Final-Gate
+
+Nicht freigeben, wenn irgendein sichtbares Element nach Werbung, Produktbriefing, Motion-Pipeline oder einem anderen alten Reel aussieht, obwohl der Sprecher über Teen-Schutz spricht.
