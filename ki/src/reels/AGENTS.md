@@ -2,6 +2,15 @@
 
 Gilt für **alle** ausführbaren Reel-Sources unter `ki/src/reels/`.
 
+## Pflicht-Skills vor jeder Reel-Änderung
+
+Vor Planung oder Änderung eines Short-Form-Sources lesen und anwenden:
+
+- `ki/skills/high-energy-remotion-reels/SKILL.md`
+- `ki/skills/voice-locked-captions/SKILL.md`
+
+Der erste Skill verhindert kleine statische Card-Kompositionen und fordert Maximum-Remotion. Der zweite verhindert finale Caption-/Szenen-Timings auf Basis von Phase-1-Schätzungen.
+
 ## Grundregel — maximal Code vor Bild
 
 Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
@@ -29,6 +38,30 @@ Das betrifft insbesondere:
 - Licht-, Glas-, Material- und Tiefenillusionen, soweit sauber kontrollierbar
 
 **Für diese Kategorien sind statische KI-Bilder als Ersatz grundsätzlich nicht erlaubt, wenn der Code-Nachbau technisch und gestalterisch vernünftig möglich ist.**
+
+## Kein PowerPoint-Look — High-Energy ist Source-Vertrag
+
+Eine weiße Card mit kleiner Mechanik in großem Leerraum ist **kein** ausreichender Reel-Visualstandard.
+
+Für neue Short-Form-Sources gilt zusätzlich:
+
+- Hauptmechanik groß und dominant; typischerweise ungefähr `55–85 %` der nutzbaren Visual-Safe-Fläche
+- solange neue Sprecherbedeutung kommt, ungefähr alle `0.6–1.5 s` einen semantischen Micro-Beat anstreben
+- praktisch unveränderte Zustände über ungefähr `1.8 s` sind ein Review-Warnsignal, sofern kein bewusster End-Hold vorliegt
+- pro Szene normalerweise `3–6` unterscheidbare Visual Beats
+- Kamera-Push/Pan, Parallax, pseudo-3D, SVG-Masken, Morphing, Partikel, Flüsse, kinetische Typografie und Layer-Reveals aktiv prüfen
+- Szene soll mindestens einen starken visuellen Moment besitzen, der auch als Einzelbild verständlich/markant ist
+- Card/Pill/Badge sind Unterelemente, nicht automatisch die Hauptkomposition
+
+Bewegung bleibt semantisch. Keine zufälligen Wackel-/Bounce-Effekte ohne Funktion.
+
+## Logos, Bilder und echte Assets
+
+Ein lokales, zulässiges Logo oder Markenasset darf und soll bei inhaltlicher Relevanz animiert werden, zum Beispiel über SVG-Stroke, Mask-Reveal, Layer-Aufbau, Light-Sweep, Depth-Pop oder Übergang in die Hauptmechanik.
+
+**Markenlogo nie ungenau aus Erinnerung nachzeichnen.** Echtes lokales Asset verwenden oder klar textbasiert referenzieren.
+
+Relevante Bilder/Screenshots ebenfalls nicht nur statisch einblenden. Je nach Aussage: Fokus-Zoom, Crop-Travel, Mask-Reveal, 2.5D, Parallax, Cutout-Layer, Device-/Browser-Integration oder Remotion-native Informationslayer verwenden.
 
 ## Bevorzugte Technik
 
@@ -86,7 +119,7 @@ Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und
 - Standard: **`bottom: 520px`**
 - horizontaler Sicherheitsabstand: **`104px` links/rechts**
 - bevorzugte maximale Caption-Breite: **`820px`**
-- sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
+- sichtbare Caption normalerweise 3–6 Wörter pro Sinnblock, maximal 2 Zeilen
 - die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
 - Bereich 420–500px vom unteren Rand nur als Puffer behandeln
 - Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
@@ -95,6 +128,20 @@ Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und
 - wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
 
 Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
+
+## Caption-Timing ist ab Phase 3 audio-locked
+
+Sobald echtes Voiceover existiert:
+
+- Phase-1-Cues sind nicht mehr autoritativ
+- tatsächliche Audio-Dauer bestimmt Composition-Dauer
+- echte Sprech-/Pausengrenzen bestimmen Cue- und Szenengrenzen
+- `words[]` mit start/end Frames ist für finale Captions Pflicht
+- eine echte Sprechpause darf **kein** proportional weiterwanderndes aktives Wort erzeugen
+- proportionaler Active-Word-Fallback ist nur für Phase-1-Preview zulässig
+- Visual Beats sollen auf dieselben Wort-/Phrasenmarker reagieren
+
+Finale Caption-Synchronität zusätzlich mit `ki/scripts/validate-voice-locked-captions.mjs` prüfen.
 
 ## Qualitätsregeln
 
@@ -107,7 +154,7 @@ Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen R
 - Smartphone-Lesbarkeit vor Detailreichtum
 - kritische Labels kurz und groß genug
 - Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
-- Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
+- Sprecherbedeutung → sichtbarer Zustand → Animation → Caption bleiben framegenau synchron
 - Caption-Safe-Position und alle übergeordneten Reel-Verträge bleiben vollständig gültig
 
 ## Entscheidungsfrage
