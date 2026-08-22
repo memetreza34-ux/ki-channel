@@ -12,9 +12,10 @@ const reviewPath = resolve(reelDir, '06-projektdateien', 'ENTERTAINMENT-REVIEW.m
 const text = await readFile(reviewPath, 'utf8');
 const errors = [];
 
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const fieldValue = (label) => {
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = text.match(new RegExp(`^- ${escaped}:\\s*(.*)$`, 'mi'));
+  const match = text.match(new RegExp(`^- ${escapeRegExp(label)}:\\s*(.*)$`, 'mi'));
   return match?.[1]?.trim() ?? '';
 };
 
@@ -25,12 +26,20 @@ if (!/^(JA|NEIN)$/i.test(productDecision)) {
   errors.push('Product/UI/Brand-Entscheidung muss eindeutig JA oder NEIN sein.');
 }
 
-const sceneBlocks = [...text.matchAll(/^### Szene\s+([^\n]+)\n([\s\S]*?)(?=^### Szene\s+|^## |\Z)/gmi)];
+const sceneHeadings = [...text.matchAll(/^### Szene\s+([^\n]+)$/gmi)];
+const sceneBlocks = sceneHeadings.map((match, index) => {
+  const start = (match.index ?? 0) + match[0].length;
+  const nextSceneStart = sceneHeadings[index + 1]?.index ?? text.length;
+  const nextSection = text.indexOf('\n## ', start);
+  const end = nextSection >= 0 && nextSection < nextSceneStart ? nextSection : nextSceneStart;
+  return {sceneName: match[1].trim(), block: text.slice(start, end)};
+});
+
 if (sceneBlocks.length === 0) {
   errors.push('Keine Szene im Entertainment-Review dokumentiert.');
 }
 
-for (const [, sceneName, block] of sceneBlocks) {
+for (const {sceneName, block} of sceneBlocks) {
   for (const label of ['SETUP', 'AKTION', 'KONSEQUENZ', 'PAYOFF', 'HERO-MOMENT']) {
     const match = block.match(new RegExp(`^- ${label}:\\s*(.*)$`, 'mi'));
     const value = match?.[1]?.trim() ?? '';
@@ -50,8 +59,7 @@ const scoreLabels = [
 
 const scores = [];
 for (const label of scoreLabels) {
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = text.match(new RegExp(`^- ${escaped}:\\s*([0-2])\\s*\\/\\s*2\\s*$`, 'mi'));
+  const match = text.match(new RegExp(`^- ${escapeRegExp(label)}:\\s*([0-2])\\s*\\/\\s*2\\s*$`, 'mi'));
   if (!match) {
     errors.push(`Score fehlt oder ist ungültig: ${label}.`);
     continue;
