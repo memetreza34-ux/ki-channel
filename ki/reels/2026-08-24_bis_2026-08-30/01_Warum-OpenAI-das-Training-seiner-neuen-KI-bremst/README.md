@@ -1,7 +1,7 @@
 # Warum OpenAI das Training seiner neuen KI bremst
 
 **Geplant für:** Montag, 24.08.2026  
-**Format:** Short-Form / 1080×1920 / 30 FPS  
+**Format:** Short-Form / 1080×1920 / 30 FPS / 1857 Frames / ca. 61.9 s  
 **Composition:** `KI-OpenAICyberPause`
 
 ## Kernidee
@@ -21,6 +21,20 @@ Verwendete belegte Punkte:
 - OpenAI verstärkt Monitoring, Alignment und Security.
 - Astra-/Cyber-Workloads erhalten strengere Isolation, Netzwerk- und Monitoring-Anforderungen.
 
+## Post-Render-Revision vom 22.08.2026
+
+Ein echter 61.888-s-Render wurde geprüft. Daraus wurden zwei dauerhafte Qualitätsprobleme abgeleitet und im Repo behoben:
+
+1. **Animation zu statisch / Card-lastig:** Source auf größere Full-Frame-Kompositionen mit Tiefe, Kamera, Partikeln/Flows, Scannern, Impact-Zuständen und stärkerer Progression umgebaut.
+2. **Caption/Szene nicht sauber voice-locked:** Composition, Szenengrenzen, Cue-Timings und Wort-Timestamps wurden auf die tatsächliche Stimme neu ausgerichtet. Sprechpausen bleiben caption-frei.
+
+Verbindliche neue Skills:
+
+- `ki/skills/high-energy-remotion-reels/SKILL.md`
+- `ki/skills/voice-locked-captions/SKILL.md`
+
 ## Produktionsstatus
 
-Phase 1 wird in diesem Branch vollständig als Planungs- und Remotion-Code-Grundlage angelegt. Echtes Voiceover gehört ausschließlich in Phase 2. Kein Render, Audio-Sync oder visuelle Freigabe wird in Phase 1 behauptet.
+**Phase 3 Revision implementiert; neuer Render und erneuter visueller/akustischer Review erforderlich.**
+
+Der alte Render ist nach den Source-/Timing-Änderungen nicht mehr freigabefähig. Echtes Voiceover-Asset ist nicht als Repository-Datei committed; der aktualisierte Source ist auf die gemessene Render-/Audio-Dauer von 61.888 s ausgelegt.
