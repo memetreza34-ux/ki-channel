@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "title": "ChatGPT Ads starten in Deutschland",
+  "slug": "chatgpt-ads-germany",
+  "publishDate": "2026-08-25",
+  "compositionId": "KI-ChatGPTAdsGermany",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1590},
+  "productionMode": "REMOTION_NATIVE_HIGH_ENERGY",
+  "audio": {
+    "phase": 2,
+    "requiredFilename": "voiceover.wav",
+    "fallbackFilename": "voiceover.mp3",
+    "status": "MISSING_EXPECTED_IN_PHASE_1",
+    "phase3Requirement": "WHISPER_VOICE_LOCK_REQUIRED"
+  },
+  "factBasis": {
+    "primarySource": "OpenAI — ChatGPT Ads expands across Europe",
+    "published": "2026-08-18",
+    "url": "https://openai.com/index/chatgpt-ads-expands-across-europe/",
+    "secondarySource": "OpenAI — Testing ads in ChatGPT",
+    "secondaryUrl": "https://openai.com/index/testing-ads-in-chatgpt/"
+  },
+  "captionSafe": {"source":"ki/src/reels/captionSafe.ts","bottom":520,"horizontalInset":104,"maxWidth":820},
+  "scenes": [
+    {"sceneId":"ads-01","startFrame":0,"endFrame":315,"headline":"ChatGPT Ads sind jetzt hier","icon":"launch","visualMode":"NEW_BUILD","medium":"REMOTION_NATIVE"},
+    {"sceneId":"ads-02","startFrame":315,"endFrame":600,"headline":"Antwort und Werbung getrennt","icon":"split","visualMode":"NEW_BUILD","medium":"REMOTION_NATIVE"},
+    {"sceneId":"ads-03","startFrame":600,"endFrame":945,"headline":"Nicht jeder sieht Ads","icon":"plans","visualMode":"NEW_BUILD","medium":"REMOTION_NATIVE"},
+    {"sceneId":"ads-04","startFrame":945,"endFrame":1260,"headline":"Relevant – aber privat","icon":"privacy","visualMode":"NEW_BUILD","medium":"REMOTION_NATIVE"},
+    {"sceneId":"ads-05","startFrame":1260,"endFrame":1590,"headline":"Ein neuer Werbekanal","icon":"target","visualMode":"NEW_BUILD","medium":"REMOTION_NATIVE"}
+  ]
+}
