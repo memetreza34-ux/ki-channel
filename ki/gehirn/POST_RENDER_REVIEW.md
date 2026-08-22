@@ -1,6 +1,6 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md`, `ki/reels/AGENTS.md` sowie die Skills `ki/skills/high-energy-remotion-reels/SKILL.md` und `ki/skills/voice-locked-captions/SKILL.md` für **jede** finale Reel-Runde.
+Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md`, `ki/reels/AGENTS.md` sowie die Skills `ki/skills/entertainment-first-reels/SKILL.md`, `ki/skills/high-energy-remotion-reels/SKILL.md` und `ki/skills/voice-locked-captions/SKILL.md` für **jede** finale Reel-Runde.
 
 Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
 
@@ -12,6 +12,7 @@ Der Zuschauer soll ab dem ersten Moment erkennen, dass etwas passiert.
 - Das erste Hauptvisual soll sofort schwach sichtbar sein oder innerhalb der ersten ungefähr `0.2–0.4 s` eindeutig erscheinen.
 - Keine lange Intro-Fade, kein Logo-Pre-Roll, kein dekoratives Warten vor dem Inhalt.
 - Hook-Audio und erster visueller Zustand beginnen als ein gemeinsamer Moment.
+- Bei konkretem Produkt-/Feature-Thema soll der Hook möglichst innerhalb der ersten `1–2 s` ohne Ton grob erkennen lassen, worum es geht.
 
 ## 2. Smartphone zuerst — Hauptvisual groß genug
 
@@ -52,26 +53,63 @@ Review-Ziele für Short-Form:
 - praktisch unveränderter Zustand länger als ungefähr `1.8 s` ist ein Warnsignal, sofern es kein bewusster End-Hold ist
 - pro Szene normalerweise mindestens `3–6` unterscheidbare Visual Beats
 - Card/Pill/Badge dürfen Teil des Designs sein, aber nicht automatisch die gesamte Mechanik bilden
-- mindestens ein markanter visueller Moment pro Szene
+- mindestens ein markanter visueller Hero-Moment pro Szene
 - Kamera, Parallax, pseudo-3D, Transformation, Masken, SVG-Pfade, gerichtete Partikel/Flows oder kinetische Schlüsselwörter aktiv prüfen, wenn sie die Aussage verbessern
+- nicht jede Szene mit identischer mittiger Frontal-Komposition bauen
 
-Nicht einfach zusätzliche Deko hinzufügen. Wenn der Render langweilig wirkt, zuerst **Komposition, Objektgröße, Zustandswechsel und räumliche Dynamik** verbessern.
+Nicht einfach zusätzliche Deko hinzufügen. Wenn der Render langweilig wirkt, zuerst **Komposition, Objektgröße, Zustandswechsel, Mini-Story und räumliche Dynamik** verbessern.
 
 Nicht freigeben, wenn sich das Reel wie eine PowerPoint mit sanften Fade-ins anfühlt.
 
-## 5. Logos, Bilder und Screenshots dürfen leben
+## 5. Entertainment-First / Product-UI-Review
+
+Bei konkreten Apps, Websites, Plattformen oder Features prüfen:
+
+- zeigt das Reel die Produktoberfläche / Interaktion, wenn dies die Aussage klarer erklärt?
+- wurde echte UI bewusst gegen abstrakte Metapher abgewogen?
+- wirkt das Produkt konkret oder könnte dieselbe Animation beliebig für zehn andere Themen verwendet werden?
+- besitzt jede Szene sichtbar **Setup → Aktion → Konsequenz → Payoff**?
+- gibt es pro Szene einen Frame, der als eigenständiger Hero-Moment funktioniert?
+
+### Warnsignale
+
+- Kreis mit Text in der Mitte als wiederholter Default
+- mehrfach kleine Karten nebeneinander ohne räumliche Progression
+- generische `ENGINE`-/Node-Grafik, obwohl eine konkrete UI-Situation möglich wäre
+- Headline + kleine Mechanik + riesige weiße Fläche
+- fünf Szenen, die im Contact Sheet wie Varianten derselben Folie aussehen
+
+### Entertainment-Score
+
+`06-projektdateien/ENTERTAINMENT-REVIEW.md` muss nach dem Review erneut bewertet werden.
+
+Ziel:
+
+- mindestens **8/10**
+- keine Kategorie `0`
+
+Unter 8/10 ist das Reel nicht freigabefähig, selbst wenn technische Tests bestehen.
+
+## 6. Markenassets, Bilder und Screenshots
 
 Wenn ein echtes lokales Logo, Markenasset, Bild oder Screenshot inhaltlich relevant ist:
 
-- nicht automatisch statisch einblenden
-- Logo bei Möglichkeit über Mask-Reveal, SVG-Stroke, Depth-Pop, Layer-Aufbau, Light-Sweep oder Übergang in die Hauptmechanik animieren
-- Bilder/Screenshots über Fokus-Zoom, Crop-Travel, 2.5D, Parallax, Cutout-Layer oder native Overlays in die Erklärung integrieren
+- Markenrichtlinien haben Vorrang vor dekorativer Motion
+- Markenlogo nie ungenau aus Erinnerung nachbauen
+- offizielles Asset exakt und nur im zulässigen Rahmen verwenden
+- bei strengen Brand-Regeln primär Container, Position, Kamera, Hintergrund, UI und Übergang um das **unveränderte** Asset animieren
+- Bilder/Screenshots über Fokus-Zoom, Crop-Travel, 2.5D, Parallax, Cutout-Layer, Cursor/Touch oder native Overlays in die Erklärung integrieren
 - bei Screenshots relevante Bereiche gezielt hervorheben/isolieren statt das komplette Bild passiv stehen zu lassen
-- Markenlogos nie ungenau aus Erinnerung nachbauen
+
+### OpenAI-spezifisch
+
+Bei offiziellen OpenAI-Markenassets keine Verformung, kein Crop, keine Verwendung als Maske, keine unzulässige Variante und keine verbotenen Effekte/Texturen auf der Marke.
+
+Wenn kein zulässiges offizielles Asset lokal vorliegt: kein Fake-Logo zeichnen.
 
 Ein Ken-Burns-Zoom allein gilt bei zentralen Bildassets nicht als ausreichend, wenn mehr semantische Animation möglich ist.
 
-## 6. Voice-Lock — Caption und Szene müssen zur echten Stimme passen
+## 7. Voice-Lock — Caption und Szene müssen zur echten Stimme passen
 
 Sobald echtes Voiceover vorliegt, dürfen Phase-1-Schätzungen nicht mehr die Produktions-Timeline bestimmen.
 
@@ -94,7 +132,7 @@ Vor finaler Freigabe ausführen:
 node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
 ```
 
-## 7. Schluss muss bis zur letzten Aussage tragen
+## 8. Schluss muss bis zur letzten Aussage tragen
 
 Die letzte Szene darf nicht früh „fertig aussehen“, während noch mehrere Sätze gesprochen werden.
 
@@ -109,7 +147,7 @@ finale Aussage → klarer Endzustand + kurzer Hold
 
 Falls die Schlussanimation bereits lange vor dem Voiceover-Ende im Endzustand steht, zusätzliche **semantische** Micro-Beats bauen oder die Progression neu verteilen.
 
-## 8. Pflicht-Review nach jedem neuen Render
+## 9. Pflicht-Review nach jedem neuen Render
 
 Mindestens prüfen:
 
@@ -133,16 +171,33 @@ Mindestens prüfen:
 - kleine Card-Inseln
 - statische Phasen
 - visuelle Energie / markante Momente
-- Logo-/Bildanimation, falls solche Assets verwendet werden
+- Product-/UI-Nähe bei konkreten Tools/Apps/Features
+- Markenrichtlinien bei verwendeten Logos
 - finalen End-Hold
 
-## 9. Post-Render-Korrekturschleife
+## 10. Contact-Sheet- und Scrub-Gate
+
+Nach jedem relevanten Review-Render zusätzlich:
+
+1. Frames in regelmäßigen Abständen als Contact Sheet betrachten.
+2. Reel schnell durchscrubben, zunächst auch ohne Ton.
+3. Prüfen, ob Szenen wirklich unterschiedliche Bildzustände besitzen.
+
+Nicht freigeben, wenn:
+
+- mehrere Contact-Sheet-Frames fast gleich aussehen, obwohl neue Aussagen gesprochen werden
+- dieselbe Card-/Kreis-Komposition in fast jeder Szene wiederkehrt
+- die Caption sichtbar mehr „erzählt“ als die Animation
+- der Hook ohne Ton keinerlei konkrete Produkt-/Themeninformation liefert, obwohl das Thema visuell konkret darstellbar wäre
+
+## 11. Post-Render-Korrekturschleife
 
 Wenn der Render einen echten visuellen oder akustischen Fehler zeigt:
 
 ```text
 Render ansehen/anhören
 → konkrete Ursache in Source/Timing bestimmen
+→ Entertainment-Score + Product/UI-Entscheidung erneut prüfen
 → prüfen, ob dauerhafte Skill-/Gehirn-Regel fehlt
 → Source/Timing ändern
 → Status auf "Revision implementiert, Rerender erforderlich" setzen
@@ -154,7 +209,7 @@ Ein alter Render darf **nicht** als visuelle Freigabe für eine danach geändert
 
 Das gilt ausdrücklich auch für reine Caption-Positions-, Caption-Timing-, Szenen-Timing- oder Motion-Änderungen.
 
-## 10. Freigabe-Gate
+## 12. Freigabe-Gate
 
 Nicht `approved`, wenn mindestens eines davon zutrifft:
 
@@ -163,7 +218,11 @@ Nicht `approved`, wenn mindestens eines davon zutrifft:
 - kleine Card-Insel in großer ungenutzter Fläche
 - wichtige interne Labels zu klein
 - mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
-- Reel wirkt wie Präsentationsfolien statt Motion Design
+- Reel wirkt wie Präsentationsfolien statt Motion Design / UI-Cinema
+- Produkt-/Feature-Thema bleibt unnötig generisch, obwohl konkrete UI besser erklären würde
+- keine klare Mini-Story / kein Payoff in mehreren Szenen
+- Entertainment-Score unter 8/10 oder eine Kategorie 0
+- Contact Sheet zeigt zu wenig visuelle Variation
 - Schluss steht sichtbar zu früh still
 - Caption liegt sichtbar zu tief im Plattform-/Feed-UI-Bereich
 - Caption wurde unter `bottom: 500px` geschoben, um Platz für Visuals zu gewinnen
@@ -174,6 +233,7 @@ Nicht `approved`, wenn mindestens eines davon zutrifft:
 - Production-Cues besitzen keine Wort-Timestamps
 - Szenenwechsel passen hörbar nicht zum Sprecherwechsel
 - wichtiger Inhalt wird vom Clip-Guard abgeschnitten
+- Markenasset wurde verfälscht oder Brand-Guidelines ignoriert
 - neuer Source-Stand wurde nach letzter visueller Prüfung verändert
 
-Ziel ist **maximale visuelle Erklärung pro sinnvoller Bewegung bei sicher lesbarer, hörbar synchroner Caption**.
+Ziel ist **maximale visuelle Erklärung + Entertainment pro sinnvoller Bewegung bei sicher lesbarer, hörbar synchroner Caption**.
