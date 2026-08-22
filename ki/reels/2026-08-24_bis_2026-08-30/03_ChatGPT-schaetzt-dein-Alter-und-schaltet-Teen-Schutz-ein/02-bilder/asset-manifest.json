@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "imageDecision": "BILDER_NICHT_ERFORDERLICH",
+  "productionMode": "REMOTION_NATIVE_MAXIMUM",
+  "brandAssetPolicy": "NO_FAKE_LOGOS",
+  "assets": [],
+  "notes": [
+    "Product-like ChatGPT UI is rebuilt natively for explanation, not copied pixel-for-pixel.",
+    "No official OpenAI logo asset is stored locally on this branch, so no Blossom/wordmark graphic is synthesized.",
+    "If an approved official asset is later supplied, use it unchanged and animate the surrounding UI/camera rather than modifying the mark."
+  ]
+}
