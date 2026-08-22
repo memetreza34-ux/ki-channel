@@ -17,10 +17,11 @@ Danach den passenden Produktionsvertrag lesen:
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
 
-Für **jedes Short-Form-Reel** sind zusätzlich diese beiden Repo-Skills Pflichtlektüre:
+Für **jedes Short-Form-Reel** sind zusätzlich diese drei Repo-Skills Pflichtlektüre:
 
 - `ki/skills/high-energy-remotion-reels/SKILL.md` — visuelle Dichte, Full-Frame-Motion, Kamera, Tiefe, Logo-/Bildanimation
 - `ki/skills/voice-locked-captions/SKILL.md` — echtes Audio als Autorität für Caption, Wort-Timing, Visual Beat und Szenengrenzen
+- `ki/skills/final-video-delivery/SKILL.md` — finale Abgabe erst nach vollständigem Render-, Audio- und Hör-Gate; keine stumme Preview als fertiges Video
 
 ## Harte Short-Form-Ordnerstruktur
 
@@ -132,6 +133,7 @@ Für Short-Form und Longform gilt:
 - Phase 3 integriert das Audio in den vorhandenen Source, synchronisiert an die reale Stimme, testet, smoke-reviewt und rendert.
 - Sobald echtes Audio vorliegt, ist **dieses Audio die Zeit-Autorität**: Wort-Timestamps, Caption-Gruppen, Visual Beats, Szenengrenzen und Composition-Dauer werden daran neu ausgerichtet.
 - Ein proportionaler Caption-Fallback ist nur für Phase-1-Preview zulässig und darf nicht als finale Phase-3-Synchronisation durchrutschen.
+- Bei einer verlangten **fertigen Video-Abgabe** darf der Agent die Aufgabe nicht nach einem Preview-/Smoke-Render beenden. Er arbeitet bis zum aktuellen finalen MP4 mit hörbarem Voiceover, bestandenen Audio-/Render-Gates und finaler Hör-/Sichtprüfung weiter. Erst dann wird das Video gezeigt und die Aufgabe beendet.
 
 Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler. Eine **gezielte visuelle Revision nach echtem Render-Feedback** ist dagegen ausdrücklich erlaubt und soll als dauerhafte Regel zurück in Gehirn/Skills fließen.
 
@@ -142,6 +144,14 @@ Für Production-Captions nach echtem Audio zusätzlich ausführen:
 ```bash
 node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
 ```
+
+Vor jeder **finalen Video-Abgabe** zusätzlich ausführen:
+
+```bash
+node ki/scripts/validate-final-video.mjs <final-video.mp4>
+```
+
+Ein fehlender oder praktisch stummer Audiostream blockiert die finale Abgabe.
 
 ## Visual Standard
 
@@ -191,7 +201,10 @@ Mindestens formatbezogen prüfen:
 - bei Phase 3: Caption-Worttimings gegen reales Audio validiert
 - bei Phase 3: natürliche Sprechpausen erzeugen keine falschen aktiven Caption-Wörter
 - bei Phase 3: Szenengrenzen liegen auf echten Sprecher-/Bedeutungsgrenzen
+- bei finaler Video-Abgabe: Video- und Audiostream vorhanden
+- bei finaler Video-Abgabe: Audio technisch nicht stumm/praktisch unhörbar
+- bei finaler Video-Abgabe: finalen MP4 tatsächlich ansehen **und anhören**
 - Thumbnail bei Longform separat und in kleiner Darstellung geprüft
 - finaler Render gehört exakt zum aktuellen Source-Stand
 
-Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.
+Ein bestandenes Unit-Test-Set ersetzt keine visuelle oder akustische Prüfung.
