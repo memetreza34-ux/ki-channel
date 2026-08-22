@@ -1,41 +1,66 @@
-# Review Checklist
+# Review Checklist — Post-Render Revision
 
-## Inhalt
+## Fakten
 
-- [ ] Kein Satz behauptet, Astra sei außer Kontrolle, ausgebrochen oder bereits als kritisches Cybermodell endgültig bestätigt.
-- [ ] Zweiwöchige RL-Pause korrekt als Maßnahme von OpenAI erklärt.
-- [ ] Größter geplanter Frontier-RL-Lauf nur als `HOLD` / angehalten dargestellt, nicht als endgültig gestrichen.
-- [ ] Monitoring, Alignment und Security visuell unterscheidbar.
-- [ ] Keine offensiven Cyber-Anleitungen oder Exploit-Details sichtbar.
+- [x] Astra-Aussagen bleiben bei OpenAI als Quelle attribuiert.
+- [x] Kein „KI außer Kontrolle“-Claim.
+- [x] Zweiwöchige RL-Pause und weiterhin angehaltener großer Run werden getrennt dargestellt.
+- [x] Monitoring, Alignment und Security werden nicht als identische Funktionen dargestellt.
 
-## Visual
+## Voice-Lock
 
-- [ ] Erster sinnvoller Zustand ab Frame 0 sichtbar.
-- [ ] Hauptvisuals auf Smartphone groß genug.
-- [ ] Zwischenüberschrift komplett `#6E45C9` und semantisches Icon deutlich sichtbar.
-- [ ] Keine unnötigen kleinen UI-Karten in großer Leerfläche.
-- [ ] Bedeutende Visuals enden bevorzugt bis y≈1240–1280.
-- [ ] Kein wichtiger Inhalt wird durch den technischen Clip-Guard abgeschnitten.
-- [ ] Keine externe Bild-/Screenshot-Abhängigkeit.
+- [x] bereitgestellter Render als 61.888 s / 30 FPS analysiert
+- [x] Composition auf 1857 Frames angepasst
+- [x] Szenengrenzen auf natürliche Sprecher-/Pausengrenzen neu gelegt
+- [x] Caption-Cues auf tatsächlich gesprochene Abschnitte gelegt
+- [x] Wort-Timestamps für jeden Production-Cue vorhanden
+- [x] natürliche Pausen erzeugen im Source keine proportionale aktive Wortfortschreibung mehr
+- [ ] `node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>` tatsächlich ausführen
+- [ ] neuen Render anhören: aktives lila Wort folgt der Stimme
+- [ ] neuen Render anhören: Szenenwechsel treffen den Sprecherwechsel
+- [ ] letzte Caption endet hörbar mit der letzten Phrase
 
-## Caption
+## High-Energy Remotion
 
-- [ ] Source verwendet `REEL_CAPTION_SAFE` / `REEL_CAPTION_WRAPPER_STYLE`.
-- [ ] `bottom: 520px`, horizontal 104px, maxWidth 820px aus Shared-Konstante.
-- [ ] Caption-Fenster maximal 6 Wörter und höchstens 2 sichtbare Zeilen.
-- [ ] Caption kollidiert nicht mit rechter Feed-Interaktionsleiste.
-- [ ] Aktiver Sprecherfokus lila und mit finalem Audio synchron.
+- [x] alte kleine Card-Inseln im Source durch größere Full-Frame-Kompositionen ersetzt
+- [x] Depth-/Parallax-Hintergründe statt toter Weißfläche ergänzt
+- [x] Szene 1: Speed-Lines + Threshold-Impact + Brake-Zustand
+- [x] Szene 2: bewegter RL-Conveyor + 2-Wochen-Gate + HOLD-Stamp
+- [x] Szene 3: drei audio-ankerte Schutzringe + Threat-Flows + Scanner
+- [x] Szene 4: pseudo-3D-Sandbox + Blocked-Network-Pakete + ACTIVITY/DETECT/REVIEW
+- [x] Szene 5: Mythos-Crossout + Capability-vs-Safety-Progression
+- [x] textbasierte OpenAI-Markenreferenz animiert; kein erfundenes offizielles Logo
+- [ ] neuen Render auf Smartphone prüfen: Hauptmechanik wirklich groß genug
+- [ ] neuen Render prüfen: keine neue Sprecherbedeutung > ca. 1.8 s ohne sichtbare Reaktion
+- [ ] neuen Render prüfen: mindestens ein markanter Hero-Moment pro Szene
+- [ ] neuen Render prüfen: Bewegung wirkt semantisch, nicht hektisch/dekorativ
 
-## Phase 3
+## Caption-Safe
 
-- [ ] echtes Voiceover vorhanden
-- [ ] reale Dauer gemessen
-- [ ] Caption-/Beat-Timing gegen finales Audio angepasst
-- [ ] fokussierter Test ausgeführt
-- [ ] Typecheck ausgeführt
-- [ ] Smoke-Frames neu gerendert
-- [ ] Smoke-Frames visuell geprüft
-- [ ] finaler MP4 neu gerendert
-- [ ] finaler MP4 in normaler Geschwindigkeit vollständig angesehen
-- [ ] Smartphone-/Feed-Review durchgeführt
-- [ ] aktueller Render gehört exakt zum aktuellen Source-Stand
+- [x] `REEL_CAPTION_SAFE.bottom = 520`
+- [x] `horizontalInset = 104`
+- [x] `maxWidth = 820`
+- [x] Caption ohne weiße Box
+- [x] aktive Sprecherposition lila
+- [ ] neuen Feed-/Smartphone-Render auf echte Kollision prüfen
+- [ ] rechte Interaktionsleiste gedanklich prüfen
+- [ ] maximal 2 sichtbare Caption-Zeilen bestätigen
+
+## Technisch
+
+- [x] Source und Contract auf 1857 Frames aktualisiert
+- [x] Contract-Test auf voice-locked Dauer/Wort-Timestamps aktualisiert
+- [ ] TypeScript tatsächlich ausführen
+- [ ] Vitest tatsächlich ausführen
+- [ ] Remotion-Bundle tatsächlich ausführen
+- [ ] Voice-Lock-Validator tatsächlich ausführen
+- [ ] Smoke-Frames des **neuen** Source-Stands rendern
+- [ ] finalen MP4 des **neuen** Source-Stands rendern
+
+## Freigabe
+
+- [ ] neuer Render visuell freigegeben
+- [ ] neuer Render akustisch/caption-synchron freigegeben
+- [ ] finaler MP4 gehört exakt zum aktuellen Source-Stand
+
+Der alte bereitgestellte Render darf nach dieser Revision nicht als Freigabe verwendet werden.
