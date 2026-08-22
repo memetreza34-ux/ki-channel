@@ -1,41 +1,57 @@
-# Scene Plan
+# Scene Plan — Voice-Locked Revision
 
-## Szene 1 — OpenAI tritt auf die Bremse · Frames 0–324
+Zeitbasis: **61.888 s echter bereitgestellter Render / 1857 Frames @ 30 FPS**.
+
+## Szene 1 — OpenAI tritt auf die Bremse · Frames 0–387
 
 **Sprecher:** OpenAI verlangsamt die Entwicklung; Astra könnte eine kritische Cyber-Fähigkeitsschwelle erreichen.
 
-**Visual:** Ein großer stilisierter Astra-Kern fährt auf einer klaren Capability-Spur nach oben. Eine Schwellenlinie `CRITICAL CYBER` wird sichtbar. Kurz davor fährt eine kräftige, aber nicht alarmistische Sicherheitsbarriere ein und stoppt die Skalierungsbewegung. Sofort ab Frame 0 sichtbar.
+**Visual:** Keine kleine Card mehr. Textbasierte OpenAI-Markenreferenz kommt räumlich ein; ein großer Astra-Core fährt mit Speed-Lines auf einer Full-Frame-Capability-Spur. Während „bewusst verlangsamt“ nimmt das Tempo sichtbar ab. Bei „kritische Schwelle“ schlägt eine rote `CRITICAL CYBER`-Grenze groß in die Szene; der Core stoppt mit sichtbarem Brake-/Pace-Impact direkt davor.
 
-**Ziel:** Zuschauer versteht ohne Zusatztext: Fähigkeit nähert sich Schwelle → Entwicklung wird bewusst gebremst.
+**Ziel:** Fähigkeit nähert sich Schwelle → Entwicklung wird bewusst gebremst. Mehrere sichtbare Beats statt eines fast statischen Tracks.
 
-## Szene 2 — Zwei Wochen Trainingspause · Frames 324–660
+## Szene 2 — Zwei Wochen Trainingspause · Frames 387–751
 
 **Sprecher:** Zwei Wochen RL-Pause; größter geplanter Frontier-RL-Lauf weiterhin angehalten.
 
-**Visual:** Training-Timeline mit kompakten RL-Blöcken. Der aktive Lauf fährt vor, dann setzt ein Pause-Block `2 WOCHEN` ein. Anschließend erscheint ein größerer Frontier-Run als eigener Track mit Status `HOLD` statt fälschlich „abgebrochen“.
+**Visual:** Perspektivischer RL-Conveyor mit bewegten Trainingspaketen. Auf „zwei Wochen“ fällt ein großes Pause-Gate in die laufende Pipeline und stoppt den Strom. Danach Camera-Push auf einen separaten großen Frontier-Run; auf „weiterhin angehalten“ schlägt ein klarer `HOLD`-Stamp ein.
 
-**Ziel:** Zeitliche Maßnahme klar von dauerhafter Einstellung unterscheiden.
+**Ziel:** Pause und weiterhin angehaltener großer Lauf sind zwei starke, getrennte Hero-Beats.
 
-## Szene 3 — Drei Schutzschichten · Frames 660–1020
+## Szene 3 — Drei Schutzschichten · Frames 751–1192
 
-**Sprecher:** Monitoring, Alignment, Security werden ausgebaut.
+**Sprecher:** Monitoring, Alignment, Security werden ausgebaut und erfüllen unterschiedliche Funktionen.
 
-**Visual:** Astra-Core in der Mitte. Drei kontrollierte Schutzringe bauen sich nacheinander auf: `MONITORING` erkennt auffällige Aktivität, `ALIGNMENT` lenkt Verhalten auf erlaubte Ziele, `SECURITY` begrenzt Zugriff. Jede Phrase aktiviert exakt den passenden Ring.
+**Visual:** Astra-Core groß im Zentrum. Auf den tatsächlich gesprochenen Begriffen aktivieren sich Monitoring, Alignment und Security einzeln als räumliche Ringe. Danach laufen rote Aktivitäts-/Threat-Pakete auf das System zu: Monitoring scannt, Alignment verändert den Pfad/Status, Security blockiert verbleibenden Zugriff. Scanner und Status `SAFEGUARDS ACTIVE` schließen die Szene.
 
-**Ziel:** Die drei Funktionen nicht als austauschbare „Schilde“ zeigen, sondern mit unterschiedlicher Rolle.
+**Ziel:** Die drei Schutzschichten sind funktional sichtbar verschieden und reagieren auf die echte Sprecherphrase.
 
-## Szene 4 — Astra läuft strenger isoliert · Frames 1020–1308
+## Szene 4 — Astra läuft strenger isoliert · Frames 1192–1523
 
-**Sprecher:** Code-/Tool-Workloads stärker isoliert, Netzwerke eingeschränkt, Aktivitäten überwacht.
+**Sprecher:** Code-/Tool-Workloads stärker isoliert, Netzwerke eingeschränkt, Aktivitäten mehrstufig überwacht.
 
-**Visual:** Ein Workload-Container schließt sich als Sandbox. Eine Netzwerklinie zur Außenwelt wird auf kontrollierte Verbindung reduziert. Danach wandert ein Aktivitätsstrom durch mehrere Monitoring-Stufen bis zu einem Review-Status.
+**Visual:** Große pseudo-3D-Sandbox fährt in Perspektive ein und verriegelt sich. CODE/TOOLS/DATA werden im Inneren aktiviert. Ein Scanner fährt durch den Workload. Netzwerkpakete bewegen sich zur Außenwelt und werden an der Grenze sichtbar blockiert. Danach aktiviert sich `ACTIVITY → DETECT → REVIEW` schrittweise passend zur Stimme.
 
-**Ziel:** Isolation → Netzwerkbegrenzung → Monitoring als drei nacheinander verständliche Zustände.
+**Ziel:** Isolation → Netzwerkbegrenzung → Monitoring werden als echte Zustandswechsel erlebt, nicht als drei statische Labels.
 
-## Szene 5 — Fähigkeit und Schutz zusammen · Frames 1308–1644
+## Szene 5 — Fähigkeit und Schutz zusammen · Frames 1523–1857
 
-**Sprecher:** Kein „außer Kontrolle“; Sicherheitsmaßnahmen müssen mit Fähigkeiten mitwachsen.
+**Sprecher:** Kein „außer Kontrolle“; Sicherheitsmaßnahmen müssen mit Fähigkeiten während Training und Tests mitwachsen.
 
-**Visual:** Eine übertriebene rote `AUSSER KONTROLLE?`-These wird sichtbar durchgestrichen. Danach zwei synchron steigende vertikale Systeme: `FÄHIGKEIT` und `SCHUTZ`. Wenn Fähigkeit kurz vorläuft, zieht Schutz sichtbar nach; Endzustand zeigt beide auf gleicher Höhe mit stabilem Check.
+**Visual:** `AUSSER KONTROLLE?` erscheint als große rote Behauptung und wird auf dem tatsächlichen Audio-Anker sichtbar durchgestrichen. Danach wechselt die Bühne: zwei sehr große Systeme `FÄHIGKEIT` und `SCHUTZ` wachsen dynamisch. Fähigkeit läuft kurz voraus und erzeugt Warnzustand; Schutz zieht sichtbar nach. Auf „Training und Tests mitwachsen“ erreichen beide einen stabilen gemeinsamen Abschlussstatus.
 
-**Ziel:** Nüchterne Einordnung und klarer Takeaway statt Sci-Fi-Angst.
+**Ziel:** Starker Mythos-vs-Fakten-Übergang und ein visuell eindeutiger Schluss bis zum letzten gesprochenen Satz.
+
+## Globale Motion-Regel
+
+- `ki/skills/high-energy-remotion-reels/SKILL.md` ist verbindlich.
+- ungefähr alle 0.6–1.5 s sichtbarer semantischer Micro-Beat, solange neue Sprecherbedeutung kommt
+- keine kleine Card-Insel in großer weißer Fläche
+- Full-Frame, Kamera, Tiefe, Partikel/Flows, Masken und Transformation aktiv nutzen, wenn sie die Aussage verbessern
+- Logos/Bilder/Screenshots bei Relevanz animieren statt nur statisch zeigen
+
+## Globale Audio-Regel
+
+- `ki/skills/voice-locked-captions/SKILL.md` ist verbindlich.
+- Szene, Caption und Visual Trigger verwenden das echte Voiceover als Zeit-Autorität.
+- echte Pausen bleiben caption-frei.
