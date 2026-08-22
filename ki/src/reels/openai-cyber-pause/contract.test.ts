@@ -11,18 +11,33 @@ import {
 } from './contract';
 
 describe('OpenAI cyber pause reel contract', () => {
-  it('uses the canonical vertical production format', () => {
+  it('uses the canonical vertical production format and supplied audio duration', () => {
     assertVerticalFormat(OPENAI_CYBER_PAUSE_WIDTH, OPENAI_CYBER_PAUSE_HEIGHT, OPENAI_CYBER_PAUSE_FPS);
-    expect(OPENAI_CYBER_PAUSE_DURATION_IN_FRAMES / OPENAI_CYBER_PAUSE_FPS).toBeCloseTo(54.8, 1);
+    expect(OPENAI_CYBER_PAUSE_DURATION_IN_FRAMES / OPENAI_CYBER_PAUSE_FPS).toBeCloseTo(61.9, 1);
   });
 
-  it('has five contiguous scenes covering the full reel', () => {
+  it('has five contiguous scenes covering the full voice-locked reel', () => {
     expect(OPENAI_CYBER_PAUSE_SCENES).toHaveLength(5);
     assertScenesContiguous(OPENAI_CYBER_PAUSE_SCENES, OPENAI_CYBER_PAUSE_DURATION_IN_FRAMES);
   });
 
-  it('keeps phase-1 subtitle cues within their scenes', () => {
+  it('keeps voice-locked subtitle cues within their scenes', () => {
     assertSubtitlesWithinScenes(OPENAI_CYBER_PAUSE_SUBTITLES, OPENAI_CYBER_PAUSE_SCENES);
+  });
+
+  it('requires word timestamps for every production cue', () => {
+    for (const cue of OPENAI_CYBER_PAUSE_SUBTITLES) {
+      expect(cue.words.length).toBeGreaterThan(0);
+      expect(cue.words.map((word) => word.text).join(' ')).toBe(cue.text);
+      for (const word of cue.words) {
+        expect(word.startFrame).toBeGreaterThanOrEqual(cue.startFrame);
+        expect(word.endFrame).toBeLessThanOrEqual(cue.endFrame);
+        expect(word.endFrame).toBeGreaterThan(word.startFrame);
+      }
+      for (let i = 1; i < cue.words.length; i++) {
+        expect(cue.words[i].startFrame).toBeGreaterThanOrEqual(cue.words[i - 1].endFrame);
+      }
+    }
   });
 
   it('uses the current feed-safe caption geometry', () => {
