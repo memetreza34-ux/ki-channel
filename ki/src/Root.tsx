@@ -82,6 +82,14 @@ import {
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
 import {
+  OPENAI_CYBER_PAUSE_COMPOSITION_ID,
+  OPENAI_CYBER_PAUSE_DURATION_IN_FRAMES,
+  OPENAI_CYBER_PAUSE_FPS,
+  OPENAI_CYBER_PAUSE_HEIGHT,
+  OPENAI_CYBER_PAUSE_WIDTH,
+  ReelOpenAICyberPause,
+} from './reels/openai-cyber-pause';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -156,16 +164,16 @@ export const RemotionRoot: React.FC = () => (
         width={AI_APP_WIDTH}
         height={AI_APP_HEIGHT}
       />
-      <Composition 
-        id={AI_PRODUCT_AD_COMPOSITION_ID} 
-        component={ReelAIProductAd} 
+      <Composition
+        id={AI_PRODUCT_AD_COMPOSITION_ID}
+        component={ReelAIProductAd}
         defaultProps={{
           voiceoverSrc: voiceoverProductAd,
           showCaptions: true
-        }} 
-        durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} 
-        fps={AI_PRODUCT_AD_FPS} 
-        width={AI_PRODUCT_AD_WIDTH} 
+        }}
+        durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES}
+        fps={AI_PRODUCT_AD_FPS}
+        width={AI_PRODUCT_AD_WIDTH}
         height={AI_PRODUCT_AD_HEIGHT}
       />
       <Composition
@@ -177,29 +185,38 @@ export const RemotionRoot: React.FC = () => (
         width={WHY_AI_WIDTH}
         height={WHY_AI_HEIGHT}
       />
-      <Composition 
-        id={AI_SKETCH_WEBSITE_COMPOSITION_ID} 
-        component={ReelAISketchWebsite} 
+      <Composition
+        id={AI_SKETCH_WEBSITE_COMPOSITION_ID}
+        component={ReelAISketchWebsite}
         defaultProps={{
           voiceoverSrc: voiceoverSketchWebsite,
           showCaptions: true
-        }} 
-        durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} 
-        fps={AI_SKETCH_WEBSITE_FPS} 
-        width={AI_SKETCH_WEBSITE_WIDTH} 
+        }}
+        durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES}
+        fps={AI_SKETCH_WEBSITE_FPS}
+        width={AI_SKETCH_WEBSITE_WIDTH}
         height={AI_SKETCH_WEBSITE_HEIGHT}
       />
-      <Composition 
-        id={GITHUB_REPOSITORY_COMPOSITION_ID} 
-        component={ReelGitHubRepository} 
+      <Composition
+        id={GITHUB_REPOSITORY_COMPOSITION_ID}
+        component={ReelGitHubRepository}
         defaultProps={{
           voiceoverSrc: voiceoverGithubRepo,
           showCaptions: true
-        }} 
-        durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} 
-        fps={GITHUB_REPOSITORY_FPS} 
-        width={GITHUB_REPOSITORY_WIDTH} 
+        }}
+        durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES}
+        fps={GITHUB_REPOSITORY_FPS}
+        width={GITHUB_REPOSITORY_WIDTH}
         height={GITHUB_REPOSITORY_HEIGHT}
+      />
+      <Composition
+        id={OPENAI_CYBER_PAUSE_COMPOSITION_ID}
+        component={ReelOpenAICyberPause}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={OPENAI_CYBER_PAUSE_DURATION_IN_FRAMES}
+        fps={OPENAI_CYBER_PAUSE_FPS}
+        width={OPENAI_CYBER_PAUSE_WIDTH}
+        height={OPENAI_CYBER_PAUSE_HEIGHT}
       />
     </Folder>
 
