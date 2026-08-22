@@ -17,8 +17,9 @@ Danach den passenden Produktionsvertrag lesen:
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
 
-Für **jedes Short-Form-Reel** sind zusätzlich diese drei Repo-Skills Pflichtlektüre:
+Für **jedes Short-Form-Reel** sind zusätzlich diese vier Repo-Skills Pflichtlektüre:
 
+- `ki/skills/entertainment-first-reels/SKILL.md` — UI-/Brand-first, Mini-Story, Hero-Momente, Entertainment-Score
 - `ki/skills/high-energy-remotion-reels/SKILL.md` — visuelle Dichte, Full-Frame-Motion, Kamera, Tiefe, Logo-/Bildanimation
 - `ki/skills/voice-locked-captions/SKILL.md` — echtes Audio als Autorität für Caption, Wort-Timing, Visual Beat und Szenengrenzen
 - `ki/skills/final-video-delivery/SKILL.md` — finale Abgabe erst nach vollständigem Render-, Audio- und Hör-Gate; keine stumme Preview als fertiges Video
@@ -88,7 +89,7 @@ Aktueller Formatstandard: 1920×1080, 30 FPS, 16:9, 5:00–6:00 Minuten nach ech
 - `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
 - `04-pdf/` — optionale PDF-Assets
 - `05-export/` — Smoke-Frames, Review-Renders, finale MP4
-- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
+- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, `ENTERTAINMENT-REVIEW.md`, Review
 
 Ausführbarer TS/TSX-Code ausschließlich separat:
 
@@ -129,6 +130,7 @@ Für Short-Form und Longform gilt:
 
 - Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten.
 - Phase 1 darf Caption-/Szenen-Timings schätzen, aber diese Werte sind ausdrücklich nur Preview-/Planwerte.
+- Phase 1 eines Short-Form-Reels ist erst fertig, wenn `ENTERTAINMENT-REVIEW.md` mindestens **8/10** erreicht und keine Kategorie `0` hat.
 - Phase 2 ist nur das menschliche Voiceover.
 - Phase 3 integriert das Audio in den vorhandenen Source, synchronisiert an die reale Stimme, testet, smoke-reviewt und rendert.
 - Sobald echtes Audio vorliegt, ist **dieses Audio die Zeit-Autorität**: Wort-Timestamps, Caption-Gruppen, Visual Beats, Szenengrenzen und Composition-Dauer werden daran neu ausgerichtet.
@@ -162,11 +164,16 @@ Ein fehlender oder praktisch stummer Audiostream blockiert die finale Abgabe.
 - faceless
 - keine generische Cyberpunk-/Neon-Ästhetik
 - `REMOTION_NATIVE_MAXIMUM`: möglichst alles Sichtbare direkt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
+- **Product/UI-first:** bei Apps, Websites, Plattformen oder Features zuerst produktnahe UI-/Device-/Browser-Szenen prüfen; generische Kreise/Nodes sind kein Default
+- jede Szene als Mini-Story planen: **Setup → Aktion → Konsequenz → Payoff**
+- jede Szene braucht mindestens einen erkennbaren Hero-Moment
 - Hauptmechanik auf Smartphone groß und dominant; keine kleine Card-Insel in riesigem Leerraum
 - solange neue Sprecherbedeutung kommt, ungefähr alle `0.6–1.5 s` einen semantischen sichtbaren Micro-Beat anstreben
 - Full-Frame-Komposition, Kamera, Parallax, pseudo-3D, Masken, SVG-Pfade, Zustandswechsel und Transformationen aktiv prüfen
-- Logos und echte lokale Markenassets bei Relevanz animieren statt nur statisch einblenden
-- Bilder/Screenshots bei Relevanz mit Fokus-Zoom, Masken, 2.5D, Parallax oder nativen Overlay-Ebenen in die Erklärung integrieren
+- nicht jede Szene frontal/mittig bauen; Kamera-Grammatik und räumliche Inszenierung bewusst variieren
+- Logos/Markenassets nur als echte lokale zulässige Assets verwenden und aktuelle Markenrichtlinien respektieren; kein Fake-Logo und keine verbotene Markenmodifikation
+- bei strengen Brand-Regeln die **Umgebung um das unveränderte Logo** animieren: Container, Position, Kamera, UI, Übergang, Hintergrund
+- Bilder/Screenshots bei Relevanz mit Fokus-Zoom, Masken, 2.5D, Parallax, Cursor/Touch oder nativen Overlay-Ebenen in die Erklärung integrieren
 - bei zu flachen Code-Visuals zuerst Komposition, Perspektive, Schatten, Tiefe und Layering verbessern
 - externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
 - keine erfundenen Zahlen
@@ -185,7 +192,7 @@ Kein langer Sprechertext doppelt als Headline und Animationstext. Keine wortweis
 
 Bilder nur, wenn sie echten Mehrwert gegenüber Maximum-Remotion liefern. `ki/BILDSTIL.md` bestimmt Prompt-Aufbau, Safe-Zones, Dateinamen und Qualitätsgate. Für UI, Icons, Diagramme, technische Illustrationen, Mockups, Cover und pseudo-3D zuerst Remotion ausreizen.
 
-Wenn ein Bild oder reales Markenasset verwendet wird, soll es nicht automatisch statisch bleiben. `ki/skills/high-energy-remotion-reels/SKILL.md` bestimmt die zulässigen Motion-Techniken für Logos, Bilder, Screenshots und Layer.
+Wenn ein Bild oder reales Markenasset verwendet wird, soll es nicht automatisch statisch bleiben. `ki/skills/high-energy-remotion-reels/SKILL.md` und `ki/skills/entertainment-first-reels/SKILL.md` bestimmen die zulässige Inszenierung. Markenrichtlinien haben Vorrang vor dekorativen Motion-Ideen.
 
 ## Testing
 
@@ -198,6 +205,10 @@ Mindestens formatbezogen prüfen:
 - keine ungrounded Werte
 - Visual-Safe-Zones über reale Smoke-Frames
 - Packaging/Metadaten vorhanden
+- `ENTERTAINMENT-REVIEW.md` vorhanden und Phase 1 mindestens 8/10 ohne 0-Kategorie
+- bei produktbezogenen Reels: UI-/Brand-first-Entscheidung dokumentiert
+- Contact-Sheet-/Scrub-Review zeigt echte visuelle Variation statt fünf ähnlicher Karten
+- Hook ist auch ohne Ton in den ersten 1–2 Sekunden grob verständlich
 - bei Phase 3: Caption-Worttimings gegen reales Audio validiert
 - bei Phase 3: natürliche Sprechpausen erzeugen keine falschen aktiven Caption-Wörter
 - bei Phase 3: Szenengrenzen liegen auf echten Sprecher-/Bedeutungsgrenzen
