@@ -1,19 +1,40 @@
-# Audio Generation
+# Audio Generation / Provenance
 
-**Status:** AUDIO ERZEUGT UND DIREKT INTEGRIERT
+**Status:** REFERENZ-AUDIO AUS DEM HOCHGELADENEN RENDER EXTRAHIERT — NOCH NICHT ALS BINÄRDATEI IM REPO
 
+## Tatsächlich verifiziert
+
+Aus dem vom Nutzer hochgeladenen `KI-ChatGPTForTeens.mp4` wurde die vorhandene deutsche Sprachspur lokal extrahiert.
+
+Gemessen:
+
+- hochgeladener Render: ca. 54.827 s
+- extrahierte MP3-Referenz: ca. 54.857 s
 - Sprache: Deutsch
-- Voice: synthetische deutsche Männerstimme (`de+m3`)
-- Tempo: ungefähr 198 WPM
-- Rohproduktion: satzweise TTS, damit Satzgrenzen messbar bleiben
-- Mastering: Highpass 75 Hz, Lowpass 12 kHz, leichte Kompression, Loudness-Ziel ca. -16 LUFS / -1.5 dBTP
-- Zielformat: MP3, mono, 48 kHz, 96 kbit/s
-- gemessene Master-Dauer: **54.432 s**
+- der Sprechertext entspricht dem Teen-Reel
+- Audio ist hörbar und technisch vorhanden
 
-## Timing-Methode
+Lokale Arbeitsdatei dieser Sitzung:
 
-Die zehn Sätze wurden separat synthetisiert und anschließend in unveränderter Reihenfolge zusammengefügt. Dadurch sind die Satzgrenzen direkt messbar. Wortgrenzen wurden innerhalb der Satzsegmente mit den tatsächlich erzeugten Audiodaten angenähert: erkannte kurze Sprechpausen/Word-Gaps wurden mit per-Wort-TTS-Dauern als Alignment-Prior kombiniert.
+`/mnt/data/teen_rebuild/voiceover.mp3`
 
-Das ist für dieses direkt erzeugte, deterministische TTS präziser als eine gleichmäßige Zeichenverteilung. `03-caption/subtitle-cues.json` enthält die resultierenden Wortframes.
+## Nicht behaupten
 
-Wenn später eine andere Stimme verwendet wird, sind Audio, Worttimings, Szenengrenzen und Visual Trigger vollständig neu zu alignen.
+Nicht mehr behaupten, dass ChatGPT bereits selbst eine kanonische `voiceover.mp3` erzeugt und im Repository gespeichert hat.
+
+Der GitHub-Connector dieser Sitzung kann UTF-8-Dateien ändern, aber die lokale MP3 nicht als normale Binärdatei über den Contents-Write hochladen. Deshalb ist der Zielpfad im Repository derzeit noch nicht physisch vorhanden.
+
+## Zielpfad
+
+`01-script-audio/voiceover.mp3`
+
+Sobald genau diese verifizierte Sprachspur dort liegt:
+
+1. echte Dauer erneut mit `ffprobe` messen
+2. `align-voiceover-whisper.mjs` gegen genau diese Datei ausführen
+3. `subtitle-cues.json` / Wortframes aktualisieren
+4. Szenengrenzen und Visual Trigger an dieselbe Audio-Timeline anpassen
+5. `validate-voice-locked-captions.mjs` ausführen
+6. erst danach final rendern
+
+Die bisherigen Worttimings sind bis dahin Referenzwerte und keine finale Voice-Lock-Freigabe.
