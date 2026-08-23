@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "reelId": "chatgpt-for-teens",
   "compositionId": "KI-ChatGPTForTeens",
   "title": "ChatGPT schätzt dein Alter und schaltet Teen-Schutz ein",
@@ -26,9 +26,25 @@
   "captions": {
     "status": "REFERENCE_TIMINGS_REQUIRE_RELOCK_TO_FINAL_AUDIO",
     "file": "03-caption/subtitle-cues.json",
+    "finalSocialCaption": "03-caption/FINAL-CAPTION.txt",
     "cueCount": 32,
     "activeWordColor": "SCENE_ACCENT",
     "finalGate": "Do not treat current word timings as final until verified against the exact committed voiceover file."
+  },
+  "export": {
+    "mode": "MANDATORY_FINAL_PACKAGE",
+    "directory": "05-export",
+    "coverTimeSeconds": 6.0,
+    "coverSelection": "Scene 1 hero: TEEN state active + ChatGPT for Teens visible; recheck after the current layout render before finalization",
+    "requiredFiles": [
+      "KI-ChatGPTForTeens.mp4",
+      "KI-ChatGPTForTeens-cover.png",
+      "KI-ChatGPTForTeens-caption.txt",
+      "KI-ChatGPTForTeens-export-manifest.json"
+    ],
+    "finalizeCommand": "node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>",
+    "validateCommand": "node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>",
+    "audioRequired": true
   },
   "visualStyle": {
     "mode": "PRODUCT_UI_CINEMA",
