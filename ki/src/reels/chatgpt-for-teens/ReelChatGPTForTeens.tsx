@@ -42,38 +42,53 @@ const SceneHeader: React.FC<{scene: TeenScene}> = ({scene}) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 15,
         opacity: enter,
         transform: `translateY(${(1-enter)*-14}px)`,
+        pointerEvents: 'none',
       }}
     >
       <div
         style={{
-          width: 58,
-          height: 58,
-          borderRadius: 19,
-          display: 'grid',
-          placeItems: 'center',
-          background: scene.surface,
-          color: scene.accent,
-          border: `1.5px solid ${scene.accent}42`,
-          boxShadow: `0 12px 28px ${scene.accent}1F`,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 15,
+          padding: '10px 18px 10px 12px',
+          borderRadius: 25,
+          background: 'rgba(255,255,255,.78)',
+          border: '1px solid rgba(255,255,255,.72)',
+          boxShadow: '0 12px 34px rgba(16,32,51,.10)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
         }}
       >
-        {iconByScene[scene.sceneId]}
-      </div>
-      <div
-        style={{
-          fontFamily: BRAND.font,
-          fontSize: scene.headline.length > 25 ? 37 : 43,
-          lineHeight: 1.03,
-          fontWeight: 950,
-          letterSpacing: -1.45,
-          color: C.ink,
-          textAlign: 'center',
-        }}
-      >
-        {scene.headline}
+        <div
+          style={{
+            width: 58,
+            height: 58,
+            borderRadius: 19,
+            display: 'grid',
+            placeItems: 'center',
+            background: scene.surface,
+            color: scene.accent,
+            border: `1.5px solid ${scene.accent}42`,
+          }}
+        >
+          {iconByScene[scene.sceneId]}
+        </div>
+        <div
+          style={{
+            fontFamily: BRAND.font,
+            fontSize: scene.headline.length > 25 ? 37 : 43,
+            lineHeight: 1.03,
+            fontWeight: 950,
+            letterSpacing: -1.45,
+            color: C.ink,
+            textAlign: 'center',
+          }}
+        >
+          {scene.headline}
+        </div>
       </div>
     </div>
   );
