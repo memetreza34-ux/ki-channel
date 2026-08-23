@@ -9,7 +9,6 @@ import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-e
 import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
 import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
 import voiceoverGithubRepo from '../reels/2026-08-10_bis_2026-08-16/08_Was-ist-ein-GitHub-Repository/01-script-audio/voiceover.mp4';
-import voiceoverChatGPTTeens from '../reels/2026-08-24_bis_2026-08-30/03_ChatGPT-schaetzt-dein-Alter-und-schaltet-Teen-Schutz-ein/01-script-audio/voiceover.mp3';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -120,10 +119,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={HALLUCINATION_COMPOSITION_ID}
         component={ReelHallucinations}
-        defaultProps={{
-          voiceoverSrc: voiceoverHallucination,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverHallucination, showCaptions: true}}
         durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
         fps={HALLUCINATION_FPS}
         width={HALLUCINATION_WIDTH}
@@ -132,10 +128,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AMBIGUOUS_PROMPTS_COMPOSITION_ID}
         component={ReelAmbiguousPrompts}
-        defaultProps={{
-          voiceoverSrc: voiceoverAmbiguous,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverAmbiguous, showCaptions: true}}
         durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES}
         fps={AMBIGUOUS_PROMPTS_FPS}
         width={AMBIGUOUS_PROMPTS_WIDTH}
@@ -144,10 +137,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_AGENTS_COMPOSITION_ID}
         component={ReelAIAgents}
-        defaultProps={{
-          voiceoverSrc: voiceoverAgents,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverAgents, showCaptions: true}}
         durationInFrames={AI_AGENTS_DURATION_IN_FRAMES}
         fps={AI_AGENTS_FPS}
         width={AI_AGENTS_WIDTH}
@@ -156,10 +146,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_APP_COMPOSITION_ID}
         component={ReelAIAppPrototype}
-        defaultProps={{
-          voiceoverSrc: voiceoverApp,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverApp, showCaptions: true}}
         durationInFrames={AI_APP_DURATION_IN_FRAMES}
         fps={AI_APP_FPS}
         width={AI_APP_WIDTH}
@@ -168,10 +155,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_PRODUCT_AD_COMPOSITION_ID}
         component={ReelAIProductAd}
-        defaultProps={{
-          voiceoverSrc: voiceoverProductAd,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverProductAd, showCaptions: true}}
         durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES}
         fps={AI_PRODUCT_AD_FPS}
         width={AI_PRODUCT_AD_WIDTH}
@@ -189,10 +173,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID}
         component={ReelAISketchWebsite}
-        defaultProps={{
-          voiceoverSrc: voiceoverSketchWebsite,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverSketchWebsite, showCaptions: true}}
         durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES}
         fps={AI_SKETCH_WEBSITE_FPS}
         width={AI_SKETCH_WEBSITE_WIDTH}
@@ -201,10 +182,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={GITHUB_REPOSITORY_COMPOSITION_ID}
         component={ReelGitHubRepository}
-        defaultProps={{
-          voiceoverSrc: voiceoverGithubRepo,
-          showCaptions: true,
-        }}
+        defaultProps={{voiceoverSrc: voiceoverGithubRepo, showCaptions: true}}
         durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES}
         fps={GITHUB_REPOSITORY_FPS}
         width={GITHUB_REPOSITORY_WIDTH}
@@ -213,10 +191,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={CHATGPT_TEENS_COMPOSITION_ID}
         component={ReelChatGPTForTeens}
-        defaultProps={{
-          voiceoverSrc: voiceoverChatGPTTeens,
-          showCaptions: true,
-        }}
+        defaultProps={{showCaptions: true}}
         durationInFrames={CHATGPT_TEENS_DURATION_IN_FRAMES}
         fps={CHATGPT_TEENS_FPS}
         width={CHATGPT_TEENS_WIDTH}
