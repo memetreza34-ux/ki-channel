@@ -12,7 +12,7 @@ ChatGPT schätzt dein Alter – und schaltet Teen-Schutz ein
 
 **Hashtags:** #ChatGPT #OpenAI #KI #KünstlicheIntelligenz #TechNews
 
-**Eigenes Cover nötig:** NEIN — der erste UI-Morph ist als Hook-Frame geplant.
+**Eigenes Cover nötig:** JA — Export-Paket erzeugt ein Cover aus dem nach Hero-/Contact-Sheet-Review gewählten Frame.
 
 ## Instagram Reels
 
