@@ -17,12 +17,13 @@ Danach den passenden Produktionsvertrag lesen:
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
 
-Für **jedes Short-Form-Reel** sind zusätzlich diese vier Repo-Skills Pflichtlektüre:
+Für **jedes Short-Form-Reel** sind zusätzlich diese fünf Repo-Skills Pflichtlektüre:
 
 - `ki/skills/entertainment-first-reels/SKILL.md` — UI-/Brand-first, Mini-Story, Hero-Momente, Entertainment-Score
 - `ki/skills/high-energy-remotion-reels/SKILL.md` — visuelle Dichte, Full-Frame-Motion, Kamera, Tiefe, Logo-/Bildanimation
 - `ki/skills/voice-locked-captions/SKILL.md` — echtes Audio als Autorität für Caption, Wort-Timing, Visual Beat und Szenengrenzen
 - `ki/skills/final-video-delivery/SKILL.md` — finale Abgabe erst nach vollständigem Render-, Audio- und Hör-Gate; keine stumme Preview als fertiges Video
+- `ki/skills/final-export-package/SKILL.md` — nach finalem Render automatisch vollständiges `05-export/`-Paket mit MP4 + Cover + Caption + Manifest erzeugen und validieren
 
 ## Harte Short-Form-Ordnerstruktur
 
@@ -57,9 +58,9 @@ node scripts/check-ki-reel-folder-structure.mjs
 
 - `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
 - `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
+- `03-caption/` — Subtitle-Cues, Wort-Timestamps, `platform-copy.md` und kanonische `FINAL-CAPTION.txt`
 - `04-pdf/` — optionale PDF-Assets
-- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
+- `05-export/` — Review-Artefakte plus **finales Publish-Paket: MP4 + Cover + Caption + Manifest**
 - `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, `ENTERTAINMENT-REVIEW.md`, Review
 
 Ausführbarer TS/TSX-Code ausschließlich separat:
@@ -80,7 +81,7 @@ Für Short-Form gilt:
 - Wenn echtes Audio bereits im selben Auftrag erzeugt wird, darf direkt in Phase 3 übergegangen werden.
 - Sobald echtes Audio vorliegt, ist **dieses Audio die Zeit-Autorität**: Wort-Timestamps, Caption-Gruppen, Visual Beats, Szenengrenzen und Composition-Dauer werden daran neu ausgerichtet.
 - Ein proportionaler Caption-Fallback ist nur für Preview zulässig und darf nicht als finale Synchronisation durchrutschen.
-- Bei einer verlangten **fertigen Video-Abgabe** darf der Agent die Aufgabe nicht nach einem Preview-/Smoke-Render beenden. Er arbeitet bis zum aktuellen finalen MP4 mit hörbarem Voiceover, bestandenen Audio-/Render-Gates und finaler Hör-/Sichtprüfung weiter. Erst dann wird das Video gezeigt und die Aufgabe beendet.
+- Bei einer verlangten **fertigen Video-Abgabe** darf der Agent die Aufgabe nicht nach einem Preview-/Smoke-Render beenden. Er arbeitet bis zum aktuellen finalen MP4 mit hörbarem Voiceover, bestandenen Audio-/Render-Gates, vollständigem Export-Paket und finaler Hör-/Sichtprüfung weiter. Erst dann wird das Video gezeigt und die Aufgabe beendet.
 
 Für Production-Captions nach echtem Audio ausführen:
 
@@ -94,7 +95,45 @@ Vor jeder finalen Video-Abgabe:
 node ki/scripts/validate-final-video.mjs <final-video.mp4>
 ```
 
-Ein fehlender oder praktisch stummer Audiostream blockiert die finale Abgabe.
+Ein fehlender oder praktisch stummer Audiostream blockiert die finale Abgabe **und blockiert den Export in `05-export/`**.
+
+## Automatischer Final-Export — Pflicht
+
+Wenn ein Reel final gerendert wurde, darf Antigravity/Codex **nicht** bei `render complete` stoppen.
+
+Verpflichtende Reihenfolge:
+
+1. finalen MP4 aus aktuellem Source rendern
+2. `validate-final-video.mjs` erfolgreich ausführen
+3. nach Contact-Sheet-/Hero-Review `reel.json -> export.coverTimeSeconds` setzen
+4. `03-caption/FINAL-CAPTION.txt` publish-ready vervollständigen
+5. Finalize-Befehl ausführen:
+
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
+```
+
+6. vollständiges Paket prüfen:
+
+```bash
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+```
+
+7. den **exportierten** MP4 unter `05-export/` vollständig ansehen und anhören
+8. Cover und Caption visuell/inhaltsseitig prüfen
+9. erst dann `FINAL VIDEO READY — EXPORT PACKAGE READY`
+
+Kanonischer Finalzustand:
+
+```text
+05-export/
+├── <compositionId>.mp4
+├── <compositionId>-cover.png
+├── <compositionId>-caption.txt
+└── <compositionId>-export-manifest.json
+```
+
+Ein MP4 außerhalb dieses Pakets ist nur Arbeitsware. Ein stummer MP4 darf niemals als finale Datei in `05-export/` landen.
 
 ## Visual Standard
 
@@ -150,5 +189,10 @@ Mindestens formatbezogen prüfen:
 - bei finaler Video-Abgabe: Audio technisch nicht stumm/praktisch unhörbar
 - bei finaler Video-Abgabe: finalen MP4 tatsächlich ansehen **und anhören**
 - finaler Render gehört exakt zum aktuellen Source-Stand
+- `03-caption/FINAL-CAPTION.txt` ist publish-ready und ohne Platzhalter
+- `reel.json.export.coverTimeSeconds` ist nach Hero-Review gesetzt
+- `finalize-reel-export.mjs` erfolgreich
+- `validate-reel-export-package.mjs` erfolgreich
+- finaler MP4, Cover, Caption und Manifest liegen im `05-export/`
 
 Ein bestandenes Unit-Test-Set ersetzt keine visuelle oder akustische Prüfung.
