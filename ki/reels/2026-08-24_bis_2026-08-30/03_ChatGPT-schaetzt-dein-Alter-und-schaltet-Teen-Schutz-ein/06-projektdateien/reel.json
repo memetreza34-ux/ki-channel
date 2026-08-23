@@ -1,31 +1,41 @@
 {
-  "version": 3,
+  "version": 4,
   "reelId": "chatgpt-for-teens",
   "compositionId": "KI-ChatGPTForTeens",
   "title": "ChatGPT schätzt dein Alter und schaltet Teen-Schutz ein",
   "publishDate": "2026-08-26",
   "week": "2026-08-24_bis_2026-08-30",
-  "productionMode": "REMOTION_NATIVE_MAXIMUM_ENTERTAINMENT_FIRST",
+  "productionMode": "REMOTION_NATIVE_MAXIMUM_ENTERTAINMENT_FIRST_ISOLATED_REBUILD",
   "format": {
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "durationInFrames": 1643,
-    "durationSeconds": 54.7667
+    "durationInFrames": 1651,
+    "durationSeconds": 55.0333
   },
   "audio": {
-    "file": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_AND_INCLUDED",
-    "observedAudioDurationSeconds": 54.432,
-    "timingAuthority": true,
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "repoFilePresent": false,
+    "status": "REFERENCE_AUDIO_EXTRACTED_FROM_USER_RENDER_NOT_COMMITTED",
+    "userRenderDurationSeconds": 54.827,
+    "extractedReferenceDurationSeconds": 54.857,
+    "timingAuthority": false,
     "language": "de",
-    "masteringTarget": "approximately -16 LUFS / -1.5 dBTP"
+    "requiredNextStep": "Place the verified extracted/reference voiceover at targetFile, then rerun Whisper/voice-lock against that exact file before final render."
   },
   "captions": {
-    "status": "VOICE_LOCKED_TO_GENERATED_AUDIO",
+    "status": "REFERENCE_TIMINGS_REQUIRE_RELOCK_TO_FINAL_AUDIO",
     "file": "03-caption/subtitle-cues.json",
     "cueCount": 32,
-    "activeWordColor": "#6E45C9"
+    "activeWordColor": "SCENE_ACCENT",
+    "finalGate": "Do not treat current word timings as final until verified against the exact committed voiceover file."
+  },
+  "visualStyle": {
+    "mode": "PRODUCT_UI_CINEMA",
+    "palette": ["#18C7D9", "#3478F6", "#20B26B", "#FF8A34", "#F4C542", "#E24A57", "#7657E8", "#102033", "#FFFFFF"],
+    "brandReference": "ChatGPT/OpenAI text only until an approved official local logo asset exists",
+    "officialLogoAssetPresent": false,
+    "sourceIsolation": "06-projektdateien/source-isolation.json"
   },
   "scenes": [
     {
@@ -34,7 +44,8 @@
       "icon": "Sparkles",
       "startFrame": 0,
       "endFrame": 220,
-      "heroMoment": "STANDARD UI morphs into TEEN experience"
+      "heroMoment": "STANDARD UI morphs into TEEN experience",
+      "visualMode": "CHAT_UI_MORPH"
     },
     {
       "sceneId": "scene2",
@@ -42,7 +53,8 @@
       "icon": "ScanSearch",
       "startFrame": 220,
       "endFrame": 751,
-      "heroMoment": "age signal meter lands below 18 and triggers Teen mode"
+      "heroMoment": "age signal meter lands below 18 and triggers Teen mode",
+      "visualMode": "ACCOUNT_SAFETY_UI"
     },
     {
       "sceneId": "scene3",
@@ -50,7 +62,8 @@
       "icon": "GraduationCap",
       "startFrame": 751,
       "endFrame": 1103,
-      "heroMoment": "direct-answer card transforms into Study Mode steps and quiz"
+      "heroMoment": "direct-answer card transforms into Study Mode steps and quiz",
+      "visualMode": "STUDY_MODE_CHAT_UI"
     },
     {
       "sceneId": "scene4",
@@ -58,15 +71,17 @@
       "icon": "ShieldCheck",
       "startFrame": 1103,
       "endFrame": 1236,
-      "heroMoment": "sensitive-content panel is sealed, then break reminder takes focus"
+      "heroMoment": "sensitive-content panel is sealed, then break reminder takes focus",
+      "visualMode": "SAFETY_AND_BREAK_UI"
     },
     {
       "sceneId": "scene5",
       "title": "Eltern steuern – Chats privat",
       "icon": "LockKeyhole",
       "startFrame": 1236,
-      "endFrame": 1643,
-      "heroMoment": "parent controls remain active while chat access visibly stays locked"
+      "endFrame": 1651,
+      "heroMoment": "parent controls remain active while chat access visibly stays locked",
+      "visualMode": "PARENT_CONTROLS_SPLIT_UI"
     }
   ],
   "sources": [
