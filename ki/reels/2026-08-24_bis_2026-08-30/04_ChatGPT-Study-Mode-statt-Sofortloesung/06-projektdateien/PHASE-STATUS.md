@@ -1,7 +1,7 @@
 # Produktionsstatus — ChatGPT Study Mode
 
 ## Phase 1 — Planung + Source
-**Status:** IN ARBEIT
+**Status:** IMPLEMENTIERT — AUDIO-LOCK UND RENDER NOCH AUSSTEHEND
 
 Vorhanden:
 - finaler Sprechertext
@@ -10,8 +10,16 @@ Vorhanden:
 - Szenen-/Animationsplan
 - Plattform-Copy + Final-Caption
 - Reel-Contract + Entertainment-Review
+- eigener ausführbarer Source unter `ki/src/reels/chatgpt-study-mode/`
+- fünf neue Study-Mode-spezifische Visuals
+- Composition `KI-ChatGPTStudyMode` in `ki/src/Root.tsx` registriert
+- Contract-Test angelegt
+- Fullscreen-Hintergründe, Header `top:112`, Caption `bottom:250`, kein Footer-Split
 
-Phase 1 wird erst auf `IMPLEMENTIERT` gesetzt, wenn Remotion-Source + Root-Wiring + Contract-Test im Branch liegen.
+Nicht als bestanden behauptet, bis tatsächlich ausgeführt:
+- TypeScript/Tests
+- Remotion-Bundle/Smoke-Render
+- Post-Render-Entertainment-Review
 
 ## Audio
 **Status:** ERZEUGT REMOTE — DOWNLOAD INS REPO ERFORDERLICH
@@ -25,6 +33,7 @@ Pflicht:
 3. Whisper/Voice-Lock gegen genau diese Datei ausführen
 4. `subtitle-cues.json` mit echten Wortframes ersetzen
 5. Szenengrenzen und Composition-Dauer auf Audio anpassen
+6. finale Composition mit genau diesem Voiceover rendern
 
 ## Final
 **Status:** NICHT FINAL
@@ -34,5 +43,11 @@ Kein finaler MP4 ohne hörbares Audio. Nach Final-Render zwingend:
 - komplette Hör-/Sichtprüfung
 - `finalize-reel-export.mjs`
 - `validate-reel-export-package.mjs`
+
+`05-export/` muss enthalten:
+- `KI-ChatGPTStudyMode.mp4`
+- `KI-ChatGPTStudyMode-cover.png`
+- `KI-ChatGPTStudyMode-caption.txt`
+- `KI-ChatGPTStudyMode-export-manifest.json`
 
 Erst danach: `FINAL VIDEO READY — EXPORT PACKAGE READY`.
