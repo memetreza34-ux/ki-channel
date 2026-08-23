@@ -6,7 +6,6 @@ import {REEL_CAPTION_SAFE} from '../captionSafe';
 import {
   CHATGPT_TEENS_SCENES,
   CHATGPT_TEENS_SUBTITLES,
-  CHATGPT_TEENS_VISUAL_END_Y,
   TEEN_PALETTE as C,
   type TeenCue,
   type TeenScene,
@@ -22,20 +21,62 @@ const visualByScene: Record<TeenScene['sceneId'], React.FC> = {
 };
 
 const iconByScene: Record<TeenScene['sceneId'], React.ReactNode> = {
-  scene1: <Sparkles size={37}/>,
-  scene2: <ScanSearch size={37}/>,
-  scene3: <GraduationCap size={37}/>,
-  scene4: <ShieldCheck size={37}/>,
-  scene5: <LockKeyhole size={37}/>,
+  scene1: <Sparkles size={32}/>,
+  scene2: <ScanSearch size={32}/>,
+  scene3: <GraduationCap size={32}/>,
+  scene4: <ShieldCheck size={32}/>,
+  scene5: <LockKeyhole size={32}/>,
 };
 
 const SceneHeader: React.FC<{scene: TeenScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const enter = interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  return <div style={{position:'absolute',left:62,right:62,top:62,zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',gap:17,opacity:enter,transform:`translateY(${(1-enter)*-18}px)`}}>
-    <div style={{width:64,height:64,borderRadius:21,display:'grid',placeItems:'center',background:scene.surface,color:scene.accent,border:`1.5px solid ${scene.accent}42`,boxShadow:`0 12px 28px ${scene.accent}1F`}}>{iconByScene[scene.sceneId]}</div>
-    <div style={{fontFamily:BRAND.font,fontSize:scene.headline.length > 25 ? 43 : 50,lineHeight:1.02,fontWeight:950,letterSpacing:-1.7,color:C.ink,textAlign:'center'}}>{scene.headline}</div>
-  </div>;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 58,
+        right: 58,
+        top: 112,
+        zIndex: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 15,
+        opacity: enter,
+        transform: `translateY(${(1-enter)*-14}px)`,
+      }}
+    >
+      <div
+        style={{
+          width: 58,
+          height: 58,
+          borderRadius: 19,
+          display: 'grid',
+          placeItems: 'center',
+          background: scene.surface,
+          color: scene.accent,
+          border: `1.5px solid ${scene.accent}42`,
+          boxShadow: `0 12px 28px ${scene.accent}1F`,
+        }}
+      >
+        {iconByScene[scene.sceneId]}
+      </div>
+      <div
+        style={{
+          fontFamily: BRAND.font,
+          fontSize: scene.headline.length > 25 ? 37 : 43,
+          lineHeight: 1.03,
+          fontWeight: 950,
+          letterSpacing: -1.45,
+          color: C.ink,
+          textAlign: 'center',
+        }}
+      >
+        {scene.headline}
+      </div>
+    </div>
+  );
 };
 
 const activeWordIndex = (frame: number, cue: TeenCue, count: number) => {
@@ -59,20 +100,56 @@ const Captions: React.FC = () => {
     interpolate(frame,[cue.endFrame-3,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),
   );
   const accent = scene?.accent ?? C.purple;
-  return <div style={{position:'absolute',left:REEL_CAPTION_SAFE.horizontalInset,right:REEL_CAPTION_SAFE.horizontalInset,bottom:REEL_CAPTION_SAFE.bottom,zIndex:220,display:'flex',justifyContent:'center',opacity:alpha,pointerEvents:'none'}}>
-    <div style={{width:'100%',maxWidth:REEL_CAPTION_SAFE.maxWidth,textAlign:'center',fontFamily:BRAND.font,fontSize:46,fontWeight:880,lineHeight:1.17,letterSpacing:-.7,color:C.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(16,32,51,.14)'}}>
-      {words.map((word,index)=><React.Fragment key={`${cue.id}-${index}`}><span style={{display:'inline-block',color:index===active?accent:C.ink,transform:`scale(${index===active?1.045:1})`,transformOrigin:'50% 75%'}}>{word}</span>{index < words.length-1 ? ' ' : null}</React.Fragment>)}
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: REEL_CAPTION_SAFE.horizontalInset,
+        right: REEL_CAPTION_SAFE.horizontalInset,
+        bottom: 250,
+        zIndex: 220,
+        display: 'flex',
+        justifyContent: 'center',
+        opacity: alpha,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 860,
+          textAlign: 'center',
+          fontFamily: BRAND.font,
+          fontSize: 44,
+          fontWeight: 880,
+          lineHeight: 1.16,
+          letterSpacing: -.6,
+          color: C.ink,
+          textShadow: '0 1px 2px rgba(255,255,255,.5),0 8px 28px rgba(16,32,51,.14)',
+          background: 'rgba(255,255,255,.58)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255,255,255,.62)',
+          borderRadius: 26,
+          padding: '15px 22px 17px',
+          boxShadow: '0 12px 34px rgba(16,32,51,.10)',
+        }}
+      >
+        {words.map((word,index)=><React.Fragment key={`${cue.id}-${index}`}><span style={{display:'inline-block',color:index===active?accent:C.ink,transform:`scale(${index===active?1.045:1})`,transformOrigin:'50% 75%'}}>{word}</span>{index < words.length-1 ? ' ' : null}</React.Fragment>)}
+      </div>
     </div>
-  </div>;
+  );
 };
 
 const SceneLayer: React.FC<{scene: TeenScene}> = ({scene}) => {
   const Visual = visualByScene[scene.sceneId];
   if (!Visual) throw new Error(`Missing isolated teen visual for ${scene.sceneId}`);
-  return <AbsoluteFill>
-    <SceneHeader scene={scene}/>
-    <div style={{position:'absolute',left:0,right:0,top:175,height:CHATGPT_TEENS_VISUAL_END_Y-175,overflow:'hidden',zIndex:20,borderRadius:0}}><Visual/></div>
-  </AbsoluteFill>;
+  return (
+    <AbsoluteFill>
+      <Visual/>
+      <SceneHeader scene={scene}/>
+    </AbsoluteFill>
+  );
 };
 
 export type ReelChatGPTForTeensProps = {voiceoverSrc?: string; showCaptions?: boolean};
