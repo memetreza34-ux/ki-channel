@@ -44,9 +44,13 @@ if (existsSync(reelJsonPath)) {
 }
 
 const configuredCover = reelConfig?.export?.coverTimeSeconds;
-const coverTime = rawCoverTime != null ? Number(rawCoverTime) : Number(configuredCover);
-if (!Number.isFinite(coverTime) || coverTime < 0) {
+const coverInput = rawCoverTime != null && rawCoverTime !== '' ? rawCoverTime : configuredCover;
+if (coverInput == null || coverInput === '') {
   fail('cover time missing. Set reel.json -> export.coverTimeSeconds after Hero/Contact-Sheet review or pass it as the third argument.');
+}
+const coverTime = Number(coverInput);
+if (!Number.isFinite(coverTime) || coverTime < 0) {
+  fail('cover time is invalid. Set a non-negative number of seconds after Hero/Contact-Sheet review.');
 }
 
 if (!existsSync(captionSource)) {
