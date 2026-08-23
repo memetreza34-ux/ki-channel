@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "reelId": "chatgpt-study-mode",
+  "compositionId": "KI-ChatGPTStudyMode",
+  "title": "ChatGPT Study Mode statt Sofortlösung",
+  "publishDate": "2026-08-27",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 1950,
+    "finalDurationAuthority": "EXACT_DOWNLOADED_VOICEOVER"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+    "timingAuthority": true,
+    "finalGate": "No final render or export without the exact local audio file and a passed audio gate."
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
+    "finalRequirement": "word-level timings from exact local voiceover.mp3",
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay"
+  },
+  "header": {
+    "top": 112,
+    "style": "compact_glass_chip"
+  },
+  "background": {
+    "rule": "FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
+    "footerSplitAllowed": false
+  },
+  "export": {
+    "coverTimeSeconds": 4.5,
+    "coverText": "STUDY MODE STATT COPY-PASTE",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video", "cover", "caption", "manifest"]
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"Study Mode statt Sofortlösung","startFrame":0,"endFrame":510,"accent":"#18C7D9","heroMoment":"STANDARD answer UI transforms into STUDY MODE learning UI"},
+    {"sceneId":"scene2","title":"Schnell – aber oberflächlich","startFrame":510,"endFrame":900,"accent":"#FF8A34","heroMoment":"instant answer completes while learning meter stays low"},
+    {"sceneId":"scene3","title":"Schritt für Schritt","startFrame":900,"endFrame":1305,"accent":"#20B26B","heroMoment":"single answer breaks apart into guided steps, questions and quiz"},
+    {"sceneId":"scene4","title":"Verstehen statt Kopieren","startFrame":1305,"endFrame":1545,"accent":"#3478F6","heroMoment":"green understanding route overtakes red copy route"},
+    {"sceneId":"scene5","title":"Sinnvoll – nicht perfekt","startFrame":1545,"endFrame":1950,"accent":"#7657E8","heroMoment":"balanced benefit cards lock into final CTA"}
+  ],
+  "sources": [
+    "https://help.openai.com/de-de/articles/11780217-chatgpt-study-mode-faq",
+    "https://help.openai.com/en/articles/11780217-chatgpt-study-mode-faq"
+  ]
+}
