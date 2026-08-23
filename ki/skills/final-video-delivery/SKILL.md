@@ -24,6 +24,11 @@ Vor der finalen Ausgabe müssen alle Punkte erfüllt sein:
 8. Audio ist nicht stumm oder praktisch unhörbar
 9. finale MP4 wurde in normaler Geschwindigkeit angesehen und angehört
 10. keine offene Revision oder `RERENDER ERFORDERLICH`-Markierung bleibt bestehen
+11. `03-caption/FINAL-CAPTION.txt` ist publish-ready
+12. ein geeigneter Cover-Hero-Frame wurde nach dem visuellen Review gewählt
+13. `reel.json.export.coverTimeSeconds` ist gesetzt
+14. das finale Publish-Paket wurde automatisch unter `05-export/` erzeugt
+15. das Export-Paket wurde mit `validate-reel-export-package.mjs` bestanden
 
 ## Technischer Final-Gate
 
@@ -58,6 +63,28 @@ Fehlerbeispiele:
 
 Bei einem dieser Fälle: keine Abgabe.
 
+## Finaler Export ist Teil der Fertigstellung
+
+Nach bestandenem Audio-/Video-Gate darf der Agent nicht einfach den Renderpfad nennen und stoppen.
+
+Er muss anschließend ausführen:
+
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+```
+
+Das finale Paket muss unter `05-export/` liegen und enthalten:
+
+```text
+<compositionId>.mp4
+<compositionId>-cover.png
+<compositionId>-caption.txt
+<compositionId>-export-manifest.json
+```
+
+Wichtig: `finalize-reel-export.mjs` prüft **vor dem Kopieren** erneut das Video-Audio-Gate. Ein stummes Video darf niemals als finales MP4 in `05-export/` landen.
+
 ## Verhalten gegenüber dem Nutzer
 
 Wenn der Nutzer eine **fertige Video-Abgabe** verlangt:
@@ -65,6 +92,9 @@ Wenn der Nutzer eine **fertige Video-Abgabe** verlangt:
 - intern weiterarbeiten, bis alle finalen Gates erfüllt sind
 - keine unfertige Preview als Endergebnis zeigen
 - kein stummes Video als fertig bezeichnen
+- nicht bei `render complete` stoppen
+- nicht bei einem MP4 außerhalb von `05-export/` stoppen
+- vollständiges Export-Paket mit Cover und Caption erzeugen
 - erst die vollständige finale Datei mit hörbarem Voiceover zeigen
 - danach die Aufgabe beenden
 
@@ -72,7 +102,7 @@ Der Agent soll nicht mitten in Phase 3 stoppen und den Nutzer mit einem halbfert
 
 ## Ausnahme: ausdrücklich gewünschte Preview
 
-Nur wenn der Nutzer ausdrücklich etwas wie „zeig mir die Preview“, „zeig mir einen Zwischenstand“ oder „erstmal ohne Audio“ verlangt, darf ein unfertiger Render gezeigt werden. Er muss dann klar als **PREVIEW / NICHT FINAL** gekennzeichnet sein.
+Nur wenn der Nutzer ausdrücklich etwas wie „zeig mir die Preview“, „zeig mir einen Zwischenstand“ oder „erstmal ohne Audio“ verlangt, darf ein unfertiger Render gezeigt werden. Er muss dann klar als **PREVIEW / NICHT FINAL** gekennzeichnet sein und darf nicht in den kanonischen finalen Exportnamen geschrieben werden.
 
 ## Statussprache
 
@@ -82,7 +112,9 @@ Zulässig vor Fertigstellung:
 - `PHASE 3 IN ARBEIT`
 - `REVISION IMPLEMENTIERT — RERENDER ERFORDERLICH`
 - `FINAL-GATE FEHLGESCHLAGEN`
+- `EXPORT PACKAGE FEHLT`
+- `EXPORT PACKAGE GATE FEHLGESCHLAGEN`
 
-Erst nach bestandenem Final-Gate:
+Erst nach bestandenem Final- und Export-Gate:
 
-- `FINAL VIDEO READY`
+- `FINAL VIDEO READY — EXPORT PACKAGE READY`
