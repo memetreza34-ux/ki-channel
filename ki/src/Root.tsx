@@ -90,6 +90,14 @@ import {
   ReelChatGPTForTeens,
 } from './reels/chatgpt-for-teens';
 import {
+  STUDY_MODE_COMPOSITION_ID,
+  STUDY_MODE_PLANNING_DURATION_IN_FRAMES,
+  STUDY_MODE_FPS,
+  STUDY_MODE_HEIGHT,
+  STUDY_MODE_WIDTH,
+  ReelChatGPTStudyMode,
+} from './reels/chatgpt-study-mode';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -196,6 +204,15 @@ export const RemotionRoot: React.FC = () => (
         fps={CHATGPT_TEENS_FPS}
         width={CHATGPT_TEENS_WIDTH}
         height={CHATGPT_TEENS_HEIGHT}
+      />
+      <Composition
+        id={STUDY_MODE_COMPOSITION_ID}
+        component={ReelChatGPTStudyMode}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={STUDY_MODE_PLANNING_DURATION_IN_FRAMES}
+        fps={STUDY_MODE_FPS}
+        width={STUDY_MODE_WIDTH}
+        height={STUDY_MODE_HEIGHT}
       />
     </Folder>
 
