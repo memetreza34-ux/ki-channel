@@ -3,6 +3,7 @@ import {BookOpenCheck, BrainCircuit, GraduationCap, HelpCircle, Sparkles} from '
 import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {BalancedEndingVisual, GuidedStepsVisual, InstantAnswerVisual, StudySwitchVisual, UnderstandPathVisual} from './Visuals';
 import {STUDY_MODE_SCENES, STUDY_MODE_SUBTITLES, STUDY_PALETTE as C, type StudyCue, type StudyScene} from './contract';
+import {STUDY_MODE_GENERATED_VOICEOVER_URL} from './audio';
 
 const visualByScene: Record<StudyScene['sceneId'], React.FC> = {
   scene1: StudySwitchVisual,
@@ -64,10 +65,10 @@ const SceneLayer: React.FC<{scene:StudyScene}> = ({scene}) => {
 
 export type ReelChatGPTStudyModeProps = {voiceoverSrc?:string;showCaptions?:boolean};
 
-export const ReelChatGPTStudyMode: React.FC<ReelChatGPTStudyModeProps> = ({voiceoverSrc,showCaptions=true}) => (
+export const ReelChatGPTStudyMode: React.FC<ReelChatGPTStudyModeProps> = ({voiceoverSrc=STUDY_MODE_GENERATED_VOICEOVER_URL,showCaptions=true}) => (
   <AbsoluteFill style={{background:C.cloud,color:C.ink,fontFamily:FONT,overflow:'hidden'}}>
     {STUDY_MODE_SCENES.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`STUDY-${scene.sceneId}`}><SceneLayer scene={scene}/></Sequence>)}
-    {voiceoverSrc?<Html5Audio src={voiceoverSrc}/>:null}
+    <Html5Audio src={voiceoverSrc}/>
     {showCaptions?<Captions/>:null}
   </AbsoluteFill>
 );
