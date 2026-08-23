@@ -1,28 +1,12 @@
 # Entertainment Review — ChatGPT for Teens
 
-**Status:** POST_RENDER_FAILED_FULL_VISUAL_REBUILD_REQUIRED
+**Status:** REBUILD_IMPLEMENTED_POST_RENDER_RECHECK_PENDING
 
-## Phase-1-Plan
+## Historischer Fehlrender
 
-Der ursprüngliche Plan war produktnah gedacht und wurde vor dem Render mit 10/10 bewertet. Diese theoretische Bewertung ist durch den echten Render **nicht bestätigt**, sondern widerlegt worden.
+Der frühere hochgeladene Render ist durchgefallen.
 
-## Echte Post-Render-Analyse des hochgeladenen MP4
-
-Der Render enthält mehrfach Visuals aus einem anderen Produktionskontext und erklärt dadurch den Sprechertext nicht zuverlässig.
-
-### Sichtbare Fehlbeispiele
-
-- ca. 0–8 s: Smartphone mit `NOVA`, Prompt `Mach daraus Werbung` und Produktkarte — kein sinnvoller Bezug zu Teen-Schutz
-- ca. 9–22 s: `PRODUKT`, `ZIELGRUPPE`, `STIMMUNG`, `CREATIVE BRIEF` — klarer Fremdkontext aus Werbe-/Produktproduktion
-- ca. 26–37 s: vier `NOVA`-Produktkarten plus `Produkt bleibt konsistent` — widerspricht der geplanten Study-Mode-Visualisierung
-- ca. 41 s: `KEYFRAME → MOTION` / Produktionspipeline statt Schutz-/Pause-Funktion
-- ca. 46–54 s: `WERBECLIP-CHECK`, `WORKFLOW`, `Logo`, `Text`, `Produkt`, `Übergang` — erneut komplett anderes Thema
-
-Damit ist das zentrale Kriterium verletzt:
-
-> Jede sichtbare Mechanik und jedes sichtbare Label muss die aktuell gesprochene Aussage erklären.
-
-## Post-Render Score
+Post-Render-Score der alten Fassung:
 
 - Hook / sofortige Erkennbarkeit: 1 / 2
 - Produkt-/UI-/Brand-Nähe: 0 / 2
@@ -30,45 +14,78 @@ Damit ist das zentrale Kriterium verletzt:
 - Motion / Kamera / Rhythmus: 1 / 2
 - Memorable / Hero-Momente: 0 / 2
 
-**GESAMT: 2 / 10**
+**ALT: 2 / 10 — NICHT BESTANDEN**
 
-Gate: **NICHT BESTANDEN**. Mehrere Kategorien sind `0`; Full Visual Rebuild ist Pflicht.
+Grund: Fremdvisuals aus Werbe-/Produkt-/Motion-Pipeline (`NOVA`, `CREATIVE BRIEF`, `Produkt bleibt konsistent`, `KEYFRAME → MOTION`, `WERBECLIP-CHECK`).
 
-## Verbindlicher Neuaufbau
+## Neuer isolierter Source
 
-Die nächste Version darf keine bestehende Werbe-/Produkt-/Motion-Pipeline als visuelle Basis recyceln.
+Der neue Source wurde komplett Teen-spezifisch aufgebaut unter:
 
-### Szene 1 — echter Teen-Switch
-- ChatGPT-nahe mobile Chatoberfläche
-- Account-/Altersstatus sichtbar
-- klare Transformation `STANDARD → TEEN`
-- keine Produktkarte, kein Werbeprompt
+`ki/src/reels/chatgpt-for-teens/`
+
+### Szene 1 — Teen-Switch
+- SETUP: große ChatGPT-nahe mobile Chatoberfläche im Standardzustand
+- AKTION: Alters-Scan läuft durch die UI, Experience-Switch bewegt sich
+- KONSEQUENZ: Study / Schutz / Pause erscheinen als Teen-Funktionen
+- PAYOFF: `STANDARD → TEEN`
+- HERO-MOMENT: halb transformierte Phone-UI mit sichtbarem Teen-Switch
+- FARBEN: Cyan + Grün + Gelb + Graphit
 
 ### Szene 2 — Altersschätzung
-- Account-/Safety-UI
-- Signale fließen in eine Altersentscheidung
-- Schwelle `<18` aktiviert Teen Experience
-- keine Creative-Brief-Karten
+- SETUP: Account-&-Safety-Oberfläche
+- AKTION: Gesprächsthemen, Nutzungszeiten, Kontonutzung und Account-Alter fließen ein
+- KONSEQUENZ: `<18` löst Teen Experience aus
+- PAYOFF: separater EU-Rollout-Balken
+- HERO-MOMENT: Schwelle `<18` + aktivierter Schutzstatus
+- FARBEN: Dunkelblau + Cyan + Orange + Gelb + Grün
 
 ### Szene 3 — Study Mode
-- echte Chatfrage / Lernaufgabe
-- direkter Lösungs-Shortcut wird gestoppt
-- Antwort transformiert in Schritte / Rückfrage / Mini-Quiz
-- kein `Produkt bleibt konsistent`
+- SETUP: Chat verlangt nur die fertige Lösung
+- AKTION: Shortcut wird blockiert, Study Mode übernimmt
+- KONSEQUENZ: Antwort zerlegt sich in Verstehen → Schritt lösen → selbst prüfen
+- PAYOFF: Mini-Quiz / `VERSTANDEN`
+- HERO-MOMENT: direkte Antwort transformiert in Lernschritte
+- FARBEN: Orange + Grün + Weiß + Rot für den blockierten Shortcut
 
 ### Szene 4 — Schutz + Pause
-- sensible Anfrage wird sichtbar abgefangen
-- Schutzlayer / Safety-State
-- separater Break-Reminder
-- kein `KEYFRAME → MOTION`
+- SETUP: sensible Anfrage / riskanter Inhalt
+- AKTION: Safety-Layer schließt und blockiert
+- KONSEQUENZ: Break Reminder übernimmt anschließend den Fokus
+- PAYOFF: Schutz und gesunde Pause werden als zwei Funktionen verstanden
+- HERO-MOMENT: roter Inhalt hinter Schutzlayer + orangefarbener Pause-Callout
+- FARBEN: Rot + Orange + dunkles Graphit + Grün
 
-### Szene 5 — Elternkontrollen, Chats privat
-- Parent-Control-Settings links
-- Teen-Chat rechts
-- Eltern können Zeit-/Schutzeinstellungen ändern
-- Zugriff auf Chatinhalt wird sichtbar blockiert
-- kein Werbeclip-/Workflow-Check
+### Szene 5 — Elternkontrollen / private Chats
+- SETUP: Parent Controls und Teen Chat im Split-Screen
+- AKTION: Study Hours / Quiet Hours werden gesetzt; Zugriff auf Chat wird versucht
+- KONSEQUENZ: Chat bleibt verriegelt
+- PAYOFF: `Chats bleiben privat`, Teen und 18+ als unterschiedliche Experiences
+- HERO-MOMENT: aktive Parent Controls + großes `KEIN ZUGRIFF`
+- FARBEN: Blau + Cyan + Grün + Rot/Lock-Kontrast
 
-## Freigaberegel
+## Source-Review vor Render
 
-Vor dem nächsten Final-Render muss ein Contact Sheet geprüft werden. Wenn darin auch nur ein sichtbares Label oder eine Mechanik auftaucht, die nicht zum Teen-Schutz-Skript gehört, ist der Render sofort abzulehnen.
+- Hook / sofortige Erkennbarkeit: 2 / 2
+- Produkt-/UI-/Brand-Nähe: 2 / 2
+- Szenen-Dramaturgie: 2 / 2
+- Motion / Kamera / Rhythmus: 2 / 2 geplant / implementiert, **Renderprüfung offen**
+- Memorable / Hero-Momente: 2 / 2 geplant / implementiert, **Renderprüfung offen**
+
+**SOURCE-PLAN: 10 / 10 — KEINE POST-RENDER-FREIGABE**
+
+Dieser Score bewertet ausschließlich den neuen Source-/Szenenaufbau. Er darf nicht als visuelle Endfreigabe bezeichnet werden.
+
+## Harte Post-Render-Prüfung
+
+Vor Freigabe muss der neue Contact Sheet zeigen:
+
+- keine `NOVA`-/Werbeclip-/Creative-Brief-/Produktpipeline-Begriffe
+- alle fünf Szenen sofort als unterschiedliche Teen-/ChatGPT-Situationen erkennbar
+- Hauptvisuals groß genug auf Smartphone
+- Farbwechsel unterstützen die Bedeutung und wirken nicht wie ein Ein-Farben-Template
+- mindestens ein freiwillig zeigbarer Hero-Frame pro Szene
+- neue Sprecherbedeutung erzeugt sichtbaren Zustandswechsel
+- ChatGPT-/Produktbezug in der Hook sofort erkennbar
+
+Erst nach echtem Render und Sichtprüfung wird ein neuer finaler Entertainment-Score vergeben.
