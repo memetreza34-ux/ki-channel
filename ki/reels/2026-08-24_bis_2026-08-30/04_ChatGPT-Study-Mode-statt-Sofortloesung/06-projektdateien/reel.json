@@ -2,6 +2,7 @@
   "version": 2,
   "reelId": "chatgpt-study-mode",
   "compositionId": "KI-ChatGPTStudyMode",
+  "sourceDir": "ki/src/reels/chatgpt-study-mode",
   "title": "ChatGPT Study Mode statt Sofortlösung",
   "publishDate": "2026-08-27",
   "week": "2026-08-24_bis_2026-08-30",
