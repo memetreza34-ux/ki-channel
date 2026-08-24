@@ -192,7 +192,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={CHATGPT_TEENS_COMPOSITION_ID}
         component={ReelChatGPTForTeens}
-        defaultProps={{showCaptions: true}}
+        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
         durationInFrames={CHATGPT_TEENS_DURATION_IN_FRAMES}
         fps={CHATGPT_TEENS_FPS}
         width={CHATGPT_TEENS_WIDTH}
@@ -201,7 +201,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={STUDY_MODE_COMPOSITION_ID}
         component={ReelChatGPTStudyMode}
-        defaultProps={{showCaptions: true}}
+        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
         durationInFrames={STUDY_MODE_PLANNING_DURATION_IN_FRAMES}
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
