@@ -34,7 +34,7 @@ Nach einer Tool-Erzeugung:
 1. Audio tatsächlich herunterladen.
 2. am kanonischen `reel.json -> audio.targetFile` ablegen.
 3. lokal mit `ffprobe` prüfen.
-4. Whisper/Voice-Lock gegen **genau diese Datei** ausführen.
+4. Whisper/Voice-Lock gegen die finale Audiospur ausführen.
 5. vor Render:
 
 ```bash
@@ -44,8 +44,10 @@ node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 Das Script erzeugt lokal:
 
 ```text
-public/runtime-audio/<compositionId>.mp3
+public/runtime-audio/<compositionId>.wav
 ```
+
+Die Runtime-Datei ist immer **48 kHz Stereo PCM s16le WAV**. Es wird bewusst **kein zweites MP3-Encoding** verwendet. Dadurch entstehen weder zusätzliche verlustbehaftete Artefakte noch MP3-Encoder-Delay, der Wort-/Caption-Timing verschieben könnte.
 
 Dieser Ordner ist regenerierbare Runtime-Arbeitsware und bleibt per `.gitignore` außerhalb von Git.
 
@@ -53,7 +55,7 @@ Dieser Ordner ist regenerierbare Runtime-Arbeitsware und bleibt per `.gitignore`
 
 ## Timing-Autorität
 
-Erst die **lokal vorhandene kanonische Audiodatei** ist Timing-Autorität.
+Erst die **lokal vorhandene kanonische Audiodatei** ist Timing-Autorität. Für den tatsächlichen Remotion-Render wird daraus deterministisch die PCM-WAV-Runtime-Datei erzeugt.
 
 Danach zwingend:
 
@@ -62,6 +64,7 @@ Danach zwingend:
 - `subtitle-cues.json` auf `VOICE_LOCKED...` setzen
 - Szenengrenzen und Composition-Dauer auf reale Audio-/Bedeutungsgrenzen schreiben
 - `validate-voice-locked-captions.mjs` bestehen
+- `prepare-reel-render.mjs` ausführen; dieser Schritt bindet den Render an Audio-, Caption-, Reel- und Source-Hashes
 
 Remote-Generation, Preview-Audio oder geschätzte Cue-Zeiten sind niemals finale Timing-Autorität.
 
@@ -85,6 +88,6 @@ Keine Regel darf gleichzeitig verlangen, ignorierte Binärdateien normal in Git 
 - aktive Production-Compositions bekommen ihre Audio-URL aus `public/runtime-audio/`
 - neue Reel-Komponenten dürfen bei fehlendem/leerem `voiceoverSrc` hart fehlschlagen
 - `validate-final-video.mjs` prüft Audio-Stream + Lautstärke
-- `finalize-reel-export.mjs` läuft erst nach Voice-Lock-, Motion-, Entertainment- und Audio-Gates
+- `finalize-reel-export.mjs` läuft erst nach Voice-Lock-, Motion-, Entertainment-, Provenance- und Audio-Gates
 
 Ein Render ohne hörbares Audio ist **Arbeitsfehler**, kein Preview-Endzustand und niemals ein Final-Export.
