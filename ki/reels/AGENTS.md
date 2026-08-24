@@ -37,6 +37,7 @@ Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
 - `06-projektdateien/reel.json`
 - `scene-plan.md`
 - `animation-plan.md`
+- `MOTION-READABILITY-REVIEW.md` bereits angelegt
 - `03-caption/subtitle-cues.json`
 - `03-caption/platform-copy.md`
 - `02-bilder/asset-manifest.json`
@@ -63,6 +64,10 @@ Sprecherstelle
 → Endzustand
 → REUSE_EXACT oder NEW_BUILD
 → Sprecher-Timing
+→ Reveal-Dauer
+→ Settle
+→ lesbarer Hold
+→ nächster semantischer Trigger
 ```
 
 Regeln:
@@ -75,8 +80,29 @@ Regeln:
 - wenn sich die Aussage innerhalb eines Satzes sichtbar ändert, muss der visuelle Zustand passend reagieren
 - nicht jedes Wort braucht Bewegung; jedes bedeutungstragende Wort/jede Phrase braucht aber eine bewusste visuelle Entscheidung
 - keine dekorative Füllanimation
+- **High Energy ist nicht High Speed**: ein wichtiger Zustand braucht `REVEAL → SETTLE → READABLE HOLD`
+- bei 30 fps wichtige neue Informationszustände nach Reveal/Settle normalerweise mindestens ungefähr `12–24 Frames` klar lesbar halten
+- Hero-/Payoff-Zustände meist ungefähr `18–30 Frames` halten, sofern Audio/Story es zulassen
+- unabhängige neue Informationen normalerweise `6–12 Frames` staffeln statt gleichzeitig einzublenden
+- höchstens `1–2` unabhängige neue Informationsobjekte gleichzeitig, wenn sie aktiv gelesen werden müssen
+
+Wenn der Sprecherabschnitt zu kurz ist, Visualisierung vereinfachen oder Beats neu verteilen. **Nicht** mehrere wichtige Zustände so beschleunigen, dass sie nur kurz aufblitzen.
 
 Phase 3 darf NEW_BUILD/REUSE_EXACT nicht aus Bequemlichkeit ändern.
+
+## Light-First Visual Contract
+
+Für zukünftige KI-Reels gilt standardmäßig **LIGHT_FIRST**.
+
+- Fullscreen-Hintergründe grundsätzlich hell: Offwhite, Hellgrau, sehr helles Cyan, Mint, Blau, Creme oder vergleichbare helle Töne.
+- Dunkle Typografie auf hellem Grund ist Default.
+- Kräftige Akzentfarben sind ausdrücklich erlaubt.
+- Dunkle Cards/Objekte innerhalb einer hellen Szene sind erlaubt.
+- **Dunkle Fullscreen-Szenen sind standardmäßig nicht zulässig.**
+- Keine einzelne schwarze/dunkelblaue Szene mitten in einem sonst hellen Reel nur für Abwechslung.
+- Ausnahme nur bei ausdrücklichem Nutzerwunsch oder zwingender Quelllogik und dokumentiert in `MOTION-READABILITY-REVIEW.md`.
+
+Details: `ki/skills/motion-readability-light-first/SKILL.md`.
 
 ## Remotion-native Visual Contract — Code vor Bild
 
@@ -132,9 +158,10 @@ Verbindlich:
 - über ungefähr ±6 % nicht weiter verzerren; stattdessen Phase-2-Voiceover neu erzeugen lassen
 - keine Wörter schneiden, duplizieren oder künstlich verlängern
 - keine starre Zielsekunde erzwingen, wenn Natürlichkeit leidet
+- wenn mehrere Visuals nicht lesbar in den Audioabschnitt passen: **Visuals reduzieren**, nicht hektisch machen
 - verwendete lokale Retiming-Faktoren im Phase-3-Abschlussbericht nennen
 
-Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen denselben Moment.**
+Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen denselben Moment und bleiben bei 1x verständlich.**
 
 ## Verbindliches sichtbares Textlayout
 
@@ -180,17 +207,25 @@ Zusätzlich gilt für **jedes** Reel `ki/gehirn/POST_RENDER_REVIEW.md`.
 
 Insbesondere:
 
-- erster visueller Zustand sofort bzw. innerhalb der ersten ungefähr `0.2–0.4 s` lesbar; kein leer wirkender weißer Einstieg
-- Hauptmechanik groß genug für Smartphone statt kleiner UI-Insel in viel Leerraum
-- kritische interne Labels kurz und in der Regel mindestens ungefähr `28–32 px` bei 1080 × 1920
-- vorhandene sinnvolle Mechanik vergrößern statt Leerraum mit Deko zu füllen
-- neue Sprecherbedeutung darf nicht über mehrere Sekunden auf praktisch unverändertem Bild liegen; ungefähr `>2.5 s` ist ein Review-Warnsignal, sofern kein bewusster End-Hold vorliegt
+- erster visueller Zustand sofort bzw. innerhalb der ersten ungefähr `0.2–0.4 s` lesbar
+- Hauptmechanik groß genug für Smartphone
+- kritische interne Labels kurz und in der Regel mindestens ungefähr `28–32 px`
+- neue Sprecherbedeutung darf nicht mehrere Sekunden auf praktisch unverändertem Bild liegen
+- **wichtige Visuals dürfen umgekehrt nicht so schnell wechseln, dass man sie nur mit Pause/Zurückspulen versteht**
+- wichtige neue Zustände brauchen einen lesbaren Hold
+- unabhängige Informationen gestaffelt einführen statt gleichzeitig zu stapeln
+- Contact Sheet muss Light-First und visuell kohärent wirken
+- dunkle Fullscreen-Szene ohne dokumentierte Ausnahme = Fail
 - die letzte Szene muss bis zur letzten inhaltlichen Phrase sichtbar weiterentwickelt werden
-- Caption im Feed-Eindruck klar oberhalb von Beschreibung/Account-/Interaktions-UI halten
-- rechte Feed-Interaktionsleiste darf Caption oder kritische Visual-Labels nicht bedrängen
-- nach jeder Source- oder Caption-Positionsänderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht; ein alter MP4 darf nie den neuen Source-Stand freigeben
+- nach jeder Source- oder Caption-Positionsänderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht
 
-Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md`, `CAPTION_SAFE_POSITION.md` oder diesem Vertrag verankert werden müssen.
+Nach dem echten Render `MOTION-READABILITY-REVIEW.md` ausfüllen und ausführen:
+
+```bash
+node ki/scripts/validate-motion-readability-review.mjs <reel-package-dir>
+```
+
+Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren, sondern als dauerhafte Regel verankern.
 
 ## Plattform-Copy
 
@@ -230,11 +265,12 @@ Wenn kein Bild nötig ist, ausdrücklich `BILDER NICHT ERFORDERLICH` dokumentier
 3. `voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
 4. `scene-plan.md`
 5. `animation-plan.md`
-6. `subtitle-cues.json`
-7. `platform-copy.md`
-8. `asset-manifest.json` / `image-prompts.md`
-9. `CODEX_ASSEMBLY_TASK.md`
-10. `review-checklist.md`
+6. `MOTION-READABILITY-REVIEW.md`
+7. `subtitle-cues.json`
+8. `platform-copy.md`
+9. `asset-manifest.json` / `image-prompts.md`
+10. `CODEX_ASSEMBLY_TASK.md`
+11. `review-checklist.md`
 
 Widerspruch erkennen, nicht verstecken.
 
@@ -246,25 +282,23 @@ Zur visuellen/akustischen Freigabe gehört ausdrücklich:
 
 - Visual Beats passen exakt zum Sprecherinhalt
 - keine bequeme/ungefähre Library-Reuse
-- Symbole, UI und erklärende Grafiken sind Remotion-native, sofern technisch vernünftig möglich
-- `IMAGE_REQUIRED` / `HYBRID` ist bei externen Bildern nachvollziehbar begründet
 - Sprecher, Visual Beat und Caption treffen zeitlich denselben Moment
-- lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
+- kritische Visual Beats sind bei **1x** ohne Pause/Zurückspulen verständlich
+- wichtige Informationszustände haben nach Reveal/Settle ausreichend Hold
+- keine hektisch gleichzeitig eingeblendeten Informationsstapel
+- Light-First-Kohärenz über alle Fullscreen-Szenen oder dokumentierte Ausnahme
+- `validate-motion-readability-review.mjs` bestanden
 - Header/Icon-Position
-- vollständige lila Zwischenüberschrift
-- Caption standardmäßig `bottom: 520px` bei 1080×1920
-- Caption verwendet die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`
-- horizontaler Caption-Sicherheitsabstand zur Feed-UI ist eingehalten
+- vollständige Zwischenüberschrift
+- Caption verwendet die geltende Safe-Geometrie bzw. eine explizit vom Nutzer verlangte Abweichung
 - maximal 2 Caption-Zeilen gleichzeitig
-- Caption nicht im unteren Plattform-/Feed-UI-Bereich
 - Hauptvisual auf Smartphone ausreichend groß
 - wichtige interne Labels auf Smartphone lesbar
 - keine unnötig große Leere bei gleichzeitig kleiner Kernanimation
 - kein langer statischer Abschnitt während neue Sprecherbedeutung weiterläuft
 - Schluss trägt sichtbar bis zur letzten inhaltlichen Phrase
-- keine Clip-bedingt abgeschnittenen wichtigen Inhalte
-- transparente Untertitel
-- Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung
+- keine abgeschnittenen wichtigen Inhalte
+- Sprecher-Synchronität der Wort-/Phrasenhervorhebung
 - aktueller Render gehört exakt zum aktuell geprüften Source-Stand
 
 `veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.
