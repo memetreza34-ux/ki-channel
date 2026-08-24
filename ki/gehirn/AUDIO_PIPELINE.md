@@ -29,19 +29,22 @@ Im Reel-Paket:
 
 Remotion rendert niemals direkt von einer TTS-/CDN-/Remote-URL.
 
-Nach einer Tool-Erzeugung:
+Nach einer Tool-Erzeugung gilt diese Reihenfolge:
 
 1. Audio tatsächlich herunterladen.
 2. am kanonischen `reel.json -> audio.targetFile` ablegen.
 3. lokal mit `ffprobe` prüfen.
-4. Whisper/Voice-Lock gegen den kanonischen Audio-Master ausführen.
-5. vor Render:
+4. **Runtime-Audio vorbereiten:**
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-Das Script erzeugt lokal:
+5. Whisper/Voice-Lock gegen **genau die vorbereitete Runtime-WAV** ausführen.
+6. finale Szenengrenzen, Caption-Wortzeiten und `finalDurationInFrames` auf diese WAV legen.
+7. erst danach `prepare-reel-render.mjs` als finalen Pre-Render-Gate ausführen.
+
+Das Audio-Script erzeugt lokal:
 
 ```text
 public/runtime-audio/<compositionId>.wav
@@ -49,24 +52,40 @@ public/runtime-audio/<compositionId>.wav
 
 Die Runtime-Datei ist immer **48 kHz Stereo PCM s16le WAV**. Es wird bewusst **kein zweites MP3-Encoding** verwendet. Dadurch entstehen weder zusätzliche verlustbehaftete Artefakte noch MP3-Encoder-Delay, der Wort-/Caption-Timing verschieben könnte.
 
+Komprimierte Eingangsdaten wie MP3 dürfen durch Container-/Encoder-Padding geringfügig eine andere gemeldete Dauer haben. Deshalb ist für **finale Wort- und Frame-Synchronität die dekodierte Runtime-WAV maßgeblich**, nicht die MP3-Containerdauer.
+
 Dieser Ordner ist regenerierbare Runtime-Arbeitsware und bleibt per `.gitignore` außerhalb von Git.
 
 `ki/src/Root.tsx` referenziert nur diese deterministische Runtime-URL. Dadurch gibt es keine kaputten statischen Audio-Imports und keine versteckten Netzwerkdownloads während des Renders.
 
 ## Timing-Autorität
 
-Der **kanonische lokale Audio-Master** bestimmt Wort-/Phrase-Timing. Für den tatsächlichen Remotion-Render wird daraus deterministisch PCM-WAV erzeugt. `prepare-reel-audio.mjs` blockiert, wenn die Runtime-WAV-Dauer gegenüber dem Master relevant driftet.
+Der lokale Audio-Master ist die Inhaltsquelle. Die daraus deterministisch erzeugte **Runtime-PCM-WAV ist die finale Timing- und Render-Autorität**.
 
 Danach zwingend:
 
-- echte Dauer messen
-- Whisper/Wort-Timestamps
+- Runtime-WAV-Dauer messen
+- Whisper/Wort-Timestamps gegen Runtime-WAV
 - `subtitle-cues.json` auf `VOICE_LOCKED...` setzen
 - Szenengrenzen und Composition-Dauer auf reale Audio-/Bedeutungsgrenzen schreiben
 - `validate-voice-locked-captions.mjs` bestehen
-- `prepare-reel-render.mjs` ausführen; dieser Schritt bindet den Render an Audio-, Caption-, Reel- und Source-Hashes
+- `prepare-reel-render.mjs` ausführen; dieser Schritt bindet den Render an Git-Commit, Source-Tree, Render-Contract, Caption, Master-Audio und Runtime-WAV
 
-Remote-Generation, Preview-Audio oder geschätzte Cue-Zeiten sind niemals finale Timing-Autorität.
+Remote-Generation, Preview-Audio, MP3-Containerdauer oder geschätzte Cue-Zeiten sind niemals finale Timing-Autorität.
+
+## Render-Provenance
+
+`prepare-reel-render.mjs` erzeugt lokal einen `RENDER_LOCKED`-Datensatz für die Composition. Er enthält mindestens:
+
+- Git-Commit des Render-Source-Stands
+- Source-Tree-SHA256
+- Render-Contract-SHA256
+- Caption-JSON-SHA256
+- kanonischen Audio-SHA256
+- Runtime-WAV-SHA256
+- finale Frame-Dauer
+
+`finalize-reel-export.mjs` akzeptiert keinen Render, dessen gelockte Inputs danach in renderrelevanter Weise verändert wurden. Reine Post-Render-Exportmetadaten wie der nach Sichtprüfung gewählte Cover-Zeitpunkt dürfen separat ergänzt werden.
 
 ## Git-/Speicherregel
 
