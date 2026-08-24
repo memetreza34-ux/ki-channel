@@ -43,20 +43,31 @@ if (!Number.isFinite(duration) || duration <= 0) fail('canonical voiceover has i
 
 const runtimeDir = path.resolve('public', 'runtime-audio');
 await mkdir(runtimeDir, {recursive:true});
-const runtimeAudio = path.join(runtimeDir, `${compositionId}.mp3`);
+const runtimeAudio = path.join(runtimeDir, `${compositionId}.wav`);
 await rm(runtimeAudio, {force:true});
 
+// Runtime audio is always uncompressed PCM WAV. This avoids a second lossy MP3 encode
+// and avoids MP3 encoder delay shifting word-level caption timing.
 const ffmpeg = spawnSync('ffmpeg', [
   '-hide_banner','-loglevel','error','-y','-i',sourceAudio,
-  '-vn','-ac','2','-ar','48000','-c:a','libmp3lame','-b:a','192k',runtimeAudio,
+  '-vn','-ac','2','-ar','48000','-c:a','pcm_s16le',runtimeAudio,
 ], {encoding:'utf8'});
 if (ffmpeg.error) fail(`ffmpeg could not start: ${ffmpeg.error.message}`);
 if (ffmpeg.status !== 0) fail(`runtime audio conversion failed: ${ffmpeg.stderr || ffmpeg.stdout}`);
 if (!existsSync(runtimeAudio)) fail('runtime audio was not created.');
 
+const runtimeProbe = spawnSync('ffprobe', ['-v','error','-select_streams','a:0','-show_entries','stream=codec_name,sample_rate,channels:format=duration','-of','json',runtimeAudio], {encoding:'utf8'});
+if (runtimeProbe.error || runtimeProbe.status !== 0) fail(`runtime WAV validation failed: ${runtimeProbe.stderr || runtimeProbe.stdout || runtimeProbe.error?.message}`);
+let runtimeInfo;
+try { runtimeInfo = JSON.parse(runtimeProbe.stdout); } catch { fail('runtime WAV ffprobe output could not be parsed.'); }
+const runtimeDuration = Number(runtimeInfo?.format?.duration || 0);
+if (!runtimeInfo?.streams?.length || runtimeInfo.streams[0]?.codec_name !== 'pcm_s16le') fail('runtime audio is not PCM s16le WAV.');
+if (Math.abs(runtimeDuration - duration) > 0.03) fail(`runtime audio duration drift is too large (${runtimeDuration.toFixed(3)}s vs ${duration.toFixed(3)}s).`);
+
 console.log('REEL AUDIO PREP PASSED');
 console.log(`compositionId: ${compositionId}`);
 console.log(`source: ${sourceAudio}`);
-console.log(`duration: ${duration.toFixed(3)} s`);
+console.log(`source duration: ${duration.toFixed(3)} s`);
+console.log(`runtime duration: ${runtimeDuration.toFixed(3)} s`);
 console.log(`runtime: ${runtimeAudio}`);
-console.log(`remotion src: /runtime-audio/${compositionId}.mp3`);
+console.log(`remotion src: /runtime-audio/${compositionId}.wav`);
