@@ -6,41 +6,47 @@ Verhindert, dass stumme, ungeprüfte oder veraltete Render als fertig gezeigt we
 
 ## Vor Production-Render
 
-Pflicht:
+Pflichtreihenfolge:
 
 ```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+# Whisper/Voice-Lock gegen public/runtime-audio/<compositionId>.wav
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Schritt blockiert:
+Der Runtime-Audio-Schritt erzeugt die **48-kHz-PCM-WAV**, die Remotion tatsächlich rendert. Genau diese WAV ist finale Wort-/Frame-Timing-Autorität.
 
-- fehlenden lokalen Audio-Master
+`prepare-reel-render.mjs` blockiert:
+
+- fehlenden lokalen Audio-Master / fehlende Runtime-WAV
 - nicht Voice-Locked Captions
 - nicht Voice-Locked Szenen
 - alte Planning-Dauer statt `finalDurationInFrames`
 - nicht kontinuierliche Szenengrenzen
 - fehlgeschlagene Entertainment-/ggf. Source-Isolation-Gates
+- einen schmutzigen Git-Arbeitsstand
 
-und bereitet das lokale Runtime-Audio für Remotion vor.
+Zusätzlich erzeugt es einen `RENDER_LOCKED`-Datensatz mit Git-Commit sowie Source-/Contract-/Caption-/Audio-Hashes.
 
 ## Fertig bedeutet
 
 Vor der finalen Ausgabe:
 
 1. lokales Voiceover existiert
-2. Szenen + finale Duration folgen echtem Audio
-3. Captions haben echte Wort-Timestamps
-4. Source/TypeScript/fokussierte Tests sind aktuell
-5. finaler MP4 stammt aus aktuellem Source
-6. Video + hörbares Audio vorhanden
-7. MP4 bei 1x geprüft
-8. Motion-Readability-Review gehört per SHA256 **genau zu diesem MP4**
-9. keine offene Revision
-10. `FINAL-CAPTION.txt` publish-ready
-11. Cover-Hero gewählt
-12. Finalizer erfolgreich
-13. Export-Package-Validator erfolgreich
-14. exportierten MP4 tatsächlich angesehen und angehört
+2. Runtime-PCM-WAV existiert und ist Timing-/Render-Autorität
+3. Szenen + finale Duration folgen dieser Audiospur
+4. Captions haben echte Wort-Timestamps
+5. Source/TypeScript/fokussierte Tests sind aktuell
+6. finaler MP4 stammt aus dem gelockten Source-/Audio-/Timing-Stand
+7. Video + hörbares Audio vorhanden
+8. MP4 bei 1x geprüft
+9. Motion-Readability-Review gehört per SHA256 **genau zu diesem MP4**
+10. keine offene Revision
+11. `FINAL-CAPTION.txt` publish-ready
+12. Cover-Hero gewählt
+13. Finalizer inkl. Render-Provenance erfolgreich
+14. Export-Package-Validator erfolgreich
+15. exportierten MP4 tatsächlich angesehen und angehört
 
 ## Final-Gate
 
@@ -68,8 +74,11 @@ Der Finalizer führt selbst erneut aus:
 - Motion-Readability-Gate gegen exakt den übergebenen MP4
 - ggf. Source-Isolation
 - Video-/Audio-Gate
+- Render-Provenance-Gate gegen den vorher erzeugten `RENDER_LOCKED`-Datensatz
 
-Erst danach erzeugt er:
+Ein alter MP4, ein Render aus einem anderen Source-Commit oder ein Render nach veränderten gelockten Inputs darf nicht finalisiert werden.
+
+Erst danach erzeugt der Finalizer:
 
 ```text
 05-export/
@@ -78,6 +87,8 @@ Erst danach erzeugt er:
 ├── <compositionId>-caption.txt
 └── <compositionId>-export-manifest.json
 ```
+
+Das Manifest speichert Provenance- und Artifact-SHA256-Werte. Der Export-Package-Validator verlangt, dass der exportierte MP4 byte-identisch mit dem tatsächlich reviewten MP4 ist.
 
 ## Nutzer-Abgabe
 
@@ -101,6 +112,7 @@ Vor Fertigstellung z. B.:
 - `VOICE-LOCK FEHLT`
 - `REVISION IMPLEMENTIERT — RERENDER ERFORDERLICH`
 - `MOTION-READABILITY GATE FEHLGESCHLAGEN`
+- `RENDER-PROVENANCE GATE FEHLGESCHLAGEN`
 - `FINAL-GATE FEHLGESCHLAGEN`
 
 Erst nach allem:
