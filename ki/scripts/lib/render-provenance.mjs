@@ -7,6 +7,15 @@ import path from 'node:path';
 export const safeCompositionId = (value) => String(value || '').replace(/[^A-Za-z0-9._-]+/g,'-');
 
 export const sha256File = async (file) => createHash('sha256').update(await readFile(file)).digest('hex');
+export const sha256Value = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+
+export const renderContractSha256 = (reel) => {
+  const contract = structuredClone(reel);
+  delete contract.export;
+  delete contract.observedUserRender;
+  delete contract.sources;
+  return sha256Value(contract);
+};
 
 export const sha256Directory = async (dir) => {
   const root = path.resolve(dir);
