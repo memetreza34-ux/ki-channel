@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_REQUIRES_RUNTIME_WAV_VOICE_LOCK",
+  "note": "Estimated Phase-1 cues only. Replace with word-level timings from the exact prepared PCM runtime WAV before production render.",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","startFrame":0,"endFrame":150,"text":"ChatGPT kann jetzt auf deinem Mac deine Apple-Nachrichten durchsuchen."},
+    {"id":"c02","sceneId":"scene1","startFrame":150,"endFrame":270,"text":"OpenAI hat dafür am 20. August ein Apple-Messages-Plugin veröffentlicht."},
+    {"id":"c03","sceneId":"scene2","startFrame":270,"endFrame":450,"text":"Du kannst zum Beispiel fragen: Was hatte mir Max gestern wegen Freitag geschrieben?"},
+    {"id":"c04","sceneId":"scene2","startFrame":450,"endFrame":630,"text":"Oder: Fass die letzten Nachrichten in diesem Chat zusammen."},
+    {"id":"c05","sceneId":"scene3","startFrame":630,"endFrame":780,"text":"ChatGPT kann danach sogar eine passende Antwort vorbereiten."},
+    {"id":"c06","sceneId":"scene3","startFrame":780,"endFrame":930,"text":"Und wenn du willst, kann sie über Nachrichten gesendet werden."},
+    {"id":"c07","sceneId":"scene4","startFrame":930,"endFrame":1080,"text":"Wichtig: Standardmäßig wird nichts einfach verschickt."},
+    {"id":"c08","sceneId":"scene4","startFrame":1080,"endFrame":1260,"text":"Bevor eine Nachricht rausgeht, musst du Inhalt und Empfänger bestätigen."},
+    {"id":"c09","sceneId":"scene5","startFrame":1260,"endFrame":1430,"text":"Das Plugin ist in der ChatGPT-Desktop-App für macOS auf allen Tarifen verfügbar"},
+    {"id":"c10","sceneId":"scene5","startFrame":1430,"endFrame":1530,"text":"und kann auch in ChatGPT Work und Codex genutzt werden."},
+    {"id":"c11","sceneId":"scene5","startFrame":1530,"endFrame":1650,"text":"Suchen, Kontext verstehen, Antwort entwerfen und nach deiner Freigabe senden."}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "compositionId": "KI-ChatGPTAppleMessages",
+  "sourceDir": "ki/src/reels/chatgpt-apple-messages",
+  "requiredStrings": ["Messages", "Suche", "Kontext", "Freigabe", "Senden"],
+  "forbiddenStrings": ["NOVA", "CREATIVE BRIEF", "WERBECLIP", "Produkt bleibt konsistent", "KEYFRAME → MOTION", "ZIELGRUPPE", "STIMMUNG", "Mach daraus Werbung"],
+  "rule": "Every visible label, object and mechanism must map directly to the current Apple Messages voiceover. Reject unrelated reused template content."
+}

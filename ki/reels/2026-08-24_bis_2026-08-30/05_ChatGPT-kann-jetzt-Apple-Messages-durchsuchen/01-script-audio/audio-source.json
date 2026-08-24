@@ -1,0 +1,10 @@
+{
+  "provider": "AI Voice Generator",
+  "contextId": "4a27ad0153df4e979398d35dd3e66afe",
+  "voiceId": "crisp",
+  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+  "fullAudioUrl": "https://www.aidocmaker.com/g0/audio?name=4a27ad0153df4e979398d35dd3e66afe",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/6e0ae4ea-528c-4288-bd38-fa94b8f77d82.mp3",
+  "targetFile": "voiceover.mp3",
+  "note": "Remote generation is provenance only. Download locally to targetFile, prepare PCM runtime WAV, then Voice-Lock against the exact runtime WAV before production render."
+}

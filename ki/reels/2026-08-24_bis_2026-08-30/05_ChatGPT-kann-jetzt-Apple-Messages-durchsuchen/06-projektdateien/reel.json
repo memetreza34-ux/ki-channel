@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "reelId": "chatgpt-apple-messages",
+  "compositionId": "KI-ChatGPTAppleMessages",
+  "sourceDir": "ki/src/reels/chatgpt-apple-messages",
+  "title": "ChatGPT kann jetzt Apple Messages durchsuchen",
+  "publishDate": "2026-08-28",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1650,"finalDurationInFrames":null,"finalDurationAuthority":"RUNTIME_PCM_WAV_AFTER_VOICE_LOCK"},
+  "audio": {"sourceMetadata":"01-script-audio/audio-source.json","targetFile":"01-script-audio/voiceover.mp3","status":"GENERATED_REMOTE_DOWNLOAD_REQUIRED","timingAuthority":false,"runtimeFormat":"PCM_S16LE_48KHZ_STEREO_WAV"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_UNTIL_RUNTIME_WAV_VOICE_LOCK","maxLines":2,"bottom":250,"horizontalInset":104,"maxWidth":860,"style":"transparent_glass_overlay"},
+  "header": {"top":112,"style":"compact_glass_chip"},
+  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "export": {"coverTimeSeconds":5.4,"coverText":"CHATGPT LIEST JETZT DEINE MESSAGES?","finalCaptionFile":"03-caption/FINAL-CAPTION.txt","requiredPackage":["video","cover","caption","manifest"]},
+  "scenes": [
+    {"sceneId":"scene1","title":"ChatGPT trifft Messages","startFrame":0,"endFrame":270,"accent":"#18C7D9","heroMoment":"ChatGPT and Messages panels connect through a visible bridge","timingStatus":"PLANNING"},
+    {"sceneId":"scene2","title":"Chats gezielt durchsuchen","startFrame":270,"endFrame":630,"accent":"#3478F6","heroMoment":"search query resolves into the exact matching message thread","timingStatus":"PLANNING"},
+    {"sceneId":"scene3","title":"Antwort direkt vorbereiten","startFrame":630,"endFrame":930,"accent":"#20B26B","heroMoment":"message context transforms into a drafted reply","timingStatus":"PLANNING"},
+    {"sceneId":"scene4","title":"Senden nur mit Freigabe","startFrame":930,"endFrame":1260,"accent":"#FF8A34","heroMoment":"send action stops at approval gate for recipient and message","timingStatus":"PLANNING"},
+    {"sceneId":"scene5","title":"Vom Chat zum Assistenten","startFrame":1260,"endFrame":1650,"accent":"#7657E8","heroMoment":"search-context-draft-approve-send workflow locks into one clean pipeline","timingStatus":"PLANNING"}
+  ],
+  "sources": ["https://openai.com/products/release-notes/","https://help.openai.com/en/articles/6825453-chatgpt-release-notes"]
+}
