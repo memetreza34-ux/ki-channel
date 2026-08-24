@@ -2,7 +2,7 @@ import React from 'react';
 import {GraduationCap, LockKeyhole, ScanSearch, ShieldCheck, Sparkles} from 'lucide-react';
 import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
-import {REEL_CAPTION_SAFE} from '../captionSafe';
+import {REEL_CAPTION_GLASS_STYLE, REEL_CAPTION_WRAPPER_STYLE} from '../captionSafe';
 import {
   CHATGPT_TEENS_SCENES,
   CHATGPT_TEENS_SUBTITLES,
@@ -32,63 +32,10 @@ const SceneHeader: React.FC<{scene: TeenScene}> = ({scene}) => {
   const frame = useCurrentFrame();
   const enter = interpolate(frame, [0, 12], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: 58,
-        right: 58,
-        top: 112,
-        zIndex: 100,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: enter,
-        transform: `translateY(${(1-enter)*-14}px)`,
-        pointerEvents: 'none',
-      }}
-    >
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 15,
-          padding: '10px 18px 10px 12px',
-          borderRadius: 25,
-          background: 'rgba(255,255,255,.78)',
-          border: '1px solid rgba(255,255,255,.72)',
-          boxShadow: '0 12px 34px rgba(16,32,51,.10)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-        }}
-      >
-        <div
-          style={{
-            width: 58,
-            height: 58,
-            borderRadius: 19,
-            display: 'grid',
-            placeItems: 'center',
-            background: scene.surface,
-            color: scene.accent,
-            border: `1.5px solid ${scene.accent}42`,
-          }}
-        >
-          {iconByScene[scene.sceneId]}
-        </div>
-        <div
-          style={{
-            fontFamily: BRAND.font,
-            fontSize: scene.headline.length > 25 ? 37 : 43,
-            lineHeight: 1.03,
-            fontWeight: 950,
-            letterSpacing: -1.45,
-            color: C.ink,
-            textAlign: 'center',
-          }}
-        >
-          {scene.headline}
-        </div>
+    <div style={{position:'absolute',left:58,right:58,top:112,zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',opacity:enter,transform:`translateY(${(1-enter)*-14}px)`,pointerEvents:'none'}}>
+      <div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:15,padding:'10px 18px 10px 12px',borderRadius:25,background:'rgba(255,255,255,.78)',border:'1px solid rgba(255,255,255,.72)',boxShadow:'0 12px 34px rgba(16,32,51,.10)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)'}}>
+        <div style={{width:58,height:58,borderRadius:19,display:'grid',placeItems:'center',background:scene.surface,color:scene.accent,border:`1.5px solid ${scene.accent}42`}}>{iconByScene[scene.sceneId]}</div>
+        <div style={{fontFamily:BRAND.font,fontSize:scene.headline.length>25?37:43,lineHeight:1.03,fontWeight:950,letterSpacing:-1.45,color:C.ink,textAlign:'center'}}>{scene.headline}</div>
       </div>
     </div>
   );
@@ -116,40 +63,8 @@ const Captions: React.FC = () => {
   );
   const accent = scene?.accent ?? C.purple;
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: REEL_CAPTION_SAFE.horizontalInset,
-        right: REEL_CAPTION_SAFE.horizontalInset,
-        bottom: 250,
-        zIndex: 220,
-        display: 'flex',
-        justifyContent: 'center',
-        opacity: alpha,
-        pointerEvents: 'none',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 860,
-          textAlign: 'center',
-          fontFamily: BRAND.font,
-          fontSize: 44,
-          fontWeight: 880,
-          lineHeight: 1.16,
-          letterSpacing: -.6,
-          color: C.ink,
-          textShadow: '0 1px 2px rgba(255,255,255,.5),0 8px 28px rgba(16,32,51,.14)',
-          background: 'rgba(255,255,255,.58)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255,255,255,.62)',
-          borderRadius: 26,
-          padding: '15px 22px 17px',
-          boxShadow: '0 12px 34px rgba(16,32,51,.10)',
-        }}
-      >
+    <div style={{...REEL_CAPTION_WRAPPER_STYLE,opacity:alpha}}>
+      <div style={{...REEL_CAPTION_GLASS_STYLE,fontFamily:BRAND.font,fontSize:44,fontWeight:880,lineHeight:1.16,letterSpacing:-.6,color:C.ink,textShadow:'0 1px 2px rgba(255,255,255,.5),0 8px 28px rgba(16,32,51,.14)'}}>
         {words.map((word,index)=><React.Fragment key={`${cue.id}-${index}`}><span style={{display:'inline-block',color:index===active?accent:C.ink,transform:`scale(${index===active?1.045:1})`,transformOrigin:'50% 75%'}}>{word}</span>{index < words.length-1 ? ' ' : null}</React.Fragment>)}
       </div>
     </div>
@@ -159,20 +74,21 @@ const Captions: React.FC = () => {
 const SceneLayer: React.FC<{scene: TeenScene}> = ({scene}) => {
   const Visual = visualByScene[scene.sceneId];
   if (!Visual) throw new Error(`Missing isolated teen visual for ${scene.sceneId}`);
+  return <AbsoluteFill><Visual/><SceneHeader scene={scene}/></AbsoluteFill>;
+};
+
+export type ReelChatGPTForTeensProps = {voiceoverSrc: string; showCaptions?: boolean};
+
+export const ReelChatGPTForTeens: React.FC<ReelChatGPTForTeensProps> = ({voiceoverSrc, showCaptions = true}) => {
+  if (!voiceoverSrc?.trim()) {
+    throw new Error('KI-ChatGPTForTeens requires a verified local voiceoverSrc. Production renders may not run silently.');
+  }
+
   return (
-    <AbsoluteFill>
-      <Visual/>
-      <SceneHeader scene={scene}/>
+    <AbsoluteFill style={{background:'#F8FAFC',color:C.ink,fontFamily:BRAND.font,overflow:'hidden'}}>
+      {CHATGPT_TEENS_SCENES.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`TEENS-${scene.sceneId}-NEW_BUILD`}><SceneLayer scene={scene}/></Sequence>)}
+      <Html5Audio src={voiceoverSrc}/>
+      {showCaptions ? <Captions/> : null}
     </AbsoluteFill>
   );
 };
-
-export type ReelChatGPTForTeensProps = {voiceoverSrc?: string; showCaptions?: boolean};
-
-export const ReelChatGPTForTeens: React.FC<ReelChatGPTForTeensProps> = ({voiceoverSrc, showCaptions = true}) => (
-  <AbsoluteFill style={{background:'#F8FAFC',color:C.ink,fontFamily:BRAND.font,overflow:'hidden'}}>
-    {CHATGPT_TEENS_SCENES.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`TEENS-${scene.sceneId}-NEW_BUILD`}><SceneLayer scene={scene}/></Sequence>)}
-    {voiceoverSrc ? <Html5Audio src={voiceoverSrc}/> : null}
-    {showCaptions ? <Captions/> : null}
-  </AbsoluteFill>
-);
