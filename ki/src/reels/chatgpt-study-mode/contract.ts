@@ -1,10 +1,15 @@
 import subtitleData from '../../../reels/2026-08-24_bis_2026-08-30/04_ChatGPT-Study-Mode-statt-Sofortloesung/03-caption/subtitle-cues.json';
+import reelData from '../../../reels/2026-08-24_bis_2026-08-30/04_ChatGPT-Study-Mode-statt-Sofortloesung/06-projektdateien/reel.json';
 
 export const STUDY_MODE_COMPOSITION_ID = 'KI-ChatGPTStudyMode';
 export const STUDY_MODE_FPS = 30;
 export const STUDY_MODE_WIDTH = 1080;
 export const STUDY_MODE_HEIGHT = 1920;
-export const STUDY_MODE_PLANNING_DURATION_IN_FRAMES = 1950;
+
+const resolvedDuration = reelData.format.finalDurationInFrames ?? reelData.format.planningDurationInFrames;
+export const STUDY_MODE_DURATION_IN_FRAMES = resolvedDuration;
+// Backwards-compatible alias while old render scripts are migrated.
+export const STUDY_MODE_PLANNING_DURATION_IN_FRAMES = STUDY_MODE_DURATION_IN_FRAMES;
 
 export const STUDY_PALETTE = Object.freeze({
   ink: '#102033',
@@ -36,13 +41,25 @@ export type StudyScene = {
   surface: string;
 };
 
-export const STUDY_MODE_SCENES: StudyScene[] = [
-  {sceneId:'scene1',headline:'Study Mode statt Sofortlösung',startFrame:0,endFrame:510,accent:STUDY_PALETTE.cyan,surface:STUDY_PALETTE.cyanSoft},
-  {sceneId:'scene2',headline:'Schnell – aber oberflächlich',startFrame:510,endFrame:900,accent:STUDY_PALETTE.orange,surface:STUDY_PALETTE.orangeSoft},
-  {sceneId:'scene3',headline:'Schritt für Schritt',startFrame:900,endFrame:1305,accent:STUDY_PALETTE.green,surface:STUDY_PALETTE.greenSoft},
-  {sceneId:'scene4',headline:'Verstehen statt Kopieren',startFrame:1305,endFrame:1545,accent:STUDY_PALETTE.blue,surface:STUDY_PALETTE.blueSoft},
-  {sceneId:'scene5',headline:'Sinnvoll – nicht perfekt',startFrame:1545,endFrame:1950,accent:STUDY_PALETTE.purple,surface:STUDY_PALETTE.purpleSoft},
-];
+const surfaceByScene: Record<StudyScene['sceneId'], string> = {
+  scene1: STUDY_PALETTE.cyanSoft,
+  scene2: STUDY_PALETTE.orangeSoft,
+  scene3: STUDY_PALETTE.greenSoft,
+  scene4: STUDY_PALETTE.blueSoft,
+  scene5: STUDY_PALETTE.purpleSoft,
+};
+
+export const STUDY_MODE_SCENES: StudyScene[] = reelData.scenes.map((scene) => {
+  const sceneId = scene.sceneId as StudyScene['sceneId'];
+  return {
+    sceneId,
+    headline: scene.title,
+    startFrame: scene.startFrame,
+    endFrame: scene.endFrame,
+    accent: scene.accent,
+    surface: surfaceByScene[sceneId],
+  };
+});
 
 export type StudyWord = {text:string;startFrame:number;endFrame:number};
 export type StudyCue = {
