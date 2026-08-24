@@ -1,0 +1,10 @@
+{
+  "provider": "AI Voice Generator",
+  "voiceId": "clear",
+  "contextId": "208a343c58c4447496890b03d43ec430",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=208a343c58c4447496890b03d43ec430",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/8c64d7c9-f3a6-45ef-b240-3d0f0bfdd903.mp3",
+  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+  "targetFile": "voiceover.mp3",
+  "note": "audioUrl is provenance/download input only. Remotion must never render from this remote URL."
+}
