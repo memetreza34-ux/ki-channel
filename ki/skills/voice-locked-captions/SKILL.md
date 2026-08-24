@@ -2,125 +2,96 @@
 
 ## Zweck
 
-Dieser Skill gilt ab Phase 3 für jedes Reel mit echtem Voiceover. Er verhindert, dass Phase-1-Schätzungen als finale Caption-, Wort- oder Szenen-Timings verwendet werden.
+Verhindert, dass Phase-1-Schätzungen als finale Caption-, Wort-, Szenen- oder Composition-Timings verwendet werden.
 
 ## Autorität
 
-Sobald echtes Voiceover existiert, gilt:
+Sobald der **lokale finale Voiceover-Master** existiert:
 
-**final verwendetes Audio → Whisper-/Wort-Timestamps → Caption-Gruppen → Visual Beats → Szenengrenzen → Composition-Dauer**
+`Audio → Wort-Timestamps → Caption-Gruppen → Visual Beats → Szenengrenzen → Composition-Dauer`
 
 Nicht umgekehrt.
 
-Phase-1-Timings sind ausschließlich Planwerte.
+Verbindliche Audioquelle: `ki/gehirn/AUDIO_PIPELINE.md`.
 
-## Phase-3-Standard: Whisper zuerst
+## Whisper / Transkription
 
-Im Repo ist `@remotion/install-whisper-cpp` bereits vorhanden. Für deutsche Voiceovers wird standardmäßig das **mehrsprachige Modell `medium`** mit `language: 'de'` und Token-Level-Timestamps verwendet.
+Für Phase 3 müssen präzise Wort-Timestamps aus dem tatsächlichen lokalen Audio erzeugt werden, bevorzugt mit Whisper bzw. einer gleichwertig präzisen Transkriptionsmethode.
 
-Vor der finalen Timing-Arbeit ausführen:
+Wichtig:
 
-```bash
-node ki/scripts/align-voiceover-whisper.mjs <reel-package-dir>
-```
+- Das Repo behauptet **keinen speziellen Alignment-Befehl**, solange dafür kein tatsächlich vorhandenes, getestetes Script existiert.
+- `@remotion/install-whisper-cpp` ist als Dependency vorhanden, aber ein Agent darf daraus nicht automatisch behaupten, ein bestimmtes Wrapper-Script existiere.
+- Der kanonische Sprechertext bleibt Text-Autorität; STT-Fehler dürfen ihn nicht umschreiben.
+- Das Ergebnis muss als echte `words[]`-Timings in `subtitle-cues.json` landen.
 
-Optional stärkeres Modell:
+## Finale Datenanforderung
 
-```bash
-KI_WHISPER_MODEL=large-v3 node ki/scripts/align-voiceover-whisper.mjs <reel-package-dir>
-```
+`subtitle-cues.json` muss vor Production-Render:
 
-Whisper ist **Timing-Hilfe**, nicht Text-Autorität. Der Sprechertext in `VOICEOVER-ZUM-KOPIEREN.txt` bleibt wortgetreu maßgeblich. STT-Fehler dürfen den Text nicht umschreiben.
+- `timingStatus` beginnend mit `VOICE_LOCKED` haben
+- pro Cue `words[]` enthalten
+- Worttexte den Cue-Text exakt rekonstruieren
+- keine Wortüberlappungen haben
+- Cue-/Wortframes innerhalb der Voice-Locked-Szenengrenzen halten
 
-## Produktionsregel
+`reel.json` muss gleichzeitig:
 
-Ein finaler Render mit Voiceover ist nicht freigabefähig, wenn Caption-Cues nur proportional über geschätzte Cue-Dauern laufen.
-
-Pflicht für Phase 3:
-
-- tatsächliche Audio-Dauer messen
-- Sprechbeginn, Pausen und Phrasenenden aus echtem Audio bestimmen
-- pro gesprochenem Wort Whisper-/audio-basierte `startFrame`/`endFrame`-Werte hinterlegen
-- Caption-Cues nur während tatsächlich gesprochener Abschnitte anzeigen
-- natürliche Pausen als echte Caption-Pausen respektieren
-- Szenengrenzen auf natürliche Sprecher-/Bedeutungsgrenzen legen
-- Visual Beats auf dieselben Wort-/Phrasenmarker ausrichten
-- aktives lila Wort nur dann hervorheben, wenn es tatsächlich gesprochen wird
-
-## Keine Produktions-Fallbacks
-
-Der Source darf einen proportionalen Timing-Fallback für **Phase-1-Preview** besitzen. Sobald ein Reel als Phase 3 / final behandelt wird, ist dieser Fallback nicht ausreichend.
-
-Wenn Word-Timestamps fehlen:
-
-- Status nicht `approved`
-- kein finaler Publishing-Render
-- Validator muss warnen oder im Production-Modus fehlschlagen
-
-Wenn echte Voiceover-Datei vorhanden ist, soll Phase 3 **Whisper-Alignment vor manueller Schätzung bevorzugen**.
+- `format.finalDurationInFrames` setzen
+- alle Szenen kontinuierlich von Frame 0 bis finalDuration führen
+- pro Szene `timingStatus: VOICE_LOCKED` setzen
+- `audio.observedAudioDurationSeconds` bzw. gleichwertige echte Audio-Dauer dokumentieren
 
 ## Caption-Gruppen
 
-- Gruppen nach Sinn und Sprechphrase bilden, nicht blind alle N Wörter
-- normalerweise 3–6 Wörter sichtbar
+- nach Sinn/Phrase gruppieren
+- typischerweise 3–6 Wörter
 - maximal 2 Zeilen
-- kurze Pause innerhalb eines Satzes darf einen neuen Caption-Block auslösen
-- Satzzeichen und natürliche Betonung für Gruppierung nutzen
-- kein neues Caption-Fenster mitten in einer eng gesprochenen Wortgruppe, nur weil die Wortzahl erreicht wurde
+- natürliche Pausen respektieren
+- kein aktives Wort während echter Sprechpause
 
-## Szene und Stimme
-
-Eine Szene darf nicht wechseln, während der Sprecher semantisch noch im vorherigen Gedanken ist.
-
-Scene Cut bevorzugt:
-
-- nach Satzende
-- nach klarer Pause
-- beim hörbaren Wechsel auf einen neuen Gedanken
-- wenn ein neues Schlüsselwort den nächsten visuellen Zustand startet
+Layout kommt **nicht** aus diesem Skill, sondern ausschließlich aus `captionSafe.ts` / `CAPTION_SAFE_POSITION.md`.
 
 ## Visual-Sync
 
-Für jeden starken Visual Beat einen Audio-Anker definieren:
+Für starke Beats:
 
 ```text
-Wort / Phrase
-→ Frame im finalen Audio
+gesprochenes Wort / Phrase
+→ echter Frame
 → visueller Trigger
-→ erwarteter sichtbarer Zustand
+→ erwarteter Zustand
 ```
 
-## Audio-Abweichung zu Phase 1
+Szenenwechsel bevorzugt nach Satzende, klarer Pause oder hörbarem Gedankenwechsel.
 
-Wenn die echte Stimme länger oder kürzer ist als die Phase-1-Planung:
+## Wenn Audio kürzer/länger als Planung ist
 
-1. Composition-Dauer an Audio anpassen
-2. Szenen und Beats auf Audio neu verteilen
-3. Captions neu ausrichten
-4. erst danach bei Bedarf lokale, natürliche Retiming-Korrekturen im erlaubten Bereich verwenden
+1. Szenen/Animation/Holds an echte Stimme anpassen
+2. Visuals reduzieren, falls zu viele Informationen in eine Phrase gepackt wurden
+3. `reel.json` und Caption-Timings neu schreiben
+4. nur bei Bedarf natürliches, pitch-erhaltendes Phrase-Retiming im erlaubten Korridor
 
-Nie das echte Voiceover gegen falsche Plan-Cues laufen lassen.
+Nie das Voiceover gegen alte Plan-Cues laufen lassen.
 
 ## Validierung
 
-Nach Integration der finalen Timing-Daten:
+Vor Production-Render:
 
 ```bash
 node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Check ersetzt nicht den hörbaren Review, verhindert aber fehlende/inkonsistente Wort-Timings und Audio-Dauer-Drift.
+`prepare-reel-render.mjs` blockiert insbesondere alte Plan-Dauer, nicht-Voice-Locked-Szenen und fehlendes lokales Audio.
 
-## Freigabe-Gate
+## Freigabe
 
-Finale Freigabe nur wenn:
+Kein Final-Render, wenn:
 
-- Whisper-/Audio-Alignment wurde erzeugt oder gleichwertig präzise Wort-Timestamps liegen vor
-- Caption-Text stimmt wortgleich mit Sprechertext
-- Caption erscheint erst mit dem gesprochenen Wort / der Phrase
-- aktives Wort folgt der Stimme sichtbar
-- keine Caption läuft hörbar vor oder hinterher
-- Szenenwechsel treffen den inhaltlichen Audio-Wechsel
-- Visual-Trigger treffen die geplanten gesprochenen Schlüsselwörter
-- letzte Caption endet mit der letzten gesprochenen Phrase
-- Composition endet erst nach dem echten Audio-Ende plus bewusstem kurzen End-Hold
+- Wort-Timestamps fehlen
+- Timingstatus nur Preview/Planning ist
+- Szenen nicht auf echtem Audio liegen
+- Composition-Dauer noch Planwert ist
+- Caption hörbar vor-/nachläuft
+- aktives Wort nicht zur Stimme passt
