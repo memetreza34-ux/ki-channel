@@ -8,6 +8,7 @@ const mustExist = [
   'ki/gehirn/AUDIO_PIPELINE.md',
   'ki/gehirn/CAPTION_SAFE_POSITION.md',
   'ki/src/reels/captionSafe.ts',
+  'ki/scripts/lib/render-provenance.mjs',
   'ki/scripts/prepare-reel-audio.mjs',
   'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-voice-locked-captions.mjs',
@@ -72,6 +73,11 @@ for (const file of sourceFiles) {
 const studySource = await read('ki/src/reels/chatgpt-study-mode/ReelChatGPTStudyMode.tsx');
 if (studySource.includes('http://') || studySource.includes('https://')) fail.push('Study Mode render source contains a remote URL.');
 if (!studySource.includes('requires a verified local voiceoverSrc')) fail.push('Study Mode does not fail closed on missing audio.');
+
+const prepare = await read('ki/scripts/prepare-reel-render.mjs');
+if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
+const finalize = await read('ki/scripts/finalize-reel-export.mjs');
+if (!finalize.includes('PASSED_LOCKED_INPUT_HASHES') || !finalize.includes('reviewedVideoSha256')) fail.push('finalize-reel-export.mjs does not enforce render provenance.');
 
 if (fail.length) {
   console.error('PRODUCTION CONTRACT AUDIT: FAILED');
