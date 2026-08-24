@@ -1,5 +1,5 @@
 import React from 'react';
-import {Composition, Folder} from 'remotion';
+import {Composition, Folder, staticFile} from 'remotion';
 import {MotionPreviewRoot} from './motion-system/MotionPreviewRoot';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
@@ -100,10 +100,10 @@ import {
   ThumbnailAIAppWorkflow,
 } from './longform/ai-app-workflow';
 
-// Audio binaries are intentionally not imported here. They are ignored by Git and may
-// be absent in a fresh checkout. Production renders must pass a verified local audio
-// source through render props/preflight. This keeps the Remotion bundle reproducible.
-const NO_AUDIO = '';
+// Audio binaries are not imported from reel packages. Before a production render,
+// `prepare-reel-audio.mjs` creates the deterministic local file below. This keeps a
+// fresh checkout bundle-safe while preventing hidden render-time network downloads.
+const runtimeAudio = (compositionId: string) => staticFile(`runtime-audio/${compositionId}.mp3`);
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -111,7 +111,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={CONTEXT_OVERLOAD_COMPOSITION_ID}
         component={ReelContextOverload}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true, showDebugTimeline: false}}
+        defaultProps={{voiceoverSrc: runtimeAudio(CONTEXT_OVERLOAD_COMPOSITION_ID), showCaptions: true, showDebugTimeline: false}}
         durationInFrames={CONTEXT_OVERLOAD_DURATION_IN_FRAMES}
         fps={CONTEXT_OVERLOAD_FPS}
         width={CONTEXT_OVERLOAD_WIDTH}
@@ -120,7 +120,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={HALLUCINATION_COMPOSITION_ID}
         component={ReelHallucinations}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(HALLUCINATION_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={HALLUCINATION_DURATION_IN_FRAMES}
         fps={HALLUCINATION_FPS}
         width={HALLUCINATION_WIDTH}
@@ -129,7 +129,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AMBIGUOUS_PROMPTS_COMPOSITION_ID}
         component={ReelAmbiguousPrompts}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(AMBIGUOUS_PROMPTS_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES}
         fps={AMBIGUOUS_PROMPTS_FPS}
         width={AMBIGUOUS_PROMPTS_WIDTH}
@@ -138,7 +138,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_AGENTS_COMPOSITION_ID}
         component={ReelAIAgents}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(AI_AGENTS_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={AI_AGENTS_DURATION_IN_FRAMES}
         fps={AI_AGENTS_FPS}
         width={AI_AGENTS_WIDTH}
@@ -147,7 +147,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_APP_COMPOSITION_ID}
         component={ReelAIAppPrototype}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(AI_APP_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={AI_APP_DURATION_IN_FRAMES}
         fps={AI_APP_FPS}
         width={AI_APP_WIDTH}
@@ -156,7 +156,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_PRODUCT_AD_COMPOSITION_ID}
         component={ReelAIProductAd}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(AI_PRODUCT_AD_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES}
         fps={AI_PRODUCT_AD_FPS}
         width={AI_PRODUCT_AD_WIDTH}
@@ -174,7 +174,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={AI_SKETCH_WEBSITE_COMPOSITION_ID}
         component={ReelAISketchWebsite}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(AI_SKETCH_WEBSITE_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES}
         fps={AI_SKETCH_WEBSITE_FPS}
         width={AI_SKETCH_WEBSITE_WIDTH}
@@ -183,7 +183,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={GITHUB_REPOSITORY_COMPOSITION_ID}
         component={ReelGitHubRepository}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(GITHUB_REPOSITORY_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES}
         fps={GITHUB_REPOSITORY_FPS}
         width={GITHUB_REPOSITORY_WIDTH}
@@ -192,7 +192,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={CHATGPT_TEENS_COMPOSITION_ID}
         component={ReelChatGPTForTeens}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(CHATGPT_TEENS_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={CHATGPT_TEENS_DURATION_IN_FRAMES}
         fps={CHATGPT_TEENS_FPS}
         width={CHATGPT_TEENS_WIDTH}
@@ -201,7 +201,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id={STUDY_MODE_COMPOSITION_ID}
         component={ReelChatGPTStudyMode}
-        defaultProps={{voiceoverSrc: NO_AUDIO, showCaptions: true}}
+        defaultProps={{voiceoverSrc: runtimeAudio(STUDY_MODE_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={STUDY_MODE_PLANNING_DURATION_IN_FRAMES}
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
