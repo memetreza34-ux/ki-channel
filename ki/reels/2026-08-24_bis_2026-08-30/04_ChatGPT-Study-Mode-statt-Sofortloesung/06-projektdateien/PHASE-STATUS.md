@@ -1,53 +1,71 @@
 # Produktionsstatus — ChatGPT Study Mode
 
-## Phase 1 — Planung + Source
-**Status:** IMPLEMENTIERT — AUDIO-LOCK UND RENDER NOCH AUSSTEHEND
+## Phase 1 — Inhalt + Source
+
+**Status:** IMPLEMENTIERT
 
 Vorhanden:
+
 - finaler Sprechertext
-- echte Remote-Voiceover-Generation (`audio-source.json`)
-- Preview-Captions mit ausdrücklicher Sperre für Final-Timing
+- erzeugte Voiceover-Provenance (`audio-source.json`)
+- Preview-Captions mit klarer Sperre für Final-Timing
 - Szenen-/Animationsplan
 - Plattform-Copy + Final-Caption
 - Reel-Contract + Entertainment-Review
-- eigener ausführbarer Source unter `ki/src/reels/chatgpt-study-mode/`
-- fünf neue Study-Mode-spezifische Visuals
-- Composition `KI-ChatGPTStudyMode` in `ki/src/Root.tsx` registriert
-- Contract-Test angelegt
-- Fullscreen-Hintergründe, Header `top:112`, Caption `bottom:250`, kein Footer-Split
-
-Nicht als bestanden behauptet, bis tatsächlich ausgeführt:
-- TypeScript/Tests
-- Remotion-Bundle/Smoke-Render
-- Post-Render-Entertainment-Review
+- eigener Source `ki/src/reels/chatgpt-study-mode/`
+- Composition `KI-ChatGPTStudyMode`
+- Contract-Test
+- Fullscreen-Layout, Header `top:112`, Shared-Caption `bottom:250`
 
 ## Audio
-**Status:** ERZEUGT REMOTE — DOWNLOAD INS REPO ERFORDERLICH
 
-Zielpfad:
+**Status:** REMOTE ERZEUGT — LOKALER MASTER + VOICE-LOCK FEHLEN
+
+Kanonischer Zielpfad:
+
 `01-script-audio/voiceover.mp3`
 
 Pflicht:
-1. `fetch-generated-voiceover.mjs` ausführen
-2. Audio mit ffprobe messen
-3. Whisper/Voice-Lock gegen genau diese Datei ausführen
-4. `subtitle-cues.json` mit echten Wortframes ersetzen
-5. Szenengrenzen und Composition-Dauer auf Audio anpassen
-6. finale Composition mit genau diesem Voiceover rendern
+
+1. echtes Audio herunterladen/ablegen
+2. `ffprobe`
+3. Whisper/Voice-Lock
+4. `reel.json` Szenengrenzen + `finalDurationInFrames` auf echte Audio-/Bedeutungsgrenzen schreiben
+5. `subtitle-cues.json` auf VOICE_LOCKED + echte Wortframes
+6. `node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>`
+
+Remote-URL ist nur Provenance und darf nicht direkt gerendert werden.
+
+## Echte Render-Beobachtung
+
+**Status:** REVIEWED — NICHT FREIGEGEBEN
+
+Der bereitgestellte Render war ca. 40.19 s lang und beweist, dass der alte 1950-Frame-Plan nicht der echte Final-Timing-Stand ist.
+
+Visuelles Review:
+
+- insgesamt deutlich besser als frühere Reels
+- mehrere Beats in Szene 2/3/4 zu schnell
+- Szene 4 als dunkler Fullscreen-Stilbruch unerwünscht
+- Schluss-Hold zu kurz
+
+Details: `MOTION-READABILITY-REVIEW.md` → aktuell `FAIL`.
 
 ## Final
-**Status:** NICHT FINAL
 
-Kein finaler MP4 ohne hörbares Audio. Nach Final-Render zwingend:
-- `validate-final-video.mjs`
-- komplette Hör-/Sichtprüfung
+**Status:** BLOCKED UNTIL AUDIO LOCK + MOTION PASS + RERENDER
+
+Vor Final zwingend:
+
+- lokaler Audio-Master
+- Whisper/Voice-Lock PASS
+- Szenen-/Dauer-Writeback PASS
+- `prepare-reel-audio.mjs`
+- TypeScript/fokussierte Tests
+- neuer Render aus aktuellem Source
+- `MOTION-READABILITY-REVIEW.md` PASS
 - `finalize-reel-export.mjs`
 - `validate-reel-export-package.mjs`
-
-`05-export/` muss enthalten:
-- `KI-ChatGPTStudyMode.mp4`
-- `KI-ChatGPTStudyMode-cover.png`
-- `KI-ChatGPTStudyMode-caption.txt`
-- `KI-ChatGPTStudyMode-export-manifest.json`
+- exportierten MP4 ansehen und anhören
 
 Erst danach: `FINAL VIDEO READY — EXPORT PACKAGE READY`.
