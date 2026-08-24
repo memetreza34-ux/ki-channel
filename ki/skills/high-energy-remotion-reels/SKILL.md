@@ -4,7 +4,7 @@
 
 Dieser Skill gilt für alle Short-Form-Produktionen unter `ki/src/reels/`. Er verhindert statische Karten-Animationen, kleine UI-Inseln und visuell leere Reels. Ziel ist **maximale visuelle Erklärung mit maximal sinnvoll ausgereiztem Remotion**.
 
-Zusätzlich ist `ki/skills/entertainment-first-reels/SKILL.md` verbindlich. High Energy ohne Entertainment-Dramaturgie reicht nicht.
+Zusätzlich sind `ki/skills/entertainment-first-reels/SKILL.md` und `ki/skills/motion-readability-light-first/SKILL.md` verbindlich. High Energy ohne Entertainment-Dramaturgie oder ohne Lesbarkeit reicht nicht.
 
 ## Grundregel
 
@@ -38,6 +38,46 @@ Für Short-Form gilt als Ziel:
 - jede Szene braucht mindestens einen klaren Hero-Moment
 
 Nicht künstlich wackeln. Jede Bewegung muss mindestens eine Funktion erfüllen: **erklären, fokussieren, vergleichen, verbinden, blockieren, transformieren, priorisieren, überraschen oder abschließen**.
+
+## High Energy ist nicht High Speed
+
+Die Micro-Beat-Regel darf **niemals** so interpretiert werden, dass wichtige Informationen nur kurz aufblitzen.
+
+Jeder bedeutungstragende neue Zustand braucht:
+
+```text
+REVEAL → SETTLE → READABLE HOLD
+```
+
+Richtwerte bei 30 fps:
+
+- Entrance/Morph meist `8–18 Frames`
+- danach bei wichtigen neuen Informationen mindestens `12–24 Frames` klar lesbarer Hold
+- Hero-/Payoff-Zustand meist `18–30 Frames` halten, wenn Audio/Story es zulassen
+- unabhängige neue Informationen normalerweise um `6–12 Frames` staffeln statt gleichzeitig einzublenden
+
+Wenn der Sprecherabschnitt zu kurz ist, **Visualisierung vereinfachen oder Beats neu verteilen**. Nicht drei wichtige Zustände in wenige Frames quetschen.
+
+Faustregel: höchstens **1–2 unabhängige neue Informationsobjekte gleichzeitig**, wenn der Zuschauer sie aktiv lesen/verstehen muss.
+
+Beispiel falsch:
+
+```text
+Antwort + SCHNELL + NIEDRIG + Progress + Zoom gleichzeitig
+```
+
+Beispiel besser:
+
+```text
+Antwort
+→ Hold
+→ SCHNELL
+→ Hold
+→ NIEDRIG
+→ gemeinsamer Payoff
+```
+
+Die finalen Regeln und der 1x-Review stehen in `ki/skills/motion-readability-light-first/SKILL.md`.
 
 ## Mini-Story innerhalb jeder Szene
 
@@ -88,6 +128,15 @@ Verbotenes Default-Muster:
 
 `weißer Hintergrund → kleine zentrierte Card → ein Element bewegt sich → mehrere Sekunden Hold`
 
+## Light-First-Kohärenz
+
+Für den Kanal ist ein heller, sauberer Look der Standard. Vollbild-Szenen sollen grundsätzlich hell bleiben und über helle Offwhite-/Cyan-/Mint-/Blau-/Creme-Verläufe variieren.
+
+- keine einzelne schwarze/dunkelblaue Fullscreen-Szene nur für Abwechslung
+- kräftige dunkle Objekte/Cards sind innerhalb einer hellen Szene erlaubt
+- dunkle Fullscreen-Ausnahme nur bei explizitem Nutzerwunsch oder zwingender Quelllogik und dokumentierter Ausnahme
+- Details: `ki/skills/motion-readability-light-first/SKILL.md`
+
 ## Markenassets — brand-safe Motion
 
 Markenassets nie aus Erinnerung ungenau nachzeichnen.
@@ -129,7 +178,7 @@ Statische Bilder sind kein Endzustand. Bei relevanten echten Bildern / Screensho
 
 ## Hintergrund ist Teil der Motion
 
-Weiße oder ruhige Flächen dürfen existieren, aber nicht tot wirken. Je nach Thema sinnvoll verwenden:
+Helle oder ruhige Flächen dürfen existieren, aber nicht tot wirken. Je nach Thema sinnvoll verwenden:
 
 - langsame Gradient-Verschiebung
 - dezente Grid-/Depth-Bewegung
@@ -168,16 +217,19 @@ Beispiele:
 
 ## Qualitäts-Gate
 
-Vor Freigabe jede Szene in Smartphone-Größe prüfen:
+Vor Freigabe jede Szene in Smartphone-Größe und bei **1x Geschwindigkeit** prüfen:
 
 - ist das Hauptobjekt sofort groß genug?
 - verändert sich das Bild passend zu jeder neuen Sprecherbedeutung?
+- bleibt jeder wichtige neue Zustand lange genug sichtbar, um ihn ohne Pausieren zu erfassen?
+- erscheinen unabhängige Informationen gestaffelt statt gehetzt gleichzeitig?
 - gibt es mindestens einen starken visuellen Moment, den man als Einzelbild wiedererkennt?
 - nutzt die Szene Tiefe, Transformation oder gerichtete Bewegung statt nur Fade/Slide?
 - wurde bei Produkt-/Feature-Themen echte UI vor abstrakten Kreisen geprüft?
 - besitzt die Szene Setup → Aktion → Konsequenz → Payoff?
+- bleibt der Fullscreen-Look hell und kohärent, sofern keine dokumentierte Ausnahme existiert?
 - wirkt das Reel eher wie Motion Design / UI-Cinema als wie PowerPoint?
 
-Zusätzlich muss das Reel das Entertainment-Gate aus `ki/skills/entertainment-first-reels/SKILL.md` mit mindestens **8/10** bestehen.
+Zusätzlich muss das Reel das Entertainment-Gate mit mindestens **8/10** und das Motion-Readability-Gate bestehen.
 
-Wenn die Antwort bei einem Punkt klar nein ist: Szene neu komponieren, nicht nur weitere Deko hinzufügen.
+Wenn die Antwort bei einem Punkt klar nein ist: Szene neu komponieren oder Timing neu kalibrieren, nicht nur weitere Deko hinzufügen.
