@@ -1,5 +1,12 @@
 import {describe, expect, it} from 'vitest';
-import {STUDY_MODE_COMPOSITION_ID, STUDY_MODE_FPS, STUDY_MODE_HEIGHT, STUDY_MODE_PLANNING_DURATION_IN_FRAMES, STUDY_MODE_SCENES, STUDY_MODE_WIDTH} from './contract';
+import {
+  STUDY_MODE_COMPOSITION_ID,
+  STUDY_MODE_DURATION_IN_FRAMES,
+  STUDY_MODE_FPS,
+  STUDY_MODE_HEIGHT,
+  STUDY_MODE_SCENES,
+  STUDY_MODE_WIDTH,
+} from './contract';
 
 describe('ChatGPT Study Mode reel contract',()=>{
   it('uses vertical short-form geometry',()=>{
@@ -9,12 +16,12 @@ describe('ChatGPT Study Mode reel contract',()=>{
     expect(STUDY_MODE_FPS).toBe(30);
   });
 
-  it('has five continuous planning scenes',()=>{
+  it('derives one continuous timeline from reel.json',()=>{
     expect(STUDY_MODE_SCENES).toHaveLength(5);
     expect(STUDY_MODE_SCENES[0]?.startFrame).toBe(0);
     for(let i=1;i<STUDY_MODE_SCENES.length;i++){
       expect(STUDY_MODE_SCENES[i]?.startFrame).toBe(STUDY_MODE_SCENES[i-1]?.endFrame);
     }
-    expect(STUDY_MODE_SCENES.at(-1)?.endFrame).toBe(STUDY_MODE_PLANNING_DURATION_IN_FRAMES);
+    expect(STUDY_MODE_SCENES.at(-1)?.endFrame).toBe(STUDY_MODE_DURATION_IN_FRAMES);
   });
 });
