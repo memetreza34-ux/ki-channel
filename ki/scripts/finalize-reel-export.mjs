@@ -16,7 +16,14 @@ const sourceVideo = path.resolve(rawVideo);
 const exportDir = path.join(reelDir, '05-export');
 const reelJsonPath = path.join(reelDir, '06-projektdateien', 'reel.json');
 const captionSource = path.join(reelDir, '03-caption', 'FINAL-CAPTION.txt');
-const finalValidator = path.resolve('ki', 'scripts', 'validate-final-video.mjs');
+
+const scripts = {
+  entertainment: path.resolve('ki','scripts','validate-entertainment-review.mjs'),
+  voiceLock: path.resolve('ki','scripts','validate-voice-locked-captions.mjs'),
+  motion: path.resolve('ki','scripts','validate-motion-readability-review.mjs'),
+  sourceIsolation: path.resolve('ki','scripts','validate-reel-source-isolation.mjs'),
+  finalVideo: path.resolve('ki','scripts','validate-final-video.mjs'),
+};
 
 const fail = (message) => {
   console.error(`FINALIZE EXPORT FAILED: ${message}`);
@@ -26,13 +33,26 @@ const fail = (message) => {
 if (!existsSync(reelDir)) fail(`reel package not found: ${reelDir}`);
 if (!existsSync(sourceVideo)) fail(`rendered video not found: ${sourceVideo}`);
 if (!existsSync(exportDir)) fail(`05-export missing: ${exportDir}`);
-if (!existsSync(finalValidator)) fail(`final-video validator missing: ${finalValidator}`);
+for (const [name, script] of Object.entries(scripts)) {
+  if (name === 'sourceIsolation') continue;
+  if (!existsSync(script)) fail(`required validator missing: ${script}`);
+}
 
-// HARD AUDIO GATE: nothing is copied into the final export package before this passes.
-const gate = spawnSync(process.execPath, [finalValidator, sourceVideo], {encoding: 'utf8'});
-if (gate.stdout) process.stdout.write(gate.stdout);
-if (gate.stderr) process.stderr.write(gate.stderr);
-if (gate.status !== 0) fail('video/audio gate failed. No final export package was created.');
+const runGate = (label, script, args) => {
+  const gate = spawnSync(process.execPath, [script, ...args], {encoding:'utf8'});
+  if (gate.stdout) process.stdout.write(gate.stdout);
+  if (gate.stderr) process.stderr.write(gate.stderr);
+  if (gate.error) fail(`${label} could not start: ${gate.error.message}`);
+  if (gate.status !== 0) fail(`${label} failed. No final export package was created.`);
+};
+
+// HARD QUALITY CHAIN: export is impossible unless every applicable gate passes.
+runGate('entertainment gate', scripts.entertainment, [reelDir]);
+runGate('voice-lock gate', scripts.voiceLock, [reelDir]);
+runGate('motion-readability gate', scripts.motion, [reelDir]);
+const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolation.json');
+if (existsSync(isolationConfig)) runGate('source-isolation gate', scripts.sourceIsolation, [reelDir]);
+runGate('video/audio gate', scripts.finalVideo, [sourceVideo]);
 
 let reelConfig = {};
 if (existsSync(reelJsonPath)) {
@@ -53,9 +73,7 @@ if (!Number.isFinite(coverTime) || coverTime < 0) {
   fail('cover time is invalid. Set a non-negative number of seconds after Hero/Contact-Sheet review.');
 }
 
-if (!existsSync(captionSource)) {
-  fail(`canonical caption missing: ${captionSource}`);
-}
+if (!existsSync(captionSource)) fail(`canonical caption missing: ${captionSource}`);
 const caption = (await readFile(captionSource, 'utf8')).trim();
 if (caption.length < 20 || /\b(?:OFFEN|TODO|TBD|PLATZHALTER)\b/i.test(caption)) {
   fail('FINAL-CAPTION.txt is empty or still contains a placeholder.');
@@ -103,15 +121,19 @@ try {
     cover: coverName,
     coverTimeSeconds: coverTime,
     caption: captionName,
-    audioGate: 'PASSED_BEFORE_EXPORT',
+    gates: {
+      entertainment: 'PASSED',
+      voiceLock: 'PASSED',
+      motionReadability: 'PASSED',
+      sourceIsolation: existsSync(isolationConfig) ? 'PASSED' : 'NOT_APPLICABLE',
+      audioVideo: 'PASSED',
+    },
     generatedAt: new Date().toISOString(),
   };
   await writeFile(stageManifest, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
   const finals = [videoName, coverName, captionName, manifestName];
-  for (const name of finals) {
-    await rm(path.join(exportDir, name), {force: true});
-  }
+  for (const name of finals) await rm(path.join(exportDir, name), {force: true});
   await rename(stageVideo, path.join(exportDir, videoName));
   await rename(stageCover, path.join(exportDir, coverName));
   await rename(stageCaption, path.join(exportDir, captionName));
