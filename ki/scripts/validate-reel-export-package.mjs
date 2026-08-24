@@ -60,7 +60,7 @@ if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fai
 if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
 
 const provenance = manifest?.provenance || {};
-for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','reelJsonSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
+for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
   if (!provenance[key] || typeof provenance[key] !== 'string') fail(`manifest provenance field missing: ${key}.`);
 }
 const artifacts = manifest?.artifacts || {};
