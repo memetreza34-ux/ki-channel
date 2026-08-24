@@ -4,6 +4,7 @@ import {readFile, stat} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
+import {safeCompositionId, sha256File} from './lib/render-provenance.mjs';
 
 const rawReelDir = process.argv[2];
 if (!rawReelDir) {
@@ -25,7 +26,7 @@ let reel;
 try { reel = JSON.parse(await readFile(reelJsonPath, 'utf8')); }
 catch (error) { fail(`reel.json is invalid: ${error.message}`); }
 
-const compositionId = String(reel?.compositionId || '').replace(/[^A-Za-z0-9._-]+/g, '-');
+const compositionId = safeCompositionId(reel?.compositionId);
 if (!compositionId) fail('compositionId missing in reel.json.');
 
 const names = {
@@ -49,19 +50,33 @@ let manifest;
 try { manifest = JSON.parse(await readFile(files.manifest, 'utf8')); }
 catch (error) { fail(`export manifest is invalid: ${error.message}`); }
 if (manifest.status !== 'FINAL_EXPORT_READY') fail('manifest status is not FINAL_EXPORT_READY.');
-if (manifest.exportedVideo !== names.video || manifest.cover !== names.cover || manifest.caption !== names.caption) {
-  fail('manifest filenames do not match the canonical export package.');
-}
+if (manifest.exportedVideo !== names.video || manifest.cover !== names.cover || manifest.caption !== names.caption) fail('manifest filenames do not match the canonical export package.');
 
 for (const gate of ['entertainment','voiceLock','audioVideo']) {
   if (manifest?.gates?.[gate] !== 'PASSED') fail(`manifest gate ${gate} is not PASSED.`);
 }
-if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') {
-  fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
+if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
+if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fail('manifest sourceIsolation gate is invalid.');
+if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
+
+const provenance = manifest?.provenance || {};
+for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','reelJsonSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
+  if (!provenance[key] || typeof provenance[key] !== 'string') fail(`manifest provenance field missing: ${key}.`);
 }
-if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) {
-  fail('manifest sourceIsolation gate is invalid.');
+const artifacts = manifest?.artifacts || {};
+for (const key of ['videoSha256','coverSha256','captionSha256']) {
+  if (!artifacts[key] || typeof artifacts[key] !== 'string') fail(`manifest artifact hash missing: ${key}.`);
 }
+
+const actualArtifactHashes = {
+  videoSha256: await sha256File(files.video),
+  coverSha256: await sha256File(files.cover),
+  captionSha256: await sha256File(files.caption),
+};
+for (const [key,value] of Object.entries(actualArtifactHashes)) {
+  if (artifacts[key] !== value) fail(`export artifact hash mismatch: ${key}.`);
+}
+if (provenance.reviewedVideoSha256 !== actualArtifactHashes.videoSha256) fail('exported video is not byte-identical to the reviewed video hash.');
 
 const gate = spawnSync(process.execPath, [finalValidator, files.video], {encoding: 'utf8'});
 if (gate.stdout) process.stdout.write(gate.stdout);
@@ -73,3 +88,5 @@ console.log(`video: ${files.video}`);
 console.log(`cover: ${files.cover}`);
 console.log(`caption: ${files.caption}`);
 console.log(`manifest: ${files.manifest}`);
+console.log(`render source commit: ${provenance.renderSourceCommitSha}`);
+console.log(`video sha256: ${actualArtifactHashes.videoSha256}`);
