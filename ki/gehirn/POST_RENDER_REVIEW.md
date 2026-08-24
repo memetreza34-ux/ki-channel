@@ -1,132 +1,70 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Ein sauberer Source reicht nicht. Der **tatsächliche MP4** muss bei normaler Geschwindigkeit und in Smartphone-/Feed-Größe geprüft werden.
+Nach jedem echten Reel-Render wird bei **1x-Geschwindigkeit** geprüft. Ein technisch gültiges MP4 ist noch keine visuelle Freigabe.
 
-## 1. Opening
+## Pflichtprüfung
 
-- erster sinnvoller Zustand sofort bzw. innerhalb ca. `0.2–0.4 s`
-- kein leerer Pre-Roll
-- Hook-Audio und erster visueller Zustand gehören zusammen
+- Hook/erster Zustand sofort verständlich
+- Überschrift lesbar und nicht zu hoch
+- Caption tief genug, aber ohne Plattform-UI-Kollision
+- Caption maximal 2 Zeilen
+- kein separater Footer-/zweiter Hintergrund
+- Fullscreen-Szenenhintergrund bleibt konsistent
+- wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
+- unabhängige Informationen gestaffelt statt gleichzeitig gestapelt
+- keine dunkle Fullscreen-Szene ohne genehmigte Ausnahme
+- Voiceover hörbar und passend
+- Caption/aktive Wörter folgen dem tatsächlich verwendeten Audio
+- finale Szene endet nicht hektisch
 
-## 2. Smartphone-Lesbarkeit
+## Motion Readability
 
-- Hauptmechanik groß genug
-- kritische interne Labels kurz und typischerweise mindestens ca. `28–32 px`
-- keine kleine UI-Insel in riesiger Leere
-- lieber sinnvolle Mechanik größer als Deko hinzufügen
+Wichtige Zustände müssen bei normaler Wiedergabe beim ersten Anschauen verständlich sein. Muss man pausieren oder zurückspulen, ist der Beat zu schnell.
 
-## 3. Caption / Feed
+Bei 30 fps gelten als Startwerte:
 
-Kanonisch laut `CAPTION_SAFE_POSITION.md`:
+- wichtige neue Zustände normalerweise etwa 12–24 Frames lesbarer Hold
+- Hero-/Payoff-Zustände meist etwa 18–30 Frames
+- unabhängige neue Informationen meist 6–12 Frames versetzt
 
-- `bottom: 250px`
-- `104px` horizontaler Inset
-- max. `860px`
-- max. 2 Zeilen
-- Glass-/Blur-Overlay
-- Fullscreen-Hintergrund bleibt sichtbar; **kein separater Footer**
+Diese Zahlen sind Mindest-/Planungsrichtwerte; die echte Lesbarkeit des Renders entscheidet.
 
-Review-Fails:
+## Light-First
 
-- Caption kollidiert mit Account/CTA/Feed-UI
-- Caption und Hauptvisual konkurrieren
-- mehr als 2 Zeilen
-- eigener weißer/andersfarbiger Untertitel-Footer
-- alter hoher Caption-Wert wird ohne dokumentierte Ausnahme wieder eingeführt
+Standard sind helle Fullscreen-Szenen. Dunkle Cards/Objekte auf hellem Grund sind erlaubt. Dunkle Fullscreen-Szenen brauchen explizite/dokumentierte Ausnahme.
 
-## 4. Motion Readability
+## Exakter Renderbezug
 
-High Energy ≠ High Speed.
+`MOTION-READABILITY-REVIEW.md` darf nur den tatsächlich angesehenen MP4 freigeben. Der Review wird deshalb an dessen SHA256/Dauer gebunden. Ein alter Review darf einen neuen Render nicht freigeben.
 
-Wichtige Zustände:
+Zusätzlich muss der Production-Render vor dem Rendern mit
 
-`REVEAL → SETTLE → READABLE HOLD`
-
-Bei 1x fällt ein Beat durch, wenn:
-
-- Pausieren/Zurückspulen nötig ist
-- wichtiges Element verschwindet, bevor es erfasst werden kann
-- zu viele neue Dinge gleichzeitig erscheinen
-- Hero-Moment sofort überschrieben wird
-- Ablauf subjektiv gehetzt wirkt
-
-Richtwerte bei 30 fps:
-
-- kritischer Hold meist mindestens `12–24 Frames`
-- Hero-/Payoff-Hold meist `18–30 Frames`
-- unabhängige neue Informationen meist `6–12 Frames` staffeln
-
-## 5. Kein statischer Sprecherabschnitt
-
-Die Gegenrichtung ist ebenfalls falsch.
-
-- neue Sprecherbedeutung darf nicht mehrere Sekunden über praktisch unverändertem Bild laufen
-- > ca. `2.5 s` ohne semantische Reaktion ist Warnsignal
-- Hold erst nach abgeschlossener Aussage
-
-## 6. Light-First
-
-- Fullscreen standardmäßig hell
-- kräftige Akzente erlaubt
-- dunkle Fullscreen-Szene nur als dokumentierte Ausnahme
-- kein einzelner dunkler Stilbruch zwischen hellen Szenen
-
-## 7. Schluss
-
-Die letzte Szene muss bis zur letzten Sprecherphrase weiterentwickelt werden.
-
-```text
-letzte Phrase(n)
-→ sichtbare Beats
-→ finaler Payoff
-→ kurzer End-Hold
+```bash
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Nicht früh fertig aussehen, während Voiceover weiterläuft.
+an einen **sauberen Git-Commit sowie Source-, Reel-, Caption- und Audio-Hashes** gebunden worden sein. Der daraus erzeugte lokale `RENDER_LOCKED`-Datensatz ist Teil der finalen Provenance-Prüfung. Ein MP4, das älter als dieser Render-Lock ist oder dessen Inputs danach geändert wurden, darf nicht finalisiert werden.
 
-## 8. Pflicht-Review nach jedem Render
+Nach dem Review:
 
-Mindestens prüfen:
-
-- Opening
-- Mitte/Ende jeder Szene
-- Hero-Momente
-- alle wichtigen Zustandswechsel
-- letzte 8–12 Sekunden
-- 1x Geschwindigkeit
-- Smartphone-Größe
-- Caption/Feed-Kollision
-- Light-First-Kohärenz
-- Audio hörbar
-
-`MOTION-READABILITY-REVIEW.md` danach real ausfüllen und validieren.
-
-## 9. Korrekturschleife
-
-```text
-Render ansehen
-→ konkrete Ursache finden
-→ Source ändern
-→ Status: REVISION IMPLEMENTIERT — RERENDER ERFORDERLICH
-→ neu rendern
-→ neuen Render prüfen
+```bash
+node ki/scripts/validate-motion-readability-review.mjs <reel-package-dir> <rendered-video.mp4>
 ```
 
-Ein alter Render darf niemals einen danach geänderten Source freigeben.
+Vor finalem Export laufen zusätzlich Voice-Lock, Entertainment, Source-Isolation (wenn vorhanden), Render-Provenance und Audio-/Video-Gate.
 
-## 10. Freigabe-Gate
+## Fail-Bedingungen
 
-Nicht freigeben bei:
+Kein `PASS`, wenn:
 
-- leerem Einstieg
-- zu kleinem Hauptvisual
-- unlesbaren/zu schnellen Beats
-- mehreren Sekunden neuer Bedeutung ohne Reaktion
-- dunklem Fullscreen-Stilbruch ohne Ausnahme
-- Caption-/Feed-Kollision
-- zweitem Footer-Hintergrund
-- Schluss zu früh statisch
-- stummem/praktisch unhörbarem Audio
-- Render passt nicht zum aktuellen Source
+- `TOO_FAST_BEATS > 0`
+- `SIMULTANEOUS_INFO_OVERLOADS > 0`
+- ungenehmigte dunkle Fullscreen-Szene vorhanden
+- Caption/Header kollidieren oder unlesbar sind
+- Audio fehlt/stumm ist
+- Caption merkbar vor/hinter der Stimme läuft
+- der Review zu einem anderen MP4 gehört
+- Source/Caption/Reel/Audio nach dem Render-Lock verändert wurden
+- der finale MP4 nicht aus dem gelockten Produktionsstand stammen kann
 
-Ziel: **maximale visuelle Erklärung bei klarer Lesbarkeit, nicht maximale Bewegung.**
+Nach jeder Source-, Caption-, Audio- oder Timingänderung: neuer Render, neuer 1x-Review, neuer Provenance-Gate.
