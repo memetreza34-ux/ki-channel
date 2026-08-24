@@ -53,9 +53,11 @@ if (manifest.exportedVideo !== names.video || manifest.cover !== names.cover || 
   fail('manifest filenames do not match the canonical export package.');
 }
 
-const requiredGates = ['entertainment','voiceLock','motionReadability','audioVideo'];
-for (const gate of requiredGates) {
+for (const gate of ['entertainment','voiceLock','audioVideo']) {
   if (manifest?.gates?.[gate] !== 'PASSED') fail(`manifest gate ${gate} is not PASSED.`);
+}
+if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') {
+  fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
 }
 if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) {
   fail('manifest sourceIsolation gate is invalid.');
