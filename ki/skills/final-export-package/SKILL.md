@@ -2,114 +2,85 @@
 
 ## Zweck
 
-Dieser Skill erzwingt, dass Antigravity/Codex nach einem fertigen Reel nicht bei einem beliebigen Render stoppt, sondern automatisch ein vollständiges, veröffentlichungsnahes Paket unter `05-export/` erzeugt.
+Ein Reel endet nicht bei einem beliebigen Render, sondern bei einem vollständigen, geprüften Paket unter `05-export/`.
 
-## Harte Regel
+## Zielstruktur
 
-Ein Short-Form-Reel ist **nicht fertig**, solange der finale Exportordner nicht mindestens enthält:
+```text
+05-export/
+├── <compositionId>.mp4
+├── <compositionId>-cover.png
+├── <compositionId>-caption.txt
+└── <compositionId>-export-manifest.json
+```
 
-- finalen MP4 mit hörbarem Voiceover
-- eigenes Cover aus einem nach Contact-Sheet-/Hero-Review gewählten Frame
-- finale Social-Caption als Textdatei
-- Export-Manifest
+## Vor Production-Render
 
-Ein MP4 irgendwo in `/tmp`, `out/`, `renders/`, Projekt-Root oder einem Preview-Pfad ist **keine finale Abgabe**.
+```bash
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
+```
 
-## Kanonischer Ablauf
+Damit sind lokales Audio, Voice-Lock, finale Dauer/Szenen und Runtime-Audio vorbereitet.
 
-Nach dem finalen Remotion-Render:
+## Nach finalem Render
 
-1. finalen Render noch **nicht** als fertig ausgeben
-2. `validate-final-video.mjs` muss Video + hörbares Audio erfolgreich bestätigen
-3. besten Hero-/Cover-Frame aus Smoke-/Contact-Sheet-Review wählen
-4. dessen Zeit in `06-projektdateien/reel.json` unter `export.coverTimeSeconds` eintragen
-5. `03-caption/FINAL-CAPTION.txt` mit der final vorgesehenen Social-Caption vervollständigen
-6. Finalize-Befehl ausführen:
+1. finalen MP4 bei 1x ansehen/anhören
+2. Motion-Readability-Review für **genau diesen MP4** ausfüllen
+3. SHA256 + Dauer des MP4 in `MOTION-READABILITY-REVIEW.md` eintragen
+4. Hero-/Cover-Zeit wählen und in `reel.json.export.coverTimeSeconds` setzen
+5. `FINAL-CAPTION.txt` publish-ready
+6. Finalizer:
 
 ```bash
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 ```
 
-7. nur wenn der Befehl `FINAL EXPORT PACKAGE READY` meldet, darf die Aufgabe als fertig gelten
-8. finalen MP4 im `05-export/` vollständig ansehen **und anhören**
-9. Cover prüfen: lesbar, stark, keine ungünstige Zwischenanimation
-10. Caption prüfen: keine Platzhalter, keine falschen Fakten, publish-ready
+Der Finalizer blockiert vor dem Export, wenn eines fehlschlägt:
 
-## Audio ist Blocker Nummer 1
+- Entertainment-Gate
+- Voice-Lock-Gate
+- Motion-Readability-Gate inkl. exaktem Video-Hash
+- ggf. Source-Isolation
+- Video-/Audio-/Lautheits-Gate
 
-Der Finalize-Befehl führt **vor jedem Kopieren** das Final-Video-Gate aus.
+7. danach:
 
-Wenn kein Audiostream vorhanden ist oder das Audio praktisch stumm ist:
-
-- kein finales MP4 in `05-export/` erzeugen
-- kein Cover/Manifest als fertiges Paket erzeugen
-- Status `FINAL-GATE FEHLGESCHLAGEN`
-- Audio korrekt integrieren
-- neu rendern
-- erneut finalisieren
-
-Ein Video ohne Voiceover darf niemals nur deshalb in `05-export/` landen, weil der visuelle Render erfolgreich war.
-
-## Zielstruktur
-
-Beispiel für Composition `KI-MeinReel`:
-
-```text
-05-export/
-├── KI-MeinReel.mp4
-├── KI-MeinReel-cover.png
-├── KI-MeinReel-caption.txt
-└── KI-MeinReel-export-manifest.json
+```bash
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Smoke-Frames oder Review-Renders dürfen zusätzlich vorhanden sein, sind aber keine finale Abgabe.
+8. den **exportierten** MP4 nochmals ansehen und anhören
+9. Cover + Caption prüfen
 
-## Cover-Regel
+## Cover
 
-Cover nicht blind bei Sekunde 0 erzeugen.
+Nicht blind Sekunde 0.
 
-Antigravity muss nach dem visuellen Review einen starken Frame wählen, der:
+Cover-Frame muss:
 
-- das Thema sofort erkennen lässt
-- keine halb eingeklappte oder unfertige Animation zeigt
-- wichtige UI/Objekte nicht verdeckt
-- im 9:16-Crop funktioniert
-- nicht von Captions oder Debug-Elementen dominiert wird
+- Thema sofort erkennen lassen
+- vollständigen Hero-Zustand zeigen
+- keine Zwischenanimation/Debug-UI zeigen
+- in 9:16 funktionieren
 
-Die Zeit wird als Sekundenwert in `reel.json` gespeichert:
+Ohne gültige `coverTimeSeconds` schlägt der Finalizer fehl.
 
-```json
-{
-  "export": {
-    "coverTimeSeconds": 3.4
-  }
-}
-```
+## Caption
 
-Ohne gültige Cover-Zeit muss der Finalize-Befehl fehlschlagen.
+Quelle:
 
-## Caption-Regel
+`03-caption/FINAL-CAPTION.txt`
 
-Die kanonische finale Caption liegt vor dem Export hier:
+Platzhalter wie `OFFEN`, `TODO`, `TBD`, `PLATZHALTER` blockieren den Export.
 
-```text
-03-caption/FINAL-CAPTION.txt
-```
+## Binärdateien / Git
 
-Der Finalize-Befehl kopiert sie in den Exportordner. `OFFEN`, `TODO`, `TBD` oder Platzhalter blockieren den Export.
+Das Paket liegt lokal im kanonischen `05-export/`. Große MP4/PNG-Dateien sind standardmäßig per `.gitignore` nicht normal Git-tracked, solange Git LFS nicht eingerichtet ist.
 
-## Verhalten von Antigravity
+In Git bleiben Source, Caption, Provenance, Timing und Manifest-/Review-Logik. Nicht behaupten, ein ignoriertes Binary sei committed, wenn es das nicht ist.
 
-Wenn der Nutzer ein fertiges Reel verlangt, endet der Agent nicht bei:
+## Endstatus
 
-- `render complete`
-- Smoke-Render
-- stummer MP4
-- Preview-Datei
-- MP4 außerhalb von `05-export/`
-
-Er arbeitet weiter bis **Exportpaket + Audio + Cover + Caption** vollständig vorliegen.
-
-Erst dann ist zulässig:
+Erst nach Finalizer + Export-Package-Validator + tatsächlicher Hör-/Sichtprüfung:
 
 `FINAL VIDEO READY — EXPORT PACKAGE READY`
