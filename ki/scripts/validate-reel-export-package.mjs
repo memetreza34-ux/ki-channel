@@ -49,9 +49,16 @@ let manifest;
 try { manifest = JSON.parse(await readFile(files.manifest, 'utf8')); }
 catch (error) { fail(`export manifest is invalid: ${error.message}`); }
 if (manifest.status !== 'FINAL_EXPORT_READY') fail('manifest status is not FINAL_EXPORT_READY.');
-if (manifest.audioGate !== 'PASSED_BEFORE_EXPORT') fail('manifest does not confirm the pre-export audio gate.');
 if (manifest.exportedVideo !== names.video || manifest.cover !== names.cover || manifest.caption !== names.caption) {
   fail('manifest filenames do not match the canonical export package.');
+}
+
+const requiredGates = ['entertainment','voiceLock','motionReadability','audioVideo'];
+for (const gate of requiredGates) {
+  if (manifest?.gates?.[gate] !== 'PASSED') fail(`manifest gate ${gate} is not PASSED.`);
+}
+if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) {
+  fail('manifest sourceIsolation gate is invalid.');
 }
 
 const gate = spawnSync(process.execPath, [finalValidator, files.video], {encoding: 'utf8'});
