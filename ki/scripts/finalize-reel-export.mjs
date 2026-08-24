@@ -49,7 +49,7 @@ const runGate = (label, script, args) => {
 // HARD QUALITY CHAIN: export is impossible unless every applicable gate passes.
 runGate('entertainment gate', scripts.entertainment, [reelDir]);
 runGate('voice-lock gate', scripts.voiceLock, [reelDir]);
-runGate('motion-readability gate', scripts.motion, [reelDir]);
+runGate('motion-readability gate', scripts.motion, [reelDir, sourceVideo]);
 const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolation.json');
 if (existsSync(isolationConfig)) runGate('source-isolation gate', scripts.sourceIsolation, [reelDir]);
 runGate('video/audio gate', scripts.finalVideo, [sourceVideo]);
@@ -121,10 +121,11 @@ try {
     cover: coverName,
     coverTimeSeconds: coverTime,
     caption: captionName,
+    reviewedVideo: sourceVideo,
     gates: {
       entertainment: 'PASSED',
       voiceLock: 'PASSED',
-      motionReadability: 'PASSED',
+      motionReadability: 'PASSED_EXACT_VIDEO_HASH',
       sourceIsolation: existsSync(isolationConfig) ? 'PASSED' : 'NOT_APPLICABLE',
       audioVideo: 'PASSED',
     },
