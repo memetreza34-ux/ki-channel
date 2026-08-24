@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {runtimeAudioPath, safeCompositionId} from './lib/render-provenance.mjs';
 
 const target=process.argv[2];
 if(!target){console.error('Usage: node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>');process.exit(1);}
@@ -27,6 +29,30 @@ const observedSeconds=Number(reel.audio?.observedAudioDurationSeconds);
 if(!Number.isFinite(fps)||fps<=0) issues.push('reel.format.fps missing/invalid');
 if(!Number.isFinite(durationFrames)||durationFrames<=0) issues.push('final composition duration is not locked');
 if(!Number.isFinite(observedSeconds)||observedSeconds<=0) issues.push('reel.audio.observedAudioDurationSeconds missing/invalid');
+
+const compositionId=safeCompositionId(reel.compositionId);
+const runtimeAudio=runtimeAudioPath(compositionId);
+let runtimeSeconds=NaN;
+if(!compositionId) issues.push('reel.compositionId missing/invalid');
+else if(!fs.existsSync(runtimeAudio)) issues.push(`prepared runtime WAV missing: ${runtimeAudio}`);
+else {
+  const probe=spawnSync('ffprobe',['-v','error','-select_streams','a:0','-show_entries','stream=codec_name,sample_rate,channels:format=duration','-of','json',runtimeAudio],{encoding:'utf8'});
+  if(probe.error||probe.status!==0) issues.push(`ffprobe failed for runtime WAV: ${probe.stderr||probe.stdout||probe.error?.message}`);
+  else {
+    try {
+      const info=JSON.parse(probe.stdout);
+      runtimeSeconds=Number(info?.format?.duration);
+      if(!info?.streams?.length) issues.push('runtime WAV contains no audio stream');
+      if(info?.streams?.[0]?.codec_name!=='pcm_s16le') issues.push(`runtime audio codec is ${info?.streams?.[0]?.codec_name||'unknown'}, expected pcm_s16le`);
+      if(!Number.isFinite(runtimeSeconds)||runtimeSeconds<=0) issues.push('runtime WAV duration is invalid');
+    } catch { issues.push('runtime WAV ffprobe JSON could not be parsed'); }
+  }
+}
+
+if(Number.isFinite(fps)&&Number.isFinite(observedSeconds)&&Number.isFinite(runtimeSeconds)){
+  const toleranceSeconds=1/fps;
+  if(Math.abs(observedSeconds-runtimeSeconds)>toleranceSeconds) issues.push(`reel.audio.observedAudioDurationSeconds (${observedSeconds.toFixed(3)}s) does not match runtime WAV (${runtimeSeconds.toFixed(3)}s)`);
+}
 
 const rawScenes=Array.isArray(reel.scenes)?reel.scenes:[];
 if(rawScenes.length===0) issues.push('reel.scenes missing');
@@ -61,10 +87,10 @@ for(const [index,cue] of cues.entries()){
 const rebuiltScript=normalize(cues.map((cue)=>cue.text).join(' '));
 if(rebuiltScript!==normalize(canonicalScript)) issues.push('all cue texts together do not exactly match VOICEOVER-ZUM-KOPIEREN.txt');
 
-if(Number.isFinite(fps)&&Number.isFinite(durationFrames)&&Number.isFinite(observedSeconds)){
-  const audioFrames=observedSeconds*fps;
-  if(durationFrames<audioFrames) issues.push(`composition duration (${durationFrames}f) ends before audio (${audioFrames.toFixed(1)}f)`);
-  if(durationFrames-audioFrames>30) issues.push(`composition has an excessive final hold (${(durationFrames-audioFrames).toFixed(1)}f after audio)`);
+if(Number.isFinite(fps)&&Number.isFinite(durationFrames)&&Number.isFinite(runtimeSeconds)){
+  const audioFrames=runtimeSeconds*fps;
+  if(durationFrames<audioFrames) issues.push(`composition duration (${durationFrames}f) ends before runtime audio (${audioFrames.toFixed(1)}f)`);
+  if(durationFrames-audioFrames>30) issues.push(`composition has an excessive final hold (${(durationFrames-audioFrames).toFixed(1)}f after runtime audio)`);
 }
 
 if(issues.length){
@@ -74,4 +100,4 @@ if(issues.length){
 }
 console.log(`✅ Voice-locked captions valid: ${cues.length} cues`);
 console.log(`✅ Final duration: ${durationFrames} frames`);
-console.log(`✅ Audio duration: ${observedSeconds.toFixed(3)} s`);
+console.log(`✅ Runtime WAV duration: ${runtimeSeconds.toFixed(3)} s`);
