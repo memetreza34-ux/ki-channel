@@ -12,7 +12,7 @@ Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Si
 
 Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
 
-Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main`. Die älteren gestapelten Draft-PRs #26 und #27 sind superseded und geschlossen.
+Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main`. Die älteren PRs **#24, #26 und #27** sind superseded und geschlossen; sie dürfen nicht mehr als Integrationsziel verwendet werden.
 
 ## 2. Verbindliche Lesereihenfolge
 
@@ -67,9 +67,9 @@ Short-Form-Production verwendet eine lokale, deterministische Runtime-Audiospur:
 public/runtime-audio/<compositionId>.wav
 ```
 
-Sie wird vor dem Render aus dem kanonischen lokalen Voiceover-Master erzeugt. Remotion lädt kein Voiceover während des Renders aus dem Netz. Die Runtime-Datei ist 48-kHz-Stereo-PCM-WAV, um ein zweites verlustbehaftetes MP3-Encoding und Encoder-Delay zu vermeiden.
+Sie wird aus dem kanonischen lokalen Voiceover-Master als **48-kHz-Stereo-PCM-WAV** erzeugt. Remotion lädt kein Voiceover während des Renders aus dem Netz. Dadurch gibt es kein zweites verlustbehaftetes MP3-Encoding und kein MP3-Encoder-Delay in der finalen Timing-Kette.
 
-Kanonische Details: `ki/gehirn/AUDIO_PIPELINE.md`.
+Die Runtime-WAV ist die finale **Whisper-/Wort-/Frame- und Render-Autorität**. Kanonische Details: `ki/gehirn/AUDIO_PIPELINE.md`.
 
 ## 5. Kanonische Caption-Geometrie
 
@@ -95,8 +95,16 @@ PHASE 2 — Audio
 reales Voiceover: tatsächlich per verfügbarem Voice-Tool erzeugt oder vom Nutzer bereitgestellt
 
 PHASE 3 — Codex / Antigravity
-lokales Audio + Voice-Lock + finale Szenengrenzen + Pre-Render-Gate + Render + 1x-Review + Final-Gates + Export
+lokalen Audio-Master vorbereiten → Runtime-PCM-WAV → Whisper/Voice-Lock → finale Szenengrenzen → Pre-Render-Gate → Render → 1x-Review → Final-Gates → Export
 ```
+
+Vor dem finalen Voice-Lock:
+
+```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+```
+
+Whisper/Wort-Timings werden anschließend gegen die erzeugte Runtime-WAV gelegt.
 
 Vor Production-Render:
 
@@ -104,7 +112,7 @@ Vor Production-Render:
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Schritt blockiert geschätzte Plan-Timings als Finalzustand und bereitet die lokale Runtime-Audiospur vor.
+Dieser Schritt blockiert geschätzte Plan-Timings und erzeugt einen lokalen `RENDER_LOCKED`-Datensatz mit Git-Commit sowie Source-, Render-Contract-, Caption- und Audio-Hashes.
 
 Nach Final-Render:
 
@@ -112,6 +120,8 @@ Nach Final-Render:
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
+
+Der Finalizer lehnt alte/fremde Render ab, wenn gelockte renderrelevante Inputs geändert wurden. Das Export-Manifest speichert die Provenance und SHA256-Hashes von finalem MP4, Cover und Caption.
 
 ## 7. Globale Produktions-Regressionen
 
@@ -124,10 +134,13 @@ npm run production:contracts
 Der Check schützt unter anderem vor:
 
 - statischen Audio-/Video-Binary-Imports in `Root.tsx`
-- Remote-Media-URLs im Production-Source
+- Remote-Media-URLs im Production-Root
 - Rückkehr alter Caption-Geometrien
-- fehlender Runtime-Audio-Pipeline
-- fehlenden Final-/Voice-/Motion-Gates
+- fehlender PCM-Runtime-Audio-Pipeline
+- fehlenden Final-/Voice-/Motion-/Provenance-Gates
+- bekannten alten Caption-Bottom-Werten in Reel-TS/TSX-Sources
+- direkten Binary-Imports in Reel-Sources
+- `Math.random()` in deterministischem Reel-Source
 
 `npm run repo:verify` führt diesen Produktionsvertrag ebenfalls zuerst aus.
 
