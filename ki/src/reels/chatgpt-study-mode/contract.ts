@@ -5,11 +5,7 @@ export const STUDY_MODE_COMPOSITION_ID = 'KI-ChatGPTStudyMode';
 export const STUDY_MODE_FPS = 30;
 export const STUDY_MODE_WIDTH = 1080;
 export const STUDY_MODE_HEIGHT = 1920;
-
-const resolvedDuration = reelData.format.finalDurationInFrames ?? reelData.format.planningDurationInFrames;
-export const STUDY_MODE_DURATION_IN_FRAMES = resolvedDuration;
-// Backwards-compatible alias while old render scripts are migrated.
-export const STUDY_MODE_PLANNING_DURATION_IN_FRAMES = STUDY_MODE_DURATION_IN_FRAMES;
+export const STUDY_MODE_DURATION_IN_FRAMES = reelData.format.finalDurationInFrames ?? reelData.format.planningDurationInFrames;
 
 export const STUDY_PALETTE = Object.freeze({
   ink: '#102033',
