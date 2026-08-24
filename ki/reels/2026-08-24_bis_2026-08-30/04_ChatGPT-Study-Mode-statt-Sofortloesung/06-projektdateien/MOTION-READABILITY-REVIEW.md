@@ -1,6 +1,6 @@
 # Motion Readability Review — ChatGPT Study Mode
 
-Review-Grundlage: tatsächlich vom Nutzer bereitgestellter Render `KI-ChatGPTStudyMode.mp4`, ca. 40.19 s, bei 1x und als Contact Sheet geprüft.
+Review-Grundlage: tatsächlich vom Nutzer bereitgestellter Render `KI-ChatGPTStudyMode.mp4`, bei 1x und als Contact Sheet geprüft.
 
 STATUS: FAIL
 LIGHT_FIRST: FAIL
@@ -10,6 +10,8 @@ TOO_FAST_BEATS: 3
 SIMULTANEOUS_INFO_OVERLOADS: 2
 MIN_CRITICAL_HOLD_FRAMES: 8
 POST_RENDER_1X_REVIEW: FAIL
+REVIEWED_VIDEO_SHA256: 0e690b36dacb0bc46ba943c203cc11bc40bde2f7c101ca3374320e7385a92298
+REVIEWED_VIDEO_DURATION_SECONDS: 40.192
 
 ## Konkrete Fails
 
@@ -36,4 +38,5 @@ Finalen Nutzen-/Endzustand länger halten.
 - SIMULTANEOUS_INFO_OVERLOADS = 0
 - kritische Holds mindestens 12 Frames
 - neuen Render bei 1x prüfen
-- erst danach `STATUS: PASS` und Validator ausführen
+- neue SHA256 + Dauer eintragen
+- erst danach `STATUS: PASS` und Validator gegen **genau diesen MP4** ausführen
