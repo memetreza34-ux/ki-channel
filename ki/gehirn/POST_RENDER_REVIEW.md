@@ -1,6 +1,6 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
+Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md`, `ki/reels/AGENTS.md` und `ki/skills/motion-readability-light-first/SKILL.md` für **jede** finale Reel-Runde.
 
 Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
 
@@ -26,7 +26,7 @@ Die Animation soll die verfügbare Fläche **nutzen**, statt wie ein kleines Des
 
 ## 3. Caption- und Feed-Sicherheit
 
-Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wurde anhand eines echten veröffentlichten Instagram-Feed-Screenshots des Kanals nach oben korrigiert.
+Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich, sofern der Nutzer keine reel-spezifische Abweichung verlangt.
 
 - Caption standardmäßig mit **`bottom: 520px`** platzieren.
 - Horizontal ungefähr **104px** Abstand links/rechts und bevorzugt maximal **820px** Caption-Breite.
@@ -36,21 +36,44 @@ Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktu
 - Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
 - Neue bedeutungstragende Visuals sollen möglichst bis ungefähr **y≈1240–1280** abgeschlossen sein.
 - Zwischen Hauptvisual und Caption ungefähr `80–120 px` Luft anstreben.
-- Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen; kritischer Caption-Text darf nicht an die rechte Kante gedrängt sein.
-- Wenn viel ungenutzter Weißraum entsteht, Hauptvisual vergrößern/neu komponieren — **niemals Caption nach unten verschieben**.
-- Der technische Clip-Guard um y≈1440 ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
+- Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen.
 
-## 4. Kein langer statischer Sprecherabschnitt
+## 4. Nicht statisch — aber auch nicht gehetzt
 
-Wenn sich die Bedeutung ändert, muss sich auch der sichtbare Zustand ändern.
+Wenn sich die Bedeutung ändert, muss sich der sichtbare Zustand ändern. Gleichzeitig darf ein wichtiger Zustand nicht so schnell vorbeiziehen, dass er nur technisch vorhanden ist.
+
+### Zu langsam / statisch
 
 - Ein bedeutungstragender neuer Satz/Halbsatz darf nicht mehrere Sekunden über einem praktisch unveränderten Bild laufen.
 - Als Review-Warnsignal gilt ungefähr `>2.5 s` neuer Sprecherbedeutung ohne sichtbare Reaktion, sofern es kein bewusstes End-Hold ist.
-- Mögliche Reaktion: Fokuswechsel, Zustandswechsel, Gate, Progression, Verbindung, Auswahl, Bestätigung, Ergebnis oder neue Micro-Animation.
-- Nicht künstlich ständig wackeln lassen. Bewegung muss Bedeutung erklären.
-- End-Hold ist erlaubt, aber erst wenn die inhaltliche Aussage wirklich abgeschlossen ist.
 
-## 5. Schluss muss bis zur letzten Aussage tragen
+### Zu schnell / unlesbar
+
+Ein Reel fällt durch, wenn bei 1x-Geschwindigkeit:
+
+- ein wichtiges Label, eine Card, Zahl oder Statusänderung bereits wieder verschwindet, bevor sie sauber erfasst werden kann
+- mehrere unabhängige neue Informationen gleichzeitig auftauchen und der Blick nicht weiß, wohin zuerst
+- ein Hero-/Payoff-Zustand praktisch keinen Hold hat
+- ein Entrance direkt vom nächsten Entrance überschrieben wird
+- man pausieren oder zurückspulen muss, um einen wichtigen Visual Beat zu verstehen
+
+Richtwert bei 30 fps für kritische Informationszustände: nach Reveal/Settle mindestens ungefähr **12–24 Frames** klar lesbarer Zustand. Hero-Momente meist **18–30 Frames**, sofern Audio/Story es zulassen.
+
+Wenn der Audioabschnitt zu kurz ist: Visualisierung vereinfachen oder Beats neu verteilen. **Nicht** mehrere wichtige Zustände unlesbar beschleunigen.
+
+## 5. Light-First-Kohärenz
+
+Der Standard-Look für zukünftige Reels ist **hell und visuell zusammenhängend**.
+
+- Vollbild-Hintergründe standardmäßig hell: Offwhite, Hellgrau, sehr helles Cyan, Mint, Blau, Creme etc.
+- Akzentfarben dürfen kräftig sein.
+- Dunkle Cards/Objekte innerhalb einer hellen Szene sind erlaubt.
+- Eine einzelne schwarze/dunkelblaue Fullscreen-Szene zwischen hellen Szenen ist ein Stilbruch und fällt durch.
+- Dunkle Fullscreen-Szenen nur bei ausdrücklichem Nutzerwunsch oder zwingender Quelllogik und dann dokumentierte Ausnahme im `MOTION-READABILITY-REVIEW.md`.
+
+Der Contact Sheet muss wie **ein zusammengehöriges Reel** aussehen, nicht wie zwei verschiedene Designsysteme.
+
+## 6. Schluss muss bis zur letzten Aussage tragen
 
 Die letzte Szene darf nicht früh „fertig aussehen“, während noch mehrere Sätze gesprochen werden.
 
@@ -65,7 +88,7 @@ finale Aussage → klarer Endzustand + kurzer Hold
 
 Falls die Schlussanimation bereits lange vor dem Voiceover-Ende im Endzustand steht, zusätzliche **semantische** Micro-Beats bauen oder die Progression neu verteilen.
 
-## 6. Pflicht-Review nach jedem neuen Render
+## 7. Pflicht-Review nach jedem neuen Render
 
 Mindestens prüfen:
 
@@ -74,20 +97,27 @@ Mindestens prüfen:
 - Ende jeder Szene
 - alle relevanten Visual-Beat-Wechsel
 - letzte `8–12 s` besonders dicht
-- normale Wiedergabegeschwindigkeit
+- normale Wiedergabegeschwindigkeit **1x**
 - Smartphone-Größe / kleine Vorschau
-- Feed-Eindruck mit gedanklich reservierter Plattform-UI unten/rechts
+- Feed-Eindruck
 - Caption-Lesbarkeit und Caption-Höhe
-- Caption ungefähr bei `bottom: 520px`, nicht wieder im alten unteren Bereich
-- horizontaler Abstand zur rechten Interaktionsleiste
-- maximal 2 Caption-Zeilen
 - interne Label-Lesbarkeit
 - Animation/Caption-Abstand
 - leere Flächen
 - statische Phasen
+- **zu schnelle Phasen**
+- gestaffelte Reveals statt Informationsstapel
+- ausreichende Holds nach wichtigen Zuständen
+- Light-First-Kohärenz über alle Szenen
 - finalen End-Hold
 
-## 7. Post-Render-Korrekturschleife
+Danach `06-projektdateien/MOTION-READABILITY-REVIEW.md` aktualisieren und ausführen:
+
+```bash
+node ki/scripts/validate-motion-readability-review.mjs <reel-package-dir>
+```
+
+## 8. Post-Render-Korrekturschleife
 
 Wenn der Render einen echten visuellen Fehler zeigt:
 
@@ -102,9 +132,7 @@ Render ansehen
 
 Ein alter Render darf **nicht** als visuelle Freigabe für eine danach geänderte Source verwendet werden.
 
-Das gilt ausdrücklich auch für reine Caption-Positionsänderungen. Nach einer Änderung von `bottom`, horizontalem Inset, Caption-Größe, Zeilenlogik oder Safe-Zone sind frühere Render-/Review-Häkchen nicht mehr gültig.
-
-## 8. Freigabe-Gate
+## 9. Freigabe-Gate
 
 Nicht `approved`, wenn mindestens eines davon zutrifft:
 
@@ -113,13 +141,17 @@ Nicht `approved`, wenn mindestens eines davon zutrifft:
 - wichtige interne Labels zu klein
 - große ungenutzte Fläche trotz kleiner Kernanimation
 - mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
+- ein wichtiger Visual Beat ist bei 1x zu kurz lesbar
+- mehrere unabhängige Informationen erscheinen hektisch gleichzeitig
+- Hero-/Payoff-Zustand hat keinen sinnvollen Hold
+- dunkle Fullscreen-Szene ohne dokumentierte Ausnahme
+- Contact Sheet wirkt wie zwei verschiedene Designsysteme
 - Schluss steht sichtbar zu früh still
-- Caption liegt sichtbar zu tief im Plattform-/Feed-UI-Bereich
-- Caption wurde unter `bottom: 500px` geschoben, um Platz für Visuals zu gewinnen
-- Caption oder kritischer Text liegt zu nah an der rechten Feed-Interaktionsleiste
+- Caption liegt sichtbar im Plattform-/Feed-UI-Bereich
 - Caption und Animation konkurrieren
 - mehr als 2 Caption-Zeilen stehen gleichzeitig sichtbar
-- wichtiger Inhalt wird vom Clip-Guard abgeschnitten
+- wichtiger Inhalt wird abgeschnitten
 - neuer Source-Stand wurde nach letzter visueller Prüfung verändert
+- `MOTION-READABILITY-REVIEW.md` oder dessen Validator ist nicht bestanden
 
-Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung bei sicher lesbarer Caption**.
+Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung bei klarer Lesbarkeit und konsistent hellem Design**.
