@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "reelId": "chatgpt-study-mode",
   "compositionId": "KI-ChatGPTStudyMode",
   "title": "ChatGPT Study Mode statt Sofortlösung",
@@ -11,14 +11,23 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1950,
-    "finalDurationAuthority": "EXACT_DOWNLOADED_VOICEOVER"
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "LOCAL_VOICEOVER_AFTER_WHISPER_LOCK"
+  },
+  "observedUserRender": {
+    "status": "REVIEW_EVIDENCE_ONLY_NOT_CANONICAL_TIMING",
+    "durationSeconds": 40.192,
+    "videoFrames": 1205,
+    "audioDurationSeconds": 40.192,
+    "note": "This proves the old 1950-frame planning contract is stale. Phase 3 must write the exact local-audio timing back into reel.json and subtitle-cues.json before final export."
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
     "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-    "timingAuthority": true,
-    "finalGate": "No final render or export without the exact local audio file and a passed audio gate."
+    "timingAuthority": false,
+    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>",
+    "finalGate": "No final render or export without the exact local audio file, Whisper/Voice-Lock, runtime preparation and a passed audio gate."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
@@ -35,7 +44,7 @@
     "style": "compact_glass_chip"
   },
   "background": {
-    "rule": "FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
+    "rule": "LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
     "footerSplitAllowed": false
   },
   "export": {
@@ -45,11 +54,11 @@
     "requiredPackage": ["video", "cover", "caption", "manifest"]
   },
   "scenes": [
-    {"sceneId":"scene1","title":"Study Mode statt Sofortlösung","startFrame":0,"endFrame":510,"accent":"#18C7D9","heroMoment":"STANDARD answer UI transforms into STUDY MODE learning UI"},
-    {"sceneId":"scene2","title":"Schnell – aber oberflächlich","startFrame":510,"endFrame":900,"accent":"#FF8A34","heroMoment":"instant answer completes while learning meter stays low"},
-    {"sceneId":"scene3","title":"Schritt für Schritt","startFrame":900,"endFrame":1305,"accent":"#20B26B","heroMoment":"single answer breaks apart into guided steps, questions and quiz"},
-    {"sceneId":"scene4","title":"Verstehen statt Kopieren","startFrame":1305,"endFrame":1545,"accent":"#3478F6","heroMoment":"green understanding route overtakes red copy route"},
-    {"sceneId":"scene5","title":"Sinnvoll – nicht perfekt","startFrame":1545,"endFrame":1950,"accent":"#7657E8","heroMoment":"balanced benefit cards lock into final CTA"}
+    {"sceneId":"scene1","title":"Study Mode statt Sofortlösung","startFrame":0,"endFrame":510,"accent":"#18C7D9","heroMoment":"STANDARD answer UI transforms into STUDY MODE learning UI","timingStatus":"PLANNING"},
+    {"sceneId":"scene2","title":"Schnell – aber oberflächlich","startFrame":510,"endFrame":900,"accent":"#FF8A34","heroMoment":"instant answer completes while learning meter stays low","timingStatus":"PLANNING"},
+    {"sceneId":"scene3","title":"Schritt für Schritt","startFrame":900,"endFrame":1305,"accent":"#20B26B","heroMoment":"single answer breaks apart into guided steps, questions and quiz","timingStatus":"PLANNING"},
+    {"sceneId":"scene4","title":"Verstehen statt Kopieren","startFrame":1305,"endFrame":1545,"accent":"#3478F6","heroMoment":"green understanding route overtakes red copy route","timingStatus":"PLANNING"},
+    {"sceneId":"scene5","title":"Sinnvoll – nicht perfekt","startFrame":1545,"endFrame":1950,"accent":"#7657E8","heroMoment":"balanced benefit cards lock into final CTA","timingStatus":"PLANNING"}
   ],
   "sources": [
     "https://help.openai.com/de-de/articles/11780217-chatgpt-study-mode-faq",
