@@ -2,123 +2,140 @@
 
 ## Start here
 
-Vor jeder Arbeit zuerst `REPO-STATE.md` lesen. Bei Dateien unter `ki/` danach `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.
+Vor jeder Arbeit:
 
-Zusätzlich je nach Aufgabe:
+1. `REPO-STATE.md`
+2. bei `ki/` → `ki/AGENTS.md`
+3. `ki/gehirn/MASTER.md`
+4. passende Domäne (`ki/reels/AGENTS.md`, Longform, Plattformen)
+5. named Reel/Source und nächstes `AGENTS.md`
 
-- Reel-Arbeit → `ki/reels/AGENTS.md`
-- Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
+Bei Audio zusätzlich verbindlich: `ki/gehirn/AUDIO_PIPELINE.md`.
 
 ## Mission
 
-Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit Remotion und verteilt freigegebene Short-Form-Master kontrolliert auf YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat. Agenten arbeiten als Produktionsingenieure: bestehende Verträge respektieren, semantisch passende Visualisierung bauen, prüfen und wahrheitsgemäß berichten.
+Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit Remotion. Agenten arbeiten wie Produktionsingenieure: klare Quelle der Wahrheit, semantisch passende Visualisierung, reproduzierbare Pipeline, echte Prüfungen und wahrheitsgemäße Statusmeldungen.
 
 ## Git und Branches
 
 - `main` ist der kanonische Produktionsstand.
-- Historische `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches niemals als aktuelle Wahrheit behandeln, wenn der Nutzer sie nicht ausdrücklich nennt.
-- Für normale Arbeit von `main` einen Arbeitsbranch verwenden.
-- `main` nicht direkt verändern, außer der Nutzer verlangt ausdrücklich Repository-Stabilisierung/Kanonisierung.
-- Keine PRs mergen, schließen oder als ready markieren, außer die Aufgabe umfasst das ausdrücklich.
+- Normale Änderungen auf einem Arbeitsbranch.
+- `main` nicht direkt verändern, außer der Nutzer verlangt ausdrücklich Stabilisierung/Kanonisierung.
+- Historische Branches/PRs sind keine aktuelle Wahrheit.
+- PRs nicht mergen/ready setzen, außer die Aufgabe verlangt es.
 - Keine unrelated Dateien anfassen.
 
-## Verbindliches 3-Phasen-Modell für Reels
+## 3-Phasen-Modell für Reels
 
-### Phase 1 — ChatGPT
+### Phase 1 — Inhalt + Source
 
-Phase 1 liefert die komplette Produktionsgrundlage vor dem Audio:
+Muss enthalten:
 
-- finales Voiceover-Skript
-- zusätzlich reiner Fließtext `VOICEOVER-ZUM-KOPIEREN.txt`
-- Szenen-, Animations- und Caption-Planung
-- Plattform-Copy in `03-caption/platform-copy.md`
-- Bildentscheidung, hochwertige Bildprompts und Asset-Manifest, falls Bilder nötig sind
+- finales Skript + `VOICEOVER-ZUM-KOPIEREN.txt`
+- Szenen-/Animationsplan
+- Caption-Basis
+- Plattform-Copy
+- Bild-/Asset-Entscheidung
 - `reel.json`
-- ausführbare Remotion-Code-Grundlage unter `ki/src/reels/<slug>/`
+- ausführbaren Remotion-Source
 - Composition-Registrierung
-- Content-Grounding und fokussierte Checks
-- klarer `PHASE-STATUS.md`
+- Entertainment-/Motion-Readability-Grundlage
+- klaren `PHASE-STATUS.md`
 
-Fehlendes Voiceover-Audio ist in Phase 1 normal und kein Grund, die Code-Grundlage aufzuschieben.
+Geschätzte Timings sind nur Preview.
 
-### Phase 2 — Mensch
+### Phase 2 — Voiceover beschaffen
 
-Der Mensch erzeugt ausschließlich das echte Voiceover aus dem freigegebenen Fließtext und legt `voiceover.wav` bevorzugt, alternativ `voiceover.mp3`, in `01-script-audio/` ab.
+Voiceover darf **real** auf zwei Arten entstehen:
 
-### Phase 3 — Codex / Antigravity
+1. mit einem tatsächlich verfügbaren Voice-/TTS-Tool im selben Auftrag, oder
+2. durch Nutzer/Mensch.
 
-Phase 3 beginnt erst mit echtem Audio. Der Agent:
+Wenn Audio bereits real per Tool erzeugt wurde, muss nicht künstlich auf einen Human-only-Schritt gewartet werden.
 
-- verwendet die vorhandene Phase-1-Source
-- integriert Audio
-- misst reale Dauer
-- synchronisiert Captions/Timing
-- führt Struktur-, TypeScript- und fokussierte Tests aus
-- rendert und prüft Smoke-Frames
-- rendert erst danach das finale MP4
-- prüft das finale Video technisch und visuell
+Verbindlich ist `ki/gehirn/AUDIO_PIPELINE.md`:
 
-Fehlt Audio, mit `PHASE 2 AUDIO FEHLT` stoppen. Kein Audio erfinden und das Reel nicht von Null neu bauen.
+- Remote-/Provider-URL nur als Provenance
+- echtes Audio lokal am kanonischen `audio.targetFile`
+- keine Render-Time-Netzwerkquelle
+- vor Render `prepare-reel-audio.mjs`
+
+### Phase 3 — Sync, Review, Render, Export
+
+Mit lokalem Audio:
+
+- reale Dauer messen
+- Whisper/Voice-Lock
+- Szenen/Captions/Visual Beats an echtes Audio anpassen
+- TypeScript/fokussierte Tests
+- Smoke-/Hero-/Contact-Sheet-Review
+- Motion-Readability bei 1x
+- final rendern
+- Audio-/Video-Gate
+- vollständiges `05-export/`-Paket
+
+Fehlt das lokale Audio: `PHASE 2 AUDIO FEHLT` bzw. bei bereits dokumentierter Tool-Generation `AUDIO DOWNLOAD/PREP FEHLT`.
 
 ## Autoritative Reel-Dateien
 
-Wenn vorhanden, gelten in dieser Reihenfolge:
+Wenn vorhanden, gilt grob:
 
 1. `06-projektdateien/PHASE-STATUS.md`
 2. `06-projektdateien/reel.json`
-3. `01-script-audio/voiceover.md`
-4. `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
-5. `06-projektdateien/scene-plan.md`
-6. `06-projektdateien/animation-plan.md`
+3. `01-script-audio/voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
+4. `01-script-audio/audio-source.json` (nur Provenance)
+5. `scene-plan.md`
+6. `animation-plan.md`
 7. `03-caption/subtitle-cues.json`
 8. `03-caption/platform-copy.md`
-9. `02-bilder/asset-manifest.json`
-10. `02-bilder/image-prompts.md`, wenn Bilder benötigt werden
-11. `06-projektdateien/CODEX_ASSEMBLY_TASK.md`
-12. `06-projektdateien/review-checklist.md`
+9. Asset-Manifest/Prompts
+10. `ENTERTAINMENT-REVIEW.md`
+11. `MOTION-READABILITY-REVIEW.md`
+12. Assembly-/Review-Dateien
 
-Widersprüche nicht still auflösen. Höher priorisierte Quelle erhalten und den Konflikt an der Ursache korrigieren.
-
-## Publishing-Regel
-
-Plattformordner sind Packaging, keine zweite Produktionswahrheit. Kein zweites Skript, `reel.json` oder Remotion-Projekt nur für YouTube/TikTok/Instagram/Facebook/Snapchat anlegen.
-
-Short-Form-Master bleibt unter `ki/reels/`. Plattform-spezifische Copy gehört in `03-caption/platform-copy.md`.
-
-YouTube Longform ist ein separates Format und darf nicht automatisch aus einem Short künstlich verlängert werden.
-
-Zeitabhängige Plattformlimits oder Monetarisierungsregeln bei konkreter Veröffentlichung aktuell prüfen.
+Widersprüche nicht still übergehen; an der Ursache korrigieren.
 
 ## Remotion-Regeln
 
-- deterministisch: `useCurrentFrame()`, `interpolate()`, `spring()`, `Sequence`
+- deterministisch: `useCurrentFrame`, `interpolate`, `spring`, `Sequence`
 - kein `Math.random()` im Render
-- keine Render-Time-Netzwerkaufrufe oder Downloads
-- Assets über Repository/staticFile-Pfade
-- direkte Frame-Seeks müssen funktionieren
-- Hard Cut ist Standard; Übergang nur bei echter semantischer Kontinuität
-- eine dominante erklärende Bewegung pro Satz, maximal drei starke Bewegungen gleichzeitig
+- **keine Render-Time-Netzwerkdownloads**
+- lokale Runtime-Medien über vorbereitete `public/`-Assets / `staticFile`
+- Hard Cut nur, wenn keine bessere semantische Transition nötig ist
+- High Energy bedeutet nicht High Speed
+- wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
 - keine Demo-Zahlen als Fakten
-- keine vollständige Library-Animation zweimal im selben Reel
+- keine internen Regie-/Goal-Texte sichtbar
 
-## Text-Hierarchie
+## Text-/Layout-Hierarchie
 
-- Überschrift: 3–7 Wörter, ordnet die Szene ein
-- Caption: gesprochener Text
-- Animationstext: nur kurze Objekt-/Zustandslabels
-- Animation: zeigt Mechanismus oder Zustandsänderung
+- Überschrift: kurz, ordnet ein
+- Caption: gesprochener Inhalt, Voice-Locked
+- Animationstext: kurze Objekt-/Zustandslabels
+- Animation: zeigt Mechanismus
 
-Interne `goal`, `communicationGoal`, Debug- oder Regietexte dürfen nie im finalen Video sichtbar werden. Sprechertext nicht zusätzlich als langen Untertitel oben oder innerhalb der Animation duplizieren.
+Caption-Geometrie ausschließlich aus `ki/src/reels/captionSafe.ts` / `CAPTION_SAFE_POSITION.md`.
 
-## Bildregeln
+## Medien-Wahrheit
 
-`ki/BILDSTIL.md` ist verbindlich. Bilder werden nur eingesetzt, wenn sie die Aussage besser erklären als reine Remotion-Grafik. Generierte Bilder enthalten keine Überschrift, keine Untertitel, keine Wasserzeichen und keine langen Texte. Sichtbare Bildlabels sind selten, kurz und deutsch; Prompt-Text ist standardmäßig Englisch für Modellpräzision.
+**Erlaubt:** Medien tatsächlich mit einem verfügbaren Tool erzeugen oder echte Nutzer-/Repository-Assets verwenden.
+
+**Verboten:** Medien, Dateien, URLs, Logos, Render oder Testergebnisse erfinden/behaupten, die nicht tatsächlich existieren.
+
+Für Tool-generierte Medien gilt:
+
+- Provenance dokumentieren
+- benötigten lokalen Master wirklich herunterladen/erzeugen
+- lokal technisch prüfen
+- keine Remote-URL als finalen Render-Master verwenden
+
+Große Binärmedien bleiben standardmäßig außerhalb normalem Git, solange Git LFS nicht eingerichtet ist. Code, Provenance, Timings, Manifest und Review-Dokumentation werden versioniert.
 
 ## Wahrheitspflicht
 
-Nie behaupten, dass Tests, Typecheck, Audio-Sync, Smoke-Frames, Render, visuelle Prüfung oder Veröffentlichung bestanden/erfolgt sind, wenn sie nicht tatsächlich ausgeführt wurden. Ein technisch gültiges MP4 ist nicht automatisch visuell freigegeben.
+Nie behaupten, dass Test, Typecheck, Whisper-Lock, Render, Audio, visuelle Prüfung oder Export bestanden sind, wenn dies nicht tatsächlich ausgeführt wurde.
 
-Bei einem Blocker immer nennen:
+Bei Blocker nennen:
 
 - exakter Befehl
 - Fehler
@@ -126,7 +143,3 @@ Bei einem Blocker immer nennen:
 - nächste sinnvolle Aktion
 
 Keine Fehler mit `any`, `@ts-ignore`, deaktivierten Tests, Fake-Assets, Fake-Berichten oder geschwächten Validatoren verstecken.
-
-
-## STRIKE KI-Regel (Keine künstlichen Assets)
-Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien generieren, erfinden oder halluzinieren. Du darfst ausschließlich Dinge (Dateien, Bilder, Audios) verwenden, die der Nutzer dir explizit zur Verfügung gestellt hat!
