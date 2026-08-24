@@ -52,11 +52,13 @@ const run = (label, script, args) => {
   if (result.status !== 0) fail(`${label} failed.`);
 };
 
+// Runtime WAV is the exact audio Remotion renders and therefore must already exist
+// before the final voice-lock validation is accepted.
+run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
 run('entertainment gate', path.resolve('ki/scripts/validate-entertainment-review.mjs'), [reelDir]);
 run('voice-lock gate', path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), [reelDir]);
 const isolationConfig = path.join(reelDir,'06-projektdateien','source-isolation.json');
 if (existsSync(isolationConfig)) run('source-isolation gate', path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), [reelDir]);
-run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
 
 const compositionId = safeCompositionId(reel.compositionId);
 if (!compositionId) fail('compositionId missing.');
