@@ -1,9 +1,9 @@
 import React from 'react';
 import {BookOpenCheck, BrainCircuit, GraduationCap, HelpCircle, Sparkles} from 'lucide-react';
 import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
+import {REEL_CAPTION_GLASS_STYLE, REEL_CAPTION_SAFE, REEL_CAPTION_WRAPPER_STYLE} from '../captionSafe';
 import {BalancedEndingVisual, GuidedStepsVisual, InstantAnswerVisual, StudySwitchVisual, UnderstandPathVisual} from './Visuals';
 import {STUDY_MODE_SCENES, STUDY_MODE_SUBTITLES, STUDY_PALETTE as C, type StudyCue, type StudyScene} from './contract';
-import {STUDY_MODE_GENERATED_VOICEOVER_URL} from './audio';
 
 const visualByScene: Record<StudyScene['sceneId'], React.FC> = {
   scene1: StudySwitchVisual,
@@ -51,8 +51,8 @@ const Captions: React.FC = () => {
     interpolate(frame,[cue.endFrame-3,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),
   );
   const accent=scene?.accent??C.purple;
-  return <div style={{position:'absolute',left:104,right:104,bottom:250,zIndex:220,display:'flex',justifyContent:'center',opacity:alpha,pointerEvents:'none'}}>
-    <div style={{width:'100%',maxWidth:860,textAlign:'center',fontFamily:FONT,fontSize:44,fontWeight:880,lineHeight:1.16,letterSpacing:-.55,color:C.ink,background:'rgba(255,255,255,.60)',border:'1px solid rgba(255,255,255,.66)',borderRadius:26,padding:'15px 22px 17px',boxShadow:'0 12px 34px rgba(16,32,51,.11)',backdropFilter:'blur(12px)',textShadow:'0 1px 2px rgba(255,255,255,.55),0 8px 24px rgba(16,32,51,.10)'}}>
+  return <div style={{...REEL_CAPTION_WRAPPER_STYLE,opacity:alpha}}>
+    <div style={{...REEL_CAPTION_GLASS_STYLE,fontFamily:FONT,fontSize:44,fontWeight:880,lineHeight:1.16,letterSpacing:-.55,color:C.ink,textShadow:'0 1px 2px rgba(255,255,255,.55),0 8px 24px rgba(16,32,51,.10)'}}>
       {words.map((word,index)=><React.Fragment key={`${cue.id}-${index}`}><span style={{display:'inline-block',color:index===active?accent:C.ink,transform:`scale(${index===active?1.045:1})`}}>{word}</span>{index<words.length-1?' ':null}</React.Fragment>)}
     </div>
   </div>;
@@ -63,12 +63,20 @@ const SceneLayer: React.FC<{scene:StudyScene}> = ({scene}) => {
   return <AbsoluteFill><Visual/><SceneHeader scene={scene}/></AbsoluteFill>;
 };
 
-export type ReelChatGPTStudyModeProps = {voiceoverSrc?:string;showCaptions?:boolean};
+export type ReelChatGPTStudyModeProps = {voiceoverSrc:string;showCaptions?:boolean};
 
-export const ReelChatGPTStudyMode: React.FC<ReelChatGPTStudyModeProps> = ({voiceoverSrc=STUDY_MODE_GENERATED_VOICEOVER_URL,showCaptions=true}) => (
-  <AbsoluteFill style={{background:C.cloud,color:C.ink,fontFamily:FONT,overflow:'hidden'}}>
-    {STUDY_MODE_SCENES.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`STUDY-${scene.sceneId}`}><SceneLayer scene={scene}/></Sequence>)}
-    <Html5Audio src={voiceoverSrc}/>
-    {showCaptions?<Captions/>:null}
-  </AbsoluteFill>
-);
+export const ReelChatGPTStudyMode: React.FC<ReelChatGPTStudyModeProps> = ({voiceoverSrc,showCaptions=true}) => {
+  if (!voiceoverSrc?.trim()) {
+    throw new Error('KI-ChatGPTStudyMode requires a verified local voiceoverSrc. Production renders may not run silently or from a remote audio URL.');
+  }
+
+  return (
+    <AbsoluteFill style={{background:C.cloud,color:C.ink,fontFamily:FONT,overflow:'hidden'}}>
+      {STUDY_MODE_SCENES.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`STUDY-${scene.sceneId}`}><SceneLayer scene={scene}/></Sequence>)}
+      <Html5Audio src={voiceoverSrc}/>
+      {showCaptions?<Captions/>:null}
+    </AbsoluteFill>
+  );
+};
+
+export const STUDY_MODE_CAPTION_BOTTOM = REEL_CAPTION_SAFE.bottom;
