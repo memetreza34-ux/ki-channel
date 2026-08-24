@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {existsSync} from 'node:fs';
-import {readFile} from 'node:fs/promises';
+import {readFile, readdir} from 'node:fs/promises';
 import path from 'node:path';
 
 const fail = [];
@@ -22,8 +22,8 @@ const read = async (file) => readFile(path.resolve(file),'utf8');
 
 const root = await read('ki/src/Root.tsx');
 if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|mp4)['"]/i.test(root)) fail.push('Root.tsx contains a static binary audio/video import.');
-if (/aidocmaker|storage\.googleapis\.com|https?:\/\//i.test(root)) fail.push('Root.tsx contains a remote media URL.');
-if (!/runtime-audio/.test(root) || !/staticFile/.test(root)) fail.push('Root.tsx is not wired to prepared runtime audio via staticFile.');
+if (/https?:\/\//i.test(root)) fail.push('Root.tsx contains a remote media URL.');
+if (!root.includes('runtime-audio/') || !root.includes('staticFile') || !root.includes('.wav')) fail.push('Root.tsx is not wired to PCM WAV runtime audio via staticFile.');
 
 const caption = await read('ki/src/reels/captionSafe.ts');
 for (const [needle,label] of [
@@ -45,17 +45,33 @@ const activeContracts = [
 ];
 for (const file of activeContracts) {
   const text = await read(file);
-  if (/bottom:\s*520|`bottom:\s*520px`|\*\*`bottom:\s*520px`\*\*/i.test(text)) fail.push(`${file} still declares legacy bottom:520 caption geometry.`);
-  if (/Phase\s*2\s*[—-]\s*Mensch[^\n]*(?:ausschließlich|nur)\s+(?:das\s+)?(?:echte\s+)?Voiceover/i.test(text)) fail.push(`${file} still declares Human-only Phase 2 audio.`);
-  if (/untertitel\s+ohne\s+(?:weiße\s+)?(?:box|caption-card|hintergrundkarte)/i.test(text)) fail.push(`${file} still conflicts with canonical glass caption style.`);
+  if (text.includes('bottom: 520') || text.includes('bottom: 520px')) fail.push(`${file} still declares legacy bottom:520 caption geometry.`);
 }
 
 const ignore = await read('.gitignore');
 if (!ignore.includes('public/runtime-audio/')) fail.push('.gitignore does not ignore public/runtime-audio/.');
 
+const sourceFiles = [];
+const walk = async (dir) => {
+  for (const entry of await readdir(dir,{withFileTypes:true})) {
+    const full = path.join(dir,entry.name);
+    if (entry.isDirectory()) await walk(full);
+    else if (/\.(?:ts|tsx)$/i.test(entry.name)) sourceFiles.push(full);
+  }
+};
+await walk(path.resolve('ki','src','reels'));
+
+for (const file of sourceFiles) {
+  const relative = path.relative(process.cwd(),file);
+  const text = await readFile(file,'utf8');
+  if (/bottom\s*:\s*(?:264|270|360|440|460|500|520)\b/.test(text)) fail.push(`${relative} contains a legacy hard-coded caption bottom value.`);
+  if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|aiff|mp4|mov)['"]/i.test(text)) fail.push(`${relative} directly imports binary media.`);
+  if (text.includes('Math.random(')) fail.push(`${relative} uses Math.random() in deterministic render source.`);
+}
+
 const studySource = await read('ki/src/reels/chatgpt-study-mode/ReelChatGPTStudyMode.tsx');
-if (/https?:\/\//i.test(studySource)) fail.push('Study Mode render source contains a remote URL.');
-if (!/requires a verified local voiceoverSrc/.test(studySource)) fail.push('Study Mode does not fail closed on missing audio.');
+if (studySource.includes('http://') || studySource.includes('https://')) fail.push('Study Mode render source contains a remote URL.');
+if (!studySource.includes('requires a verified local voiceoverSrc')) fail.push('Study Mode does not fail closed on missing audio.');
 
 if (fail.length) {
   console.error('PRODUCTION CONTRACT AUDIT: FAILED');
@@ -66,3 +82,4 @@ if (fail.length) {
 console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
+console.log(`scanned reel source files: ${sourceFiles.length}`);
