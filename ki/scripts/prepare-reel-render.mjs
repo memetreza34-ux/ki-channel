@@ -4,7 +4,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
-import {getGitState, renderLockPath, resolveSourceDir, runtimeAudioPath, safeCompositionId, sha256Directory, sha256File} from './lib/render-provenance.mjs';
+import {getGitState, renderContractSha256, renderLockPath, resolveSourceDir, runtimeAudioPath, safeCompositionId, sha256Directory, sha256File} from './lib/render-provenance.mjs';
 
 const rawReelDir = process.argv[2];
 if (!rawReelDir) {
@@ -82,7 +82,8 @@ const lock = {
   sourceDir,
   hashes: {
     sourceTreeSha256: await sha256Directory(absoluteSourceDir),
-    reelJsonSha256: await sha256File(reelPath),
+    renderContractSha256: renderContractSha256(reel),
+    reelJsonSha256AtLock: await sha256File(reelPath),
     captionJsonSha256: await sha256File(captionPath),
     canonicalAudioSha256: await sha256File(canonicalAudio),
     runtimeAudioSha256: await sha256File(runtimeAudio),
@@ -96,5 +97,6 @@ console.log(`compositionId: ${compositionId}`);
 console.log(`final duration: ${finalDuration} frames / ${(finalDuration/fps).toFixed(3)} s`);
 console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
+console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
 console.log('Production render may now use the registered composition and prepared runtime WAV.');
