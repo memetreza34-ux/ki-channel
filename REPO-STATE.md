@@ -1,42 +1,38 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-16
+**Status:** 2026-08-24
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
 ## 1. Kanonischer Branch
 
-`main` ist der einzige kanonische Produktionsstand.
+`main` bleibt der einzige kanonische Produktionsstand.
 
-Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
+Aktuelle Stabilisierung läuft in:
 
-Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
+- Branch: `fix/repo-stabilisierung-2026-08-24`
+- Draft-PR: **#28**, direkt gegen `main`
+
+Wichtig: Die Änderungen dieses Branches werden erst nach einem späteren Merge kanonischer `main`-Stand. Die früher gestapelten Draft-PRs #26 und #27 sind als **SUPERSEDED** geschlossen; ihre Branches sind nur Historie.
+
+Neue normale Arbeiten starten nach der Stabilisierung wieder von `main` auf einem neuen Arbeitsbranch.
 
 ## 2. Verbindliche Lesereihenfolge
-
-Bei KI-Kanal-Arbeit gilt:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
 3. `ki/AGENTS.md`
 4. `ki/gehirn/MASTER.md`
-5. danach die passende Domäne:
-   - Reel-Arbeit → `ki/reels/AGENTS.md`
-   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
-   - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
-6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
-7. erst danach konkrete Pläne, Source- oder Plattformdateien
+5. passende Domäne:
+   - Reels → `ki/reels/AGENTS.md`
+   - Audio → `ki/gehirn/AUDIO_PIPELINE.md`
+   - Longform → `ki/youtube-longform/AGENTS.md`
+   - Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
+6. named Produktionspaket + dessen Source-Vertrag
 
-Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
+Ältere PR-Beschreibungen, historische Branches und alte Layoutwerte überschreiben diese Reihenfolge nicht.
 
-- Reels → `ki/src/reels/AGENTS.md`
-- Longform → `ki/src/longform/AGENTS.md`
-
-Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
-
-## 3. Kanonische Short-Form-Produktionsstruktur
-
-Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
+## 3. Short-Form-Struktur
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -49,119 +45,150 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Ausführbarer Remotion-Code liegt getrennt hier:
+Ausführbarer Remotion-Code:
+
+`ki/src/reels/<slug>/`
+
+Planung und ausführbarer Source bleiben getrennt.
+
+## 4. Produktionsphasen
+
+### Phase 1 — Inhalt + Source
+
+Skript, Visual Beats, Source, Preview-Captions, Plattform-Copy, Assets, Entertainment-Review und Motion-Review-Datei vorbereiten.
+
+### Phase 2 — reales Voiceover beschaffen
+
+Voiceover darf tatsächlich:
+
+1. mit einem verfügbaren Voice-/TTS-Tool erzeugt werden, oder
+2. durch Nutzer/Mensch bereitgestellt werden.
+
+Remote-/Provider-URL ist nur Provenance. Finaler Audio-Master muss lokal vorliegen.
+
+### Phase 3 — Audio-Lock + Render + Export
 
 ```text
-ki/src/reels/<slug>/
+lokales Audio
+→ ffprobe
+→ präzise Wort-Timestamps / Voice-Lock
+→ finale Szenen + finalDurationInFrames
+→ prepare-reel-render.mjs
+→ Tests / Smoke / Contact Sheet
+→ Final-Render
+→ 1x Motion-Review für exakt diesen MP4
+→ Finalizer
+→ Export-Package-Validator
+→ finales Video ansehen + anhören
 ```
 
-Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
+## 5. Kanonische Audio-Pipeline
 
-## 4. Kanonische YouTube-Longform-Struktur
+Einzige Audio-Wahrheit: `ki/gehirn/AUDIO_PIPELINE.md`.
 
-YouTube Longform ist seit 2026-08-16 als eigenes Produktionsformat aktiv.
+Vor Production-Render:
 
-Produktionspakete liegen hier:
+```bash
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
+```
+
+Dieser Preflight erzwingt final gelockte Szenen/Dauer, Voice-Lock und lokalen Audio-Master und erzeugt das ignorierte Runtime-Asset:
+
+`public/runtime-audio/<compositionId>.mp3`
+
+`ki/src/Root.tsx` verwendet diese lokalen Runtime-Assets über `staticFile`. Keine statischen Imports auf ignorierte Reel-Audio-Binaries und keine Render-Time-TTS-/CDN-URLs.
+
+## 6. Kanonische Caption-Geometrie
+
+Einzige Quelle:
+
+- `ki/gehirn/CAPTION_SAFE_POSITION.md`
+- `ki/src/reels/captionSafe.ts`
+
+Für 1080×1920 aktuell:
+
+- `bottom: 250px`
+- `104px` horizontaler Inset
+- `860px` max width
+- max. 2 Zeilen
+- halbtransparente Glass-/Blur-Overlay-Caption
+- Fullscreen-Hintergrund bleibt durchgehend
+- kein separater weißer Footer / kein zweiter Hintergrund
+
+Alte 520px-/boxless-Regeln sind nicht mehr kanonisch.
+
+## 7. Visual-/Motion-Standard
+
+- Light-First
+- Product/UI-first bei konkreten Apps/Features
+- Fullscreen-Komposition
+- Setup → Aktion → Konsequenz → Payoff
+- Hero-Moment pro Szene
+- High Energy ≠ High Speed
+- wichtige Zustände: Reveal → Settle → Readable Hold
+- 1–2 neue unabhängige Informationsobjekte gleichzeitig
+- dunkle Fullscreen-Szenen nur als dokumentierte Ausnahme
+
+Der Motion-Review muss zum **exakten finalen MP4** gehören: SHA256 + Dauer werden validiert.
+
+## 8. Finaler Export
+
+Ein Reel ist nicht fertig bei `render complete`.
+
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+```
+
+Der Finalizer führt erneut Entertainment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates aus.
+
+Kanonisches lokales Endpaket:
 
 ```text
-ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-visuals/
-├── 03-thumbnail/
-├── 04-metadata/
-├── 05-export/
-└── 06-projektdateien/
+05-export/
+├── <compositionId>.mp4
+├── <compositionId>-cover.png
+├── <compositionId>-caption.txt
+└── <compositionId>-export-manifest.json
 ```
 
-Ausführbarer Source:
+## 9. Git-/Medienstrategie
 
-```text
-ki/src/longform/<slug>/
-```
+Git versioniert reproduzierbare Produktionswahrheit:
 
-Aktive Startvorgabe:
+- Source
+- Skripte
+- Provenance
+- Timing-/Whisper-Daten
+- Contracts
+- Reviews
+- Manifest/Metadaten
 
-- 1920 × 1080
-- 30 FPS
-- 16:9
-- finale Laufzeit nach echtem Voiceover: 5:00–6:00 Minuten
-- `REMOTION_NATIVE_MAXIMUM`
-- Thumbnail als eigene Composition
+Große MP4/WAV/MP3/PNG-Dateien bleiben standardmäßig lokal bzw. in Artifact-Storage, solange Git LFS nicht eingerichtet ist. `.gitignore` und Produktionsregeln sind darauf abgestimmt.
 
-Aktives erstes Video:
+## 10. Aktiver Study-Mode-Status
 
-```text
-ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
-```
+Der reale bereitgestellte Study-Mode-Render (~40.192 s) ist **Review-Evidence, nicht Finalfreigabe**.
 
-Video-Composition: `KI-Longform-AIAppWorkflow`
-Thumbnail-Composition: `KI-Longform-AIAppWorkflow-Thumbnail`
+Aktuell dokumentierte Fails:
 
-## 5. Plattform-/Publishing-Struktur
+- mehrere Beats zu schnell
+- Informationsstapel in Szene 2/3
+- eine unerwünschte dunkle Fullscreen-Szene
+- Schluss-Hold zu kurz
 
-Plattformlogik liegt hier:
+`MOTION-READABILITY-REVIEW.md` bleibt deshalb korrekt auf `FAIL`, bis ein neuer aktueller Render diese Punkte behebt.
 
-```text
-ki/plattformen/
-├── youtube/
-├── instagram/
-├── tiktok/
-├── facebook/
-└── snapchat/
-```
+## 11. Bekannte externe / noch ungeprüfte Punkte
 
-Diese Ordner enthalten **Publishing-Regeln und Templates, keine zweite Produktionswahrheit**.
+- GitHub Actions/Runner waren zuletzt auf Konto-/Billing-Ebene eingeschränkt; kein CI-Run ist deshalb automatisch Qualitätsbeweis.
+- Ein kanonisches `package-lock.json` ist noch nicht erzeugt. Kein erfundener Lockfile-Inhalt committen.
+- Nach dieser Stabilisierung sind vollständiger frischer `npm install`, Repo-Typecheck, Vitest und Remotion-Bundle **noch tatsächlich auszuführen**, bevor PR #28 merge-ready werden darf.
+- `ki/scripts/validate-production-contracts.mjs` wurde als Regression-Check angelegt; auch dieser muss in einem echten Checkout ausgeführt werden, bevor sein PASS behauptet wird.
 
-Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Plattform-spezifische Copy eines Reels gehört nach:
+## 12. Statusbegriffe
 
-```text
-03-caption/platform-copy.md
-```
-
-YouTube Longform ist ein separates Format unter `ki/youtube-longform/` und wird nicht automatisch aus Reels erzeugt.
-
-Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
-
-## 6. Verbindliches 3-Phasen-Modell
-
-Für Short-Form und Longform gilt derselbe Verantwortungsrahmen:
-
-```text
-PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen/Kapitel + Visual Beats + Visual-/Asset-Entscheidungen + Packaging + Remotion-Code-Grundlage + Checks
-
-PHASE 2 — Mensch
-nur das echte Voiceover erzeugen und in 01-script-audio ablegen
-
-PHASE 3 — Codex / Antigravity
-Audio integrieren + echte Timeline synchronisieren + Tests + Smoke-Review + Final-Render + Export
-```
-
-Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Format nicht neu von Null.
-
-Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
-
-## 7. Verbindliche visuelle Identität
-
-- Short-Form standardmäßig 1080 × 1920 / 30 FPS
-- Longform aktuell 1920 × 1080 / 30 FPS
-- heller editorialer Look
-- dunkle Schrift
-- Marken-Lila `#B98CFF` als primärer Akzent
-- dunkles Lila `#6E45C9` für Tiefe/Kontrast
-- faceless, keine erkennbaren Gesichter
-- keine Cyberpunk-/Neon-Standardästhetik
-- `REMOTION_NATIVE_MAXIMUM`: sichtbare Inhalte so weit wie technisch und gestalterisch sinnvoll in React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- externe Bilder nur als begründete Ausnahme; keine erfundenen Assets
-- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
-- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
-
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`, `ki/reels/REMOTION_NATIVE_VISUALS_MAXIMUM.md`.
-
-## 8. Statusbegriffe niemals vermischen
-
-Diese Zustände sind getrennt:
+Diese Zustände niemals vermischen:
 
 ```text
 geplant
@@ -173,11 +200,4 @@ freigegeben
 veröffentlicht
 ```
 
-Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. `veröffentlicht` bedeutet nicht automatisch `fachlich freigegeben`, wenn der Freigabeprozess übersprungen wurde.
-
-## 9. Bekannte externe Einschränkungen
-
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
-
-Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
+Nur tatsächlich ausgeführte Prüfungen als bestanden melden.
