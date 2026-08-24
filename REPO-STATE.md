@@ -6,33 +6,39 @@ Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- o
 
 ## 1. Kanonischer Branch
 
-`main` bleibt der einzige kanonische Produktionsstand.
+`main` ist der einzige kanonische Produktionsstand.
 
-Aktuelle Stabilisierung läuft in:
+Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
 
-- Branch: `fix/repo-stabilisierung-2026-08-24`
-- Draft-PR: **#28**, direkt gegen `main`
+Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
 
-Wichtig: Die Änderungen dieses Branches werden erst nach einem späteren Merge kanonischer `main`-Stand. Die früher gestapelten Draft-PRs #26 und #27 sind als **SUPERSEDED** geschlossen; ihre Branches sind nur Historie.
-
-Neue normale Arbeiten starten nach der Stabilisierung wieder von `main` auf einem neuen Arbeitsbranch.
+Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main`. Die älteren gestapelten Draft-PRs #26 und #27 sind superseded und geschlossen.
 
 ## 2. Verbindliche Lesereihenfolge
+
+Bei KI-Kanal-Arbeit gilt:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
 3. `ki/AGENTS.md`
 4. `ki/gehirn/MASTER.md`
-5. passende Domäne:
-   - Reels → `ki/reels/AGENTS.md`
-   - Audio → `ki/gehirn/AUDIO_PIPELINE.md`
-   - Longform → `ki/youtube-longform/AGENTS.md`
-   - Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
-6. named Produktionspaket + dessen Source-Vertrag
+5. danach die passende Domäne:
+   - Reel-Arbeit → `ki/reels/AGENTS.md`
+   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
+   - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
+6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
+7. erst danach konkrete Pläne, Source- oder Plattformdateien
 
-Ältere PR-Beschreibungen, historische Branches und alte Layoutwerte überschreiben diese Reihenfolge nicht.
+Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
 
-## 3. Short-Form-Struktur
+- Reels → `ki/src/reels/AGENTS.md`
+- Longform → `ki/src/longform/AGENTS.md`
+
+Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
+
+## 3. Kanonische Short-Form-Produktionsstruktur
+
+Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -45,46 +51,52 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Ausführbarer Remotion-Code:
-
-`ki/src/reels/<slug>/`
-
-Planung und ausführbarer Source bleiben getrennt.
-
-## 4. Produktionsphasen
-
-### Phase 1 — Inhalt + Source
-
-Skript, Visual Beats, Source, Preview-Captions, Plattform-Copy, Assets, Entertainment-Review und Motion-Review-Datei vorbereiten.
-
-### Phase 2 — reales Voiceover beschaffen
-
-Voiceover darf tatsächlich:
-
-1. mit einem verfügbaren Voice-/TTS-Tool erzeugt werden, oder
-2. durch Nutzer/Mensch bereitgestellt werden.
-
-Remote-/Provider-URL ist nur Provenance. Finaler Audio-Master muss lokal vorliegen.
-
-### Phase 3 — Audio-Lock + Render + Export
+Ausführbarer Remotion-Code liegt getrennt hier:
 
 ```text
-lokales Audio
-→ ffprobe
-→ präzise Wort-Timestamps / Voice-Lock
-→ finale Szenen + finalDurationInFrames
-→ prepare-reel-render.mjs
-→ Tests / Smoke / Contact Sheet
-→ Final-Render
-→ 1x Motion-Review für exakt diesen MP4
-→ Finalizer
-→ Export-Package-Validator
-→ finales Video ansehen + anhören
+ki/src/reels/<slug>/
 ```
 
-## 5. Kanonische Audio-Pipeline
+Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
 
-Einzige Audio-Wahrheit: `ki/gehirn/AUDIO_PIPELINE.md`.
+## 4. Produktions-Audio
+
+Short-Form-Production verwendet eine lokale, deterministische Runtime-Audiospur:
+
+```text
+public/runtime-audio/<compositionId>.wav
+```
+
+Sie wird vor dem Render aus dem kanonischen lokalen Voiceover-Master erzeugt. Remotion lädt kein Voiceover während des Renders aus dem Netz. Die Runtime-Datei ist 48-kHz-Stereo-PCM-WAV, um ein zweites verlustbehaftetes MP3-Encoding und Encoder-Delay zu vermeiden.
+
+Kanonische Details: `ki/gehirn/AUDIO_PIPELINE.md`.
+
+## 5. Kanonische Caption-Geometrie
+
+Für neue 1080×1920-Production-Reels gilt als aktueller gemeinsamer Standard:
+
+- `bottom: 250`
+- `horizontalInset: 104`
+- `maxWidth: 860`
+- maximal 2 Zeilen
+- Glass-/Blur-Overlay statt separatem Footer
+- Fullscreen-Szenenhintergrund läuft hinter der Caption weiter
+- echte Feed-/Smartphone-Prüfung bleibt Pflicht
+
+Quelle: `ki/src/reels/captionSafe.ts` + `ki/gehirn/CAPTION_SAFE_POSITION.md`.
+
+## 6. Verbindliches Produktionsmodell
+
+```text
+PHASE 1 — ChatGPT
+Idee + Fakten + Skript + Copy-Text + Szenen + Visual Beats + Source + Preview-Timing
+
+PHASE 2 — Audio
+reales Voiceover: tatsächlich per verfügbarem Voice-Tool erzeugt oder vom Nutzer bereitgestellt
+
+PHASE 3 — Codex / Antigravity
+lokales Audio + Voice-Lock + finale Szenengrenzen + Pre-Render-Gate + Render + 1x-Review + Final-Gates + Export
+```
 
 Vor Production-Render:
 
@@ -92,103 +104,49 @@ Vor Production-Render:
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Preflight erzwingt final gelockte Szenen/Dauer, Voice-Lock und lokalen Audio-Master und erzeugt das ignorierte Runtime-Asset:
+Dieser Schritt blockiert geschätzte Plan-Timings als Finalzustand und bereitet die lokale Runtime-Audiospur vor.
 
-`public/runtime-audio/<compositionId>.mp3`
-
-`ki/src/Root.tsx` verwendet diese lokalen Runtime-Assets über `staticFile`. Keine statischen Imports auf ignorierte Reel-Audio-Binaries und keine Render-Time-TTS-/CDN-URLs.
-
-## 6. Kanonische Caption-Geometrie
-
-Einzige Quelle:
-
-- `ki/gehirn/CAPTION_SAFE_POSITION.md`
-- `ki/src/reels/captionSafe.ts`
-
-Für 1080×1920 aktuell:
-
-- `bottom: 250px`
-- `104px` horizontaler Inset
-- `860px` max width
-- max. 2 Zeilen
-- halbtransparente Glass-/Blur-Overlay-Caption
-- Fullscreen-Hintergrund bleibt durchgehend
-- kein separater weißer Footer / kein zweiter Hintergrund
-
-Alte 520px-/boxless-Regeln sind nicht mehr kanonisch.
-
-## 7. Visual-/Motion-Standard
-
-- Light-First
-- Product/UI-first bei konkreten Apps/Features
-- Fullscreen-Komposition
-- Setup → Aktion → Konsequenz → Payoff
-- Hero-Moment pro Szene
-- High Energy ≠ High Speed
-- wichtige Zustände: Reveal → Settle → Readable Hold
-- 1–2 neue unabhängige Informationsobjekte gleichzeitig
-- dunkle Fullscreen-Szenen nur als dokumentierte Ausnahme
-
-Der Motion-Review muss zum **exakten finalen MP4** gehören: SHA256 + Dauer werden validiert.
-
-## 8. Finaler Export
-
-Ein Reel ist nicht fertig bei `render complete`.
+Nach Final-Render:
 
 ```bash
-node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer führt erneut Entertainment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates aus.
+## 7. Globale Produktions-Regressionen
 
-Kanonisches lokales Endpaket:
+Vor Merge/Release ausführen:
 
-```text
-05-export/
-├── <compositionId>.mp4
-├── <compositionId>-cover.png
-├── <compositionId>-caption.txt
-└── <compositionId>-export-manifest.json
+```bash
+npm run production:contracts
 ```
 
-## 9. Git-/Medienstrategie
+Der Check schützt unter anderem vor:
 
-Git versioniert reproduzierbare Produktionswahrheit:
+- statischen Audio-/Video-Binary-Imports in `Root.tsx`
+- Remote-Media-URLs im Production-Source
+- Rückkehr alter Caption-Geometrien
+- fehlender Runtime-Audio-Pipeline
+- fehlenden Final-/Voice-/Motion-Gates
 
-- Source
-- Skripte
-- Provenance
-- Timing-/Whisper-Daten
-- Contracts
-- Reviews
-- Manifest/Metadaten
+`npm run repo:verify` führt diesen Produktionsvertrag ebenfalls zuerst aus.
 
-Große MP4/WAV/MP3/PNG-Dateien bleiben standardmäßig lokal bzw. in Artifact-Storage, solange Git LFS nicht eingerichtet ist. `.gitignore` und Produktionsregeln sind darauf abgestimmt.
+## 8. Verbindliche visuelle Identität
 
-## 10. Aktiver Study-Mode-Status
+- Short-Form standardmäßig 1080 × 1920 / 30 FPS
+- Longform aktuell 1920 × 1080 / 30 FPS
+- Light-First: helle Fullscreen-Szenen als Default
+- dunkle Schrift
+- mehrere semantische Akzentfarben erlaubt
+- faceless
+- keine Cyberpunk-/Neon-Standardästhetik
+- `REMOTION_NATIVE_MAXIMUM`
+- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben
+- High Energy ist nicht High Speed: wichtige Zustände brauchen Reveal → Settle → Readable Hold
 
-Der reale bereitgestellte Study-Mode-Render (~40.192 s) ist **Review-Evidence, nicht Finalfreigabe**.
+## 9. Statusbegriffe niemals vermischen
 
-Aktuell dokumentierte Fails:
-
-- mehrere Beats zu schnell
-- Informationsstapel in Szene 2/3
-- eine unerwünschte dunkle Fullscreen-Szene
-- Schluss-Hold zu kurz
-
-`MOTION-READABILITY-REVIEW.md` bleibt deshalb korrekt auf `FAIL`, bis ein neuer aktueller Render diese Punkte behebt.
-
-## 11. Bekannte externe / noch ungeprüfte Punkte
-
-- GitHub Actions/Runner waren zuletzt auf Konto-/Billing-Ebene eingeschränkt; kein CI-Run ist deshalb automatisch Qualitätsbeweis.
-- Ein kanonisches `package-lock.json` ist noch nicht erzeugt. Kein erfundener Lockfile-Inhalt committen.
-- Nach dieser Stabilisierung sind vollständiger frischer `npm install`, Repo-Typecheck, Vitest und Remotion-Bundle **noch tatsächlich auszuführen**, bevor PR #28 merge-ready werden darf.
-- `ki/scripts/validate-production-contracts.mjs` wurde als Regression-Check angelegt; auch dieser muss in einem echten Checkout ausgeführt werden, bevor sein PASS behauptet wird.
-
-## 12. Statusbegriffe
-
-Diese Zustände niemals vermischen:
+Diese Zustände sind getrennt:
 
 ```text
 geplant
@@ -200,4 +158,17 @@ freigegeben
 veröffentlicht
 ```
 
-Nur tatsächlich ausgeführte Prüfungen als bestanden melden.
+Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
+
+## 10. Git-/Medienregel
+
+Große Binärmedien (`mp3`, `wav`, `mp4`, `png` usw.) bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
+
+In Git bleiben zwingend Source, Skripte, Provenance, Timings, Reviews, Contracts und Export-Manifeste. Kein Vertrag darf gleichzeitig verlangen, global ignorierte Binärmedien normal in Git zu committen.
+
+## 11. Bekannte externe Einschränkungen
+
+- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
+- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
+
+Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
