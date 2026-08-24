@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "reelId": "dalle-gpt-ende",
+  "compositionId": "KI-DalleGptEnds",
+  "sourceDir": "ki/src/reels/dalle-gpt-ends",
+  "title": "Der DALL·E-GPT wird eingestellt",
+  "publishDate": "2026-08-28",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 1380,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "RUNTIME_PCM_WAV_AFTER_WHISPER_LOCK"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+    "timingAuthority": false,
+    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>"
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay"
+  },
+  "header": {"top":112,"style":"compact_glass_chip"},
+  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "export": {
+    "coverTimeSeconds": 4.2,
+    "coverText": "DALL·E-GPT WIRD EINGESTELLT",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video","cover","caption","manifest"]
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"DALL·E-GPT endet","startFrame":0,"endFrame":270,"accent":"#E24A57","heroMoment":"DALL·E GPT tile receives 30 AUG shutdown stamp","timingStatus":"PLANNING"},
+    {"sceneId":"scene2","title":"Bilder bleiben","startFrame":270,"endFrame":540,"accent":"#18C7D9","heroMoment":"DALL·E GPT tile exits while ChatGPT Images stays active","timingStatus":"PLANNING"},
+    {"sceneId":"scene3","title":"Jetzt sichern","startFrame":540,"endFrame":780,"accent":"#FF8A34","heroMoment":"image gallery flows into download folder before deadline","timingStatus":"PLANNING"},
+    {"sceneId":"scene4","title":"Das bleibt verfügbar","startFrame":780,"endFrame":1080,"accent":"#20B26B","heroMoment":"create edit and custom-GPT image features remain active","timingStatus":"PLANNING"},
+    {"sceneId":"scene5","title":"Nur der GPT verschwindet","startFrame":1080,"endFrame":1380,"accent":"#7657E8","heroMoment":"before-after summary locks into save-before-30-Aug CTA","timingStatus":"PLANNING"}
+  ],
+  "sources": [
+    "https://help.openai.com/de-de/articles/6825453-chatgpt-release-notes"
+  ]
+}
