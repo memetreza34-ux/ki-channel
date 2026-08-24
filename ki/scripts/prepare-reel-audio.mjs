@@ -38,8 +38,8 @@ if (probe.status !== 0) fail(`ffprobe failed: ${probe.stderr || probe.stdout}`);
 let info;
 try { info = JSON.parse(probe.stdout); } catch { fail('ffprobe output could not be parsed.'); }
 if (!info?.streams?.length) fail('canonical voiceover has no audio stream.');
-const duration = Number(info?.format?.duration || 0);
-if (!Number.isFinite(duration) || duration <= 0) fail('canonical voiceover has invalid duration.');
+const sourceDuration = Number(info?.format?.duration || 0);
+if (!Number.isFinite(sourceDuration) || sourceDuration <= 0) fail('canonical voiceover has invalid duration.');
 
 const runtimeDir = path.resolve('public', 'runtime-audio');
 await mkdir(runtimeDir, {recursive:true});
@@ -47,7 +47,7 @@ const runtimeAudio = path.join(runtimeDir, `${compositionId}.wav`);
 await rm(runtimeAudio, {force:true});
 
 // Runtime audio is always uncompressed PCM WAV. This avoids a second lossy MP3 encode
-// and avoids MP3 encoder delay shifting word-level caption timing.
+// and makes the exact decoded waveform used by Remotion the final timing authority.
 const ffmpeg = spawnSync('ffmpeg', [
   '-hide_banner','-loglevel','error','-y','-i',sourceAudio,
   '-vn','-ac','2','-ar','48000','-c:a','pcm_s16le',runtimeAudio,
@@ -62,12 +62,18 @@ let runtimeInfo;
 try { runtimeInfo = JSON.parse(runtimeProbe.stdout); } catch { fail('runtime WAV ffprobe output could not be parsed.'); }
 const runtimeDuration = Number(runtimeInfo?.format?.duration || 0);
 if (!runtimeInfo?.streams?.length || runtimeInfo.streams[0]?.codec_name !== 'pcm_s16le') fail('runtime audio is not PCM s16le WAV.');
-if (Math.abs(runtimeDuration - duration) > 0.03) fail(`runtime audio duration drift is too large (${runtimeDuration.toFixed(3)}s vs ${duration.toFixed(3)}s).`);
+if (!Number.isFinite(runtimeDuration) || runtimeDuration <= 0) fail('runtime WAV has invalid duration.');
+
+// Compressed inputs such as MP3 may report encoder padding in their container duration.
+// A small difference is expected; larger differences indicate a damaged/wrong conversion.
+if (Math.abs(runtimeDuration - sourceDuration) > 0.12) {
+  fail(`runtime audio duration differs too much from source (${runtimeDuration.toFixed(3)}s vs ${sourceDuration.toFixed(3)}s).`);
+}
 
 console.log('REEL AUDIO PREP PASSED');
 console.log(`compositionId: ${compositionId}`);
 console.log(`source: ${sourceAudio}`);
-console.log(`source duration: ${duration.toFixed(3)} s`);
-console.log(`runtime duration: ${runtimeDuration.toFixed(3)} s`);
+console.log(`source container duration: ${sourceDuration.toFixed(3)} s`);
+console.log(`runtime timing duration: ${runtimeDuration.toFixed(3)} s`);
 console.log(`runtime: ${runtimeAudio}`);
-console.log(`remotion src: /runtime-audio/${compositionId}.wav`);
+console.log(`remotion/Whisper timing src: /runtime-audio/${compositionId}.wav`);
