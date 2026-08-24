@@ -6,17 +6,25 @@ Verhindert, dass Phase-1-Schätzungen als finale Caption-, Wort-, Szenen- oder C
 
 ## Autorität
 
-Sobald der **lokale finale Voiceover-Master** existiert:
+Sobald der lokale Voiceover-Master existiert, wird zuerst die deterministische Runtime-Audiospur erzeugt:
 
-`Audio → Wort-Timestamps → Caption-Gruppen → Visual Beats → Szenengrenzen → Composition-Dauer`
+```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+```
+
+Danach gilt:
+
+`Runtime-PCM-WAV → Wort-Timestamps → Caption-Gruppen → Visual Beats → Szenengrenzen → Composition-Dauer`
 
 Nicht umgekehrt.
+
+Die Runtime-WAV unter `public/runtime-audio/<compositionId>.wav` ist exakt die Audiospur, die Remotion später rendert. Damit werden MP3-Container-Padding und ein zweites verlustbehaftetes Encoding aus der finalen Timing-Kette entfernt.
 
 Verbindliche Audioquelle: `ki/gehirn/AUDIO_PIPELINE.md`.
 
 ## Whisper / Transkription
 
-Für Phase 3 müssen präzise Wort-Timestamps aus dem tatsächlichen lokalen Audio erzeugt werden, bevorzugt mit Whisper bzw. einer gleichwertig präzisen Transkriptionsmethode.
+Für Phase 3 müssen präzise Wort-Timestamps aus der **vorbereiteten Runtime-WAV** erzeugt werden, bevorzugt mit Whisper bzw. einer gleichwertig präzisen Transkriptionsmethode.
 
 Wichtig:
 
@@ -40,7 +48,7 @@ Wichtig:
 - `format.finalDurationInFrames` setzen
 - alle Szenen kontinuierlich von Frame 0 bis finalDuration führen
 - pro Szene `timingStatus: VOICE_LOCKED` setzen
-- `audio.observedAudioDurationSeconds` bzw. gleichwertige echte Audio-Dauer dokumentieren
+- `audio.observedAudioDurationSeconds` bzw. gleichwertige Dauer der **Runtime-WAV** dokumentieren
 
 ## Caption-Gruppen
 
@@ -58,7 +66,7 @@ Für starke Beats:
 
 ```text
 gesprochenes Wort / Phrase
-→ echter Frame
+→ echter Frame in der Runtime-WAV
 → visueller Trigger
 → erwarteter Zustand
 ```
@@ -67,10 +75,11 @@ Szenenwechsel bevorzugt nach Satzende, klarer Pause oder hörbarem Gedankenwechs
 
 ## Wenn Audio kürzer/länger als Planung ist
 
-1. Szenen/Animation/Holds an echte Stimme anpassen
-2. Visuals reduzieren, falls zu viele Informationen in eine Phrase gepackt wurden
-3. `reel.json` und Caption-Timings neu schreiben
-4. nur bei Bedarf natürliches, pitch-erhaltendes Phrase-Retiming im erlaubten Korridor
+1. Runtime-WAV erzeugen und echte dekodierte Dauer messen
+2. Szenen/Animation/Holds an diese Stimme anpassen
+3. Visuals reduzieren, falls zu viele Informationen in eine Phrase gepackt wurden
+4. `reel.json` und Caption-Timings neu schreiben
+5. nur bei Bedarf natürliches, pitch-erhaltendes Phrase-Retiming im erlaubten Korridor; danach Runtime-WAV neu erzeugen und erneut locken
 
 Nie das Voiceover gegen alte Plan-Cues laufen lassen.
 
@@ -79,19 +88,22 @@ Nie das Voiceover gegen alte Plan-Cues laufen lassen.
 Vor Production-Render:
 
 ```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+# Whisper/Word-Lock gegen public/runtime-audio/<compositionId>.wav
 node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-`prepare-reel-render.mjs` blockiert insbesondere alte Plan-Dauer, nicht-Voice-Locked-Szenen und fehlendes lokales Audio.
+`prepare-reel-render.mjs` regeneriert/verifiziert die Runtime-WAV, blockiert alte Plan-Dauer und nicht-Voice-Locked-Szenen und erzeugt danach den Render-Provenance-Lock.
 
 ## Freigabe
 
 Kein Final-Render, wenn:
 
+- Runtime-WAV fehlt
 - Wort-Timestamps fehlen
 - Timingstatus nur Preview/Planning ist
-- Szenen nicht auf echtem Audio liegen
+- Szenen nicht auf der tatsächlich gerenderten Audiospur liegen
 - Composition-Dauer noch Planwert ist
 - Caption hörbar vor-/nachläuft
 - aktives Wort nicht zur Stimme passt
