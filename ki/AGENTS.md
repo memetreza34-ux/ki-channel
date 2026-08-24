@@ -2,33 +2,25 @@
 
 Diese Datei erweitert `REPO-STATE.md` und `AGENTS.md`.
 
-## Gehirn zuerst
+## Lesereihenfolge
 
-Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die autoritativen Bereiche:
+Für KI-Aufgaben:
 
-- `KANAL.md` — Identität und Ton
-- `REELS.md` — Reel- und Text-Hierarchie
-- `PLATTFORMEN.md` — Publishing, YouTube und weitere Plattformen
-- `PRODUKTIONSABLAUF.md` — 3 Phasen
-- `../BILDSTIL.md` — Bild-/Prompt-Qualität
+1. `ki/gehirn/MASTER.md`
+2. bei Short-Form zusätzlich `ki/reels/AGENTS.md`
+3. bei Audio `ki/gehirn/AUDIO_PIPELINE.md`
+4. named Reel + Source
 
-Danach den passenden Produktionsvertrag lesen:
+Für jedes Short-Form-Reel zusätzlich diese Skills:
 
-- Short-Form → `ki/reels/AGENTS.md`
-- YouTube Longform → `ki/youtube-longform/AGENTS.md`
+- `ki/skills/entertainment-first-reels/SKILL.md`
+- `ki/skills/high-energy-remotion-reels/SKILL.md`
+- `ki/skills/motion-readability-light-first/SKILL.md`
+- `ki/skills/voice-locked-captions/SKILL.md`
+- `ki/skills/final-video-delivery/SKILL.md`
+- `ki/skills/final-export-package/SKILL.md`
 
-Für **jedes Short-Form-Reel** sind zusätzlich diese sechs Repo-Skills Pflichtlektüre:
-
-- `ki/skills/entertainment-first-reels/SKILL.md` — UI-/Brand-first, Mini-Story, Hero-Momente, Entertainment-Score
-- `ki/skills/high-energy-remotion-reels/SKILL.md` — visuelle Dichte, Full-Frame-Motion, Kamera, Tiefe, Logo-/Bildanimation
-- `ki/skills/motion-readability-light-first/SKILL.md` — High Energy ohne Hektik, lesbare Holds, gestaffelte Reveals, Light-First-Kohärenz
-- `ki/skills/voice-locked-captions/SKILL.md` — echtes Audio als Autorität für Caption, Wort-Timing, Visual Beat und Szenengrenzen
-- `ki/skills/final-video-delivery/SKILL.md` — finale Abgabe erst nach vollständigem Render-, Audio- und Hör-Gate; keine stumme Preview als fertiges Video
-- `ki/skills/final-export-package/SKILL.md` — nach finalem Render automatisch vollständiges `05-export/`-Paket mit MP4 + Cover + Caption + Manifest erzeugen und validieren
-
-## Harte Short-Form-Ordnerstruktur
-
-Jedes Produktionsreel liegt dauerhaft hier:
+## Ordnerstruktur
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -41,178 +33,98 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Nicht zulässig:
-
-```text
-ki/<reel-name>/
-ki/reels/<slug>/
-ki/src/reels/<planning-package>/
-```
-
-Vor und nach Strukturänderungen:
-
-```bash
-node scripts/check-ki-reel-folder-structure.mjs
-```
-
-## Datei-Eigentum Short-Form
-
-- `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
-- `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, `platform-copy.md` und kanonische `FINAL-CAPTION.txt`
-- `04-pdf/` — optionale PDF-Assets
-- `05-export/` — Review-Artefakte plus **finales Publish-Paket: MP4 + Cover + Caption + Manifest**
-- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, `ENTERTAINMENT-REVIEW.md`, `MOTION-READABILITY-REVIEW.md`, Review
-
-Ausführbarer TS/TSX-Code ausschließlich separat:
-
-```text
-ki/src/reels/<slug>/
-```
-
-Keine Planungsdokumente in den Source-Ordner kopieren.
+Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
 
 ## Phasen
 
-Für Short-Form gilt:
+### Phase 1
 
-- Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten.
-- Phase 1 darf Caption-/Szenen-Timings schätzen, aber diese Werte sind ausdrücklich nur Preview-/Planwerte.
-- Phase 1 ist erst fertig, wenn `ENTERTAINMENT-REVIEW.md` mindestens **8/10** erreicht und keine Kategorie `0` hat.
-- `MOTION-READABILITY-REVIEW.md` muss bei neuen Reels bereits vorhanden sein; finaler `PASS` wird erst nach echtem Render bei 1x vergeben.
-- Wenn echtes Audio bereits im selben Auftrag erzeugt wird, darf direkt in Phase 3 übergegangen werden.
-- Sobald echtes Audio vorliegt, ist **dieses Audio die Zeit-Autorität**: Wort-Timestamps, Caption-Gruppen, Visual Beats, Szenengrenzen und Composition-Dauer werden daran neu ausgerichtet.
-- Ein proportionaler Caption-Fallback ist nur für Preview zulässig und darf nicht als finale Synchronisation durchrutschen.
-- Wenn ein Sprecherabschnitt zu kurz für mehrere visuelle Aussagen ist, Visualisierung vereinfachen oder Beats neu verteilen — nicht wichtige Zustände unlesbar beschleunigen.
-- Bei einer verlangten **fertigen Video-Abgabe** darf der Agent die Aufgabe nicht nach einem Preview-/Smoke-Render beenden. Er arbeitet bis zum aktuellen finalen MP4 mit hörbarem Voiceover, bestandenem Motion-Readability-, Audio-/Render-Gate, vollständigem Export-Paket und finaler Hör-/Sichtprüfung weiter.
+- Inhalt/Skript
+- Visual Beats
+- Remotion-Source
+- Caption-Basis
+- Plattform-Copy
+- Entertainment-Review
+- Motion-Readability-Datei PENDING
 
-Für Production-Captions nach echtem Audio ausführen:
+### Phase 2
 
-```bash
-node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
-```
+Reales Voiceover beschaffen: tatsächliches Voice-/TTS-Tool oder Nutzer/Mensch.
 
-Nach dem echten Render und vor finaler Freigabe:
+Remote-URL nur als Provenance; lokaler Master ist Pflicht.
 
-```bash
-node ki/scripts/validate-motion-readability-review.mjs <reel-package-dir>
-```
+### Phase 3
 
-Vor jeder finalen Video-Abgabe:
+- reales Audio messen
+- Whisper/Voice-Lock
+- Szenen/Dauer an echte Audio-/Bedeutungsgrenzen
+- `prepare-reel-audio.mjs`
+- Tests/Smoke/Contact-Sheet
+- 1x Motion-Readability
+- Final-Render
+- Finalizer + Export-Package-Validator
 
-```bash
-node ki/scripts/validate-final-video.mjs <final-video.mp4>
-```
+## Caption — eine Wahrheit
 
-Ein fehlender oder praktisch stummer Audiostream blockiert die finale Abgabe **und blockiert den Export in `05-export/`**.
+Bei 1080×1920 ausschließlich Shared-Geometrie aus `ki/src/reels/captionSafe.ts`:
 
-## Automatischer Final-Export — Pflicht
+- `bottom: 250px`
+- `104px` horizontal
+- `860px` max width
+- max. 2 Zeilen
+- Glass-/Blur-Overlay
+- kein eigener Footer
 
-Wenn ein Reel final gerendert wurde, darf Antigravity/Codex **nicht** bei `render complete` stoppen.
+Keine alten 520px-/Boxless-Regeln neu einführen.
 
-Verpflichtende Reihenfolge:
+## Audio — eine Wahrheit
 
-1. finalen MP4 aus aktuellem Source rendern
-2. echten MP4 bei 1x auf Motion-Lesbarkeit und Light-First-Kohärenz prüfen
-3. `MOTION-READABILITY-REVIEW.md` auf `PASS` bringen und Validator erfolgreich ausführen
-4. `validate-final-video.mjs` erfolgreich ausführen
-5. nach Contact-Sheet-/Hero-Review `reel.json -> export.coverTimeSeconds` setzen
-6. `03-caption/FINAL-CAPTION.txt` publish-ready vervollständigen
-7. Finalize-Befehl ausführen:
+Verbindlich `ki/gehirn/AUDIO_PIPELINE.md`.
 
-```bash
-node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
-```
-
-8. vollständiges Paket prüfen:
+Vor Production-Render:
 
 ```bash
-node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-9. den **exportierten** MP4 unter `05-export/` vollständig ansehen und anhören
-10. Cover und Caption prüfen
-11. erst dann `FINAL VIDEO READY — EXPORT PACKAGE READY`
+`Root.tsx` nutzt nur `public/runtime-audio/<compositionId>.mp3` via `staticFile`.
 
-Kanonischer Finalzustand:
-
-```text
-05-export/
-├── <compositionId>.mp4
-├── <compositionId>-cover.png
-├── <compositionId>-caption.txt
-└── <compositionId>-export-manifest.json
-```
-
-Ein MP4 außerhalb dieses Pakets ist nur Arbeitsware. Ein stummer MP4 darf niemals als finale Datei in `05-export/` landen.
+Keine statischen Imports auf ignorierte Reel-Audiodateien und keine Remote-Audio-URL im Render-Source.
 
 ## Visual Standard
 
-- **LIGHT_FIRST ist Standard:** Fullscreen-Hintergründe grundsätzlich hell (Offwhite, Hellgrau, sehr helles Cyan/Mint/Blau/Creme)
-- dunkle Cards/Objekte innerhalb heller Szenen sind erlaubt; dunkle Fullscreen-Szenen nur bei explizitem Nutzerwunsch oder zwingender dokumentierter Ausnahme
-- kein einzelner schwarzer/dunkelblauer Stilbruch mitten in einem sonst hellen Reel
-- heller oder weißer editorialer Hintergrund darf nicht wie tote Leerfläche wirken
-- dunkle, formatgerecht lesbare Typografie
-- `#B98CFF` primärer Fokus-Akzent
-- `#6E45C9` Tiefe/Kontrast
-- faceless
-- keine generische Cyberpunk-/Neon-Ästhetik
-- `REMOTION_NATIVE_MAXIMUM`: möglichst alles Sichtbare direkt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- **Product/UI-first:** bei Apps, Websites, Plattformen oder Features zuerst produktnahe UI-/Device-/Browser-Szenen prüfen; generische Kreise/Nodes sind kein Default
-- jede Szene als Mini-Story planen: **Setup → Aktion → Konsequenz → Payoff**
-- jede Szene braucht mindestens einen erkennbaren Hero-Moment
-- Hauptmechanik auf Smartphone groß und dominant; keine kleine Card-Insel in riesigem Leerraum
-- solange neue Sprecherbedeutung kommt, ungefähr alle `0.6–1.5 s` einen semantischen sichtbaren Micro-Beat anstreben
-- **High Energy ist nicht High Speed:** jeder kritische Zustand braucht `REVEAL → SETTLE → READABLE HOLD`
-- bei 30 fps für wichtige neue Informationen nach Reveal/Settle normalerweise mindestens ungefähr `12–24 Frames` klaren Hold einplanen; Hero-Momente meist `18–30 Frames`, wenn Audio/Story es zulassen
-- unabhängige neue Informationen normalerweise um `6–12 Frames` staffeln; höchstens 1–2 neue Informationsobjekte gleichzeitig, wenn sie aktiv gelesen werden müssen
-- Full-Frame-Komposition, Kamera, Parallax, pseudo-3D, Masken, SVG-Pfade, Zustandswechsel und Transformationen aktiv prüfen
-- nicht jede Szene frontal/mittig bauen; Kamera-Grammatik und räumliche Inszenierung bewusst variieren
-- Logos/Markenassets nur als echte lokale zulässige Assets verwenden und aktuelle Markenrichtlinien respektieren; kein Fake-Logo und keine verbotene Markenmodifikation
-- bei strengen Brand-Regeln die **Umgebung um das unveränderte Logo** animieren: Container, Position, Kamera, UI, Übergang, Hintergrund
-- Bilder/Screenshots bei Relevanz mit Fokus-Zoom, Masken, 2.5D, Parallax, Cursor/Touch oder nativen Overlay-Ebenen in die Erklärung integrieren
-- externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
-- keine erfundenen Zahlen
+- Light-First
+- Product/UI-first bei Apps/Features
+- Fullscreen-Hintergrund
+- keine kleine Card-Insel in riesigem Leerraum
+- `SETUP → AKTION → KONSEQUENZ → PAYOFF`
+- Hero-Moment pro Szene
+- `REVEAL → SETTLE → READABLE HOLD`
+- High Energy ≠ High Speed
+- dunkle Fullscreen-Szenen nur dokumentierte Ausnahme
+- Logos nur aus echten zulässigen Assets
 
-## Text-Hierarchie
+## Final-Export
 
-- Überschrift/Kapitelmarker: kurz, Zuschauer-Sprache
-- Short-Form-Caption: Sprechertext synchron
-- Animationslabels: kurze Objekt-/Zustandsbegriffe
-- interne Regie-/Goal-Texte: niemals sichtbar
+Ein Reel ist nicht fertig bei `render complete`.
 
-Kein langer Sprechertext doppelt als Headline und Animationstext. Keine wortweise Kopie des Transcripts in die Animation.
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+```
 
-## Testing
+Der Finalizer führt Entertainment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates erneut aus.
 
-Mindestens formatbezogen prüfen:
+Erst danach und nach echtem Ansehen/Anhören:
 
-- Format/FPS/Dauer
-- kontinuierliche Szenenbereiche
-- eindeutige IDs
-- Asset-Pfade
-- keine ungrounded Werte
-- Visual-Safe-Zones über reale Smoke-Frames
-- Packaging/Metadaten vorhanden
-- `ENTERTAINMENT-REVIEW.md` vorhanden und Phase 1 mindestens 8/10 ohne 0-Kategorie
-- `MOTION-READABILITY-REVIEW.md` bei neuen Reels vorhanden
-- bei produktbezogenen Reels: UI-/Brand-first-Entscheidung dokumentiert
-- Contact-Sheet-/Scrub-Review zeigt echte visuelle Variation statt fünf ähnlicher Karten
-- Contact Sheet bleibt als Designsystem hell/kohärent, sofern keine dokumentierte Ausnahme existiert
-- Hook ist auch ohne Ton in den ersten 1–2 Sekunden grob verständlich
-- bei Phase 3: Caption-Worttimings gegen reales Audio validiert
-- bei Phase 3: Szenengrenzen liegen auf echten Sprecher-/Bedeutungsgrenzen
-- bei Phase 3: kritische Visual Beats sind bei 1x ohne Pause/Zurückspulen verständlich
-- bei Phase 3: keine hektisch gleichzeitig eingeführten Informationsstapel
-- bei Phase 3: `validate-motion-readability-review.mjs` erfolgreich
-- bei finaler Video-Abgabe: Video- und Audiostream vorhanden
-- bei finaler Video-Abgabe: Audio technisch nicht stumm/praktisch unhörbar
-- bei finaler Video-Abgabe: finalen MP4 tatsächlich ansehen **und anhören**
-- finaler Render gehört exakt zum aktuellen Source-Stand
-- `03-caption/FINAL-CAPTION.txt` ist publish-ready und ohne Platzhalter
-- `reel.json.export.coverTimeSeconds` ist nach Hero-Review gesetzt
-- `finalize-reel-export.mjs` erfolgreich
-- `validate-reel-export-package.mjs` erfolgreich
-- finaler MP4, Cover, Caption und Manifest liegen im `05-export/`
+`FINAL VIDEO READY — EXPORT PACKAGE READY`
 
-Ein bestandenes Unit-Test-Set ersetzt keine visuelle oder akustische Prüfung.
+## Git/Medien
+
+Git hält Source, Skripte, Provenance, Timings, Reviews und Manifest.
+
+Große MP4/WAV/MP3/PNG bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist. Keine Regel darf verlangen, per `.gitignore` ausgeschlossene Binärdateien normal zu committen.
+
+## Wahrheitspflicht
+
+Keine erfundenen Medien, Dateien, URLs, Testergebnisse oder Render-Claims. Nur tatsächlich ausgeführte Schritte als bestanden melden.
