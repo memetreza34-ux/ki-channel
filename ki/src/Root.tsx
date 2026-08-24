@@ -83,7 +83,7 @@ import {
 } from './reels/chatgpt-for-teens';
 import {
   STUDY_MODE_COMPOSITION_ID,
-  STUDY_MODE_PLANNING_DURATION_IN_FRAMES,
+  STUDY_MODE_DURATION_IN_FRAMES,
   STUDY_MODE_FPS,
   STUDY_MODE_HEIGHT,
   STUDY_MODE_WIDTH,
@@ -101,9 +101,9 @@ import {
 } from './longform/ai-app-workflow';
 
 // Audio binaries are not imported from reel packages. Before a production render,
-// `prepare-reel-audio.mjs` creates the deterministic local file below. This keeps a
-// fresh checkout bundle-safe while preventing hidden render-time network downloads.
-const runtimeAudio = (compositionId: string) => staticFile(`runtime-audio/${compositionId}.mp3`);
+// `prepare-reel-audio.mjs` creates a deterministic local PCM WAV. This keeps a fresh
+// checkout bundle-safe, avoids hidden render-time network downloads and avoids MP3 delay.
+const runtimeAudio = (compositionId: string) => staticFile(`runtime-audio/${compositionId}.wav`);
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -202,7 +202,7 @@ export const RemotionRoot: React.FC = () => (
         id={STUDY_MODE_COMPOSITION_ID}
         component={ReelChatGPTStudyMode}
         defaultProps={{voiceoverSrc: runtimeAudio(STUDY_MODE_COMPOSITION_ID), showCaptions: true}}
-        durationInFrames={STUDY_MODE_PLANNING_DURATION_IN_FRAMES}
+        durationInFrames={STUDY_MODE_DURATION_IN_FRAMES}
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
         height={STUDY_MODE_HEIGHT}
