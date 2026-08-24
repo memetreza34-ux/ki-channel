@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
+    "production:contracts": "node ki/scripts/validate-production-contracts.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
     "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run",
     "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
@@ -19,7 +20,7 @@
     "typecheck": "npm run typecheck:motion && npm run typecheck:animation-library",
     "typecheck:all": "npm run typecheck",
     "content:runtime:verify": "node scripts/verify-content-matched-runtime.mjs",
-    "repo:verify": "npm run repo:wiring-check && npm run typecheck && npm test && npm run content:runtime:verify",
+    "repo:verify": "npm run production:contracts && npm run repo:wiring-check && npm run typecheck && npm test && npm run content:runtime:verify",
     "release:verify": "node scripts/run-content-release.mjs verify",
     "release:smoke": "node scripts/run-content-release.mjs smoke",
     "release:full": "node scripts/run-content-release.mjs full",
