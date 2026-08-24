@@ -4,7 +4,7 @@ import {existsSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
-import {getGitState, renderLockPath, resolveSourceDir, runtimeAudioPath, safeCompositionId, sha256Directory, sha256File} from './lib/render-provenance.mjs';
+import {getGitState, renderContractSha256, renderLockPath, resolveSourceDir, runtimeAudioPath, safeCompositionId, sha256Directory, sha256File} from './lib/render-provenance.mjs';
 
 const [rawReelDir, rawVideo, rawCoverTime] = process.argv.slice(2);
 if (!rawReelDir || !rawVideo) {
@@ -62,8 +62,6 @@ const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolatio
 if (existsSync(isolationConfig)) runGate('source-isolation gate', scripts.sourceIsolation, [reelDir]);
 runGate('video/audio gate', scripts.finalVideo, [sourceVideo]);
 
-// RENDER PROVENANCE GATE: the final video must come from a previously prepared,
-// committed source state and none of the locked production inputs may have drifted.
 const lockPath = renderLockPath(compositionId);
 if (!existsSync(lockPath)) fail(`render provenance lock missing: ${lockPath}. Run prepare-reel-render.mjs before rendering.`);
 let renderLock;
@@ -85,13 +83,14 @@ if (!existsSync(canonicalAudio) || !existsSync(runtimeAudio)) fail('canonical/ru
 
 const currentHashes = {
   sourceTreeSha256: await sha256Directory(path.resolve(sourceDir)),
-  reelJsonSha256: await sha256File(reelJsonPath),
+  renderContractSha256: renderContractSha256(reelConfig),
+  reelJsonSha256AtFinalization: await sha256File(reelJsonPath),
   captionJsonSha256: await sha256File(captionJsonPath),
   canonicalAudioSha256: await sha256File(canonicalAudio),
   runtimeAudioSha256: await sha256File(runtimeAudio),
 };
-for (const [key,value] of Object.entries(currentHashes)) {
-  if (renderLock?.hashes?.[key] !== value) fail(`${key} changed after render preparation. Rerun prepare + render.`);
+for (const key of ['sourceTreeSha256','renderContractSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256']) {
+  if (renderLock?.hashes?.[key] !== currentHashes[key]) fail(`${key} changed after render preparation. Rerun prepare + render.`);
 }
 const sourceVideoStat = await stat(sourceVideo);
 if (sourceVideoStat.mtimeMs + 1000 < Number(renderLock.createdAtMs || 0)) fail('rendered video predates the render lock; stale render rejected.');
@@ -168,7 +167,9 @@ try {
       renderLockCreatedAt: renderLock.createdAt,
       sourceDir,
       sourceTreeSha256: currentHashes.sourceTreeSha256,
-      reelJsonSha256: currentHashes.reelJsonSha256,
+      renderContractSha256: currentHashes.renderContractSha256,
+      reelJsonSha256AtRenderLock: renderLock.hashes.reelJsonSha256AtLock,
+      reelJsonSha256AtFinalization: currentHashes.reelJsonSha256AtFinalization,
       captionJsonSha256: currentHashes.captionJsonSha256,
       canonicalAudioSha256: currentHashes.canonicalAudioSha256,
       runtimeAudioSha256: currentHashes.runtimeAudioSha256,
