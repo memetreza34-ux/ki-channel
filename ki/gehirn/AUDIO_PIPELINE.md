@@ -34,7 +34,7 @@ Nach einer Tool-Erzeugung:
 1. Audio tatsächlich herunterladen.
 2. am kanonischen `reel.json -> audio.targetFile` ablegen.
 3. lokal mit `ffprobe` prüfen.
-4. Whisper/Voice-Lock gegen die finale Audiospur ausführen.
+4. Whisper/Voice-Lock gegen den kanonischen Audio-Master ausführen.
 5. vor Render:
 
 ```bash
@@ -55,7 +55,7 @@ Dieser Ordner ist regenerierbare Runtime-Arbeitsware und bleibt per `.gitignore`
 
 ## Timing-Autorität
 
-Erst die **lokal vorhandene kanonische Audiodatei** ist Timing-Autorität. Für den tatsächlichen Remotion-Render wird daraus deterministisch die PCM-WAV-Runtime-Datei erzeugt.
+Der **kanonische lokale Audio-Master** bestimmt Wort-/Phrase-Timing. Für den tatsächlichen Remotion-Render wird daraus deterministisch PCM-WAV erzeugt. `prepare-reel-audio.mjs` blockiert, wenn die Runtime-WAV-Dauer gegenüber dem Master relevant driftet.
 
 Danach zwingend:
 
