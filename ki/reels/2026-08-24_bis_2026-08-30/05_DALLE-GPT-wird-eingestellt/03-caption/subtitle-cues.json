@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_REQUIRES_WHISPER_LOCK",
+  "note": "Planning only. Replace with word-level timestamps from the exact prepared runtime PCM-WAV before production render.",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","startFrame":0,"endFrame":150,"text":"Der offizielle DALL·E-GPT in ChatGPT verschwindet am 30. August."},
+    {"id":"c02","sceneId":"scene2","startFrame":270,"endFrame":390,"text":"Wichtig: Das bedeutet nicht, dass Bildgenerierung aus ChatGPT rausfliegt."},
+    {"id":"c03","sceneId":"scene2","startFrame":390,"endFrame":540,"text":"OpenAI stellt nur den offiziellen DALL·E-GPT ein."},
+    {"id":"c04","sceneId":"scene3","startFrame":540,"endFrame":780,"text":"Wenn du dort Bilder hast, die du behalten willst, sollst du sie vorher herunterladen."},
+    {"id":"c05","sceneId":"scene4","startFrame":780,"endFrame":915,"text":"Bilder erstellen und bearbeiten kannst du danach weiterhin direkt mit ChatGPT Bilder."},
+    {"id":"c06","sceneId":"scene4","startFrame":915,"endFrame":1080,"text":"Auch selbst erstellte GPTs mit aktivierter Bildgenerierung sind laut OpenAI nicht betroffen."},
+    {"id":"c07","sceneId":"scene5","startFrame":1080,"endFrame":1170,"text":"Der Unterschied ist also simpel:"},
+    {"id":"c08","sceneId":"scene5","startFrame":1170,"endFrame":1260,"text":"Der alte DALL·E-GPT verschwindet als eigener GPT,"},
+    {"id":"c09","sceneId":"scene5","startFrame":1260,"endFrame":1320,"text":"die Bildfunktion in ChatGPT bleibt."},
+    {"id":"c10","sceneId":"scene5","startFrame":1320,"endFrame":1380,"text":"Wenn du den DALL·E-GPT noch benutzt, sichere deine Bilder besser vor dem 30. August."}
+  ]
+}
