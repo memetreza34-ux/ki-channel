@@ -13,27 +13,28 @@
     "fps": 30,
     "planningDurationInFrames": 1950,
     "finalDurationInFrames": null,
-    "finalDurationAuthority": "LOCAL_VOICEOVER_AFTER_WHISPER_LOCK"
+    "finalDurationAuthority": "PREPARED_RUNTIME_PCM_WAV_AFTER_WHISPER_LOCK"
   },
   "observedUserRender": {
     "status": "REVIEW_EVIDENCE_ONLY_NOT_CANONICAL_TIMING",
     "durationSeconds": 40.192,
     "videoFrames": 1205,
     "audioDurationSeconds": 40.192,
-    "note": "This proves the old 1950-frame planning contract is stale. Phase 3 must write the exact local-audio timing back into reel.json and subtitle-cues.json before final export."
+    "note": "This proves the old 1950-frame planning contract is stale. Phase 3 must prepare the runtime PCM WAV and write exact voice-locked timing back into reel.json and subtitle-cues.json before final export."
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
+    "runtimeTimingFile": "public/runtime-audio/KI-ChatGPTStudyMode.wav",
     "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
     "timingAuthority": false,
     "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>",
-    "finalGate": "No final render or export without the exact local audio file, Whisper/Voice-Lock, runtime preparation and a passed audio gate."
+    "finalGate": "No final render or export without local master audio, prepared runtime PCM WAV, Whisper/Voice-Lock against that WAV and passed final gates."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
     "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
-    "finalRequirement": "word-level timings from exact local voiceover.mp3",
+    "finalRequirement": "word-level timings from prepared runtime PCM WAV used by Remotion",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
