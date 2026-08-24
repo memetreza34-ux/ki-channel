@@ -1,0 +1,7 @@
+{
+  "compositionId": "KI-DalleGptEnds",
+  "sourceDir": "ki/src/reels/dalle-gpt-ends",
+  "requiredStrings": ["DALL·E", "30. AUGUST", "ChatGPT Bilder", "Bilder vorher sichern"],
+  "forbiddenStrings": ["NOVA", "CREATIVE BRIEF", "WERBECLIP", "KEYFRAME → MOTION", "Produkt bleibt konsistent"],
+  "rule": "Every visible label/object/mechanism must map directly to this reel's spoken claim or source-grounded mechanism."
+}
