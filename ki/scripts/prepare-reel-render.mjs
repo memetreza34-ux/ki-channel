@@ -16,8 +16,10 @@ const reelDir = path.resolve(rawReelDir);
 const fail = (message) => { console.error(`REEL RENDER PREP FAILED: ${message}`); process.exit(1); };
 const reelPath = path.join(reelDir,'06-projektdateien','reel.json');
 const captionPath = path.join(reelDir,'03-caption','subtitle-cues.json');
+const wordTimingsPath = path.join(reelDir,'01-script-audio','WORD-TIMINGS.json');
 if (!existsSync(reelPath)) fail(`reel.json missing: ${reelPath}`);
 if (!existsSync(captionPath)) fail(`subtitle-cues.json missing: ${captionPath}`);
+if (!existsSync(wordTimingsPath)) fail(`WORD-TIMINGS.json missing: ${wordTimingsPath}. Run align-reel-local.mjs first.`);
 
 let reel;
 try { reel = JSON.parse(await readFile(reelPath,'utf8')); }
@@ -45,7 +47,7 @@ if (cursor !== finalDuration) fail(`last scene ends at ${cursor}, finalDurationI
 
 let git;
 try { git = getGitState(); } catch (error) { fail(error.message); }
-if (git.dirty) fail('working tree is dirty. Commit source/contract changes before a production render. Ignored runtime media may remain local.');
+if (git.dirty) fail('working tree is dirty. Commit source/contract/timing changes before a production render. Ignored runtime media may remain local.');
 
 const run = (label, script, args) => {
   if (!existsSync(script)) fail(`${label} script missing: ${script}`);
@@ -57,6 +59,7 @@ const run = (label, script, args) => {
 };
 
 run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
+run('local forced-alignment gate', path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), [reelDir]);
 run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
 run('entertainment gate', path.resolve('ki/scripts/validate-entertainment-review.mjs'), [reelDir]);
 run('voice-lock gate', path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), [reelDir]);
@@ -90,6 +93,7 @@ const lock = {
     renderContractSha256: renderContractSha256(reel),
     reelJsonSha256AtLock: await sha256File(reelPath),
     sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
+    wordTimingsSha256: await sha256File(wordTimingsPath),
     captionJsonSha256: await sha256File(captionPath),
     canonicalAudioSha256: await sha256File(canonicalAudio),
     runtimeAudioSha256: await sha256File(runtimeAudio),
@@ -104,6 +108,7 @@ console.log(`final duration: ${finalDuration} frames / ${(finalDuration/fps).toF
 console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
 console.log(`scene voice map sha256: ${lock.hashes.sceneVoiceMapSha256}`);
+console.log(`word timings sha256: ${lock.hashes.wordTimingsSha256}`);
 console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
 console.log('Production render may now use the registered composition and prepared runtime WAV.');
