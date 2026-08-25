@@ -23,6 +23,10 @@ let reel;
 try { reel = JSON.parse(await readFile(reelPath,'utf8')); }
 catch (error) { fail(`invalid reel.json: ${error.message}`); }
 
+const sceneVoiceMapRelative = reel?.sceneVoiceMap?.file || '01-script-audio/SCENE-VOICE-MAP.json';
+const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
+if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
+
 const fps = Number(reel?.format?.fps);
 const finalDuration = Number(reel?.format?.finalDurationInFrames);
 if (!Number.isFinite(fps) || fps <= 0) fail('format.fps missing/invalid.');
@@ -53,8 +57,9 @@ const run = (label, script, args) => {
 };
 
 // Runtime WAV is the exact audio Remotion renders and therefore must already exist
-// before the final voice-lock validation is accepted.
+// before the final voice/scene lock validation is accepted.
 run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
+run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
 run('entertainment gate', path.resolve('ki/scripts/validate-entertainment-review.mjs'), [reelDir]);
 run('voice-lock gate', path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), [reelDir]);
 const isolationConfig = path.join(reelDir,'06-projektdateien','source-isolation.json');
@@ -86,6 +91,7 @@ const lock = {
     sourceTreeSha256: await sha256Directory(absoluteSourceDir),
     renderContractSha256: renderContractSha256(reel),
     reelJsonSha256AtLock: await sha256File(reelPath),
+    sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
     captionJsonSha256: await sha256File(captionPath),
     canonicalAudioSha256: await sha256File(canonicalAudio),
     runtimeAudioSha256: await sha256File(runtimeAudio),
@@ -99,6 +105,7 @@ console.log(`compositionId: ${compositionId}`);
 console.log(`final duration: ${finalDuration} frames / ${(finalDuration/fps).toFixed(3)} s`);
 console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
+console.log(`scene voice map sha256: ${lock.hashes.sceneVoiceMapSha256}`);
 console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
 console.log('Production render may now use the registered composition and prepared runtime WAV.');
