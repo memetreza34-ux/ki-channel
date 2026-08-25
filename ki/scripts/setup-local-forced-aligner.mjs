@@ -31,9 +31,7 @@ const findPython = () => {
   for (const candidate of candidates) {
     const args = candidate === 'py' ? ['-3.11','--version'] : ['--version'];
     const result = spawnSync(candidate,args,{encoding:'utf8'});
-    if (!result.error && result.status === 0) {
-      return {command:candidate,prefix:candidate === 'py' ? ['-3.11'] : []};
-    }
+    if (!result.error && result.status === 0) return {command:candidate,prefix:candidate === 'py' ? ['-3.11'] : []};
   }
   return null;
 };
@@ -53,9 +51,7 @@ const run = (label, command, args) => {
   }
 };
 
-if (!existsSync(cacheRoot)) {
-  run('create venv', systemPython.command, [...systemPython.prefix,'-m','venv',cacheRoot]);
-}
+if (!existsSync(cacheRoot)) run('create venv', systemPython.command, [...systemPython.prefix,'-m','venv',cacheRoot]);
 
 const venvPython = process.platform === 'win32'
   ? path.join(cacheRoot,'Scripts','python.exe')
@@ -83,17 +79,17 @@ if (backend === 'mlx-qwen3') {
 }
 
 const marker = {
-  version: 1,
-  status: 'LOCAL_ALIGNER_INSTALLED',
+  version:1,
+  status:'LOCAL_ALIGNER_INSTALLED',
   backend,
   packageSpec,
   model,
   modelLicense,
-  venv: path.relative(process.cwd(),cacheRoot),
-  python: path.relative(process.cwd(),venvPython),
-  platform: {os:process.platform,arch:process.arch,release:os.release()},
-  installedAt: new Date().toISOString(),
-  notes: [
+  venv:path.relative(process.cwd(),cacheRoot),
+  python:path.relative(process.cwd(),venvPython),
+  platform:{os:process.platform,arch:process.arch,release:os.release()},
+  installedAt:new Date().toISOString(),
+  notes:[
     'No cloud API key and no per-minute quota are required.',
     'Model weights download locally on first alignment and are cached by the model runtime.',
     'Do not replace the configured CTC model with the package default MMS model for commercial reels; its default weights are CC-BY-NC.',
@@ -105,4 +101,4 @@ console.log('\nLOCAL FORCED ALIGNER INSTALLED');
 console.log(`backend: ${backend}`);
 console.log(`model: ${model} (${modelLicense})`);
 console.log(`marker: ${markerPath}`);
-console.log('Next: npm run reel:align -- <reel-package-dir>');
+console.log('Next: node ki/scripts/align-reel-local.mjs <reel-package-dir>');
