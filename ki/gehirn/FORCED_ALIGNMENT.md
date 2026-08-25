@@ -66,14 +66,14 @@ Die Standardlösung läuft lokal:
 Automatisch passend zum Rechner:
 
 ```bash
-npm run aligner:setup
+node ki/scripts/setup-local-forced-aligner.mjs
 ```
 
 Explizit:
 
 ```bash
-npm run aligner:setup -- --backend=mlx-qwen3
-npm run aligner:setup -- --backend=ctc-german
+node ki/scripts/setup-local-forced-aligner.mjs --backend=mlx-qwen3
+node ki/scripts/setup-local-forced-aligner.mjs --backend=ctc-german
 ```
 
 Die Python-Umgebung liegt lokal unter `.cache/reel-aligner-venv/` und wird nicht committed.
@@ -81,8 +81,10 @@ Die Python-Umgebung liegt lokal unter `.cache/reel-aligner-venv/` und wird nicht
 ## Ein Reel synchronisieren
 
 ```bash
-npm run reel:align -- <reel-package-dir>
+node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
+
+Wenn noch kein lokaler Aligner eingerichtet ist, führt dieser Befehl das einmalige Setup automatisch aus.
 
 Der Befehl macht automatisch:
 
