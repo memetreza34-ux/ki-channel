@@ -4,33 +4,29 @@
 **Status:** IMPLEMENTIERT
 
 Vorhanden:
-- offizieller OpenAI-Faktenstand
+- offizieller Faktenstand
 - finaler Sprechertext in `VOICEOVER-ZUM-KOPIEREN.txt`
-- explizites Satz→Szene-Mapping in `SCENE-VOICE-MAP.json`
-- echtes generiertes Voiceover als Remote-Provenance
-- Preview-Captions
+- Satz→Szene-Mapping in `SCENE-VOICE-MAP.json`
+- echtes generiertes Voiceover als Provenance
 - 5-Szenen-Plan
 - Light-First-Motion-Plan
 - Plattform-Copy + Final-Caption
-- eigener Remotion-Source `ki/src/reels/dalle-gpt-ends/`
-- Composition `KI-DalleGptEnds` in `Root.tsx`
-- Source-Isolation
-- Motion-/Entertainment-Review-Struktur
+- Remotion-Source `ki/src/reels/dalle-gpt-ends/`
+- Composition `KI-DalleGptEnds`
 
-### Scene-Voice-Map
-Der Agent muss die Szenenzuordnung **nicht mehr aus dem Audio erraten**.
-
-Festgelegt:
+### Feste Satz→Szene-Zuordnung
 - S01 → scene1
 - S02 + S03 → scene2
 - S04 → scene3
 - S05 + S06 → scene4
 - S07 + S08 → scene5
 
-Caption-Blöcke dürfen diese Sätze in kleinere Blöcke teilen. Alle Caption-Texte einer Szene zusammen müssen aber exakt ihren gemappten Sprechertext ergeben.
+Diese Zuordnung wird nicht mehr aus dem Audio erraten.
 
-## Phase 2 Audio
-**Status:** GENERIERT — LOKALER DOWNLOAD ERFORDERLICH
+## Phase 2 — Audio
+**Status:** GENERIERT — LOKALER MASTER ERFORDERLICH
+
+Falls `voiceover.mp3` lokal noch fehlt:
 
 ```bash
 node ki/scripts/fetch-generated-voiceover.mjs \
@@ -38,23 +34,41 @@ node ki/scripts/fetch-generated-voiceover.mjs \
   ki/reels/2026-08-24_bis_2026-08-30/05_DALLE-GPT-wird-eingestellt/01-script-audio/voiceover.mp3
 ```
 
-Danach Runtime-PCM-WAV vorbereiten und Worttimings auf **genau diese Runtime-WAV** locken.
+## Phase 3 — neuer Sync-Standard
+**Status:** LOKALES FORCED ALIGNMENT AUSSTEHEND
 
-## Phase 3
-**Status:** AUSSTEHEND
+Die alten 1282-Frame-Timings wurden nach dem Sync-Review ausdrücklich als **Legacy/Preview** zurückgestuft. Sie sind keine Production-Autorität mehr.
 
-Pflicht:
-1. Runtime-WAV erzeugen
-2. Wort-Timestamps / Alignment aus der Runtime-WAV
-3. Caption-Cues mit den bereits festgelegten `sceneId`s und echten `words[]`-Frames schreiben
-4. `lock-scene-timing-from-captions.mjs` ausführen — setzt Szenenstarts und finale Dauer automatisch aus den echten Wortankern
-5. `validate-scene-voice-map.mjs` bestehen
-6. `validate-voice-locked-captions.mjs` bestehen
-7. gelockte Timing-Dateien committen
-8. `prepare-reel-render.mjs`
-9. Typecheck/Test/Bundle
-10. Render
-11. 1x Motion-/Audio-/Caption-Sync-Review
-12. Finalizer + Export-Package-Gate
+Sobald der lokale Audio-Master existiert, nur noch:
+
+```bash
+node ki/scripts/align-reel-local.mjs \
+  ki/reels/2026-08-24_bis_2026-08-30/05_DALLE-GPT-wird-eingestellt
+```
+
+Der Befehl macht automatisch:
+1. exakte Runtime-PCM-WAV erzeugen
+2. bekannten Sprechertext lokal auf diese WAV ausrichten
+3. `WORD-TIMINGS.json` mit echten Wortzeiten erzeugen
+4. Caption-Cues aus diesen Wortzeiten neu bauen
+5. Caption-Wörter den bereits festgelegten Sätzen/Szenen zuordnen
+6. Szenenstarts aus dem ersten tatsächlich gesprochenen Wort jeder Szene ableiten
+7. finale Dauer aus der Runtime-WAV setzen
+8. Scene-Voice- und Voice-Lock-Gates ausführen
+
+Backend automatisch:
+- Apple Silicon → Qwen3 ForcedAligner via MLX
+- sonst → deutscher CTC-Aligner
+
+Beide laufen lokal ohne API-Minutenlimit. Kein fuzzy word matching: Wenn Text/Wortreihenfolge nicht exakt passt, wird abgebrochen statt falsche Timings zu akzeptieren.
+
+Danach:
+1. erzeugte `WORD-TIMINGS.json`, `subtitle-cues.json`, `reel.json` und `SCENE-VOICE-MAP.json` prüfen
+2. diese gelockten JSON-Dateien committen
+3. `prepare-reel-render.mjs`
+4. Typecheck/Test/Bundle
+5. Render
+6. 1x Motion-/Audio-/Caption-Sync-Review
+7. Finalizer + Export-Package-Gate
 
 Kein `FINAL VIDEO READY`, bevor diese Schritte tatsächlich bestanden sind.
