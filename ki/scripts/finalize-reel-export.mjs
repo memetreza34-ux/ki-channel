@@ -21,6 +21,7 @@ const captionSource = path.join(reelDir, '03-caption', 'FINAL-CAPTION.txt');
 
 const scripts = {
   entertainment: path.resolve('ki','scripts','validate-entertainment-review.mjs'),
+  sceneVoiceMap: path.resolve('ki','scripts','validate-scene-voice-map.mjs'),
   voiceLock: path.resolve('ki','scripts','validate-voice-locked-captions.mjs'),
   motion: path.resolve('ki','scripts','validate-motion-readability-review.mjs'),
   sourceIsolation: path.resolve('ki','scripts','validate-reel-source-isolation.mjs'),
@@ -46,6 +47,9 @@ try { reelConfig = JSON.parse(await readFile(reelJsonPath,'utf8')); }
 catch (error) { fail(`could not parse reel.json: ${error.message}`); }
 const compositionId = safeCompositionId(reelConfig?.compositionId);
 if (!compositionId) fail('compositionId missing in reel.json.');
+const sceneVoiceMapRelative = reelConfig?.sceneVoiceMap?.file || '01-script-audio/SCENE-VOICE-MAP.json';
+const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
+if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
 
 const runGate = (label, script, args) => {
   const gate = spawnSync(process.execPath, [script, ...args], {encoding:'utf8'});
@@ -56,6 +60,7 @@ const runGate = (label, script, args) => {
 };
 
 runGate('entertainment gate', scripts.entertainment, [reelDir]);
+runGate('scene/voice map gate', scripts.sceneVoiceMap, [reelDir]);
 runGate('voice-lock gate', scripts.voiceLock, [reelDir]);
 runGate('motion-readability gate', scripts.motion, [reelDir, sourceVideo]);
 const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolation.json');
@@ -85,11 +90,12 @@ const currentHashes = {
   sourceTreeSha256: await sha256Directory(path.resolve(sourceDir)),
   renderContractSha256: renderContractSha256(reelConfig),
   reelJsonSha256AtFinalization: await sha256File(reelJsonPath),
+  sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
   captionJsonSha256: await sha256File(captionJsonPath),
   canonicalAudioSha256: await sha256File(canonicalAudio),
   runtimeAudioSha256: await sha256File(runtimeAudio),
 };
-for (const key of ['sourceTreeSha256','renderContractSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256']) {
+for (const key of ['sourceTreeSha256','renderContractSha256','sceneVoiceMapSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256']) {
   if (renderLock?.hashes?.[key] !== currentHashes[key]) fail(`${key} changed after render preparation. Rerun prepare + render.`);
 }
 const sourceVideoStat = await stat(sourceVideo);
@@ -155,6 +161,7 @@ try {
     caption: captionName,
     gates: {
       entertainment: 'PASSED',
+      sceneVoiceMap: 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS',
       voiceLock: 'PASSED',
       motionReadability: 'PASSED_EXACT_VIDEO_HASH',
       sourceIsolation: existsSync(isolationConfig) ? 'PASSED' : 'NOT_APPLICABLE',
@@ -170,6 +177,7 @@ try {
       renderContractSha256: currentHashes.renderContractSha256,
       reelJsonSha256AtRenderLock: renderLock.hashes.reelJsonSha256AtLock,
       reelJsonSha256AtFinalization: currentHashes.reelJsonSha256AtFinalization,
+      sceneVoiceMapSha256: currentHashes.sceneVoiceMapSha256,
       captionJsonSha256: currentHashes.captionJsonSha256,
       canonicalAudioSha256: currentHashes.canonicalAudioSha256,
       runtimeAudioSha256: currentHashes.runtimeAudioSha256,
