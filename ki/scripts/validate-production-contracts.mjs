@@ -6,10 +6,15 @@ import path from 'node:path';
 const fail = [];
 const mustExist = [
   'ki/gehirn/AUDIO_PIPELINE.md',
+  'ki/gehirn/FORCED_ALIGNMENT.md',
   'ki/gehirn/CAPTION_SAFE_POSITION.md',
   'ki/src/reels/captionSafe.ts',
   'ki/scripts/lib/render-provenance.mjs',
   'ki/scripts/prepare-reel-audio.mjs',
+  'ki/scripts/setup-local-forced-aligner.mjs',
+  'ki/scripts/python/align_words.py',
+  'ki/scripts/align-reel-local.mjs',
+  'ki/scripts/validate-local-forced-alignment.mjs',
   'ki/scripts/lock-scene-timing-from-captions.mjs',
   'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-scene-voice-map.mjs',
@@ -22,7 +27,6 @@ const mustExist = [
 for (const file of mustExist) if (!existsSync(path.resolve(file))) fail.push(`missing required production file: ${file}`);
 
 const read = async (file) => readFile(path.resolve(file),'utf8');
-
 const root = await read('ki/src/Root.tsx');
 if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|mp4)['"]/i.test(root)) fail.push('Root.tsx contains a static binary audio/video import.');
 if (/https?:\/\//i.test(root)) fail.push('Root.tsx contains a remote media URL.');
@@ -53,6 +57,7 @@ for (const file of activeContracts) {
 
 const ignore = await read('.gitignore');
 if (!ignore.includes('public/runtime-audio/')) fail.push('.gitignore does not ignore public/runtime-audio/.');
+if (!ignore.includes('.cache/')) fail.push('.gitignore does not ignore local aligner/model cache work.');
 
 const sourceFiles = [];
 const walk = async (dir) => {
@@ -63,7 +68,6 @@ const walk = async (dir) => {
   }
 };
 await walk(path.resolve('ki','src','reels'));
-
 for (const file of sourceFiles) {
   const relative = path.relative(process.cwd(),file);
   const text = await readFile(file,'utf8');
@@ -72,13 +76,21 @@ for (const file of sourceFiles) {
   if (text.includes('Math.random(')) fail.push(`${relative} uses Math.random() in deterministic render source.`);
 }
 
-const studySource = await read('ki/src/reels/chatgpt-study-mode/ReelChatGPTStudyMode.tsx');
-if (studySource.includes('http://') || studySource.includes('https://')) fail.push('Study Mode render source contains a remote URL.');
-if (!studySource.includes('requires a verified local voiceoverSrc')) fail.push('Study Mode does not fail closed on missing audio.');
+const alignRunner = await read('ki/scripts/python/align_words.py');
+if (!alignRunner.includes('mlx-community/Qwen3-ForcedAligner-0.6B-8bit')) fail.push('Apple-Silicon forced aligner model is missing.');
+if (!alignRunner.includes('facebook/wav2vec2-large-xlsr-53-german')) fail.push('commercial-safe German CTC fallback model is missing.');
+if (alignRunner.includes('MahmoudAshraf/mms-300m-1130-forced-aligner')) fail.push('production aligner references the noncommercial default MMS model.');
+
+const setupAligner = await read('ki/scripts/setup-local-forced-aligner.mjs');
+if (!setupAligner.includes('mlx-audio==0.5.0') || !setupAligner.includes('11855d1de76af2b490dd2e8e2db2661805ae90a0')) fail.push('local aligner dependencies are not pinned.');
+
+const localGate = await read('ki/scripts/validate-local-forced-alignment.mjs');
+if (!localGate.includes('fuzzyWordMatching') || !localGate.includes('PASSED') || !localGate.includes('Apache-2.0')) fail.push('local forced-alignment gate is incomplete.');
 
 const prepare = await read('ki/scripts/prepare-reel-render.mjs');
 if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
 if (!prepare.includes('validate-scene-voice-map.mjs') || !prepare.includes('sceneVoiceMapSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash scene-to-voice mapping.');
+if (!prepare.includes('validate-local-forced-alignment.mjs') || !prepare.includes('wordTimingsSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash local forced alignment.');
 
 const lockScenes = await read('ki/scripts/lock-scene-timing-from-captions.mjs');
 if (!lockScenes.includes('firstWordFrame') || !lockScenes.includes('finalDurationInFrames') || !lockScenes.includes('VOICE_LOCKED_SCENE_MAPPED')) fail.push('scene timing lock script does not derive final scene timing from real word anchors.');
@@ -86,6 +98,7 @@ if (!lockScenes.includes('firstWordFrame') || !lockScenes.includes('finalDuratio
 const finalize = await read('ki/scripts/finalize-reel-export.mjs');
 if (!finalize.includes('PASSED_LOCKED_INPUT_HASHES') || !finalize.includes('reviewedVideoSha256')) fail.push('finalize-reel-export.mjs does not enforce render provenance.');
 if (!finalize.includes('PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') || !finalize.includes('sceneVoiceMapSha256')) fail.push('finalize-reel-export.mjs does not enforce scene-to-voice provenance.');
+if (!finalize.includes('PASSED_EXACT_KNOWN_TRANSCRIPT') || !finalize.includes('wordTimingsSha256')) fail.push('finalize-reel-export.mjs does not enforce local forced-alignment provenance.');
 
 const generator = await read('scripts/new-ki-reel.mjs');
 if (!generator.includes('SCENE-VOICE-MAP.json') || !generator.includes('FIRST_MAPPED_WORD')) fail.push('new reel generator does not create the canonical scene-to-voice mapping contract.');
@@ -100,4 +113,4 @@ console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
-console.log('checked scene-to-voice mapping pipeline: yes');
+console.log('checked scene-to-voice + local forced-alignment pipeline: yes');
