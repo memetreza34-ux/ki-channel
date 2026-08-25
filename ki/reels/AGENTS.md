@@ -22,6 +22,8 @@ Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
 Pflicht:
 
 - finales Skript + Copy-Fließtext
+- `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
+- `01-script-audio/SCENE-VOICE-MAP.json`
 - `reel.json`
 - `scene-plan.md`
 - `animation-plan.md`
@@ -36,6 +38,14 @@ Pflicht:
 
 Plan-only ist nicht Phase-1-fertig.
 
+### Zwei Skripte, zwei Aufgaben
+
+`VOICEOVER-ZUM-KOPIEREN.txt` enthält nur das, was gesprochen wird.
+
+`SCENE-VOICE-MAP.json` legt **vor Audio-Alignment** fest, welcher exakte Satz zu welcher Szene gehört.
+
+Der Agent darf die Szenenzuordnung später nicht aus dem kompletten Audio erraten. Alignment beantwortet nur noch: **Wann wird der bereits gemappte Satz tatsächlich gesprochen?**
+
 ## Phase 2 — Voiceover
 
 Voiceover darf real per verfügbarem Tool oder durch Nutzer/Mensch entstehen. Details ausschließlich in `ki/gehirn/AUDIO_PIPELINE.md`.
@@ -47,19 +57,35 @@ Remote-URL ist Provenance, kein Render-Master.
 Pflichtreihenfolge:
 
 1. lokales Audio vorhanden
-2. reale Dauer messen
-3. Whisper/Voice-Lock
-4. Szenengrenzen + Composition-Dauer auf echtes Audio schreiben
-5. `prepare-reel-audio.mjs`
-6. Source-/TypeScript-/fokussierte Tests
-7. Entertainment-/Voice-Lock-/ggf. Isolation-Gates
-8. Smoke/Hero/Contact Sheet
-9. 1x Motion-Readability-Review
-10. finaler MP4
-11. Video-/Audio-Gate
-12. Finalizer
-13. Export-Package-Validator
-14. exportiertes Video ansehen und anhören
+2. Runtime-PCM-WAV erzeugen
+3. echte Wortzeiten / Alignment auf dieser Runtime-WAV
+4. `SCENE-VOICE-MAP.json` gegen Sprechertext + Caption-Zuordnung prüfen
+5. Caption-Cues aus echten Wortzeiten bilden
+6. `lock-scene-timing-from-captions.mjs` ausführen
+7. `validate-scene-voice-map.mjs`
+8. `validate-voice-locked-captions.mjs`
+9. gelockte Timing-Dateien committen
+10. `prepare-reel-render.mjs`
+11. Source-/TypeScript-/fokussierte Tests
+12. Smoke/Hero/Contact Sheet
+13. 1x Motion-/Audio-/Caption-Sync-Review
+14. finaler MP4
+15. Video-/Audio-Gate
+16. Finalizer
+17. Export-Package-Validator
+18. exportiertes Video ansehen und anhören
+
+## Scene-/Caption-Sync
+
+Verbindlich:
+
+- Caption-Blöcke dürfen einen Satz in kleinere Einheiten teilen.
+- Sie dürfen einen Satz aber nicht in eine andere Szene verschieben.
+- Alle Caption-Texte einer Szene zusammen müssen exakt den in `SCENE-VOICE-MAP.json` gemappten Sprechertext dieser Szene rekonstruieren.
+- Szene 2+ startet am ersten tatsächlich gesprochenen Wort ihres ersten gemappten Satzes.
+- Szene 1 startet bei Frame 0 und darf nur einen kleinen definierten Lead vor dem ersten Wort haben.
+- `lock-scene-timing-from-captions.mjs` berechnet diese Grenzen automatisch aus echten Wortzeiten.
+- Alte Planframes sind keine finale Szenen-Autorität.
 
 ## Visual / Motion
 
@@ -74,7 +100,7 @@ Pflichtreihenfolge:
 
 ## Caption
 
-Einzige Wahrheit:
+Einzige Layout-Wahrheit:
 
 - `ki/gehirn/CAPTION_SAFE_POSITION.md`
 - `ki/src/reels/captionSafe.ts`
@@ -88,12 +114,23 @@ Kanonisch bei 1080×1920:
 - Glass-/Blur-Overlay
 - kein separater Footer / kein zweiter Hintergrund
 
+Timing-Wahrheit:
+
+- Runtime-WAV
+- `SCENE-VOICE-MAP.json`
+- echte Wortzeiten in `subtitle-cues.json`
+
 ## Audio/Render
 
 Vor Render:
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+node ki/scripts/lock-scene-timing-from-captions.mjs <reel-package-dir>
+node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
+node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+# gelockte Dateien committen
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
 Vor Finalisierung:
@@ -103,7 +140,7 @@ node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer führt Entertainment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates selbst aus.
+Der Finalizer führt Entertainment-, Scene-Voice-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates selbst aus. `SCENE-VOICE-MAP.json` wird per SHA256 in den Render-Provenance-Lock gebunden.
 
 ## Kanonischer Endzustand
 
