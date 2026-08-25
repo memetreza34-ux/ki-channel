@@ -1,112 +1,82 @@
 # Kanonische Audio-Pipeline — KI-Reels
 
-Diese Datei ist die **eine Audio-Wahrheit** für Short-Form-Reels.
+Diese Datei ist die Audio-Wahrheit für Short-Form-Reels.
 
 ## Grundsatz
 
-Ein Reel darf Voiceover auf zwei reale Arten erhalten:
+Voiceover darf real per verfügbarem Voice-/TTS-Tool oder durch Nutzer/Mensch entstehen. Remotion rendert niemals direkt von einer Remote-TTS-URL.
 
-1. **direkt mit einem tatsächlich verfügbaren Voice-/TTS-Tool erzeugt**, oder
-2. **vom Nutzer/Menschen bereitgestellt**.
-
-Beides ist zulässig. Nicht zulässig ist, Audio nur zu behaupten, eine URL zu erfinden oder einen stummen Render als fertig zu behandeln.
-
-## Kanonische Dateien
-
-Im Reel-Paket:
+## Dateien
 
 ```text
 01-script-audio/
-├── voiceover.md
 ├── VOICEOVER-ZUM-KOPIEREN.txt
-├── voiceover.mp3 oder voiceover.wav   # lokaler Audio-Master, nicht zwingend Git-tracked
-└── audio-source.json                  # Provenance, wenn Tool/Remote-Erzeugung genutzt wurde
+├── SCENE-VOICE-MAP.json
+├── WORD-TIMINGS.json             # erst nach lokalem Forced Alignment
+├── voiceover.mp3 oder voiceover.wav
+└── audio-source.json
 ```
 
-`audio-source.json` dokumentiert Herkunft/Provider/ID. Es ist **keine Renderquelle**.
-
-## Keine Render-Time-Netzwerkquelle
-
-Remotion rendert niemals direkt von einer TTS-/CDN-/Remote-URL.
-
-Nach einer Tool-Erzeugung gilt diese Reihenfolge:
-
-1. Audio tatsächlich herunterladen.
-2. am kanonischen `reel.json -> audio.targetFile` ablegen.
-3. lokal mit `ffprobe` prüfen.
-4. **Runtime-Audio vorbereiten:**
+## Runtime-Audio
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-5. Whisper/Voice-Lock gegen **genau die vorbereitete Runtime-WAV** ausführen.
-6. finale Szenengrenzen, Caption-Wortzeiten und `finalDurationInFrames` auf diese WAV legen.
-7. erst danach `prepare-reel-render.mjs` als finalen Pre-Render-Gate ausführen.
-
-Das Audio-Script erzeugt lokal:
+erzeugt exakt:
 
 ```text
 public/runtime-audio/<compositionId>.wav
 ```
 
-Die Runtime-Datei ist immer **48 kHz Stereo PCM s16le WAV**. Es wird bewusst **kein zweites MP3-Encoding** verwendet. Dadurch entstehen weder zusätzliche verlustbehaftete Artefakte noch MP3-Encoder-Delay, der Wort-/Caption-Timing verschieben könnte.
+48 kHz Stereo PCM s16le WAV. Diese dekodierte Datei ist Audio- und Timing-Autorität für den Render.
 
-Komprimierte Eingangsdaten wie MP3 dürfen durch Container-/Encoder-Padding geringfügig eine andere gemeldete Dauer haben. Deshalb ist für **finale Wort- und Frame-Synchronität die dekodierte Runtime-WAV maßgeblich**, nicht die MP3-Containerdauer.
+## Finaler Sync bei bekanntem Sprechertext
 
-Dieser Ordner ist regenerierbare Runtime-Arbeitsware und bleibt per `.gitignore` außerhalb von Git.
+Whisper ist nicht mehr der Standard. Der Sprechertext ist bereits bekannt, deshalb wird er lokal auf die echte Runtime-WAV ausgerichtet:
 
-`ki/src/Root.tsx` referenziert nur diese deterministische Runtime-URL. Dadurch gibt es keine kaputten statischen Audio-Imports und keine versteckten Netzwerkdownloads während des Renders.
+```bash
+node ki/scripts/align-reel-local.mjs <reel-package-dir>
+```
 
-## Timing-Autorität
+Pipeline:
 
-Der lokale Audio-Master ist die Inhaltsquelle. Die daraus deterministisch erzeugte **Runtime-PCM-WAV ist die finale Timing- und Render-Autorität**.
+```text
+VOICEOVER-ZUM-KOPIEREN.txt
++ SCENE-VOICE-MAP.json
++ Runtime-WAV
+→ LOCAL FORCED ALIGNMENT
+→ WORD-TIMINGS.json
+→ Caption-Cues
+→ automatische Szenengrenzen
+→ VOICE_LOCKED
+```
 
-Danach zwingend:
+Kanonische Details: `ki/gehirn/FORCED_ALIGNMENT.md`.
 
-- Runtime-WAV-Dauer messen
-- Whisper/Wort-Timestamps gegen Runtime-WAV
-- `subtitle-cues.json` auf `VOICE_LOCKED...` setzen
-- Szenengrenzen und Composition-Dauer auf reale Audio-/Bedeutungsgrenzen schreiben
-- `validate-voice-locked-captions.mjs` bestehen
-- `prepare-reel-render.mjs` ausführen; dieser Schritt bindet den Render an Git-Commit, Source-Tree, Render-Contract, Caption, Master-Audio und Runtime-WAV
+## Kosten / Limits
 
-Remote-Generation, Preview-Audio, MP3-Containerdauer oder geschätzte Cue-Zeiten sind niemals finale Timing-Autorität.
+- lokal
+- kein API-Key
+- kein Abo
+- keine Minuten-/Zeichenquote
+- Modelle werden einmal heruntergeladen und danach lokal wiederverwendet
 
-## Render-Provenance
+Apple Silicon nutzt bevorzugt Qwen3 ForcedAligner über MLX. Andere Systeme verwenden den deutschen CTC-Fallback. Die Produktionskonfiguration nutzt nur die dokumentierten Apache-2.0-Modellpfade; das nicht-kommerzielle Default-MMS-Modell des CTC-Projekts ist ausgeschlossen.
 
-`prepare-reel-render.mjs` erzeugt lokal einen `RENDER_LOCKED`-Datensatz für die Composition. Er enthält mindestens:
+## Hard Gates
 
-- Git-Commit des Render-Source-Stands
-- Source-Tree-SHA256
-- Render-Contract-SHA256
-- Caption-JSON-SHA256
-- kanonischen Audio-SHA256
-- Runtime-WAV-SHA256
-- finale Frame-Dauer
+Vor Production-Render müssen bestehen:
 
-`finalize-reel-export.mjs` akzeptiert keinen Render, dessen gelockte Inputs danach in renderrelevanter Weise verändert wurden. Reine Post-Render-Exportmetadaten wie der nach Sichtprüfung gewählte Cover-Zeitpunkt dürfen separat ergänzt werden.
+```bash
+node ki/scripts/validate-local-forced-alignment.mjs <reel-package-dir>
+node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
+node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
+```
 
-## Git-/Speicherregel
+Kein fuzzy word matching. Wenn der Aligner nicht exakt zum kanonischen Sprechertext passt, wird abgebrochen statt falsche Timings zu akzeptieren.
 
-Große Binärmedien (`mp3`, `wav`, `mp4`, `png`) bleiben standardmäßig lokal/Artifact-Storage und sind durch `.gitignore` ausgeschlossen, solange Git LFS nicht ausdrücklich eingerichtet ist.
+`prepare-reel-render.mjs` bindet `WORD-TIMINGS.json`, `SCENE-VOICE-MAP.json`, Caption-JSON, Source, Audio und Runtime-WAV per SHA256 an den Render.
 
-In Git müssen immer bleiben:
-
-- Skript
-- Provenance/`audio-source.json`
-- Timing-/Whisper-JSON
-- Reel-Contract
-- Export-Manifest/Metadaten
-- Source-Code und Review-Dokumentation
-
-Keine Regel darf gleichzeitig verlangen, ignorierte Binärdateien normal in Git zu committen.
-
-## Stummes Video verhindern
-
-- aktive Production-Compositions bekommen ihre Audio-URL aus `public/runtime-audio/`
-- neue Reel-Komponenten dürfen bei fehlendem/leerem `voiceoverSrc` hart fehlschlagen
-- `validate-final-video.mjs` prüft Audio-Stream + Lautstärke
-- `finalize-reel-export.mjs` läuft erst nach Voice-Lock-, Motion-, Entertainment-, Provenance- und Audio-Gates
-
-Ein Render ohne hörbares Audio ist **Arbeitsfehler**, kein Preview-Endzustand und niemals ein Final-Export.
+Ein stummer oder hörbar asynchroner Render ist kein Finalzustand.
