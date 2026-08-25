@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "reelId": "dalle-gpt-ende",
   "compositionId": "KI-DalleGptEnds",
   "sourceDir": "ki/src/reels/dalle-gpt-ends",
@@ -11,99 +11,59 @@
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "planningDurationInFrames": 1380,
-    "finalDurationInFrames": 1282,
-    "finalDurationAuthority": "RUNTIME_PCM_WAV_AFTER_WHISPER_LOCK"
+    "planningDurationInFrames": 1282,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "LOCAL_FORCED_ALIGNMENT_ON_EXACT_RUNTIME_PCM_WAV"
+  },
+  "legacyTimingEvidence": {
+    "status": "REJECTED_AS_FINAL_AFTER_SYNC_REVIEW",
+    "durationInFrames": 1282,
+    "durationSeconds": 42.709333,
+    "reason": "Previous voice/caption/scene timings were not produced by the canonical local known-transcript forced-alignment pipeline. They remain preview evidence only."
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "RUNTIME_PCM_WAV_LOCKED",
-    "timingAuthority": true,
-    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>",
-    "observedAudioDurationSeconds": 42.709333
+    "status": "GENERATED_MASTER_MUST_EXIST_LOCALLY_BEFORE_ALIGNMENT",
+    "timingAuthority": false,
+    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>"
+  },
+  "alignment": {
+    "method": "LOCAL_KNOWN_TRANSCRIPT_FORCED_ALIGNMENT",
+    "command": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "wordTimingsFile": "01-script-audio/WORD-TIMINGS.json",
+    "backendSelection": "AUTO_MLX_QWEN3_ON_APPLE_SILICON_ELSE_CTC_GERMAN",
+    "fuzzyWordMatching": false,
+    "status": "REQUIRED_NOT_YET_ACCEPTED"
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "VOICE_LOCKED",
+    "status": "CONTENT_LOCKED_TIMING_PENDING",
     "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts are anchored to the first mapped spoken word."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "VOICE_LOCKED_SCENE_MAPPED",
+    "status": "LEGACY_TIMING_REJECTED_REQUIRES_LOCAL_FORCED_ALIGNMENT",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
     "maxWidth": 860,
     "style": "transparent_glass_overlay"
   },
-  "header": {
-    "top": 112,
-    "style": "compact_glass_chip"
-  },
-  "background": {
-    "rule": "LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
-    "footerSplitAllowed": false
-  },
+  "header": {"top":112,"style":"compact_glass_chip"},
+  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
   "export": {
     "coverTimeSeconds": 4.2,
     "coverText": "DALL·E-GPT WIRD EINGESTELLT",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": [
-      "video",
-      "cover",
-      "caption",
-      "manifest"
-    ]
+    "requiredPackage": ["video","cover","caption","manifest"]
   },
   "scenes": [
-    {
-      "sceneId": "scene1",
-      "title": "DALL·E-GPT endet",
-      "startFrame": 0,
-      "endFrame": 160,
-      "accent": "#E24A57",
-      "heroMoment": "DALL·E GPT tile receives 30 AUG shutdown stamp",
-      "timingStatus": "VOICE_LOCKED"
-    },
-    {
-      "sceneId": "scene2",
-      "title": "Bilder bleiben",
-      "startFrame": 160,
-      "endFrame": 408,
-      "accent": "#18C7D9",
-      "heroMoment": "DALL·E GPT tile exits while ChatGPT Images stays active",
-      "timingStatus": "VOICE_LOCKED"
-    },
-    {
-      "sceneId": "scene3",
-      "title": "Jetzt sichern",
-      "startFrame": 408,
-      "endFrame": 537,
-      "accent": "#FF8A34",
-      "heroMoment": "image gallery flows into download folder before deadline",
-      "timingStatus": "VOICE_LOCKED"
-    },
-    {
-      "sceneId": "scene4",
-      "title": "Das bleibt verfügbar",
-      "startFrame": 537,
-      "endFrame": 852,
-      "accent": "#20B26B",
-      "heroMoment": "create edit and custom-GPT image features remain active",
-      "timingStatus": "VOICE_LOCKED"
-    },
-    {
-      "sceneId": "scene5",
-      "title": "Nur der GPT verschwindet",
-      "startFrame": 852,
-      "endFrame": 1282,
-      "accent": "#7657E8",
-      "heroMoment": "before-after summary locks into save-before-30-Aug CTA",
-      "timingStatus": "VOICE_LOCKED"
-    }
+    {"sceneId":"scene1","title":"DALL·E-GPT endet","startFrame":0,"endFrame":160,"accent":"#E24A57","heroMoment":"DALL·E GPT tile receives 30 AUG shutdown stamp","timingStatus":"PREVIEW_LEGACY"},
+    {"sceneId":"scene2","title":"Bilder bleiben","startFrame":160,"endFrame":408,"accent":"#18C7D9","heroMoment":"DALL·E GPT tile exits while ChatGPT Images stays active","timingStatus":"PREVIEW_LEGACY"},
+    {"sceneId":"scene3","title":"Jetzt sichern","startFrame":408,"endFrame":537,"accent":"#FF8A34","heroMoment":"image gallery flows into download folder before deadline","timingStatus":"PREVIEW_LEGACY"},
+    {"sceneId":"scene4","title":"Das bleibt verfügbar","startFrame":537,"endFrame":852,"accent":"#20B26B","heroMoment":"create edit and custom-GPT image features remain active","timingStatus":"PREVIEW_LEGACY"},
+    {"sceneId":"scene5","title":"Nur der GPT verschwindet","startFrame":852,"endFrame":1282,"accent":"#7657E8","heroMoment":"before-after summary locks into save-before-30-Aug CTA","timingStatus":"PREVIEW_LEGACY"}
   ],
-  "sources": [
-    "https://help.openai.com/de-de/articles/6825453-chatgpt-release-notes"
-  ]
+  "sources": ["https://help.openai.com/de-de/articles/6825453-chatgpt-release-notes"]
 }
