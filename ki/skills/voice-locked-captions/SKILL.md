@@ -4,9 +4,22 @@
 
 Verhindert, dass Phase-1-Schätzungen als finale Caption-, Wort-, Szenen- oder Composition-Timings verwendet werden.
 
+## Zwei getrennte Skript-Wahrheiten
+
+Für jedes Reel gibt es zwei Pflichtdateien:
+
+```text
+01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt
+01-script-audio/SCENE-VOICE-MAP.json
+```
+
+`VOICEOVER-ZUM-KOPIEREN.txt` enthält nur den exakten Sprechertext.
+
+`SCENE-VOICE-MAP.json` legt **vor dem Alignment** fest, welcher exakte Satz zu welcher Szene gehört. Der Agent darf diese Zuordnung später nicht aus dem kompletten Audio erraten.
+
 ## Autorität
 
-Sobald der lokale Voiceover-Master existiert, wird zuerst die deterministische Runtime-Audiospur erzeugt:
+Sobald der lokale Voiceover-Master existiert:
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
@@ -14,96 +27,123 @@ node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 
 Danach gilt:
 
-`Runtime-PCM-WAV → Wort-Timestamps → Caption-Gruppen → Visual Beats → Szenengrenzen → Composition-Dauer`
+`SCENE-VOICE-MAP + Runtime-PCM-WAV → Wort-Timestamps → Caption-Gruppen → Szenengrenzen → Visual Beats → Composition-Dauer`
 
-Nicht umgekehrt.
+Die Runtime-WAV unter `public/runtime-audio/<compositionId>.wav` ist exakt die Audiospur, die Remotion rendert.
 
-Die Runtime-WAV unter `public/runtime-audio/<compositionId>.wav` ist exakt die Audiospur, die Remotion später rendert. Damit werden MP3-Container-Padding und ein zweites verlustbehaftetes Encoding aus der finalen Timing-Kette entfernt.
+## Alignment
 
-Verbindliche Audioquelle: `ki/gehirn/AUDIO_PIPELINE.md`.
+Für Phase 3 müssen präzise Wort-Timestamps aus der Runtime-WAV erzeugt werden.
 
-## Whisper / Transkription
+Verbindlich:
 
-Für Phase 3 müssen präzise Wort-Timestamps aus der **vorbereiteten Runtime-WAV** erzeugt werden, bevorzugt mit Whisper bzw. einer gleichwertig präzisen Transkriptionsmethode.
+- Sprechertext bleibt Text-Autorität.
+- `SCENE-VOICE-MAP.json` bleibt Szenen-Autorität.
+- STT darf weder Wörter umschreiben noch Sätze in andere Szenen verschieben.
+- Caption-Blöcke dürfen einen Satz in mehrere kleine Cues teilen.
+- Alle Cues einer Szene zusammen müssen exakt den gemappten Sprechertext dieser Szene rekonstruieren.
+- `subtitle-cues.json` enthält echte `words[]`-Timings.
 
-Wichtig:
+## Automatischer Scene-Lock
 
-- Das Repo behauptet **keinen speziellen Alignment-Befehl**, solange dafür kein tatsächlich vorhandenes, getestetes Script existiert.
-- `@remotion/install-whisper-cpp` ist als Dependency vorhanden, aber ein Agent darf daraus nicht automatisch behaupten, ein bestimmtes Wrapper-Script existiere.
-- Der kanonische Sprechertext bleibt Text-Autorität; STT-Fehler dürfen ihn nicht umschreiben.
-- Das Ergebnis muss als echte `words[]`-Timings in `subtitle-cues.json` landen.
+Nach echten Wortzeiten:
+
+```bash
+node ki/scripts/lock-scene-timing-from-captions.mjs <reel-package-dir>
+```
+
+Das Script setzt automatisch:
+
+- scene1.startFrame = 0
+- scene2+ startFrame = erstes wirklich gesprochenes Wort der ersten gemappten Caption dieser Szene
+- scene.endFrame = Start der nächsten gemappten Szene
+- letzte Szene endet an der realen Runtime-WAV-Dauer
+- `format.finalDurationInFrames`
+- `audio.observedAudioDurationSeconds`
+- alle Szenen auf `timingStatus: VOICE_LOCKED`
+- Captions auf `VOICE_LOCKED_SCENE_MAPPED`
+
+Damit muss der Agent Szenengrenzen nicht mehr von Hand schätzen.
+
+## Scene-Voice-Gate
+
+```bash
+node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
+```
+
+Prüft:
+
+- alle gemappten Sätze rekonstruieren exakt `VOICEOVER-ZUM-KOPIEREN.txt`
+- Satz-IDs eindeutig
+- jeder Satz zeigt auf eine existierende Szene
+- Szenen-Reihenfolge läuft nicht rückwärts
+- jede Szene hat mindestens einen gemappten Satz
+- Caption-Texte pro Szene rekonstruieren exakt den gemappten Sprechertext
+- bei `VOICE_LOCKED` startet jede Szene am ersten gemappten gesprochenen Wort innerhalb der Toleranz
 
 ## Finale Datenanforderung
 
-`subtitle-cues.json` muss vor Production-Render:
+`subtitle-cues.json`:
 
-- `timingStatus` beginnend mit `VOICE_LOCKED` haben
-- pro Cue `words[]` enthalten
-- Worttexte den Cue-Text exakt rekonstruieren
-- keine Wortüberlappungen haben
-- Cue-/Wortframes innerhalb der Voice-Locked-Szenengrenzen halten
+- `timingStatus` beginnt mit `VOICE_LOCKED`
+- pro Cue `words[]`
+- Worttexte rekonstruieren Cue-Text exakt
+- keine Wortüberlappungen
+- Cue-/Wortframes innerhalb ihrer Voice-Locked-Szene
 
-`reel.json` muss gleichzeitig:
+`reel.json`:
 
-- `format.finalDurationInFrames` setzen
-- alle Szenen kontinuierlich von Frame 0 bis finalDuration führen
-- pro Szene `timingStatus: VOICE_LOCKED` setzen
-- `audio.observedAudioDurationSeconds` bzw. gleichwertige Dauer der **Runtime-WAV** dokumentieren
+- `sceneVoiceMap.file` gesetzt
+- `format.finalDurationInFrames` gesetzt
+- Szenen kontinuierlich von Frame 0 bis finalDuration
+- pro Szene `timingStatus: VOICE_LOCKED`
+- echte Runtime-WAV-Dauer dokumentiert
 
 ## Caption-Gruppen
 
-- nach Sinn/Phrase gruppieren
 - typischerweise 3–6 Wörter
 - maximal 2 Zeilen
 - natürliche Pausen respektieren
 - kein aktives Wort während echter Sprechpause
+- Sätze dürfen innerhalb derselben Szene in mehrere Cues geteilt werden
 
-Layout kommt **nicht** aus diesem Skill, sondern ausschließlich aus `captionSafe.ts` / `CAPTION_SAFE_POSITION.md`.
+Layout kommt ausschließlich aus `captionSafe.ts` / `CAPTION_SAFE_POSITION.md`.
 
 ## Visual-Sync
 
-Für starke Beats:
+Starke Beats hängen an denselben Wortzeiten wie Szene und Caption:
 
 ```text
-gesprochenes Wort / Phrase
+gemappter Satz / Schlüsselphrase
 → echter Frame in der Runtime-WAV
-→ visueller Trigger
-→ erwarteter Zustand
+→ Scene-Start oder visueller Trigger
+→ Caption derselben Szene
 ```
 
-Szenenwechsel bevorzugt nach Satzende, klarer Pause oder hörbarem Gedankenwechsel.
-
-## Wenn Audio kürzer/länger als Planung ist
-
-1. Runtime-WAV erzeugen und echte dekodierte Dauer messen
-2. Szenen/Animation/Holds an diese Stimme anpassen
-3. Visuals reduzieren, falls zu viele Informationen in eine Phrase gepackt wurden
-4. `reel.json` und Caption-Timings neu schreiben
-5. nur bei Bedarf natürliches, pitch-erhaltendes Phrase-Retiming im erlaubten Korridor; danach Runtime-WAV neu erzeugen und erneut locken
-
-Nie das Voiceover gegen alte Plan-Cues laufen lassen.
-
-## Validierung
-
-Vor Production-Render:
+## Validierung vor Production-Render
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
-# Whisper/Word-Lock gegen public/runtime-audio/<compositionId>.wav
+# Alignment gegen public/runtime-audio/<compositionId>.wav
+node ki/scripts/lock-scene-timing-from-captions.mjs <reel-package-dir>
+node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
 node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+# gelockte Dateien committen
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-`prepare-reel-render.mjs` regeneriert/verifiziert die Runtime-WAV, blockiert alte Plan-Dauer und nicht-Voice-Locked-Szenen und erzeugt danach den Render-Provenance-Lock.
+`prepare-reel-render.mjs` führt den Scene-Voice-Gate erneut aus und bindet `SCENE-VOICE-MAP.json` per SHA256 in den Render-Provenance-Lock ein.
 
 ## Freigabe
 
 Kein Final-Render, wenn:
 
+- `SCENE-VOICE-MAP.json` fehlt/unvollständig ist
+- Satz → Szene nicht eindeutig ist
+- Caption-Text einer Szene nicht zum gemappten Sprechertext passt
+- Szenenstart nicht zum ersten gemappten Wort passt
 - Runtime-WAV fehlt
 - Wort-Timestamps fehlen
 - Timingstatus nur Preview/Planning ist
-- Szenen nicht auf der tatsächlich gerenderten Audiospur liegen
 - Composition-Dauer noch Planwert ist
 - Caption hörbar vor-/nachläuft
-- aktives Wort nicht zur Stimme passt
