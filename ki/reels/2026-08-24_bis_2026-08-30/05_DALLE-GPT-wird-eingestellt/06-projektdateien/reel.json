@@ -22,6 +22,11 @@
     "timingAuthority": false,
     "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>"
   },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING",
+    "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts are anchored to the first mapped spoken word."
+  },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
     "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
