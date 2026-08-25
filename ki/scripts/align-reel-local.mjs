@@ -51,7 +51,6 @@ const run = (label, command, args, options={}) => {
   return result;
 };
 
-// Produce the exact PCM WAV that Remotion will later render.
 run('runtime audio preparation', process.execPath, [path.resolve('ki/scripts/prepare-reel-audio.mjs'), reelDir]);
 const runtimeAudio = runtimeAudioPath(compositionId);
 if (!existsSync(runtimeAudio)) fail(`runtime WAV missing after preparation: ${runtimeAudio}`);
@@ -74,7 +73,7 @@ if (requestedBackend !== 'auto' && marker.backend !== backend) {
 }
 
 const venvPython = path.resolve(marker.python);
-if (!existsSync(venvPython)) fail(`local aligner python missing: ${venvPython}. Run npm run aligner:setup.`);
+if (!existsSync(venvPython)) fail(`local aligner python missing: ${venvPython}. Run node ki/scripts/setup-local-forced-aligner.mjs.`);
 const workDir = path.resolve('.cache','reel-alignment',compositionId);
 await mkdir(workDir,{recursive:true});
 const rawAlignmentPath = path.join(workDir,'alignment.raw.json');
@@ -97,15 +96,11 @@ for (const sentence of sentences) {
   if (!sentence?.id || !sentence?.sceneId || !normalizeSpace(sentence.text)) fail('scene map contains an incomplete sentence entry.');
   for (const word of splitWords(sentence.text)) expected.push({text:word,sentenceId:sentence.id,sceneId:sentence.sceneId});
 }
-if (aligned.length !== expected.length) {
-  fail(`word count mismatch: aligner=${aligned.length}, canonical=${expected.length}. No fuzzy guessing allowed.`);
-}
+if (aligned.length !== expected.length) fail(`word count mismatch: aligner=${aligned.length}, canonical=${expected.length}. No fuzzy guessing allowed.`);
 
 const words = aligned.map((word,index) => {
   const expectedWord = expected[index];
-  if (lexical(word.text) !== lexical(expectedWord.text)) {
-    fail(`word ${index+1} mismatch: aligner="${word.text}" canonical="${expectedWord.text}". No timing files were accepted.`);
-  }
+  if (lexical(word.text) !== lexical(expectedWord.text)) fail(`word ${index+1} mismatch: aligner="${word.text}" canonical="${expectedWord.text}". No timing files were accepted.`);
   const startSeconds = Number(word.start);
   const endSeconds = Number(word.end);
   if (!Number.isFinite(startSeconds) || !Number.isFinite(endSeconds) || startSeconds < 0 || endSeconds <= startSeconds) fail(`invalid timing for word ${index+1}.`);
@@ -123,10 +118,7 @@ const words = aligned.map((word,index) => {
     score:Number.isFinite(Number(word.score)) ? Number(Number(word.score).toFixed(6)) : undefined,
   };
 });
-
-for (let i=1;i<words.length;i++) {
-  if (words[i].startFrame < words[i-1].startFrame) fail(`word timing goes backwards at word ${i+1}.`);
-}
+for (let i=1;i<words.length;i++) if (words[i].startFrame < words[i-1].startFrame) fail(`word timing goes backwards at word ${i+1}.`);
 
 const wordTimingsPath = path.join(reelDir,'01-script-audio','WORD-TIMINGS.json');
 const timingPayload = {
@@ -140,11 +132,7 @@ const timingPayload = {
   fps,
   runtimeAudio:`public/runtime-audio/${compositionId}.wav`,
   generatedAt:new Date().toISOString(),
-  rules:{
-    fuzzyWordMatching:false,
-    canonicalTextAuthority:'VOICEOVER-ZUM-KOPIEREN.txt',
-    sceneAuthority:'SCENE-VOICE-MAP.json',
-  },
+  rules:{fuzzyWordMatching:false,canonicalTextAuthority:'VOICEOVER-ZUM-KOPIEREN.txt',sceneAuthority:'SCENE-VOICE-MAP.json'},
   words,
 };
 await writeFile(wordTimingsPath,`${JSON.stringify(timingPayload,null,2)}\n`,'utf8');
@@ -186,7 +174,6 @@ const captions = {
 };
 await writeFile(captionsPath,`${JSON.stringify(captions,null,2)}\n`,'utf8');
 
-// Derive final scene starts/end and duration from the accepted real word timings.
 run('scene timing lock', process.execPath, [path.resolve('ki/scripts/lock-scene-timing-from-captions.mjs'),reelDir]);
 run('scene/voice gate', process.execPath, [path.resolve('ki/scripts/validate-scene-voice-map.mjs'),reelDir]);
 run('voice-lock gate', process.execPath, [path.resolve('ki/scripts/validate-voice-locked-captions.mjs'),reelDir]);
