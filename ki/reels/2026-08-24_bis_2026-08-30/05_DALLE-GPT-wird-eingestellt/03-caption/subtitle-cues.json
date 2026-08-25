@@ -1,18 +1,568 @@
 {
   "version": 1,
   "fps": 30,
-  "timingStatus": "PREVIEW_ONLY_REQUIRES_WHISPER_LOCK",
-  "note": "Planning only. Replace with word-level timestamps from the exact prepared runtime PCM-WAV before production render.",
+  "timingStatus": "VOICE_LOCKED_SCENE_MAPPED",
+  "note": "Word timings come from the exact runtime PCM-WAV. Scene boundaries were derived from the first mapped spoken word of each scene.",
   "cues": [
-    {"id":"c01","sceneId":"scene1","startFrame":0,"endFrame":150,"text":"Der offizielle DALL·E-GPT in ChatGPT verschwindet am 30. August."},
-    {"id":"c02","sceneId":"scene2","startFrame":270,"endFrame":390,"text":"Wichtig: Das bedeutet nicht, dass Bildgenerierung aus ChatGPT rausfliegt."},
-    {"id":"c03","sceneId":"scene2","startFrame":390,"endFrame":540,"text":"OpenAI stellt nur den offiziellen DALL·E-GPT ein."},
-    {"id":"c04","sceneId":"scene3","startFrame":540,"endFrame":780,"text":"Wenn du dort Bilder hast, die du behalten willst, sollst du sie vorher herunterladen."},
-    {"id":"c05","sceneId":"scene4","startFrame":780,"endFrame":915,"text":"Bilder erstellen und bearbeiten kannst du danach weiterhin direkt mit ChatGPT Bilder."},
-    {"id":"c06","sceneId":"scene4","startFrame":915,"endFrame":1080,"text":"Auch selbst erstellte GPTs mit aktivierter Bildgenerierung sind laut OpenAI nicht betroffen."},
-    {"id":"c07","sceneId":"scene5","startFrame":1080,"endFrame":1170,"text":"Der Unterschied ist also simpel:"},
-    {"id":"c08","sceneId":"scene5","startFrame":1170,"endFrame":1260,"text":"Der alte DALL·E-GPT verschwindet als eigener GPT,"},
-    {"id":"c09","sceneId":"scene5","startFrame":1260,"endFrame":1320,"text":"die Bildfunktion in ChatGPT bleibt."},
-    {"id":"c10","sceneId":"scene5","startFrame":1320,"endFrame":1380,"text":"Wenn du den DALL·E-GPT noch benutzt, sichere deine Bilder besser vor dem 30. August."}
+    {
+      "id": "c01",
+      "sceneId": "scene1",
+      "startFrame": 0,
+      "endFrame": 151,
+      "text": "Der offizielle DALL·E-GPT in ChatGPT verschwindet am 30. August.",
+      "words": [
+        {
+          "text": "Der",
+          "startFrame": 0,
+          "endFrame": 16
+        },
+        {
+          "text": "offizielle",
+          "startFrame": 16,
+          "endFrame": 39
+        },
+        {
+          "text": "DALL·E-GPT",
+          "startFrame": 39,
+          "endFrame": 51
+        },
+        {
+          "text": "in",
+          "startFrame": 51,
+          "endFrame": 79
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 79,
+          "endFrame": 87
+        },
+        {
+          "text": "verschwindet",
+          "startFrame": 87,
+          "endFrame": 110
+        },
+        {
+          "text": "am",
+          "startFrame": 110,
+          "endFrame": 132
+        },
+        {
+          "text": "30.",
+          "startFrame": 132,
+          "endFrame": 138
+        },
+        {
+          "text": "August.",
+          "startFrame": 138,
+          "endFrame": 151
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "sceneId": "scene2",
+      "startFrame": 160,
+      "endFrame": 301,
+      "text": "Wichtig: Das bedeutet nicht, dass Bildgenerierung aus ChatGPT rausfliegt.",
+      "words": [
+        {
+          "text": "Wichtig:",
+          "startFrame": 160,
+          "endFrame": 168
+        },
+        {
+          "text": "Das",
+          "startFrame": 188,
+          "endFrame": 198
+        },
+        {
+          "text": "bedeutet",
+          "startFrame": 213,
+          "endFrame": 219
+        },
+        {
+          "text": "nicht,",
+          "startFrame": 219,
+          "endFrame": 226
+        },
+        {
+          "text": "dass",
+          "startFrame": 226,
+          "endFrame": 238
+        },
+        {
+          "text": "Bildgenerierung",
+          "startFrame": 247,
+          "endFrame": 250
+        },
+        {
+          "text": "aus",
+          "startFrame": 250,
+          "endFrame": 274
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 274,
+          "endFrame": 281
+        },
+        {
+          "text": "rausfliegt.",
+          "startFrame": 281,
+          "endFrame": 301
+        }
+      ]
+    },
+    {
+      "id": "c03",
+      "sceneId": "scene2",
+      "startFrame": 301,
+      "endFrame": 408,
+      "text": "OpenAI stellt nur den offiziellen DALL·E-GPT ein.",
+      "words": [
+        {
+          "text": "OpenAI",
+          "startFrame": 301,
+          "endFrame": 321
+        },
+        {
+          "text": "stellt",
+          "startFrame": 339,
+          "endFrame": 349
+        },
+        {
+          "text": "nur",
+          "startFrame": 349,
+          "endFrame": 362
+        },
+        {
+          "text": "den",
+          "startFrame": 362,
+          "endFrame": 372
+        },
+        {
+          "text": "offiziellen",
+          "startFrame": 372,
+          "endFrame": 379
+        },
+        {
+          "text": "DALL·E-GPT",
+          "startFrame": 379,
+          "endFrame": 399
+        },
+        {
+          "text": "ein.",
+          "startFrame": 399,
+          "endFrame": 408
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "sceneId": "scene3",
+      "startFrame": 408,
+      "endFrame": 537,
+      "text": "Wenn du dort Bilder hast, die du behalten willst, sollst du sie vorher herunterladen.",
+      "words": [
+        {
+          "text": "Wenn",
+          "startFrame": 408,
+          "endFrame": 434
+        },
+        {
+          "text": "du",
+          "startFrame": 434,
+          "endFrame": 442
+        },
+        {
+          "text": "dort",
+          "startFrame": 458,
+          "endFrame": 463
+        },
+        {
+          "text": "Bilder",
+          "startFrame": 463,
+          "endFrame": 468
+        },
+        {
+          "text": "hast,",
+          "startFrame": 468,
+          "endFrame": 472
+        },
+        {
+          "text": "die",
+          "startFrame": 472,
+          "endFrame": 480
+        },
+        {
+          "text": "du",
+          "startFrame": 480,
+          "endFrame": 486
+        },
+        {
+          "text": "behalten",
+          "startFrame": 491,
+          "endFrame": 493
+        },
+        {
+          "text": "willst,",
+          "startFrame": 493,
+          "endFrame": 496
+        },
+        {
+          "text": "sollst",
+          "startFrame": 496,
+          "endFrame": 505
+        },
+        {
+          "text": "du",
+          "startFrame": 505,
+          "endFrame": 513
+        },
+        {
+          "text": "sie",
+          "startFrame": 524,
+          "endFrame": 530
+        },
+        {
+          "text": "vorher",
+          "startFrame": 530,
+          "endFrame": 532
+        },
+        {
+          "text": "herunterladen.",
+          "startFrame": 532,
+          "endFrame": 537
+        }
+      ]
+    },
+    {
+      "id": "c05",
+      "sceneId": "scene4",
+      "startFrame": 537,
+      "endFrame": 687,
+      "text": "Bilder erstellen und bearbeiten kannst du danach weiterhin direkt mit ChatGPT Bilder.",
+      "words": [
+        {
+          "text": "Bilder",
+          "startFrame": 537,
+          "endFrame": 547
+        },
+        {
+          "text": "erstellen",
+          "startFrame": 547,
+          "endFrame": 571
+        },
+        {
+          "text": "und",
+          "startFrame": 589,
+          "endFrame": 595
+        },
+        {
+          "text": "bearbeiten",
+          "startFrame": 595,
+          "endFrame": 610
+        },
+        {
+          "text": "kannst",
+          "startFrame": 610,
+          "endFrame": 617
+        },
+        {
+          "text": "du",
+          "startFrame": 617,
+          "endFrame": 632
+        },
+        {
+          "text": "danach",
+          "startFrame": 632,
+          "endFrame": 640
+        },
+        {
+          "text": "weiterhin",
+          "startFrame": 640,
+          "endFrame": 646
+        },
+        {
+          "text": "direkt",
+          "startFrame": 646,
+          "endFrame": 653
+        },
+        {
+          "text": "mit",
+          "startFrame": 653,
+          "endFrame": 668
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 668,
+          "endFrame": 679
+        },
+        {
+          "text": "Bilder.",
+          "startFrame": 679,
+          "endFrame": 687
+        }
+      ]
+    },
+    {
+      "id": "c06",
+      "sceneId": "scene4",
+      "startFrame": 687,
+      "endFrame": 852,
+      "text": "Auch selbst erstellte GPTs mit aktivierter Bildgenerierung sind laut OpenAI nicht betroffen.",
+      "words": [
+        {
+          "text": "Auch",
+          "startFrame": 687,
+          "endFrame": 706
+        },
+        {
+          "text": "selbst",
+          "startFrame": 706,
+          "endFrame": 714
+        },
+        {
+          "text": "erstellte",
+          "startFrame": 730,
+          "endFrame": 738
+        },
+        {
+          "text": "GPTs",
+          "startFrame": 738,
+          "endFrame": 748
+        },
+        {
+          "text": "mit",
+          "startFrame": 748,
+          "endFrame": 761
+        },
+        {
+          "text": "aktivierter",
+          "startFrame": 761,
+          "endFrame": 774
+        },
+        {
+          "text": "Bildgenerierung",
+          "startFrame": 774,
+          "endFrame": 781
+        },
+        {
+          "text": "sind",
+          "startFrame": 781,
+          "endFrame": 798
+        },
+        {
+          "text": "laut",
+          "startFrame": 798,
+          "endFrame": 819
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 819,
+          "endFrame": 832
+        },
+        {
+          "text": "nicht",
+          "startFrame": 832,
+          "endFrame": 839
+        },
+        {
+          "text": "betroffen.",
+          "startFrame": 839,
+          "endFrame": 852
+        }
+      ]
+    },
+    {
+      "id": "c07",
+      "sceneId": "scene5",
+      "startFrame": 852,
+      "endFrame": 917,
+      "text": "Der Unterschied ist also simpel:",
+      "words": [
+        {
+          "text": "Der",
+          "startFrame": 852,
+          "endFrame": 864
+        },
+        {
+          "text": "Unterschied",
+          "startFrame": 864,
+          "endFrame": 878
+        },
+        {
+          "text": "ist",
+          "startFrame": 878,
+          "endFrame": 901
+        },
+        {
+          "text": "also",
+          "startFrame": 901,
+          "endFrame": 910
+        },
+        {
+          "text": "simpel:",
+          "startFrame": 910,
+          "endFrame": 917
+        }
+      ]
+    },
+    {
+      "id": "c08",
+      "sceneId": "scene5",
+      "startFrame": 917,
+      "endFrame": 1007,
+      "text": "Der alte DALL·E-GPT verschwindet als eigener GPT,",
+      "words": [
+        {
+          "text": "Der",
+          "startFrame": 917,
+          "endFrame": 924
+        },
+        {
+          "text": "alte",
+          "startFrame": 924,
+          "endFrame": 933
+        },
+        {
+          "text": "DALL·E-GPT",
+          "startFrame": 950,
+          "endFrame": 953
+        },
+        {
+          "text": "verschwindet",
+          "startFrame": 953,
+          "endFrame": 963
+        },
+        {
+          "text": "als",
+          "startFrame": 963,
+          "endFrame": 970
+        },
+        {
+          "text": "eigener",
+          "startFrame": 970,
+          "endFrame": 988
+        },
+        {
+          "text": "GPT,",
+          "startFrame": 988,
+          "endFrame": 1007
+        }
+      ]
+    },
+    {
+      "id": "c09",
+      "sceneId": "scene5",
+      "startFrame": 1007,
+      "endFrame": 1077,
+      "text": "die Bildfunktion in ChatGPT bleibt.",
+      "words": [
+        {
+          "text": "die",
+          "startFrame": 1007,
+          "endFrame": 1015
+        },
+        {
+          "text": "Bildfunktion",
+          "startFrame": 1015,
+          "endFrame": 1027
+        },
+        {
+          "text": "in",
+          "startFrame": 1027,
+          "endFrame": 1041
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 1050,
+          "endFrame": 1058
+        },
+        {
+          "text": "bleibt.",
+          "startFrame": 1058,
+          "endFrame": 1077
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "sceneId": "scene5",
+      "startFrame": 1077,
+      "endFrame": 1228,
+      "text": "Wenn du den DALL·E-GPT noch benutzt, sichere deine Bilder besser vor dem 30. August.",
+      "words": [
+        {
+          "text": "Wenn",
+          "startFrame": 1077,
+          "endFrame": 1083
+        },
+        {
+          "text": "du",
+          "startFrame": 1083,
+          "endFrame": 1103
+        },
+        {
+          "text": "den",
+          "startFrame": 1103,
+          "endFrame": 1111
+        },
+        {
+          "text": "DALL·E-GPT",
+          "startFrame": 1130,
+          "endFrame": 1139
+        },
+        {
+          "text": "noch",
+          "startFrame": 1139,
+          "endFrame": 1143
+        },
+        {
+          "text": "benutzt,",
+          "startFrame": 1143,
+          "endFrame": 1147
+        },
+        {
+          "text": "sichere",
+          "startFrame": 1147,
+          "endFrame": 1153
+        },
+        {
+          "text": "deine",
+          "startFrame": 1153,
+          "endFrame": 1170
+        },
+        {
+          "text": "Bilder",
+          "startFrame": 1170,
+          "endFrame": 1174
+        },
+        {
+          "text": "besser",
+          "startFrame": 1174,
+          "endFrame": 1185
+        },
+        {
+          "text": "vor",
+          "startFrame": 1200,
+          "endFrame": 1206
+        },
+        {
+          "text": "dem",
+          "startFrame": 1206,
+          "endFrame": 1212
+        },
+        {
+          "text": "30.",
+          "startFrame": 1212,
+          "endFrame": 1218
+        },
+        {
+          "text": "August.",
+          "startFrame": 1218,
+          "endFrame": 1228
+        }
+      ]
+    }
   ]
 }

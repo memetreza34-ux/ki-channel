@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "mappingStatus": "VOICE_LOCKED",
   "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
   "captionFile": "03-caption/subtitle-cues.json",
   "rules": {

@@ -12,44 +12,96 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1380,
-    "finalDurationInFrames": null,
+    "finalDurationInFrames": 1282,
     "finalDurationAuthority": "RUNTIME_PCM_WAV_AFTER_WHISPER_LOCK"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-    "timingAuthority": false,
-    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>"
+    "status": "RUNTIME_PCM_WAV_LOCKED",
+    "timingAuthority": true,
+    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>",
+    "observedAudioDurationSeconds": 42.709333
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "CONTENT_LOCKED_TIMING_PENDING",
+    "status": "VOICE_LOCKED",
     "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts are anchored to the first mapped spoken word."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
+    "status": "VOICE_LOCKED_SCENE_MAPPED",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
     "maxWidth": 860,
     "style": "transparent_glass_overlay"
   },
-  "header": {"top":112,"style":"compact_glass_chip"},
-  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "header": {
+    "top": 112,
+    "style": "compact_glass_chip"
+  },
+  "background": {
+    "rule": "LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
+    "footerSplitAllowed": false
+  },
   "export": {
     "coverTimeSeconds": 4.2,
     "coverText": "DALL·E-GPT WIRD EINGESTELLT",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": ["video","cover","caption","manifest"]
+    "requiredPackage": [
+      "video",
+      "cover",
+      "caption",
+      "manifest"
+    ]
   },
   "scenes": [
-    {"sceneId":"scene1","title":"DALL·E-GPT endet","startFrame":0,"endFrame":270,"accent":"#E24A57","heroMoment":"DALL·E GPT tile receives 30 AUG shutdown stamp","timingStatus":"PLANNING"},
-    {"sceneId":"scene2","title":"Bilder bleiben","startFrame":270,"endFrame":540,"accent":"#18C7D9","heroMoment":"DALL·E GPT tile exits while ChatGPT Images stays active","timingStatus":"PLANNING"},
-    {"sceneId":"scene3","title":"Jetzt sichern","startFrame":540,"endFrame":780,"accent":"#FF8A34","heroMoment":"image gallery flows into download folder before deadline","timingStatus":"PLANNING"},
-    {"sceneId":"scene4","title":"Das bleibt verfügbar","startFrame":780,"endFrame":1080,"accent":"#20B26B","heroMoment":"create edit and custom-GPT image features remain active","timingStatus":"PLANNING"},
-    {"sceneId":"scene5","title":"Nur der GPT verschwindet","startFrame":1080,"endFrame":1380,"accent":"#7657E8","heroMoment":"before-after summary locks into save-before-30-Aug CTA","timingStatus":"PLANNING"}
+    {
+      "sceneId": "scene1",
+      "title": "DALL·E-GPT endet",
+      "startFrame": 0,
+      "endFrame": 160,
+      "accent": "#E24A57",
+      "heroMoment": "DALL·E GPT tile receives 30 AUG shutdown stamp",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene2",
+      "title": "Bilder bleiben",
+      "startFrame": 160,
+      "endFrame": 408,
+      "accent": "#18C7D9",
+      "heroMoment": "DALL·E GPT tile exits while ChatGPT Images stays active",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene3",
+      "title": "Jetzt sichern",
+      "startFrame": 408,
+      "endFrame": 537,
+      "accent": "#FF8A34",
+      "heroMoment": "image gallery flows into download folder before deadline",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene4",
+      "title": "Das bleibt verfügbar",
+      "startFrame": 537,
+      "endFrame": 852,
+      "accent": "#20B26B",
+      "heroMoment": "create edit and custom-GPT image features remain active",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene5",
+      "title": "Nur der GPT verschwindet",
+      "startFrame": 852,
+      "endFrame": 1282,
+      "accent": "#7657E8",
+      "heroMoment": "before-after summary locks into save-before-30-Aug CTA",
+      "timingStatus": "VOICE_LOCKED"
+    }
   ],
   "sources": [
     "https://help.openai.com/de-de/articles/6825453-chatgpt-release-notes"
