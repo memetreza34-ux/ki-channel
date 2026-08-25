@@ -46,11 +46,11 @@ Danach Runtime-PCM-WAV vorbereiten und Worttimings auf **genau diese Runtime-WAV
 Pflicht:
 1. Runtime-WAV erzeugen
 2. Wort-Timestamps / Alignment aus der Runtime-WAV
-3. gemappte Sätze anhand ihrer echten Wortzeiten lokalisieren
-4. `subtitle-cues.json` auf VOICE_LOCKED setzen
+3. Caption-Cues mit den bereits festgelegten `sceneId`s und echten `words[]`-Frames schreiben
+4. `lock-scene-timing-from-captions.mjs` ausführen — setzt Szenenstarts und finale Dauer automatisch aus den echten Wortankern
 5. `validate-scene-voice-map.mjs` bestehen
-6. Szenenstarts an das erste gemappte gesprochene Wort der jeweiligen Szene setzen
-7. `reel.json.finalDurationInFrames` + Szenen auf echte Stimme locken
+6. `validate-voice-locked-captions.mjs` bestehen
+7. gelockte Timing-Dateien committen
 8. `prepare-reel-render.mjs`
 9. Typecheck/Test/Bundle
 10. Render
