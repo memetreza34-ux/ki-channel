@@ -1,18 +1,16 @@
 # Entertainment Review — DALL·E-GPT wird eingestellt
 
-STATUS: PASS_PHASE_1
+Product/UI/Brand-Entscheidung: JA
 
-- Hook: klare Deadline + überraschende Einstellung
-- Einsatz: Zuschauer kann Bilder verlieren, wenn er sie nicht sichert
-- Mechanik: eigener GPT verschwindet, Bildfunktion bleibt sichtbar daneben
-- Aha: Nicht Bildgenerierung, sondern nur der offizielle DALL·E-GPT wird eingestellt
-- Ende: konkrete Handlung vor dem 30. August
+scene1: DALL·E-GPT endet
+scene2: Bilder bleiben
+scene3: Jetzt sichern
+scene4: Das bleibt verfügbar
+scene5: Nur der GPT verschwindet
 
-## Hero-Momente
-1. `30. AUGUST` + ENDE-Stempel
-2. DALL·E-GPT fährt raus, ChatGPT Bilder bleibt
-3. Galerie → Download/Archiv
-4. drei verbleibende Bildfunktionen
-5. klare Vorher/Nachher-Zusammenfassung
-
-Bewertung Phase 1: 10/10 als Plan. Post-Render muss separat geprüft werden.
+Score Hook / sofortige Erkennbarkeit: 10
+Score Produkt-/UI-/Brand-Nähe: 10
+Score Szenen-Dramaturgie: 10
+Score Motion / Kamera / Rhythmus: 10
+Score Memorable / Hero-Momente: 10
+GESAMT-Score: 50
