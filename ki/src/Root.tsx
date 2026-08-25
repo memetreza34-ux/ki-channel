@@ -127,7 +127,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id={GITHUB_REPOSITORY_COMPOSITION_ID} component={ReelGitHubRepository} defaultProps={{voiceoverSrc: runtimeAudio(GITHUB_REPOSITORY_COMPOSITION_ID), showCaptions: true}} durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} fps={GITHUB_REPOSITORY_FPS} width={GITHUB_REPOSITORY_WIDTH} height={GITHUB_REPOSITORY_HEIGHT}/>
       <Composition id={CHATGPT_TEENS_COMPOSITION_ID} component={ReelChatGPTForTeens} defaultProps={{voiceoverSrc: runtimeAudio(CHATGPT_TEENS_COMPOSITION_ID), showCaptions: true}} durationInFrames={CHATGPT_TEENS_DURATION_IN_FRAMES} fps={CHATGPT_TEENS_FPS} width={CHATGPT_TEENS_WIDTH} height={CHATGPT_TEENS_HEIGHT}/>
       <Composition id={STUDY_MODE_COMPOSITION_ID} component={ReelChatGPTStudyMode} defaultProps={{voiceoverSrc: runtimeAudio(STUDY_MODE_COMPOSITION_ID), showCaptions: true}} durationInFrames={STUDY_MODE_DURATION_IN_FRAMES} fps={STUDY_MODE_FPS} width={STUDY_MODE_WIDTH} height={STUDY_MODE_HEIGHT}/>
-      <Composition id={DALLE_ENDS_COMPOSITION_ID} component={ReelDalleGptEnds} defaultProps={{voiceoverSrc: runtimeAudio(DALLE_ENDS_COMPOSITION_ID), showCaptions: true}} durationInFrames={DALLE_ENDS_DURATION_IN_FRAMES} fps={DALLE_ENDS_FPS} width={DALLE_ENDS_WIDTH} height={DALLE_ENDS_HEIGHT}/>
+      <Composition id="KI-DalleGptEnds" component={ReelDalleGptEnds} defaultProps={{voiceoverSrc: runtimeAudio(DALLE_ENDS_COMPOSITION_ID), showCaptions: true}} durationInFrames={DALLE_ENDS_DURATION_IN_FRAMES} fps={DALLE_ENDS_FPS} width={DALLE_ENDS_WIDTH} height={DALLE_ENDS_HEIGHT}/>
     </Folder>
 
     <Folder name="KI-YouTube-Longform">
