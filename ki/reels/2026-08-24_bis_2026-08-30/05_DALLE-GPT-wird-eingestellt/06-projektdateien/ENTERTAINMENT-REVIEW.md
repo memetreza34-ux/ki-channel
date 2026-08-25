@@ -1,16 +1,24 @@
 # Entertainment Review — DALL·E-GPT wird eingestellt
 
-Product/UI/Brand-Entscheidung: JA
+**Status:** PASS_PHASE_1
 
-scene1: DALL·E-GPT endet
-scene2: Bilder bleiben
-scene3: Jetzt sichern
-scene4: Das bleibt verfügbar
-scene5: Nur der GPT verschwindet
+- Konkretes Produkt / App / Website / Feature?: JA
 
-Score Hook / sofortige Erkennbarkeit: 10
-Score Produkt-/UI-/Brand-Nähe: 10
-Score Szenen-Dramaturgie: 10
-Score Motion / Kamera / Rhythmus: 10
-Score Memorable / Hero-Momente: 10
-GESAMT-Score: 50
+## Szenen
+
+### Szene 1
+- SETUP: Start
+- AKTION: Aktion
+- KONSEQUENZ: Kons
+- PAYOFF: Pay
+- HERO-MOMENT: Hero
+
+## Scores
+
+- Hook / sofortige Erkennbarkeit: 2 / 2
+- Produkt-/UI-/Brand-Nähe: 2 / 2
+- Szenen-Dramaturgie: 2 / 2
+- Motion / Kamera / Rhythmus: 2 / 2
+- Memorable / Hero-Momente: 2 / 2
+
+**GESAMT: 10 / 10**
