@@ -21,138 +21,92 @@ Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
 
 Pflicht:
 
-- finales Skript + Copy-Fließtext
-- `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
-- `01-script-audio/SCENE-VOICE-MAP.json`
+- `VOICEOVER-ZUM-KOPIEREN.txt` mit exakt dem später gesprochenen Text
+- `SCENE-VOICE-MAP.json`: jeder Satz wird **vor dem Audio-Lock** einer Szene zugeordnet
 - `reel.json`
-- `scene-plan.md`
-- `animation-plan.md`
-- `ENTERTAINMENT-REVIEW.md`
-- `MOTION-READABILITY-REVIEW.md` zunächst PENDING
-- `subtitle-cues.json` als Preview-Basis
-- `platform-copy.md`
-- `FINAL-CAPTION.txt`
-- Asset-Manifest/Prompts
-- Assembly-/Review-Dateien
+- Szene-/Animationsplan
+- Entertainment- und Motion-Review-Struktur
+- Preview-Captions nur als Planung
+- Plattform-Copy + Final-Caption
 - ausführbarer Source + Composition
 
-Plan-only ist nicht Phase-1-fertig.
-
-### Zwei Skripte, zwei Aufgaben
-
-`VOICEOVER-ZUM-KOPIEREN.txt` enthält nur das, was gesprochen wird.
-
-`SCENE-VOICE-MAP.json` legt **vor Audio-Alignment** fest, welcher exakte Satz zu welcher Szene gehört.
-
-Der Agent darf die Szenenzuordnung später nicht aus dem kompletten Audio erraten. Alignment beantwortet nur noch: **Wann wird der bereits gemappte Satz tatsächlich gesprochen?**
+Der Agent darf später nicht aus dem fertigen Audio erraten, welcher Satz zu welcher Szene gehört.
 
 ## Phase 2 — Voiceover
 
-Voiceover darf real per verfügbarem Tool oder durch Nutzer/Mensch entstehen. Details ausschließlich in `ki/gehirn/AUDIO_PIPELINE.md`.
+Reales Audio darf per verfügbarem Tool oder durch Nutzer/Mensch entstehen. Remote-URL ist Provenance, kein Render-Master.
 
-Remote-URL ist Provenance, kein Render-Master.
+## Phase 3 — lokaler Sync, Render, Export
 
-## Phase 3 — Lock, Review, Render, Export
+Primärer Timing-Weg bei bekanntem Sprechertext:
 
-Pflichtreihenfolge:
+```text
+Voiceover-Master
+→ Runtime-PCM-WAV
+→ lokales Forced Alignment des bekannten Textes
+→ WORD-TIMINGS.json
+→ finale Caption-Cues
+→ automatische Szenengrenzen aus SCENE-VOICE-MAP
+→ VOICE_LOCKED
+```
 
-1. lokales Audio vorhanden
-2. Runtime-PCM-WAV erzeugen
-3. echte Wortzeiten / Alignment auf dieser Runtime-WAV
-4. `SCENE-VOICE-MAP.json` gegen Sprechertext + Caption-Zuordnung prüfen
-5. Caption-Cues aus echten Wortzeiten bilden
-6. `lock-scene-timing-from-captions.mjs` ausführen
-7. `validate-scene-voice-map.mjs`
-8. `validate-voice-locked-captions.mjs`
-9. gelockte Timing-Dateien committen
-10. `prepare-reel-render.mjs`
-11. Source-/TypeScript-/fokussierte Tests
-12. Smoke/Hero/Contact Sheet
-13. 1x Motion-/Audio-/Caption-Sync-Review
-14. finaler MP4
-15. Video-/Audio-Gate
-16. Finalizer
-17. Export-Package-Validator
-18. exportiertes Video ansehen und anhören
+Ein-Kommando-Sync:
 
-## Scene-/Caption-Sync
+```bash
+node ki/scripts/align-reel-local.mjs <reel-package-dir>
+```
 
-Verbindlich:
+Whisper ist Fallback/Diagnose für unbekanntes Audio, nicht mehr die Standard-Timing-Autorität für normale KI-Voiceover.
 
-- Caption-Blöcke dürfen einen Satz in kleinere Einheiten teilen.
-- Sie dürfen einen Satz aber nicht in eine andere Szene verschieben.
-- Alle Caption-Texte einer Szene zusammen müssen exakt den in `SCENE-VOICE-MAP.json` gemappten Sprechertext dieser Szene rekonstruieren.
-- Szene 2+ startet am ersten tatsächlich gesprochenen Wort ihres ersten gemappten Satzes.
-- Szene 1 startet bei Frame 0 und darf nur einen kleinen definierten Lead vor dem ersten Wort haben.
-- `lock-scene-timing-from-captions.mjs` berechnet diese Grenzen automatisch aus echten Wortzeiten.
-- Alte Planframes sind keine finale Szenen-Autorität.
+Danach müssen bestehen:
+
+```bash
+node ki/scripts/validate-local-forced-alignment.mjs <reel-package-dir>
+node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
+node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
+```
+
+Die gelockten JSON-Dateien werden vor dem Production-Render committed.
+
+## Forced-Alignment-Regeln
+
+Kanonische Quelle: `ki/gehirn/FORCED_ALIGNMENT.md`.
+
+- lokal, ohne Cloud-Quota
+- kein fuzzy word matching
+- Text muss exakt rekonstruiert werden
+- Caption-Wörter müssen exakt `WORD-TIMINGS.json` entsprechen
+- Szene 2+ startet am ersten tatsächlich gesprochenen Wort ihres ersten gemappten Satzes
+- Production nutzt nur die dokumentierten Modellpfade mit kompatibler Lizenz
 
 ## Visual / Motion
 
 - Product/UI-first bei konkreten Apps/Features
-- `SETUP → AKTION → KONSEQUENZ → PAYOFF`
-- mindestens ein Hero-Moment pro Szene
 - Light-First
-- High Energy ≠ High Speed
-- wichtige Zustände `REVEAL → SETTLE → READABLE HOLD`
+- `SETUP → AKTION → KONSEQUENZ → PAYOFF`
+- wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
 - höchstens 1–2 neue unabhängige Informationen gleichzeitig
-- keine kleine Card-Insel in riesigem Leerraum
 
-## Caption
+## Caption Layout
 
-Einzige Layout-Wahrheit:
+Einzige Wahrheit:
 
 - `ki/gehirn/CAPTION_SAFE_POSITION.md`
 - `ki/src/reels/captionSafe.ts`
 
-Kanonisch bei 1080×1920:
+Bei 1080×1920: bottom 250px, 104px Inset, max 860px, max 2 Zeilen, Glass-/Blur-Overlay, kein separater Footer.
 
-- `bottom: 250px`
-- `104px` horizontaler Inset
-- `860px` max width
-- max. 2 Zeilen
-- Glass-/Blur-Overlay
-- kein separater Footer / kein zweiter Hintergrund
+## Finaler Export
 
-Timing-Wahrheit:
-
-- Runtime-WAV
-- `SCENE-VOICE-MAP.json`
-- echte Wortzeiten in `subtitle-cues.json`
-
-## Audio/Render
-
-Vor Render:
-
-```bash
-node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
-node ki/scripts/lock-scene-timing-from-captions.mjs <reel-package-dir>
-node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
-node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
-# gelockte Dateien committen
-node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
-```
-
-Vor Finalisierung:
+Nach finalem MP4 + echtem 1x-Review:
 
 ```bash
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer führt Entertainment-, Scene-Voice-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates selbst aus. `SCENE-VOICE-MAP.json` wird per SHA256 in den Render-Provenance-Lock gebunden.
-
-## Kanonischer Endzustand
-
-```text
-05-export/
-├── <compositionId>.mp4
-├── <compositionId>-cover.png
-├── <compositionId>-caption.txt
-└── <compositionId>-export-manifest.json
-```
-
-Große Binärdateien sind lokal/Artifact-Storage und nicht automatisch Git-tracked. Git hält Source, Provenance, Timings, Reviews und Manifest.
+Das Export-Manifest muss lokale Forced-Alignment-, Scene-Voice-, Voice-Lock-, Motion-, Audio- und Provenance-Gates enthalten.
 
 Erst nach vollständiger Prüfung:
 
