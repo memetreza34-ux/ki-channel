@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {
+      "id": "S01",
+      "sceneId": "scene1",
+      "text": "Der offizielle DALL·E-GPT in ChatGPT verschwindet am 30. August."
+    },
+    {
+      "id": "S02",
+      "sceneId": "scene2",
+      "text": "Wichtig: Das bedeutet nicht, dass Bildgenerierung aus ChatGPT rausfliegt."
+    },
+    {
+      "id": "S03",
+      "sceneId": "scene2",
+      "text": "OpenAI stellt nur den offiziellen DALL·E-GPT ein."
+    },
+    {
+      "id": "S04",
+      "sceneId": "scene3",
+      "text": "Wenn du dort Bilder hast, die du behalten willst, sollst du sie vorher herunterladen."
+    },
+    {
+      "id": "S05",
+      "sceneId": "scene4",
+      "text": "Bilder erstellen und bearbeiten kannst du danach weiterhin direkt mit ChatGPT Bilder."
+    },
+    {
+      "id": "S06",
+      "sceneId": "scene4",
+      "text": "Auch selbst erstellte GPTs mit aktivierter Bildgenerierung sind laut OpenAI nicht betroffen."
+    },
+    {
+      "id": "S07",
+      "sceneId": "scene5",
+      "text": "Der Unterschied ist also simpel: Der alte DALL·E-GPT verschwindet als eigener GPT, die Bildfunktion in ChatGPT bleibt."
+    },
+    {
+      "id": "S08",
+      "sceneId": "scene5",
+      "text": "Wenn du den DALL·E-GPT noch benutzt, sichere deine Bilder besser vor dem 30. August."
+    }
+  ]
+}
