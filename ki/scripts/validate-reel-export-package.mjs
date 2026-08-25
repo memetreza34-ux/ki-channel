@@ -55,13 +55,14 @@ if (manifest.exportedVideo !== names.video || manifest.cover !== names.cover || 
 for (const gate of ['entertainment','voiceLock','audioVideo']) {
   if (manifest?.gates?.[gate] !== 'PASSED') fail(`manifest gate ${gate} is not PASSED.`);
 }
+if (manifest?.gates?.localForcedAlignment !== 'PASSED_EXACT_KNOWN_TRANSCRIPT') fail('manifest localForcedAlignment gate is not PASSED_EXACT_KNOWN_TRANSCRIPT.');
 if (manifest?.gates?.sceneVoiceMap !== 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') fail('manifest sceneVoiceMap gate is not PASSED_EXACT_SCENE_TEXT_AND_ANCHORS.');
 if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
 if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fail('manifest sourceIsolation gate is invalid.');
 if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
 
 const provenance = manifest?.provenance || {};
-for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','sceneVoiceMapSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
+for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
   if (!provenance[key] || typeof provenance[key] !== 'string') fail(`manifest provenance field missing: ${key}.`);
 }
 const artifacts = manifest?.artifacts || {};
