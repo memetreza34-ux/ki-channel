@@ -11,6 +11,7 @@ const mustExist = [
   'ki/scripts/lib/render-provenance.mjs',
   'ki/scripts/prepare-reel-audio.mjs',
   'ki/scripts/prepare-reel-render.mjs',
+  'ki/scripts/validate-scene-voice-map.mjs',
   'ki/scripts/validate-voice-locked-captions.mjs',
   'ki/scripts/validate-motion-readability-review.mjs',
   'ki/scripts/validate-final-video.mjs',
@@ -76,8 +77,14 @@ if (!studySource.includes('requires a verified local voiceoverSrc')) fail.push('
 
 const prepare = await read('ki/scripts/prepare-reel-render.mjs');
 if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
+if (!prepare.includes('validate-scene-voice-map.mjs') || !prepare.includes('sceneVoiceMapSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash scene-to-voice mapping.');
+
 const finalize = await read('ki/scripts/finalize-reel-export.mjs');
 if (!finalize.includes('PASSED_LOCKED_INPUT_HASHES') || !finalize.includes('reviewedVideoSha256')) fail.push('finalize-reel-export.mjs does not enforce render provenance.');
+if (!finalize.includes('PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') || !finalize.includes('sceneVoiceMapSha256')) fail.push('finalize-reel-export.mjs does not enforce scene-to-voice provenance.');
+
+const generator = await read('scripts/new-ki-reel.mjs');
+if (!generator.includes('SCENE-VOICE-MAP.json') || !generator.includes('FIRST_MAPPED_WORD')) fail.push('new reel generator does not create the canonical scene-to-voice mapping contract.');
 
 if (fail.length) {
   console.error('PRODUCTION CONTRACT AUDIT: FAILED');
@@ -89,3 +96,4 @@ console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
+console.log('checked scene-to-voice mapping pipeline: yes');
