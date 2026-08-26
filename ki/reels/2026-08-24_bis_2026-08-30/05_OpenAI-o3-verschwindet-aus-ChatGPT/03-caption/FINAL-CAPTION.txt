@@ -1,0 +1,1 @@
+OpenAI o3 wird heute, am 26. August 2026, aus ChatGPT entfernt. Wichtig: Diese Änderung betrifft laut OpenAI nur ChatGPT – an der API ändert sich dadurch nichts. Wenn du o3 noch in Prompts oder Workflows nutzt, teste sie jetzt mit deinem aktuellen Modell.
