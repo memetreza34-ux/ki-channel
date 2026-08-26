@@ -90,6 +90,14 @@ import {
   ReelChatGPTStudyMode,
 } from './reels/chatgpt-study-mode';
 import {
+  O3_SUNSET_COMPOSITION_ID,
+  O3_SUNSET_DURATION_IN_FRAMES,
+  O3_SUNSET_FPS,
+  O3_SUNSET_HEIGHT,
+  O3_SUNSET_WIDTH,
+  ReelO3ChatGPTSunset,
+} from './reels/o3-chatgpt-sunset';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -206,6 +214,15 @@ export const RemotionRoot: React.FC = () => (
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
         height={STUDY_MODE_HEIGHT}
+      />
+      <Composition
+        id={O3_SUNSET_COMPOSITION_ID}
+        component={ReelO3ChatGPTSunset}
+        defaultProps={{voiceoverSrc: runtimeAudio(O3_SUNSET_COMPOSITION_ID), showCaptions: true}}
+        durationInFrames={O3_SUNSET_DURATION_IN_FRAMES}
+        fps={O3_SUNSET_FPS}
+        width={O3_SUNSET_WIDTH}
+        height={O3_SUNSET_HEIGHT}
       />
     </Folder>
 
