@@ -1,47 +1,84 @@
-# SFX-Plan — OpenAI o3 verschwindet aus ChatGPT
+# SFX-System — OpenAI o3 verschwindet aus ChatGPT
 
-## Grundregel
+## Status
 
-SFX unterstützen die Aussage, überdecken aber nie die Stimme. Pro Moment höchstens 1–2 unabhängige Effekte. Nur Sounds aus der lokal validierten CC0-Bibliothek unter `public/reel-sfx/`.
+**AUTOMATISCHE AUSWAHL IMPLEMENTIERT — LOKALE AUFLÖSUNG NACH FINALER SZENENZEIT**
 
-## Szene 1 — o3 endet heute
+Die SFX werden nicht mehr manuell per Dateiname ausgesucht. Das Reel definiert nur semantische Ereignisse in `sfx-events.json`.
 
-- `impact` kurz beim großen HEUTE/ENDE-Stempel
-- optional sehr leiser `ui-error`-Akzent beim Verschwinden der o3-Karte
-- kein dauerhafter Hintergrundsound
+Ablauf:
 
-## Szene 2 — 90 Tage Auslaufphase
+```text
+finale Voice-/Scene-Timings
++ sfx-events.json
++ lokale CC0-Bibliothek (~410 Sounds)
+        ↓
+resolve-reel-sfx.mjs
+        ↓
+passenden Sound nach Rolle + Dateiname + Dauer auswählen
+        ↓
+exakten Frame aus visuellem Szenen-Event ableiten
+        ↓
+sfx-resolved.json
+        ↓
+ReelSfxTrack.tsx
+```
 
-- `ui-click` oder `ui-generic` am 28.-Mai-Marker
-- zweiter kurzer `ui-click` am 26.-August-Marker
-- optional sehr kurzer `transition-rise` während die Timeline vorläuft
+## Events dieses Reels
 
-## Szene 3 — Nur ChatGPT betroffen
+- Szene 1: Impact exakt beim `HEUTE ENDE`-Stempel
+- Szene 2: zwei UI-Klicks an den beiden Timeline-Markern
+- Szene 3: Open/Close-/Click-Akzent beim Verlassen der o3-Zeile + Confirm beim Ersatzmodell
+- Szene 4: negativer UI-Akzent beim ChatGPT-X + Confirm beim API-Haken
+- Szene 5: zwei sehr leichte UI-/Confirm-Akzente bei den Workflow-Zeilen
 
-- `ui-click` beim Öffnen der Modellauswahl
-- `ui-open-close` beim Entfernen von o3
-- `ui-confirm` wenn das aktuelle Ersatzmodell einrastet
+Die Frames sind als **relative visuelle Anker innerhalb der jeweiligen finalen Szene** definiert. Wenn die Pause-Kompression die Szenen verschiebt, verschieben sich die SFX automatisch mit.
 
-## Szene 4 — API bleibt
+## Auswahlregeln
 
-- sehr kleiner negativer `ui-error`-Akzent auf der ChatGPT-Seite
-- klarer, aber leiser `ui-confirm`-Ton auf der grünen API-Seite
-- kein harter Impact, damit die Kernaussage verständlich bleibt
+Der Resolver rankt Kandidaten deterministisch nach:
 
-## Szene 5 — Workflows prüfen
+1. exakter gewünschter `role`
+2. kompatibler Rollenfamilie
+3. passenden Keywords im Original-Dateinamen
+4. Nähe zur gewünschten Sounddauer
+5. Wiederholungsvermeidung innerhalb desselben Reels
 
-- maximal zwei `ui-confirm`-Clicks bei den wichtigsten Checkmarks
-- ein kurzer `digital-accent` beim finalen CTA/Payoff
+Es gibt kein `Math.random()` und keine Web-Suche während des Renders.
 
-## Lautstärke-Startwerte
+## Lizenz
 
-- UI-Klicks: sehr leise, ungefähr 8–14 % der Voiceover-Wahrnehmung
-- Confirm/Error: ungefähr 10–16 %
-- Impact/Stamp: ungefähr 14–22 %, nur sehr kurz
-- Riser/Transition: ungefähr 6–12 %
+Automatisch erlaubt sind ausschließlich Sounds mit:
 
-Diese Werte sind Startpunkte. Final entscheidet der 1x-Audio-Review.
+`CC0-1.0`
 
-## Auswahlregel
+Der Library-Setup-Schritt prüft die mitgelieferte `License.txt`. `validate-reel-sfx-plan.mjs` akzeptiert keine andere Lizenz.
 
-Der Agent wählt nach lokalem Setup aus `sfx-index.json` nur Sounds mit passender `role`. Keine zufälligen Sounds aus dem Web und keine nicht geprüften Lizenzen.
+## Lautstärke
+
+Voiceover hat immer Priorität:
+
+- Impact: maximal 0.20
+- UI: maximal 0.14
+- Tech/Digital: maximal 0.12
+- Transition: maximal 0.10
+
+Ein höherer Wert in `sfx-events.json` wird automatisch auf das sichere Rollenlimit begrenzt.
+
+## Befehle
+
+Normalerweise reicht künftig der bestehende Sync-Befehl:
+
+```bash
+node ki/scripts/align-reel-local.mjs \
+  ki/reels/2026-08-24_bis_2026-08-30/05_OpenAI-o3-verschwindet-aus-ChatGPT
+```
+
+Nach Voice-Lock führt er automatisch aus:
+
+```bash
+node ki/scripts/resolve-reel-sfx.mjs <reel-package-dir>
+node ki/scripts/validate-reel-sfx-plan.mjs <reel-package-dir>
+```
+
+Der Production-Render und der Finalizer verlangen den bestandenen SFX-Gate ebenfalls.
