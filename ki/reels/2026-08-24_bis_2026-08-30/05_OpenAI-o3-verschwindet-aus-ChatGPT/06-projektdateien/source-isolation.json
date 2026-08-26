@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "sourceDir": "ki/src/reels/o3-chatgpt-sunset",
+  "allowedSharedImports": [
+    "ki/src/reels/captionSafe.ts"
+  ],
+  "status": "ENFORCED"
+}
