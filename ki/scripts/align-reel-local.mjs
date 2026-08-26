@@ -181,6 +181,8 @@ await writeFile(captionsPath,`${JSON.stringify(captions,null,2)}\n`,'utf8');
 run('scene timing lock', process.execPath, [path.resolve('ki/scripts/lock-scene-timing-from-captions.mjs'),reelDir]);
 run('scene/voice gate', process.execPath, [path.resolve('ki/scripts/validate-scene-voice-map.mjs'),reelDir]);
 run('voice-lock gate', process.execPath, [path.resolve('ki/scripts/validate-voice-locked-captions.mjs'),reelDir]);
+run('SFX auto-resolution', process.execPath, [path.resolve('ki/scripts/resolve-reel-sfx.mjs'),reelDir]);
+run('SFX plan gate', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'),reelDir]);
 
 console.log('\nLOCAL REEL ALIGNMENT COMPLETE');
 console.log(`backend: ${raw.backend}`);
@@ -188,4 +190,5 @@ console.log(`model: ${raw.model} (${raw.modelLicense})`);
 console.log(`word timings: ${wordTimingsPath}`);
 console.log(`captions: ${captionsPath}`);
 console.log('scene timing: VOICE_LOCKED');
+console.log(`sfx: ${reel?.sfx?.enabled === true ? 'AUTO-RESOLVED + VALIDATED' : 'DISABLED'}`);
 console.log('Next: review/commit the generated JSON, then run prepare-reel-render.mjs.');
