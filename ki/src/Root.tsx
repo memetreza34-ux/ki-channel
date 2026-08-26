@@ -90,6 +90,14 @@ import {
   ReelChatGPTStudyMode,
 } from './reels/chatgpt-study-mode';
 import {
+  APPLE_MESSAGES_COMPOSITION_ID,
+  APPLE_MESSAGES_DURATION_IN_FRAMES,
+  APPLE_MESSAGES_FPS,
+  APPLE_MESSAGES_HEIGHT,
+  APPLE_MESSAGES_WIDTH,
+  ReelAppleMessagesChatGPT,
+} from './reels/apple-messages-chatgpt';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -206,6 +214,15 @@ export const RemotionRoot: React.FC = () => (
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
         height={STUDY_MODE_HEIGHT}
+      />
+      <Composition
+        id={APPLE_MESSAGES_COMPOSITION_ID}
+        component={ReelAppleMessagesChatGPT}
+        defaultProps={{voiceoverSrc: runtimeAudio(APPLE_MESSAGES_COMPOSITION_ID), showCaptions: true, showSfx: true}}
+        durationInFrames={APPLE_MESSAGES_DURATION_IN_FRAMES}
+        fps={APPLE_MESSAGES_FPS}
+        width={APPLE_MESSAGES_WIDTH}
+        height={APPLE_MESSAGES_HEIGHT}
       />
     </Folder>
 
