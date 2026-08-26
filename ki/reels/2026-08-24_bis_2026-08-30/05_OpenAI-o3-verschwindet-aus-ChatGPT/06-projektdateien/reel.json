@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "reelId": "o3-chatgpt-sunset",
   "compositionId": "KI-O3ChatGPTSunset",
   "sourceDir": "ki/src/reels/o3-chatgpt-sunset",
@@ -12,25 +12,35 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1200,
-    "finalDurationInFrames": 1185,
-    "finalDurationAuthority": "LOCAL_FORCED_ALIGNMENT_ON_RUNTIME_PCM_WAV"
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "RUNTIME_PCM_WAV_LOCKED",
-    "timingAuthority": true,
+    "status": "SOURCE_READY_PAUSE_COMPRESSION_RELOCK_REQUIRED",
+    "timingAuthority": false,
     "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
-    "observedAudioDurationSeconds": 39.466667
+    "observedAudioDurationSeconds": null,
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25,
+      "rule": "Compress longer speech gaps before forced alignment so captions and scenes are derived from the same tightened runtime WAV."
+    }
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "VOICE_LOCKED",
-    "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts come from the first mapped spoken word."
+    "status": "CONTENT_LOCKED_TIMING_PENDING",
+    "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts come from the first mapped spoken word in the pause-compressed runtime WAV."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "VOICE_LOCKED_SCENE_MAPPED",
+    "status": "PACING_RELOCK_REQUIRED",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
@@ -49,58 +59,53 @@
     "coverTimeSeconds": 3.5,
     "coverText": "o3 ENDET HEUTE IN CHATGPT",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": [
-      "video",
-      "cover",
-      "caption",
-      "manifest"
-    ]
+    "requiredPackage": ["video", "cover", "caption", "manifest"]
   },
   "scenes": [
     {
       "sceneId": "scene1",
       "title": "o3 endet heute",
-      "startFrame": 0,
-      "endFrame": 199,
+      "startFrame": null,
+      "endFrame": null,
       "accent": "#E24A57",
       "heroMoment": "o3 model tile receives TODAY shutdown badge",
-      "timingStatus": "VOICE_LOCKED"
+      "timingStatus": "PACING_RELOCK_REQUIRED"
     },
     {
       "sceneId": "scene2",
       "title": "90 Tage Auslaufphase",
-      "startFrame": 199,
-      "endFrame": 384,
+      "startFrame": null,
+      "endFrame": null,
       "accent": "#F59E0B",
       "heroMoment": "timeline runs from May announcement to Aug 26",
-      "timingStatus": "VOICE_LOCKED"
+      "timingStatus": "PACING_RELOCK_REQUIRED"
     },
     {
       "sceneId": "scene3",
       "title": "Nur ChatGPT betroffen",
-      "startFrame": 384,
-      "endFrame": 660,
+      "startFrame": null,
+      "endFrame": null,
       "accent": "#6D5DFB",
       "heroMoment": "ChatGPT model picker replaces o3 with current model",
-      "timingStatus": "VOICE_LOCKED"
+      "timingStatus": "PACING_RELOCK_REQUIRED"
     },
     {
       "sceneId": "scene4",
       "title": "API bleibt",
-      "startFrame": 660,
-      "endFrame": 1015,
+      "startFrame": null,
+      "endFrame": null,
       "accent": "#20B26B",
       "heroMoment": "ChatGPT branch closes while API branch stays green",
-      "timingStatus": "VOICE_LOCKED"
+      "timingStatus": "PACING_RELOCK_REQUIRED"
     },
     {
       "sceneId": "scene5",
       "title": "Workflows prüfen",
-      "startFrame": 1015,
-      "endFrame": 1185,
+      "startFrame": null,
+      "endFrame": null,
       "accent": "#18C7D9",
       "heroMoment": "prompt workflow checklist migrates from o3 to current model",
-      "timingStatus": "VOICE_LOCKED"
+      "timingStatus": "PACING_RELOCK_REQUIRED"
     }
   ],
   "sources": [
