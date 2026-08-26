@@ -48,7 +48,7 @@ for (const dir of dirs) {
 }
 
 const files = {
-  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n\n## Produktionsphasen\n\n1. **Phase 1:** Inhalt + Source + exakter Satz→Szene-Plan\n2. **Phase 2:** reales Voiceover\n3. **Phase 3:** lokales Forced Alignment → Voice/Scene-Lock → Tests → Render → Review → Export\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/AUDIO_PIPELINE.md\`, \`ki/gehirn/FORCED_ALIGNMENT.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`.\n`,
+  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n\n## Produktionsphasen\n\n1. **Phase 1:** Inhalt + Source + exakter Satz→Szene-Plan + semantische SFX-Events\n2. **Phase 2:** reales Voiceover\n3. **Phase 3:** Pause-Kompression → lokales Forced Alignment → Voice/Scene-Lock → automatische CC0-SFX-Auswahl → Tests → Render → Review → Export\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/AUDIO_PIPELINE.md\`, \`ki/gehirn/FORCED_ALIGNMENT.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`.\n`,
   '01-script-audio/README.md': `# 01 — Script & Audio\n\nPflicht in Phase 1:\n\n- \`VOICEOVER-ZUM-KOPIEREN.txt\` = nur exakter Sprechertext\n- \`SCENE-VOICE-MAP.json\` = jeder exakte Satz bekommt vor Audio-Lock eine Szene\n\nNach echtem Voiceover erzeugt Phase 3 lokal \`WORD-TIMINGS.json\` über Forced Alignment. Kein Whisper-Raten und kein fuzzy matching als Standard.\n\nEin-Kommando-Sync nach vorhandenem Audio:\n\n\`node ki/scripts/align-reel-local.mjs <reel-package-dir>\`\n`,
   '01-script-audio/SCENE-VOICE-MAP.json': `{
   "version": 1,
@@ -72,15 +72,30 @@ const files = {
   '03-caption/platform-copy.md': `# Plattform-Copy — ${title}\n\n**Status:** OFFEN\n\n## Neutraler Kerntitel\n${title}\n\n## YouTube Shorts\n**Titel:**\n\n**Beschreibung:**\n\n**Eigenes Cover nötig:** JA\n\n## Instagram Reels\n**Caption:**\n\n## TikTok\n**Caption:**\n\n## Facebook Reels\n**Begleittext:**\n`,
   '03-caption/FINAL-CAPTION.txt': `OFFEN — vor Final-Export durch die publish-ready Hauptcaption ersetzen.\n`,
   '04-pdf/README.md': `# 04 — PDF\n\nOptional. Nur reel-bezogene PDF-Quellen/Exports.\n`,
-  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render müssen lokale Forced-Alignment-, Scene-Voice- und Voice-Lock-Gates bestehen.\n\n\`node ki/scripts/prepare-reel-render.mjs <reel-package-dir>\`\n\nNach finalem MP4 + echtem 1x-Review:\n\n\`node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>\`\n\`node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>\`\n`,
-  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nStatus, \`reel.json\`, Szene-/Animationsplan, Review- und Assembly-Dateien. Ausführbarer Source liegt unter \`ki/src/reels/<slug>/\`.\n\n\`reel.json.sceneVoiceMap.file\` muss auf \`01-script-audio/SCENE-VOICE-MAP.json\` zeigen.\n`,
+  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render müssen lokale Forced-Alignment-, Scene-Voice-, Voice-Lock- und — wenn aktiviert — SFX-Gates bestehen.\n\n\`node ki/scripts/prepare-reel-render.mjs <reel-package-dir>\`\n\nNach finalem MP4 + echtem 1x-Review:\n\n\`node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>\`\n\`node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>\`\n`,
+  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nStatus, \`reel.json\`, Szene-/Animationsplan, SFX-Events, Review- und Assembly-Dateien. Ausführbarer Source liegt unter \`ki/src/reels/<slug>/\`.\n\n\`reel.json.sceneVoiceMap.file\` muss auf \`01-script-audio/SCENE-VOICE-MAP.json\` zeigen.\n\nWenn SFX aktiviert sind: \`sfx-events.json\` enthält nur semantische/visuelle Anker. \`sfx-resolved.json\` wird nach finalem Scene-Lock automatisch aus der lokalen CC0-Bibliothek erzeugt.\n`,
+  '06-projektdateien/sfx-events.json': `{
+  "version": 1,
+  "status": "DRAFT",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": []
+}
+`,
+  '06-projektdateien/sfx-resolved.json': `{
+  "version": 1,
+  "status": "PENDING_LOCAL_CC0_RESOLUTION",
+  "libraryStatus": "REQUIRES_PUBLIC_REEL_SFX_INDEX",
+  "events": []
+}
+`,
+  '06-projektdateien/SFX-PLAN.md': `# SFX-Plan — ${title}\n\n## Grundregel\n\nNur visuelle/semantische Events definieren. Keine konkreten Sounddateien manuell festnageln.\n\nNach finalem Szenen-Timing wählt \`resolve-reel-sfx.mjs\` automatisch einen passenden Sound aus der lokalen CC0-Bibliothek anhand Rolle, Keywords und Dauer.\n\nErlaubte Auto-Lizenz: **CC0-1.0 בלבד**. Voiceover hat Lautstärke-Priorität.\n\nBeispiel-Event:\n\n\`{\"id\":\"sfx01\",\"sceneId\":\"scene1\",\"anchor\":{\"type\":\"SCENE_OFFSET\",\"frame\":24},\"roles\":[\"ui-click\"],\"keywords\":[\"click\"],\"preferredDurationSeconds\":0.18,\"volume\":0.09}\`\n`,
   '06-projektdateien/MOTION-READABILITY-REVIEW.md': `# Motion Readability Review — ${title}\n\nNach dem **exakten finalen MP4** bei 1x ausfüllen.\n\nSTATUS: PENDING\nLIGHT_FIRST: PENDING\nDARK_FULL_FRAME_SCENES: 0\nDARK_EXCEPTION_APPROVED: NO\nTOO_FAST_BEATS: 0\nSIMULTANEOUS_INFO_OVERLOADS: 0\nMIN_CRITICAL_HOLD_FRAMES: 12\nPOST_RENDER_1X_REVIEW: PENDING\nREVIEWED_VIDEO_SHA256: PENDING\nREVIEWED_VIDEO_DURATION_SECONDS: PENDING\n`,
-  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1\n**Status:** OFFEN\n\nPflicht: finaler Sprechertext + ausgefüllte \`SCENE-VOICE-MAP.json\`.\n\n## Phase 2 — Voiceover\n**Status:** WARTET AUF PHASE 1\n\n## Phase 3\n**Status:** WARTET AUF LOKALES AUDIO\n\n\`node ki/scripts/align-reel-local.mjs <reel-package-dir>\` → erzeugt \`WORD-TIMINGS.json\`, finale Captions, Szenengrenzen und VOICE_LOCKED. Danach committen → Pre-Render-Gate → Tests → Render → 1x Review → Finalizer.\n`,
+  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1\n**Status:** OFFEN\n\nPflicht: finaler Sprechertext + ausgefüllte \`SCENE-VOICE-MAP.json\` + SFX-Events für echte visuelle Beats.\n\n## Phase 2 — Voiceover\n**Status:** WARTET AUF PHASE 1\n\n## Phase 3\n**Status:** WARTET AUF LOKALES AUDIO\n\n\`node ki/scripts/align-reel-local.mjs <reel-package-dir>\` → Pause-Kompression → \`WORD-TIMINGS.json\` → finale Captions/Szenen → automatische CC0-SFX-Auswahl → Gates. Danach committen → Pre-Render-Gate → Tests → Render → 1x Review → Finalizer.\n`,
 };
 
 for (const [relative,content] of Object.entries(files)) await writeFile(resolve(reelRoot,relative),content,'utf8');
 
 console.log(`KI-Reel angelegt: ${reelRoot}`);
-console.log('Pflicht: VOICEOVER-ZUM-KOPIEREN.txt + SCENE-VOICE-MAP.json.');
+console.log('Pflicht: VOICEOVER-ZUM-KOPIEREN.txt + SCENE-VOICE-MAP.json + semantische SFX-Events.');
 console.log('Nach realem Audio: node ki/scripts/align-reel-local.mjs <reel-package-dir>');
-console.log('Production-Render erst nach lokalem Forced Alignment + VOICE_LOCKED.');
+console.log('Production-Render erst nach lokalem Forced Alignment + VOICE_LOCKED + SFX-Gate (wenn aktiviert).');
