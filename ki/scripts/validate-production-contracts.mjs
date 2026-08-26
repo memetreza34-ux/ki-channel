@@ -76,6 +76,13 @@ for (const file of sourceFiles) {
   if (text.includes('Math.random(')) fail.push(`${relative} uses Math.random() in deterministic render source.`);
 }
 
+const audioPrep = await read('ki/scripts/prepare-reel-audio.mjs');
+for (const needle of ['pauseCompression','silenceremove=','maxReductionRatio','silencedetect','pacing.json']) {
+  if (!audioPrep.includes(needle)) fail.push(`prepare-reel-audio.mjs missing pause-compression contract token: ${needle}`);
+}
+const audioDoc = await read('ki/gehirn/AUDIO_PIPELINE.md');
+if (!audioDoc.includes('Pause-Kompression') || !audioDoc.includes('Forced Alignment läuft erst nach dieser Pause-Kompression')) fail.push('AUDIO_PIPELINE.md does not make pause compression precede forced alignment.');
+
 const alignRunner = await read('ki/scripts/python/align_words.py');
 if (!alignRunner.includes('mlx-community/Qwen3-ForcedAligner-0.6B-8bit')) fail.push('Apple-Silicon forced aligner model is missing.');
 if (!alignRunner.includes('facebook/wav2vec2-large-xlsr-53-german')) fail.push('commercial-safe German CTC fallback model is missing.');
@@ -113,4 +120,4 @@ console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
-console.log('checked scene-to-voice + local forced-alignment pipeline: yes');
+console.log('checked pause-compression + scene-to-voice + local forced-alignment pipeline: yes');
