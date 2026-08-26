@@ -29,7 +29,7 @@ Nach einer Tool-Erzeugung:
 1. Audio tatsächlich herunterladen.
 2. unter `reel.json -> audio.targetFile` ablegen.
 3. lokal mit `ffprobe` prüfen.
-4. Runtime-Audio erzeugen:
+4. Runtime-Audio inklusive optionaler Pause-Kompression erzeugen:
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
@@ -39,20 +39,51 @@ Das Ergebnis ist:
 
 ```text
 public/runtime-audio/<compositionId>.wav
+public/runtime-audio/<compositionId>.pacing.json
 ```
 
-Diese Datei ist immer **48 kHz Stereo PCM s16le WAV** und exakt die Audiospur, die Remotion später rendert. MP3-Container-/Encoder-Padding ist deshalb keine Timing-Autorität.
+Die WAV ist immer **48 kHz Stereo PCM s16le** und exakt die Audiospur, die Remotion später rendert. MP3-Container-/Encoder-Padding ist deshalb keine Timing-Autorität.
+
+## Pause-Kompression — kein Leerlauf zwischen Beats
+
+Für Reels kann in `reel.json -> audio.pauseCompression` ein dichteres Sprach-Pacing aktiviert werden.
+
+Kanonischer Startwert:
+
+```json
+{
+  "enabled": true,
+  "thresholdDb": -35,
+  "triggerSeconds": 0.15,
+  "keepSeconds": 0.05,
+  "startKeepSeconds": 0.03,
+  "maxAllowedSilenceSeconds": 0.25,
+  "maxReductionRatio": 0.25
+}
+```
+
+Bedeutung:
+
+- längere Stille ab ungefähr 150 ms wird komprimiert
+- eine kleine Restpause bleibt erhalten, damit Wörter nicht unnatürlich zusammenkleben
+- Start-Leadin wird stark verkürzt
+- die Runtime-WAV wird danach auf unerwartet lange Silence-Gaps geprüft
+- wenn mehr als 25 % der Gesamtdauer entfernt würden, bricht die Pipeline als Safety-Gate ab
+
+Wichtig: **Forced Alignment läuft erst nach dieser Pause-Kompression.** Dadurch verwenden Stimme, Wortzeiten, Captions, Szenengrenzen und Composition-Dauer alle dieselbe bereits verdichtete Runtime-WAV.
+
+Alte `VOICE_LOCKED`-Timings sind nach Aktivierung oder Änderung der Pause-Kompression ungültig und müssen neu erzeugt werden.
 
 ## Finale Timing-Autorität
 
-Für normale KI-Reels ist der Sprechertext bereits exakt bekannt. Deshalb gilt ab jetzt:
+Für normale KI-Reels ist der Sprechertext bereits exakt bekannt. Deshalb gilt:
 
 ```text
 VOICEOVER-ZUM-KOPIEREN.txt
 +
 SCENE-VOICE-MAP.json
 +
-Runtime-PCM-WAV
+Pause-komprimierte Runtime-PCM-WAV
         ↓
 LOCAL FORCED ALIGNMENT
         ↓
@@ -69,7 +100,7 @@ Ein-Kommando-Alignment:
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Der Befehl erzeugt/verifiziert die Runtime-WAV, richtet den **bekannten** Sprechertext lokal auf diese WAV aus, schreibt Wortzeiten, baut Caption-Cues und leitet die Szenengrenzen aus dem Satz→Szene-Mapping ab.
+Der Befehl erzeugt/verifiziert die Runtime-WAV, richtet den **bekannten** Sprechertext lokal auf diese bereits gepacte WAV aus, schreibt Wortzeiten, baut Caption-Cues und leitet die Szenengrenzen aus dem Satz→Szene-Mapping ab.
 
 Whisper bleibt für unbekanntes Audio oder Diagnose zulässig, ist aber **nicht mehr die primäre finale Timing-Autorität**, wenn der exakte Sprechertext bereits vorliegt.
 
@@ -90,7 +121,7 @@ Für monetarisierte Reels werden nur die im Forced-Alignment-Vertrag dokumentier
 
 Nach lokalem Alignment müssen gelten:
 
-- `WORD-TIMINGS.json` stammt aus der exakten Runtime-WAV
+- `WORD-TIMINGS.json` stammt aus der exakten **pause-komprimierten** Runtime-WAV
 - kein fuzzy word matching
 - Wortreihenfolge entspricht exakt `VOICEOVER-ZUM-KOPIEREN.txt`
 - jeder Satz ist über `SCENE-VOICE-MAP.json` genau einer Szene zugeordnet
