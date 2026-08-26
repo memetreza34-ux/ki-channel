@@ -3,10 +3,10 @@
   "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
   "provider": "AI_Voice_Generator",
   "voiceId": "clear",
-  "contextId": "5f7604c4bd5742e792cd23021027609d",
-  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=5f7604c4bd5742e792cd23021027609d",
-  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/73ce3631-227e-45e9-bd89-4ab21007b401.mp3",
+  "contextId": "5d9c261974a043d99ee86efe1be2d279",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=5d9c261974a043d99ee86efe1be2d279",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/dc4b7aae-39b5-4a85-841e-4572f1244287.mp3",
   "targetFile": "01-script-audio/voiceover.mp3",
   "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
-  "note": "Download the generated full audio locally before alignment. Remote URLs are provenance only and are never Remotion render sources."
+  "note": "Final Phase-1 voice generation. Download the full audio locally before alignment. Remote URLs are provenance only and are never Remotion render sources."
 }
