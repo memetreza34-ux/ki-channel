@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "reelId": "o3-chatgpt-sunset",
   "compositionId": "KI-O3ChatGPTSunset",
   "sourceDir": "ki/src/reels/o3-chatgpt-sunset",
@@ -46,6 +46,19 @@
     "horizontalInset": 104,
     "maxWidth": 860,
     "style": "transparent_glass_overlay"
+  },
+  "sfx": {
+    "enabled": true,
+    "policyStatus": "AUTO_CC0_SELECTION_ENFORCED",
+    "libraryIndex": "public/reel-sfx/sfx-index.json",
+    "eventsFile": "06-projektdateien/sfx-events.json",
+    "resolvedFile": "06-projektdateien/sfx-resolved.json",
+    "resolveCommand": "node ki/scripts/resolve-reel-sfx.mjs <reel-package-dir>",
+    "gateCommand": "node ki/scripts/validate-reel-sfx-plan.mjs <reel-package-dir>",
+    "licensePolicy": "CC0-1.0_ONLY",
+    "selectionPolicy": "DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING",
+    "timingPolicy": "VISUAL_EVENT_ANCHORS_RELATIVE_TO_FINAL_SCENE_FRAMES",
+    "volumePolicy": "VOICE_FIRST_MAX_0.20"
   },
   "header": {
     "top": 112,
