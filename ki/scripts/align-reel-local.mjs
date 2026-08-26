@@ -118,6 +118,10 @@ const words = aligned.map((word,index) => {
     score:Number.isFinite(Number(word.score)) ? Number(Number(word.score).toFixed(6)) : undefined,
   };
 });
+for (let i=1;i<words.length;i++) {
+  if (words[i].startFrame < words[i-1].endFrame) words[i].startFrame = words[i-1].endFrame;
+  if (words[i].endFrame <= words[i].startFrame) words[i].endFrame = words[i].startFrame + 1;
+}
 for (let i=1;i<words.length;i++) if (words[i].startFrame < words[i-1].startFrame) fail(`word timing goes backwards at word ${i+1}.`);
 
 const wordTimingsPath = path.join(reelDir,'01-script-audio','WORD-TIMINGS.json');

@@ -1,0 +1,38 @@
+{
+  "status": "FINAL_EXPORT_READY",
+  "compositionId": "KI-DalleGptEnds",
+  "exportedVideo": "KI-DalleGptEnds.mp4",
+  "cover": "KI-DalleGptEnds-cover.png",
+  "coverTimeSeconds": 4.2,
+  "caption": "KI-DalleGptEnds-caption.txt",
+  "gates": {
+    "entertainment": "PASSED",
+    "sceneVoiceMap": "PASSED_EXACT_SCENE_TEXT_AND_ANCHORS",
+    "voiceLock": "PASSED",
+    "motionReadability": "PASSED_EXACT_VIDEO_HASH",
+    "sourceIsolation": "PASSED",
+    "audioVideo": "PASSED",
+    "renderProvenance": "PASSED_LOCKED_INPUT_HASHES"
+  },
+  "provenance": {
+    "renderSourceCommitSha": "baa2a129ee810a0feea7cc836f3374ef399bf389",
+    "finalizationCommitSha": "b1aaec6828825e39064619d9c424d9dabcca552d",
+    "renderLockCreatedAt": "2026-08-25T04:10:50.659Z",
+    "sourceDir": "ki/src/reels/dalle-gpt-ends",
+    "sourceTreeSha256": "2b45b11287493caeacd5a146874c394b2cc2cd021fa13db515a69e283f19d90b",
+    "renderContractSha256": "d02bdbf9e7066897fda20a23966911140fa60673b8731ae471ae83ec287d1787",
+    "reelJsonSha256AtRenderLock": "0905540f8f099ecfc3f03729928c4b99793c1f462b20ccb32af20734f61a1c68",
+    "reelJsonSha256AtFinalization": "0905540f8f099ecfc3f03729928c4b99793c1f462b20ccb32af20734f61a1c68",
+    "sceneVoiceMapSha256": "f23ffe03c10ec288605bde927346fe4d86e372de7d38d63157c64061b8323a6a",
+    "captionJsonSha256": "251cda7e38a4719a038352c982c1036c189205ebb6ee4c97f8b6cc01a1330ee9",
+    "canonicalAudioSha256": "c75a2a9b3fa873b6bf86cb0e770ac17df4a065e29175da9569edaaa54ccaf6e1",
+    "runtimeAudioSha256": "99649c7c58744e9abf2eafc36c13d8ac0b2e0fbc7832bd8d5cbae03d3c8957a4",
+    "reviewedVideoSha256": "089fde3e4d823309bddabba8340479fa87a6a2c02b697c21c6b41f785cc06e93"
+  },
+  "artifacts": {
+    "videoSha256": "089fde3e4d823309bddabba8340479fa87a6a2c02b697c21c6b41f785cc06e93",
+    "coverSha256": "d6f64e44b5873e0e758885b0739f1da8d97b5198935026e7f85fae396d58fcfa",
+    "captionSha256": "0e78718baad1644fcef0040ce82c6a978143835e3f84dda390d4da3d95d08a53"
+  },
+  "generatedAt": "2026-08-25T04:16:47.843Z"
+}

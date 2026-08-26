@@ -216,7 +216,7 @@ export const RemotionRoot: React.FC = () => (
         height={STUDY_MODE_HEIGHT}
       />
       <Composition
-        id={O3_SUNSET_COMPOSITION_ID}
+        id="KI-O3ChatGPTSunset"
         component={ReelO3ChatGPTSunset}
         defaultProps={{voiceoverSrc: runtimeAudio(O3_SUNSET_COMPOSITION_ID), showCaptions: true}}
         durationInFrames={O3_SUNSET_DURATION_IN_FRAMES}

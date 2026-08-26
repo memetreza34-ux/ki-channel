@@ -1,0 +1,919 @@
+{
+  "version": 1,
+  "status": "LOCAL_FORCED_ALIGNMENT_ACCEPTED",
+  "alignmentType": "KNOWN_TRANSCRIPT_FORCED_ALIGNMENT",
+  "backend": "mlx-qwen3",
+  "model": "mlx-community/Qwen3-ForcedAligner-0.6B-8bit",
+  "modelLicense": "Apache-2.0",
+  "runtime": "MLX / Apple Silicon",
+  "fps": 30,
+  "runtimeAudio": "public/runtime-audio/KI-O3ChatGPTSunset.wav",
+  "generatedAt": "2026-08-26T04:42:54.210Z",
+  "rules": {
+    "fuzzyWordMatching": false,
+    "canonicalTextAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
+    "sceneAuthority": "SCENE-VOICE-MAP.json"
+  },
+  "words": [
+    {
+      "index": 1,
+      "text": "Heute,",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.4,
+      "endSeconds": 0.8,
+      "startFrame": 12,
+      "endFrame": 24
+    },
+    {
+      "index": 2,
+      "text": "am",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.8,
+      "endSeconds": 0.96,
+      "startFrame": 24,
+      "endFrame": 29
+    },
+    {
+      "index": 3,
+      "text": "26.",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.96,
+      "endSeconds": 1.92,
+      "startFrame": 29,
+      "endFrame": 58
+    },
+    {
+      "index": 4,
+      "text": "August,",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.92,
+      "endSeconds": 2.4,
+      "startFrame": 58,
+      "endFrame": 72
+    },
+    {
+      "index": 5,
+      "text": "verschwindet",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 2.48,
+      "endSeconds": 3.12,
+      "startFrame": 74,
+      "endFrame": 94
+    },
+    {
+      "index": 6,
+      "text": "OpenAI",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 3.2,
+      "endSeconds": 4.08,
+      "startFrame": 96,
+      "endFrame": 123
+    },
+    {
+      "index": 7,
+      "text": "o3",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 4.16,
+      "endSeconds": 4.88,
+      "startFrame": 124,
+      "endFrame": 147
+    },
+    {
+      "index": 8,
+      "text": "aus",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 4.96,
+      "endSeconds": 5.12,
+      "startFrame": 148,
+      "endFrame": 154
+    },
+    {
+      "index": 9,
+      "text": "ChatGPT.",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 5.12,
+      "endSeconds": 5.92,
+      "startFrame": 154,
+      "endFrame": 178
+    },
+    {
+      "index": 10,
+      "text": "OpenAI",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.64,
+      "endSeconds": 7.36,
+      "startFrame": 199,
+      "endFrame": 221
+    },
+    {
+      "index": 11,
+      "text": "hatte",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 7.36,
+      "endSeconds": 7.52,
+      "startFrame": 221,
+      "endFrame": 226
+    },
+    {
+      "index": 12,
+      "text": "das",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 7.52,
+      "endSeconds": 7.68,
+      "startFrame": 226,
+      "endFrame": 231
+    },
+    {
+      "index": 13,
+      "text": "schon",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 7.68,
+      "endSeconds": 7.92,
+      "startFrame": 231,
+      "endFrame": 238
+    },
+    {
+      "index": 14,
+      "text": "Ende",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 7.92,
+      "endSeconds": 8.16,
+      "startFrame": 238,
+      "endFrame": 245
+    },
+    {
+      "index": 15,
+      "text": "Mai",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 8.16,
+      "endSeconds": 8.48,
+      "startFrame": 245,
+      "endFrame": 255
+    },
+    {
+      "index": 16,
+      "text": "angekündigt",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 8.48,
+      "endSeconds": 9.28,
+      "startFrame": 255,
+      "endFrame": 279
+    },
+    {
+      "index": 17,
+      "text": "und",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 9.28,
+      "endSeconds": 9.52,
+      "startFrame": 279,
+      "endFrame": 286
+    },
+    {
+      "index": 18,
+      "text": "dem",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 9.52,
+      "endSeconds": 9.6,
+      "startFrame": 286,
+      "endFrame": 288
+    },
+    {
+      "index": 19,
+      "text": "Modell",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 9.6,
+      "endSeconds": 9.92,
+      "startFrame": 288,
+      "endFrame": 298
+    },
+    {
+      "index": 20,
+      "text": "eine",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 9.92,
+      "endSeconds": 10.16,
+      "startFrame": 298,
+      "endFrame": 305
+    },
+    {
+      "index": 21,
+      "text": "90-tägige",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 10.16,
+      "endSeconds": 11.12,
+      "startFrame": 305,
+      "endFrame": 334
+    },
+    {
+      "index": 22,
+      "text": "Auslaufphase",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 11.12,
+      "endSeconds": 11.84,
+      "startFrame": 334,
+      "endFrame": 356
+    },
+    {
+      "index": 23,
+      "text": "gegeben.",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 11.84,
+      "endSeconds": 12.32,
+      "startFrame": 356,
+      "endFrame": 370
+    },
+    {
+      "index": 24,
+      "text": "Wichtig:",
+      "sentenceId": "S03",
+      "sceneId": "scene3",
+      "startSeconds": 12.8,
+      "endSeconds": 13.28,
+      "startFrame": 384,
+      "endFrame": 399
+    },
+    {
+      "index": 25,
+      "text": "Betroffen",
+      "sentenceId": "S03",
+      "sceneId": "scene3",
+      "startSeconds": 13.6,
+      "endSeconds": 14.08,
+      "startFrame": 408,
+      "endFrame": 423
+    },
+    {
+      "index": 26,
+      "text": "ist",
+      "sentenceId": "S03",
+      "sceneId": "scene3",
+      "startSeconds": 14.08,
+      "endSeconds": 14.32,
+      "startFrame": 423,
+      "endFrame": 430
+    },
+    {
+      "index": 27,
+      "text": "nur",
+      "sentenceId": "S03",
+      "sceneId": "scene3",
+      "startSeconds": 14.32,
+      "endSeconds": 14.56,
+      "startFrame": 430,
+      "endFrame": 437
+    },
+    {
+      "index": 28,
+      "text": "ChatGPT.",
+      "sentenceId": "S03",
+      "sceneId": "scene3",
+      "startSeconds": 14.64,
+      "endSeconds": 15.44,
+      "startFrame": 439,
+      "endFrame": 464
+    },
+    {
+      "index": 29,
+      "text": "Wenn",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 15.92,
+      "endSeconds": 16.08,
+      "startFrame": 477,
+      "endFrame": 483
+    },
+    {
+      "index": 30,
+      "text": "du",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16.08,
+      "endSeconds": 16.24,
+      "startFrame": 483,
+      "endFrame": 488
+    },
+    {
+      "index": 31,
+      "text": "o3",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16.24,
+      "endSeconds": 16.72,
+      "startFrame": 488,
+      "endFrame": 502
+    },
+    {
+      "index": 32,
+      "text": "bisher",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16.72,
+      "endSeconds": 17.04,
+      "startFrame": 502,
+      "endFrame": 512
+    },
+    {
+      "index": 33,
+      "text": "über",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.04,
+      "endSeconds": 17.28,
+      "startFrame": 512,
+      "endFrame": 519
+    },
+    {
+      "index": 34,
+      "text": "die",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.28,
+      "endSeconds": 17.36,
+      "startFrame": 519,
+      "endFrame": 521
+    },
+    {
+      "index": 35,
+      "text": "Modellauswahl",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.36,
+      "endSeconds": 18.16,
+      "startFrame": 521,
+      "endFrame": 545
+    },
+    {
+      "index": 36,
+      "text": "genutzt",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 18.16,
+      "endSeconds": 18.56,
+      "startFrame": 545,
+      "endFrame": 557
+    },
+    {
+      "index": 37,
+      "text": "hast,",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 18.56,
+      "endSeconds": 18.8,
+      "startFrame": 557,
+      "endFrame": 564
+    },
+    {
+      "index": 38,
+      "text": "musst",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 19.04,
+      "endSeconds": 19.28,
+      "startFrame": 571,
+      "endFrame": 579
+    },
+    {
+      "index": 39,
+      "text": "du",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 19.28,
+      "endSeconds": 19.36,
+      "startFrame": 579,
+      "endFrame": 581
+    },
+    {
+      "index": 40,
+      "text": "dort",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 19.36,
+      "endSeconds": 19.68,
+      "startFrame": 581,
+      "endFrame": 591
+    },
+    {
+      "index": 41,
+      "text": "auf",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 19.68,
+      "endSeconds": 19.84,
+      "startFrame": 591,
+      "endFrame": 596
+    },
+    {
+      "index": 42,
+      "text": "ein",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 19.92,
+      "endSeconds": 20,
+      "startFrame": 597,
+      "endFrame": 600
+    },
+    {
+      "index": 43,
+      "text": "aktuelleres",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 20,
+      "endSeconds": 20.8,
+      "startFrame": 600,
+      "endFrame": 624
+    },
+    {
+      "index": 44,
+      "text": "Modell",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 20.8,
+      "endSeconds": 21.04,
+      "startFrame": 624,
+      "endFrame": 632
+    },
+    {
+      "index": 45,
+      "text": "wechseln.",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 21.04,
+      "endSeconds": 21.36,
+      "startFrame": 632,
+      "endFrame": 641
+    },
+    {
+      "index": 46,
+      "text": "Die",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 22,
+      "endSeconds": 22.16,
+      "startFrame": 660,
+      "endFrame": 665
+    },
+    {
+      "index": 47,
+      "text": "API",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 22.24,
+      "endSeconds": 22.88,
+      "startFrame": 667,
+      "endFrame": 687
+    },
+    {
+      "index": 48,
+      "text": "bleibt",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 22.88,
+      "endSeconds": 23.2,
+      "startFrame": 687,
+      "endFrame": 696
+    },
+    {
+      "index": 49,
+      "text": "laut",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 23.28,
+      "endSeconds": 23.44,
+      "startFrame": 698,
+      "endFrame": 704
+    },
+    {
+      "index": 50,
+      "text": "OpenAI",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 23.44,
+      "endSeconds": 24.08,
+      "startFrame": 704,
+      "endFrame": 723
+    },
+    {
+      "index": 51,
+      "text": "unverändert,",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 24.16,
+      "endSeconds": 24.88,
+      "startFrame": 724,
+      "endFrame": 747
+    },
+    {
+      "index": 52,
+      "text": "o3",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 25.2,
+      "endSeconds": 25.68,
+      "startFrame": 756,
+      "endFrame": 771
+    },
+    {
+      "index": 53,
+      "text": "verschwindet",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 25.68,
+      "endSeconds": 26.24,
+      "startFrame": 771,
+      "endFrame": 788
+    },
+    {
+      "index": 54,
+      "text": "dort",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 26.24,
+      "endSeconds": 26.48,
+      "startFrame": 788,
+      "endFrame": 795
+    },
+    {
+      "index": 55,
+      "text": "also",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 26.48,
+      "endSeconds": 26.72,
+      "startFrame": 795,
+      "endFrame": 802
+    },
+    {
+      "index": 56,
+      "text": "nicht",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 26.72,
+      "endSeconds": 27.04,
+      "startFrame": 802,
+      "endFrame": 812
+    },
+    {
+      "index": 57,
+      "text": "durch",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 27.04,
+      "endSeconds": 27.2,
+      "startFrame": 812,
+      "endFrame": 816
+    },
+    {
+      "index": 58,
+      "text": "diese",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 27.2,
+      "endSeconds": 27.44,
+      "startFrame": 816,
+      "endFrame": 824
+    },
+    {
+      "index": 59,
+      "text": "Änderung.",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 27.44,
+      "endSeconds": 27.84,
+      "startFrame": 824,
+      "endFrame": 836
+    },
+    {
+      "index": 60,
+      "text": "Kurz",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 28.4,
+      "endSeconds": 28.64,
+      "startFrame": 852,
+      "endFrame": 860
+    },
+    {
+      "index": 61,
+      "text": "gesagt:",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 28.64,
+      "endSeconds": 29.04,
+      "startFrame": 860,
+      "endFrame": 872
+    },
+    {
+      "index": 62,
+      "text": "o3",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 29.44,
+      "endSeconds": 29.92,
+      "startFrame": 883,
+      "endFrame": 898
+    },
+    {
+      "index": 63,
+      "text": "endet",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 30,
+      "endSeconds": 30.4,
+      "startFrame": 900,
+      "endFrame": 912
+    },
+    {
+      "index": 64,
+      "text": "heute",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 30.4,
+      "endSeconds": 30.64,
+      "startFrame": 912,
+      "endFrame": 920
+    },
+    {
+      "index": 65,
+      "text": "in",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 30.64,
+      "endSeconds": 30.88,
+      "startFrame": 920,
+      "endFrame": 927
+    },
+    {
+      "index": 66,
+      "text": "ChatGPT,",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 30.88,
+      "endSeconds": 31.68,
+      "startFrame": 927,
+      "endFrame": 951
+    },
+    {
+      "index": 67,
+      "text": "aber",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 32,
+      "endSeconds": 32.16,
+      "startFrame": 960,
+      "endFrame": 965
+    },
+    {
+      "index": 68,
+      "text": "nicht",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 32.16,
+      "endSeconds": 32.48,
+      "startFrame": 965,
+      "endFrame": 975
+    },
+    {
+      "index": 69,
+      "text": "in",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 32.48,
+      "endSeconds": 32.64,
+      "startFrame": 975,
+      "endFrame": 980
+    },
+    {
+      "index": 70,
+      "text": "der",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 32.64,
+      "endSeconds": 32.72,
+      "startFrame": 980,
+      "endFrame": 982
+    },
+    {
+      "index": 71,
+      "text": "API.",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 32.72,
+      "endSeconds": 33.2,
+      "startFrame": 982,
+      "endFrame": 997
+    },
+    {
+      "index": 72,
+      "text": "Wenn",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 33.84,
+      "endSeconds": 34,
+      "startFrame": 1015,
+      "endFrame": 1020
+    },
+    {
+      "index": 73,
+      "text": "du",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 34,
+      "endSeconds": 34.08,
+      "startFrame": 1020,
+      "endFrame": 1023
+    },
+    {
+      "index": 74,
+      "text": "noch",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 34.08,
+      "endSeconds": 34.24,
+      "startFrame": 1023,
+      "endFrame": 1028
+    },
+    {
+      "index": 75,
+      "text": "Workflows",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 34.24,
+      "endSeconds": 34.88,
+      "startFrame": 1028,
+      "endFrame": 1047
+    },
+    {
+      "index": 76,
+      "text": "oder",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 34.88,
+      "endSeconds": 35.12,
+      "startFrame": 1047,
+      "endFrame": 1054
+    },
+    {
+      "index": 77,
+      "text": "Prompts",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 35.12,
+      "endSeconds": 35.52,
+      "startFrame": 1054,
+      "endFrame": 1066
+    },
+    {
+      "index": 78,
+      "text": "mit",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 35.52,
+      "endSeconds": 35.68,
+      "startFrame": 1066,
+      "endFrame": 1071
+    },
+    {
+      "index": 79,
+      "text": "o3",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 35.68,
+      "endSeconds": 36.08,
+      "startFrame": 1071,
+      "endFrame": 1083
+    },
+    {
+      "index": 80,
+      "text": "nutzt,",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 36.08,
+      "endSeconds": 36.4,
+      "startFrame": 1083,
+      "endFrame": 1092
+    },
+    {
+      "index": 81,
+      "text": "prüf",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 36.64,
+      "endSeconds": 36.88,
+      "startFrame": 1099,
+      "endFrame": 1107
+    },
+    {
+      "index": 82,
+      "text": "sie",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 36.88,
+      "endSeconds": 37.12,
+      "startFrame": 1107,
+      "endFrame": 1114
+    },
+    {
+      "index": 83,
+      "text": "heute",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 37.12,
+      "endSeconds": 37.36,
+      "startFrame": 1114,
+      "endFrame": 1121
+    },
+    {
+      "index": 84,
+      "text": "am",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 37.44,
+      "endSeconds": 37.52,
+      "startFrame": 1123,
+      "endFrame": 1126
+    },
+    {
+      "index": 85,
+      "text": "besten",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 37.52,
+      "endSeconds": 37.76,
+      "startFrame": 1126,
+      "endFrame": 1133
+    },
+    {
+      "index": 86,
+      "text": "einmal",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 37.76,
+      "endSeconds": 38.16,
+      "startFrame": 1133,
+      "endFrame": 1145
+    },
+    {
+      "index": 87,
+      "text": "mit",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 38.24,
+      "endSeconds": 38.4,
+      "startFrame": 1147,
+      "endFrame": 1152
+    },
+    {
+      "index": 88,
+      "text": "deinem",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 38.4,
+      "endSeconds": 38.56,
+      "startFrame": 1152,
+      "endFrame": 1157
+    },
+    {
+      "index": 89,
+      "text": "neuen",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 38.56,
+      "endSeconds": 38.88,
+      "startFrame": 1157,
+      "endFrame": 1167
+    },
+    {
+      "index": 90,
+      "text": "Modell.",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 38.88,
+      "endSeconds": 39.2,
+      "startFrame": 1167,
+      "endFrame": 1176
+    }
+  ]
+}

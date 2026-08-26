@@ -12,44 +12,96 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1200,
-    "finalDurationInFrames": null,
+    "finalDurationInFrames": 1185,
     "finalDurationAuthority": "LOCAL_FORCED_ALIGNMENT_ON_RUNTIME_PCM_WAV"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-    "timingAuthority": false,
-    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>"
+    "status": "RUNTIME_PCM_WAV_LOCKED",
+    "timingAuthority": true,
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "observedAudioDurationSeconds": 39.466667
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "CONTENT_LOCKED_TIMING_PENDING",
+    "status": "VOICE_LOCKED",
     "rule": "Each spoken sentence is assigned to one scene before alignment; final scene starts come from the first mapped spoken word."
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "PREVIEW_ONLY_UNTIL_LOCAL_FORCED_ALIGNMENT",
+    "status": "VOICE_LOCKED_SCENE_MAPPED",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
     "maxWidth": 860,
     "style": "transparent_glass_overlay"
   },
-  "header": {"top":112,"style":"compact_glass_chip"},
-  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "header": {
+    "top": 112,
+    "style": "compact_glass_chip"
+  },
+  "background": {
+    "rule": "LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
+    "footerSplitAllowed": false
+  },
   "export": {
     "coverTimeSeconds": 3.5,
     "coverText": "o3 ENDET HEUTE IN CHATGPT",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": ["video","cover","caption","manifest"]
+    "requiredPackage": [
+      "video",
+      "cover",
+      "caption",
+      "manifest"
+    ]
   },
   "scenes": [
-    {"sceneId":"scene1","title":"o3 endet heute","startFrame":0,"endFrame":180,"accent":"#E24A57","heroMoment":"o3 model tile receives TODAY shutdown badge","timingStatus":"PLANNING"},
-    {"sceneId":"scene2","title":"90 Tage Auslaufphase","startFrame":180,"endFrame":390,"accent":"#F59E0B","heroMoment":"timeline runs from May announcement to Aug 26","timingStatus":"PLANNING"},
-    {"sceneId":"scene3","title":"Nur ChatGPT betroffen","startFrame":390,"endFrame":660,"accent":"#6D5DFB","heroMoment":"ChatGPT model picker replaces o3 with current model","timingStatus":"PLANNING"},
-    {"sceneId":"scene4","title":"API bleibt","startFrame":660,"endFrame":930,"accent":"#20B26B","heroMoment":"ChatGPT branch closes while API branch stays green","timingStatus":"PLANNING"},
-    {"sceneId":"scene5","title":"Workflows prüfen","startFrame":930,"endFrame":1200,"accent":"#18C7D9","heroMoment":"prompt workflow checklist migrates from o3 to current model","timingStatus":"PLANNING"}
+    {
+      "sceneId": "scene1",
+      "title": "o3 endet heute",
+      "startFrame": 0,
+      "endFrame": 199,
+      "accent": "#E24A57",
+      "heroMoment": "o3 model tile receives TODAY shutdown badge",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene2",
+      "title": "90 Tage Auslaufphase",
+      "startFrame": 199,
+      "endFrame": 384,
+      "accent": "#F59E0B",
+      "heroMoment": "timeline runs from May announcement to Aug 26",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene3",
+      "title": "Nur ChatGPT betroffen",
+      "startFrame": 384,
+      "endFrame": 660,
+      "accent": "#6D5DFB",
+      "heroMoment": "ChatGPT model picker replaces o3 with current model",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene4",
+      "title": "API bleibt",
+      "startFrame": 660,
+      "endFrame": 1015,
+      "accent": "#20B26B",
+      "heroMoment": "ChatGPT branch closes while API branch stays green",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene5",
+      "title": "Workflows prüfen",
+      "startFrame": 1015,
+      "endFrame": 1185,
+      "accent": "#18C7D9",
+      "heroMoment": "prompt workflow checklist migrates from o3 to current model",
+      "timingStatus": "VOICE_LOCKED"
+    }
   ],
   "sources": [
     "https://help.openai.com/de-de/articles/9624314-model-release-notes",

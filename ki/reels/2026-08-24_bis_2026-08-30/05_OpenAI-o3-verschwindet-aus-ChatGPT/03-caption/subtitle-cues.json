@@ -1,15 +1,669 @@
 {
-  "version": 1,
+  "version": 2,
   "fps": 30,
-  "timingStatus": "PREVIEW_ONLY_REQUIRES_LOCAL_FORCED_ALIGNMENT",
-  "note": "Planning only. Replace with exact word timings from the runtime PCM-WAV via align-reel-local.mjs.",
+  "timingStatus": "VOICE_LOCKED_SCENE_MAPPED",
+  "timingAuthority": "01-script-audio/WORD-TIMINGS.json",
+  "note": "Word timings come from the exact runtime PCM-WAV. Scene boundaries were derived from the first mapped spoken word of each scene.",
   "cues": [
-    {"id":"c01","sceneId":"scene1","sentenceId":"S01","startFrame":0,"endFrame":180,"text":"Heute, am 26. August, verschwindet OpenAI o3 aus ChatGPT."},
-    {"id":"c02","sceneId":"scene2","sentenceId":"S02","startFrame":180,"endFrame":390,"text":"OpenAI hatte das schon Ende Mai angekündigt und dem Modell eine 90-tägige Auslaufphase gegeben."},
-    {"id":"c03","sceneId":"scene3","sentenceId":"S03","startFrame":390,"endFrame":465,"text":"Wichtig: Betroffen ist nur ChatGPT."},
-    {"id":"c04","sceneId":"scene3","sentenceId":"S04","startFrame":465,"endFrame":660,"text":"Wenn du o3 bisher über die Modellauswahl genutzt hast, musst du dort auf ein aktuelleres Modell wechseln."},
-    {"id":"c05","sceneId":"scene4","sentenceId":"S05","startFrame":660,"endFrame":825,"text":"Die API bleibt laut OpenAI unverändert, o3 verschwindet dort also nicht durch diese Änderung."},
-    {"id":"c06","sceneId":"scene4","sentenceId":"S06","startFrame":825,"endFrame":930,"text":"Kurz gesagt: o3 endet heute in ChatGPT, aber nicht in der API."},
-    {"id":"c07","sceneId":"scene5","sentenceId":"S07","startFrame":930,"endFrame":1200,"text":"Wenn du noch Workflows oder Prompts mit o3 nutzt, prüf sie heute am besten einmal mit deinem neuen Modell."}
+    {
+      "id": "c01",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 12,
+      "endFrame": 58,
+      "text": "Heute, am 26.",
+      "words": [
+        {
+          "text": "Heute,",
+          "startFrame": 12,
+          "endFrame": 24
+        },
+        {
+          "text": "am",
+          "startFrame": 24,
+          "endFrame": 29
+        },
+        {
+          "text": "26.",
+          "startFrame": 29,
+          "endFrame": 58
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 58,
+      "endFrame": 154,
+      "text": "August, verschwindet OpenAI o3 aus",
+      "words": [
+        {
+          "text": "August,",
+          "startFrame": 58,
+          "endFrame": 72
+        },
+        {
+          "text": "verschwindet",
+          "startFrame": 74,
+          "endFrame": 94
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 96,
+          "endFrame": 123
+        },
+        {
+          "text": "o3",
+          "startFrame": 124,
+          "endFrame": 147
+        },
+        {
+          "text": "aus",
+          "startFrame": 148,
+          "endFrame": 154
+        }
+      ]
+    },
+    {
+      "id": "c03",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 154,
+      "endFrame": 178,
+      "text": "ChatGPT.",
+      "words": [
+        {
+          "text": "ChatGPT.",
+          "startFrame": 154,
+          "endFrame": 178
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 199,
+      "endFrame": 245,
+      "text": "OpenAI hatte das schon Ende",
+      "words": [
+        {
+          "text": "OpenAI",
+          "startFrame": 199,
+          "endFrame": 221
+        },
+        {
+          "text": "hatte",
+          "startFrame": 221,
+          "endFrame": 226
+        },
+        {
+          "text": "das",
+          "startFrame": 226,
+          "endFrame": 231
+        },
+        {
+          "text": "schon",
+          "startFrame": 231,
+          "endFrame": 238
+        },
+        {
+          "text": "Ende",
+          "startFrame": 238,
+          "endFrame": 245
+        }
+      ]
+    },
+    {
+      "id": "c05",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 245,
+      "endFrame": 298,
+      "text": "Mai angekündigt und dem Modell",
+      "words": [
+        {
+          "text": "Mai",
+          "startFrame": 245,
+          "endFrame": 255
+        },
+        {
+          "text": "angekündigt",
+          "startFrame": 255,
+          "endFrame": 279
+        },
+        {
+          "text": "und",
+          "startFrame": 279,
+          "endFrame": 286
+        },
+        {
+          "text": "dem",
+          "startFrame": 286,
+          "endFrame": 288
+        },
+        {
+          "text": "Modell",
+          "startFrame": 288,
+          "endFrame": 298
+        }
+      ]
+    },
+    {
+      "id": "c06",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 298,
+      "endFrame": 370,
+      "text": "eine 90-tägige Auslaufphase gegeben.",
+      "words": [
+        {
+          "text": "eine",
+          "startFrame": 298,
+          "endFrame": 305
+        },
+        {
+          "text": "90-tägige",
+          "startFrame": 305,
+          "endFrame": 334
+        },
+        {
+          "text": "Auslaufphase",
+          "startFrame": 334,
+          "endFrame": 356
+        },
+        {
+          "text": "gegeben.",
+          "startFrame": 356,
+          "endFrame": 370
+        }
+      ]
+    },
+    {
+      "id": "c07",
+      "sceneId": "scene3",
+      "sentenceId": "S03",
+      "startFrame": 384,
+      "endFrame": 464,
+      "text": "Wichtig: Betroffen ist nur ChatGPT.",
+      "words": [
+        {
+          "text": "Wichtig:",
+          "startFrame": 384,
+          "endFrame": 399
+        },
+        {
+          "text": "Betroffen",
+          "startFrame": 408,
+          "endFrame": 423
+        },
+        {
+          "text": "ist",
+          "startFrame": 423,
+          "endFrame": 430
+        },
+        {
+          "text": "nur",
+          "startFrame": 430,
+          "endFrame": 437
+        },
+        {
+          "text": "ChatGPT.",
+          "startFrame": 439,
+          "endFrame": 464
+        }
+      ]
+    },
+    {
+      "id": "c08",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 477,
+      "endFrame": 519,
+      "text": "Wenn du o3 bisher über",
+      "words": [
+        {
+          "text": "Wenn",
+          "startFrame": 477,
+          "endFrame": 483
+        },
+        {
+          "text": "du",
+          "startFrame": 483,
+          "endFrame": 488
+        },
+        {
+          "text": "o3",
+          "startFrame": 488,
+          "endFrame": 502
+        },
+        {
+          "text": "bisher",
+          "startFrame": 502,
+          "endFrame": 512
+        },
+        {
+          "text": "über",
+          "startFrame": 512,
+          "endFrame": 519
+        }
+      ]
+    },
+    {
+      "id": "c09",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 519,
+      "endFrame": 564,
+      "text": "die Modellauswahl genutzt hast,",
+      "words": [
+        {
+          "text": "die",
+          "startFrame": 519,
+          "endFrame": 521
+        },
+        {
+          "text": "Modellauswahl",
+          "startFrame": 521,
+          "endFrame": 545
+        },
+        {
+          "text": "genutzt",
+          "startFrame": 545,
+          "endFrame": 557
+        },
+        {
+          "text": "hast,",
+          "startFrame": 557,
+          "endFrame": 564
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 571,
+      "endFrame": 600,
+      "text": "musst du dort auf ein",
+      "words": [
+        {
+          "text": "musst",
+          "startFrame": 571,
+          "endFrame": 579
+        },
+        {
+          "text": "du",
+          "startFrame": 579,
+          "endFrame": 581
+        },
+        {
+          "text": "dort",
+          "startFrame": 581,
+          "endFrame": 591
+        },
+        {
+          "text": "auf",
+          "startFrame": 591,
+          "endFrame": 596
+        },
+        {
+          "text": "ein",
+          "startFrame": 597,
+          "endFrame": 600
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 600,
+      "endFrame": 641,
+      "text": "aktuelleres Modell wechseln.",
+      "words": [
+        {
+          "text": "aktuelleres",
+          "startFrame": 600,
+          "endFrame": 624
+        },
+        {
+          "text": "Modell",
+          "startFrame": 624,
+          "endFrame": 632
+        },
+        {
+          "text": "wechseln.",
+          "startFrame": 632,
+          "endFrame": 641
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "sceneId": "scene4",
+      "sentenceId": "S05",
+      "startFrame": 660,
+      "endFrame": 723,
+      "text": "Die API bleibt laut OpenAI",
+      "words": [
+        {
+          "text": "Die",
+          "startFrame": 660,
+          "endFrame": 665
+        },
+        {
+          "text": "API",
+          "startFrame": 667,
+          "endFrame": 687
+        },
+        {
+          "text": "bleibt",
+          "startFrame": 687,
+          "endFrame": 696
+        },
+        {
+          "text": "laut",
+          "startFrame": 698,
+          "endFrame": 704
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 704,
+          "endFrame": 723
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "sceneId": "scene4",
+      "sentenceId": "S05",
+      "startFrame": 724,
+      "endFrame": 802,
+      "text": "unverändert, o3 verschwindet dort also",
+      "words": [
+        {
+          "text": "unverändert,",
+          "startFrame": 724,
+          "endFrame": 747
+        },
+        {
+          "text": "o3",
+          "startFrame": 756,
+          "endFrame": 771
+        },
+        {
+          "text": "verschwindet",
+          "startFrame": 771,
+          "endFrame": 788
+        },
+        {
+          "text": "dort",
+          "startFrame": 788,
+          "endFrame": 795
+        },
+        {
+          "text": "also",
+          "startFrame": 795,
+          "endFrame": 802
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "sceneId": "scene4",
+      "sentenceId": "S05",
+      "startFrame": 802,
+      "endFrame": 836,
+      "text": "nicht durch diese Änderung.",
+      "words": [
+        {
+          "text": "nicht",
+          "startFrame": 802,
+          "endFrame": 812
+        },
+        {
+          "text": "durch",
+          "startFrame": 812,
+          "endFrame": 816
+        },
+        {
+          "text": "diese",
+          "startFrame": 816,
+          "endFrame": 824
+        },
+        {
+          "text": "Änderung.",
+          "startFrame": 824,
+          "endFrame": 836
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "sceneId": "scene4",
+      "sentenceId": "S06",
+      "startFrame": 852,
+      "endFrame": 920,
+      "text": "Kurz gesagt: o3 endet heute",
+      "words": [
+        {
+          "text": "Kurz",
+          "startFrame": 852,
+          "endFrame": 860
+        },
+        {
+          "text": "gesagt:",
+          "startFrame": 860,
+          "endFrame": 872
+        },
+        {
+          "text": "o3",
+          "startFrame": 883,
+          "endFrame": 898
+        },
+        {
+          "text": "endet",
+          "startFrame": 900,
+          "endFrame": 912
+        },
+        {
+          "text": "heute",
+          "startFrame": 912,
+          "endFrame": 920
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "sceneId": "scene4",
+      "sentenceId": "S06",
+      "startFrame": 920,
+      "endFrame": 980,
+      "text": "in ChatGPT, aber nicht in",
+      "words": [
+        {
+          "text": "in",
+          "startFrame": 920,
+          "endFrame": 927
+        },
+        {
+          "text": "ChatGPT,",
+          "startFrame": 927,
+          "endFrame": 951
+        },
+        {
+          "text": "aber",
+          "startFrame": 960,
+          "endFrame": 965
+        },
+        {
+          "text": "nicht",
+          "startFrame": 965,
+          "endFrame": 975
+        },
+        {
+          "text": "in",
+          "startFrame": 975,
+          "endFrame": 980
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "sceneId": "scene4",
+      "sentenceId": "S06",
+      "startFrame": 980,
+      "endFrame": 997,
+      "text": "der API.",
+      "words": [
+        {
+          "text": "der",
+          "startFrame": 980,
+          "endFrame": 982
+        },
+        {
+          "text": "API.",
+          "startFrame": 982,
+          "endFrame": 997
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "sceneId": "scene5",
+      "sentenceId": "S07",
+      "startFrame": 1015,
+      "endFrame": 1054,
+      "text": "Wenn du noch Workflows oder",
+      "words": [
+        {
+          "text": "Wenn",
+          "startFrame": 1015,
+          "endFrame": 1020
+        },
+        {
+          "text": "du",
+          "startFrame": 1020,
+          "endFrame": 1023
+        },
+        {
+          "text": "noch",
+          "startFrame": 1023,
+          "endFrame": 1028
+        },
+        {
+          "text": "Workflows",
+          "startFrame": 1028,
+          "endFrame": 1047
+        },
+        {
+          "text": "oder",
+          "startFrame": 1047,
+          "endFrame": 1054
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "sceneId": "scene5",
+      "sentenceId": "S07",
+      "startFrame": 1054,
+      "endFrame": 1092,
+      "text": "Prompts mit o3 nutzt,",
+      "words": [
+        {
+          "text": "Prompts",
+          "startFrame": 1054,
+          "endFrame": 1066
+        },
+        {
+          "text": "mit",
+          "startFrame": 1066,
+          "endFrame": 1071
+        },
+        {
+          "text": "o3",
+          "startFrame": 1071,
+          "endFrame": 1083
+        },
+        {
+          "text": "nutzt,",
+          "startFrame": 1083,
+          "endFrame": 1092
+        }
+      ]
+    },
+    {
+      "id": "c20",
+      "sceneId": "scene5",
+      "sentenceId": "S07",
+      "startFrame": 1099,
+      "endFrame": 1133,
+      "text": "prüf sie heute am besten",
+      "words": [
+        {
+          "text": "prüf",
+          "startFrame": 1099,
+          "endFrame": 1107
+        },
+        {
+          "text": "sie",
+          "startFrame": 1107,
+          "endFrame": 1114
+        },
+        {
+          "text": "heute",
+          "startFrame": 1114,
+          "endFrame": 1121
+        },
+        {
+          "text": "am",
+          "startFrame": 1123,
+          "endFrame": 1126
+        },
+        {
+          "text": "besten",
+          "startFrame": 1126,
+          "endFrame": 1133
+        }
+      ]
+    },
+    {
+      "id": "c21",
+      "sceneId": "scene5",
+      "sentenceId": "S07",
+      "startFrame": 1133,
+      "endFrame": 1176,
+      "text": "einmal mit deinem neuen Modell.",
+      "words": [
+        {
+          "text": "einmal",
+          "startFrame": 1133,
+          "endFrame": 1145
+        },
+        {
+          "text": "mit",
+          "startFrame": 1147,
+          "endFrame": 1152
+        },
+        {
+          "text": "deinem",
+          "startFrame": 1152,
+          "endFrame": 1157
+        },
+        {
+          "text": "neuen",
+          "startFrame": 1157,
+          "endFrame": 1167
+        },
+        {
+          "text": "Modell.",
+          "startFrame": 1167,
+          "endFrame": 1176
+        }
+      ]
+    }
   ]
 }

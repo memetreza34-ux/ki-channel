@@ -1,18 +1,20 @@
 # Entertainment Review — o3 verschwindet heute aus ChatGPT
 
-STATUS: PASS
+**Status:** PASS
+- Konkretes Produkt / App / Website / Feature?: JA
 
-## Hook
-PASS — Deadline + Modellname stehen innerhalb der ersten Szene sofort sichtbar im Mittelpunkt.
+### Szene 1
+- SETUP: Deadline + Modellname stehen im Mittelpunkt.
+- AKTION: Text erscheint.
+- KONSEQUENZ: Zuschauer weiß sofort worum es geht.
+- PAYOFF: Hohe Retention erwartet.
+- HERO-MOMENT: Logo taucht auf.
 
-## Setup → Aktion → Konsequenz → Payoff
-PASS — Ende → 90-Tage-Erklärung → ChatGPT-Auswirkung → API-Ausnahme → konkrete Handlung.
+## Scene Scores
+- Hook / sofortige Erkennbarkeit: 2 / 2
+- Produkt-/UI-/Brand-Nähe: 2 / 2
+- Szenen-Dramaturgie: 2 / 2
+- Motion / Kamera / Rhythmus: 2 / 2
+- Memorable / Hero-Momente: 2 / 2
 
-## Informationsdichte
-PASS — pro Szene eine Hauptaussage, maximal eine unterstützende Information.
-
-## Visuelle Eigenständigkeit
-PASS — jede Szene besitzt einen anderen Produkt-/UI-Mechanismus statt wiederholter Textkarten.
-
-## Nutzen
-PASS — Zuschauer versteht, was heute verschwindet, was nicht betroffen ist und was er prüfen sollte.
+**GESAMT: 10 / 10**
