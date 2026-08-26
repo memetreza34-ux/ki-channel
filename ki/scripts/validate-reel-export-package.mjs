@@ -28,6 +28,7 @@ catch (error) { fail(`reel.json is invalid: ${error.message}`); }
 
 const compositionId = safeCompositionId(reel?.compositionId);
 if (!compositionId) fail('compositionId missing in reel.json.');
+const sfxEnabled = reel?.sfx?.enabled === true;
 
 const names = {
   video: `${compositionId}.mp4`,
@@ -57,12 +58,16 @@ for (const gate of ['entertainment','voiceLock','audioVideo']) {
 }
 if (manifest?.gates?.localForcedAlignment !== 'PASSED_EXACT_KNOWN_TRANSCRIPT') fail('manifest localForcedAlignment gate is not PASSED_EXACT_KNOWN_TRANSCRIPT.');
 if (manifest?.gates?.sceneVoiceMap !== 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') fail('manifest sceneVoiceMap gate is not PASSED_EXACT_SCENE_TEXT_AND_ANCHORS.');
+if (sfxEnabled && manifest?.gates?.sfx !== 'PASSED_CC0_AUTO_RESOLVED_AND_LOCKED') fail('manifest SFX gate is not PASSED_CC0_AUTO_RESOLVED_AND_LOCKED.');
+if (!sfxEnabled && manifest?.gates?.sfx !== 'NOT_APPLICABLE') fail('manifest SFX gate must be NOT_APPLICABLE when SFX is disabled.');
 if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
 if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fail('manifest sourceIsolation gate is invalid.');
 if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
 
 const provenance = manifest?.provenance || {};
-for (const key of ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256']) {
+const requiredProvenance = ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256'];
+if (sfxEnabled) requiredProvenance.push('sfxResolvedSha256');
+for (const key of requiredProvenance) {
   if (!provenance[key] || typeof provenance[key] !== 'string') fail(`manifest provenance field missing: ${key}.`);
 }
 const artifacts = manifest?.artifacts || {};
@@ -90,5 +95,6 @@ console.log(`video: ${files.video}`);
 console.log(`cover: ${files.cover}`);
 console.log(`caption: ${files.caption}`);
 console.log(`manifest: ${files.manifest}`);
+console.log(`sfx: ${sfxEnabled ? 'CC0 AUTO-RESOLVED + LOCKED' : 'NOT_APPLICABLE'}`);
 console.log(`render source commit: ${provenance.renderSourceCommitSha}`);
 console.log(`video sha256: ${actualArtifactHashes.videoSha256}`);
