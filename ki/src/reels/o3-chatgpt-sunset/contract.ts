@@ -1,5 +1,7 @@
 import reelData from '../../../reels/2026-08-24_bis_2026-08-30/05_OpenAI-o3-verschwindet-aus-ChatGPT/06-projektdateien/reel.json';
 import captionData from '../../../reels/2026-08-24_bis_2026-08-30/05_OpenAI-o3-verschwindet-aus-ChatGPT/03-caption/subtitle-cues.json';
+import sfxData from '../../../reels/2026-08-24_bis_2026-08-30/05_OpenAI-o3-verschwindet-aus-ChatGPT/06-projektdateien/sfx-resolved.json';
+import type {ReelResolvedSfxEvent} from '../ReelSfxTrack';
 
 export const O3_SUNSET_COMPOSITION_ID = reelData.compositionId;
 export const O3_SUNSET_WIDTH = reelData.format.width;
@@ -13,3 +15,4 @@ export type O3Cue = (typeof captionData.cues)[number];
 
 export const O3_SUNSET_SCENES = reelData.scenes as O3Scene[];
 export const O3_SUNSET_CUES = captionData.cues as O3Cue[];
+export const O3_SUNSET_SFX = (sfxData.events ?? []) as ReelResolvedSfxEvent[];
