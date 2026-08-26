@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"id":"S01","sceneId":"scene1","text":"Heute, am 26. August, verschwindet OpenAI o3 aus ChatGPT."},
+    {"id":"S02","sceneId":"scene2","text":"OpenAI hatte das schon Ende Mai angekündigt und dem Modell eine 90-tägige Auslaufphase gegeben."},
+    {"id":"S03","sceneId":"scene3","text":"Wichtig: Betroffen ist nur ChatGPT."},
+    {"id":"S04","sceneId":"scene3","text":"Wenn du o3 bisher über die Modellauswahl genutzt hast, musst du dort auf ein aktuelleres Modell wechseln."},
+    {"id":"S05","sceneId":"scene4","text":"Die API bleibt laut OpenAI unverändert, o3 verschwindet dort also nicht durch diese Änderung."},
+    {"id":"S06","sceneId":"scene4","text":"Kurz gesagt: o3 endet heute in ChatGPT, aber nicht in der API."},
+    {"id":"S07","sceneId":"scene5","text":"Wenn du noch Workflows oder Prompts mit o3 nutzt, prüf sie heute am besten einmal mit deinem neuen Modell."}
+  ]
+}
