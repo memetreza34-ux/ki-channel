@@ -9,12 +9,18 @@ const mustExist = [
   'ki/gehirn/FORCED_ALIGNMENT.md',
   'ki/gehirn/CAPTION_SAFE_POSITION.md',
   'ki/src/reels/captionSafe.ts',
+  'ki/src/reels/ReelSfxTrack.tsx',
+  'ki/config/sfx-sources.json',
   'ki/scripts/lib/render-provenance.mjs',
   'ki/scripts/prepare-reel-audio.mjs',
   'ki/scripts/setup-local-forced-aligner.mjs',
   'ki/scripts/python/align_words.py',
   'ki/scripts/align-reel-local.mjs',
   'ki/scripts/validate-local-forced-alignment.mjs',
+  'ki/scripts/setup-reel-sfx-library.mjs',
+  'ki/scripts/validate-reel-sfx-library.mjs',
+  'ki/scripts/resolve-reel-sfx.mjs',
+  'ki/scripts/validate-reel-sfx-plan.mjs',
   'ki/scripts/lock-scene-timing-from-captions.mjs',
   'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-scene-voice-map.mjs',
@@ -90,14 +96,26 @@ if (alignRunner.includes('MahmoudAshraf/mms-300m-1130-forced-aligner')) fail.pus
 
 const setupAligner = await read('ki/scripts/setup-local-forced-aligner.mjs');
 if (!setupAligner.includes('mlx-audio==0.5.0') || !setupAligner.includes('11855d1de76af2b490dd2e8e2db2661805ae90a0')) fail.push('local aligner dependencies are not pinned.');
-
 const localGate = await read('ki/scripts/validate-local-forced-alignment.mjs');
 if (!localGate.includes('fuzzyWordMatching') || !localGate.includes('PASSED') || !localGate.includes('Apache-2.0')) fail.push('local forced-alignment gate is incomplete.');
+
+const sfxSources = JSON.parse(await read('ki/config/sfx-sources.json'));
+if (!Array.isArray(sfxSources?.packs) || sfxSources.packs.length < 5) fail.push('SFX source allowlist must contain at least five curated packs.');
+for (const pack of sfxSources?.packs || []) if (pack.license !== 'CC0-1.0') fail.push(`SFX pack ${pack.id} is not CC0-1.0.`);
+const sfxSetup = await read('ki/scripts/setup-reel-sfx-library.mjs');
+for (const needle of ['CC0-1.0','License.txt','sfx-index.json','48000','pcm_s16le']) if (!sfxSetup.includes(needle)) fail.push(`SFX setup missing contract token: ${needle}`);
+const sfxResolver = await read('ki/scripts/resolve-reel-sfx.mjs');
+for (const needle of ['SFX_RESOLVED_CC0_AUTO','DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING','randomness:false','voiceFirstVolumeCaps']) if (!sfxResolver.includes(needle)) fail.push(`SFX resolver missing contract token: ${needle}`);
+const sfxGate = await read('ki/scripts/validate-reel-sfx-plan.mjs');
+for (const needle of ['CC0-1.0','SFX_RESOLVED_CC0_AUTO','0.20']) if (!sfxGate.includes(needle)) fail.push(`SFX gate missing contract token: ${needle}`);
+const sfxTrack = await read('ki/src/reels/ReelSfxTrack.tsx');
+if (!sfxTrack.includes('staticFile(event.staticFile)') || !sfxTrack.includes('Html5Audio')) fail.push('ReelSfxTrack.tsx does not render local static SFX assets.');
 
 const prepare = await read('ki/scripts/prepare-reel-render.mjs');
 if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
 if (!prepare.includes('validate-scene-voice-map.mjs') || !prepare.includes('sceneVoiceMapSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash scene-to-voice mapping.');
 if (!prepare.includes('validate-local-forced-alignment.mjs') || !prepare.includes('wordTimingsSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash local forced alignment.');
+if (!prepare.includes('validate-reel-sfx-plan.mjs') || !prepare.includes('sfxResolvedSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash resolved SFX.');
 
 const lockScenes = await read('ki/scripts/lock-scene-timing-from-captions.mjs');
 if (!lockScenes.includes('firstWordFrame') || !lockScenes.includes('finalDurationInFrames') || !lockScenes.includes('VOICE_LOCKED_SCENE_MAPPED')) fail.push('scene timing lock script does not derive final scene timing from real word anchors.');
@@ -106,9 +124,11 @@ const finalize = await read('ki/scripts/finalize-reel-export.mjs');
 if (!finalize.includes('PASSED_LOCKED_INPUT_HASHES') || !finalize.includes('reviewedVideoSha256')) fail.push('finalize-reel-export.mjs does not enforce render provenance.');
 if (!finalize.includes('PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') || !finalize.includes('sceneVoiceMapSha256')) fail.push('finalize-reel-export.mjs does not enforce scene-to-voice provenance.');
 if (!finalize.includes('PASSED_EXACT_KNOWN_TRANSCRIPT') || !finalize.includes('wordTimingsSha256')) fail.push('finalize-reel-export.mjs does not enforce local forced-alignment provenance.');
+if (!finalize.includes('PASSED_CC0_AUTO_RESOLVED_AND_LOCKED') || !finalize.includes('sfxResolvedSha256')) fail.push('finalize-reel-export.mjs does not enforce SFX provenance.');
 
 const generator = await read('scripts/new-ki-reel.mjs');
 if (!generator.includes('SCENE-VOICE-MAP.json') || !generator.includes('FIRST_MAPPED_WORD')) fail.push('new reel generator does not create the canonical scene-to-voice mapping contract.');
+if (!generator.includes('sfx-events.json') || !generator.includes('sfx-resolved.json') || !generator.includes('AUTO_CC0_DETERMINISTIC')) fail.push('new reel generator does not scaffold automatic SFX files.');
 
 if (fail.length) {
   console.error('PRODUCTION CONTRACT AUDIT: FAILED');
@@ -120,4 +140,4 @@ console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
-console.log('checked pause-compression + scene-to-voice + local forced-alignment pipeline: yes');
+console.log('checked pause-compression + forced-alignment + scene-voice + automatic CC0-SFX pipeline: yes');
