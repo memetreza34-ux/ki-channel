@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "provider": "AI Voice Generator",
+  "contextId": "da6d31b06be348eba881beee77b5bf07",
+  "voiceId": "clear",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=da6d31b06be348eba881beee77b5bf07",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/0f7af63e-00d6-4535-8a02-714aed03143e.mp3",
+  "targetFile": "voiceover.mp3",
+  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+  "note": "Remote URLs are provenance/download sources only. Production timing/render authority is the locally prepared Runtime-PCM-WAV."
+}
