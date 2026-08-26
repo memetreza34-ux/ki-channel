@@ -5,7 +5,7 @@
 
 Vorhanden:
 - offizieller OpenAI-Faktenstand vom 20. August 2026
-- finaler Sprechertext
+- finaler, hook-stärkerer Sprechertext
 - exaktes `SCENE-VOICE-MAP.json`
 - 5 klar unterschiedliche Szenen
 - 9 semantische SFX-Events an sichtbaren UI-Momenten
@@ -16,7 +16,7 @@ Vorhanden:
 **Status:** GENERIERT — LOKALER DOWNLOAD ERFORDERLICH
 
 Voice: `clear`
-Context: `5f7604c4bd5742e792cd23021027609d`
+Context: `5d9c261974a043d99ee86efe1be2d279`
 
 Nach Download als `01-script-audio/voiceover.mp3`:
 
