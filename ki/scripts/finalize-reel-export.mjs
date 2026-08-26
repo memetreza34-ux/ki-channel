@@ -25,6 +25,7 @@ const scripts = {
   localAlignment: path.resolve('ki','scripts','validate-local-forced-alignment.mjs'),
   sceneVoiceMap: path.resolve('ki','scripts','validate-scene-voice-map.mjs'),
   voiceLock: path.resolve('ki','scripts','validate-voice-locked-captions.mjs'),
+  sfx: path.resolve('ki','scripts','validate-reel-sfx-plan.mjs'),
   motion: path.resolve('ki','scripts','validate-motion-readability-review.mjs'),
   sourceIsolation: path.resolve('ki','scripts','validate-reel-source-isolation.mjs'),
   finalVideo: path.resolve('ki','scripts','validate-final-video.mjs'),
@@ -48,6 +49,11 @@ if (!compositionId) fail('compositionId missing in reel.json.');
 const sceneVoiceMapRelative = reelConfig?.sceneVoiceMap?.file || '01-script-audio/SCENE-VOICE-MAP.json';
 const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
 if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
+const sfxEnabled = reelConfig?.sfx?.enabled === true;
+const sfxResolvedPath = sfxEnabled
+  ? path.resolve(reelDir, reelConfig?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
+  : null;
+if (sfxEnabled && !existsSync(sfxResolvedPath)) fail(`resolved SFX plan missing: ${sfxResolvedPath}`);
 
 const runGate = (label, script, args) => {
   const gate = spawnSync(process.execPath, [script, ...args], {encoding:'utf8'});
@@ -61,6 +67,7 @@ runGate('entertainment gate', scripts.entertainment, [reelDir]);
 runGate('local forced-alignment gate', scripts.localAlignment, [reelDir]);
 runGate('scene/voice map gate', scripts.sceneVoiceMap, [reelDir]);
 runGate('voice-lock gate', scripts.voiceLock, [reelDir]);
+if (sfxEnabled) runGate('SFX plan gate', scripts.sfx, [reelDir]);
 runGate('motion-readability gate', scripts.motion, [reelDir, sourceVideo]);
 const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolation.json');
 if (existsSync(isolationConfig)) runGate('source-isolation gate', scripts.sourceIsolation, [reelDir]);
@@ -76,7 +83,7 @@ if (Number(renderLock.finalDurationInFrames) !== Number(reelConfig?.format?.fina
 
 let git;
 try { git = getGitState(); } catch (error) { fail(error.message); }
-if (git.dirty) fail('working tree is dirty. Commit review/metadata changes before finalizing the export.');
+if (git.dirty) fail('working tree is dirty. Commit review/metadata/SFX changes before finalizing the export.');
 
 let sourceDir;
 try { sourceDir = await resolveSourceDir(reelDir,reelConfig); } catch (error) { fail(`could not resolve sourceDir: ${error.message}`); }
@@ -92,10 +99,13 @@ const currentHashes = {
   sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
   wordTimingsSha256: await sha256File(wordTimingsPath),
   captionJsonSha256: await sha256File(captionJsonPath),
+  sfxResolvedSha256: sfxEnabled ? await sha256File(sfxResolvedPath) : null,
   canonicalAudioSha256: await sha256File(canonicalAudio),
   runtimeAudioSha256: await sha256File(runtimeAudio),
 };
-for (const key of ['sourceTreeSha256','renderContractSha256','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256']) {
+const lockedKeys = ['sourceTreeSha256','renderContractSha256','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256'];
+if (sfxEnabled) lockedKeys.push('sfxResolvedSha256');
+for (const key of lockedKeys) {
   if (renderLock?.hashes?.[key] !== currentHashes[key]) fail(`${key} changed after render preparation. Rerun prepare + render.`);
 }
 const sourceVideoStat = await stat(sourceVideo);
@@ -158,6 +168,7 @@ try {
       localForcedAlignment: 'PASSED_EXACT_KNOWN_TRANSCRIPT',
       sceneVoiceMap: 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS',
       voiceLock: 'PASSED',
+      sfx: sfxEnabled ? 'PASSED_CC0_AUTO_RESOLVED_AND_LOCKED' : 'NOT_APPLICABLE',
       motionReadability: 'PASSED_EXACT_VIDEO_HASH',
       sourceIsolation: existsSync(isolationConfig) ? 'PASSED' : 'NOT_APPLICABLE',
       audioVideo: 'PASSED',
@@ -175,6 +186,7 @@ try {
       sceneVoiceMapSha256: currentHashes.sceneVoiceMapSha256,
       wordTimingsSha256: currentHashes.wordTimingsSha256,
       captionJsonSha256: currentHashes.captionJsonSha256,
+      sfxResolvedSha256: currentHashes.sfxResolvedSha256,
       canonicalAudioSha256: currentHashes.canonicalAudioSha256,
       runtimeAudioSha256: currentHashes.runtimeAudioSha256,
       reviewedVideoSha256: sourceVideoSha256,
