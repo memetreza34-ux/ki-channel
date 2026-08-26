@@ -1,4 +1,4 @@
-export {ReelO3ChatGPTSunset} from './ReelO3ChatGPTSunset';
+export {ReelO3ChatGPTSunsetWithSfx as ReelO3ChatGPTSunset} from './ReelO3ChatGPTSunsetWithSfx';
 export {
   O3_SUNSET_COMPOSITION_ID,
   O3_SUNSET_DURATION_IN_FRAMES,
