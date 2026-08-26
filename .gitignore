@@ -19,6 +19,7 @@ frames/
 *.m4a
 *.aiff
 public/runtime-audio/
+public/reel-sfx/
 
 # ---- Reel-Bilder (groß, viel pro Reel, sprengt GitHub-Storage) ----
 # nur lokal — auf GitHub landet Code/Doku/Timing/Manifest
