@@ -1,8 +1,18 @@
 {
   "version": 1,
+  "compositionId": "KI-O3ChatGPTSunset",
   "sourceDir": "ki/src/reels/o3-chatgpt-sunset",
-  "allowedSharedImports": [
-    "ki/src/reels/captionSafe.ts"
+  "rootImportNeedle": "./reels/o3-chatgpt-sunset",
+  "requiredStrings": [
+    "o3 verschwindet heute aus ChatGPT",
+    "Die API bleibt unverändert",
+    "NUR CHATGPT",
+    "HEUTE TESTEN"
+  ],
+  "forbiddenStrings": [
+    "DALL·E-GPT",
+    "Study Mode",
+    "Teen"
   ],
   "status": "ENFORCED"
 }
