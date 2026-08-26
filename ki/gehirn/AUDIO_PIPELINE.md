@@ -20,7 +20,7 @@ Ein Reel darf Voiceover real per verfügbarem Voice-/TTS-Tool oder durch Nutzer/
 
 `audio-source.json` dokumentiert Provenance. Es ist **keine Renderquelle**.
 
-## Keine Render-Time-Netzwerkquelle
+## Runtime-Audio + Pause-Kompression
 
 Remotion rendert niemals direkt von einer TTS-/CDN-/Remote-URL.
 
@@ -39,20 +39,37 @@ Das Ergebnis ist:
 
 ```text
 public/runtime-audio/<compositionId>.wav
+public/runtime-audio/<compositionId>.pacing.json
 ```
 
-Diese Datei ist immer **48 kHz Stereo PCM s16le WAV** und exakt die Audiospur, die Remotion später rendert. MP3-Container-/Encoder-Padding ist deshalb keine Timing-Autorität.
+Die WAV ist immer **48 kHz Stereo PCM s16le** und exakt die Audiospur, die Remotion später rendert.
+
+Wenn `reel.json -> audio.pauseCompression.enabled` aktiv ist, werden längere Sprachlücken bereits **vor dem Forced Alignment** komprimiert. Kanonischer Reel-Startwert:
+
+```json
+{
+  "enabled": true,
+  "thresholdDb": -35,
+  "triggerSeconds": 0.15,
+  "keepSeconds": 0.05,
+  "startKeepSeconds": 0.03,
+  "maxAllowedSilenceSeconds": 0.25,
+  "maxReductionRatio": 0.25
+}
+```
+
+Das bedeutet: längere Stille wird stark verkürzt, eine kleine natürliche Restpause bleibt bestehen. Wenn die Kompression mehr als 25 % der Gesamtdauer entfernen würde, schlägt die Pipeline als Safety-Gate fehl. Zusätzlich wird die resultierende Runtime-WAV auf unerwartet lange Silence-Gaps geprüft.
+
+**Wichtig:** Nach Aktivierung oder Änderung dieser Pacing-Regeln sind alte `VOICE_LOCKED`-Timings ungültig.
 
 ## Finale Timing-Autorität
-
-Für normale KI-Reels ist der Sprechertext bereits exakt bekannt. Deshalb gilt ab jetzt:
 
 ```text
 VOICEOVER-ZUM-KOPIEREN.txt
 +
 SCENE-VOICE-MAP.json
 +
-Runtime-PCM-WAV
+pause-komprimierte Runtime-PCM-WAV
         ↓
 LOCAL FORCED ALIGNMENT
         ↓
@@ -61,74 +78,28 @@ WORD-TIMINGS.json
 Captions + Szenen + finale Duration
 ```
 
-Kanonische Details: `ki/gehirn/FORCED_ALIGNMENT.md`.
-
 Ein-Kommando-Alignment:
 
 ```bash
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Der Befehl erzeugt/verifiziert die Runtime-WAV, richtet den **bekannten** Sprechertext lokal auf diese WAV aus, schreibt Wortzeiten, baut Caption-Cues und leitet die Szenengrenzen aus dem Satz→Szene-Mapping ab.
+Der Befehl erzeugt/verifiziert zuerst die bereits verdichtete Runtime-WAV und richtet danach den **bekannten** Sprechertext lokal exakt auf diese WAV aus. Damit kommen Stimme, Wortzeiten, Untertitel, Szenenstarts und finale Composition-Dauer aus derselben Tonspur.
 
-Whisper bleibt für unbekanntes Audio oder Diagnose zulässig, ist aber **nicht mehr die primäre finale Timing-Autorität**, wenn der exakte Sprechertext bereits vorliegt.
-
-## Kosten / Limits
-
-Die kanonische Alignment-Lösung ist lokal und kostenlos:
-
-- kein Abo
-- kein API-Key
-- keine Minuten-/Zeichenquote
-- Modelle werden einmal lokal geladen und danach beliebig oft verwendet
-
-Auf Apple Silicon wird bevorzugt `mlx-qwen3` verwendet. Auf anderen Systemen `ctc-german`.
-
-Für monetarisierte Reels werden nur die im Forced-Alignment-Vertrag dokumentierten kommerziell nutzbaren Modellpfade verwendet. Das standardmäßige MMS-Modell des CTC-Projekts wird wegen seiner CC-BY-NC-Gewichte ausdrücklich **nicht** als Produktionsmodell verwendet.
+Whisper bleibt für unbekanntes Audio oder Diagnose zulässig, ist aber nicht die primäre Timing-Autorität, wenn der exakte Sprechertext bereits vorliegt.
 
 ## Voice-/Scene-Lock
 
 Nach lokalem Alignment müssen gelten:
 
-- `WORD-TIMINGS.json` stammt aus der exakten Runtime-WAV
+- `WORD-TIMINGS.json` stammt aus der exakten pause-komprimierten Runtime-WAV
 - kein fuzzy word matching
 - Wortreihenfolge entspricht exakt `VOICEOVER-ZUM-KOPIEREN.txt`
 - jeder Satz ist über `SCENE-VOICE-MAP.json` genau einer Szene zugeordnet
 - `subtitle-cues.json` enthält echte Wortframes
 - Szenenstarts werden aus dem ersten tatsächlich gesprochenen Wort ihrer gemappten Szene abgeleitet
 - `reel.json.format.finalDurationInFrames` folgt der Runtime-WAV
-- Scene-Voice- und Voice-Lock-Gates bestehen
 
-Danach erst committen und:
+Danach erst committen und `prepare-reel-render.mjs` ausführen.
 
-```bash
-node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
-```
-
-## Render-Provenance
-
-`prepare-reel-render.mjs` erzeugt lokal einen `RENDER_LOCKED`-Datensatz mit mindestens:
-
-- Git-Commit
-- Source-Tree-SHA256
-- Render-Contract-SHA256
-- Scene-Voice-Map-SHA256
-- Caption-JSON-SHA256
-- kanonischem Audio-SHA256
-- Runtime-WAV-SHA256
-- finaler Frame-Dauer
-
-Der Finalizer akzeptiert keinen Render, dessen gelockte renderrelevante Inputs danach verändert wurden.
-
-## Git-/Speicherregel
-
-Große Binärmedien bleiben standardmäßig lokal/Artifact-Storage. In Git bleiben Source, Skript, `SCENE-VOICE-MAP.json`, `WORD-TIMINGS.json`, Provenance, Captions, Contracts, Reviews und Export-Manifest.
-
-## Stummes Video verhindern
-
-- Production-Compositions laden nur die lokale Runtime-WAV
-- aktive Reel-Komponenten fail-closed bei fehlendem `voiceoverSrc`
-- `validate-final-video.mjs` prüft Audio-Stream + Lautstärke
-- Finalizer läuft erst nach Scene-Voice-, Voice-Lock-, Motion-, Entertainment-, Provenance- und Audio-Gates
-
-Ein Render ohne hörbares, synchrones Audio ist kein Finalzustand.
+Ein Render ohne hörbares, synchrones und korrekt gepactes Audio ist kein Finalzustand.
