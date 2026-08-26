@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "status": "SEMANTIC_EVENTS_LOCKED_TIMING_DERIVED_FROM_SCENES",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {
+      "id": "sfx01-shutdown-stamp",
+      "sceneId": "scene1",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 36},
+      "roles": ["impact", "digital-accent"],
+      "keywords": ["impact", "hit", "heavy", "thud"],
+      "preferredDurationSeconds": 0.45,
+      "volume": 0.18,
+      "purpose": "HEUTE ENDE stamp lands"
+    },
+    {
+      "id": "sfx02-timeline-start",
+      "sceneId": "scene2",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 20},
+      "roles": ["ui-click", "ui-generic"],
+      "keywords": ["click", "select", "tap"],
+      "preferredDurationSeconds": 0.16,
+      "volume": 0.09,
+      "purpose": "28 May timeline marker activates"
+    },
+    {
+      "id": "sfx03-timeline-end",
+      "sceneId": "scene2",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 70},
+      "roles": ["ui-click", "ui-confirm", "ui-generic"],
+      "keywords": ["click", "confirm", "select"],
+      "preferredDurationSeconds": 0.18,
+      "volume": 0.10,
+      "purpose": "26 August marker lands"
+    },
+    {
+      "id": "sfx04-picker-motion",
+      "sceneId": "scene3",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 36},
+      "roles": ["ui-open-close", "ui-click", "ui-generic"],
+      "keywords": ["open", "close", "click", "back"],
+      "preferredDurationSeconds": 0.22,
+      "volume": 0.09,
+      "purpose": "o3 row begins leaving model picker"
+    },
+    {
+      "id": "sfx05-model-confirm",
+      "sceneId": "scene3",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 80},
+      "roles": ["ui-confirm", "digital-accent", "ui-generic"],
+      "keywords": ["confirm", "positive", "success", "select"],
+      "preferredDurationSeconds": 0.28,
+      "volume": 0.11,
+      "purpose": "replacement model locks in"
+    },
+    {
+      "id": "sfx06-chatgpt-close",
+      "sceneId": "scene4",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 28},
+      "roles": ["ui-error", "ui-open-close", "digital-accent"],
+      "keywords": ["error", "negative", "close", "down"],
+      "preferredDurationSeconds": 0.24,
+      "volume": 0.10,
+      "purpose": "ChatGPT side receives removal X"
+    },
+    {
+      "id": "sfx07-api-confirm",
+      "sceneId": "scene4",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 62},
+      "roles": ["ui-confirm", "digital-accent", "tech-accent"],
+      "keywords": ["confirm", "positive", "success", "power"],
+      "preferredDurationSeconds": 0.30,
+      "volume": 0.12,
+      "purpose": "API checkmark appears"
+    },
+    {
+      "id": "sfx08-workflow-check-1",
+      "sceneId": "scene5",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 18},
+      "roles": ["ui-click", "ui-confirm", "ui-generic"],
+      "keywords": ["click", "confirm", "select"],
+      "preferredDurationSeconds": 0.16,
+      "volume": 0.08,
+      "purpose": "first workflow row enters"
+    },
+    {
+      "id": "sfx09-workflow-check-2",
+      "sceneId": "scene5",
+      "anchor": {"type": "SCENE_OFFSET", "frame": 62},
+      "roles": ["ui-confirm", "digital-accent", "ui-generic"],
+      "keywords": ["confirm", "positive", "complete"],
+      "preferredDurationSeconds": 0.22,
+      "volume": 0.09,
+      "purpose": "final workflow rows settle"
+    }
+  ]
+}
