@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_REQUIRES_LOCAL_FORCED_ALIGNMENT",
+  "note": "Planning only. Replace with exact word timings from the runtime PCM-WAV via align-reel-local.mjs.",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","sentenceId":"S01","startFrame":0,"endFrame":180,"text":"Heute, am 26. August, verschwindet OpenAI o3 aus ChatGPT."},
+    {"id":"c02","sceneId":"scene2","sentenceId":"S02","startFrame":180,"endFrame":390,"text":"OpenAI hatte das schon Ende Mai angekündigt und dem Modell eine 90-tägige Auslaufphase gegeben."},
+    {"id":"c03","sceneId":"scene3","sentenceId":"S03","startFrame":390,"endFrame":465,"text":"Wichtig: Betroffen ist nur ChatGPT."},
+    {"id":"c04","sceneId":"scene3","sentenceId":"S04","startFrame":465,"endFrame":660,"text":"Wenn du o3 bisher über die Modellauswahl genutzt hast, musst du dort auf ein aktuelleres Modell wechseln."},
+    {"id":"c05","sceneId":"scene4","sentenceId":"S05","startFrame":660,"endFrame":825,"text":"Die API bleibt laut OpenAI unverändert, o3 verschwindet dort also nicht durch diese Änderung."},
+    {"id":"c06","sceneId":"scene4","sentenceId":"S06","startFrame":825,"endFrame":930,"text":"Kurz gesagt: o3 endet heute in ChatGPT, aber nicht in der API."},
+    {"id":"c07","sceneId":"scene5","sentenceId":"S07","startFrame":930,"endFrame":1200,"text":"Wenn du noch Workflows oder Prompts mit o3 nutzt, prüf sie heute am besten einmal mit deinem neuen Modell."}
+  ]
+}
