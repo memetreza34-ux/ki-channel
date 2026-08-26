@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "compositionId": "KI-AppleMessagesChatGPT",
+  "sourceDir": "ki/src/reels/apple-messages-chatgpt",
+  "rootImportNeedle": "./reels/apple-messages-chatgpt",
+  "requiredStrings": ["Apple Messages","iMessage","SMS","RCS","SENDEN FREIGEGEBEN","ALLE TARIFE"],
+  "forbiddenStrings": ["OpenAI o3","DALL·E-GPT","Study Mode","Teen"],
+  "status": "ENFORCED"
+}

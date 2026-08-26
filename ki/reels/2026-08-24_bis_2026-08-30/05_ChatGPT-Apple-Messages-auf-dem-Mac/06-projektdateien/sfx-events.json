@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "status": "SEMANTIC_EVENTS_LOCKED_TIMING_DERIVED_FROM_SCENES",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01-connect","sceneId":"scene1","anchor":{"type":"SCENE_OFFSET","frame":18},"roles":["ui-click","digital-accent","ui-generic"],"keywords":["click","select","digital"],"preferredDurationSeconds":0.18,"volume":0.09,"purpose":"Messages bubble connects to plugin card"},
+    {"id":"sfx02-success","sceneId":"scene1","anchor":{"type":"SCENE_OFFSET","frame":48},"roles":["ui-confirm","digital-accent"],"keywords":["confirm","positive","success"],"preferredDurationSeconds":0.25,"volume":0.10,"purpose":"plugin connection settles"},
+    {"id":"sfx03-search","sceneId":"scene2","anchor":{"type":"SCENE_OFFSET","frame":18},"roles":["ui-click","ui-generic"],"keywords":["click","select","tap"],"preferredDurationSeconds":0.15,"volume":0.08,"purpose":"search field activates"},
+    {"id":"sfx04-results","sceneId":"scene2","anchor":{"type":"SCENE_OFFSET","frame":52},"roles":["digital-accent","tech-accent","ui-generic"],"keywords":["scan","digital","power"],"preferredDurationSeconds":0.32,"volume":0.09,"purpose":"message type results appear"},
+    {"id":"sfx05-draft","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":20},"roles":["digital-accent","ui-generic"],"keywords":["digital","click","select"],"preferredDurationSeconds":0.22,"volume":0.08,"purpose":"draft reply materializes"},
+    {"id":"sfx06-send-ready","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":66},"roles":["ui-confirm","ui-click"],"keywords":["confirm","positive","click"],"preferredDurationSeconds":0.20,"volume":0.10,"purpose":"draft becomes send-ready"},
+    {"id":"sfx07-blocked","sceneId":"scene4","anchor":{"type":"SCENE_OFFSET","frame":18},"roles":["ui-error","digital-accent"],"keywords":["negative","error","deny"],"preferredDurationSeconds":0.22,"volume":0.09,"purpose":"send is blocked before approval"},
+    {"id":"sfx08-approved","sceneId":"scene4","anchor":{"type":"SCENE_OFFSET","frame":64},"roles":["ui-confirm","digital-accent"],"keywords":["confirm","success","positive"],"preferredDurationSeconds":0.28,"volume":0.11,"purpose":"message and recipient approval completes"},
+    {"id":"sfx09-availability","sceneId":"scene5","anchor":{"type":"SCENE_OFFSET","frame":24},"roles":["ui-confirm","digital-accent","ui-generic"],"keywords":["confirm","complete","positive"],"preferredDurationSeconds":0.24,"volume":0.09,"purpose":"macOS and all-plans badges settle"}
+  ]
+}

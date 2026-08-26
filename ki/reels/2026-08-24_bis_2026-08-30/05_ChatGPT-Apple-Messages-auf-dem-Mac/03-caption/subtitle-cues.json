@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_UNALIGNED",
+  "timingAuthority": "PLANNING_ONLY",
+  "note": "These cues are only for Remotion preview. align-reel-local.mjs overwrites them from real WORD-TIMINGS.json before production.",
+  "cues": [
+    {"id":"p01","sceneId":"scene1","sentenceId":"S01","startFrame":8,"endFrame":78,"text":"ChatGPT kann jetzt direkt mit"},
+    {"id":"p02","sceneId":"scene1","sentenceId":"S01","startFrame":78,"endFrame":150,"text":"Apple Messages auf dem Mac arbeiten."},
+    {"id":"p03","sceneId":"scene2","sentenceId":"S02","startFrame":165,"endFrame":255,"text":"Nach dem Verbinden kann das Plug-in"},
+    {"id":"p04","sceneId":"scene2","sentenceId":"S02","startFrame":255,"endFrame":345,"text":"Nachrichten lesen und durchsuchen."},
+    {"id":"p05","sceneId":"scene2","sentenceId":"S03","startFrame":345,"endFrame":430,"text":"iMessage, SMS und RCS."},
+    {"id":"p06","sceneId":"scene3","sentenceId":"S04","startFrame":445,"endFrame":535,"text":"ChatGPT kann Antworten vorbereiten."},
+    {"id":"p07","sceneId":"scene3","sentenceId":"S05","startFrame":535,"endFrame":645,"text":"Und auf Wunsch sogar über Messages senden."},
+    {"id":"p08","sceneId":"scene4","sentenceId":"S06","startFrame":660,"endFrame":760,"text":"Wichtig: Es wird nicht einfach losgeschickt."},
+    {"id":"p09","sceneId":"scene4","sentenceId":"S07","startFrame":760,"endFrame":870,"text":"Vorher bestätigst du Nachricht und Empfänger."},
+    {"id":"p10","sceneId":"scene5","sentenceId":"S08","startFrame":885,"endFrame":1010,"text":"Auf macOS Desktop laut OpenAI auf allen Tarifen."}
+  ]
+}

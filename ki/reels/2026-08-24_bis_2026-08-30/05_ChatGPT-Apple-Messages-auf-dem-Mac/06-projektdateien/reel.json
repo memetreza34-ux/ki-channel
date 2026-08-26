@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "reelId": "apple-messages-chatgpt",
+  "compositionId": "KI-AppleMessagesChatGPT",
+  "sourceDir": "ki/src/reels/apple-messages-chatgpt",
+  "title": "ChatGPT kann jetzt Apple Messages auf dem Mac nutzen",
+  "publishDate": "2026-08-26",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 1020,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+    "timingAuthority": false,
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "observedAudioDurationSeconds": null,
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25
+    }
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "PREVIEW_ONLY_UNALIGNED",
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay"
+  },
+  "sfx": {
+    "enabled": true,
+    "eventsFile": "06-projektdateien/sfx-events.json",
+    "resolvedFile": "06-projektdateien/sfx-resolved.json",
+    "selectionMode": "AUTO_CC0_DETERMINISTIC",
+    "status": "PENDING_LOCAL_CC0_RESOLUTION"
+  },
+  "header": {"top":112,"style":"compact_glass_chip"},
+  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "export": {
+    "coverTimeSeconds": 2.6,
+    "coverText": "CHATGPT KANN JETZT DEINE MESSAGES DURCHSUCHEN",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video","cover","caption","manifest"]
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"Apple Messages in ChatGPT","startFrame":0,"endFrame":160,"accent":"#12B76A","heroMoment":"Messages bubble connects to ChatGPT plugin card","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Lesen und durchsuchen","startFrame":160,"endFrame":440,"accent":"#2E90FA","heroMoment":"Search scans iMessage SMS and RCS rows","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Antworten und senden","startFrame":440,"endFrame":650,"accent":"#7A5AF8","heroMoment":"Draft reply becomes send-ready message","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Freigabe vor dem Senden","startFrame":650,"endFrame":875,"accent":"#F79009","heroMoment":"Approval sheet blocks send until recipient and text are confirmed","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"macOS und alle Tarife","startFrame":875,"endFrame":1020,"accent":"#12B76A","heroMoment":"availability badges settle with final takeaway","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://openai.com/products/release-notes/",
+    "https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
+  ]
+}

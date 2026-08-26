@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 6,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"id":"S01","sceneId":"scene1","text":"ChatGPT kann jetzt direkt mit Apple Messages auf dem Mac arbeiten."},
+    {"id":"S02","sceneId":"scene2","text":"Nach dem Verbinden kann das Plug-in Nachrichten lesen und durchsuchen."},
+    {"id":"S03","sceneId":"scene2","text":"Unterstützt werden iMessage, SMS und RCS."},
+    {"id":"S04","sceneId":"scene3","text":"Du kannst ChatGPT Antworten vorbereiten lassen."},
+    {"id":"S05","sceneId":"scene3","text":"Auf Wunsch kann es die Nachricht sogar über Messages senden."},
+    {"id":"S06","sceneId":"scene4","text":"Wichtig: Standardmäßig wird dabei nicht einfach losgeschickt."},
+    {"id":"S07","sceneId":"scene4","text":"Vor dem Senden fragt ChatGPT nach deiner Freigabe für die Nachricht und die Empfänger."},
+    {"id":"S08","sceneId":"scene5","text":"Laut OpenAI ist das Plug-in in der ChatGPT-Desktop-App für macOS auf allen Tarifen verfügbar."}
+  ]
+}
