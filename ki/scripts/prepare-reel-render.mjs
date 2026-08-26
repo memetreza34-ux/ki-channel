@@ -28,6 +28,11 @@ catch (error) { fail(`invalid reel.json: ${error.message}`); }
 const sceneVoiceMapRelative = reel?.sceneVoiceMap?.file || '01-script-audio/SCENE-VOICE-MAP.json';
 const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
 if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
+const sfxEnabled = reel?.sfx?.enabled === true;
+const sfxResolvedPath = sfxEnabled
+  ? path.resolve(reelDir, reel?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
+  : null;
+if (sfxEnabled && !existsSync(sfxResolvedPath)) fail(`resolved SFX plan missing: ${sfxResolvedPath}. Run align-reel-local.mjs first.`);
 
 const fps = Number(reel?.format?.fps);
 const finalDuration = Number(reel?.format?.finalDurationInFrames);
@@ -47,7 +52,7 @@ if (cursor !== finalDuration) fail(`last scene ends at ${cursor}, finalDurationI
 
 let git;
 try { git = getGitState(); } catch (error) { fail(error.message); }
-if (git.dirty) fail('working tree is dirty. Commit source/contract/timing changes before a production render. Ignored runtime media may remain local.');
+if (git.dirty) fail('working tree is dirty. Commit source/contract/timing/SFX changes before a production render. Ignored runtime media may remain local.');
 
 const run = (label, script, args) => {
   if (!existsSync(script)) fail(`${label} script missing: ${script}`);
@@ -63,6 +68,7 @@ run('local forced-alignment gate', path.resolve('ki/scripts/validate-local-force
 run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
 run('entertainment gate', path.resolve('ki/scripts/validate-entertainment-review.mjs'), [reelDir]);
 run('voice-lock gate', path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), [reelDir]);
+if (sfxEnabled) run('SFX plan gate', path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'), [reelDir]);
 const isolationConfig = path.join(reelDir,'06-projektdateien','source-isolation.json');
 if (existsSync(isolationConfig)) run('source-isolation gate', path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), [reelDir]);
 
@@ -95,6 +101,7 @@ const lock = {
     sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
     wordTimingsSha256: await sha256File(wordTimingsPath),
     captionJsonSha256: await sha256File(captionPath),
+    sfxResolvedSha256: sfxEnabled ? await sha256File(sfxResolvedPath) : null,
     canonicalAudioSha256: await sha256File(canonicalAudio),
     runtimeAudioSha256: await sha256File(runtimeAudio),
   },
@@ -109,6 +116,7 @@ console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
 console.log(`scene voice map sha256: ${lock.hashes.sceneVoiceMapSha256}`);
 console.log(`word timings sha256: ${lock.hashes.wordTimingsSha256}`);
+if (sfxEnabled) console.log(`sfx resolved sha256: ${lock.hashes.sfxResolvedSha256}`);
 console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
-console.log('Production render may now use the registered composition and prepared runtime WAV.');
+console.log('Production render may now use the registered composition, prepared runtime WAV and locked SFX plan.');
