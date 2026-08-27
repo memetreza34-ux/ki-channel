@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "STEP3_VISUAL_ASSETS_LOCKED",
+  "policy": "NATIVE_FIRST_LOCAL_ONLY",
+  "assets": [
+    {
+      "id": "scene1-native-messages-connect",
+      "sceneId": "scene1",
+      "provider": "NATIVE_UI",
+      "renderMode": "REMOTION_NATIVE_PRODUCT_UI",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "purpose": "Messages ↔ ChatGPT connection is clearer as animated native UI than as a stock image."
+    },
+    {
+      "id": "scene2-native-search",
+      "sceneId": "scene2",
+      "provider": "NATIVE_UI",
+      "renderMode": "REMOTION_NATIVE_PRODUCT_UI",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "purpose": "Search field and iMessage/SMS/RCS result states require exact readable UI."
+    },
+    {
+      "id": "scene3-native-draft",
+      "sceneId": "scene3",
+      "provider": "NATIVE_UI",
+      "renderMode": "REMOTION_NATIVE_PRODUCT_UI",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "purpose": "Draft and send interaction is best shown as exact native motion UI."
+    },
+    {
+      "id": "scene4-native-approval",
+      "sceneId": "scene4",
+      "provider": "NATIVE_UI",
+      "renderMode": "REMOTION_NATIVE_PRODUCT_UI",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "purpose": "Approval checklist is the core safety mechanic and must remain readable."
+    },
+    {
+      "id": "scene5-openai-source-proof",
+      "sceneId": "scene5",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "renderMode": "NATIVE_SOURCE_PROOF_CARD",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://openai.com/de-DE/products/release-notes/",
+      "sourceDate": "2026-08-20",
+      "sourceLabel": "OpenAI Release Notes",
+      "purpose": "Add authenticity and visual variation while showing the official source without copying a full webpage screenshot."
+    }
+  ]
+}
