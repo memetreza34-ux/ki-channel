@@ -49,7 +49,6 @@ if (!existsSync(path.resolve('node_modules/.bin/remotion'))) {
 
 await mkdir(outputDir, {recursive: true});
 
-// 1) Recreate the exact canonical local voice source when the ignored MP3 is missing.
 if (!existsSync(voiceover)) {
   run('Download generated voiceover', process.execPath, [
     path.resolve('ki/scripts/fetch-generated-voiceover.mjs'),
@@ -58,13 +57,11 @@ if (!existsSync(voiceover)) {
   ]);
 }
 
-// 2) Recreate the pause-compressed PCM runtime authority from the canonical voiceover.
 run('Prepare pause-compressed runtime audio', process.execPath, [
   path.resolve('ki/scripts/prepare-reel-audio.mjs'),
   reelDir,
 ]);
 
-// 3) Do not rerun ML alignment for a pure Step-3 visual test; verify the committed lock instead.
 run('Validate committed forced alignment', process.execPath, [
   path.resolve('ki/scripts/validate-local-forced-alignment.mjs'),
   reelDir,
@@ -78,7 +75,6 @@ run('Validate voice-locked captions', process.execPath, [
   reelDir,
 ]);
 
-// 4) Restore/verify the complete local CC0 library, then resolve the nine semantic events.
 if (!existsSync(path.resolve('public/reel-sfx/sfx-index.json'))) {
   run('Setup local CC0 SFX library', process.execPath, [path.resolve('ki/scripts/setup-reel-sfx-library.mjs')]);
 }
@@ -86,11 +82,13 @@ run('Validate local CC0 SFX library', process.execPath, [path.resolve('ki/script
 run('Resolve reel SFX against final scene frames', process.execPath, [path.resolve('ki/scripts/resolve-reel-sfx.mjs'), reelDir]);
 run('Validate resolved SFX', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'), reelDir]);
 
-// 5) Step-3 visual/source contract.
+// Step 3D: external-visual sources are resolved to local files before any render.
+// This Apple Messages reel intentionally resolves to native UI + official source card,
+// but the same resolver now supports license-filtered Wikimedia Commons and pinned GitHub Raw assets.
+run('Resolve Step-3 visual assets locally', process.execPath, [path.resolve('ki/scripts/resolve-reel-visual-assets.mjs'), reelDir]);
 run('Validate Step-3 visual assets', process.execPath, [path.resolve('ki/scripts/validate-reel-visual-assets.mjs'), reelDir]);
 run('Validate source isolation', process.execPath, [path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), reelDir]);
 
-// 6) Compile/test the actual Remotion reel before rendering.
 run('Typecheck Remotion source', 'npm', ['run', 'typecheck:motion']);
 run('Apple Messages contract test', 'npx', [
   '--no-install',
@@ -99,8 +97,7 @@ run('Apple Messages contract test', 'npx', [
   'ki/src/reels/apple-messages-chatgpt/contract.test.ts',
 ]);
 
-// 7) TEST render. This deliberately bypasses the production provenance/final-review gate.
-// It is for visual comparison only and may never be handed off as FINAL.
+// Comparison render only. Production finalization remains forbidden until human review.
 run('Render Step-3 comparison MP4', 'npx', [
   '--no-install',
   'remotion',
@@ -112,7 +109,6 @@ run('Render Step-3 comparison MP4', 'npx', [
 ]);
 run('Technical A/V gate on test MP4', process.execPath, [path.resolve('ki/scripts/validate-final-video.mjs'), video]);
 
-// 8) Create an immediate visual overview for the 1x review.
 run('Create Step-3 contact sheet', 'ffmpeg', [
   '-hide_banner', '-loglevel', 'error', '-y',
   '-i', video,
@@ -130,7 +126,8 @@ const durationSeconds = Number(String(probe.stdout).trim());
 const videoSha256 = await sha256File(video);
 
 const sfx = JSON.parse(await readFile(path.join(reelDir, '06-projektdateien', 'sfx-resolved.json'), 'utf8'));
-const visualAssets = JSON.parse(await readFile(path.join(reelDir, '06-projektdateien', 'visual-assets.json'), 'utf8'));
+const visualAssets = JSON.parse(await readFile(path.join(reelDir, '06-projektdateien', 'visual-assets-resolved.json'), 'utf8'));
+const resolvedVisuals = Array.isArray(visualAssets.assets) ? visualAssets.assets : [];
 const report = {
   status: 'STEP3_TEST_RENDER_READY_FOR_HUMAN_REVIEW_NOT_FINAL',
   compositionId,
@@ -139,7 +136,9 @@ const report = {
   durationSeconds: Number(durationSeconds.toFixed(6)),
   videoSha256,
   sfxEvents: Array.isArray(sfx.events) ? sfx.events.length : 0,
-  visualAssets: Array.isArray(visualAssets.assets) ? visualAssets.assets.length : 0,
+  visualAssets: resolvedVisuals.length,
+  externalVisualFiles: resolvedVisuals.filter((asset) => asset.localFile).length,
+  visualProviders: [...new Set(resolvedVisuals.map((asset) => asset.provider))],
   checksPassed: [
     'pause-compressed runtime audio',
     'committed forced-alignment contract',
@@ -147,11 +146,12 @@ const report = {
     'voice-locked captions',
     'local CC0 SFX library',
     'deterministic SFX resolution',
-    'visual asset rights/local-render gate',
+    'visual source resolution before render',
+    'visual license + local-file SHA256 gate',
     'source isolation',
     'TypeScript motion typecheck',
     'Apple Messages contract test',
-    'technical final-video A/V gate',
+    'technical final-video A/V gate'
   ],
   humanReviewRequired: [
     'pacing',
@@ -161,11 +161,11 @@ const report = {
     'zoom strength',
     'focus halo quality',
     'visual overload',
-    'source-proof readability',
+    'source-proof readability'
   ],
   finalizationAllowed: false,
-  note: 'This test intentionally does not create a production render lock or overwrite MOTION-READABILITY-REVIEW.md. Review the exact MP4 first.',
-  generatedAt: new Date().toISOString(),
+  note: 'Comparison test only. Do not mark FINAL until this exact MP4 was watched at 1x and reviewed.',
+  generatedAt: new Date().toISOString()
 };
 await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 
@@ -175,4 +175,5 @@ console.log(`contact sheet: ${contactSheet}`);
 console.log(`sha256: ${videoSha256}`);
 console.log(`duration: ${durationSeconds.toFixed(3)} s`);
 console.log(`SFX events: ${report.sfxEvents}`);
-console.log('Next: watch this exact MP4 at 1x and fill MOTION-READABILITY-REVIEW.md only after the review.');
+console.log(`visual assets: ${report.visualAssets} / external files: ${report.externalVisualFiles}`);
+console.log('Next: watch this exact MP4 at 1x before adding another feature.');
