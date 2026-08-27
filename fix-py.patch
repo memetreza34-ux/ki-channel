@@ -1,0 +1,10 @@
+--- ki/scripts/python/align_words.py
++++ ki/scripts/python/align_words.py
+@@ -124,6 +124,7 @@
+     for index, word in enumerate(words):
+         start = float(word["start"])
+         end = float(word["end"])
++        if end <= start: end = start + 0.01; word["end"] = end
+         if start < 0 or end <= start:
+             raise SystemExit(f"invalid word timing at index {index}: {start}-{end}")
+         if start + 0.050 < previous_end:

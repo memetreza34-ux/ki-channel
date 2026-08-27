@@ -1,0 +1,819 @@
+{
+  "version": 1,
+  "status": "LOCAL_FORCED_ALIGNMENT_ACCEPTED",
+  "alignmentType": "KNOWN_TRANSCRIPT_FORCED_ALIGNMENT",
+  "backend": "mlx-qwen3",
+  "model": "mlx-community/Qwen3-ForcedAligner-0.6B-8bit",
+  "modelLicense": "Apache-2.0",
+  "runtime": "MLX / Apple Silicon",
+  "fps": 30,
+  "runtimeAudio": "public/runtime-audio/KI-AppleMessagesChatGPT.wav",
+  "generatedAt": "2026-08-26T16:44:11.995Z",
+  "rules": {
+    "fuzzyWordMatching": false,
+    "canonicalTextAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
+    "sceneAuthority": "SCENE-VOICE-MAP.json"
+  },
+  "words": [
+    {
+      "index": 1,
+      "text": "ChatGPT",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0,
+      "endSeconds": 0.88,
+      "startFrame": 0,
+      "endFrame": 27
+    },
+    {
+      "index": 2,
+      "text": "kann",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.88,
+      "endSeconds": 1.12,
+      "startFrame": 27,
+      "endFrame": 34
+    },
+    {
+      "index": 3,
+      "text": "jetzt",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.12,
+      "endSeconds": 1.44,
+      "startFrame": 34,
+      "endFrame": 44
+    },
+    {
+      "index": 4,
+      "text": "Apple",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.44,
+      "endSeconds": 1.76,
+      "startFrame": 44,
+      "endFrame": 53
+    },
+    {
+      "index": 5,
+      "text": "Messages",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.76,
+      "endSeconds": 2.32,
+      "startFrame": 53,
+      "endFrame": 70
+    },
+    {
+      "index": 6,
+      "text": "auf",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 2.32,
+      "endSeconds": 2.4,
+      "startFrame": 70,
+      "endFrame": 72
+    },
+    {
+      "index": 7,
+      "text": "deinem",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 2.4,
+      "endSeconds": 2.72,
+      "startFrame": 72,
+      "endFrame": 82
+    },
+    {
+      "index": 8,
+      "text": "Mac",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 2.72,
+      "endSeconds": 2.88,
+      "startFrame": 82,
+      "endFrame": 87
+    },
+    {
+      "index": 9,
+      "text": "durchsuchen.",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 2.88,
+      "endSeconds": 3.36,
+      "startFrame": 87,
+      "endFrame": 101
+    },
+    {
+      "index": 10,
+      "text": "Sobald",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 3.44,
+      "endSeconds": 3.84,
+      "startFrame": 103,
+      "endFrame": 116
+    },
+    {
+      "index": 11,
+      "text": "du",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 3.84,
+      "endSeconds": 3.85,
+      "startFrame": 116,
+      "endFrame": 117
+    },
+    {
+      "index": 12,
+      "text": "das",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 3.84,
+      "endSeconds": 4.08,
+      "startFrame": 117,
+      "endFrame": 123
+    },
+    {
+      "index": 13,
+      "text": "Plug-in",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 4.08,
+      "endSeconds": 4.48,
+      "startFrame": 123,
+      "endFrame": 135
+    },
+    {
+      "index": 14,
+      "text": "verbindest,",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 4.48,
+      "endSeconds": 5.12,
+      "startFrame": 135,
+      "endFrame": 154
+    },
+    {
+      "index": 15,
+      "text": "kann",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.28,
+      "endSeconds": 5.44,
+      "startFrame": 158,
+      "endFrame": 164
+    },
+    {
+      "index": 16,
+      "text": "es",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.44,
+      "endSeconds": 5.52,
+      "startFrame": 164,
+      "endFrame": 166
+    },
+    {
+      "index": 17,
+      "text": "deine",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.52,
+      "endSeconds": 5.76,
+      "startFrame": 166,
+      "endFrame": 173
+    },
+    {
+      "index": 18,
+      "text": "Nachrichten",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.76,
+      "endSeconds": 6.32,
+      "startFrame": 173,
+      "endFrame": 190
+    },
+    {
+      "index": 19,
+      "text": "lesen",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.32,
+      "endSeconds": 6.72,
+      "startFrame": 190,
+      "endFrame": 202
+    },
+    {
+      "index": 20,
+      "text": "und",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.72,
+      "endSeconds": 6.88,
+      "startFrame": 202,
+      "endFrame": 207
+    },
+    {
+      "index": 21,
+      "text": "durchsuchen.",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.96,
+      "endSeconds": 7.44,
+      "startFrame": 208,
+      "endFrame": 224
+    },
+    {
+      "index": 22,
+      "text": "Dabei",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 7.52,
+      "endSeconds": 7.76,
+      "startFrame": 225,
+      "endFrame": 233
+    },
+    {
+      "index": 23,
+      "text": "werden",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 7.84,
+      "endSeconds": 8.16,
+      "startFrame": 235,
+      "endFrame": 245
+    },
+    {
+      "index": 24,
+      "text": "iMessage,",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 8.24,
+      "endSeconds": 8.96,
+      "startFrame": 247,
+      "endFrame": 269
+    },
+    {
+      "index": 25,
+      "text": "SMS",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 9.12,
+      "endSeconds": 9.68,
+      "startFrame": 273,
+      "endFrame": 291
+    },
+    {
+      "index": 26,
+      "text": "und",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 9.68,
+      "endSeconds": 9.92,
+      "startFrame": 291,
+      "endFrame": 298
+    },
+    {
+      "index": 27,
+      "text": "RCS",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 10,
+      "endSeconds": 10.56,
+      "startFrame": 300,
+      "endFrame": 317
+    },
+    {
+      "index": 28,
+      "text": "unterstützt.",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 10.56,
+      "endSeconds": 11.2,
+      "startFrame": 317,
+      "endFrame": 336
+    },
+    {
+      "index": 29,
+      "text": "Noch",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 11.28,
+      "endSeconds": 11.44,
+      "startFrame": 338,
+      "endFrame": 344
+    },
+    {
+      "index": 30,
+      "text": "besser:",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 11.44,
+      "endSeconds": 11.76,
+      "startFrame": 344,
+      "endFrame": 353
+    },
+    {
+      "index": 31,
+      "text": "ChatGPT",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 11.92,
+      "endSeconds": 12.64,
+      "startFrame": 357,
+      "endFrame": 380
+    },
+    {
+      "index": 32,
+      "text": "kann",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 12.64,
+      "endSeconds": 12.88,
+      "startFrame": 380,
+      "endFrame": 387
+    },
+    {
+      "index": 33,
+      "text": "direkt",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 12.88,
+      "endSeconds": 13.36,
+      "startFrame": 387,
+      "endFrame": 401
+    },
+    {
+      "index": 34,
+      "text": "eine",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.36,
+      "endSeconds": 13.52,
+      "startFrame": 401,
+      "endFrame": 406
+    },
+    {
+      "index": 35,
+      "text": "passende",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.52,
+      "endSeconds": 13.92,
+      "startFrame": 406,
+      "endFrame": 418
+    },
+    {
+      "index": 36,
+      "text": "Antwort",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14,
+      "endSeconds": 14.4,
+      "startFrame": 420,
+      "endFrame": 432
+    },
+    {
+      "index": 37,
+      "text": "für",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.4,
+      "endSeconds": 14.48,
+      "startFrame": 432,
+      "endFrame": 435
+    },
+    {
+      "index": 38,
+      "text": "dich",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.48,
+      "endSeconds": 14.64,
+      "startFrame": 435,
+      "endFrame": 440
+    },
+    {
+      "index": 39,
+      "text": "vorbereiten.",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.64,
+      "endSeconds": 15.2,
+      "startFrame": 440,
+      "endFrame": 456
+    },
+    {
+      "index": 40,
+      "text": "Auf",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 15.36,
+      "endSeconds": 15.52,
+      "startFrame": 460,
+      "endFrame": 466
+    },
+    {
+      "index": 41,
+      "text": "Wunsch",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 15.52,
+      "endSeconds": 15.76,
+      "startFrame": 466,
+      "endFrame": 473
+    },
+    {
+      "index": 42,
+      "text": "kann",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 15.76,
+      "endSeconds": 16,
+      "startFrame": 473,
+      "endFrame": 480
+    },
+    {
+      "index": 43,
+      "text": "ChatGPT",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 16,
+      "endSeconds": 16.72,
+      "startFrame": 480,
+      "endFrame": 502
+    },
+    {
+      "index": 44,
+      "text": "die",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 16.72,
+      "endSeconds": 16.8,
+      "startFrame": 502,
+      "endFrame": 504
+    },
+    {
+      "index": 45,
+      "text": "Nachricht",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 16.8,
+      "endSeconds": 17.28,
+      "startFrame": 504,
+      "endFrame": 519
+    },
+    {
+      "index": 46,
+      "text": "anschließend",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 17.36,
+      "endSeconds": 17.92,
+      "startFrame": 520,
+      "endFrame": 538
+    },
+    {
+      "index": 47,
+      "text": "über",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 17.92,
+      "endSeconds": 18.08,
+      "startFrame": 538,
+      "endFrame": 543
+    },
+    {
+      "index": 48,
+      "text": "Messages",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 18.08,
+      "endSeconds": 18.56,
+      "startFrame": 543,
+      "endFrame": 557
+    },
+    {
+      "index": 49,
+      "text": "senden.",
+      "sentenceId": "S05",
+      "sceneId": "scene3",
+      "startSeconds": 18.56,
+      "endSeconds": 18.96,
+      "startFrame": 557,
+      "endFrame": 569
+    },
+    {
+      "index": 50,
+      "text": "Aber",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 19.12,
+      "endSeconds": 19.28,
+      "startFrame": 573,
+      "endFrame": 579
+    },
+    {
+      "index": 51,
+      "text": "sie",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 19.28,
+      "endSeconds": 19.44,
+      "startFrame": 579,
+      "endFrame": 584
+    },
+    {
+      "index": 52,
+      "text": "geht",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 19.44,
+      "endSeconds": 19.68,
+      "startFrame": 584,
+      "endFrame": 591
+    },
+    {
+      "index": 53,
+      "text": "nicht",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 19.68,
+      "endSeconds": 19.84,
+      "startFrame": 591,
+      "endFrame": 596
+    },
+    {
+      "index": 54,
+      "text": "einfach",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 19.84,
+      "endSeconds": 20.16,
+      "startFrame": 596,
+      "endFrame": 605
+    },
+    {
+      "index": 55,
+      "text": "ungefragt",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 20.16,
+      "endSeconds": 20.64,
+      "startFrame": 605,
+      "endFrame": 620
+    },
+    {
+      "index": 56,
+      "text": "raus.",
+      "sentenceId": "S06",
+      "sceneId": "scene4",
+      "startSeconds": 20.64,
+      "endSeconds": 20.96,
+      "startFrame": 620,
+      "endFrame": 629
+    },
+    {
+      "index": 57,
+      "text": "Standardmäßig",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 21.12,
+      "endSeconds": 21.84,
+      "startFrame": 633,
+      "endFrame": 656
+    },
+    {
+      "index": 58,
+      "text": "musst",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 21.84,
+      "endSeconds": 22,
+      "startFrame": 656,
+      "endFrame": 660
+    },
+    {
+      "index": 59,
+      "text": "du",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 22,
+      "endSeconds": 22.08,
+      "startFrame": 660,
+      "endFrame": 663
+    },
+    {
+      "index": 60,
+      "text": "vorher",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 22.08,
+      "endSeconds": 22.48,
+      "startFrame": 663,
+      "endFrame": 675
+    },
+    {
+      "index": 61,
+      "text": "die",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 22.48,
+      "endSeconds": 22.64,
+      "startFrame": 675,
+      "endFrame": 680
+    },
+    {
+      "index": 62,
+      "text": "Nachricht",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 22.64,
+      "endSeconds": 23.12,
+      "startFrame": 680,
+      "endFrame": 694
+    },
+    {
+      "index": 63,
+      "text": "und",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 23.12,
+      "endSeconds": 23.28,
+      "startFrame": 694,
+      "endFrame": 699
+    },
+    {
+      "index": 64,
+      "text": "den",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 23.28,
+      "endSeconds": 23.36,
+      "startFrame": 699,
+      "endFrame": 701
+    },
+    {
+      "index": 65,
+      "text": "Empfänger",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 23.36,
+      "endSeconds": 23.84,
+      "startFrame": 701,
+      "endFrame": 716
+    },
+    {
+      "index": 66,
+      "text": "bestätigen.",
+      "sentenceId": "S07",
+      "sceneId": "scene4",
+      "startSeconds": 23.84,
+      "endSeconds": 24.32,
+      "startFrame": 716,
+      "endFrame": 730
+    },
+    {
+      "index": 67,
+      "text": "Laut",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 24.32,
+      "endSeconds": 24.48,
+      "startFrame": 730,
+      "endFrame": 735
+    },
+    {
+      "index": 68,
+      "text": "OpenAI",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 24.56,
+      "endSeconds": 25.2,
+      "startFrame": 736,
+      "endFrame": 756
+    },
+    {
+      "index": 69,
+      "text": "ist",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 25.2,
+      "endSeconds": 25.44,
+      "startFrame": 756,
+      "endFrame": 764
+    },
+    {
+      "index": 70,
+      "text": "das",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 25.44,
+      "endSeconds": 25.6,
+      "startFrame": 764,
+      "endFrame": 768
+    },
+    {
+      "index": 71,
+      "text": "Plug-in",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 25.6,
+      "endSeconds": 26,
+      "startFrame": 768,
+      "endFrame": 780
+    },
+    {
+      "index": 72,
+      "text": "in",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 26.08,
+      "endSeconds": 26.16,
+      "startFrame": 782,
+      "endFrame": 785
+    },
+    {
+      "index": 73,
+      "text": "der",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 26.16,
+      "endSeconds": 26.24,
+      "startFrame": 785,
+      "endFrame": 788
+    },
+    {
+      "index": 74,
+      "text": "ChatGPT-Desktop-App",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 26.24,
+      "endSeconds": 27.68,
+      "startFrame": 788,
+      "endFrame": 831
+    },
+    {
+      "index": 75,
+      "text": "für",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 27.68,
+      "endSeconds": 27.84,
+      "startFrame": 831,
+      "endFrame": 836
+    },
+    {
+      "index": 76,
+      "text": "macOS",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 27.84,
+      "endSeconds": 28.48,
+      "startFrame": 836,
+      "endFrame": 855
+    },
+    {
+      "index": 77,
+      "text": "auf",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 28.48,
+      "endSeconds": 28.64,
+      "startFrame": 855,
+      "endFrame": 860
+    },
+    {
+      "index": 78,
+      "text": "allen",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 28.72,
+      "endSeconds": 28.96,
+      "startFrame": 861,
+      "endFrame": 869
+    },
+    {
+      "index": 79,
+      "text": "Tarifen",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 28.96,
+      "endSeconds": 29.44,
+      "startFrame": 869,
+      "endFrame": 884
+    },
+    {
+      "index": 80,
+      "text": "verfügbar.",
+      "sentenceId": "S08",
+      "sceneId": "scene5",
+      "startSeconds": 29.44,
+      "endSeconds": 29.92,
+      "startFrame": 884,
+      "endFrame": 898
+    }
+  ]
+}

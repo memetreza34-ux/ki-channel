@@ -216,7 +216,7 @@ export const RemotionRoot: React.FC = () => (
         height={STUDY_MODE_HEIGHT}
       />
       <Composition
-        id={APPLE_MESSAGES_COMPOSITION_ID}
+        id="KI-AppleMessagesChatGPT"
         component={ReelAppleMessagesChatGPT}
         defaultProps={{voiceoverSrc: runtimeAudio(APPLE_MESSAGES_COMPOSITION_ID), showCaptions: true, showSfx: true}}
         durationInFrames={APPLE_MESSAGES_DURATION_IN_FRAMES}

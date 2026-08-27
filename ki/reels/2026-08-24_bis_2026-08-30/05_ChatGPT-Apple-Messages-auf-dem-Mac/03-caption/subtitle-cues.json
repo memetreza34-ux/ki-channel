@@ -1,19 +1,599 @@
 {
   "version": 2,
   "fps": 30,
-  "timingStatus": "PREVIEW_ONLY_UNALIGNED",
-  "timingAuthority": "PLANNING_ONLY",
-  "note": "These cues are only for Remotion preview. align-reel-local.mjs overwrites them from real WORD-TIMINGS.json before production.",
+  "timingStatus": "VOICE_LOCKED_SCENE_MAPPED",
+  "timingAuthority": "01-script-audio/WORD-TIMINGS.json",
+  "note": "Word timings come from the exact runtime PCM-WAV. Scene boundaries were derived from the first mapped spoken word of each scene.",
   "cues": [
-    {"id":"p01","sceneId":"scene1","sentenceId":"S01","startFrame":8,"endFrame":78,"text":"ChatGPT kann jetzt Apple Messages"},
-    {"id":"p02","sceneId":"scene1","sentenceId":"S01","startFrame":78,"endFrame":150,"text":"auf deinem Mac durchsuchen."},
-    {"id":"p03","sceneId":"scene2","sentenceId":"S02","startFrame":165,"endFrame":260,"text":"Sobald du das Plug-in verbindest,"},
-    {"id":"p04","sceneId":"scene2","sentenceId":"S02","startFrame":260,"endFrame":350,"text":"kann es Nachrichten lesen und durchsuchen."},
-    {"id":"p05","sceneId":"scene2","sentenceId":"S03","startFrame":350,"endFrame":430,"text":"iMessage, SMS und RCS werden unterstützt."},
-    {"id":"p06","sceneId":"scene3","sentenceId":"S04","startFrame":445,"endFrame":545,"text":"ChatGPT kann eine passende Antwort vorbereiten."},
-    {"id":"p07","sceneId":"scene3","sentenceId":"S05","startFrame":545,"endFrame":645,"text":"Auf Wunsch kann ChatGPT sie senden."},
-    {"id":"p08","sceneId":"scene4","sentenceId":"S06","startFrame":660,"endFrame":750,"text":"Aber sie geht nicht ungefragt raus."},
-    {"id":"p09","sceneId":"scene4","sentenceId":"S07","startFrame":750,"endFrame":870,"text":"Nachricht und Empfänger musst du bestätigen."},
-    {"id":"p10","sceneId":"scene5","sentenceId":"S08","startFrame":885,"endFrame":1010,"text":"macOS Desktop, laut OpenAI auf allen Tarifen."}
+    {
+      "id": "c01",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 0,
+      "endFrame": 70,
+      "text": "ChatGPT kann jetzt Apple Messages",
+      "words": [
+        {
+          "text": "ChatGPT",
+          "startFrame": 0,
+          "endFrame": 27
+        },
+        {
+          "text": "kann",
+          "startFrame": 27,
+          "endFrame": 34
+        },
+        {
+          "text": "jetzt",
+          "startFrame": 34,
+          "endFrame": 44
+        },
+        {
+          "text": "Apple",
+          "startFrame": 44,
+          "endFrame": 53
+        },
+        {
+          "text": "Messages",
+          "startFrame": 53,
+          "endFrame": 70
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 70,
+      "endFrame": 101,
+      "text": "auf deinem Mac durchsuchen.",
+      "words": [
+        {
+          "text": "auf",
+          "startFrame": 70,
+          "endFrame": 72
+        },
+        {
+          "text": "deinem",
+          "startFrame": 72,
+          "endFrame": 82
+        },
+        {
+          "text": "Mac",
+          "startFrame": 82,
+          "endFrame": 87
+        },
+        {
+          "text": "durchsuchen.",
+          "startFrame": 87,
+          "endFrame": 101
+        }
+      ]
+    },
+    {
+      "id": "c03",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 103,
+      "endFrame": 154,
+      "text": "Sobald du das Plug-in verbindest,",
+      "words": [
+        {
+          "text": "Sobald",
+          "startFrame": 103,
+          "endFrame": 116
+        },
+        {
+          "text": "du",
+          "startFrame": 116,
+          "endFrame": 117
+        },
+        {
+          "text": "das",
+          "startFrame": 117,
+          "endFrame": 123
+        },
+        {
+          "text": "Plug-in",
+          "startFrame": 123,
+          "endFrame": 135
+        },
+        {
+          "text": "verbindest,",
+          "startFrame": 135,
+          "endFrame": 154
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 158,
+      "endFrame": 202,
+      "text": "kann es deine Nachrichten lesen",
+      "words": [
+        {
+          "text": "kann",
+          "startFrame": 158,
+          "endFrame": 164
+        },
+        {
+          "text": "es",
+          "startFrame": 164,
+          "endFrame": 166
+        },
+        {
+          "text": "deine",
+          "startFrame": 166,
+          "endFrame": 173
+        },
+        {
+          "text": "Nachrichten",
+          "startFrame": 173,
+          "endFrame": 190
+        },
+        {
+          "text": "lesen",
+          "startFrame": 190,
+          "endFrame": 202
+        }
+      ]
+    },
+    {
+      "id": "c05",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 202,
+      "endFrame": 224,
+      "text": "und durchsuchen.",
+      "words": [
+        {
+          "text": "und",
+          "startFrame": 202,
+          "endFrame": 207
+        },
+        {
+          "text": "durchsuchen.",
+          "startFrame": 208,
+          "endFrame": 224
+        }
+      ]
+    },
+    {
+      "id": "c06",
+      "sceneId": "scene2",
+      "sentenceId": "S03",
+      "startFrame": 225,
+      "endFrame": 269,
+      "text": "Dabei werden iMessage,",
+      "words": [
+        {
+          "text": "Dabei",
+          "startFrame": 225,
+          "endFrame": 233
+        },
+        {
+          "text": "werden",
+          "startFrame": 235,
+          "endFrame": 245
+        },
+        {
+          "text": "iMessage,",
+          "startFrame": 247,
+          "endFrame": 269
+        }
+      ]
+    },
+    {
+      "id": "c07",
+      "sceneId": "scene2",
+      "sentenceId": "S03",
+      "startFrame": 273,
+      "endFrame": 336,
+      "text": "SMS und RCS unterstützt.",
+      "words": [
+        {
+          "text": "SMS",
+          "startFrame": 273,
+          "endFrame": 291
+        },
+        {
+          "text": "und",
+          "startFrame": 291,
+          "endFrame": 298
+        },
+        {
+          "text": "RCS",
+          "startFrame": 300,
+          "endFrame": 317
+        },
+        {
+          "text": "unterstützt.",
+          "startFrame": 317,
+          "endFrame": 336
+        }
+      ]
+    },
+    {
+      "id": "c08",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 338,
+      "endFrame": 401,
+      "text": "Noch besser: ChatGPT kann direkt",
+      "words": [
+        {
+          "text": "Noch",
+          "startFrame": 338,
+          "endFrame": 344
+        },
+        {
+          "text": "besser:",
+          "startFrame": 344,
+          "endFrame": 353
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 357,
+          "endFrame": 380
+        },
+        {
+          "text": "kann",
+          "startFrame": 380,
+          "endFrame": 387
+        },
+        {
+          "text": "direkt",
+          "startFrame": 387,
+          "endFrame": 401
+        }
+      ]
+    },
+    {
+      "id": "c09",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 401,
+      "endFrame": 440,
+      "text": "eine passende Antwort für dich",
+      "words": [
+        {
+          "text": "eine",
+          "startFrame": 401,
+          "endFrame": 406
+        },
+        {
+          "text": "passende",
+          "startFrame": 406,
+          "endFrame": 418
+        },
+        {
+          "text": "Antwort",
+          "startFrame": 420,
+          "endFrame": 432
+        },
+        {
+          "text": "für",
+          "startFrame": 432,
+          "endFrame": 435
+        },
+        {
+          "text": "dich",
+          "startFrame": 435,
+          "endFrame": 440
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 440,
+      "endFrame": 456,
+      "text": "vorbereiten.",
+      "words": [
+        {
+          "text": "vorbereiten.",
+          "startFrame": 440,
+          "endFrame": 456
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "sceneId": "scene3",
+      "sentenceId": "S05",
+      "startFrame": 460,
+      "endFrame": 504,
+      "text": "Auf Wunsch kann ChatGPT die",
+      "words": [
+        {
+          "text": "Auf",
+          "startFrame": 460,
+          "endFrame": 466
+        },
+        {
+          "text": "Wunsch",
+          "startFrame": 466,
+          "endFrame": 473
+        },
+        {
+          "text": "kann",
+          "startFrame": 473,
+          "endFrame": 480
+        },
+        {
+          "text": "ChatGPT",
+          "startFrame": 480,
+          "endFrame": 502
+        },
+        {
+          "text": "die",
+          "startFrame": 502,
+          "endFrame": 504
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "sceneId": "scene3",
+      "sentenceId": "S05",
+      "startFrame": 504,
+      "endFrame": 569,
+      "text": "Nachricht anschließend über Messages senden.",
+      "words": [
+        {
+          "text": "Nachricht",
+          "startFrame": 504,
+          "endFrame": 519
+        },
+        {
+          "text": "anschließend",
+          "startFrame": 520,
+          "endFrame": 538
+        },
+        {
+          "text": "über",
+          "startFrame": 538,
+          "endFrame": 543
+        },
+        {
+          "text": "Messages",
+          "startFrame": 543,
+          "endFrame": 557
+        },
+        {
+          "text": "senden.",
+          "startFrame": 557,
+          "endFrame": 569
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "sceneId": "scene4",
+      "sentenceId": "S06",
+      "startFrame": 573,
+      "endFrame": 605,
+      "text": "Aber sie geht nicht einfach",
+      "words": [
+        {
+          "text": "Aber",
+          "startFrame": 573,
+          "endFrame": 579
+        },
+        {
+          "text": "sie",
+          "startFrame": 579,
+          "endFrame": 584
+        },
+        {
+          "text": "geht",
+          "startFrame": 584,
+          "endFrame": 591
+        },
+        {
+          "text": "nicht",
+          "startFrame": 591,
+          "endFrame": 596
+        },
+        {
+          "text": "einfach",
+          "startFrame": 596,
+          "endFrame": 605
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "sceneId": "scene4",
+      "sentenceId": "S06",
+      "startFrame": 605,
+      "endFrame": 629,
+      "text": "ungefragt raus.",
+      "words": [
+        {
+          "text": "ungefragt",
+          "startFrame": 605,
+          "endFrame": 620
+        },
+        {
+          "text": "raus.",
+          "startFrame": 620,
+          "endFrame": 629
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "sceneId": "scene4",
+      "sentenceId": "S07",
+      "startFrame": 633,
+      "endFrame": 680,
+      "text": "Standardmäßig musst du vorher die",
+      "words": [
+        {
+          "text": "Standardmäßig",
+          "startFrame": 633,
+          "endFrame": 656
+        },
+        {
+          "text": "musst",
+          "startFrame": 656,
+          "endFrame": 660
+        },
+        {
+          "text": "du",
+          "startFrame": 660,
+          "endFrame": 663
+        },
+        {
+          "text": "vorher",
+          "startFrame": 663,
+          "endFrame": 675
+        },
+        {
+          "text": "die",
+          "startFrame": 675,
+          "endFrame": 680
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "sceneId": "scene4",
+      "sentenceId": "S07",
+      "startFrame": 680,
+      "endFrame": 730,
+      "text": "Nachricht und den Empfänger bestätigen.",
+      "words": [
+        {
+          "text": "Nachricht",
+          "startFrame": 680,
+          "endFrame": 694
+        },
+        {
+          "text": "und",
+          "startFrame": 694,
+          "endFrame": 699
+        },
+        {
+          "text": "den",
+          "startFrame": 699,
+          "endFrame": 701
+        },
+        {
+          "text": "Empfänger",
+          "startFrame": 701,
+          "endFrame": 716
+        },
+        {
+          "text": "bestätigen.",
+          "startFrame": 716,
+          "endFrame": 730
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "sceneId": "scene5",
+      "sentenceId": "S08",
+      "startFrame": 730,
+      "endFrame": 780,
+      "text": "Laut OpenAI ist das Plug-in",
+      "words": [
+        {
+          "text": "Laut",
+          "startFrame": 730,
+          "endFrame": 735
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 736,
+          "endFrame": 756
+        },
+        {
+          "text": "ist",
+          "startFrame": 756,
+          "endFrame": 764
+        },
+        {
+          "text": "das",
+          "startFrame": 764,
+          "endFrame": 768
+        },
+        {
+          "text": "Plug-in",
+          "startFrame": 768,
+          "endFrame": 780
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "sceneId": "scene5",
+      "sentenceId": "S08",
+      "startFrame": 782,
+      "endFrame": 855,
+      "text": "in der ChatGPT-Desktop-App für macOS",
+      "words": [
+        {
+          "text": "in",
+          "startFrame": 782,
+          "endFrame": 785
+        },
+        {
+          "text": "der",
+          "startFrame": 785,
+          "endFrame": 788
+        },
+        {
+          "text": "ChatGPT-Desktop-App",
+          "startFrame": 788,
+          "endFrame": 831
+        },
+        {
+          "text": "für",
+          "startFrame": 831,
+          "endFrame": 836
+        },
+        {
+          "text": "macOS",
+          "startFrame": 836,
+          "endFrame": 855
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "sceneId": "scene5",
+      "sentenceId": "S08",
+      "startFrame": 855,
+      "endFrame": 898,
+      "text": "auf allen Tarifen verfügbar.",
+      "words": [
+        {
+          "text": "auf",
+          "startFrame": 855,
+          "endFrame": 860
+        },
+        {
+          "text": "allen",
+          "startFrame": 861,
+          "endFrame": 869
+        },
+        {
+          "text": "Tarifen",
+          "startFrame": 869,
+          "endFrame": 884
+        },
+        {
+          "text": "verfügbar.",
+          "startFrame": 884,
+          "endFrame": 898
+        }
+      ]
+    }
   ]
 }

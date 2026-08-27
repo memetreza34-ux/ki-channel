@@ -1,0 +1,40 @@
+{
+  "status": "FINAL_EXPORT_READY",
+  "compositionId": "KI-O3ChatGPTSunset",
+  "exportedVideo": "KI-O3ChatGPTSunset.mp4",
+  "cover": "KI-O3ChatGPTSunset-cover.png",
+  "coverTimeSeconds": 3.5,
+  "caption": "KI-O3ChatGPTSunset-caption.txt",
+  "gates": {
+    "entertainment": "PASSED",
+    "localForcedAlignment": "PASSED_EXACT_KNOWN_TRANSCRIPT",
+    "sceneVoiceMap": "PASSED_EXACT_SCENE_TEXT_AND_ANCHORS",
+    "voiceLock": "PASSED",
+    "motionReadability": "PASSED_EXACT_VIDEO_HASH",
+    "sourceIsolation": "PASSED",
+    "audioVideo": "PASSED",
+    "renderProvenance": "PASSED_LOCKED_INPUT_HASHES"
+  },
+  "provenance": {
+    "renderSourceCommitSha": "1e411c73310ea88ba5ed545ff6c6a6e9edd03ad5",
+    "finalizationCommitSha": "b9841ea458127393f6648302dd3b8fafd9058e37",
+    "renderLockCreatedAt": "2026-08-26T04:47:24.868Z",
+    "sourceDir": "ki/src/reels/o3-chatgpt-sunset",
+    "sourceTreeSha256": "3dc48af494a5796141f136a37eb4bb28738c5944e5f4d1bd7203fd00a26d8080",
+    "renderContractSha256": "7e0dbe08a5925dc1b30612c559ebdd72ee02b55b5cf1ac8de8ca0638d215e140",
+    "reelJsonSha256AtRenderLock": "5c9376c37c9740f2e24ff65cb99159bc61331cb04458d9b7bd2a2ce25ff3ac40",
+    "reelJsonSha256AtFinalization": "5c9376c37c9740f2e24ff65cb99159bc61331cb04458d9b7bd2a2ce25ff3ac40",
+    "sceneVoiceMapSha256": "84edcd6a472519b0853a3761f2cd750844c5999efb7568308afe94bc575b5d06",
+    "wordTimingsSha256": "9c4649b770745c3df2a2ff743b5f562fc244ad8b11836971ad9e649ad510a2c0",
+    "captionJsonSha256": "506bd4ca0f2bee72c9741075dc19f84b46af7f24d44a1670369e2279dcaa89b9",
+    "canonicalAudioSha256": "f6b408c6a280cd53c6fde98c11cdf561d2da2e14fbfebbc239817ddde2d4708f",
+    "runtimeAudioSha256": "fa9254c7bca2e20bea363cadd552563d0a8d5d1c0165ca7eb5effb0a0b534a09",
+    "reviewedVideoSha256": "e57acd91a8559f9e7ae9f549669277523a50cb660b0b3483f5a8c0d299b45bba"
+  },
+  "artifacts": {
+    "videoSha256": "e57acd91a8559f9e7ae9f549669277523a50cb660b0b3483f5a8c0d299b45bba",
+    "coverSha256": "5c7b794eb60da3b03f211a65bd661f5383847913eecf306333be719addfff375",
+    "captionSha256": "b25b80c898ce31e9ec701e762e0359cad27210d0a4159000b5bce5aba798362f"
+  },
+  "generatedAt": "2026-08-26T13:49:58.517Z"
+}

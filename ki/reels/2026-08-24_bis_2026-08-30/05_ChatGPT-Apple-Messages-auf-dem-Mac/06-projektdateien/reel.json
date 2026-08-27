@@ -12,16 +12,16 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1020,
-    "finalDurationInFrames": null,
+    "finalDurationInFrames": 902,
     "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-    "timingAuthority": false,
+    "status": "RUNTIME_PCM_WAV_LOCKED",
+    "timingAuthority": true,
     "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
-    "observedAudioDurationSeconds": null,
+    "observedAudioDurationSeconds": 30.048917,
     "pauseCompression": {
       "enabled": true,
       "thresholdDb": -35,
@@ -34,11 +34,11 @@
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "CONTENT_LOCKED_TIMING_PENDING"
+    "status": "VOICE_LOCKED"
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "PREVIEW_ONLY_UNALIGNED",
+    "status": "VOICE_LOCKED_SCENE_MAPPED",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
@@ -52,20 +52,71 @@
     "selectionMode": "AUTO_CC0_DETERMINISTIC",
     "status": "PENDING_LOCAL_CC0_RESOLUTION"
   },
-  "header": {"top":112,"style":"compact_glass_chip"},
-  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "header": {
+    "top": 112,
+    "style": "compact_glass_chip"
+  },
+  "background": {
+    "rule": "LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE",
+    "footerSplitAllowed": false
+  },
   "export": {
     "coverTimeSeconds": 2.6,
     "coverText": "CHATGPT KANN JETZT DEINE MESSAGES DURCHSUCHEN",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": ["video","cover","caption","manifest"]
+    "requiredPackage": [
+      "video",
+      "cover",
+      "caption",
+      "manifest"
+    ]
   },
   "scenes": [
-    {"sceneId":"scene1","title":"Apple Messages in ChatGPT","startFrame":0,"endFrame":160,"accent":"#12B76A","heroMoment":"Messages bubble connects to ChatGPT plugin card","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene2","title":"Lesen und durchsuchen","startFrame":160,"endFrame":440,"accent":"#2E90FA","heroMoment":"Search scans iMessage SMS and RCS rows","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene3","title":"Antworten und senden","startFrame":440,"endFrame":650,"accent":"#7A5AF8","heroMoment":"Draft reply becomes send-ready message","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene4","title":"Freigabe vor dem Senden","startFrame":650,"endFrame":875,"accent":"#F79009","heroMoment":"Approval sheet blocks send until recipient and text are confirmed","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene5","title":"macOS und alle Tarife","startFrame":875,"endFrame":1020,"accent":"#12B76A","heroMoment":"availability badges settle with final takeaway","timingStatus":"PLANNING_ONLY"}
+    {
+      "sceneId": "scene1",
+      "title": "Apple Messages in ChatGPT",
+      "startFrame": 0,
+      "endFrame": 103,
+      "accent": "#12B76A",
+      "heroMoment": "Messages bubble connects to ChatGPT plugin card",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene2",
+      "title": "Lesen und durchsuchen",
+      "startFrame": 103,
+      "endFrame": 338,
+      "accent": "#2E90FA",
+      "heroMoment": "Search scans iMessage SMS and RCS rows",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene3",
+      "title": "Antworten und senden",
+      "startFrame": 338,
+      "endFrame": 573,
+      "accent": "#7A5AF8",
+      "heroMoment": "Draft reply becomes send-ready message",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene4",
+      "title": "Freigabe vor dem Senden",
+      "startFrame": 573,
+      "endFrame": 730,
+      "accent": "#F79009",
+      "heroMoment": "Approval sheet blocks send until recipient and text are confirmed",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene5",
+      "title": "macOS und alle Tarife",
+      "startFrame": 730,
+      "endFrame": 902,
+      "accent": "#12B76A",
+      "heroMoment": "availability badges settle with final takeaway",
+      "timingStatus": "VOICE_LOCKED"
+    }
   ],
   "sources": [
     "https://openai.com/products/release-notes/",

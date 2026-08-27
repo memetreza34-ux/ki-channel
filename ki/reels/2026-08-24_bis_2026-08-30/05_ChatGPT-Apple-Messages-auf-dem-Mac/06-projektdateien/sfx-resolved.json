@@ -1,6 +1,220 @@
 {
   "version": 1,
-  "status": "PENDING_LOCAL_CC0_RESOLUTION",
-  "libraryStatus": "REQUIRES_PUBLIC_REEL_SFX_INDEX",
-  "events": []
+  "status": "SFX_RESOLVED_CC0_AUTO",
+  "selectionMode": "DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING",
+  "compositionId": "KI-AppleMessagesChatGPT",
+  "fps": 30,
+  "finalDurationInFrames": 902,
+  "generatedAt": "2026-08-26T16:44:35.957Z",
+  "library": {
+    "status": "LOCAL_CC0_SFX_LIBRARY_READY",
+    "totalSounds": 416,
+    "mirror": {
+      "repository": "https://github.com/Silentnoob21/cc0-public-domain-sounds.git",
+      "commit": "f2b6264f9ab89fabc266914c3654685d68c5a39b"
+    },
+    "indexSha256": "18d93a23855589b3e46509f1420e676891c188a4db1d2431ff49bd056832852b"
+  },
+  "sourceEventsSha256": "220e74c3da4a4f56d664ab113f89d7e2516f9f32fa2d1d1b64a625ccfb36f3a2",
+  "rules": {
+    "license": "CC0-1.0_ONLY",
+    "randomness": false,
+    "soundReusePenalty": true,
+    "sceneAnchorsFollowFinalSceneFrames": true,
+    "voiceFirstVolumeCaps": true
+  },
+  "events": [
+    {
+      "id": "sfx01-connect",
+      "sceneId": "scene1",
+      "purpose": "Messages bubble connects to plugin card",
+      "startFrame": 18,
+      "durationInFrames": 2,
+      "volume": 0.09,
+      "requestedRoles": [
+        "ui-click",
+        "digital-accent",
+        "ui-generic"
+      ],
+      "selectedRole": "ui-click",
+      "soundId": "kenney-interface-sounds:select_007",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/select_007.wav",
+      "durationSeconds": 0.059521,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "select_007.ogg"
+    },
+    {
+      "id": "sfx02-success",
+      "sceneId": "scene1",
+      "purpose": "plugin connection settles",
+      "startFrame": 48,
+      "durationInFrames": 9,
+      "volume": 0.1,
+      "requestedRoles": [
+        "ui-confirm",
+        "digital-accent"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_001",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_001.wav",
+      "durationSeconds": 0.289854,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_001.ogg"
+    },
+    {
+      "id": "sfx03-search",
+      "sceneId": "scene2",
+      "purpose": "search field activates",
+      "startFrame": 121,
+      "durationInFrames": 2,
+      "volume": 0.08,
+      "requestedRoles": [
+        "ui-click",
+        "ui-generic"
+      ],
+      "selectedRole": "ui-click",
+      "soundId": "kenney-interface-sounds:select_008",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/select_008.wav",
+      "durationSeconds": 0.059521,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "select_008.ogg"
+    },
+    {
+      "id": "sfx04-results",
+      "sceneId": "scene2",
+      "purpose": "message type results appear",
+      "startFrame": 155,
+      "durationInFrames": 12,
+      "volume": 0.09,
+      "requestedRoles": [
+        "digital-accent",
+        "tech-accent",
+        "ui-generic"
+      ],
+      "selectedRole": "digital-accent",
+      "soundId": "kenney-digital-audio:phaseJump2",
+      "staticFile": "reel-sfx/kenney/kenney-digital-audio/phaseJump2.wav",
+      "durationSeconds": 0.388938,
+      "packId": "kenney-digital-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/digital-audio",
+      "originalFile": "phaseJump2.ogg"
+    },
+    {
+      "id": "sfx05-draft",
+      "sceneId": "scene3",
+      "purpose": "draft reply materializes",
+      "startFrame": 358,
+      "durationInFrames": 13,
+      "volume": 0.08,
+      "requestedRoles": [
+        "digital-accent",
+        "ui-generic"
+      ],
+      "selectedRole": "digital-accent",
+      "soundId": "kenney-digital-audio:phaseJump5",
+      "staticFile": "reel-sfx/kenney/kenney-digital-audio/phaseJump5.wav",
+      "durationSeconds": 0.415063,
+      "packId": "kenney-digital-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/digital-audio",
+      "originalFile": "phaseJump5.ogg"
+    },
+    {
+      "id": "sfx06-send-ready",
+      "sceneId": "scene3",
+      "purpose": "draft becomes send-ready",
+      "startFrame": 404,
+      "durationInFrames": 10,
+      "volume": 0.1,
+      "requestedRoles": [
+        "ui-confirm",
+        "ui-click"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_003",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_003.wav",
+      "durationSeconds": 0.322021,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_003.ogg"
+    },
+    {
+      "id": "sfx07-blocked",
+      "sceneId": "scene4",
+      "purpose": "send is blocked before approval",
+      "startFrame": 591,
+      "durationInFrames": 6,
+      "volume": 0.09,
+      "requestedRoles": [
+        "ui-error",
+        "digital-accent"
+      ],
+      "selectedRole": "ui-error",
+      "soundId": "kenney-interface-sounds:error_007",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/error_007.wav",
+      "durationSeconds": 0.192,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "error_007.ogg"
+    },
+    {
+      "id": "sfx08-approved",
+      "sceneId": "scene4",
+      "purpose": "message and recipient approval completes",
+      "startFrame": 637,
+      "durationInFrames": 15,
+      "volume": 0.11,
+      "requestedRoles": [
+        "ui-confirm",
+        "digital-accent"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_004",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_004.wav",
+      "durationSeconds": 0.490417,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_004.ogg"
+    },
+    {
+      "id": "sfx09-availability",
+      "sceneId": "scene5",
+      "purpose": "macOS and all-plans badges settle",
+      "startFrame": 754,
+      "durationInFrames": 17,
+      "volume": 0.09,
+      "requestedRoles": [
+        "ui-confirm",
+        "digital-accent",
+        "ui-generic"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_002",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_002.wav",
+      "durationSeconds": 0.539021,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_002.ogg"
+    }
+  ]
 }

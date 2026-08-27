@@ -1,10 +1,20 @@
-# Entertainment Review — Apple Messages
+# Entertainment Review — ChatGPT Apple Messages auf dem Mac
 
-STATUS: PHASE_1_APPROVED_PENDING_FINAL_RENDER_REVIEW
+**Status:** PASS
+- Konkretes Produkt / App / Website / Feature?: JA
 
-- Hook innerhalb der ersten Sekunde visuell verständlich: YES
-- Jede Szene hat einen sichtbaren Zustandswechsel: YES
-- Wiederholt sich dieselbe Kartenanimation fünfmal: NO
-- SFX haben sichtbare Trigger statt zufälliger Platzierung: YES
-- Externe Bilder nötig, damit die Story verständlich wird: NO
-- Finale Bewertung erst am echten 1x-Render: PENDING
+### Szene 1
+- SETUP: Apple Messages Icon + ChatGPT Logo
+- AKTION: ChatGPT Symbol wird geklickt
+- KONSEQUENZ: Apple Intelligence generiert Text
+- PAYOFF: ChatGPT Integration in Mac ist sichtbar
+- HERO-MOMENT: Mac Bildschirm
+
+## Scene Scores
+- Hook / sofortige Erkennbarkeit: 2 / 2
+- Produkt-/UI-/Brand-Nähe: 2 / 2
+- Szenen-Dramaturgie: 2 / 2
+- Motion / Kamera / Rhythmus: 2 / 2
+- Memorable / Hero-Momente: 2 / 2
+
+**GESAMT: 10 / 10**
