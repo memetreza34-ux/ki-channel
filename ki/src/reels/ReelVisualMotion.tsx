@@ -53,13 +53,26 @@ type FocusHaloProps = {
 
 export const FocusHalo: React.FC<FocusHaloProps> = ({left,top,width,height,startFrame,endFrame,accent,radius=28}) => {
   const frame = useCurrentFrame();
-  const enter = interpolate(frame,[startFrame,startFrame+8],[0,1],clamp);
-  const leave = interpolate(frame,[Math.max(startFrame+9,endFrame-8),endFrame],[1,0],clamp);
-  const opacity = Math.min(enter,leave);
-  const scale = interpolate(enter,[0,1],[1.07,1],clamp);
+  const enter = interpolate(frame,[startFrame,startFrame+10],[0,1],clamp);
+  const leave = interpolate(frame,[Math.max(startFrame+11,endFrame-10),endFrame],[1,0],clamp);
+  const opacity = Math.min(enter,leave) * 0.52;
+  const scale = interpolate(enter,[0,1],[1.035,1],clamp);
   if (opacity <= 0) return null;
   return (
-    <div style={{position:'absolute',left,top,width,height,borderRadius:radius,border:`3px solid ${accent}`,boxShadow:`0 0 0 7px ${accent}18, 0 16px 42px ${accent}24`,opacity,transform:`scale(${scale})`,pointerEvents:'none',zIndex:30}}/>
+    <div style={{
+      position:'absolute',
+      left,
+      top,
+      width,
+      height,
+      borderRadius:radius,
+      border:`2px solid ${accent}8C`,
+      boxShadow:`0 0 0 4px ${accent}0D, 0 10px 28px ${accent}14`,
+      opacity,
+      transform:`scale(${scale})`,
+      pointerEvents:'none',
+      zIndex:30,
+    }}/>
   );
 };
 
@@ -98,11 +111,23 @@ export const SourceProofCard: React.FC<SourceProofCardProps> = ({source,date,lab
   const opacity = interpolate(frame,[startFrame,startFrame+10],[0,1],clamp);
   const y = interpolate(frame,[startFrame,startFrame+10],[20,0],clamp);
   return (
-    <div style={{display:'flex',alignItems:'center',gap:14,padding:'15px 18px',borderRadius:22,background:'rgba(255,255,255,.88)',border:'1px solid rgba(16,32,51,.09)',boxShadow:'0 18px 46px rgba(16,32,51,.10)',opacity,transform:`translateY(${y}px)`}}>
-      <div style={{width:12,height:12,borderRadius:999,background:accent,boxShadow:`0 0 0 6px ${accent}18`}}/>
+    <div style={{
+      display:'flex',
+      alignItems:'center',
+      gap:17,
+      minWidth:620,
+      padding:'18px 22px',
+      borderRadius:26,
+      background:'rgba(255,255,255,.91)',
+      border:'1px solid rgba(16,32,51,.10)',
+      boxShadow:'0 18px 46px rgba(16,32,51,.10)',
+      opacity,
+      transform:`translateY(${y}px)`,
+    }}>
+      <div style={{width:14,height:14,borderRadius:999,background:accent,boxShadow:`0 0 0 6px ${accent}14`,flex:'0 0 auto'}}/>
       <div style={{minWidth:0}}>
-        <div style={{fontSize:21,fontWeight:900,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{label}</div>
-        <div style={{fontSize:17,opacity:.54,marginTop:2}}>{source} • {date}</div>
+        <div style={{fontSize:25,fontWeight:900,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{label}</div>
+        <div style={{fontSize:20,opacity:.58,marginTop:3}}>{source} • {date}</div>
       </div>
     </div>
   );
