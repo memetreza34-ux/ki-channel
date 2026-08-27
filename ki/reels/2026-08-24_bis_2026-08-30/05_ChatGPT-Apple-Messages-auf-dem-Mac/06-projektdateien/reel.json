@@ -50,16 +50,18 @@
     "eventsFile": "06-projektdateien/sfx-events.json",
     "resolvedFile": "06-projektdateien/sfx-resolved.json",
     "selectionMode": "AUTO_CC0_DETERMINISTIC",
-    "status": "PENDING_LOCAL_CC0_RESOLUTION"
+    "status": "SFX_RESOLVED_CC0_AUTO"
   },
   "visuals": {
     "enabled": true,
     "manifestFile": "06-projektdateien/visual-assets.json",
-    "status": "STEP3_VISUAL_ASSETS_LOCKED",
+    "resolvedFile": "06-projektdateien/visual-assets-resolved.json",
+    "status": "VISUAL_ASSETS_RESOLVED_LOCAL_LOCK",
     "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
     "remoteRenderUrlsAllowed": false,
     "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
-    "sourceProof": "OFFICIAL_SOURCE_CARD"
+    "sourceProof": "OFFICIAL_SOURCE_CARD",
+    "externalProviders": ["WIKIMEDIA_COMMONS", "GITHUB_RAW"]
   },
   "header": {
     "top": 112,
