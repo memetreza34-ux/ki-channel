@@ -21,7 +21,7 @@ Aktueller gelockter Stand:
 - deterministische CC0-SFX-Auflösung
 
 ## Phase 3 — Visual-Upgrade
-**Status:** IMPLEMENTIERT — JETZT TESTEN
+**Status:** IMPLEMENTIERT — REVIEW-POLISH EINGEBAUT — RETEST JETZT
 
 ### 3A Visual Assets
 - `visual-assets.json`
@@ -53,29 +53,22 @@ Aktueller gelockter Stand:
 - Google-Bildersuche gilt ausdrücklich nicht als Lizenznachweis
 - `ReelExternalVisual.tsx` rendert nur lokale Dateien und bietet Smart-Crop, Fokuspunkt, Zoom und Pan
 
+### 3E Review-Polish nach erstem Step-3-Test
+Aus dem ersten echten Step-3-MP4 wurden genau zwei Korrekturen übernommen:
+- `FocusHalo` ist jetzt dünner, transparenter, mit kleinerem Scale-Punch und deutlich schwächerem Glow.
+- `SourceProofCard` ist etwa 18 % größer, mit größeren Schriften und 620 px Mindestbreite für bessere mobile Lesbarkeit.
+
+Es wurden bewusst keine weiteren neuen Effekte hinzugefügt.
+
 Für dieses Apple-Messages-Reel bleiben die 5 Visuals bewusst Native UI + offizielle Source-Card, weil ein beliebiges Stock-/Fremdbild die Erklärung nicht verbessert. Der neue Resolver ist trotzdem Teil des Testlaufs und ist für kommende Reels bereit.
 
-## JETZT TESTEN — ein Befehl
+## JETZT RETESTEN — gleicher Befehl
 
 Ab hier keine weiteren Features hinzufügen, bevor das neue MP4 geprüft wurde:
 
 ```bash
 node ki/scripts/test-apple-messages-step3.mjs
 ```
-
-Der Test erledigt automatisch:
-1. Voiceover/Runtime-Audio herstellen
-2. Pause-Kompression prüfen
-3. Forced-Alignment-/Scene-Voice-/Caption-Lock prüfen
-4. CC0-SFX-Bibliothek + 9 SFX prüfen
-5. Visuals lokal auflösen
-6. Lizenz-/Local-File-/SHA256-Visual-Gate prüfen
-7. Source-Isolation prüfen
-8. TypeScript-Typecheck
-9. Apple-Messages-Contract-Test
-10. Step-3-MP4 rendern
-11. technischen A/V-Gate ausführen
-12. Contact-Sheet + Testbericht erzeugen
 
 Ausgabe:
 
@@ -89,17 +82,12 @@ out/step3-apple-messages-test/STEP3-TEST-REPORT.json
 
 `MOTION-READABILITY-REVIEW.md` bleibt bis zum echten neuen Review auf `PENDING`.
 
-Das neue MP4 bei 1x prüfen auf:
-- Pacing / unnötige Pausen
-- Caption-Sync
-- SFX-Timing und Lautstärke
-- Zoom-Stärke
-- Fokus-Halos
-- visuelle Überladung
-- Source-Proof-Lesbarkeit
+Beim zweiten Step-3-Test besonders prüfen:
+- Fokus-Halos wirken unterstützend statt wie Editor-Rahmen
+- OpenAI-Source-Proof ist auf Smartphone-Größe klar lesbar
+- Pacing / Caption-Sync bleiben unverändert gut
+- SFX-Timing und Lautstärke bleiben passend
+- Zooms bleiben subtil
+- keine neue visuelle Überladung
 
-Erst danach übernehmen wir die bestandenen Step-3-Komponenten global in PR #28 oder korrigieren sie zuerst.
-
-## CI-Hinweis
-
-Der vorhandene GitHub-Actions-Workflow ist im Repo aktuell als wegen Actions-Billing/Spending blockiert dokumentiert. Deshalb ist der Vergleich als lokaler Ein-Kommando-Test gebaut.
+Wenn dieser Retest passt, ist Schritt 3 für diesen Referenzstand abgeschlossen. Danach kommt das erste komplett neue Reel von null als Übertragbarkeitstest.
