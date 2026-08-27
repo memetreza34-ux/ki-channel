@@ -52,6 +52,15 @@
     "selectionMode": "AUTO_CC0_DETERMINISTIC",
     "status": "PENDING_LOCAL_CC0_RESOLUTION"
   },
+  "visuals": {
+    "enabled": true,
+    "manifestFile": "06-projektdateien/visual-assets.json",
+    "status": "STEP3_VISUAL_ASSETS_LOCKED",
+    "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
+    "remoteRenderUrlsAllowed": false,
+    "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
+    "sourceProof": "OFFICIAL_SOURCE_CARD"
+  },
   "header": {
     "top": 112,
     "style": "compact_glass_chip"
@@ -64,12 +73,7 @@
     "coverTimeSeconds": 2.6,
     "coverText": "CHATGPT KANN JETZT DEINE MESSAGES DURCHSUCHEN",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": [
-      "video",
-      "cover",
-      "caption",
-      "manifest"
-    ]
+    "requiredPackage": ["video", "cover", "caption", "manifest"]
   },
   "scenes": [
     {
@@ -114,12 +118,12 @@
       "startFrame": 730,
       "endFrame": 902,
       "accent": "#12B76A",
-      "heroMoment": "availability badges settle with final takeaway",
+      "heroMoment": "availability badges settle with official source proof",
       "timingStatus": "VOICE_LOCKED"
     }
   ],
   "sources": [
-    "https://openai.com/products/release-notes/",
+    "https://openai.com/de-DE/products/release-notes/",
     "https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
   ]
 }
