@@ -1,40 +1,67 @@
 # Produktionsstatus — ChatGPT + Apple Messages
 
-## Phase 1 — Inhalt / Story / Motion / SFX
+## Phase 1 — Inhalt / Story
 **Status:** IMPLEMENTIERT
 
 Vorhanden:
 - offizieller OpenAI-Faktenstand vom 20. August 2026
-- finaler, hook-stärkerer Sprechertext
+- finaler Sprechertext
 - exaktes `SCENE-VOICE-MAP.json`
 - 5 klar unterschiedliche Szenen
-- 9 semantische SFX-Events an sichtbaren UI-Momenten
-- eigenes Remotion-Source-Modul
-- keine externen Bilder für diesen Schritt-2-Test
 
-## Phase 2 — Voiceover
-**Status:** GENERIERT — LOKALER DOWNLOAD ERFORDERLICH
+## Phase 2 — Pacing / Sync / SFX
+**Status:** TIMING VOICE_LOCKED — SFX-VERTRAG VORHANDEN
 
-Voice: `clear`
-Context: `5d9c261974a043d99ee86efe1be2d279`
+Aktueller gelockter Stand in `reel.json`:
+- 902 Frames bei 30 fps
+- pause-komprimierte Runtime-WAV als Timing-Autorität
+- finale Szenengrenzen aus Forced Alignment
+- Captions `VOICE_LOCKED_SCENE_MAPPED`
+- semantische SFX-Events vorhanden
 
-Nach Download als `01-script-audio/voiceover.mp3`:
+Vor einem neuen Production-Render muss die lokale CC0-SFX-Auflösung/Gate weiterhin zum aktuellen Checkout passen.
 
-```bash
-node ki/scripts/align-reel-local.mjs ki/reels/2026-08-24_bis_2026-08-30/05_ChatGPT-Apple-Messages-auf-dem-Mac
-```
+## Phase 3 — Visual-Upgrade
+**Status:** IMPLEMENTIERT — NEUER RENDER/REVIEW ERFORDERLICH
 
-Dieser eine Lauf macht Pause-Kompression → Forced Alignment → finale Captions → finale Szenengrenzen → automatische CC0-SFX-Auswahl → SFX-Gate.
+### 3A Visual Assets
+- `visual-assets.json` eingeführt
+- Native-First-Policy
+- offizielle OpenAI-Source-Proof-Karte in Szene 5
+- GitHub/Open-Source-/Direct-Asset-Pfade nur mit dokumentiertem Rechte-Status
+- Google-Suchergebnis gilt niemals als Lizenznachweis
+- keine Remote-Media-URL im Remotion-Renderpfad
 
-## Phase 3 — Test-Render
-**Status:** BLOCKIERT BIS REALIGNMENT + SFX-RESOLUTION
+### 3B Zoom / Focus
+- `CameraPush`
+- `FocusHalo`
+- kontrollierte Fokuswechsel innerhalb der Szenen
+- leichte Parallax-Bewegung
 
-Danach Pflicht:
-1. generierte JSON-Dateien committen
-2. `prepare-reel-render.mjs`
-3. Typecheck/Test/Bundle
-4. Render
-5. 1x Review auf Pacing, Caption-Sync, SFX-Timing und SFX-Lautstärke
-6. erst nach bestandenem Review finalisieren
+### 3C Motion Accents
+- `ScanSweep` in der Suchszene
+- subtile Hintergrundtiefe
+- Source-Proof-Card
+- Visual-Manifest wird im Pre-Render-Gate validiert und per SHA256 im Render-Lock gebunden
 
-Dieses Reel ist bewusst der Test, bevor Schritt 3 mit externen Bildern/Zooms beginnt.
+## Nächster Test
+
+Jetzt **kein weiteres Feature hinzufügen**.
+
+Pflicht:
+1. lokalen SFX-Plan gegen aktuelle Library auflösen/validieren
+2. Visual-Asset-Gate ausführen
+3. `prepare-reel-render.mjs`
+4. Typecheck/Test/Bundle
+5. neues `KI-AppleMessagesChatGPT.mp4` rendern
+6. genau dieses MP4 bei 1x prüfen auf:
+   - Pacing
+   - Caption-Sync
+   - SFX-Timing/Lautstärke
+   - Zoom-Stärke
+   - Fokus-Halos
+   - visuelle Überladung
+   - Source-Proof-Lesbarkeit
+7. erst nach diesem Review entscheiden, welche Step-3-Komponenten global in PR #28 übernommen werden
+
+Das bisherige hochgeladene MP4 ist **Pre-Step-3** und darf nicht als Review für die neuen Visuals gelten.
