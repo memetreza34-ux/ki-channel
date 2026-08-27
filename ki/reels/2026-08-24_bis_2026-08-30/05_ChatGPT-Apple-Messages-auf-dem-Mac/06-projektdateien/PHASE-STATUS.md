@@ -10,59 +10,72 @@ Vorhanden:
 - 5 klar unterschiedliche Szenen
 
 ## Phase 2 — Pacing / Sync / SFX
-**Status:** TIMING VOICE_LOCKED — SFX-VERTRAG VORHANDEN
+**Status:** TIMING VOICE_LOCKED — SFX AUFGELÖST
 
-Aktueller gelockter Stand in `reel.json`:
+Aktueller gelockter Stand:
 - 902 Frames bei 30 fps
 - pause-komprimierte Runtime-WAV als Timing-Autorität
 - finale Szenengrenzen aus Forced Alignment
 - Captions `VOICE_LOCKED_SCENE_MAPPED`
-- 9 semantische SFX-Events vorhanden
+- 9 semantische SFX-Events
+- deterministische CC0-SFX-Auflösung
 
 ## Phase 3 — Visual-Upgrade
-**Status:** IMPLEMENTIERT — STEP-3-TEST AUSSTEHEND
+**Status:** IMPLEMENTIERT — JETZT TESTEN
 
 ### 3A Visual Assets
-- `visual-assets.json` eingeführt
+- `visual-assets.json`
 - Native-First-Policy
-- offizielle OpenAI-Source-Proof-Karte in Szene 5
-- GitHub/Open-Source-/Direct-Asset-Pfade nur mit dokumentiertem Rechte-Status
-- Google-Suchergebnis gilt niemals als Lizenznachweis
+- offizielle OpenAI-Source-Proof-Karte
 - keine Remote-Media-URL im Remotion-Renderpfad
 
 ### 3B Zoom / Focus
 - `CameraPush`
 - `FocusHalo`
-- kontrollierte Fokuswechsel innerhalb der Szenen
+- kontrollierte Fokuswechsel
 - leichte Parallax-Bewegung
 
 ### 3C Motion Accents
-- `ScanSweep` in der Suchszene
+- `ScanSweep`
 - subtile Hintergrundtiefe
 - Source-Proof-Card
-- Visual-Manifest wird im Production-Pfad validiert und per SHA256 gebunden
 
-## Step-3-Test — ein Befehl
+### 3D Automatische externe Visuals
+- `visual-asset-sources.json` mit kuratierten Providern
+- Wikimedia Commons ohne API-Key mit automatischer Lizenzfilterung
+- GitHub Raw nur mit gepinntem 40-Zeichen-Commit + Lizenzquelle
+- `resolve-reel-visual-assets.mjs` lädt akzeptierte Bilder vor dem Render lokal
+- akzeptierte Remote-Bilder: JPEG, PNG, WebP
+- lokale Dateien unter `public/reel-assets/<compositionId>/...`
+- `visual-assets-resolved.json` als aufgelöster Visual-Vertrag
+- lokale Bilddatei wird im Gate gegen SHA256 geprüft
+- CC-BY-4.0 benötigt Attribution
+- Google-Bildersuche gilt ausdrücklich nicht als Lizenznachweis
+- `ReelExternalVisual.tsx` rendert nur lokale Dateien und bietet Smart-Crop, Fokuspunkt, Zoom und Pan
 
-Ab jetzt für diesen Vergleich ausschließlich:
+Für dieses Apple-Messages-Reel bleiben die 5 Visuals bewusst Native UI + offizielle Source-Card, weil ein beliebiges Stock-/Fremdbild die Erklärung nicht verbessert. Der neue Resolver ist trotzdem Teil des Testlaufs und ist für kommende Reels bereit.
+
+## JETZT TESTEN — ein Befehl
+
+Ab hier keine weiteren Features hinzufügen, bevor das neue MP4 geprüft wurde:
 
 ```bash
 node ki/scripts/test-apple-messages-step3.mjs
 ```
 
 Der Test erledigt automatisch:
-1. fehlendes generiertes Voiceover lokal herunterladen
-2. pause-komprimierte Runtime-WAV reproduzieren
-3. committed Forced-Alignment-/Scene-Voice-/Caption-Lock prüfen
-4. lokale CC0-SFX-Bibliothek herstellen/validieren
-5. alle 9 SFX deterministisch neu auflösen und prüfen
-6. Step-3-Visual-/Rechte-Gate prüfen
+1. Voiceover/Runtime-Audio herstellen
+2. Pause-Kompression prüfen
+3. Forced-Alignment-/Scene-Voice-/Caption-Lock prüfen
+4. CC0-SFX-Bibliothek + 9 SFX prüfen
+5. Visuals lokal auflösen
+6. Lizenz-/Local-File-/SHA256-Visual-Gate prüfen
 7. Source-Isolation prüfen
-8. TypeScript-Motion-Typecheck
+8. TypeScript-Typecheck
 9. Apple-Messages-Contract-Test
-10. neues Step-3-MP4 rendern
-11. technischen Audio/Video-Gate ausführen
-12. Contact-Sheet + `STEP3-TEST-REPORT.json` erzeugen
+10. Step-3-MP4 rendern
+11. technischen A/V-Gate ausführen
+12. Contact-Sheet + Testbericht erzeugen
 
 Ausgabe:
 
@@ -74,20 +87,19 @@ out/step3-apple-messages-test/STEP3-TEST-REPORT.json
 
 ## Review-Regel
 
-Das Test-MP4 ist **nicht final**. `MOTION-READABILITY-REVIEW.md` wurde bewusst wieder auf `PENDING` gesetzt, weil der alte PASS zum Pre-Step-3-Video gehörte.
+`MOTION-READABILITY-REVIEW.md` bleibt bis zum echten neuen Review auf `PENDING`.
 
-Das neue MP4 muss danach bei 1x geprüft werden auf:
-- Pacing
+Das neue MP4 bei 1x prüfen auf:
+- Pacing / unnötige Pausen
 - Caption-Sync
-- SFX-Timing
-- SFX-Lautstärke
+- SFX-Timing und Lautstärke
 - Zoom-Stärke
 - Fokus-Halos
 - visuelle Überladung
 - Source-Proof-Lesbarkeit
 
-Erst nach diesem Review entscheiden wir, welche Step-3-Komponenten global in PR #28 übernommen werden.
+Erst danach übernehmen wir die bestandenen Step-3-Komponenten global in PR #28 oder korrigieren sie zuerst.
 
 ## CI-Hinweis
 
-Der vorhandene GitHub-Actions-Workflow ist im Repo selbst aktuell als wegen Actions-Billing/Spending blockiert dokumentiert. Deshalb ist dieser Step-3-Vergleich bewusst als lokaler Ein-Kommando-Test gebaut.
+Der vorhandene GitHub-Actions-Workflow ist im Repo aktuell als wegen Actions-Billing/Spending blockiert dokumentiert. Deshalb ist der Vergleich als lokaler Ein-Kommando-Test gebaut.
