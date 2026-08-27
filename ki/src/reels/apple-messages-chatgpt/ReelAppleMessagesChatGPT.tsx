@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import {REEL_CAPTION_GLASS_STYLE, REEL_CAPTION_WRAPPER_STYLE} from '../captionSafe';
 import {ReelSfxTrack} from '../ReelSfxTrack';
+import {CameraPush, FocusHalo, ParallaxFloat, ScanSweep, SourceProofCard} from '../ReelVisualMotion';
 import {APPLE_MESSAGES_CUES, APPLE_MESSAGES_SCENES, APPLE_MESSAGES_SFX} from './contract';
 
 type Props = {voiceoverSrc: string; showCaptions?: boolean; showSfx?: boolean};
@@ -29,8 +30,10 @@ const FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont
 
 const Shell: React.FC<React.PropsWithChildren<{accent:string; eyebrow:string}>> = ({accent,eyebrow,children}) => (
   <AbsoluteFill style={{fontFamily:FONT,color:'#102033',background:'linear-gradient(180deg,#FAFCFF 0%,#EEF5FA 100%)',padding:'112px 82px 0',overflow:'hidden'}}>
-    <div style={{alignSelf:'flex-start',padding:'12px 18px',borderRadius:999,background:'rgba(255,255,255,.82)',border:'1px solid rgba(16,32,51,.08)',boxShadow:'0 10px 30px rgba(16,32,51,.08)',fontSize:23,fontWeight:850,letterSpacing:'.04em',color:accent}}>{eyebrow}</div>
-    {children}
+    <div style={{position:'absolute',width:520,height:520,borderRadius:999,right:-190,top:300,background:`radial-gradient(circle,${accent}13 0%, transparent 68%)`,pointerEvents:'none'}}/>
+    <div style={{position:'absolute',width:420,height:420,borderRadius:999,left:-210,bottom:260,background:`radial-gradient(circle,${accent}0D 0%, transparent 68%)`,pointerEvents:'none'}}/>
+    <div style={{alignSelf:'flex-start',padding:'12px 18px',borderRadius:999,background:'rgba(255,255,255,.82)',border:'1px solid rgba(16,32,51,.08)',boxShadow:'0 10px 30px rgba(16,32,51,.08)',fontSize:23,fontWeight:850,letterSpacing:'.04em',color:accent,zIndex:4}}>{eyebrow}</div>
+    <div style={{position:'relative',zIndex:2}}>{children}</div>
   </AbsoluteFill>
 );
 
@@ -53,16 +56,25 @@ const Scene1: React.FC<{accent:string}> = ({accent}) => {
   const success=spring({frame:frame-48,fps,config:{damping:15,stiffness:180}});
   return <Shell accent={accent} eyebrow="NEU IN CHATGPT">
     <Title>ChatGPT kann jetzt mit Apple Messages arbeiten.</Title>
-    <div style={{display:'grid',gridTemplateColumns:'1fr 120px 1fr',alignItems:'center',marginTop:105}}>
-      <Card style={{height:390,padding:32,transform:`scale(${.9+.1*card})`}}>
-        <div style={{display:'flex',gap:16,alignItems:'center',fontSize:29,fontWeight:900}}><MessageCircle size={44} color={accent}/> Messages</div>
-        <div style={{display:'grid',gap:14,marginTop:44}}><Bubble side="left" text="Bist du später da?"/><Bubble side="right" text="Ich prüfe kurz." accent={accent}/></div>
-      </Card>
-      <div style={{height:5,background:`linear-gradient(90deg,${accent},#2E90FA)`,borderRadius:99,transform:`scaleX(${connect})`,transformOrigin:'left'}}/>
-      <Card style={{height:390,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.9+.1*card})`}}>
-        <div><Sparkles size={74} color="#111827"/><div style={{fontSize:38,fontWeight:950,marginTop:20}}>ChatGPT</div><div style={{fontSize:25,opacity:.6,marginTop:8}}>Apple Messages Plug-in</div></div>
-        <div style={{position:'absolute',marginTop:300,opacity:success,transform:`scale(${success})`,color:accent,fontSize:24,fontWeight:900}}>VERBUNDEN</div>
-      </Card>
+    <div style={{position:'relative',marginTop:105}}>
+      <CameraPush startFrame={8} endFrame={58} fromScale={1} toScale={1.045} origin="58% 58%">
+        <div style={{display:'grid',gridTemplateColumns:'1fr 120px 1fr',alignItems:'center'}}>
+          <ParallaxFloat amplitude={5} phase={0.4}>
+            <Card style={{height:390,padding:32,transform:`scale(${.9+.1*card})`}}>
+              <div style={{display:'flex',gap:16,alignItems:'center',fontSize:29,fontWeight:900}}><MessageCircle size={44} color={accent}/> Messages</div>
+              <div style={{display:'grid',gap:14,marginTop:44}}><Bubble side="left" text="Bist du später da?"/><Bubble side="right" text="Ich prüfe kurz." accent={accent}/></div>
+            </Card>
+          </ParallaxFloat>
+          <div style={{height:5,background:`linear-gradient(90deg,${accent},#2E90FA)`,borderRadius:99,transform:`scaleX(${connect})`,transformOrigin:'left'}}/>
+          <ParallaxFloat amplitude={5} phase={2.1}>
+            <Card style={{height:390,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.9+.1*card})`,position:'relative'}}>
+              <div><Sparkles size={74} color="#111827"/><div style={{fontSize:38,fontWeight:950,marginTop:20}}>ChatGPT</div><div style={{fontSize:25,opacity:.6,marginTop:8}}>Apple Messages Plug-in</div></div>
+              <div style={{position:'absolute',left:0,right:0,bottom:28,opacity:success,transform:`scale(${success})`,color:accent,fontSize:24,fontWeight:900}}>VERBUNDEN</div>
+            </Card>
+          </ParallaxFloat>
+        </div>
+      </CameraPush>
+      <FocusHalo left="68%" top={300} width={250} height={68} startFrame={45} endFrame={82} accent={accent} radius={24}/>
     </div>
   </Shell>;
 };
@@ -70,17 +82,22 @@ const Scene1: React.FC<{accent:string}> = ({accent}) => {
 const Scene2: React.FC<{accent:string}> = ({accent}) => {
   const frame=useCurrentFrame();
   const focus=interpolate(frame,[10,24],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  const scan=interpolate(frame,[22,70],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   const rows=['iMessage','SMS','RCS'];
   return <Shell accent={accent} eyebrow="LESEN + SUCHEN">
     <Title>Nachrichten lesen und durchsuchen.</Title>
-    <Card style={{marginTop:84,height:690,padding:34,position:'relative',overflow:'hidden'}}>
-      <div style={{height:86,borderRadius:24,border:`2px solid rgba(46,144,250,${.16+.36*focus})`,background:'#F8FAFD',display:'flex',alignItems:'center',padding:'0 24px',gap:16,fontSize:28,fontWeight:750}}><Search size={34} color={accent}/> Suche in Messages…</div>
-      <div style={{position:'absolute',left:34,right:34,top:142,height:3,background:accent,transform:`scaleX(${scan})`,transformOrigin:'left',opacity:.45}}/>
-      <div style={{display:'grid',gap:18,marginTop:48}}>
-        {rows.map((label,i)=>{const p=interpolate(frame,[38+i*14,54+i*14],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return <div key={label} style={{height:128,borderRadius:28,background:'#F3F7FB',display:'flex',alignItems:'center',padding:'0 28px',transform:`translateY(${(1-p)*22}px)`,opacity:p}}><MessageCircle size={40} color={accent}/><div style={{marginLeft:20}}><div style={{fontSize:31,fontWeight:900}}>{label}</div><div style={{fontSize:22,opacity:.52,marginTop:4}}>Treffer aus deinem verbundenen Verlauf</div></div><CheckCircle2 size={34} color={accent} style={{marginLeft:'auto'}}/></div>})}
-      </div>
-    </Card>
+    <div style={{position:'relative',marginTop:84}}>
+      <CameraPush startFrame={6} endFrame={58} fromScale={1} toScale={1.045} fromY={0} toY={-8} origin="50% 32%">
+        <Card style={{height:690,padding:34,position:'relative',overflow:'hidden'}}>
+          <div style={{height:86,borderRadius:24,border:`2px solid rgba(46,144,250,${.16+.36*focus})`,background:'#F8FAFD',display:'flex',alignItems:'center',padding:'0 24px',gap:16,fontSize:28,fontWeight:750}}><Search size={34} color={accent}/> Suche in Messages…</div>
+          <ScanSweep startFrame={22} endFrame={70} accent={accent} top={142} left={34} width="calc(100% - 68px)"/>
+          <div style={{display:'grid',gap:18,marginTop:48}}>
+            {rows.map((label,i)=>{const p=interpolate(frame,[38+i*14,54+i*14],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});return <div key={label} style={{height:128,borderRadius:28,background:'#F3F7FB',display:'flex',alignItems:'center',padding:'0 28px',transform:`translateY(${(1-p)*22}px)`,opacity:p}}><MessageCircle size={40} color={accent}/><div style={{marginLeft:20}}><div style={{fontSize:31,fontWeight:900}}>{label}</div><div style={{fontSize:22,opacity:.52,marginTop:4}}>Treffer aus deinem verbundenen Verlauf</div></div><CheckCircle2 size={34} color={accent} style={{marginLeft:'auto'}}/></div>})}
+          </div>
+        </Card>
+      </CameraPush>
+      <FocusHalo left={20} top={8} width="calc(100% - 40px)" height={104} startFrame={8} endFrame={40} accent={accent} radius={28}/>
+      <FocusHalo left={18} top={185} width="calc(100% - 36px)" height={438} startFrame={48} endFrame={96} accent={accent} radius={32}/>
+    </div>
   </Shell>;
 };
 
@@ -90,17 +107,23 @@ const Scene3: React.FC<{accent:string}> = ({accent}) => {
   const send=spring({frame:frame-66,fps:30,config:{damping:15,stiffness:180}});
   return <Shell accent={accent} eyebrow="ANTWORTEN VORBEREITEN">
     <Title>Entwurf erstellen. Auf Wunsch senden.</Title>
-    <Card style={{marginTop:90,height:660,padding:36,position:'relative'}}>
-      <div style={{display:'flex',gap:14,alignItems:'center',fontSize:27,fontWeight:850}}><Sparkles size={34} color={accent}/> Antwortentwurf</div>
-      <div style={{marginTop:42,borderRadius:28,background:'#F4F1FF',padding:30,minHeight:210,fontSize:32,lineHeight:1.35,fontWeight:720}}>
-        <span style={{opacity:draft}}>„Ja, ich bin später da. Ich melde mich, sobald ich losfahre.“</span>
-      </div>
-      <div style={{marginTop:42,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <div style={{fontSize:25,opacity:.56}}>Bereit für Messages</div>
-        <div style={{width:180,height:76,borderRadius:24,background:accent,color:'white',display:'flex',alignItems:'center',justifyContent:'center',gap:12,fontSize:27,fontWeight:900,transform:`scale(${.84+.16*send})`,opacity:send}}><Send size={31}/> SENDEN</div>
-      </div>
-      <div style={{position:'absolute',left:36,right:36,bottom:44,display:'flex',justifyContent:'center',fontSize:25,fontWeight:850,color:accent}}>VORBEREITEN → SENDEN</div>
-    </Card>
+    <div style={{position:'relative',marginTop:90}}>
+      <CameraPush startFrame={10} endFrame={78} fromScale={1} toScale={1.055} origin="70% 57%">
+        <Card style={{height:660,padding:36,position:'relative'}}>
+          <div style={{display:'flex',gap:14,alignItems:'center',fontSize:27,fontWeight:850}}><Sparkles size={34} color={accent}/> Antwortentwurf</div>
+          <div style={{marginTop:42,borderRadius:28,background:'#F4F1FF',padding:30,minHeight:210,fontSize:32,lineHeight:1.35,fontWeight:720}}>
+            <span style={{opacity:draft}}>„Ja, ich bin später da. Ich melde mich, sobald ich losfahre.“</span>
+          </div>
+          <div style={{marginTop:42,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:25,opacity:.56}}>Bereit für Messages</div>
+            <div style={{width:180,height:76,borderRadius:24,background:accent,color:'white',display:'flex',alignItems:'center',justifyContent:'center',gap:12,fontSize:27,fontWeight:900,transform:`scale(${.84+.16*send})`,opacity:send}}><Send size={31}/> SENDEN</div>
+          </div>
+          <div style={{position:'absolute',left:36,right:36,bottom:44,display:'flex',justifyContent:'center',fontSize:25,fontWeight:850,color:accent}}>VORBEREITEN → SENDEN</div>
+        </Card>
+      </CameraPush>
+      <FocusHalo left={20} top={86} width="calc(100% - 40px)" height={260} startFrame={18} endFrame={58} accent={accent} radius={32}/>
+      <FocusHalo left="70%" top={360} width={210} height={102} startFrame={60} endFrame={96} accent={accent} radius={28}/>
+    </div>
   </Shell>;
 };
 
@@ -112,13 +135,17 @@ const Scene4: React.FC<{accent:string}> = ({accent}) => {
   const approved=spring({frame:frame-64,fps:30,config:{damping:15,stiffness:185}});
   return <Shell accent={accent} eyebrow="NICHT EINFACH ABSCHICKEN">
     <Title>Vor dem Senden kommt deine Freigabe.</Title>
-    <div style={{marginTop:74,display:'grid',gap:24}}>
+    <div style={{marginTop:74,display:'grid',gap:24,position:'relative'}}>
       <Card style={{height:132,padding:'0 30px',display:'flex',alignItems:'center',gap:20}}><LockKeyhole size={44} color="#D92D20"/><div><div style={{fontSize:29,fontWeight:900}}>Senden gesperrt</div><div style={{fontSize:22,opacity:.54,marginTop:4}}>Freigabe fehlt</div></div></Card>
-      <Card style={{height:520,padding:34,transform:`translateY(${(1-sheet)*58}px)`,opacity:sheet}}>
-        <div style={{fontSize:31,fontWeight:950}}>Vor dem Senden bestätigen</div>
-        {[['Nachricht prüfen',c1],['Empfänger prüfen',c2]].map(([label,p],i)=><div key={String(label)} style={{height:112,marginTop:i?16:30,borderRadius:26,background:'#F8FAFC',display:'flex',alignItems:'center',padding:'0 24px',fontSize:27,fontWeight:820}}><div style={{width:46,height:46,borderRadius:14,background:accent,color:'white',display:'grid',placeItems:'center',transform:`scale(${p as number})`,opacity:p as number}}><Check size={28}/></div><span style={{marginLeft:18}}>{String(label)}</span></div>)}
-        <div style={{marginTop:26,height:82,borderRadius:24,background:approved>.5?'#12B76A':'#E9EEF5',color:approved>.5?'white':'#667085',display:'flex',alignItems:'center',justifyContent:'center',gap:12,fontSize:27,fontWeight:950,transform:`scale(${.96+.04*approved})`}}><ShieldCheck size={34}/> SENDEN FREIGEGEBEN</div>
-      </Card>
+      <CameraPush startFrame={18} endFrame={82} fromScale={1} toScale={1.05} origin="50% 66%">
+        <Card style={{height:520,padding:34,transform:`translateY(${(1-sheet)*58}px)`,opacity:sheet}}>
+          <div style={{fontSize:31,fontWeight:950}}>Vor dem Senden bestätigen</div>
+          {[['Nachricht prüfen',c1],['Empfänger prüfen',c2]].map(([label,p],i)=><div key={String(label)} style={{height:112,marginTop:i?16:30,borderRadius:26,background:'#F8FAFC',display:'flex',alignItems:'center',padding:'0 24px',fontSize:27,fontWeight:820}}><div style={{width:46,height:46,borderRadius:14,background:accent,color:'white',display:'grid',placeItems:'center',transform:`scale(${p as number})`,opacity:p as number}}><Check size={28}/></div><span style={{marginLeft:18}}>{String(label)}</span></div>)}
+          <div style={{marginTop:26,height:82,borderRadius:24,background:approved>.5?'#12B76A':'#E9EEF5',color:approved>.5?'white':'#667085',display:'flex',alignItems:'center',justifyContent:'center',gap:12,fontSize:27,fontWeight:950,transform:`scale(${.96+.04*approved})`}}><ShieldCheck size={34}/> SENDEN FREIGEGEBEN</div>
+        </Card>
+      </CameraPush>
+      <FocusHalo left={20} top={170} width="calc(100% - 40px)" height={270} startFrame={38} endFrame={68} accent={accent} radius={30}/>
+      <FocusHalo left={42} top={447} width="calc(100% - 84px)" height={108} startFrame={64} endFrame={104} accent={accent} radius={28}/>
     </div>
   </Shell>;
 };
@@ -130,11 +157,16 @@ const Scene5: React.FC<{accent:string}> = ({accent}) => {
   const hold=interpolate(frame,[48,62],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   return <Shell accent={accent} eyebrow="VERFÜGBARKEIT">
     <Title>Laut OpenAI: macOS Desktop, alle Tarife.</Title>
-    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,marginTop:110}}>
-      <Card style={{height:360,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.86+.14*mac})`,opacity:mac}}><Monitor size={90} color={accent}/><div><div style={{fontSize:36,fontWeight:950}}>macOS DESKTOP</div><div style={{fontSize:22,opacity:.55,marginTop:8}}>ChatGPT App</div></div></Card>
-      <Card style={{height:360,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.86+.14*plans})`,opacity:plans}}><Smartphone size={90} color={accent}/><div><div style={{fontSize:36,fontWeight:950}}>ALLE TARIFE</div><div style={{fontSize:22,opacity:.55,marginTop:8}}>laut OpenAI Release Notes</div></div></Card>
+    <CameraPush startFrame={8} endFrame={70} fromScale={1} toScale={1.035} origin="50% 48%">
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,marginTop:110}}>
+        <ParallaxFloat amplitude={5} phase={0.2}><Card style={{height:360,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.86+.14*mac})`,opacity:mac}}><Monitor size={90} color={accent}/><div><div style={{fontSize:36,fontWeight:950}}>macOS DESKTOP</div><div style={{fontSize:22,opacity:.55,marginTop:8}}>ChatGPT App</div></div></Card></ParallaxFloat>
+        <ParallaxFloat amplitude={5} phase={1.9}><Card style={{height:360,padding:34,display:'grid',placeItems:'center',textAlign:'center',transform:`scale(${.86+.14*plans})`,opacity:plans}}><Smartphone size={90} color={accent}/><div><div style={{fontSize:36,fontWeight:950}}>ALLE TARIFE</div><div style={{fontSize:22,opacity:.55,marginTop:8}}>laut OpenAI Release Notes</div></div></Card></ParallaxFloat>
+      </div>
+    </CameraPush>
+    <div style={{marginTop:32,display:'flex',justifyContent:'center'}}>
+      <SourceProofCard source="openai.com" date="20. Aug. 2026" label="OpenAI Release Notes" accent={accent} startFrame={34}/>
     </div>
-    <div style={{marginTop:64,textAlign:'center',fontSize:42,fontWeight:950,color:accent,opacity:hold}}>VERBINDEN → PRÜFEN → SENDEN</div>
+    <div style={{marginTop:34,textAlign:'center',fontSize:42,fontWeight:950,color:accent,opacity:hold}}>VERBINDEN → PRÜFEN → SENDEN</div>
   </Shell>;
 };
 
