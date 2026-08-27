@@ -29,6 +29,7 @@ catch (error) { fail(`reel.json is invalid: ${error.message}`); }
 const compositionId = safeCompositionId(reel?.compositionId);
 if (!compositionId) fail('compositionId missing in reel.json.');
 const sfxEnabled = reel?.sfx?.enabled === true;
+const visualsEnabled = reel?.visuals?.enabled === true;
 
 const names = {
   video: `${compositionId}.mp4`,
@@ -60,6 +61,8 @@ if (manifest?.gates?.localForcedAlignment !== 'PASSED_EXACT_KNOWN_TRANSCRIPT') f
 if (manifest?.gates?.sceneVoiceMap !== 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') fail('manifest sceneVoiceMap gate is not PASSED_EXACT_SCENE_TEXT_AND_ANCHORS.');
 if (sfxEnabled && manifest?.gates?.sfx !== 'PASSED_CC0_AUTO_RESOLVED_AND_LOCKED') fail('manifest SFX gate is not PASSED_CC0_AUTO_RESOLVED_AND_LOCKED.');
 if (!sfxEnabled && manifest?.gates?.sfx !== 'NOT_APPLICABLE') fail('manifest SFX gate must be NOT_APPLICABLE when SFX is disabled.');
+if (visualsEnabled && manifest?.gates?.visuals !== 'PASSED_VISUAL_ASSET_RIGHTS_AND_LOCK') fail('manifest visuals gate is not PASSED_VISUAL_ASSET_RIGHTS_AND_LOCK.');
+if (!visualsEnabled && manifest?.gates?.visuals !== 'NOT_APPLICABLE') fail('manifest visuals gate must be NOT_APPLICABLE when visuals are disabled.');
 if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
 if (!['PASSED','NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fail('manifest sourceIsolation gate is invalid.');
 if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
@@ -67,6 +70,7 @@ if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('ma
 const provenance = manifest?.provenance || {};
 const requiredProvenance = ['renderSourceCommitSha','finalizationCommitSha','sourceDir','sourceTreeSha256','renderContractSha256','reelJsonSha256AtRenderLock','reelJsonSha256AtFinalization','sceneVoiceMapSha256','wordTimingsSha256','captionJsonSha256','canonicalAudioSha256','runtimeAudioSha256','reviewedVideoSha256'];
 if (sfxEnabled) requiredProvenance.push('sfxResolvedSha256');
+if (visualsEnabled) requiredProvenance.push('visualAssetsSha256');
 for (const key of requiredProvenance) {
   if (!provenance[key] || typeof provenance[key] !== 'string') fail(`manifest provenance field missing: ${key}.`);
 }
@@ -96,5 +100,6 @@ console.log(`cover: ${files.cover}`);
 console.log(`caption: ${files.caption}`);
 console.log(`manifest: ${files.manifest}`);
 console.log(`sfx: ${sfxEnabled ? 'CC0 AUTO-RESOLVED + LOCKED' : 'NOT_APPLICABLE'}`);
+console.log(`visuals: ${visualsEnabled ? 'RIGHTS-CHECKED + LOCKED' : 'NOT_APPLICABLE'}`);
 console.log(`render source commit: ${provenance.renderSourceCommitSha}`);
 console.log(`video sha256: ${actualArtifactHashes.videoSha256}`);
