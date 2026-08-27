@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "status": "VISUAL_ASSETS_RESOLVED_LOCAL_LOCK",
+  "compositionId": "KI-AppleMessagesChatGPT",
+  "generatedAt": "2026-08-27T15:06:00.000Z",
+  "sourceManifest": "ki/reels/2026-08-24_bis_2026-08-30/05_ChatGPT-Apple-Messages-auf-dem-Mac/06-projektdateien/visual-assets.json",
+  "policy": {
+    "renderTimeRemoteMedia": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "deterministicAfterResolution": true
+  },
+  "assets": [
+    {
+      "id": "scene1-native-messages-connect",
+      "sceneId": "scene1",
+      "provider": "NATIVE_UI",
+      "purpose": "Messages ↔ ChatGPT connection is clearer as animated native UI than as a stock image.",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene2-native-search",
+      "sceneId": "scene2",
+      "provider": "NATIVE_UI",
+      "purpose": "Search field and iMessage/SMS/RCS result states require exact readable UI.",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene3-native-draft",
+      "sceneId": "scene3",
+      "provider": "NATIVE_UI",
+      "purpose": "Draft and send interaction is best shown as exact native motion UI.",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene4-native-approval",
+      "sceneId": "scene4",
+      "provider": "NATIVE_UI",
+      "purpose": "Approval checklist is the core safety mechanic and must remain readable.",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene5-openai-source-proof",
+      "sceneId": "scene5",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "purpose": "Add authenticity and visual variation while showing the official source without copying a full webpage screenshot.",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://openai.com/de-DE/products/release-notes/",
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    }
+  ]
+}
