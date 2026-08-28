@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "compositionId": "KI-GPT56APIPricesFastMode",
+  "sourceDir": "ki/src/reels/gpt56-api-prices-fastmode",
+  "rootImportNeedle": "./reels/gpt56-api-prices-fastmode",
+  "requiredStrings": [
+    "80 %",
+    "20 %",
+    "2,5×",
+    "FAST MODE",
+    "priority",
+    "OpenAI Release Notes"
+  ],
+  "forbiddenStrings": [
+    "Apple Messages Plug-in",
+    "GPT-5.4 mini",
+    "DALL·E"
+  ]
+}

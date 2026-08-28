@@ -90,6 +90,14 @@ import {
   ReelChatGPTStudyMode,
 } from './reels/chatgpt-study-mode';
 import {
+  GPT56_API_COMPOSITION_ID,
+  GPT56_API_DURATION_IN_FRAMES,
+  GPT56_API_FPS,
+  GPT56_API_HEIGHT,
+  GPT56_API_WIDTH,
+  ReelGPT56APIPricesFastMode,
+} from './reels/gpt56-api-prices-fastmode';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -206,6 +214,15 @@ export const RemotionRoot: React.FC = () => (
         fps={STUDY_MODE_FPS}
         width={STUDY_MODE_WIDTH}
         height={STUDY_MODE_HEIGHT}
+      />
+      <Composition
+        id={GPT56_API_COMPOSITION_ID}
+        component={ReelGPT56APIPricesFastMode}
+        defaultProps={{voiceoverSrc: runtimeAudio(GPT56_API_COMPOSITION_ID), showCaptions: true, showSfx: true}}
+        durationInFrames={GPT56_API_DURATION_IN_FRAMES}
+        fps={GPT56_API_FPS}
+        width={GPT56_API_WIDTH}
+        height={GPT56_API_HEIGHT}
       />
     </Folder>
 

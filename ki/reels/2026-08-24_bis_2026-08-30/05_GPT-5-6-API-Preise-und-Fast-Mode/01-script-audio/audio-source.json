@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+  "provider": "AI_Voice_Generator",
+  "voiceId": "clear",
+  "contextId": "4a7eee04ddbd4158b51c32644c31997e",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=4a7eee04ddbd4158b51c32644c31997e",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/79f5359d-becf-4dbf-89b0-6aa89eb4d09b.mp3",
+  "targetFile": "01-script-audio/voiceover.mp3",
+  "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
+  "note": "Generated final Phase-1 voice. Remote URL is provenance only; download locally before alignment/render."
+}
