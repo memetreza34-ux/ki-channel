@@ -29,6 +29,7 @@ const scripts = {
   visuals: path.resolve('ki', 'scripts', 'validate-reel-visual-assets.mjs'),
   motion: path.resolve('ki', 'scripts', 'validate-motion-readability-review.mjs'),
   sourceIsolation: path.resolve('ki', 'scripts', 'validate-reel-source-isolation.mjs'),
+  socialAudio: path.resolve('ki', 'scripts', 'validate-social-audio-master.mjs'),
   finalVideo: path.resolve('ki', 'scripts', 'validate-final-video.mjs'),
 };
 
@@ -84,6 +85,7 @@ if (visualsEnabled) runGate('visual asset gate', scripts.visuals, [reelDir]);
 runGate('motion-readability gate', scripts.motion, [reelDir, sourceVideo]);
 const isolationConfig = path.join(reelDir, '06-projektdateien', 'source-isolation.json');
 if (existsSync(isolationConfig)) runGate('source-isolation gate', scripts.sourceIsolation, [reelDir]);
+runGate('social-audio-master gate', scripts.socialAudio, [sourceVideo]);
 runGate('video/audio gate', scripts.finalVideo, [sourceVideo]);
 
 const lockPath = renderLockPath(compositionId);
@@ -188,6 +190,7 @@ try {
       visuals: visualsEnabled ? 'PASSED_RIGHTS_LOCAL_FILE_SHA256_AND_LOCK' : 'NOT_APPLICABLE',
       motionReadability: 'PASSED_EXACT_VIDEO_HASH',
       sourceIsolation: existsSync(isolationConfig) ? 'PASSED' : 'NOT_APPLICABLE',
+      socialAudioMaster: 'PASSED_MINUS16_LUFS',
       audioVideo: 'PASSED',
       renderProvenance: 'PASSED_LOCKED_INPUT_HASHES',
     },
