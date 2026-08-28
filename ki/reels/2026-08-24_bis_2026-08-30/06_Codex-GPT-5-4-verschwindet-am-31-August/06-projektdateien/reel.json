@@ -1,0 +1,80 @@
+{
+  "version": 4,
+  "reelId": "codex-gpt54-sunset",
+  "compositionId": "KI-CodexGPT54Sunset",
+  "sourceDir": "ki/src/reels/codex-gpt54-sunset",
+  "title": "GPT-5.4 verschwindet am 31. August aus Codex mit ChatGPT-Login",
+  "publishDate": "2026-08-28",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 1080,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PENDING_PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "SOURCE_READY_LOCAL_DOWNLOAD_REQUIRED",
+    "timingAuthority": false,
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25
+    }
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "FORCED_ALIGNMENT_REQUIRED",
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay"
+  },
+  "sfx": {
+    "enabled": true,
+    "eventsFile": "06-projektdateien/sfx-events.json",
+    "resolvedFile": "06-projektdateien/sfx-resolved.json",
+    "selectionMode": "AUTO_CC0_DETERMINISTIC",
+    "status": "PENDING_LOCAL_CC0_RESOLUTION"
+  },
+  "visuals": {
+    "enabled": true,
+    "manifestFile": "06-projektdateien/visual-assets.json",
+    "resolvedFile": "06-projektdateien/visual-assets-resolved.json",
+    "status": "PENDING_LOCAL_VISUAL_RESOLUTION",
+    "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
+    "remoteRenderUrlsAllowed": false,
+    "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
+    "sourceProof": "OFFICIAL_SOURCE_CARD"
+  },
+  "header": {"top":112,"style":"compact_glass_chip"},
+  "background": {"rule":"LIGHT_FIRST_FULLSCREEN_SINGLE_BACKGROUND_PER_SCENE","footerSplitAllowed":false},
+  "export": {
+    "coverTimeSeconds": 2.2,
+    "coverText": "GPT-5.4 FLIEGT AUS CODEX",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video","cover","caption","manifest"]
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"Deadline und Abschaltung","startFrame":0,"endFrame":210,"accent":"#D92D20","heroMoment":"31 AUG deadline stamp and two GPT-5.4 cards become unavailable","timingStatus":"PLANNING"},
+    {"sceneId":"scene2","title":"Empfohlene Ersatzmodelle","startFrame":210,"endFrame":440,"accent":"#7A5AF8","heroMoment":"5.4→5.6 Terra and 5.4 mini→5.6 Luna replacement rails","timingStatus":"PLANNING"},
+    {"sceneId":"scene3","title":"API bleibt verfügbar","startFrame":440,"endFrame":650,"accent":"#12B76A","heroMoment":"ChatGPT-login path gets an X while API-key path stays green over real server visual","timingStatus":"PLANNING"},
+    {"sceneId":"scene4","title":"Was du umstellen solltest","startFrame":650,"endFrame":900,"accent":"#F79009","heroMoment":"migration checklist ticks through workspace settings agents and scheduled tasks","timingStatus":"PLANNING"},
+    {"sceneId":"scene5","title":"Kurzfazit","startFrame":900,"endFrame":1080,"accent":"#12B76A","heroMoment":"final split verdict with official OpenAI source proof","timingStatus":"PLANNING"}
+  ],
+  "sources": ["https://openai.com/de-DE/products/release-notes/"]
+}
