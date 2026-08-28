@@ -16,11 +16,13 @@ const reelDir = path.resolve(rawReelDir);
 const exportDir = path.join(reelDir, '05-export');
 const reelJsonPath = path.join(reelDir, '06-projektdateien', 'reel.json');
 const finalValidator = path.resolve('ki', 'scripts', 'validate-final-video.mjs');
+const socialAudioValidator = path.resolve('ki', 'scripts', 'validate-social-audio-master.mjs');
 const fail = (message) => { console.error(`EXPORT PACKAGE GATE FAILED: ${message}`); process.exit(1); };
 
 if (!existsSync(reelDir)) fail(`reel package not found: ${reelDir}`);
 if (!existsSync(exportDir)) fail('05-export directory is missing.');
 if (!existsSync(reelJsonPath)) fail('06-projektdateien/reel.json is missing.');
+if (!existsSync(socialAudioValidator)) fail('social audio master validator is missing.');
 
 let reel;
 try { reel = JSON.parse(await readFile(reelJsonPath, 'utf8')); }
@@ -65,6 +67,7 @@ if (visualsEnabled && manifest?.gates?.visuals !== 'PASSED_RIGHTS_LOCAL_FILE_SHA
 if (!visualsEnabled && manifest?.gates?.visuals !== 'NOT_APPLICABLE') fail('manifest visual gate must be NOT_APPLICABLE when visuals are disabled.');
 if (manifest?.gates?.motionReadability !== 'PASSED_EXACT_VIDEO_HASH') fail('manifest motionReadability gate is not PASSED_EXACT_VIDEO_HASH.');
 if (!['PASSED', 'NOT_APPLICABLE'].includes(manifest?.gates?.sourceIsolation)) fail('manifest sourceIsolation gate is invalid.');
+if (manifest?.gates?.socialAudioMaster !== 'PASSED_MINUS16_LUFS') fail('manifest socialAudioMaster gate is not PASSED_MINUS16_LUFS.');
 if (manifest?.gates?.renderProvenance !== 'PASSED_LOCKED_INPUT_HASHES') fail('manifest renderProvenance gate is not PASSED_LOCKED_INPUT_HASHES.');
 
 const provenance = manifest?.provenance || {};
@@ -89,6 +92,11 @@ for (const [key, value] of Object.entries(actualArtifactHashes)) {
 }
 if (provenance.reviewedVideoSha256 !== actualArtifactHashes.videoSha256) fail('exported video is not byte-identical to the reviewed video hash.');
 
+const socialGate = spawnSync(process.execPath, [socialAudioValidator, files.video], {encoding: 'utf8'});
+if (socialGate.stdout) process.stdout.write(socialGate.stdout);
+if (socialGate.stderr) process.stderr.write(socialGate.stderr);
+if (socialGate.status !== 0) fail('exported MP4 failed the social audio master gate.');
+
 const gate = spawnSync(process.execPath, [finalValidator, files.video], {encoding: 'utf8'});
 if (gate.stdout) process.stdout.write(gate.stdout);
 if (gate.stderr) process.stderr.write(gate.stderr);
@@ -101,5 +109,6 @@ console.log(`caption: ${files.caption}`);
 console.log(`manifest: ${files.manifest}`);
 console.log(`sfx: ${sfxEnabled ? 'CC0 AUTO-RESOLVED + LOCKED' : 'NOT_APPLICABLE'}`);
 console.log(`visuals: ${visualsEnabled ? 'RIGHTS + LOCAL SHA256 + LOCKED' : 'NOT_APPLICABLE'}`);
+console.log('social audio: -16 LUFS MASTER PASSED');
 console.log(`render source commit: ${provenance.renderSourceCommitSha}`);
 console.log(`video sha256: ${actualArtifactHashes.videoSha256}`);
