@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "fps": 30,
+  "timingStatus": "PLANNING_ONLY_FORCED_ALIGNMENT_REQUIRED",
+  "timingAuthority": "PENDING_LOCAL_FORCED_ALIGNMENT",
+  "note": "This file is intentionally overwritten by align-reel-local.mjs from the exact runtime voiceover.",
+  "cues": []
+}
