@@ -27,6 +27,8 @@ const mustExist = [
   'ki/scripts/validate-reel-sfx-plan.mjs',
   'ki/scripts/resolve-reel-visual-assets.mjs',
   'ki/scripts/validate-reel-visual-assets.mjs',
+  'ki/scripts/master-reel-video.mjs',
+  'ki/scripts/validate-social-audio-master.mjs',
   'ki/scripts/lock-scene-timing-from-captions.mjs',
   'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-scene-voice-map.mjs',
@@ -132,6 +134,11 @@ if (!externalVisual.includes('staticFile(staticSrc)') || !externalVisual.include
 const visualMotion = await read('ki/src/reels/ReelVisualMotion.tsx');
 for (const needle of ['CameraPush', 'FocusHalo', 'ScanSweep', 'ParallaxFloat', 'SourceProofCard']) if (!visualMotion.includes(needle)) fail.push(`ReelVisualMotion.tsx missing ${needle}.`);
 
+const audioMaster = await read('ki/scripts/master-reel-video.mjs');
+for (const needle of ['loudnorm=I=${targetI}', 'targetI = -16', 'targetTP = -1.5', "'-c:v', 'copy'", "'-c:a', 'aac'"]) if (!audioMaster.includes(needle)) fail.push(`master-reel-video.mjs missing social mastering token: ${needle}`);
+const socialAudioGate = await read('ki/scripts/validate-social-audio-master.mjs');
+for (const needle of ['loudnorm=I=-16:TP=-1.5:LRA=7', 'integrated < -17.0', 'integrated > -15.0', 'truePeak > -1.0']) if (!socialAudioGate.includes(needle)) fail.push(`validate-social-audio-master.mjs missing gate token: ${needle}`);
+
 const prepare = await read('ki/scripts/prepare-reel-render.mjs');
 if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
 if (!prepare.includes('validate-scene-voice-map.mjs') || !prepare.includes('sceneVoiceMapSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash scene-to-voice mapping.');
@@ -148,6 +155,10 @@ if (!finalize.includes('PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') || !finalize.inclu
 if (!finalize.includes('PASSED_EXACT_KNOWN_TRANSCRIPT') || !finalize.includes('wordTimingsSha256')) fail.push('finalize-reel-export.mjs does not enforce local forced-alignment provenance.');
 if (!finalize.includes('PASSED_CC0_AUTO_RESOLVED_AND_LOCKED') || !finalize.includes('sfxResolvedSha256')) fail.push('finalize-reel-export.mjs does not enforce SFX provenance.');
 if (!finalize.includes('PASSED_RIGHTS_LOCAL_FILE_SHA256_AND_LOCK') || !finalize.includes('visualManifestSha256') || !finalize.includes('visualResolvedSha256')) fail.push('finalize-reel-export.mjs does not enforce visual provenance.');
+if (!finalize.includes('validate-social-audio-master.mjs') || !finalize.includes('PASSED_MINUS16_LUFS')) fail.push('finalize-reel-export.mjs does not enforce the social audio master.');
+
+const exportGate = await read('ki/scripts/validate-reel-export-package.mjs');
+if (!exportGate.includes('PASSED_MINUS16_LUFS') || !exportGate.includes('validate-social-audio-master.mjs')) fail.push('validate-reel-export-package.mjs does not enforce the social audio master.');
 
 const generator = await read('scripts/new-ki-reel.mjs');
 if (!generator.includes('SCENE-VOICE-MAP.json') || !generator.includes('FIRST_MAPPED_WORD')) fail.push('new reel generator does not create the canonical scene-to-voice mapping contract.');
@@ -164,4 +175,4 @@ console.log('PRODUCTION CONTRACT AUDIT: PASSED');
 console.log(`checked required files: ${mustExist.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
-console.log('checked pause-compression + forced-alignment + scene-voice + automatic CC0-SFX + ranked local visual pipeline: yes');
+console.log('checked pause-compression + forced-alignment + scene-voice + automatic CC0-SFX + ranked local visual pipeline + -16 LUFS social master: yes');
