@@ -19,7 +19,10 @@ if (!existsSync(scriptPath)) fail(`missing script: ${scriptPath}`);
 if (!existsSync(reelPath)) fail(`missing reel.json: ${reelPath}`);
 
 const script = (await readFile(scriptPath, 'utf8')).trim();
-const reel = JSON.parse(await readFile(reelPath, 'utf8'));
+let reel;
+try { reel = JSON.parse(await readFile(reelPath, 'utf8')); }
+catch (error) { fail(`invalid reel.json: ${error.message}`); }
+
 const words = script.match(/[\p{L}\p{N}]+(?:[-'’][\p{L}\p{N}]+)*/gu) || [];
 const wordCount = words.length;
 const targetMin = Number(reel?.scriptBudget?.targetMinWords ?? 55);
