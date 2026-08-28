@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {
+      "id": "s01",
+      "sceneId": "scene1",
+      "text": "ChatGPT hat einen Study Mode."
+    },
+    {
+      "id": "s02",
+      "sceneId": "scene1",
+      "text": "Und der Unterschied ist wichtig: Statt dir sofort nur die fertige Lösung hinzuklatschen, soll es dir beim Verstehen helfen."
+    },
+    {
+      "id": "s03",
+      "sceneId": "scene2",
+      "text": "Normalerweise tippst du eine Aufgabe ein und bekommst direkt eine Antwort."
+    },
+    {
+      "id": "s04",
+      "sceneId": "scene2",
+      "text": "Das ist schnell – aber oft lernt man dabei kaum etwas."
+    },
+    {
+      "id": "s05",
+      "sceneId": "scene3",
+      "text": "Im Study Mode zerlegt ChatGPT die Aufgabe eher in Schritte, Fragen und kleine Lernhilfen."
+    },
+    {
+      "id": "s06",
+      "sceneId": "scene3",
+      "text": "Du wirst also mehr durch den Prozess geführt."
+    },
+    {
+      "id": "s07",
+      "sceneId": "scene4",
+      "text": "Du sollst die Lösung nicht nur abschreiben, sondern wirklich verstehen, wie man dahin kommt."
+    },
+    {
+      "id": "s08",
+      "sceneId": "scene5",
+      "text": "Der Study Mode macht ChatGPT nicht perfekt."
+    },
+    {
+      "id": "s09",
+      "sceneId": "scene5",
+      "text": "Aber wenn du wirklich lernen willst, ist das deutlich sinnvoller als einfach nur eine fertige Antwort zu kopieren."
+    }
+  ]
+}
