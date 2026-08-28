@@ -7,6 +7,13 @@
   "publishDate": "2026-08-28",
   "week": "2026-08-24_bis_2026-08-30",
   "productionMode": "REMOTION_NATIVE_PLUS_CURATED_REAL_VISUAL",
+  "scriptBudget": {
+    "targetMinWords": 55,
+    "targetMaxWords": 75,
+    "hardMaxWords": 80,
+    "allowLonger": false,
+    "longerReason": ""
+  },
   "format": {
     "width": 1080,
     "height": 1920,
@@ -59,6 +66,7 @@
     "status": "PENDING_LOCAL_VISUAL_RESOLUTION",
     "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
     "remoteRenderUrlsAllowed": false,
+    "maxExternalBinaries": 2,
     "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
     "sourceProof": "OFFICIAL_SOURCE_CARD"
   },
