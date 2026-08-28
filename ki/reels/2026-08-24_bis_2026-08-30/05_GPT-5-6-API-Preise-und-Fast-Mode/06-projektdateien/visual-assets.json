@@ -27,6 +27,6 @@
       }
     },
     {"id":"scene4-speed-cost-ui","sceneId":"scene4","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"2.5x speed versus 2x cost tradeoff","rightsStatus":"NATIVE_ORIGINAL"},
-    {"id":"scene5-openai-source","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","renderMode":"NATIVE_SOURCE_PROOF","purpose":"Official OpenAI release-note proof for priority backwards compatibility","rightsStatus":"OFFICIAL_SOURCE_REFERENCE","sourceUrl":"https://openai.com/de-DE/products/release-notes/"}
+    {"id":"scene5-openai-source","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","renderMode":"NATIVE_SOURCE_PROOF","purpose":"Official OpenAI July 30 pricing/Fast Mode proof for priority backwards compatibility","rightsStatus":"OFFICIAL_SOURCE_REFERENCE","sourceUrl":"https://openai.com/de-DE/index/advancing-the-price-performance-frontier-with-gpt-5-6/"}
   ]
 }
