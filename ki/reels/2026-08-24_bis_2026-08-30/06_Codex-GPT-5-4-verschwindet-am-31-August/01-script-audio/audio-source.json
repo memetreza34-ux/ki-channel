@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+  "provider": "AI_Voice_Generator",
+  "voiceId": "clear",
+  "contextId": "9ed316348bc3472f977f0970f4045e17",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=9ed316348bc3472f977f0970f4045e17",
+  "targetFile": "01-script-audio/voiceover.mp3",
+  "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt"
+}
