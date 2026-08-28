@@ -39,6 +39,19 @@ if (resolvedAssets.length !== assets.length) fail(`resolved asset count ${resolv
 if (resolved?.policy?.renderTimeRemoteMedia !== false) fail('resolved visual policy must forbid render-time remote media.');
 if (resolved?.policy?.googleImageSearchAsLicenseAuthority !== false) fail('Google image search must never be a license authority.');
 
+const maxExternalBinaries = Number(reel?.visuals?.maxExternalBinaries ?? 2);
+if (!Number.isInteger(maxExternalBinaries) || maxExternalBinaries < 0 || maxExternalBinaries > 8) {
+  fail(`reel.visuals.maxExternalBinaries must be an integer from 0 to 8, got ${reel?.visuals?.maxExternalBinaries ?? 'default'}.`);
+}
+const manifestExternalCount = assets.filter((asset) => binaryProviders.has(asset?.provider)).length;
+const resolvedExternalCount = resolvedAssets.filter((asset) => Boolean(asset?.localFile || asset?.staticFile)).length;
+if (manifestExternalCount > maxExternalBinaries) {
+  fail(`external binary visual count ${manifestExternalCount} exceeds maxExternalBinaries=${maxExternalBinaries}. Keep the reel native-first or explicitly raise the reviewed limit in reel.json.`);
+}
+if (resolvedExternalCount !== manifestExternalCount) {
+  fail(`resolved external binary count ${resolvedExternalCount} != manifest external binary count ${manifestExternalCount}.`);
+}
+
 const hashFile = async (file) => createHash('sha256').update(await readFile(file)).digest('hex');
 const ids = new Set();
 const resolvedById = new Map(resolvedAssets.map((asset) => [asset.id, asset]));
@@ -112,7 +125,7 @@ for (const file of sourceFiles) {
 
 console.log('VISUAL ASSET GATE PASSED');
 console.log(`assets: ${assets.length}`);
-console.log(`external local binaries: ${resolvedAssets.filter((asset) => asset.localFile).length}`);
+console.log(`external local binaries: ${resolvedExternalCount}/${maxExternalBinaries} max`);
 console.log(`source files scanned: ${sourceFiles.length}`);
 console.log('ranked external selection: verified');
 console.log('render-time remote URLs: forbidden');
