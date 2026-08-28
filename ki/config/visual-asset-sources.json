@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "status": "CURATED_VISUAL_SOURCE_POLICY",
   "policy": {
     "remoteMediaDuringRender": false,
@@ -11,7 +11,15 @@
       "OFFICIAL_SOURCE_CARD",
       "WIKIMEDIA_COMMONS",
       "GITHUB_RAW"
-    ]
+    ],
+    "externalRealVisualGuideline": {
+      "idealMin": 1,
+      "idealMax": 2,
+      "defaultHardMax": 2,
+      "zeroAllowedWhenNoExplanatoryValue": true,
+      "overrideField": "reel.visuals.maxExternalBinaries",
+      "principle": "One or two strong real visual moments are preferred over generic stock filler; native UI remains the base layer."
+    }
   },
   "providers": {
     "WIKIMEDIA_COMMONS": {
