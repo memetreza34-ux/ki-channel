@@ -13,6 +13,8 @@ Bewährter Richtwert aus den Apple-Messages- und Codex-Transfer-Tests:
 - mehr als `2` nur bewusst über `reel.visuals.maxExternalBinaries` und nach Review
 - kein Stockbild nur zum Füllen
 
+`validate-reel-visual-assets.mjs` erzwingt diesen Standard-Hard-Max jetzt technisch. Ohne expliziten Override in `reel.json` bricht der Production-Gate bei mehr als zwei externen Binärvisuals ab.
+
 Der Grundsatz ist: **ein starkes echtes Bild ist besser als mehrere mittelmäßige Füllbilder**.
 
 ## Erlaubte Quellen
