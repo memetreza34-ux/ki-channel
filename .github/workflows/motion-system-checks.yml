@@ -2,8 +2,8 @@ name: Repository and Content System Checks
 
 # GitHub Actions for this private repository is currently blocked before Step 1
 # by the account's Actions billing/spending state. Keep this workflow manual until
-# the runner is available again. The commands below are the canonical repository
-# and content-release gates and can also be run locally.
+# the runner is available again. The commands below mirror the canonical local
+# production and release gates.
 on:
   workflow_dispatch:
     inputs:
@@ -54,25 +54,33 @@ jobs:
           set -o pipefail
           npm run repo:wiring-check 2>&1 | tee ci-logs/repository-wiring.log
 
+      - name: Verify production contracts before install
+        id: contracts
+        if: always() && steps.wiring.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run production:contracts 2>&1 | tee ci-logs/production-contracts.log
+
       - name: Install canonical workspaces
         id: install
-        if: always() && steps.wiring.outcome == 'success'
+        if: always() && steps.wiring.outcome == 'success' && steps.contracts.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
           npm install --package-lock=false --no-audit --no-fund 2>&1 | tee ci-logs/install.log
 
-      - name: Validate reel package structure
-        id: structure
-        if: always() && steps.wiring.outcome == 'success'
+      - name: Run canonical repository verification
+        id: repo_verify
+        if: always() && steps.install.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
-          npm run ki:reel:structure-check 2>&1 | tee ci-logs/reel-structure.log
+          npm run repo:verify 2>&1 | tee ci-logs/repo-verify.log
 
       - name: Verify motion system
         id: motion_verify
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.repo_verify.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
@@ -80,7 +88,7 @@ jobs:
 
       - name: Run canonical content release mode
         id: content_release
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.motion_verify.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
@@ -121,8 +129,9 @@ jobs:
           always() &&
           (
             steps.wiring.outcome == 'failure' ||
+            steps.contracts.outcome == 'failure' ||
             steps.install.outcome == 'failure' ||
-            steps.structure.outcome == 'failure' ||
+            steps.repo_verify.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
             steps.content_release.outcome == 'failure'
           )
