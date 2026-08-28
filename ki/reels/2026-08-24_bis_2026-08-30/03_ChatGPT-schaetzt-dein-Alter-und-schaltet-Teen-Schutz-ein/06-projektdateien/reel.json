@@ -1,50 +1,82 @@
 {
-  "version": 5,
+  "version": 6,
   "reelId": "chatgpt-for-teens",
   "compositionId": "KI-ChatGPTForTeens",
+  "sourceDir": "ki/src/reels/chatgpt-for-teens",
   "title": "ChatGPT schätzt dein Alter und schaltet Teen-Schutz ein",
   "publishDate": "2026-08-26",
   "week": "2026-08-24_bis_2026-08-30",
   "productionMode": "REMOTION_NATIVE_MAXIMUM_ENTERTAINMENT_FIRST_ISOLATED_REBUILD",
+  "scriptBudget": {
+    "targetMinWords": 55,
+    "targetMaxWords": 75,
+    "hardMaxWords": 80,
+    "allowLonger": true,
+    "longerReason": "Legacy reel with an existing reviewed reference render; preserve the authored 129-word script during stabilization instead of silently rewriting it."
+  },
   "format": {
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "durationInFrames": 1651,
-    "durationSeconds": 55.0333
+    "planningDurationInFrames": 1651,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "observedUserRender": {
+    "status": "REFERENCE_EVIDENCE_ONLY_NOT_CANONICAL_TIMING",
+    "durationSeconds": 54.827,
+    "extractedReferenceAudioSeconds": 54.857,
+    "note": "The old user render/reference audio proves the intended spoken content but cannot authorize final timing after the current source/layout revision."
   },
   "audio": {
     "targetFile": "01-script-audio/voiceover.mp3",
     "repoFilePresent": false,
-    "status": "REFERENCE_AUDIO_EXTRACTED_FROM_USER_RENDER_NOT_COMMITTED",
-    "userRenderDurationSeconds": 54.827,
-    "extractedReferenceDurationSeconds": 54.857,
+    "status": "VERIFIED_REFERENCE_AUDIO_LOCAL_COPY_REQUIRED",
     "timingAuthority": false,
     "language": "de",
-    "requiredNextStep": "Place the verified extracted/reference voiceover at targetFile, then rerun Whisper/voice-lock against that exact file before final render."
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25
+    },
+    "requiredNextStep": "Place the verified extracted/reference voiceover at targetFile, then run local forced alignment against the exact known transcript before any final render."
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
   },
   "captions": {
-    "status": "REFERENCE_TIMINGS_REQUIRE_RELOCK_TO_FINAL_AUDIO",
+    "status": "REFERENCE_TIMINGS_REQUIRE_LOCAL_ALIGNMENT_RELOCK",
     "file": "03-caption/subtitle-cues.json",
     "finalSocialCaption": "03-caption/FINAL-CAPTION.txt",
-    "cueCount": 32,
     "activeWordColor": "SCENE_ACCENT",
-    "finalGate": "Do not treat current word timings as final until verified against the exact committed voiceover file."
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay",
+    "finalGate": "Current reference timings are not final until regenerated from local forced alignment against the exact runtime PCM WAV."
   },
   "export": {
     "mode": "MANDATORY_FINAL_PACKAGE",
     "directory": "05-export",
     "coverTimeSeconds": 6.0,
-    "coverSelection": "Scene 1 hero: TEEN state active + ChatGPT for Teens visible; recheck after the current layout render before finalization",
+    "coverSelection": "Scene 1 hero: TEEN state active + ChatGPT for Teens visible; recheck after the current layout rerender before finalization",
     "requiredFiles": [
       "KI-ChatGPTForTeens.mp4",
       "KI-ChatGPTForTeens-cover.png",
       "KI-ChatGPTForTeens-caption.txt",
       "KI-ChatGPTForTeens-export-manifest.json"
     ],
-    "finalizeCommand": "node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>",
+    "finalizeCommand": "node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <mastered-video.mp4>",
     "validateCommand": "node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>",
-    "audioRequired": true
+    "audioRequired": true,
+    "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
   },
   "visualStyle": {
     "mode": "PRODUCT_UI_CINEMA",
@@ -61,7 +93,8 @@
       "startFrame": 0,
       "endFrame": 220,
       "heroMoment": "STANDARD UI morphs into TEEN experience",
-      "visualMode": "CHAT_UI_MORPH"
+      "visualMode": "CHAT_UI_MORPH",
+      "timingStatus": "PLANNING_ONLY"
     },
     {
       "sceneId": "scene2",
@@ -70,7 +103,8 @@
       "startFrame": 220,
       "endFrame": 751,
       "heroMoment": "age signal meter lands below 18 and triggers Teen mode",
-      "visualMode": "ACCOUNT_SAFETY_UI"
+      "visualMode": "ACCOUNT_SAFETY_UI",
+      "timingStatus": "PLANNING_ONLY"
     },
     {
       "sceneId": "scene3",
@@ -79,7 +113,8 @@
       "startFrame": 751,
       "endFrame": 1103,
       "heroMoment": "direct-answer card transforms into Study Mode steps and quiz",
-      "visualMode": "STUDY_MODE_CHAT_UI"
+      "visualMode": "STUDY_MODE_CHAT_UI",
+      "timingStatus": "PLANNING_ONLY"
     },
     {
       "sceneId": "scene4",
@@ -88,7 +123,8 @@
       "startFrame": 1103,
       "endFrame": 1236,
       "heroMoment": "sensitive-content panel is sealed, then break reminder takes focus",
-      "visualMode": "SAFETY_AND_BREAK_UI"
+      "visualMode": "SAFETY_AND_BREAK_UI",
+      "timingStatus": "PLANNING_ONLY"
     },
     {
       "sceneId": "scene5",
@@ -97,7 +133,8 @@
       "startFrame": 1236,
       "endFrame": 1651,
       "heroMoment": "parent controls remain active while chat access visibly stays locked",
-      "visualMode": "PARENT_CONTROLS_SPLIT_UI"
+      "visualMode": "PARENT_CONTROLS_SPLIT_UI",
+      "timingStatus": "PLANNING_ONLY"
     }
   ],
   "sources": [
