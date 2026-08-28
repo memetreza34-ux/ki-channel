@@ -17,6 +17,8 @@ type ReelExternalVisualProps = {
   focalY?: number;
   borderRadius?: number;
   credit?: string;
+  rightsStatus?: string;
+  showOptionalCredit?: boolean;
   style?: React.CSSProperties;
 };
 
@@ -34,6 +36,8 @@ export const ReelExternalVisual: React.FC<ReelExternalVisualProps> = ({
   focalY = 50,
   borderRadius = 32,
   credit,
+  rightsStatus,
+  showOptionalCredit = false,
   style,
 }) => {
   const frame = useCurrentFrame();
@@ -44,6 +48,8 @@ export const ReelExternalVisual: React.FC<ReelExternalVisualProps> = ({
   const x = interpolate(frame, [startFrame, endFrame], [fromX, toX], clamp);
   const y = interpolate(frame, [startFrame, endFrame], [fromY, toY], clamp);
   const enter = interpolate(frame, [startFrame, startFrame + 8], [0, 1], clamp);
+  const creditRequired = rightsStatus === 'CC-BY-4.0';
+  const renderCredit = Boolean(credit && (creditRequired || showOptionalCredit));
 
   return (
     <div
@@ -69,7 +75,7 @@ export const ReelExternalVisual: React.FC<ReelExternalVisualProps> = ({
           willChange: 'transform',
         }}
       />
-      {credit ? (
+      {renderCredit ? (
         <div
           style={{
             position: 'absolute',
