@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "status": "SEMANTIC_EVENTS_LOCKED_TIMING_DERIVED_FROM_SCENES",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01-deadline","sceneId":"scene1","anchor":{"type":"SCENE_OFFSET","frame":18},"roles":["impact","digital-accent"],"keywords":["impact","deadline","stamp"],"preferredDurationSeconds":0.22,"volume":0.11,"purpose":"31. August deadline lands"},
+    {"id":"sfx02-remove","sceneId":"scene1","anchor":{"type":"SCENE_OFFSET","frame":58},"roles":["ui-error","digital-accent"],"keywords":["error","remove","deny"],"preferredDurationSeconds":0.22,"volume":0.09,"purpose":"GPT-5.4 model cards fade out of ChatGPT-login Codex"},
+    {"id":"sfx03-terra","sceneId":"scene2","anchor":{"type":"SCENE_OFFSET","frame":26},"roles":["ui-confirm","ui-click"],"keywords":["confirm","switch","select"],"preferredDurationSeconds":0.20,"volume":0.09,"purpose":"GPT-5.4 switches to GPT-5.6 Terra"},
+    {"id":"sfx04-luna","sceneId":"scene2","anchor":{"type":"SCENE_OFFSET","frame":76},"roles":["ui-confirm","ui-click"],"keywords":["confirm","switch","select"],"preferredDurationSeconds":0.20,"volume":0.09,"purpose":"GPT-5.4 mini switches to GPT-5.6 Luna"},
+    {"id":"sfx05-chatgpt-block","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":24},"roles":["ui-error","digital-accent"],"keywords":["negative","error","blocked"],"preferredDurationSeconds":0.20,"volume":0.08,"purpose":"ChatGPT-login path is marked as affected"},
+    {"id":"sfx06-api-safe","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":72},"roles":["ui-confirm","digital-accent"],"keywords":["confirm","success","positive"],"preferredDurationSeconds":0.25,"volume":0.10,"purpose":"API-key path remains available"},
+    {"id":"sfx07-check1","sceneId":"scene4","anchor":{"type":"SCENE_OFFSET","frame":24},"roles":["ui-click","ui-confirm"],"keywords":["click","check","select"],"preferredDurationSeconds":0.16,"volume":0.08,"purpose":"workspace settings checklist starts"},
+    {"id":"sfx08-check2","sceneId":"scene4","anchor":{"type":"SCENE_OFFSET","frame":74},"roles":["ui-click","ui-confirm"],"keywords":["click","check","select"],"preferredDurationSeconds":0.16,"volume":0.08,"purpose":"agents and scheduled tasks checklist completes"},
+    {"id":"sfx09-final","sceneId":"scene5","anchor":{"type":"SCENE_OFFSET","frame":34},"roles":["ui-confirm","digital-accent"],"keywords":["confirm","complete","positive"],"preferredDurationSeconds":0.28,"volume":0.10,"purpose":"final split verdict locks in"}
+  ]
+}
