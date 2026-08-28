@@ -21,6 +21,9 @@ frames/
 public/runtime-audio/
 public/reel-sfx/
 
+# ---- Visual Assets (lokal / regenerierbar; Auswahl + Rechte + SHA bleiben im Manifest) ----
+public/reel-assets/
+
 # ---- Reel-Bilder (groß, viel pro Reel, sprengt GitHub-Storage) ----
 # nur lokal — auf GitHub landet Code/Doku/Timing/Manifest
 public/reels/**/images/
