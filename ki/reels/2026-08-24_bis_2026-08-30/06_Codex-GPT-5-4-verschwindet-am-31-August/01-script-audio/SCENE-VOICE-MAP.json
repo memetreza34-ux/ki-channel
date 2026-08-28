@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"id":"S01","sceneId":"scene1","text":"Am 31. August verschwinden GPT-5.4 und GPT-5.4 mini aus Codex, wenn du dich mit ChatGPT anmeldest."},
+    {"id":"S02","sceneId":"scene2","text":"OpenAI empfiehlt, GPT-5.4 durch GPT-5.6 Terra zu ersetzen."},
+    {"id":"S03","sceneId":"scene2","text":"Für GPT-5.4 mini ist GPT-5.6 Luna der empfohlene Ersatz."},
+    {"id":"S04","sceneId":"scene3","text":"Wichtig: Über die OpenAI API bleiben beide Modelle weiterhin verfügbar."},
+    {"id":"S05","sceneId":"scene3","text":"Auch Codex-Sitzungen mit API-Schlüssel sind von dieser Abschaltung nicht betroffen."},
+    {"id":"S06","sceneId":"scene4","text":"Prüf deshalb Workspace-Standards, gespeicherte Modelleinstellungen und verwaltete Konfigurationen."},
+    {"id":"S07","sceneId":"scene4","text":"Auch benutzerdefinierte Agenten und geplante Aufgaben solltest du vor dem 31. August umstellen."},
+    {"id":"S08","sceneId":"scene5","text":"Kurz gesagt: ChatGPT-Login in Codex wechselt weiter, API-Key-Workflows können die Modelle behalten."}
+  ]
+}
