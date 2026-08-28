@@ -13,15 +13,23 @@ if (!rawReelDir) {
 const reelDir = path.resolve(rawReelDir);
 const scriptPath = path.join(reelDir, '01-script-audio', 'VOICEOVER-ZUM-KOPIEREN.txt');
 const reelPath = path.join(reelDir, '06-projektdateien', 'reel.json');
+const prepareRenderPath = path.resolve('ki/scripts/prepare-reel-render.mjs');
 const fail = (message) => { console.error(`SCRIPT BUDGET GATE FAILED: ${message}`); process.exit(1); };
 
 if (!existsSync(scriptPath)) fail(`missing script: ${scriptPath}`);
 if (!existsSync(reelPath)) fail(`missing reel.json: ${reelPath}`);
+if (!existsSync(prepareRenderPath)) fail(`production render gate missing: ${prepareRenderPath}`);
 
 const script = (await readFile(scriptPath, 'utf8')).trim();
 let reel;
 try { reel = JSON.parse(await readFile(reelPath, 'utf8')); }
 catch (error) { fail(`invalid reel.json: ${error.message}`); }
+
+// Self-wiring guard: a direct budget validation must also detect if a later refactor
+// accidentally removes this gate from the canonical production render preparation.
+const prepareRender = await readFile(prepareRenderPath, 'utf8');
+if (!prepareRender.includes("run('script budget gate'")) fail('prepare-reel-render.mjs no longer executes the script budget gate.');
+if (!prepareRender.includes('validate-reel-script-budget.mjs')) fail('prepare-reel-render.mjs is no longer wired to this validator.');
 
 const words = script.match(/[\p{L}\p{N}]+(?:[-'’][\p{L}\p{N}]+)*/gu) || [];
 const wordCount = words.length;
@@ -45,5 +53,6 @@ console.log(`words: ${wordCount}`);
 console.log(`target: ${targetMin}-${targetMax} words`);
 console.log(`hard max: ${hardMax} words`);
 console.log(`rough 120 wpm estimate: ${estimatedSecondsAt120Wpm.toFixed(1)} s`);
+console.log('production pre-render wiring: verified');
 if (wordCount < targetMin) console.log('note: below target range; concise is allowed if the story still lands.');
 if (wordCount > targetMax) console.log(`note: above preferred range${allowLonger ? `; approved reason: ${reason}` : '; still within hard max.'}`);
