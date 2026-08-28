@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "STEP3_VISUAL_PLAN_LOCKED",
+  "rules": {
+    "nativeFirst": true,
+    "remoteRenderMediaAllowed": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "externalBinariesMustResolveLocally": true
+  },
+  "assets": [
+    {"id":"scene1-codex-model-ui","sceneId":"scene1","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Codex model cards and August 31 deadline","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"scene2-replacement-ui","sceneId":"scene2","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Two model replacement paths","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"scene3-api-server-photo","sceneId":"scene3","provider":"WIKIMEDIA_COMMONS","renderMode":"LOCAL_SMART_CROP","purpose":"Real server-room support visual behind the unaffected API-key path","searchQuery":"US Navy server room"},
+    {"id":"scene4-migration-checklist","sceneId":"scene4","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Workspace and workflow migration checklist","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"scene5-openai-source","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","renderMode":"NATIVE_SOURCE_PROOF","purpose":"Official OpenAI sunset source proof","rightsStatus":"OFFICIAL_SOURCE_REFERENCE","sourceUrl":"https://openai.com/de-DE/products/release-notes/"}
+  ]
+}
