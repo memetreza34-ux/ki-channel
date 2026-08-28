@@ -98,6 +98,14 @@ import {
   ReelAppleMessagesChatGPT,
 } from './reels/apple-messages-chatgpt';
 import {
+  CODEX_SUNSET_COMPOSITION_ID,
+  CODEX_SUNSET_DURATION_IN_FRAMES,
+  CODEX_SUNSET_FPS,
+  CODEX_SUNSET_HEIGHT,
+  CODEX_SUNSET_WIDTH,
+  ReelCodexGPT54Sunset,
+} from './reels/codex-gpt54-sunset';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -216,13 +224,22 @@ export const RemotionRoot: React.FC = () => (
         height={STUDY_MODE_HEIGHT}
       />
       <Composition
-        id="KI-AppleMessagesChatGPT"
+        id={APPLE_MESSAGES_COMPOSITION_ID}
         component={ReelAppleMessagesChatGPT}
         defaultProps={{voiceoverSrc: runtimeAudio(APPLE_MESSAGES_COMPOSITION_ID), showCaptions: true, showSfx: true}}
         durationInFrames={APPLE_MESSAGES_DURATION_IN_FRAMES}
         fps={APPLE_MESSAGES_FPS}
         width={APPLE_MESSAGES_WIDTH}
         height={APPLE_MESSAGES_HEIGHT}
+      />
+      <Composition
+        id={CODEX_SUNSET_COMPOSITION_ID}
+        component={ReelCodexGPT54Sunset}
+        defaultProps={{voiceoverSrc: runtimeAudio(CODEX_SUNSET_COMPOSITION_ID), showCaptions: true, showSfx: true}}
+        durationInFrames={CODEX_SUNSET_DURATION_IN_FRAMES}
+        fps={CODEX_SUNSET_FPS}
+        width={CODEX_SUNSET_WIDTH}
+        height={CODEX_SUNSET_HEIGHT}
       />
     </Folder>
 
