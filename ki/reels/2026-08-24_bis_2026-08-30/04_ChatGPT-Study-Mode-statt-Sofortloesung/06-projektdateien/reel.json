@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "reelId": "chatgpt-study-mode",
   "compositionId": "KI-ChatGPTStudyMode",
   "sourceDir": "ki/src/reels/chatgpt-study-mode",
@@ -7,20 +7,27 @@
   "publishDate": "2026-08-27",
   "week": "2026-08-24_bis_2026-08-30",
   "productionMode": "REMOTION_NATIVE_PRODUCT_UI_CINEMA_ENTERTAINMENT_FIRST",
+  "scriptBudget": {
+    "targetMinWords": 55,
+    "targetMaxWords": 75,
+    "hardMaxWords": 80,
+    "allowLonger": true,
+    "longerReason": "Legacy reel with an existing reviewed reference render; preserve the authored 106-word script during stabilization instead of silently rewriting it."
+  },
   "format": {
     "width": 1080,
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1950,
     "finalDurationInFrames": null,
-    "finalDurationAuthority": "PREPARED_RUNTIME_PCM_WAV_AFTER_WHISPER_LOCK"
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
   },
   "observedUserRender": {
     "status": "REVIEW_EVIDENCE_ONLY_NOT_CANONICAL_TIMING",
     "durationSeconds": 40.192,
     "videoFrames": 1205,
     "audioDurationSeconds": 40.192,
-    "note": "This proves the old 1950-frame planning contract is stale. Phase 3 must prepare the runtime PCM WAV and write exact voice-locked timing back into reel.json and subtitle-cues.json before final export."
+    "note": "This proves the old 1950-frame planning contract is stale. Phase 3 must prepare the runtime PCM WAV and derive exact voice-locked timing with local forced alignment before final export."
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
@@ -28,13 +35,26 @@
     "runtimeTimingFile": "public/runtime-audio/KI-ChatGPTStudyMode.wav",
     "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
     "timingAuthority": false,
-    "runtimePreparationCommand": "node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>",
-    "finalGate": "No final render or export without local master audio, prepared runtime PCM WAV, Whisper/Voice-Lock against that WAV and passed final gates."
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25
+    },
+    "finalGate": "No final render or export without local master audio, prepared runtime PCM WAV, exact local forced alignment, scene/caption voice-lock and passed final gates."
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "PREVIEW_ONLY_UNTIL_WHISPER_LOCK",
-    "finalRequirement": "word-level timings from prepared runtime PCM WAV used by Remotion",
+    "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+    "finalRequirement": "word-level timings from exact local forced alignment against the prepared runtime PCM WAV",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
@@ -53,14 +73,15 @@
     "coverTimeSeconds": 4.5,
     "coverText": "STUDY MODE STATT COPY-PASTE",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": ["video", "cover", "caption", "manifest"]
+    "requiredPackage": ["video", "cover", "caption", "manifest"],
+    "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
   },
   "scenes": [
-    {"sceneId":"scene1","title":"Study Mode statt Sofortlösung","startFrame":0,"endFrame":510,"accent":"#18C7D9","heroMoment":"STANDARD answer UI transforms into STUDY MODE learning UI","timingStatus":"PLANNING"},
-    {"sceneId":"scene2","title":"Schnell – aber oberflächlich","startFrame":510,"endFrame":900,"accent":"#FF8A34","heroMoment":"instant answer completes while learning meter stays low","timingStatus":"PLANNING"},
-    {"sceneId":"scene3","title":"Schritt für Schritt","startFrame":900,"endFrame":1305,"accent":"#20B26B","heroMoment":"single answer breaks apart into guided steps, questions and quiz","timingStatus":"PLANNING"},
-    {"sceneId":"scene4","title":"Verstehen statt Kopieren","startFrame":1305,"endFrame":1545,"accent":"#3478F6","heroMoment":"green understanding route overtakes red copy route","timingStatus":"PLANNING"},
-    {"sceneId":"scene5","title":"Sinnvoll – nicht perfekt","startFrame":1545,"endFrame":1950,"accent":"#7657E8","heroMoment":"balanced benefit cards lock into final CTA","timingStatus":"PLANNING"}
+    {"sceneId":"scene1","title":"Study Mode statt Sofortlösung","startFrame":0,"endFrame":510,"accent":"#18C7D9","heroMoment":"STANDARD answer UI transforms into STUDY MODE learning UI","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Schnell – aber oberflächlich","startFrame":510,"endFrame":900,"accent":"#FF8A34","heroMoment":"instant answer completes while learning meter stays low","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Schritt für Schritt","startFrame":900,"endFrame":1305,"accent":"#20B26B","heroMoment":"single answer breaks apart into guided steps, questions and quiz","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Verstehen statt Kopieren","startFrame":1305,"endFrame":1545,"accent":"#3478F6","heroMoment":"green understanding route overtakes red copy route","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Sinnvoll – nicht perfekt","startFrame":1545,"endFrame":1950,"accent":"#7657E8","heroMoment":"balanced benefit cards lock into final CTA","timingStatus":"PLANNING_ONLY"}
   ],
   "sources": [
     "https://help.openai.com/de-de/articles/11780217-chatgpt-study-mode-faq",
