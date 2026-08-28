@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "compositionId": "KI-CodexGPT54Sunset",
+  "sourceDir": "ki/src/reels/codex-gpt54-sunset",
+  "rootImportNeedle": "./reels/codex-gpt54-sunset",
+  "requiredStrings": ["GPT-5.4","GPT-5.6 Terra","GPT-5.6 Luna","API-Key","31. AUGUST"],
+  "forbiddenStrings": ["Apple Messages","Study Mode","o3 verschwindet"]
+}
