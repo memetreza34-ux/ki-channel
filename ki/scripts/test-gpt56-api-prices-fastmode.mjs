@@ -6,6 +6,7 @@ import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
 
+const renderLockedMode = process.argv.includes('--render-locked');
 const reelDir = path.resolve('ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode');
 const compositionId = 'KI-GPT56APIPricesFastMode';
 const outputDir = path.resolve('out/gpt56-api-transfer-test');
@@ -44,93 +45,103 @@ const sha256File = async (file) => {
   return hash.digest('hex');
 };
 
-for (const binary of ['ffmpeg', 'ffprobe', 'git']) {
-  const probe = spawnSync(binary, ['--version'], {encoding: 'utf8'});
-  if (binary === 'git') {
-    const gitProbe = spawnSync('git', ['--version'], {encoding: 'utf8'});
-    if (gitProbe.error || gitProbe.status !== 0) fail('git is required.');
-    continue;
-  }
+for (const binary of ['ffmpeg', 'ffprobe']) {
+  const probe = spawnSync(binary, ['-version'], {encoding: 'utf8'});
   if (probe.error || probe.status !== 0) fail(`${binary} is required.`);
 }
+const gitProbe = spawnSync('git', ['--version'], {encoding: 'utf8'});
+if (gitProbe.error || gitProbe.status !== 0) fail('git is required.');
 if (!existsSync(path.resolve('node_modules/.bin/remotion'))) fail('node_modules/remotion missing. Run npm install once, then rerun.');
 await mkdir(outputDir, {recursive: true});
 
 // 0. Phase-1 duration contract must pass before any expensive work starts.
 run('Validate Phase-1 script budget', process.execPath, [path.resolve('ki/scripts/validate-reel-script-budget.mjs'), reelDir]);
 
-// 1. Exact generated voice source.
+// 1. Exact generated voice source. Binary stays local/ignored.
 if (!existsSync(voiceover)) {
   run('Download generated voiceover', process.execPath, [path.resolve('ki/scripts/fetch-generated-voiceover.mjs'), audioSource, voiceover]);
 }
 
-// 2. Local CC0 library is needed because align-reel-local resolves SFX after scene lock.
+// 2. Local CC0 library. Binary assets stay local/ignored.
 if (!existsSync(path.resolve('public/reel-sfx/sfx-index.json'))) {
   run('Setup local CC0 SFX library', process.execPath, [path.resolve('ki/scripts/setup-reel-sfx-library.mjs')]);
 }
 run('Validate local CC0 SFX library', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-library.mjs')]);
 
-// 3. Full fresh timing path: pause compression -> forced alignment -> captions/scenes -> SFX.
-run('Full local forced alignment + scene/caption/SFX lock', process.execPath, [path.resolve('ki/scripts/align-reel-local.mjs'), reelDir]);
+if (!renderLockedMode) {
+  // PREP MODE intentionally creates/updates tracked timing and resolved-contract files.
+  run('Full local forced alignment + scene/caption/SFX lock', process.execPath, [path.resolve('ki/scripts/align-reel-local.mjs'), reelDir]);
+  run('Resolve ranked visual assets', process.execPath, [path.resolve('ki/scripts/resolve-reel-visual-assets.mjs'), reelDir]);
+} else {
+  console.log('\n=== Render-locked mode ===');
+  console.log('Skipping alignment and visual resolution so committed timing/contract files remain byte-stable.');
+}
 
-// 4. Ranked visual resolver: multiple candidates -> rights/quality/crop ranking -> local asset + SHA.
-run('Resolve ranked visual assets', process.execPath, [path.resolve('ki/scripts/resolve-reel-visual-assets.mjs'), reelDir]);
+// Validate existing/generated contracts in both modes.
+run('Validate local forced alignment', process.execPath, [path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), reelDir]);
+run('Validate scene/voice map', process.execPath, [path.resolve('ki/scripts/validate-scene-voice-map.mjs'), reelDir]);
+run('Validate voice-locked captions', process.execPath, [path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), reelDir]);
+run('Validate SFX plan', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'), reelDir]);
 run('Validate visual assets', process.execPath, [path.resolve('ki/scripts/validate-reel-visual-assets.mjs'), reelDir]);
 run('Validate source isolation', process.execPath, [path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), reelDir]);
 
-// 5. Global contracts and focused source tests.
+// 3. Global contracts and focused source tests.
 run('Global production contract audit', 'npm', ['run', 'production:contracts']);
 run('Typecheck Remotion source', 'npm', ['run', 'typecheck:motion']);
 run('GPT-5.6 reel contract test', 'npx', ['--no-install', 'vitest', 'run', 'ki/src/reels/gpt56-api-prices-fastmode/contract.test.ts']);
 
 // Production provenance deliberately requires tracked timing/contract files to be committed.
-// A fresh alignment commonly changes tracked JSON. Do not bypass this with a dirty-worktree flag.
 const trackedStatus = capture('git', ['status', '--porcelain', '--untracked-files=no']);
 if (trackedStatus) {
   const preparedReport = {
     status: 'PREPARED_REQUIRES_COMMIT_BEFORE_PRODUCTION_RENDER',
     compositionId,
     reelDir,
+    mode: renderLockedMode ? 'render-locked' : 'prepare',
     trackedChanges: trackedStatus.split(/\r?\n/).filter(Boolean),
     checksPassed: [
       'script budget',
       'generated voice availability',
       'local CC0 SFX library',
-      'pause compression',
-      'fresh local forced alignment',
-      'scene/voice lock',
+      'local forced alignment validation',
+      'scene/voice map validation',
       'voice-locked captions',
-      'deterministic CC0 SFX resolution',
-      'ranked visual resolution',
+      'deterministic CC0 SFX validation',
       'visual rights/local-file/SHA256 gate',
       'source isolation',
       'global production contract audit',
       'TypeScript motion typecheck',
       'focused reel contract test',
     ],
-    nextStep: 'Review the generated tracked timing/contract files, commit them on the test branch, then rerun this same command. The second run must reach prepare-reel-render.mjs on a clean worktree.',
+    nextStep: renderLockedMode
+      ? 'Render-locked mode requires a clean tracked worktree. Review and commit/revert the listed changes, then rerun with --render-locked.'
+      : 'Review the generated tracked timing/contract files, commit them on the test branch, then rerun with --render-locked. That mode does not regenerate timing/visual contracts and can reach the provenance lock on a clean worktree.',
     generatedAt: new Date().toISOString(),
   };
   await writeFile(reportPath, `${JSON.stringify(preparedReport, null, 2)}\n`, 'utf8');
-  console.log('\nTRANSFER TEST PREPARED — COMMIT REQUIRED BEFORE PRODUCTION RENDER');
+  console.log('\nTRANSFER TEST PREPARED — CLEAN COMMIT REQUIRED BEFORE PRODUCTION RENDER');
   console.log(trackedStatus);
   console.log(`report: ${reportPath}`);
-  console.log('After reviewing and committing these generated tracked files, rerun the same command.');
+  if (!renderLockedMode) console.log('After review + commit: node ki/scripts/test-gpt56-api-prices-fastmode.mjs --render-locked');
   process.exit(2);
 }
 
-// 6. Real production pre-render gate including render provenance lock.
+if (!renderLockedMode) {
+  console.log('\nPREP MODE PRODUCED NO TRACKED CHANGES — continuing into render-locked production test.');
+}
+
+// 4. Real production pre-render gate including render provenance lock.
 run('Production pre-render + provenance lock', process.execPath, [path.resolve('ki/scripts/prepare-reel-render.mjs'), reelDir]);
 
-// 7. Raw Remotion render. Not final; audio master happens next.
+// 5. Raw Remotion render. Not final; audio master happens next.
 run('Render raw transfer-test MP4', 'npx', ['--no-install', 'remotion', 'render', 'ki/src/index.ts', compositionId, rawVideo, '--overwrite']);
 
-// 8. Full-mix social master.
+// 6. Full-mix social master.
 run('Master complete Voice + SFX mix', process.execPath, [path.resolve('ki/scripts/master-reel-video.mjs'), rawVideo, masteredVideo]);
 run('Validate -16 LUFS social master', process.execPath, [path.resolve('ki/scripts/validate-social-audio-master.mjs'), masteredVideo]);
 run('Technical A/V gate on mastered MP4', process.execPath, [path.resolve('ki/scripts/validate-final-video.mjs'), masteredVideo]);
 
-// 9. Contact sheet from the exact mastered video that must be reviewed.
+// 7. Contact sheet from the exact mastered video that must be reviewed.
 run('Create mastered contact sheet', 'ffmpeg', [
   '-hide_banner', '-loglevel', 'error', '-y',
   '-i', masteredVideo,
@@ -153,6 +164,7 @@ const external = (visuals.assets || []).filter((asset) => asset.localFile);
 const report = {
   status: 'PRODUCTION_PATH_MASTERED_READY_FOR_1X_REVIEW_NOT_FINAL',
   compositionId,
+  mode: renderLockedMode ? 'render-locked' : 'prepare-no-diff-auto-continued',
   rawVideo,
   masteredVideo,
   contactSheet,
@@ -169,13 +181,13 @@ const report = {
   })),
   checksPassed: [
     'script budget',
-    'generated voice download',
-    'pause compression',
-    'fresh local forced alignment',
+    'generated voice availability',
+    'local CC0 SFX library',
+    'exact local forced-alignment validation',
     'scene/voice lock',
     'voice-locked captions',
-    'deterministic CC0 SFX resolution',
-    'ranked Wikimedia visual resolution',
+    'deterministic CC0 SFX validation',
+    'ranked/local visual validation',
     'visual rights/local-file/SHA256 gate',
     'source isolation',
     'global production contract audit',
