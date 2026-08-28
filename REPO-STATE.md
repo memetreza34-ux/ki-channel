@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-24
+**Status:** 2026-08-28
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -8,11 +8,13 @@ Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- o
 
 `main` ist der einzige kanonische Produktionsstand.
 
-Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
+Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
 
-Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
+Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main` auf:
 
-Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main`. Die älteren PRs **#24, #26 und #27** sind superseded und geschlossen; sie dürfen nicht mehr als Integrationsziel verwendet werden.
+`fix/repo-stabilisierung-2026-08-24`
+
+Die älteren PRs **#24, #26, #27 und #29** sind superseded/geschlossen. Der GPT-5.6-End-to-End-Test wurde über PR #30 in den Stabilisierungsbranch integriert.
 
 ## 2. Verbindliche Lesereihenfolge
 
@@ -29,16 +31,14 @@ Bei KI-Kanal-Arbeit gilt:
 6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
 7. erst danach konkrete Pläne, Source- oder Plattformdateien
 
-Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
+Für ausführbaren Source gelten zusätzlich:
 
 - Reels → `ki/src/reels/AGENTS.md`
 - Longform → `ki/src/longform/AGENTS.md`
 
-Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
+Ältere Dokumente und historische Branches dürfen diese Reihenfolge nicht überschreiben.
 
 ## 3. Kanonische Short-Form-Produktionsstruktur
-
-Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -51,29 +51,43 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Ausführbarer Remotion-Code liegt getrennt hier:
+Ausführbarer Remotion-Code liegt getrennt unter:
 
-```text
-ki/src/reels/<slug>/
+`ki/src/reels/<slug>/`
+
+## 4. Phase-1 Script-Budget
+
+Für normale kurze Reels gilt:
+
+- bevorzugt **55–75 gesprochene Wörter**
+- bis **80 Wörter** zulässig
+- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
+
+Vor Production-Render prüft fail-closed:
+
+```bash
+node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
+Laufzeit wird zuerst über ein knappes Skript kontrolliert, nicht durch nachträgliches aggressives Audio-/Motion-Retiming.
 
-## 4. Produktions-Audio
+## 5. Produktions-Audio
 
-Short-Form-Production verwendet eine lokale, deterministische Runtime-Audiospur:
+Short-Form-Production verwendet eine lokale deterministische Runtime-Audiospur:
 
 ```text
 public/runtime-audio/<compositionId>.wav
 ```
 
-Sie wird aus dem kanonischen lokalen Voiceover-Master als **48-kHz-Stereo-PCM-WAV** erzeugt. Remotion lädt kein Voiceover während des Renders aus dem Netz. Dadurch gibt es kein zweites verlustbehaftetes MP3-Encoding und kein MP3-Encoder-Delay in der finalen Timing-Kette.
+Sie wird als **48-kHz-Stereo-PCM-WAV** aus dem kanonischen lokalen Voiceover-Master erzeugt. Remotion lädt kein Voiceover während des Renders aus dem Netz.
 
-Die Runtime-WAV ist die finale **Whisper-/Wort-/Frame- und Render-Autorität**. Kanonische Details: `ki/gehirn/AUDIO_PIPELINE.md`.
+Die Runtime-WAV ist die gemeinsame Wort-/Frame-/Render-Autorität. Bei bekanntem Sprechertext ist **lokales Forced Alignment** der Standard; freies Whisper-Transkribieren ist nur Fallback/Diagnose.
 
-## 5. Kanonische Caption-Geometrie
+Kanonische Details: `ki/gehirn/AUDIO_PIPELINE.md` und `ki/gehirn/FORCED_ALIGNMENT.md`.
 
-Für neue 1080×1920-Production-Reels gilt als aktueller gemeinsamer Standard:
+## 6. Caption-Geometrie
+
+Für neue 1080×1920-Production-Reels:
 
 - `bottom: 250`
 - `horizontalInset: 104`
@@ -81,30 +95,46 @@ Für neue 1080×1920-Production-Reels gilt als aktueller gemeinsamer Standard:
 - maximal 2 Zeilen
 - Glass-/Blur-Overlay statt separatem Footer
 - Fullscreen-Szenenhintergrund läuft hinter der Caption weiter
-- echte Feed-/Smartphone-Prüfung bleibt Pflicht
+- echte Smartphone-/Feed-Prüfung bleibt Pflicht
 
 Quelle: `ki/src/reels/captionSafe.ts` + `ki/gehirn/CAPTION_SAFE_POSITION.md`.
 
-## 6. Verbindliches Produktionsmodell
+## 7. Visual-, Zoom- und SFX-Standard
+
+Bewährter Default:
+
+- ungefähr **70–80 % Remotion-native** UI/Text/Diagramm/Motion
+- ungefähr **20–30 % echte Bilder/Screens**
+- normalerweise **1–2 starke externe Visual-Momente pro Reel**
+- externe Binärvisuals werden lokal aufgelöst, lizenzgeprüft und per SHA256 gebunden
+- `CameraPush`, Pan, Focus, Parallax und Scan nur mit sichtbarem Erklär-/Fokusnutzen
+- keine Effekt-/Zoom-Kaskade nur für Bewegung
+- semantische CC0-SFX folgen sichtbaren Events
+- Voiceover bleibt Lautstärke-Priorität
+- SFX und Kameraeffekte werden beim echten 1x-Review geprüft
+
+## 8. Verbindliches Produktionsmodell
 
 ```text
 PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen + Visual Beats + Source + Preview-Timing
+Idee + Fakten + knappes Skript + Copy + Szenen + Visual Beats + Source + Preview-Timing
 
 PHASE 2 — Audio
-reales Voiceover: tatsächlich per verfügbarem Voice-Tool erzeugt oder vom Nutzer bereitgestellt
+reales Voiceover per verfügbarem Voice-Tool oder vom Nutzer
 
 PHASE 3 — Codex / Antigravity
-lokalen Audio-Master vorbereiten → Runtime-PCM-WAV → Whisper/Voice-Lock → finale Szenengrenzen → Pre-Render-Gate → Render → 1x-Review → Final-Gates → Export
+Runtime-WAV + Pause-Kompression
+→ lokales Forced Alignment
+→ WORD-TIMINGS + Scene/Caption-Lock
+→ automatische CC0-SFX
+→ externe Visuals lokal auflösen
+→ renderrelevante getrackte Dateien committen
+→ prepare-reel-render.mjs / Provenance-Lock
+→ Remotion-Roh-Render
+→ Social-Audio-Master ca. -16 LUFS
+→ exakter 1x-Review des gemasterten MP4
+→ Finalizer + Export-Paket
 ```
-
-Vor dem finalen Voice-Lock:
-
-```bash
-node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
-```
-
-Whisper/Wort-Timings werden anschließend gegen die erzeugte Runtime-WAV gelegt.
 
 Vor Production-Render:
 
@@ -112,54 +142,75 @@ Vor Production-Render:
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Schritt blockiert geschätzte Plan-Timings und erzeugt einen lokalen `RENDER_LOCKED`-Datensatz mit Git-Commit sowie Source-, Render-Contract-, Caption- und Audio-Hashes.
+Der Schritt verlangt einen sauberen tracked Worktree und erzeugt `RENDER_LOCKED` mit Git-Commit sowie Source-/Timing-/Audio-/SFX-/Visual-/Caption-Hashes.
 
-Nach Final-Render:
+Nach dem Roh-Render:
 
 ```bash
-node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
+node ki/scripts/master-reel-video.mjs <raw-render.mp4> <mastered-render.mp4>
+node ki/scripts/validate-social-audio-master.mjs <mastered-render.mp4>
+node ki/scripts/validate-final-video.mjs <mastered-render.mp4>
+```
+
+Finalizer erst nach echtem 1x-Review des **gemasterten** MP4:
+
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <mastered-render.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer lehnt alte/fremde Render ab, wenn gelockte renderrelevante Inputs geändert wurden. Das Export-Manifest speichert die Provenance und SHA256-Hashes von finalem MP4, Cover und Caption.
+## 9. Aktueller Abschluss-Test vor Merge von PR #28
 
-## 7. Globale Produktions-Regressionen
+Kanonischer Test-Reel:
 
-Vor Merge/Release ausführen:
+`ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode/`
+
+Skript: **73 Wörter** und damit im bevorzugten Bereich.
+
+### Lauf 1 — lokale Timing-/Asset-Artefakte erzeugen
+
+```bash
+node ki/scripts/test-gpt56-api-prices-fastmode.mjs
+```
+
+Wenn getrackte Timing-/Contract-Dateien geändert werden, stoppt der Test absichtlich. Änderungen reviewen und committen.
+
+### Lauf 2 — sauber gelockter Production-Render
+
+```bash
+node ki/scripts/test-gpt56-api-prices-fastmode.mjs --render-locked
+```
+
+Dieser Modus regeneriert die getrackten Timing-/Visual-Verträge nicht und muss auf sauberem Worktree den echten `prepare-reel-render.mjs`-Provenance-Lock erreichen.
+
+Danach muss der erzeugte gemasterte MP4 bei 1x vollständig angesehen und angehört werden. `MOTION-READABILITY-REVIEW.md` wird an genau dessen SHA256 gebunden. Erst danach Finalizer/Export-Gate.
+
+## 10. Globale Produktions-Regressionen
+
+Vor Merge/Release:
 
 ```bash
 npm run production:contracts
+npm run repo:verify
+npm run motion:verify
 ```
 
-Der Check schützt unter anderem vor:
+Der GitHub-Actions-Workflow ist inzwischen auf diese kanonischen Gates ausgerichtet, kann aber erst als Beweis dienen, sobald der private Actions-Runner/Billing wieder funktioniert.
 
-- statischen Audio-/Video-Binary-Imports in `Root.tsx`
-- Remote-Media-URLs im Production-Root
-- Rückkehr alter Caption-Geometrien
-- fehlender PCM-Runtime-Audio-Pipeline
-- fehlenden Final-/Voice-/Motion-/Provenance-Gates
-- bekannten alten Caption-Bottom-Werten in Reel-TS/TSX-Sources
-- direkten Binary-Imports in Reel-Sources
-- `Math.random()` in deterministischem Reel-Source
+## 11. Verbindliche visuelle Identität
 
-`npm run repo:verify` führt diesen Produktionsvertrag ebenfalls zuerst aus.
-
-## 8. Verbindliche visuelle Identität
-
-- Short-Form standardmäßig 1080 × 1920 / 30 FPS
-- Longform aktuell 1920 × 1080 / 30 FPS
-- Light-First: helle Fullscreen-Szenen als Default
+- Short-Form: 1080 × 1920 / 30 FPS
+- Longform: 1920 × 1080 / 30 FPS
+- Light-First
 - dunkle Schrift
 - mehrere semantische Akzentfarben erlaubt
 - faceless
 - keine Cyberpunk-/Neon-Standardästhetik
 - `REMOTION_NATIVE_MAXIMUM`
-- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben
-- High Energy ist nicht High Speed: wichtige Zustände brauchen Reveal → Settle → Readable Hold
+- Sprechertext, Caption, Überschrift und Animation haben unterschiedliche Aufgaben
+- High Energy ist nicht High Speed: `REVEAL → SETTLE → READABLE HOLD`
 
-## 9. Statusbegriffe niemals vermischen
-
-Diese Zustände sind getrennt:
+## 12. Statusbegriffe niemals vermischen
 
 ```text
 geplant
@@ -173,15 +224,16 @@ veröffentlicht
 
 Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
 
-## 10. Git-/Medienregel
+## 13. Git-/Medienregel
 
 Große Binärmedien (`mp3`, `wav`, `mp4`, `png` usw.) bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
-In Git bleiben zwingend Source, Skripte, Provenance, Timings, Reviews, Contracts und Export-Manifeste. Kein Vertrag darf gleichzeitig verlangen, global ignorierte Binärmedien normal in Git zu committen.
+In Git bleiben Source, Skripte, Provenance, Timings, Reviews, Contracts und Export-Manifeste.
 
-## 11. Bekannte externe Einschränkungen
+## 14. Bekannte externe Einschränkungen
 
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
+- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert.
+- `main` hat derzeit keine Branch Protection; vor langfristigem Team-/Agent-Betrieb sollte sie aktiviert werden.
+- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Erst nach einem echten npm-Installationslauf erzeugen, niemals erfinden.
 
-Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
+Diese Betriebsgrenzen sind keine Erlaubnis, Test- oder Qualitätsregeln zu umgehen.
