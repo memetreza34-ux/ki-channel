@@ -11,6 +11,8 @@ Pflicht:
 - Thema/Fakten/Quellen
 - finales `voiceover.md`
 - exaktes `VOICEOVER-ZUM-KOPIEREN.txt`
+- normales Kurz-Reel bevorzugt 55–75 Wörter, bis 80 Wörter zulässig
+- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
 - `SCENE-VOICE-MAP.json`: jeder exakte Satz gehört genau zu einer Szene
 - Szenenplan + `animation-plan.md`
 - semantische `sfx-events.json`
@@ -22,6 +24,16 @@ Pflicht:
 - `reel.json`
 - ausführbarer Source unter `ki/src/reels/<slug>/`
 - Composition in `Root.tsx`
+
+### Script-Budget-Gate
+
+Die normale Short-Form-Länge wird bereits in Phase 1 kontrolliert. Vor Production-Render prüft fail-closed:
+
+```bash
+node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
+```
+
+Eine lange Laufzeit darf nicht dadurch entstehen, dass unnötige Erklärsätze erst nachträglich durch Timing-Tricks komprimiert werden.
 
 ### Visual Beat Contract
 
@@ -50,6 +62,8 @@ Pro Szene bewusst wählen:
 - `GITHUB_RAW`
 
 Richtwert: ungefähr 70–80 % native Visuals und 20–30 % echte Bilder/Screens; meist 1–2 starke externe Visual-Momente statt Füllmaterial. Details: `VISUAL_ASSETS.md`.
+
+Kamera-/Motion-Effekte wie Push, Pan, Focus, Parallax und Scan werden nur eingesetzt, wenn sie Aufmerksamkeit oder Erklärung sichtbar verbessern. Semantische SFX werden an tatsächliche sichtbare Events gebunden und später bei 1x gehört.
 
 ---
 
@@ -124,7 +138,7 @@ Der Production-Render arbeitet fail-closed mit Git-/Hash-Provenance. Erst wenn d
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Der Render-Lock bindet u. a.:
+Dieser Schritt erzwingt zuerst das Script-Budget und bindet danach u. a.:
 
 - Source Tree
 - Scene-Voice-Map
@@ -202,6 +216,7 @@ Erst dann:
 
 Nicht als fertig melden bei:
 
+- Script über Hard-Limit ohne dokumentierte Ausnahme
 - fehlendem lokalen Audio
 - Remote-Audio oder Remote-Bild als Renderquelle
 - fehlendem Forced Alignment / Voice-Lock
