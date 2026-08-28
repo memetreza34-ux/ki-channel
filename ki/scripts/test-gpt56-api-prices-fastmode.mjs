@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {createHash} from 'node:crypto';
 import {createReadStream, existsSync} from 'node:fs';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, rm, writeFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
@@ -10,6 +10,7 @@ const renderLockedMode = process.argv.includes('--render-locked');
 const reelDir = path.resolve('ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode');
 const compositionId = 'KI-GPT56APIPricesFastMode';
 const outputDir = path.resolve('out/gpt56-api-transfer-test');
+const bundleDir = path.join(outputDir, 'remotion-bundle');
 const rawVideo = path.join(outputDir, `${compositionId}-raw-test.mp4`);
 const masteredVideo = path.join(outputDir, `${compositionId}-mastered-test.mp4`);
 const contactSheet = path.join(outputDir, `${compositionId}-contact-sheet.jpg`);
@@ -85,10 +86,23 @@ run('Validate SFX plan', process.execPath, [path.resolve('ki/scripts/validate-re
 run('Validate visual assets', process.execPath, [path.resolve('ki/scripts/validate-reel-visual-assets.mjs'), reelDir]);
 run('Validate source isolation', process.execPath, [path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), reelDir]);
 
-// 3. Global contracts and focused source tests.
-run('Global production contract audit', 'npm', ['run', 'production:contracts']);
-run('Typecheck Remotion source', 'npm', ['run', 'typecheck:motion']);
-run('GPT-5.6 reel contract test', 'npx', ['--no-install', 'vitest', 'run', 'ki/src/reels/gpt56-api-prices-fastmode/contract.test.ts']);
+// 3. Full repository verification, not only the focused reel test.
+run('Full canonical repository verification', 'npm', ['run', 'repo:verify']);
+run('Full motion-system verification', 'npm', ['run', 'motion:verify']);
+run('GPT-5.6 focused reel contract test', 'npx', ['--no-install', 'vitest', 'run', 'ki/src/reels/gpt56-api-prices-fastmode/contract.test.ts']);
+
+// 4. Resolve the real Remotion root and prove the composition is registered.
+const compositionList = capture('npx', ['--no-install', 'remotion', 'compositions', 'ki/src/index.ts', '--quiet']);
+const compositionIds = compositionList.split(/\s+/).filter(Boolean);
+if (!compositionIds.includes(compositionId)) {
+  fail(`Remotion compositions gate did not resolve ${compositionId}. Resolved: ${compositionIds.join(', ') || '(none)'}`);
+}
+console.log(`\n=== Remotion composition gate ===\nresolved: ${compositionId}`);
+
+// 5. A real Remotion bundle must build successfully before any render claim.
+await rm(bundleDir, {recursive: true, force: true});
+run('Build fresh Remotion bundle', 'npx', ['--no-install', 'remotion', 'bundle', 'ki/src/index.ts', '--out-dir', bundleDir, '--log', 'error']);
+if (!existsSync(bundleDir)) fail(`Remotion bundle directory was not created: ${bundleDir}`);
 
 // Production provenance deliberately requires tracked timing/contract files to be committed.
 const trackedStatus = capture('git', ['status', '--porcelain', '--untracked-files=no']);
@@ -109,9 +123,11 @@ if (trackedStatus) {
       'deterministic CC0 SFX validation',
       'visual rights/local-file/SHA256 gate',
       'source isolation',
-      'global production contract audit',
-      'TypeScript motion typecheck',
-      'focused reel contract test',
+      'full repo:verify',
+      'full motion:verify',
+      'focused GPT-5.6 reel test',
+      'Remotion composition resolution',
+      'fresh Remotion bundle',
     ],
     nextStep: renderLockedMode
       ? 'Render-locked mode requires a clean tracked worktree. Review and commit/revert the listed changes, then rerun with --render-locked.'
@@ -130,18 +146,18 @@ if (!renderLockedMode) {
   console.log('\nPREP MODE PRODUCED NO TRACKED CHANGES — continuing into render-locked production test.');
 }
 
-// 4. Real production pre-render gate including render provenance lock.
+// 6. Real production pre-render gate including render provenance lock.
 run('Production pre-render + provenance lock', process.execPath, [path.resolve('ki/scripts/prepare-reel-render.mjs'), reelDir]);
 
-// 5. Raw Remotion render. Not final; audio master happens next.
+// 7. Raw Remotion render. Not final; audio master happens next.
 run('Render raw transfer-test MP4', 'npx', ['--no-install', 'remotion', 'render', 'ki/src/index.ts', compositionId, rawVideo, '--overwrite']);
 
-// 6. Full-mix social master.
+// 8. Full-mix social master.
 run('Master complete Voice + SFX mix', process.execPath, [path.resolve('ki/scripts/master-reel-video.mjs'), rawVideo, masteredVideo]);
 run('Validate -16 LUFS social master', process.execPath, [path.resolve('ki/scripts/validate-social-audio-master.mjs'), masteredVideo]);
 run('Technical A/V gate on mastered MP4', process.execPath, [path.resolve('ki/scripts/validate-final-video.mjs'), masteredVideo]);
 
-// 7. Contact sheet from the exact mastered video that must be reviewed.
+// 9. Contact sheet from the exact mastered video that must be reviewed.
 run('Create mastered contact sheet', 'ffmpeg', [
   '-hide_banner', '-loglevel', 'error', '-y',
   '-i', masteredVideo,
@@ -168,6 +184,7 @@ const report = {
   rawVideo,
   masteredVideo,
   contactSheet,
+  bundleDir,
   durationSeconds: Number(durationSeconds.toFixed(6)),
   masteredVideoSha256: videoSha256,
   gitCommitSha: capture('git', ['rev-parse', 'HEAD']),
@@ -190,9 +207,11 @@ const report = {
     'ranked/local visual validation',
     'visual rights/local-file/SHA256 gate',
     'source isolation',
-    'global production contract audit',
-    'TypeScript motion typecheck',
-    'focused reel contract test',
+    'full repo:verify',
+    'full motion:verify',
+    'focused GPT-5.6 reel test',
+    'Remotion composition resolution',
+    'fresh Remotion bundle',
     'clean tracked worktree',
     'production pre-render gate',
     'render provenance lock',
