@@ -10,13 +10,13 @@
 - 9 semantische SFX-Events
 - neues geranktes Wikimedia-Visual mit Auswahlpräferenzen
 - offizieller OpenAI-Source-Proof
-- Script-Budget: 73 Wörter und damit im bevorzugten 55–75-Wörter-Bereich
+- Script-Budget: im bevorzugten 55–75-Wörter-Bereich
 
 ## Phase 2 — Voiceover
-**Status:** ERZEUGT — LOKALER DOWNLOAD AUSSTEHEND
+**Status:** FRISCH ERZEUGT — LOKALER DOWNLOAD AUSSTEHEND
 
 Voice: `clear`
-Context: `4a7eee04ddbd4158b51c32644c31997e`
+Context: `4d676958080a40a5ba584aabd67fe7bf`
 
 Die Binärdatei bleibt lokal/ignored und wird bei Bedarf durch den Test aus `audio-source.json` heruntergeladen.
 
