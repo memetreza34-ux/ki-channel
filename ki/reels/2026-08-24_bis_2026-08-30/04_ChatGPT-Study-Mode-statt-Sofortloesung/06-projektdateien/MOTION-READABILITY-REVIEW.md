@@ -1,6 +1,6 @@
 # Motion Readability Review — ChatGPT Study Mode
 
-Review-Grundlage: tatsächlich vom Nutzer bereitgestellter Render `KI-ChatGPTStudyMode.mp4`, bei 1x und als Contact Sheet geprüft.
+Review-Grundlage: tatsächlich vom Nutzer bereitgestellter alter Render `KI-ChatGPTStudyMode.mp4`, bei 1x und als Contact Sheet geprüft. Dieser Render bleibt Fehlerreferenz und kann den neuen Social-Master-/Effekt-Vertrag nicht freigeben.
 
 STATUS: FAIL
 LIGHT_FIRST: FAIL
@@ -10,6 +10,9 @@ TOO_FAST_BEATS: 3
 SIMULTANEOUS_INFO_OVERLOADS: 2
 MIN_CRITICAL_HOLD_FRAMES: 8
 POST_RENDER_1X_REVIEW: FAIL
+CAPTION_SYNC_1X_REVIEW: FAIL
+CAMERA_EFFECTS_1X_REVIEW: FAIL
+AUDIO_MIX_1X_REVIEW: FAIL
 REVIEWED_VIDEO_SHA256: 0e690b36dacb0bc46ba943c203cc11bc40bde2f7c101ca3374320e7385a92298
 REVIEWED_VIDEO_DURATION_SECONDS: 40.192
 
@@ -37,6 +40,8 @@ Finalen Nutzen-/Endzustand länger halten.
 - TOO_FAST_BEATS = 0
 - SIMULTANEOUS_INFO_OVERLOADS = 0
 - kritische Holds mindestens 12 Frames
-- neuen Render bei 1x prüfen
+- lokales finales Audio locken, Roh-Render erzeugen und Social-Master erstellen
+- exakt den neuen gemasterten MP4 bei 1x ansehen und anhören
+- Caption-Sync, Kamera/Zoom/Focus und Gesamtmix jeweils explizit PASS setzen
 - neue SHA256 + Dauer eintragen
-- erst danach `STATUS: PASS` und Validator gegen **genau diesen MP4** ausführen
+- erst danach `STATUS: PASS` und Validator gegen **genau diesen gemasterten MP4** ausführen
