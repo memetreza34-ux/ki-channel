@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","sentenceId":"S01","startFrame":0,"endFrame":180,"text":"OpenAI hat die API-Preise für GPT-5.6 deutlich gesenkt."},
+    {"id":"c02","sceneId":"scene2","sentenceId":"S02","startFrame":180,"endFrame":320,"text":"GPT-5.6 Luna kostet seit dem 30. Juli 80 Prozent weniger."},
+    {"id":"c03","sceneId":"scene2","sentenceId":"S03","startFrame":320,"endFrame":420,"text":"GPT-5.6 Terra ist 20 Prozent günstiger."},
+    {"id":"c04","sceneId":"scene3","sentenceId":"S04","startFrame":420,"endFrame":720,"text":"Für GPT-5.6 Sol gibt es außerdem einen Schnellmodus, der laut OpenAI bis zu 2,5-mal schneller als die Standardverarbeitung sein kann."},
+    {"id":"c05","sceneId":"scene4","sentenceId":"S05","startFrame":720,"endFrame":840,"text":"Dafür kostet der Schnellmodus das Doppelte."},
+    {"id":"c06","sceneId":"scene5","sentenceId":"S06","startFrame":840,"endFrame":1000,"text":"Bestehende Anfragen mit der Kennzeichnung priority wechseln laut OpenAI automatisch auf den Schnellmodus."},
+    {"id":"c07","sceneId":"scene5","sentenceId":"S07","startFrame":1000,"endFrame":1080,"text":"Die Änderung ist damit abwärtskompatibel."}
+  ]
+}
