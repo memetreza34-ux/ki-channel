@@ -4,7 +4,7 @@ import sfxData from '../../../reels/2026-08-24_bis_2026-08-30/06_Codex-GPT-5-4-v
 import visualData from '../../../reels/2026-08-24_bis_2026-08-30/06_Codex-GPT-5-4-verschwindet-am-31-August/06-projektdateien/visual-assets-resolved.json';
 
 export type CodexSunsetCue = {id:string;sceneId:string;sentenceId?:string;startFrame:number;endFrame:number;text:string};
-export type CodexSunsetSfx = {id:string;startFrame:number;durationInFrames:number;volume:number;staticFile:string};
+export type CodexSunsetSfx = {id:string;sceneId:string;startFrame:number;durationInFrames:number;volume:number;staticFile:string;selectedRole?:string;soundId?:string};
 export type CodexSunsetVisual = {id:string;sceneId:string;staticFile?:string|null;attribution?:string|null;rightsStatus?:string|null};
 
 export const CODEX_SUNSET_COMPOSITION_ID = reelData.compositionId;
