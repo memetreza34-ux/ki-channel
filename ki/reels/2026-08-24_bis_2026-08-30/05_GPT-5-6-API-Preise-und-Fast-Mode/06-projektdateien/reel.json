@@ -85,6 +85,7 @@
     {"sceneId":"scene5","title":"Priority bleibt kompatibel","startFrame":840,"endFrame":1080,"accent":"#12B76A","heroMoment":"priority request routes automatically to FAST and source proof settles","timingStatus":"PLANNING_ONLY"}
   ],
   "sources": [
-    "https://openai.com/de-DE/products/release-notes/"
+    "https://openai.com/de-DE/index/advancing-the-price-performance-frontier-with-gpt-5-6/",
+    "https://openai.com/de-DE/api-fast-mode/"
   ]
 }
