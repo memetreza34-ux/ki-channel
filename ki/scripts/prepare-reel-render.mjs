@@ -74,6 +74,7 @@ const run = (label, script, args) => {
   if (result.status !== 0) fail(`${label} failed.`);
 };
 
+run('script budget gate', path.resolve('ki/scripts/validate-reel-script-budget.mjs'), [reelDir]);
 run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
 run('local forced-alignment gate', path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), [reelDir]);
 run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
