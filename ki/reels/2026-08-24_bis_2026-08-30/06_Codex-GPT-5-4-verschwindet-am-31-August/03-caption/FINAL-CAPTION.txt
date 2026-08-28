@@ -1,0 +1,1 @@
+GPT-5.4 und GPT-5.4 mini verschwinden am 31. August aus Codex, wenn du dich mit ChatGPT anmeldest. OpenAI empfiehlt GPT-5.6 Terra bzw. GPT-5.6 Luna als Ersatz. Wichtig: API-Key-Workflows sind von dieser Änderung nicht betroffen.
