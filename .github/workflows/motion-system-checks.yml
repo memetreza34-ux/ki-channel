@@ -60,7 +60,10 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          npm run production:contracts 2>&1 | tee ci-logs/production-contracts.log
+          {
+            npm run production:contracts
+            node ki/scripts/validate-script-budget-contract.mjs
+          } 2>&1 | tee ci-logs/production-contracts.log
 
       - name: Install canonical workspaces
         id: install
