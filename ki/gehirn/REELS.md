@@ -4,7 +4,7 @@
 
 Ein Reel erklärt **eine** KI-Idee mit klarem Spannungsbogen und sichtbarem Mechanismus. Kein Mini-Vortrag, keine Feature-Liste.
 
-Planung typischerweise ca. 40–60 Sekunden, wenn der Inhalt das trägt. **Finale Länge kommt aus dem echten lokalen Voiceover**, nicht aus einer alten Plansekunde.
+Für normale kurze Reels gilt in Phase 1 bevorzugt ein Sprechertext von **55–75 Wörtern**. Bis **80 Wörter** ist zulässig; darüber nur mit bewusst dokumentierter Ausnahme in `reel.json.scriptBudget`. Die **finale Länge kommt immer aus dem echten lokalen Voiceover**, nicht aus einer Plansekunde.
 
 ## Spannungsbogen
 
@@ -51,6 +51,8 @@ High Energy ≠ High Speed.
 - unabhängige Informationen meist 6–12 Frames staffeln
 - höchstens 1–2 neue unabhängige Informationen gleichzeitig, wenn sie aktiv verstanden werden müssen
 - wenn Audio zu kurz ist: Visual vereinfachen, nicht hektisch machen
+- Kameraeffekte nur bei echtem Fokuswechsel oder Erklärnutzen
+- Push, Pan, Focus, Parallax und Scan nicht als Deko-Spam einsetzen
 
 ## Product/UI-first
 
@@ -115,7 +117,7 @@ Finale Reihenfolge:
 ```text
 lokaler Audio-Master
 → ffprobe
-→ Whisper/Voice-Lock
+→ lokales Forced Alignment / Voice-Lock
 → Szenen + finalDurationInFrames schreiben
 → prepare-reel-render.mjs
 → Render
@@ -130,13 +132,30 @@ Remote-Audio ist nur Provenance und niemals finaler Render-Master.
 - Kamera nur bei echtem Fokuswechsel
 - Endzustand braucht Hold
 - keine Deko-Bewegung ohne Erklärfunktion
+- jeder bedeutungstragende Sprecherabschnitt braucht sichtbare Reaktion
 - 1x-Review Pflicht
 
 ## Bilder / Assets
 
 Wenn Code die Aussage hochwertig kontrollierbar baut → Remotion-native.
 
-Externe Bilder nur bei echtem Mehrwert. Markenassets nur echt/lizenzierbar, nie aus Erinnerung nachzeichnen.
+Bewährter Richtwert:
+
+- ungefähr **70–80 %** native UI/Text/Diagramm/Motion
+- ungefähr **20–30 %** echte Bilder/Screens
+- normalerweise **1–2 starke externe Visual-Momente pro Reel**
+
+Externe Bilder nur bei echtem Mehrwert. Markenassets nur echt/lizenzierbar, nie aus Erinnerung nachzeichnen. Externe Binärvisuals müssen vor Render lokal aufgelöst und über Rechte + SHA256 gebunden werden.
+
+## SFX
+
+Soundeffekte unterstützen sichtbare Ereignisse und Bedeutung, nicht bloße Dekoration.
+
+- Klick/Pop/Whoosh/Impact/Scan/Success nur passend zum sichtbaren Event
+- Voiceover bleibt Lautstärke-Priorität
+- deterministische CC0-Auswahl nach finalem Scene-Lock
+- SFX beim 1x-Review tatsächlich anhören
+- kein Effekt nur, damit „mehr passiert“
 
 ## Grounding
 
@@ -148,6 +167,7 @@ Externe Bilder nur bei echtem Mehrwert. Markenassets nur echt/lizenzierbar, nie 
 
 Vor Freigabe:
 
+- Script-Budget eingehalten oder Ausnahme dokumentiert
 - Hook ohne Ton grob verständlich
 - jeder bedeutungstragende Sprecherabschnitt hat Visual Beat
 - kein Fremd-/Alt-Template-Reuse
@@ -156,6 +176,8 @@ Vor Freigabe:
 - Caption nach Shared-Geometrie
 - Audio lokal und Voice-Locked
 - Szenen/Dauer stimmen mit Audio
+- SFX bei 1x passend und nicht störend
+- externe Bilder relevant, sauber gecroppt und nicht inflationär
 - finaler MP4 hörbar
 - Motion-Review gehört per SHA256 zum exakten Final-MP4
 - Export-Paket vollständig
