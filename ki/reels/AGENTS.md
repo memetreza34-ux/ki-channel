@@ -22,6 +22,8 @@ Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
 Pflicht:
 
 - `VOICEOVER-ZUM-KOPIEREN.txt` mit exakt dem später gesprochenen Text
+- normales Kurz-Reel bevorzugt **55–75 Wörter**, bis **80 Wörter** zulässig
+- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
 - `SCENE-VOICE-MAP.json`: jeder Satz wird **vor dem Audio-Lock** einer Szene zugeordnet
 - `reel.json`
 - Szene-/Animationsplan
@@ -31,6 +33,12 @@ Pflicht:
 - ausführbarer Source + Composition
 
 Der Agent darf später nicht aus dem fertigen Audio erraten, welcher Satz zu welcher Szene gehört.
+
+Vor Production-Render wird das Skriptbudget fail-closed geprüft:
+
+```bash
+node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
+```
 
 ## Phase 2 — Voiceover
 
@@ -87,6 +95,11 @@ Kanonische Quelle: `ki/gehirn/FORCED_ALIGNMENT.md`.
 - `SETUP → AKTION → KONSEQUENZ → PAYOFF`
 - wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
 - höchstens 1–2 neue unabhängige Informationen gleichzeitig
+- ungefähr 70–80 % native UI/Text/Diagramm/Motion
+- ungefähr 20–30 % echte Bilder/Screens, normalerweise 1–2 starke externe Visual-Momente
+- externe Visuals nur bei echtem Mehrwert und mit lokalem Rechte-/SHA256-Vertrag
+- Kameraeffekte wie Push, Pan, Focus, Parallax und Scan nur mit Erklärfunktion
+- SFX müssen semantisch zum sichtbaren Ereignis passen und bei 1x tatsächlich angehört werden
 
 ## Caption Layout
 
