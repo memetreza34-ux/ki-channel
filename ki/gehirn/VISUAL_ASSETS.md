@@ -8,7 +8,12 @@ Bewährter Richtwert aus den Apple-Messages- und Codex-Transfer-Tests:
 
 - ungefähr **70–80 % Remotion-native UI / Text / Diagramm / Motion**
 - ungefähr **20–30 % echte Bilder oder Screens**, typischerweise **1–2 starke externe Visual-Momente pro Reel**
+- Standard-Hard-Max: **2 externe Binärvisuals pro Reel**
+- `0` ist ausdrücklich erlaubt, wenn kein echtes Bild einen erklärenden Mehrwert bringt
+- mehr als `2` nur bewusst über `reel.visuals.maxExternalBinaries` und nach Review
 - kein Stockbild nur zum Füllen
+
+Der Grundsatz ist: **ein starkes echtes Bild ist besser als mehrere mittelmäßige Füllbilder**.
 
 ## Erlaubte Quellen
 
@@ -103,10 +108,11 @@ Focus-Halos bleiben bewusst dezent: sie sollen den Blick lenken und nicht wie Ed
 
 1. Phase 1 entscheidet pro Szene: `NATIVE_UI`, `OFFICIAL_SOURCE_CARD`, `WIKIMEDIA_COMMONS` oder `GITHUB_RAW`.
 2. Für externe Bilder Suchbegriff + Zweck + optional Auswahlpräferenzen definieren.
-3. `node ki/scripts/resolve-reel-visual-assets.mjs <reel-package-dir>`
-4. `node ki/scripts/validate-reel-visual-assets.mjs <reel-package-dir>`
-5. Nur lokale `staticFile`-Assets im Remotion-Source verwenden.
-6. Nach Render bei 1x prüfen: Relevanz, Crop, Lesbarkeit, Bewegung, Überladung.
+3. Standardmäßig höchstens 2 externe Binärvisuals verwenden; nur bei echtem Mehrwert erhöhen.
+4. `node ki/scripts/resolve-reel-visual-assets.mjs <reel-package-dir>`
+5. `node ki/scripts/validate-reel-visual-assets.mjs <reel-package-dir>`
+6. Nur lokale `staticFile`-Assets im Remotion-Source verwenden.
+7. Nach Render bei 1x prüfen: Relevanz, Crop, Lesbarkeit, Bewegung, Überladung.
 
 ## Auswahlpräferenzen im Manifest
 
