@@ -22,6 +22,32 @@ Externe Bilder nur, wenn Fotorealistik, reales Produkt/Markenasset oder komplexe
 
 Bei Apps, Websites, Plattformen und Features zuerst eine konkrete Produkt-/UI-Szene prüfen. Generische Kreise/Nodes sind kein Default, wenn UI die Aussage klarer erklärt.
 
+## Phase-1 Script-Budget
+
+Für normale kurze Reels gilt als Standard:
+
+- bevorzugt **55–75 gesprochene Wörter**
+- bis **80 Wörter** noch zulässig
+- über **80 Wörter** nur mit bewusster dokumentierter Ausnahme in `reel.json.scriptBudget`
+- längere Laufzeit darf nicht durch unnötige Erklärsätze entstehen
+
+Der Codex-Transfer-Test mit 86 Wörtern landete trotz sauberer Pause-Kompression bei rund 44 Sekunden. Deshalb wird die Laufzeit bereits in Phase 1 über das Skript begrenzt, nicht erst nach dem Render.
+
+Vor Production-Render prüft:
+
+`node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>`
+
+## Echte Visual-Momente
+
+Bewährter Standard aus den Transfer-Tests:
+
+- ungefähr **70–80 % native UI / Text / Diagramm / Motion**
+- ungefähr **20–30 % echte Bilder/Screens**
+- typischerweise **1–2 starke externe Visual-Momente pro Reel**
+- kein Stockbild nur zum Füllen
+
+Echte Bilder sind besonders sinnvoll für reale Geräte, Server, Chips, Rechenzentren, Orte, Produkte oder andere Motive, bei denen ein Foto die Aussage schneller glaubwürdig macht als eine künstliche UI-Karte.
+
 ## Motion
 
 High Energy ≠ High Speed.
@@ -80,9 +106,7 @@ Vor Render:
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-`Root.tsx` verwendet danach:
-
-`staticFile('runtime-audio/<compositionId>.mp3')`
+`Root.tsx` verwendet danach lokale Runtime-Audio-Dateien unter `public/runtime-audio/`.
 
 Neue aktive Reel-Komponenten sollen bei leerem `voiceoverSrc` fehlschlagen statt still zu rendern.
 
@@ -96,12 +120,15 @@ Neue aktive Reel-Komponenten sollen bei leerem `voiceoverSrc` fehlschlagen statt
 
 Vor Freigabe:
 
+- Script-Budget bewusst eingehalten oder Ausnahme dokumentiert
 - Visual passt exakt zur Sprecherbedeutung
 - Smartphone-lesbar
 - Hauptmechanik groß genug
 - Caption nach Shared-Geometrie
 - Fullscreen-Hintergrund durchgehend
 - keine Fremd-/Alt-Visuals
+- echte Bilder nur mit sauberem Rechte-/Local-File-/SHA256-Vertrag
 - Motion bei 1x verständlich
 - Audio lokal + Voice-Locked
+- SFX bei 1x tatsächlich angehört
 - aktueller Render gehört zum aktuellen Source-Stand
