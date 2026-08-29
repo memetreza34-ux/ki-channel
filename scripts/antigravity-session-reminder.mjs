@@ -20,7 +20,7 @@ const message = [
   'Run npm run antigravity:capabilities and use every relevant Agent/Skill/Workflow/MCP, not every irrelevant one.',
   'For a long production session prefer /bootstrap-ki-channel first.',
   'Production voiceover is Phase 2 user-only input: never synthesize, remotely fetch or replace voiceover.mp3/wav.',
-  'Parallelize independent read-only research/verification through custom subagents; never let multiple write agents edit the same working tree concurrently.',
+  'Parallelize independent read-only research/verification through custom subagents; enforce the single-writer policy and never let multiple write agents edit the same working tree concurrently.',
   'Never claim tests, render, visual review or release PASS unless actually executed with evidence.'
 ].join(' ');
 
