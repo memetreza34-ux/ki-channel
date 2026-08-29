@@ -146,7 +146,7 @@ if (!renderLockedMode) {
   console.log('\nPREP MODE PRODUCED NO TRACKED CHANGES — continuing into render-locked production test.');
 }
 
-// 6. Real production pre-render gate including render provenance lock.
+// 6. Real production pre-render gate including render provenance lock and actual 60-75 s voice-locked duration.
 run('Production pre-render + provenance lock', process.execPath, [path.resolve('ki/scripts/prepare-reel-render.mjs'), reelDir]);
 
 // 7. Raw Remotion render. Not final; audio master happens next.
@@ -157,11 +157,11 @@ run('Master complete Voice + SFX mix', process.execPath, [path.resolve('ki/scrip
 run('Validate -16 LUFS social master', process.execPath, [path.resolve('ki/scripts/validate-social-audio-master.mjs'), masteredVideo]);
 run('Technical A/V gate on mastered MP4', process.execPath, [path.resolve('ki/scripts/validate-final-video.mjs'), masteredVideo]);
 
-// 9. Contact sheet from the exact mastered video that must be reviewed.
+// 9. Contact sheet from the exact mastered video that must be reviewed. 5-second sampling covers a full 60-75 s reel in one 3x5 sheet.
 run('Create mastered contact sheet', 'ffmpeg', [
   '-hide_banner', '-loglevel', 'error', '-y',
   '-i', masteredVideo,
-  '-vf', 'fps=1/4,scale=270:-1,tile=2x5',
+  '-vf', 'fps=1/5,scale=270:-1,tile=3x5',
   '-frames:v', '1',
   contactSheet,
 ]);
@@ -172,6 +172,8 @@ const probe = spawnSync('ffprobe', [
 ], {encoding: 'utf8'});
 if (probe.error || probe.status !== 0) fail('could not read mastered duration.');
 const durationSeconds = Number(String(probe.stdout).trim());
+if (!Number.isFinite(durationSeconds)) fail('mastered duration is invalid.');
+if (durationSeconds < 60 || durationSeconds > 75) fail(`mastered duration ${durationSeconds.toFixed(3)} s is outside required 60-75 s.`);
 const videoSha256 = await sha256File(masteredVideo);
 
 const sfx = JSON.parse(await readFile(path.join(reelDir, '06-projektdateien', 'sfx-resolved.json'), 'utf8'));
@@ -186,6 +188,7 @@ const report = {
   contactSheet,
   bundleDir,
   durationSeconds: Number(durationSeconds.toFixed(6)),
+  durationContractSeconds: {min: 60, max: 75},
   masteredVideoSha256: videoSha256,
   gitCommitSha: capture('git', ['rev-parse', 'HEAD']),
   sfxEvents: Array.isArray(sfx.events) ? sfx.events.length : 0,
@@ -214,21 +217,26 @@ const report = {
     'fresh Remotion bundle',
     'clean tracked worktree',
     'production pre-render gate',
+    '60-75 second voice-locked duration gate',
     'render provenance lock',
     'raw Remotion render',
     '-16 LUFS social audio master',
     'technical final-video gate on mastered MP4',
+    '60-75 second mastered-video duration gate',
   ],
   humanReviewRequired: [
-    'pacing',
+    'pacing across the full 60-75 seconds',
     'caption sync',
-    'SFX timing and loudness',
+    'SFX timing and loudness across the full timeline',
     'native/external visual balance',
     'selected real image relevance and crop',
     'camera push/pan/focus/parallax readability',
+    'developer workflow beat',
     '2.5x speed beat',
     '2x cost tradeoff',
     'priority routing',
+    'integration remains intact beat',
+    'final cheaper-versus-faster payoff',
     'source-proof readability',
     'overall mastered loudness',
   ],
@@ -242,7 +250,7 @@ console.log('\nGPT-5.6 PRODUCTION-PATH TEST READY — MASTERED, NOT FINAL');
 console.log(`mastered video: ${masteredVideo}`);
 console.log(`contact sheet: ${contactSheet}`);
 console.log(`sha256: ${videoSha256}`);
-console.log(`duration: ${durationSeconds.toFixed(3)} s`);
+console.log(`duration: ${durationSeconds.toFixed(3)} s (required 60-75 s)`);
 console.log(`SFX events: ${report.sfxEvents}`);
 console.log(`external visuals: ${report.externalVisuals.length}`);
 console.log('Next: review exactly the mastered MP4 at 1x, bind MOTION-READABILITY-REVIEW.md to this SHA256, then use the normal finalizer/export gates.');
