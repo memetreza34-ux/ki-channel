@@ -30,9 +30,12 @@ const [validator, prepare, reelAgents, sourceAgents, reelBrain, productionFlow] 
 ]);
 
 const requiredValidatorTokens = [
-  'targetMinWords ?? 55',
-  'targetMaxWords ?? 75',
-  'hardMaxWords ?? 80',
+  'targetMinWords ?? 150',
+  'targetMaxWords ?? 175',
+  'hardMaxWords ?? 190',
+  'referenceWpm ?? 140',
+  'targetMinSeconds ?? 60',
+  'targetMaxSeconds ?? 75',
   'allowLonger',
   'longerReason',
   'SCRIPT BUDGET GATE FAILED',
@@ -43,6 +46,8 @@ for (const token of requiredValidatorTokens) {
 
 if (!prepare.includes("run('script budget gate'")) fail('prepare-reel-render.mjs does not execute the script budget gate.');
 if (!prepare.includes('validate-reel-script-budget.mjs')) fail('prepare-reel-render.mjs is not wired to validate-reel-script-budget.mjs.');
+if (!prepare.includes('targetMinSeconds')) fail('prepare-reel-render.mjs does not validate minimum final reel duration.');
+if (!prepare.includes('targetMaxSeconds')) fail('prepare-reel-render.mjs does not validate maximum final reel duration.');
 
 for (const [label, text] of [
   ['ki/reels/AGENTS.md', reelAgents],
@@ -50,13 +55,14 @@ for (const [label, text] of [
   ['ki/gehirn/REELS.md', reelBrain],
   ['ki/gehirn/PRODUKTIONSABLAUF.md', productionFlow],
 ]) {
-  for (const token of ['55', '75', '80', 'validate-reel-script-budget.mjs']) {
+  for (const token of ['60', '75', '150', '175', '190', 'validate-reel-script-budget.mjs']) {
     if (!text.includes(token)) fail(`${label} is missing script-budget contract token: ${token}`);
   }
 }
 
 console.log('SCRIPT BUDGET CONTRACT PASSED');
-console.log('preferred range: 55-75 words');
-console.log('hard max: 80 words unless documented exception');
-console.log('pre-render wiring: verified');
+console.log('target duration: 60-75 seconds');
+console.log('preferred range: 150-175 words');
+console.log('hard max: 190 words unless documented exception');
+console.log('pre-render duration wiring: verified');
 console.log('global agent/brain documentation: verified');
