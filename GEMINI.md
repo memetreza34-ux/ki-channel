@@ -75,6 +75,7 @@ Auf demselben Working Tree arbeitet gleichzeitig **genau ein Writer**. Für konk
 - `remotion-bits-discovery` nur nutzen, wenn der Shared StoryMotion/StoryMedia-Stack eine konkrete Motion-Anforderung nicht sinnvoll abdeckt.
 - `figma-design-reference` nur nutzen, wenn ein konkreter Figma-Link/Frame oder eine hochwertige Layout-/Motion-Referenz die Aufgabe wirklich verbessert; Figma bleibt reference-only.
 - `rive-local-motion` nur für bereits vorhandene lokale `.riv`-Dateien; keine neue kostenpflichtige Export-Abhängigkeit erzeugen.
+- `remotion-cc0-sfx-supplement` nur verwenden, wenn die bestehende lokale Kenney-CC0-Bibliothek für ein konkretes sichtbares Event keinen passenden Sound liefert; niemals global aktivieren.
 - synchronisierte offizielle Remotion Agent Skills passend zur Aufgabe nutzen.
 
 Offizielle Remotion Skills:
@@ -148,6 +149,12 @@ Lottie Creator MCP nur temporär aktivieren; Export lokal prüfen.
 `/inspect-figma-reference <figma-link> <beat-id>`
 
 Figma nur read-oriented als Designkontext verwenden und danach wieder deaktivieren.
+
+### Optionalen Remotion-CC0-SFX-Zusatz vorbereiten
+
+`/setup-remotion-cc0-sfx`
+
+Der bestehende lokale Kenney-CC0-Pfad bleibt primär. Das Supplement enthält nur einzeln geprüfte Remotion-Sounds mit expliziter CC0-Angabe und wird pro Reel nur über `allowRemotionCc0Supplement: true` aktiviert. Keine Remote-Audio-URLs im Render.
 
 ### Nur visuell prüfen
 
@@ -332,6 +339,9 @@ node scripts/check-pixabay-scout-integration.mjs
 node scripts/check-lottie-creator-integration.mjs
 node scripts/check-rive-local-motion-integration.mjs
 node scripts/check-figma-mcp-integration.mjs
+node scripts/check-polyhaven-scout-integration.mjs
+node scripts/check-blender-asset-prep-integration.mjs
+node scripts/check-remotion-cc0-sfx-integration.mjs
 ```
 
 Zusätzlich die reel-spezifischen Story-/Audio-/Visual-/Render-/Master-/Final-Gates ausführen.
