@@ -8,6 +8,14 @@
         "--browser-url=http://127.0.0.1:9222"
       ]
     },
+    "remotion-bits": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "remotion-bits",
+        "mcp"
+      ]
+    },
     "github": {
       "command": "docker",
       "args": [
