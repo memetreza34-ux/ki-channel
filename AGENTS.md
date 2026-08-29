@@ -47,25 +47,31 @@ Muss enthalten:
 
 Geschätzte Timings sind nur Preview. Das Wortbudget ist Planung; die echte Laufzeit kommt später aus dem Voice-Lock.
 
-### Phase 2 — Voiceover beschaffen
+### Phase 2 — Voiceover: ausschließlich Nutzer
 
-Voiceover darf **real** auf zwei Arten entstehen:
+**Harte Regel:** Das Voiceover wird ausschließlich vom Nutzer erstellt und manuell in `01-script-audio/` abgelegt.
 
-1. mit einem tatsächlich verfügbaren Voice-/TTS-Tool im selben Auftrag, oder
-2. durch Nutzer/Mensch.
+Agenten dürfen niemals:
 
-Wenn Audio bereits real per Tool erzeugt wurde, muss nicht künstlich auf einen Human-only-Schritt gewartet werden.
+- ein Voiceover erzeugen,
+- ein Voice-/TTS-Tool für das Produktionsaudio aufrufen,
+- eine Remote-Audiodatei herunterladen,
+- eine Preview-Audiodatei als Ersatz verwenden,
+- eine fehlende Nutzerdatei automatisch ersetzen.
 
-Verbindlich ist `ki/gehirn/AUDIO_PIPELINE.md`:
+Der kanonische Pfad steht in `reel.json -> audio.targetFile`, normalerweise:
 
-- Remote-/Provider-URL nur als Provenance
-- echtes Audio lokal am kanonischen `audio.targetFile`
-- keine Render-Time-Netzwerkquelle
-- vor Render `prepare-reel-audio.mjs`
+`01-script-audio/voiceover.mp3`
+
+Fehlt diese lokale Nutzerdatei, lautet der Status ausschließlich:
+
+`PHASE 2 — WARTET AUF NUTZER-AUDIO`
+
+Erst danach darf Phase 3 beginnen.
 
 ### Phase 3 — Sync, Review, Render, Export
 
-Mit lokalem Audio:
+Mit lokalem Nutzer-Audio:
 
 - Runtime-PCM-WAV erzeugen / Pause-Kompression
 - bekanntes Skript per lokalem Forced Alignment exakt gegen die Runtime-WAV ausrichten
@@ -80,8 +86,6 @@ Mit lokalem Audio:
 - Motion-Readability bei 1x
 - Finalizer + vollständiges `05-export/`-Paket
 
-Fehlt das lokale Audio: `PHASE 2 AUDIO FEHLT` bzw. bei bereits dokumentierter Tool-Generation `AUDIO DOWNLOAD/PREP FEHLT`.
-
 ## Autoritative Reel-Dateien
 
 Wenn vorhanden, gilt grob:
@@ -89,7 +93,7 @@ Wenn vorhanden, gilt grob:
 1. `06-projektdateien/PHASE-STATUS.md`
 2. `06-projektdateien/reel.json`
 3. `01-script-audio/voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
-4. `01-script-audio/audio-source.json` (nur Provenance)
+4. `01-script-audio/audio-source.json`
 5. `01-script-audio/SCENE-VOICE-MAP.json`
 6. `01-script-audio/WORD-TIMINGS.json` nach Voice-Lock
 7. `scene-plan.md`
@@ -109,7 +113,6 @@ Widersprüche nicht still übergehen; an der Ursache korrigieren.
 - kein `Math.random()` im Render
 - **keine Render-Time-Netzwerkdownloads**
 - lokale Runtime-Medien über vorbereitete `public/`-Assets / `staticFile`
-- Hard Cut nur, wenn keine bessere semantische Transition nötig ist
 - High Energy bedeutet nicht High Speed
 - wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
 - längere 60–75-s-Reels brauchen mehrere Visual Beats; keine langen statischen Holds nur zum Füllen
@@ -127,16 +130,9 @@ Caption-Geometrie ausschließlich aus `ki/src/reels/captionSafe.ts` / `CAPTION_S
 
 ## Medien-Wahrheit
 
-**Erlaubt:** Medien tatsächlich mit einem verfügbaren Tool erzeugen oder echte Nutzer-/Repository-Assets verwenden.
+Bei Produktions-Voiceover gilt ausschließlich Nutzer-Audio. Andere Medien dürfen nur tatsächlich mit erlaubten Tools erzeugt oder aus echten Nutzer-/Repository-Assets verwendet werden.
 
-**Verboten:** Medien, Dateien, URLs, Logos, Render oder Testergebnisse erfinden/behaupten, die nicht tatsächlich existieren.
-
-Für Tool-generierte Medien gilt:
-
-- Provenance dokumentieren
-- benötigten lokalen Master wirklich herunterladen/erzeugen
-- lokal technisch prüfen
-- keine Remote-URL als finalen Render-Master verwenden
+Verboten sind erfundene Medien, Dateien, URLs, Logos, Render oder Testergebnisse.
 
 Große Binärmedien bleiben standardmäßig außerhalb normalem Git, solange Git LFS nicht eingerichtet ist. Code, Provenance, Timings, Manifest und Review-Dokumentation werden versioniert.
 
