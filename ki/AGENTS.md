@@ -50,11 +50,15 @@ Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
 - Entertainment-Review
 - Motion-Readability-Datei PENDING
 
-### Phase 2
+### Phase 2 — ausschließlich Nutzer-Audio
 
-Reales Voiceover beschaffen: tatsächliches Voice-/TTS-Tool oder Nutzer/Mensch.
+Der Nutzer erstellt das vollständige Voiceover selbst und legt es manuell unter dem in `reel.json.audio.targetFile` definierten Pfad ab, normalerweise `01-script-audio/voiceover.mp3`.
 
-Remote-URL nur als Provenance; lokaler Master ist Pflicht.
+Agenten dürfen das Produktions-Voiceover **weder erzeugen noch herunterladen**. Keine TTS-/Voice-Tools, keine Provider-URLs und keine Preview-Dateien als Ersatz.
+
+Fehlt die Datei, wird gestoppt mit:
+
+`PHASE 2 — WARTET AUF NUTZER-AUDIO`
 
 ### Phase 3
 
@@ -119,8 +123,6 @@ Ein Reel ist nicht fertig bei `render complete`.
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
-
-Der Finalizer führt Entertainment-, Forced-Alignment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates erneut aus.
 
 Erst danach und nach echtem Ansehen/Anhören:
 
