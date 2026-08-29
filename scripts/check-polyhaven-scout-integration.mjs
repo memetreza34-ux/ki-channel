@@ -33,7 +33,7 @@ for (const forbidden of ['writeFile(path.resolve(\'public\'', 'visual-assets.jso
 for (const token of ['discovery-only', 'CC0', 'must not', 'best-effort', 'SHA256']) {
   if (!skill.toLowerCase().includes(token.toLowerCase())) errors.push(`skill missing token: ${token}`);
 }
-for (const token of ['npm run antigravity:polyhaven', 'Do **not** download anything', 'DISCOVERY_ONLY_NOT_PRODUCTION_APPROVED', 'API downtime']) {
+for (const token of ['node scripts/scout-polyhaven-assets.mjs', 'Do **not** download anything', 'DISCOVERY_ONLY_NOT_PRODUCTION_APPROVED', 'API downtime']) {
   if (!workflow.includes(token)) errors.push(`workflow missing token: ${token}`);
 }
 
