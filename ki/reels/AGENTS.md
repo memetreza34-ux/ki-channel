@@ -22,8 +22,10 @@ Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
 Pflicht:
 
 - `VOICEOVER-ZUM-KOPIEREN.txt` mit exakt dem später gesprochenen Text
-- normales Kurz-Reel bevorzugt **55–75 Wörter**, bis **80 Wörter** zulässig
-- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
+- neues Standard-Reel zielt auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
+- bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- unter/über dem Ziel nur mit bewusst dokumentierter Ausnahme in `reel.json.scriptBudget`
+- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75` für neue Reels
 - `SCENE-VOICE-MAP.json`: jeder Satz wird **vor dem Audio-Lock** einer Szene zugeordnet
 - `reel.json`
 - Szene-/Animationsplan
@@ -39,6 +41,8 @@ Vor Production-Render wird das Skriptbudget fail-closed geprüft:
 ```bash
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
+
+Nach dem lokalen Voice-Lock prüft `prepare-reel-render.mjs` zusätzlich die **echte** finale Laufzeit. Für neue Reels gilt: unter 60 oder über 75 Sekunden blockiert den Production-Render, solange keine dokumentierte Ausnahme vorliegt.
 
 ## Phase 2 — Voiceover
 
