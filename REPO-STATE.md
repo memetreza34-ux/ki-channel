@@ -22,9 +22,10 @@ Bei KI-Kanal-Arbeit gilt:
 2. `AGENTS.md`
 3. `ki/AGENTS.md`
 4. `ki/gehirn/MASTER.md`
-5. danach die passende Domäne
-6. das ausdrücklich genannte Reel/Longform-Video/Format
-7. erst danach konkrete Pläne, Source- oder Plattformdateien
+5. bei Reels zusätzlich `ki/gehirn/STORYTELLING_MOTION.md`
+6. danach die passende Domäne / `ki/reels/AGENTS.md` / `ki/src/reels/AGENTS.md`
+7. das ausdrücklich genannte Reel
+8. erst danach konkrete Pläne, Source- oder Plattformdateien
 
 ## 3. Kanonische Short-Form-Produktionsstruktur
 
@@ -40,6 +41,8 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ```
 
 Ausführbarer Remotion-Code liegt getrennt unter `ki/src/reels/<slug>/`.
+
+Der Generator erstellt alle sechs Ordner Git-stabil und scaffoldet für neue Reels zusätzlich `story-beats.json` + `STORY-PLAN.md`. Der Strukturcheck überwacht den Generator selbst.
 
 ## 4. Phase-1 Script- und Laufzeit-Budget
 
@@ -66,7 +69,7 @@ Nach lokalem Forced Alignment prüft `prepare-reel-render.mjs` zusätzlich die e
 Workflow:
 
 ```text
-ChatGPT/Codex erstellt nur Skript und Produktionsplan
+ChatGPT/Codex erstellt nur Skript, Story, Source und Produktionsplan
 → Nutzer erzeugt das vollständige Voiceover selbst
 → Nutzer legt die Datei in 01-script-audio/ ab
 → erst dann darf die technische Audio-/Render-Pipeline starten
@@ -93,7 +96,50 @@ Die lokale Datei wird danach in eine deterministische Runtime-Audiospur umgewand
 
 Diese Runtime-WAV ist Wort-/Frame-/Render-Autorität.
 
-## 6. Caption-Geometrie
+## 6. Storytelling-/Motion-Standard
+
+Neue 60–75-s-Reels werden als **narrative Social-Explainer** gebaut, nicht als Folge langer UI-/PowerPoint-Karten.
+
+Harte Story-Regeln:
+
+- mindestens **15 konkrete Visual Beats**
+- jede Szene mindestens zwei erkennbare visuelle Zustandsänderungen
+- Story-Arc enthält mindestens `HOOK`, `PROOF`, `CONSEQUENCE`, `PAYOFF`
+- jede zentrale Sprecher-Aussage löst eine sichtbare Reaktion aus
+- Ziel: kein praktisch unveränderter Visual State länger als **4,5 Sekunden** bei aktivem Voiceover, außer bewusst dokumentierte Lesepause
+- Kamera/Zoom/Transition/SFX nur mit Erklär-, Fokus-, Verbindungs- oder Payoff-Funktion
+
+Phase-1-Gate:
+
+```bash
+node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
+```
+
+Neue Story-Stack-Bausteine:
+
+- `ki/src/reels/StoryMotion.tsx`
+  - `StoryBeat`
+  - `StoryCamera`
+  - `ImpactNumber`
+  - `StoryProgressRail`
+  - `StoryCutFlash`
+  - `StoryTexture`
+- `ki/src/reels/StoryMediaLayers.tsx`
+  - `StoryThreeHero`
+  - lokale Lottie-/Rive-Layer
+  - `StorySkiaBackdrop`
+- `ki/src/motion-system/StoryTransitionShowcase.tsx`
+- `.agents/skills/remotion-storytelling/SKILL.md`
+
+Der KI-Workspace pinnt den Story-Stack auf Remotion `4.0.488`: Transitions, Effects, SFX-Capability, Shapes, Lottie, Rive, Three und Skia. `@shopify/react-native-skia` ist wegen React 18 auf `1.12.4` gepinnt.
+
+Skia ist vollständig verdrahtet:
+
+- `remotion.config.ts` → `Config.setChromiumOpenGlRenderer('angle')`
+- `remotion.config.ts` → `enableSkia()` als Webpack-Override
+- `ki/src/index.ts` → `LoadSkia()` vor dynamischem Import/`registerRoot()`
+
+## 7. Caption-Geometrie
 
 Für neue 1080×1920-Production-Reels:
 
@@ -104,24 +150,29 @@ Für neue 1080×1920-Production-Reels:
 - Glass-/Blur-Overlay
 - Fullscreen-Szenenhintergrund läuft hinter der Caption weiter
 
-## 7. Visual-, Zoom- und SFX-Standard
+## 8. Visual-, Zoom- und SFX-Standard
 
 Bewährter Default:
 
 - ungefähr **70–80 % Remotion-native** UI/Text/Diagramm/Motion
 - ungefähr **20–30 % echte Bilder/Screens**
-- normalerweise **1–2 starke externe Visual-Momente pro Reel**
+- normalerweise **1–2 starke externe Proof-/Visual-Momente pro Reel**
 - externe Binärvisuals lokal auflösen, lizenzprüfen und per SHA256 binden
-- CameraPush, Pan, Focus, Parallax und Scan nur mit Erklär-/Fokusnutzen
+- CameraPush, StoryCamera, Pan, Focus, Parallax, Reframe, Three/Skia und Scan nur mit Erklär-/Fokusnutzen
 - semantische CC0-SFX folgen sichtbaren Events
 - Voiceover bleibt Lautstärke-Priorität
-- SFX und Kameraeffekte werden beim echten 1x-Review geprüft
+- `@remotion/sfx` ist als Capability installiert, ersetzt aber nicht den lokalen CC0-Produktionspfad
+- Lottie/Rive/3D/externe Bilder müssen vor Render lokal sein; keine Render-Time-Remote-Medien
 
-## 8. Verbindliches Produktionsmodell
+## 9. Verbindliches Produktionsmodell
 
 ```text
 PHASE 1 — ChatGPT / Coding-Agent
-Idee + Fakten + 60–75-s-Skript + Copy + Szenen + Visual Beats + Source + Preview-Timing
+Idee + Fakten + 60–75-s-Skript + Copy + Szenen
+→ story-beats.json (>=15 Beats)
+→ Story-Arc + Visual/SFX-Plan
+→ Remotion Story-Source
+→ Struktur- + Storytelling-Gate
 
 PHASE 2 — NUR NUTZER
 Nutzer erzeugt das vollständige Voiceover und legt es lokal in 01-script-audio/
@@ -131,24 +182,38 @@ vorhandenes Nutzer-Audio prüfen
 → Runtime-WAV + Pause-Kompression
 → lokales Forced Alignment
 → WORD-TIMINGS + Scene/Caption-Lock
+→ Story-Beats an echte Voice-/Szenenzeit anpassen
 → echtes 60–75-s-Dauergate
 → automatische CC0-SFX
 → externe Visuals lokal auflösen
 → renderrelevante Dateien committen
-→ prepare-reel-render.mjs / Provenance-Lock
+→ prepare-reel-render.mjs (inkl. Storytelling-Gate) / Provenance-Lock
 → Remotion-Roh-Render
 → Social-Audio-Master ca. -16 LUFS
 → 1x-Review des gemasterten MP4
+→ Storyfluss + Visual Reactions + Transition Purpose + keine statischen Überlängen prüfen
 → Finalizer + Export-Paket
 ```
 
-## 9. Aktueller Abschluss-Test vor Merge von PR #28
+## 10. Aktueller Abschluss-Test vor Merge von PR #28
 
 Kanonischer Test-Reel:
 
 `ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode/`
 
 Aktueller Sprechertext: **159 Wörter**. Planning-Timeline: **2070 Frames / 69 Sekunden** bei 30 fps.
+
+Nach Review des ersten 61,7-s-Renders wurde die Source auf den Story-Standard umgebaut:
+
+- **18 konkrete Visual Beats**
+- 5 Kapitel mit mehreren Zustandsänderungen
+- 3D-Hero
+- Skia-/Effects-Layer
+- Impact-Numbers / Vergleichsrail
+- physischer Speed-vs-Cost-Seesaw
+- echte `TransitionSeries` für `priority → routing → Fast Mode`
+- reales Data-Center-Visual nach lokaler Auflösung, 3D-Fallback im Source
+- offizieller OpenAI-Source-Proof
 
 Aktueller Status:
 
@@ -172,27 +237,42 @@ Nach Commit der erzeugten Timing-/Contract-Dateien:
 node ki/scripts/test-gpt56-api-prices-fastmode.mjs --render-locked
 ```
 
-## 10. Globale Produktions-Regressionen
+## 11. Globale Produktions-Regressionen
 
 Vor Merge/Release:
 
 ```bash
+npm run ki:reel:structure-check
+node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 npm run production:contracts
 npm run repo:verify
 npm run motion:verify
 ```
 
-## 11. Verbindliche visuelle Identität
+`prepare-reel-render.mjs` führt das Storytelling-Gate für den konkreten Reel erneut aus.
+
+## 12. Finaler 1x-Review
+
+Bei storytelling-enabled Reels zusätzlich zu Caption/Kamera/Audio/SFX/Visuals zwingend:
+
+- `STORY_FLOW_1X_REVIEW: PASS`
+- `VISUAL_REACTION_1X_REVIEW: PASS`
+- `TRANSITIONS_PURPOSE_1X_REVIEW: PASS`
+- `STATIC_STATE_OVER_LIMIT_VIOLATIONS: 0`
+
+Der Review gilt ausschließlich für das exakte gemasterte MP4 und ist per SHA256 gebunden.
+
+## 13. Verbindliche visuelle Identität
 
 - Short-Form: 1080 × 1920 / 30 FPS
 - Longform: 1920 × 1080 / 30 FPS
 - Light-First
 - faceless
 - keine Cyberpunk-/Neon-Standardästhetik
-- `REMOTION_NATIVE_MAXIMUM`
+- clean/premium, aber narrative hohe Visual-Beat-Dichte
 - High Energy ist nicht High Speed: `REVEAL → SETTLE → READABLE HOLD`
 
-## 12. Statusbegriffe niemals vermischen
+## 14. Statusbegriffe niemals vermischen
 
 ```text
 geplant
@@ -206,16 +286,17 @@ veröffentlicht
 
 Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
 
-## 13. Git-/Medienregel
+## 15. Git-/Medienregel
 
 Große Binärmedien (`mp3`, `wav`, `mp4`, `png` usw.) bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
-In Git bleiben Source, Skripte, Provenance, Timings, Reviews, Contracts und Export-Manifeste.
+In Git bleiben Source, Skripte, Story-Beats, Provenance, Timings, Reviews, Contracts und Export-Manifeste.
 
-## 14. Bekannte externe Einschränkungen
+## 16. Bekannte externe Einschränkungen
 
 - GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert.
 - `main` hat derzeit keine Branch Protection.
 - Ein `package-lock.json` ist noch nicht kanonisch erzeugt.
+- Der neue Remotion-Story-Stack wurde über GitHub-Source integriert, aber in dieser Umgebung noch **nicht** per `npm install`, TypeScript, Remotion Bundle/Render oder Skia-Runtime ausgeführt.
 
 Diese Betriebsgrenzen sind keine Erlaubnis, Test- oder Qualitätsregeln zu umgehen.
