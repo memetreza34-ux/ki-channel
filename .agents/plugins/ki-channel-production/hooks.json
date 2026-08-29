@@ -1,0 +1,16 @@
+{
+  "ki-channel-post-edit": {
+    "PostToolUse": [
+      {
+        "matcher": "edit_file|create_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/antigravity-lightweight-check.mjs",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
