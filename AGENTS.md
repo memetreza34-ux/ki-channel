@@ -32,6 +32,9 @@ Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit
 Muss enthalten:
 
 - finales Skript + `VOICEOVER-ZUM-KOPIEREN.txt`
+- für neue Reels **60–75 Sekunden** Ziel-Laufzeit
+- bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
 - Szenen-/Animationsplan
 - Caption-Basis
 - Plattform-Copy
@@ -42,7 +45,7 @@ Muss enthalten:
 - Entertainment-/Motion-Readability-Grundlage
 - klaren `PHASE-STATUS.md`
 
-Geschätzte Timings sind nur Preview.
+Geschätzte Timings sind nur Preview. Das Wortbudget ist Planung; die echte Laufzeit kommt später aus dem Voice-Lock.
 
 ### Phase 2 — Voiceover beschaffen
 
@@ -64,15 +67,18 @@ Verbindlich ist `ki/gehirn/AUDIO_PIPELINE.md`:
 
 Mit lokalem Audio:
 
-- reale Dauer messen
-- Whisper/Voice-Lock
-- Szenen/Captions/Visual Beats an echtes Audio anpassen
+- Runtime-PCM-WAV erzeugen / Pause-Kompression
+- bekanntes Skript per lokalem Forced Alignment exakt gegen die Runtime-WAV ausrichten
+- `WORD-TIMINGS.json`, Szenen und Captions Voice-Locked schreiben
+- tatsächliche finale Dauer prüfen: neue Reels müssen 60–75 Sekunden erreichen oder eine dokumentierte Ausnahme besitzen
+- SFX und lokale Visuals auflösen
 - TypeScript/fokussierte Tests
+- Pre-Render-/Provenance-Gate
+- Roh-Render
+- Social-Audio-Master
 - Smoke-/Hero-/Contact-Sheet-Review
 - Motion-Readability bei 1x
-- final rendern
-- Audio-/Video-Gate
-- vollständiges `05-export/`-Paket
+- Finalizer + vollständiges `05-export/`-Paket
 
 Fehlt das lokale Audio: `PHASE 2 AUDIO FEHLT` bzw. bei bereits dokumentierter Tool-Generation `AUDIO DOWNLOAD/PREP FEHLT`.
 
@@ -84,14 +90,16 @@ Wenn vorhanden, gilt grob:
 2. `06-projektdateien/reel.json`
 3. `01-script-audio/voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
 4. `01-script-audio/audio-source.json` (nur Provenance)
-5. `scene-plan.md`
-6. `animation-plan.md`
-7. `03-caption/subtitle-cues.json`
-8. `03-caption/platform-copy.md`
-9. Asset-Manifest/Prompts
-10. `ENTERTAINMENT-REVIEW.md`
-11. `MOTION-READABILITY-REVIEW.md`
-12. Assembly-/Review-Dateien
+5. `01-script-audio/SCENE-VOICE-MAP.json`
+6. `01-script-audio/WORD-TIMINGS.json` nach Voice-Lock
+7. `scene-plan.md`
+8. `animation-plan.md`
+9. `03-caption/subtitle-cues.json`
+10. `03-caption/platform-copy.md`
+11. Asset-Manifest/Prompts
+12. `ENTERTAINMENT-REVIEW.md`
+13. `MOTION-READABILITY-REVIEW.md`
+14. Assembly-/Review-Dateien
 
 Widersprüche nicht still übergehen; an der Ursache korrigieren.
 
@@ -104,6 +112,7 @@ Widersprüche nicht still übergehen; an der Ursache korrigieren.
 - Hard Cut nur, wenn keine bessere semantische Transition nötig ist
 - High Energy bedeutet nicht High Speed
 - wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
+- längere 60–75-s-Reels brauchen mehrere Visual Beats; keine langen statischen Holds nur zum Füllen
 - keine Demo-Zahlen als Fakten
 - keine internen Regie-/Goal-Texte sichtbar
 
@@ -133,7 +142,7 @@ Große Binärmedien bleiben standardmäßig außerhalb normalem Git, solange Git
 
 ## Wahrheitspflicht
 
-Nie behaupten, dass Test, Typecheck, Whisper-Lock, Render, Audio, visuelle Prüfung oder Export bestanden sind, wenn dies nicht tatsächlich ausgeführt wurde.
+Nie behaupten, dass Test, Typecheck, Forced Alignment, Voice-Lock, Render, Audio, visuelle Prüfung oder Export bestanden sind, wenn dies nicht tatsächlich ausgeführt wurde.
 
 Bei Blocker nennen:
 
