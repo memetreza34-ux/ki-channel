@@ -11,8 +11,10 @@ Pflicht:
 - Thema/Fakten/Quellen
 - finales `voiceover.md`
 - exaktes `VOICEOVER-ZUM-KOPIEREN.txt`
-- normales Kurz-Reel bevorzugt 55–75 Wörter, bis 80 Wörter zulässig
-- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
+- neues Standard-Reel: **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
+- bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
+- kürzer/länger nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
 - `SCENE-VOICE-MAP.json`: jeder exakte Satz gehört genau zu einer Szene
 - Szenenplan + `animation-plan.md`
 - semantische `sfx-events.json`
@@ -25,15 +27,15 @@ Pflicht:
 - ausführbarer Source unter `ki/src/reels/<slug>/`
 - Composition in `Root.tsx`
 
-### Script-Budget-Gate
+### Script-Budget- und Laufzeit-Gate
 
-Die normale Short-Form-Länge wird bereits in Phase 1 kontrolliert. Vor Production-Render prüft fail-closed:
+Die Short-Form-Länge wird bereits in Phase 1 geplant. Vor Production-Render prüft fail-closed:
 
 ```bash
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Eine lange Laufzeit darf nicht dadurch entstehen, dass unnötige Erklärsätze erst nachträglich durch Timing-Tricks komprimiert werden.
+Das Wortbudget ist nur die Planungsnähe. Nach dem Voice-Lock ist die echte Audio-Dauer maßgeblich: neue Reels müssen **60 bis 75 Sekunden** lang sein. Zu kurze Reels werden nicht künstlich mit Leerlauf gestreckt; zu lange Reels werden nicht durch hektisches Sprechen gerettet.
 
 ### Visual Beat Contract
 
@@ -138,7 +140,7 @@ Der Production-Render arbeitet fail-closed mit Git-/Hash-Provenance. Erst wenn d
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Schritt erzwingt zuerst das Script-Budget und bindet danach u. a.:
+Dieser Schritt erzwingt zuerst das Script-Budget und prüft bei neuen Reels zusätzlich die **tatsächliche Voice-Locked-Dauer von 60–75 Sekunden**. Danach bindet er u. a.:
 
 - Source Tree
 - Scene-Voice-Map
@@ -182,6 +184,7 @@ Prüfen:
 - Source-Proof-Lesbarkeit
 - keine visuelle Überladung
 - Stimme klar und Gesamtlautstärke passend
+- tatsächliche Gesamtdauer 60–75 Sekunden oder dokumentierte Ausnahme
 
 `MOTION-READABILITY-REVIEW.md` erst jetzt auf `PASS` setzen und an **genau den gemasterten MP4-SHA256** binden.
 
@@ -216,7 +219,8 @@ Erst dann:
 
 Nicht als fertig melden bei:
 
-- Script über Hard-Limit ohne dokumentierte Ausnahme
+- Script außerhalb des zulässigen Budgets ohne dokumentierte Ausnahme
+- Voice-Locked-Dauer außerhalb 60–75 Sekunden ohne dokumentierte Ausnahme
 - fehlendem lokalen Audio
 - Remote-Audio oder Remote-Bild als Renderquelle
 - fehlendem Forced Alignment / Voice-Lock
