@@ -50,6 +50,23 @@ const finalDuration = Number(reel?.format?.finalDurationInFrames);
 if (!Number.isFinite(fps) || fps <= 0) fail('format.fps missing/invalid.');
 if (!Number.isFinite(finalDuration) || finalDuration <= 0) fail('format.finalDurationInFrames is not locked. Planning duration may not be used for a production render.');
 
+const targetMinSecondsRaw = reel?.scriptBudget?.targetMinSeconds;
+const targetMaxSecondsRaw = reel?.scriptBudget?.targetMaxSeconds;
+if ((targetMinSecondsRaw == null) !== (targetMaxSecondsRaw == null)) fail('scriptBudget.targetMinSeconds and targetMaxSeconds must either both be set or both be omitted.');
+if (targetMinSecondsRaw != null && targetMaxSecondsRaw != null) {
+  const targetMinSeconds = Number(targetMinSecondsRaw);
+  const targetMaxSeconds = Number(targetMaxSecondsRaw);
+  if (!Number.isFinite(targetMinSeconds) || !Number.isFinite(targetMaxSeconds) || targetMinSeconds <= 0 || targetMaxSeconds < targetMinSeconds) {
+    fail('scriptBudget target duration is invalid.');
+  }
+  const actualDurationSeconds = finalDuration / fps;
+  const allowDurationOutsideTarget = reel?.scriptBudget?.allowDurationOutsideTarget === true;
+  const durationExceptionReason = String(reel?.scriptBudget?.durationExceptionReason || '').trim();
+  if ((actualDurationSeconds < targetMinSeconds || actualDurationSeconds > targetMaxSeconds) && !(allowDurationOutsideTarget && durationExceptionReason.length >= 12)) {
+    fail(`voice-locked duration ${actualDurationSeconds.toFixed(3)} s is outside required ${targetMinSeconds}-${targetMaxSeconds} s. Regenerate/adjust the script+voiceover or document a deliberate duration exception.`);
+  }
+}
+
 const scenes = reel?.scenes;
 if (!Array.isArray(scenes) || scenes.length === 0) fail('reel.json scenes missing.');
 let cursor = 0;
