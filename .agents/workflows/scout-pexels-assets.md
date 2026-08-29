@@ -12,7 +12,7 @@ Use `.agents/skills/pexels-asset-scout/SKILL.md`.
 4. Run a focused search, normally:
 
 ```bash
-npm run antigravity:pexels -- "<specific English search query>" --type=video --orientation=portrait --size=medium --locale=de-DE --top=6
+node scripts/scout-pexels-assets.mjs "<specific English search query>" --type=video --orientation=portrait --size=medium --locale=de-DE --top=6
 ```
 
 5. Inspect the generated JSON under `out/asset-scout/pexels/`.
