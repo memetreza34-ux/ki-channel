@@ -73,6 +73,8 @@ Auf demselben Working Tree arbeitet gleichzeitig **genau ein Writer**. Für konk
 
 - `remotion-storytelling` ist bei storytelling-enabled Reels verpflichtend.
 - `remotion-bits-discovery` nur nutzen, wenn der Shared StoryMotion/StoryMedia-Stack eine konkrete Motion-Anforderung nicht sinnvoll abdeckt.
+- `figma-design-reference` nur nutzen, wenn ein konkreter Figma-Link/Frame oder eine hochwertige Layout-/Motion-Referenz die Aufgabe wirklich verbessert; Figma bleibt reference-only.
+- `rive-local-motion` nur für bereits vorhandene lokale `.riv`-Dateien; keine neue kostenpflichtige Export-Abhängigkeit erzeugen.
 - synchronisierte offizielle Remotion Agent Skills passend zur Aufgabe nutzen.
 
 Offizielle Remotion Skills:
@@ -94,7 +96,11 @@ Es bündelt Repo-Regeln, Orchestrator-Skill, Hooks und MCP-Konfiguration.
 
 - **Chrome DevTools MCP** — Remotion Studio, Browser-Konsole, Screenshots, Layout-/Visual-QA;
 - **Remotion Bits MCP** — gezielte Suche/FETCH kleiner wiederverwendbarer Motion-Patterns;
-- **GitHub MCP** — Remote-Repo-/PR-/Issue-/Branch-Kontext.
+- **GitHub MCP** — Remote-Repo-/PR-/Issue-/Branch-Kontext;
+- **Lottie Creator MCP** — optional, standardmäßig deaktiviert, nur für einen konkreten Motion-Beat;
+- **Figma Remote MCP** — optional, standardmäßig deaktiviert, read-oriented Designkontext über `https://mcp.figma.com/mcp`.
+
+Figma nur bei konkretem Referenzbedarf temporär aktivieren. Schreib-/Create-/Asset-Download-Tools bleiben deaktiviert; Figma-URLs oder Figma-gehostete Medien dürfen nie Render-Abhängigkeit werden. Nach dem Referenzpass Figma wieder deaktivieren.
 
 Wenn GitHub MCP wegen Docker/OAuth fehlt, lokale Git-Arbeit fortsetzen und MCP ehrlich als unavailable melden. Keine Datenbank-/Payment-/Flutter-/Cloud-MCPs ohne konkrete Aufgabe hinzufügen.
 
@@ -124,6 +130,24 @@ Produktions-Voiceover-Erzeugung/-Download wird zusätzlich technisch blockiert.
 `/maximize-ki-reel <reel-package-dir>`
 
 Dieser Workflow nutzt parallele read-only Intelligence, danach einen Implementation Writer, danach Audio-Sync, Browser/Pixel-QA und unabhängige Release-Verifikation.
+
+### Kostenlose externe Visual-Kandidaten finden
+
+`/scout-free-assets <query>`
+
+Pexels/Pixabay bleiben Discovery-only; keine automatische Produktionsfreigabe.
+
+### Kleine eigene Lottie-Motion bauen
+
+`/create-lottie-motion <reel-package-dir> <beat-id>`
+
+Lottie Creator MCP nur temporär aktivieren; Export lokal prüfen.
+
+### Konkrete Figma-Referenz prüfen
+
+`/inspect-figma-reference <figma-link> <beat-id>`
+
+Figma nur read-oriented als Designkontext verwenden und danach wieder deaktivieren.
 
 ### Nur visuell prüfen
 
@@ -298,6 +322,16 @@ npm test
 npm run content:runtime:verify
 npm run repo:verify
 npm run motion:verify
+```
+
+Optionale Erweiterungen zusätzlich separat prüfen, wenn sie geändert/verwendet wurden:
+
+```bash
+node scripts/check-pexels-scout-integration.mjs
+node scripts/check-pixabay-scout-integration.mjs
+node scripts/check-lottie-creator-integration.mjs
+node scripts/check-rive-local-motion-integration.mjs
+node scripts/check-figma-mcp-integration.mjs
 ```
 
 Zusätzlich die reel-spezifischen Story-/Audio-/Visual-/Render-/Master-/Final-Gates ausführen.
