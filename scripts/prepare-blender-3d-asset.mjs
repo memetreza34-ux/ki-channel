@@ -35,7 +35,16 @@ const blender = process.env.BLENDER_BIN || 'blender';
 const version = spawnSync(blender, ['--version'], {encoding: 'utf8'});
 if (version.status !== 0) {
   console.error('BLENDER ASSET PREP: Blender executable unavailable.');
-  console.error('Install an official Blender release and optionally set BLENDER_BIN=/path/to/blender.');
+  console.error('Install official Blender 4.5 LTS and optionally set BLENDER_BIN=/path/to/blender.');
+  process.exit(3);
+}
+const versionLine = String(version.stdout || version.stderr).split(/\r?\n/)[0].trim();
+const versionMatch = versionLine.match(/Blender\s+(\d+)\.(\d+)/i);
+const supportedVersion = versionMatch && versionMatch[1] === '4' && versionMatch[2] === '5';
+if (!supportedVersion && process.env.BLENDER_ALLOW_UNTESTED !== '1') {
+  console.error(`BLENDER ASSET PREP: unsupported/unverified Blender version: ${versionLine || 'unknown'}`);
+  console.error('Tested production baseline is Blender 4.5 LTS.');
+  console.error('Use BLENDER_ALLOW_UNTESTED=1 only for an isolated manual compatibility experiment, never as an automatic production bypass.');
   process.exit(3);
 }
 
@@ -53,7 +62,8 @@ if (!existsSync(helper)) {
 }
 
 console.log(`BLENDER ASSET PREP: source=${path.relative(process.cwd(), source)}`);
-console.log(`BLENDER ASSET PREP: Blender=${String(version.stdout || version.stderr).split(/\r?\n/)[0]}`);
+console.log(`BLENDER ASSET PREP: Blender=${versionLine}`);
+if (!supportedVersion) console.log('BLENDER ASSET PREP: WARNING — untested Blender version explicitly allowed for isolated compatibility testing.');
 console.log('BLENDER ASSET PREP: running background + offline + autoexec disabled');
 
 const run = spawnSync(
