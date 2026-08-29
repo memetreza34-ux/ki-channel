@@ -33,6 +33,10 @@ Use `ki-production-orchestrator` for long multi-domain reel work.
 
 Use `ki-fact-researcher` read-only, especially for current prices, release dates, product changes and proof-source claims.
 
+### Retention/story audit
+
+Use `ki-retention-story-auditor` read-only before a major rewrite/visual pass. It checks hook, progression, proof, consequence, payoff, beat density and repeated visual grammar without silently changing approved text.
+
 ### Motion research
 
 Use `ki-motion-researcher` read-only before inventing new one-off motion systems. If the shared stack is insufficient, load `remotion-bits-discovery` and use Remotion Bits MCP for small reusable candidates.
@@ -80,7 +84,7 @@ If an MCP is unavailable, continue through local tools where possible and report
 
 - `/sync-chatgpt-handoff` — after new remote ChatGPT/Codex branch changes.
 - `/bootstrap-ki-channel` — discover/verify the capability surface.
-- `/parallel-audit-ki-reel <path>` — parallel read-only intelligence pass.
+- `/parallel-audit-ki-reel <path>` — parallel fact + retention + motion + dependency + existing-artifact audit.
 - `/maximize-ki-reel <path>` — highest-quality end-to-end orchestration.
 - `/visual-qa-ki-reel <path>` — evidence-based pixel/browser QA.
 - `/finish-ki-reel <path>` — Phase 3 completion.
