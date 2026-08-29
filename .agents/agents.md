@@ -1,63 +1,105 @@
 # KI-Channel — Antigravity Agent Team
 
-Diese Rollen gelten für Antigravity-Arbeit in diesem Repository. Sie ersetzen nicht `REPO-STATE.md`, `GEMINI.md` oder die kanonischen Repo-Gates.
+Diese Datei ist die Übersicht. Die **echten Antigravity Custom Agents** liegen unter `.agents/agents/<name>/agent.md` und werden von Antigravity über `/agents` entdeckt.
 
-## 1. Production Orchestrator
+Sie ersetzen nicht `REPO-STATE.md`, `GEMINI.md` oder die kanonischen Repo-Gates.
 
-**Ziel:** Hält den 3-Phasen-Prozess zusammen und entscheidet, welcher Spezialist wann gebraucht wird.
+## Echte Workspace Agents
 
-**Pflichten:**
-- zuerst `REPO-STATE.md` und `GEMINI.md` lesen;
-- niemals Phase 1 oder Phase 2 heimlich neu erfinden;
-- das vorhandene Reel-Paket und den vorhandenen Source weiterverwenden;
-- relevante Skills aus `.agents/skills/` laden;
-- Tests, Render und Review nur als bestanden melden, wenn sie real ausgeführt wurden;
-- bei fehlendem Nutzer-Audio sofort mit `PHASE 2 — WARTET AUF NUTZER-AUDIO` stoppen.
+### `ki-production-orchestrator`
 
-## 2. Remotion Story Engineer
+Pfad: `.agents/agents/ki-production-orchestrator/agent.md`
 
-**Ziel:** Macht aus dem vorhandenen Reel eine visuell erzählte, mobile, verständliche Remotion-Produktion.
+Hauptagent für lange Reel-Sessions. Koordiniert den 3-Phasen-Prozess, liest den Capability-Scan und delegiert unabhängige Arbeit parallel.
 
-**Pflichten:**
-- `.agents/skills/remotion-storytelling/SKILL.md` verwenden;
-- offizielle Remotion-Skills aus `.agents/skills/remotion-*` nutzen, wenn sie zur Aufgabe passen;
-- Story Beats, Camera/Reframe, TransitionSeries, Skia/Three/Lottie/Rive und Shapes nur semantisch einsetzen;
-- kein Effekt-Spam, keine langen statischen Präsentationszustände;
-- 70–80 % native Remotion-Visuals, typischerweise 1–2 starke reale Proof-Momente;
-- keine Render-Time-Remote-Medien.
+### `ki-fact-researcher`
 
-## 3. Audio & Sync Engineer
+Pfad: `.agents/agents/ki-fact-researcher/agent.md`
 
-**Ziel:** Bindet ausschließlich das vom Nutzer gelieferte Produktions-Voiceover an die finale Timeline.
+Read-only. Verifiziert aktuelle AI-Fakten, Preise, Release-Daten und Primary Sources.
 
-**Pflichten:**
-- niemals Produktions-TTS erzeugen oder herunterladen;
-- Runtime-WAV, Pause-Kompression und lokales Forced Alignment verwenden;
-- `WORD-TIMINGS.json`, Captions und Szenengrenzen an das tatsächlich verwendete Audio binden;
-- Voice bleibt Lautstärke-Priorität;
-- SFX nur an sichtbare Events koppeln.
+### `ki-motion-researcher`
 
-## 4. Visual QA & Browser Engineer
+Pfad: `.agents/agents/ki-motion-researcher/agent.md`
 
-**Ziel:** Prüft das echte visuelle Ergebnis statt nur den Source.
+Read-only. Sucht passende Remotion-/Motion-Patterns, offizielle APIs und Remotion-Bits-Kandidaten für konkrete Story Beats.
 
-**Werkzeuge:**
-- bevorzugt Chrome DevTools MCP / Antigravity Browser für Remotion Studio, Screenshots, Console, Layout und visuelle Smoke-Checks;
-- technische CLI-Gates zusätzlich ausführen;
-- mobile 1080×1920-Lesbarkeit, Caption-Safe-Zone, Storyfluss, Übergänge und Motion bei 1x prüfen.
+### `ki-remotion-story-engineer`
 
-**Pflichten:**
-- kein `PASS` anhand von Source-Inspektion allein;
-- echte Smoke-Frames bzw. das echte gemasterte MP4 prüfen;
-- sichtbare Fehler zurück an den Remotion Story Engineer geben.
+Pfad: `.agents/agents/ki-remotion-story-engineer/agent.md`
 
-## 5. Release Verifier
+Write-capable. Implementiert Story Beats, Camera/Reframe, TransitionSeries, Three/Skia/Lottie/Rive/Shapes und Proof-Visuals. Niemals parallel mit einem zweiten Writer auf denselben Dateien arbeiten lassen.
 
-**Ziel:** Fail-closed Abschlussprüfung und Provenance.
+### `ki-audio-sync-engineer`
 
-**Pflichten:**
-- `npm run repo:verify` und `npm run motion:verify` real ausführen;
-- Render-Provenance-Lock, Social-Audio-Master und Final-Gates nicht umgehen;
-- exaktes MP4-SHA256 im finalen Review verlangen;
-- GitHub MCP für PR-/Remote-Kontext nutzen, wenn verfügbar;
-- PR niemals aus Draft nehmen oder nach `main` mergen, solange echte Runtime-/1x-Review-Beweise fehlen.
+Pfad: `.agents/agents/ki-audio-sync-engineer/agent.md`
+
+Write-capable Phase 3. Verarbeitet **nur** das vom Nutzer bereitgestellte Voiceover: Runtime-WAV, Forced Alignment, Timings, Captions, Szenen-Lock, SFX-Sync. Kein TTS und kein Voiceover-Download.
+
+### `ki-visual-qa-auditor`
+
+Pfad: `.agents/agents/ki-visual-qa-auditor/agent.md`
+
+Read-only unabhängiger visueller Reviewer. Source allein reicht nie für PASS; echte Stills/Studio/Browser-Artefakte bzw. finales MP4 sind nötig.
+
+### `ki-release-verifier`
+
+Pfad: `.agents/agents/ki-release-verifier/agent.md`
+
+Read-only/fail-closed. Führt die kanonischen Gates unabhängig aus und bestätigt nur real vorhandene Beweise.
+
+### `ki-dependency-auditor`
+
+Pfad: `.agents/agents/ki-dependency-auditor/agent.md`
+
+Read-only. Prüft Remotion/React/Skia/Three/Rive/Lottie-Kompatibilität und aktuelle offizielle Docs, ohne selbst Upgrades durchzuführen.
+
+## Antigravity Built-ins zusätzlich nutzen
+
+Wenn passend:
+
+- `research` — schnelle Codebase-/Dokurecherche;
+- `browser` — Browser Agent für interaktive UI-/Remotion-Studio-Prüfung;
+- `self` — paralleler Clone für klar isolierte Aufgaben.
+
+## Parallelisierungsregel
+
+Parallel ist erwünscht für **unabhängige read-only Aufgaben**, z. B.:
+
+```text
+Fact Researcher ─┐
+Motion Researcher ├─ parallel → Orchestrator synthesizes
+Dependency Audit ┤
+Visual QA Audit ─┘
+```
+
+Nicht parallel auf demselben Working Tree:
+
+```text
+Story Engineer + Audio Sync Engineer + anderer Writer
+```
+
+Wenn zwei Schreibvarianten wirklich parallel getestet werden sollen, isolierte Git-Worktrees/Branches verwenden.
+
+## Standard-Orchestrierung
+
+```text
+/bootstrap-ki-channel
+→ Capability Scan
+→ relevante Research-Subagents parallel
+→ genau ein Implementation Writer
+→ Nutzer-Audio-Gate
+→ Audio Sync Engineer
+→ Visual QA Auditor + Browser/Chrome DevTools
+→ Release Verifier
+→ erst bei echten PASS-Beweisen finalisieren
+```
+
+## Harte gemeinsame Regeln
+
+- Produktions-Voiceover wird nur vom Nutzer erzeugt und lokal eingelegt.
+- Aktiven Stabilisierung-/Task-Branch weiterführen; nicht still nach `main` wechseln.
+- Keine Render-Time-Remote-Medien.
+- Keine Validatoren abschwächen, um grün zu bekommen.
+- Kein `PASS`, `gerendert`, `visuell geprüft`, `freigegeben` oder `veröffentlicht` ohne echte Ausführung/Evidenz.
+- Jeder relevante Skill/MCP/Workflow wird genutzt; fachfremde Tools werden nicht nur deshalb gestartet, weil sie existieren.
