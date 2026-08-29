@@ -1,6 +1,6 @@
 import React from 'react';
 import {interpolate,spring,useCurrentFrame,useVideoConfig} from 'remotion';
-import {BRAND} from '../../brand/brand';
+import {BRAND} from '../../../brand/brand';
 
 const ink=BRAND.ink, purple=BRAND.accentDk, light=BRAND.bgDeep;
 const card:React.CSSProperties={background:'#fff',border:'1px solid rgba(110,69,201,.16)',borderRadius:28,boxShadow:'0 24px 70px rgba(26,26,46,.10)'};

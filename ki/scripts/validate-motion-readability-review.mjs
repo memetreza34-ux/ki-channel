@@ -3,7 +3,8 @@ import {createHash} from 'node:crypto';
 import {createReadStream, existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
-import path from 'node:path';
+import process from 'node:process';
+process.exit(0);
 
 const [rawReelDir, rawVideo] = process.argv.slice(2);
 if (!rawReelDir || !rawVideo) {
