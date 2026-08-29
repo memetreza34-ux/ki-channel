@@ -16,7 +16,6 @@ const masteredVideo = path.join(outputDir, `${compositionId}-mastered-test.mp4`)
 const contactSheet = path.join(outputDir, `${compositionId}-contact-sheet.jpg`);
 const reportPath = path.join(outputDir, 'TRANSFER-TEST-REPORT.json');
 const voiceover = path.join(reelDir, '01-script-audio', 'voiceover.mp3');
-const audioSource = path.join(reelDir, '01-script-audio', 'audio-source.json');
 
 const fail = (message, exitCode = 1) => {
   console.error(`GPT-5.6 API TRANSFER TEST FAILED: ${message}`);
@@ -58,10 +57,18 @@ await mkdir(outputDir, {recursive: true});
 // 0. Phase-1 duration contract must pass before any expensive work starts.
 run('Validate Phase-1 script budget', process.execPath, [path.resolve('ki/scripts/validate-reel-script-budget.mjs'), reelDir]);
 
-// 1. Exact generated voice source. Binary stays local/ignored.
+// 1. Voiceover is USER-ONLY. Agents must never generate or download it.
 if (!existsSync(voiceover)) {
-  run('Download generated voiceover', process.execPath, [path.resolve('ki/scripts/fetch-generated-voiceover.mjs'), audioSource, voiceover]);
+  fail(`USER AUDIO REQUIRED: Erstelle das vollständige Voiceover selbst und lege es hier ab: ${voiceover}. Kein Agent darf das Audio erzeugen oder herunterladen.`);
 }
+const userAudioDuration = Number(capture('ffprobe', [
+  '-v', 'error',
+  '-show_entries', 'format=duration',
+  '-of', 'default=noprint_wrappers=1:nokey=1',
+  voiceover,
+]));
+if (!Number.isFinite(userAudioDuration) || userAudioDuration <= 0) fail(`user-provided voiceover is unreadable: ${voiceover}`);
+console.log(`\n=== User audio gate ===\nvoiceover: ${voiceover}\nsource duration: ${userAudioDuration.toFixed(3)} s`);
 
 // 2. Local CC0 library. Binary assets stay local/ignored.
 if (!existsSync(path.resolve('public/reel-sfx/sfx-index.json'))) {
@@ -78,7 +85,6 @@ if (!renderLockedMode) {
   console.log('Skipping alignment and visual resolution so committed timing/contract files remain byte-stable.');
 }
 
-// Validate existing/generated contracts in both modes.
 run('Validate local forced alignment', process.execPath, [path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), reelDir]);
 run('Validate scene/voice map', process.execPath, [path.resolve('ki/scripts/validate-scene-voice-map.mjs'), reelDir]);
 run('Validate voice-locked captions', process.execPath, [path.resolve('ki/scripts/validate-voice-locked-captions.mjs'), reelDir]);
@@ -86,12 +92,10 @@ run('Validate SFX plan', process.execPath, [path.resolve('ki/scripts/validate-re
 run('Validate visual assets', process.execPath, [path.resolve('ki/scripts/validate-reel-visual-assets.mjs'), reelDir]);
 run('Validate source isolation', process.execPath, [path.resolve('ki/scripts/validate-reel-source-isolation.mjs'), reelDir]);
 
-// 3. Full repository verification, not only the focused reel test.
 run('Full canonical repository verification', 'npm', ['run', 'repo:verify']);
 run('Full motion-system verification', 'npm', ['run', 'motion:verify']);
 run('GPT-5.6 focused reel contract test', 'npx', ['--no-install', 'vitest', 'run', 'ki/src/reels/gpt56-api-prices-fastmode/contract.test.ts']);
 
-// 4. Resolve the real Remotion root and prove the composition is registered.
 const compositionList = capture('npx', ['--no-install', 'remotion', 'compositions', 'ki/src/index.ts', '--quiet']);
 const compositionIds = compositionList.split(/\s+/).filter(Boolean);
 if (!compositionIds.includes(compositionId)) {
@@ -99,12 +103,10 @@ if (!compositionIds.includes(compositionId)) {
 }
 console.log(`\n=== Remotion composition gate ===\nresolved: ${compositionId}`);
 
-// 5. A real Remotion bundle must build successfully before any render claim.
 await rm(bundleDir, {recursive: true, force: true});
 run('Build fresh Remotion bundle', 'npx', ['--no-install', 'remotion', 'bundle', 'ki/src/index.ts', '--out-dir', bundleDir, '--log', 'error']);
 if (!existsSync(bundleDir)) fail(`Remotion bundle directory was not created: ${bundleDir}`);
 
-// Production provenance deliberately requires tracked timing/contract files to be committed.
 const trackedStatus = capture('git', ['status', '--porcelain', '--untracked-files=no']);
 if (trackedStatus) {
   const preparedReport = {
@@ -115,7 +117,7 @@ if (trackedStatus) {
     trackedChanges: trackedStatus.split(/\r?\n/).filter(Boolean),
     checksPassed: [
       'script budget',
-      'generated voice availability',
+      'user-provided voiceover availability',
       'local CC0 SFX library',
       'local forced alignment validation',
       'scene/voice map validation',
@@ -146,18 +148,12 @@ if (!renderLockedMode) {
   console.log('\nPREP MODE PRODUCED NO TRACKED CHANGES — continuing into render-locked production test.');
 }
 
-// 6. Real production pre-render gate including render provenance lock and actual 60-75 s voice-locked duration.
 run('Production pre-render + provenance lock', process.execPath, [path.resolve('ki/scripts/prepare-reel-render.mjs'), reelDir]);
-
-// 7. Raw Remotion render. Not final; audio master happens next.
 run('Render raw transfer-test MP4', 'npx', ['--no-install', 'remotion', 'render', 'ki/src/index.ts', compositionId, rawVideo, '--overwrite']);
-
-// 8. Full-mix social master.
 run('Master complete Voice + SFX mix', process.execPath, [path.resolve('ki/scripts/master-reel-video.mjs'), rawVideo, masteredVideo]);
 run('Validate -16 LUFS social master', process.execPath, [path.resolve('ki/scripts/validate-social-audio-master.mjs'), masteredVideo]);
 run('Technical A/V gate on mastered MP4', process.execPath, [path.resolve('ki/scripts/validate-final-video.mjs'), masteredVideo]);
 
-// 9. Contact sheet from the exact mastered video that must be reviewed. 5-second sampling covers a full 60-75 s reel in one 3x5 sheet.
 run('Create mastered contact sheet', 'ffmpeg', [
   '-hide_banner', '-loglevel', 'error', '-y',
   '-i', masteredVideo,
@@ -187,6 +183,7 @@ const report = {
   masteredVideo,
   contactSheet,
   bundleDir,
+  userSourceAudioDurationSeconds: Number(userAudioDuration.toFixed(6)),
   durationSeconds: Number(durationSeconds.toFixed(6)),
   durationContractSeconds: {min: 60, max: 75},
   masteredVideoSha256: videoSha256,
@@ -201,7 +198,7 @@ const report = {
   })),
   checksPassed: [
     'script budget',
-    'generated voice availability',
+    'user-provided voiceover availability',
     'local CC0 SFX library',
     'exact local forced-alignment validation',
     'scene/voice lock',
