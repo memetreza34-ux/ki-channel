@@ -26,13 +26,13 @@ Blender is a free/open-source local preprocessing tool, not a runtime dependency
 ## Run
 
 ```bash
-npm run antigravity:blender-prep -- path/to/local-asset.glb --target-faces=80000
+node scripts/prepare-blender-3d-asset.mjs path/to/local-asset.glb --target-faces=80000
 ```
 
 Optional Blender binary override:
 
 ```bash
-BLENDER_BIN=/Applications/Blender.app/Contents/MacOS/Blender npm run antigravity:blender-prep -- path/to/local-asset.glb
+BLENDER_BIN=/Applications/Blender.app/Contents/MacOS/Blender node scripts/prepare-blender-3d-asset.mjs path/to/local-asset.glb
 ```
 
 ## Selection policy
