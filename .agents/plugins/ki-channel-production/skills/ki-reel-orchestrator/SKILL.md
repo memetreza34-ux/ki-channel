@@ -1,6 +1,6 @@
 ---
 name: ki-reel-orchestrator
-description: Orchestrate an existing KI-channel reel across Phase 3 using the repository's story, audio, browser-QA, GitHub and release-verification capabilities without replacing user audio or rebuilding approved Phase 1.
+description: Orchestrate an existing KI-channel reel across Phase 3 using the repository's story, audio, browser-QA, reusable-motion discovery, GitHub and release-verification capabilities without replacing user audio or rebuilding approved Phase 1.
 ---
 
 # KI Reel Orchestrator
@@ -24,6 +24,8 @@ For storytelling-enabled reels, always load `remotion-storytelling`. Use officia
 ### Story / Remotion source
 
 Use the **Remotion Story Engineer** role. Preserve approved content and use the shared StoryMotion/StoryMedia components before inventing one-off animation code.
+
+If a visual need is genuinely not covered by the shared stack, load `remotion-bits-discovery` and use the **Remotion Bits MCP** to search/fetch a small reusable pattern. Inspect it before adoption and keep local production rules authoritative.
 
 ### Browser / visual verification
 
