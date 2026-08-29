@@ -31,7 +31,7 @@ for (const forbidden of ['visual-assets.json', 'visual-assets-resolved.json', 'h
 for (const token of ['No community Blender MCP', 'Source `.glb`/`.gltf`', 'PREPARED_NOT_PRODUCTION_APPROVED', 'SHA256']) {
   if (!skill.includes(token)) errors.push(`skill missing token: ${token}`);
 }
-for (const token of ['npm run antigravity:blender-prep', '--offline-mode', 'MANUAL_3D_OPTIMIZATION_REQUIRED', 'PREPARED_NOT_PRODUCTION_APPROVED']) {
+for (const token of ['node scripts/prepare-blender-3d-asset.mjs', '--offline-mode', 'MANUAL_3D_OPTIMIZATION_REQUIRED', 'PREPARED_NOT_PRODUCTION_APPROVED']) {
   if (!workflow.includes(token)) errors.push(`workflow missing token: ${token}`);
 }
 
