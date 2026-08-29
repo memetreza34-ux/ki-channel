@@ -1,0 +1,40 @@
+{
+  "status": "FINAL_EXPORT_READY",
+  "compositionId": "KI-DalleGptEnds",
+  "exportedVideo": "KI-DalleGptEnds.mp4",
+  "cover": "KI-DalleGptEnds-cover.png",
+  "coverTimeSeconds": 4.2,
+  "caption": "KI-DalleGptEnds-caption.txt",
+  "gates": {
+    "entertainment": "PASSED",
+    "localForcedAlignment": "PASSED_EXACT_KNOWN_TRANSCRIPT",
+    "sceneVoiceMap": "PASSED_EXACT_SCENE_TEXT_AND_ANCHORS",
+    "voiceLock": "PASSED",
+    "motionReadability": "PASSED_EXACT_VIDEO_HASH",
+    "sourceIsolation": "PASSED",
+    "audioVideo": "PASSED",
+    "renderProvenance": "PASSED_LOCKED_INPUT_HASHES"
+  },
+  "provenance": {
+    "renderSourceCommitSha": "170afb30163102b2b4674f1e3dca360ac0789c27",
+    "finalizationCommitSha": "5b00cb5c8c464be4d6121f161b1d04cfc006956f",
+    "renderLockCreatedAt": "2026-08-28T18:48:07.241Z",
+    "sourceDir": "ki/src/reels/dalle-gpt-ends",
+    "sourceTreeSha256": "2b45b11287493caeacd5a146874c394b2cc2cd021fa13db515a69e283f19d90b",
+    "renderContractSha256": "2ab4fc74e10ec04fc4f08dd585ac61661300732d27d6e306f9a32c56fe522e17",
+    "reelJsonSha256AtRenderLock": "bd924548d15a50545fcda883229ca22d6b29d2423cd302cec68a7ee1b090a3f8",
+    "reelJsonSha256AtFinalization": "bd924548d15a50545fcda883229ca22d6b29d2423cd302cec68a7ee1b090a3f8",
+    "sceneVoiceMapSha256": "f23ffe03c10ec288605bde927346fe4d86e372de7d38d63157c64061b8323a6a",
+    "wordTimingsSha256": "589ec6d70e75b38e7e31886dfbe79c87332c6643b0ed43fac47392f6fe384cad",
+    "captionJsonSha256": "6ede303e4af38fa6e7686ea1997f4030178bbb67b4091197ca0d55164bebe04d",
+    "canonicalAudioSha256": "f6c2b079e5a7c4319588850a572e00d3314e31563e8c36b10c5fab6ec2c6a34f",
+    "runtimeAudioSha256": "403185246b75bb6ed698fc12476e39070fd3fe5f63827da0bb4dd924978f4297",
+    "reviewedVideoSha256": "20d237a94dde7010ff0b1a8c165755fb11b939f41fba5f418b47bcd4b64b14d8"
+  },
+  "artifacts": {
+    "videoSha256": "20d237a94dde7010ff0b1a8c165755fb11b939f41fba5f418b47bcd4b64b14d8",
+    "coverSha256": "72f31bd7d54a5f87d99ed11643effe3f7dc8a4f6d2d49c8fdf451ab32894804e",
+    "captionSha256": "0e78718baad1644fcef0040ce82c6a978143835e3f84dda390d4da3d95d08a53"
+  },
+  "generatedAt": "2026-08-29T03:33:19.740Z"
+}

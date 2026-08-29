@@ -1,0 +1,699 @@
+{
+  "version": 1,
+  "status": "LOCAL_FORCED_ALIGNMENT_ACCEPTED",
+  "alignmentType": "KNOWN_TRANSCRIPT_FORCED_ALIGNMENT",
+  "backend": "mlx-qwen3",
+  "model": "mlx-community/Qwen3-ForcedAligner-0.6B-8bit",
+  "modelLicense": "Apache-2.0",
+  "runtime": "MLX / Apple Silicon",
+  "fps": 30,
+  "runtimeAudio": "public/runtime-audio/KI-GPT56APIPricesFastMode.wav",
+  "generatedAt": "2026-08-29T03:53:01.386Z",
+  "rules": {
+    "fuzzyWordMatching": false,
+    "canonicalTextAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
+    "sceneAuthority": "SCENE-VOICE-MAP.json"
+  },
+  "words": [
+    {
+      "index": 1,
+      "text": "OpenAI",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0,
+      "endSeconds": 0.01,
+      "startFrame": 0,
+      "endFrame": 1
+    },
+    {
+      "index": 2,
+      "text": "hat",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.4,
+      "endSeconds": 0.56,
+      "startFrame": 12,
+      "endFrame": 17
+    },
+    {
+      "index": 3,
+      "text": "die",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.56,
+      "endSeconds": 0.72,
+      "startFrame": 17,
+      "endFrame": 22
+    },
+    {
+      "index": 4,
+      "text": "API-Preise",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 0.96,
+      "endSeconds": 1.52,
+      "startFrame": 28,
+      "endFrame": 46
+    },
+    {
+      "index": 5,
+      "text": "für",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.52,
+      "endSeconds": 1.68,
+      "startFrame": 46,
+      "endFrame": 51
+    },
+    {
+      "index": 6,
+      "text": "GPT-5.6",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 1.68,
+      "endSeconds": 3.12,
+      "startFrame": 51,
+      "endFrame": 94
+    },
+    {
+      "index": 7,
+      "text": "deutlich",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 3.2,
+      "endSeconds": 3.6,
+      "startFrame": 96,
+      "endFrame": 108
+    },
+    {
+      "index": 8,
+      "text": "gesenkt.",
+      "sentenceId": "S01",
+      "sceneId": "scene1",
+      "startSeconds": 3.6,
+      "endSeconds": 4.08,
+      "startFrame": 108,
+      "endFrame": 123
+    },
+    {
+      "index": 9,
+      "text": "GPT-5.6",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 4.16,
+      "endSeconds": 5.28,
+      "startFrame": 124,
+      "endFrame": 159
+    },
+    {
+      "index": 10,
+      "text": "Luna",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.28,
+      "endSeconds": 5.68,
+      "startFrame": 159,
+      "endFrame": 171
+    },
+    {
+      "index": 11,
+      "text": "kostet",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 5.68,
+      "endSeconds": 6,
+      "startFrame": 171,
+      "endFrame": 180
+    },
+    {
+      "index": 12,
+      "text": "seit",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6,
+      "endSeconds": 6.16,
+      "startFrame": 180,
+      "endFrame": 185
+    },
+    {
+      "index": 13,
+      "text": "dem",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.16,
+      "endSeconds": 6.24,
+      "startFrame": 185,
+      "endFrame": 188
+    },
+    {
+      "index": 14,
+      "text": "30.",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.24,
+      "endSeconds": 6.72,
+      "startFrame": 188,
+      "endFrame": 202
+    },
+    {
+      "index": 15,
+      "text": "Juli",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 6.72,
+      "endSeconds": 7.04,
+      "startFrame": 202,
+      "endFrame": 212
+    },
+    {
+      "index": 16,
+      "text": "80",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 7.12,
+      "endSeconds": 8,
+      "startFrame": 213,
+      "endFrame": 240
+    },
+    {
+      "index": 17,
+      "text": "Prozent",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 8,
+      "endSeconds": 8.01,
+      "startFrame": 240,
+      "endFrame": 241
+    },
+    {
+      "index": 18,
+      "text": "weniger.",
+      "sentenceId": "S02",
+      "sceneId": "scene2",
+      "startSeconds": 8,
+      "endSeconds": 8.48,
+      "startFrame": 241,
+      "endFrame": 255
+    },
+    {
+      "index": 19,
+      "text": "GPT-5.6",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 8.56,
+      "endSeconds": 9.52,
+      "startFrame": 256,
+      "endFrame": 286
+    },
+    {
+      "index": 20,
+      "text": "Terra",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 9.52,
+      "endSeconds": 10,
+      "startFrame": 286,
+      "endFrame": 300
+    },
+    {
+      "index": 21,
+      "text": "ist",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 10,
+      "endSeconds": 10.24,
+      "startFrame": 300,
+      "endFrame": 308
+    },
+    {
+      "index": 22,
+      "text": "20",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 10.32,
+      "endSeconds": 10.72,
+      "startFrame": 309,
+      "endFrame": 322
+    },
+    {
+      "index": 23,
+      "text": "Prozent",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 10.72,
+      "endSeconds": 11.12,
+      "startFrame": 322,
+      "endFrame": 334
+    },
+    {
+      "index": 24,
+      "text": "günstiger.",
+      "sentenceId": "S03",
+      "sceneId": "scene2",
+      "startSeconds": 11.12,
+      "endSeconds": 11.68,
+      "startFrame": 334,
+      "endFrame": 351
+    },
+    {
+      "index": 25,
+      "text": "Für",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 11.76,
+      "endSeconds": 11.84,
+      "startFrame": 352,
+      "endFrame": 356
+    },
+    {
+      "index": 26,
+      "text": "GPT-5.6",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 11.84,
+      "endSeconds": 12.88,
+      "startFrame": 356,
+      "endFrame": 387
+    },
+    {
+      "index": 27,
+      "text": "Sol",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 12.88,
+      "endSeconds": 13.12,
+      "startFrame": 387,
+      "endFrame": 394
+    },
+    {
+      "index": 28,
+      "text": "gibt",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.12,
+      "endSeconds": 13.36,
+      "startFrame": 394,
+      "endFrame": 401
+    },
+    {
+      "index": 29,
+      "text": "es",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.36,
+      "endSeconds": 13.44,
+      "startFrame": 401,
+      "endFrame": 404
+    },
+    {
+      "index": 30,
+      "text": "außerdem",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.44,
+      "endSeconds": 13.84,
+      "startFrame": 404,
+      "endFrame": 416
+    },
+    {
+      "index": 31,
+      "text": "einen",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 13.84,
+      "endSeconds": 14.08,
+      "startFrame": 416,
+      "endFrame": 423
+    },
+    {
+      "index": 32,
+      "text": "Schnellmodus,",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.08,
+      "endSeconds": 14.8,
+      "startFrame": 423,
+      "endFrame": 444
+    },
+    {
+      "index": 33,
+      "text": "der",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.8,
+      "endSeconds": 14.96,
+      "startFrame": 444,
+      "endFrame": 449
+    },
+    {
+      "index": 34,
+      "text": "laut",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 14.96,
+      "endSeconds": 15.2,
+      "startFrame": 449,
+      "endFrame": 456
+    },
+    {
+      "index": 35,
+      "text": "OpenAI",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 15.2,
+      "endSeconds": 15.76,
+      "startFrame": 456,
+      "endFrame": 473
+    },
+    {
+      "index": 36,
+      "text": "bis",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 15.76,
+      "endSeconds": 16,
+      "startFrame": 473,
+      "endFrame": 480
+    },
+    {
+      "index": 37,
+      "text": "zu",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16,
+      "endSeconds": 16.08,
+      "startFrame": 480,
+      "endFrame": 483
+    },
+    {
+      "index": 38,
+      "text": "2,5-mal",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16.08,
+      "endSeconds": 16.96,
+      "startFrame": 483,
+      "endFrame": 509
+    },
+    {
+      "index": 39,
+      "text": "schneller",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 16.96,
+      "endSeconds": 17.36,
+      "startFrame": 509,
+      "endFrame": 521
+    },
+    {
+      "index": 40,
+      "text": "als",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.36,
+      "endSeconds": 17.52,
+      "startFrame": 521,
+      "endFrame": 526
+    },
+    {
+      "index": 41,
+      "text": "die",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.52,
+      "endSeconds": 17.68,
+      "startFrame": 526,
+      "endFrame": 531
+    },
+    {
+      "index": 42,
+      "text": "Standardverarbeitung",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 17.68,
+      "endSeconds": 18.56,
+      "startFrame": 531,
+      "endFrame": 546
+    },
+    {
+      "index": 43,
+      "text": "sein",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 18.56,
+      "endSeconds": 18.8,
+      "startFrame": 546,
+      "endFrame": 547
+    },
+    {
+      "index": 44,
+      "text": "kann.",
+      "sentenceId": "S04",
+      "sceneId": "scene3",
+      "startSeconds": 18.8,
+      "endSeconds": 19.04,
+      "startFrame": 547,
+      "endFrame": 548
+    },
+    {
+      "index": 45,
+      "text": "Dafür",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 19.04,
+      "endSeconds": 19.05,
+      "startFrame": 548,
+      "endFrame": 549
+    },
+    {
+      "index": 46,
+      "text": "kostet",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 19.04,
+      "endSeconds": 19.05,
+      "startFrame": 549,
+      "endFrame": 550
+    },
+    {
+      "index": 47,
+      "text": "der",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 19.04,
+      "endSeconds": 19.05,
+      "startFrame": 550,
+      "endFrame": 551
+    },
+    {
+      "index": 48,
+      "text": "Schnellmodus",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 19.84,
+      "endSeconds": 19.85,
+      "startFrame": 551,
+      "endFrame": 552
+    },
+    {
+      "index": 49,
+      "text": "das",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 20,
+      "endSeconds": 20.08,
+      "startFrame": 552,
+      "endFrame": 553
+    },
+    {
+      "index": 50,
+      "text": "Doppelte.",
+      "sentenceId": "S05",
+      "sceneId": "scene4",
+      "startSeconds": 20.08,
+      "endSeconds": 21.12,
+      "startFrame": 553,
+      "endFrame": 554
+    },
+    {
+      "index": 51,
+      "text": "Bestehende",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 21.12,
+      "endSeconds": 21.28,
+      "startFrame": 554,
+      "endFrame": 555
+    },
+    {
+      "index": 52,
+      "text": "Anfragen",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 21.28,
+      "endSeconds": 21.29,
+      "startFrame": 555,
+      "endFrame": 556
+    },
+    {
+      "index": 53,
+      "text": "mit",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 21.28,
+      "endSeconds": 22.4,
+      "startFrame": 556,
+      "endFrame": 557
+    },
+    {
+      "index": 54,
+      "text": "der",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 22.4,
+      "endSeconds": 22.41,
+      "startFrame": 557,
+      "endFrame": 558
+    },
+    {
+      "index": 55,
+      "text": "Kennzeichnung",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 22.4,
+      "endSeconds": 24.8,
+      "startFrame": 558,
+      "endFrame": 559
+    },
+    {
+      "index": 56,
+      "text": "priority",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 24.8,
+      "endSeconds": 26.88,
+      "startFrame": 559,
+      "endFrame": 560
+    },
+    {
+      "index": 57,
+      "text": "wechseln",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 560,
+      "endFrame": 561
+    },
+    {
+      "index": 58,
+      "text": "laut",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 561,
+      "endFrame": 562
+    },
+    {
+      "index": 59,
+      "text": "OpenAI",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 562,
+      "endFrame": 563
+    },
+    {
+      "index": 60,
+      "text": "automatisch",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 563,
+      "endFrame": 564
+    },
+    {
+      "index": 61,
+      "text": "auf",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 564,
+      "endFrame": 565
+    },
+    {
+      "index": 62,
+      "text": "den",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 565,
+      "endFrame": 566
+    },
+    {
+      "index": 63,
+      "text": "Schnellmodus.",
+      "sentenceId": "S06",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 566,
+      "endFrame": 567
+    },
+    {
+      "index": 64,
+      "text": "Die",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 567,
+      "endFrame": 568
+    },
+    {
+      "index": 65,
+      "text": "Änderung",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 568,
+      "endFrame": 569
+    },
+    {
+      "index": 66,
+      "text": "ist",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 569,
+      "endFrame": 570
+    },
+    {
+      "index": 67,
+      "text": "damit",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 570,
+      "endFrame": 571
+    },
+    {
+      "index": 68,
+      "text": "abwärtskompatibel.",
+      "sentenceId": "S07",
+      "sceneId": "scene5",
+      "startSeconds": 26.88,
+      "endSeconds": 26.89,
+      "startFrame": 571,
+      "endFrame": 572
+    }
+  ]
+}
