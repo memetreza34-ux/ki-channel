@@ -1,5 +1,5 @@
 ---
-description: Perform evidence-based visual QA on a KI-channel reel using story-beat stills, Remotion Studio, Browser/Chrome DevTools and an independent visual auditor.
+description: Perform evidence-based visual QA on a KI-channel reel using story-beat stills, pixel-delta diagnostics, Remotion Studio, Browser/Chrome DevTools and an independent visual auditor.
 ---
 
 # /visual-qa-ki-reel <reel-package-dir>
@@ -17,12 +17,20 @@ Visual QA is based on rendered pixels, not source confidence.
 Run:
 
 ```bash
-node scripts/render-story-beat-stills.mjs <reel-package-dir> --scale=1
+npm run antigravity:story-stills -- <reel-package-dir> --scale=1
 ```
 
 Use the generated `out/story-beat-stills/<reel-id>/manifest.json` as the review index.
 
+Then run the non-semantic pixel-delta diagnostic:
+
+```bash
+node scripts/analyze-story-beat-visual-deltas.mjs out/story-beat-stills/<reel-id>/manifest.json
+```
+
 Inspect every still and compare it with the corresponding `visualAction` and `role`.
+
+Treat `SUSPICIOUS_STATIC` pairs as mandatory manual inspection targets. Do **not** treat a high pixel-delta score as proof of good storytelling: it only proves the pixels changed materially.
 
 ## 3. Remotion Studio / browser inspection
 
@@ -40,7 +48,7 @@ If Chrome DevTools MCP is unavailable, use the built-in Browser Agent or rendere
 
 ## 4. Independent audit
 
-Invoke `ki-visual-qa-auditor` with the reel path and generated manifest/artifact locations.
+Invoke `ki-visual-qa-auditor` with the reel path, generated manifest, pixel-delta report and artifact locations.
 
 It must grade:
 
@@ -62,10 +70,11 @@ For concrete FAIL findings:
 1. pass timestamp/frame + issue to `ki-remotion-story-engineer`;
 2. make one focused implementation pass;
 3. rerender affected beat stills / scene smoke states;
-4. re-run the independent audit.
+4. rerun pixel-delta diagnostics for affected adjacent beats;
+5. re-run the independent audit.
 
 Do not change the speaker text if production user audio already exists unless the user explicitly accepts returning to Phase 2.
 
 ## 6. Final visual evidence
 
-A final visual PASS requires the exact mastered MP4 to be viewed at 1x and bound to its SHA256 in the review file. Story-beat stills and Studio QA are strong intermediate evidence but do not replace the final 1x review.
+A final visual PASS requires the exact mastered MP4 to be viewed at 1x and bound to its SHA256 in the review file. Story-beat stills, delta diagnostics and Studio QA are strong intermediate evidence but do not replace the final 1x review.
