@@ -1,30 +1,33 @@
 # Produktionsstatus — GPT-5.6 API Preise + Fast Mode
 
 ## Phase 1 — Inhalt / Story
-**Status:** IMPLEMENTIERT
+**Status:** IMPLEMENTIERT — AUF 60–75-SEKUNDEN-STANDARD ERWEITERT
 
 - offizieller OpenAI-Faktenstand vom 30. Juli 2026
-- finaler deutscher Sprechertext
+- finaler deutscher Sprechertext auf **159 Wörter** erweitert
+- Ziel: **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
 - exaktes Satz→Szene-Mapping
-- 5 unterschiedliche Szenen
-- 9 semantische SFX-Events
-- neues geranktes Wikimedia-Visual mit Auswahlpräferenzen
+- 5 unterschiedliche Hauptszenen mit mehreren Visual Beats
+- semantische SFX-Events über die längere Timeline verteilt
+- geranktes Wikimedia-Visual mit Auswahlpräferenzen
 - offizieller OpenAI-Source-Proof
-- Script-Budget: im bevorzugten 55–75-Wörter-Bereich
+- Script-Budget: bevorzugt 150–175 Wörter, Hard-Limit 190
+- Planning-Timeline: 2070 Frames / 69 Sekunden bei 30 fps; final bleibt echtes Voiceover maßgeblich
 
 ## Phase 2 — Voiceover
-**Status:** FRISCH ERZEUGT — LOKALER DOWNLOAD AUSSTEHEND
+**Status:** FÜR NEUES LANGES SCRIPT FRISCH ERZEUGT — LOKALER DOWNLOAD AUSSTEHEND
 
 Voice: `clear`
-Context: `4d676958080a40a5ba584aabd67fe7bf`
+Context: `7521558f3b4d4efb90bf5acbbf2fccef`
 
-Die Binärdatei bleibt lokal/ignored und wird bei Bedarf durch den Test aus `audio-source.json` heruntergeladen.
+Die Binärdatei bleibt lokal/ignored und wird bei Bedarf durch den Test aus `audio-source.json` heruntergeladen. Das alte kurze Voiceover ist nicht mehr gültig.
 
 ## Phase 3 — Production-Path-Test inklusive Social-Master
 **Status:** JETZT LOKAL AUSFÜHREN
 
 Dieser Reel ist der abschließende Transfer-Test für:
 
+- neues 60–75-Sekunden-Laufzeitgate
 - Phase-1 Script-Budget
 - Pause-Kompression
 - exaktes lokales Forced Alignment
@@ -61,7 +64,7 @@ Nach dem Commit:
 node ki/scripts/test-gpt56-api-prices-fastmode.mjs --render-locked
 ```
 
-Dieser Modus regeneriert die getrackten Timing-/Visual-Verträge nicht, prüft sie erneut und muss anschließend den echten `prepare-reel-render.mjs`-Provenance-Lock erreichen.
+Dieser Modus regeneriert die getrackten Timing-/Visual-Verträge nicht, prüft sie erneut und muss anschließend den echten `prepare-reel-render.mjs`-Provenance-Lock erreichen. Das Pre-Render-Gate blockiert das neue Reel, wenn die echte Voice-Locked-Dauer außerhalb **60–75 Sekunden** liegt.
 
 Erwartete Ausgabe nach erfolgreichem Render-Lauf:
 
