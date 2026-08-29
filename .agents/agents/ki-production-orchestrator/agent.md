@@ -67,6 +67,7 @@ If the production `voiceover.mp3`/`.wav` is missing in Phase 3, stop with `PHASE
 - Use story-beat stills and pixel-delta diagnostics to identify suspicious static/repetitive states; they are diagnostics, not a visual PASS.
 - Use Chrome DevTools MCP / Browser Agent for real visual/browser QA when available.
 - Use Remotion Bits MCP only to discover small reusable motion patterns when the shared stack is insufficient; inspect and adapt source rather than blindly copying it.
+- For a real documentary/proof beat, prefer the exact official company/product source when it directly proves the claim. If broader real-world or historical imagery materially improves the story, use `/scout-wikimedia-proof-visuals <query>` as discovery-only. Pexels/Pixabay remain generic B-roll alternatives. Never put remote scout URLs into Remotion; selected external visuals must go through the existing local license/SHA resolver.
 - Use headless structured audits as independent second opinions when useful; they never replace deterministic gates or 1x review.
 - Run the canonical gates and never weaken a validator to get green.
 - Collect background tasks/subagents before stopping.
