@@ -38,7 +38,7 @@ In Antigravity inspect:
 
 - `/agents` — verify the KI-channel custom agents are visible;
 - `/hooks` — verify session, safety, post-edit and stop hooks are enabled;
-- `/mcp` / MCP Servers panel — verify Chrome DevTools, Remotion Bits and GitHub MCP status;
+- `/mcp` / MCP Servers panel — verify Chrome DevTools, Remotion Bits and GitHub MCP status; optional Lottie/Figma servers should normally remain disabled;
 - `/tasks` — inspect long-running background commands;
 - Subagent panel — inspect/wake/approve agent work as needed.
 
@@ -86,6 +86,25 @@ Local use:
 
 Never use a remote LottieFiles URL in Remotion production source. Exported assets require local compatibility/render review before production use. A Creator/MCP outage is never a reel-production blocker because native Remotion remains the fallback.
 
+### Figma Remote MCP — optional, read-oriented and disabled by default
+
+The workspace uses the official remote endpoint:
+
+`https://mcp.figma.com/mcp`
+
+The server is intentionally configured with `disabled: true`. Use `/inspect-figma-reference <figma-link> <beat-id>` only when a concrete design frame materially improves a reel beat.
+
+When enabled:
+
+1. authenticate through the normal Figma OAuth flow in Antigravity;
+2. keep write/create/download tools disabled;
+3. use only a few targeted design-context calls;
+4. translate hierarchy/layout/motion principles into local Remotion;
+5. never put Figma URLs or Figma-hosted media into production render source;
+6. disable Figma again after the reference pass.
+
+Figma is never a render dependency. If unavailable or rate-limited, continue with the repository design system, Remotion Bits, official Remotion APIs and Browser QA.
+
 ## 6. Free external visual discovery
 
 Pexels and Pixabay scouts are discovery-only helpers. Real API keys live only in `.env.local`:
@@ -122,6 +141,7 @@ After bootstrap:
 /maximize-ki-reel <reel-package-dir>
 /scout-free-assets <query>
 /create-lottie-motion <reel-package-dir> <beat-id>
+/inspect-figma-reference <figma-link> <beat-id>
 /visual-qa-ki-reel <reel-package-dir>
 /finish-ki-reel <reel-package-dir>
 /verify-ki-reel <reel-package-dir>
