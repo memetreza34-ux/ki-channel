@@ -24,9 +24,8 @@ Pflicht:
 - `VOICEOVER-ZUM-KOPIEREN.txt` mit exakt dem später gesprochenen Text
 - neues Standard-Reel zielt auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
 - bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe
-- unter/über dem Ziel nur mit bewusst dokumentierter Ausnahme in `reel.json.scriptBudget`
-- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75` für neue Reels
-- `SCENE-VOICE-MAP.json`: jeder Satz wird **vor dem Audio-Lock** einer Szene zugeordnet
+- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
+- `SCENE-VOICE-MAP.json`: jeder Satz wird vor dem Audio-Lock einer Szene zugeordnet
 - `reel.json`
 - Szene-/Animationsplan
 - Entertainment- und Motion-Review-Struktur
@@ -34,26 +33,34 @@ Pflicht:
 - Plattform-Copy + Final-Caption
 - ausführbarer Source + Composition
 
-Der Agent darf später nicht aus dem fertigen Audio erraten, welcher Satz zu welcher Szene gehört.
-
 Vor Production-Render wird das Skriptbudget fail-closed geprüft:
 
 ```bash
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Nach dem lokalen Voice-Lock prüft `prepare-reel-render.mjs` zusätzlich die **echte** finale Laufzeit. Für neue Reels gilt: unter 60 oder über 75 Sekunden blockiert den Production-Render, solange keine dokumentierte Ausnahme vorliegt.
+Nach dem lokalen Voice-Lock prüft `prepare-reel-render.mjs` zusätzlich die echte finale Laufzeit. Für neue Reels gilt: unter 60 oder über 75 Sekunden blockiert den Production-Render, solange keine dokumentierte Ausnahme vorliegt.
 
-## Phase 2 — Voiceover
+## Phase 2 — Voiceover ausschließlich vom Nutzer
 
-Reales Audio darf per verfügbarem Tool oder durch Nutzer/Mensch entstehen. Remote-URL ist Provenance, kein Render-Master.
+Der Nutzer erstellt das vollständige Produktions-Voiceover selbst und legt es manuell unter `reel.json.audio.targetFile` ab.
+
+Normaler Pfad:
+
+`01-script-audio/voiceover.mp3`
+
+Agenten dürfen **kein** Produktions-Voiceover erzeugen oder herunterladen. Keine TTS-/Voice-Tools, keine Provider-URLs und keine Preview-Dateien als Ersatz.
+
+Fehlt die Datei, bleibt der Reel auf:
+
+`PHASE 2 — WARTET AUF NUTZER-AUDIO`
 
 ## Phase 3 — lokaler Sync, Render, Export
 
 Primärer Timing-Weg bei bekanntem Sprechertext:
 
 ```text
-Voiceover-Master
+Nutzer-Voiceover
 → Runtime-PCM-WAV
 → lokales Forced Alignment des bekannten Textes
 → WORD-TIMINGS.json
@@ -68,8 +75,6 @@ Ein-Kommando-Sync:
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Whisper ist Fallback/Diagnose für unbekanntes Audio, nicht mehr die Standard-Timing-Autorität für normale KI-Voiceover.
-
 Danach müssen bestehen:
 
 ```bash
@@ -80,17 +85,6 @@ node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
 Die gelockten JSON-Dateien werden vor dem Production-Render committed.
-
-## Forced-Alignment-Regeln
-
-Kanonische Quelle: `ki/gehirn/FORCED_ALIGNMENT.md`.
-
-- lokal, ohne Cloud-Quota
-- kein fuzzy word matching
-- Text muss exakt rekonstruiert werden
-- Caption-Wörter müssen exakt `WORD-TIMINGS.json` entsprechen
-- Szene 2+ startet am ersten tatsächlich gesprochenen Wort ihres ersten gemappten Satzes
-- Production nutzt nur die dokumentierten Modellpfade mit kompatibler Lizenz
 
 ## Visual / Motion
 
@@ -122,8 +116,6 @@ Nach finalem MP4 + echtem 1x-Review:
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
-
-Das Export-Manifest muss lokale Forced-Alignment-, Scene-Voice-, Voice-Lock-, Motion-, Audio- und Provenance-Gates enthalten.
 
 Erst nach vollständiger Prüfung:
 
