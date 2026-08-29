@@ -15,7 +15,7 @@ const option = (name, fallback) => {
 };
 
 if (!targetArg) {
-  console.error('Usage: node scripts/run-antigravity-headless-audit.mjs <reel-package-dir> [--mode=release|facts|motion|dependencies] [--timeout=15m]');
+  console.error('Usage: node scripts/run-antigravity-headless-audit.mjs <reel-package-dir> [--mode=release|facts|retention|motion|dependencies] [--timeout=15m]');
   process.exit(1);
 }
 
@@ -24,11 +24,15 @@ const timeout = option('timeout', '15m');
 const configs = {
   release: {
     agent: 'ki-release-verifier',
-    instruction: 'Perform an independent fail-closed release-readiness audit. Run only checks that your agent contract allows. Do not edit production files. Distinguish real PASS evidence from NOT_RUN/BLOCKED.',
+    instruction: 'Perform an independent fail-closed release-readiness audit including current publication freshness for time-sensitive claims. Run only checks that your agent contract allows. Do not edit production files. Distinguish real PASS evidence from NOT_RUN/BLOCKED.',
   },
   facts: {
     agent: 'ki-fact-researcher',
     instruction: 'Audit the target reel factual claims, dates, numbers and proof-source candidates using current primary sources. Do not edit files. A factual audit can PASS even when production/render gates are not relevant.',
+  },
+  retention: {
+    agent: 'ki-retention-story-auditor',
+    instruction: 'Audit hook, narrative progression, proof, consequence, payoff, beat density, repeated visual grammar and likely drop-off risks. Do not edit files and do not silently rewrite approved text. Reference exact scene/beat IDs.',
   },
   motion: {
     agent: 'ki-motion-researcher',
