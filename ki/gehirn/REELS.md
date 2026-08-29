@@ -4,7 +4,7 @@
 
 Ein Reel erklärt **eine** KI-Idee mit klarem Spannungsbogen und sichtbarem Mechanismus. Kein Mini-Vortrag, keine Feature-Liste.
 
-Für normale kurze Reels gilt in Phase 1 bevorzugt ein Sprechertext von **55–75 Wörtern**. Bis **80 Wörter** ist zulässig; darüber nur mit bewusst dokumentierter Ausnahme in `reel.json.scriptBudget`. Die **finale Länge kommt immer aus dem echten lokalen Voiceover**, nicht aus einer Plansekunde.
+Für neue Reels gilt in Phase 1 ein Ziel von **60–75 Sekunden tatsächlicher Voice-Locked-Laufzeit**. Als Planwert gelten bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe. Die **finale Länge kommt immer aus dem echten lokalen Voiceover**, nicht aus einer Plansekunde. `reel.json.scriptBudget.targetMinSeconds` und `targetMaxSeconds` sind für neue Reels auf 60 und 75 zu setzen.
 
 ## Spannungsbogen
 
@@ -50,7 +50,8 @@ High Energy ≠ High Speed.
 - Hero-/Payoff-Hold meist ca. 18–30 Frames
 - unabhängige Informationen meist 6–12 Frames staffeln
 - höchstens 1–2 neue unabhängige Informationen gleichzeitig, wenn sie aktiv verstanden werden müssen
-- wenn Audio zu kurz ist: Visual vereinfachen, nicht hektisch machen
+- wenn Audio zu kurz ist: Skript/Voiceover korrigieren, nicht das Reel künstlich mit Leerlauf strecken
+- wenn Audio zu lang ist: Inhalt verdichten, nicht hektisch sprechen oder Motion beschleunigen
 - Kameraeffekte nur bei echtem Fokuswechsel oder Erklärnutzen
 - Push, Pan, Focus, Parallax und Scan nicht als Deko-Spam einsetzen
 
@@ -119,6 +120,7 @@ lokaler Audio-Master
 → ffprobe
 → lokales Forced Alignment / Voice-Lock
 → Szenen + finalDurationInFrames schreiben
+→ 60–75-s-Dauergate
 → prepare-reel-render.mjs
 → Render
 ```
@@ -168,6 +170,7 @@ Soundeffekte unterstützen sichtbare Ereignisse und Bedeutung, nicht bloße Deko
 Vor Freigabe:
 
 - Script-Budget eingehalten oder Ausnahme dokumentiert
+- tatsächliche Voice-Locked-Laufzeit 60–75 Sekunden oder Ausnahme dokumentiert
 - Hook ohne Ton grob verständlich
 - jeder bedeutungstragende Sprecherabschnitt hat Visual Beat
 - kein Fremd-/Alt-Template-Reuse
