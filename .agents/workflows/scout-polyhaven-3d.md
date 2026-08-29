@@ -11,7 +11,7 @@ Use `.agents/skills/polyhaven-3d-asset-scout/SKILL.md`.
 3. Search the official Poly Haven API, normally:
 
 ```bash
-npm run antigravity:polyhaven -- "<specific English query>" --type=model --top=6
+node scripts/scout-polyhaven-assets.mjs "<specific English query>" --type=model --top=6
 ```
 
 4. For atmosphere/background use `--type=hdri`; for surfaces use `--type=texture`.
