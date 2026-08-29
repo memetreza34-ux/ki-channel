@@ -4,6 +4,7 @@ import {TransitionSeries, linearTiming} from '@remotion/transitions';
 import {slide} from '@remotion/transitions/slide';
 import {wipe} from '@remotion/transitions/wipe';
 import {bookFlip} from '@remotion/transitions/book-flip';
+import {StoryFlowArrow} from '../reels/StoryShapes';
 
 const Panel: React.FC<React.PropsWithChildren<{background:string}>> = ({background, children}) => (
   <AbsoluteFill style={{background, justifyContent:'center', alignItems:'center', fontFamily:'Inter, system-ui, sans-serif', fontSize:92, fontWeight:950, color:'#102033'}}>
@@ -18,7 +19,12 @@ export const StoryTransitionShowcase: React.FC = () => (
     </TransitionSeries.Sequence>
     <TransitionSeries.Transition presentation={slide({direction:'from-right'})} timing={linearTiming({durationInFrames:12})} />
     <TransitionSeries.Sequence durationInFrames={54}>
-      <Panel background="#EEF6FF">PROBLEM</Panel>
+      <Panel background="#EEF6FF">
+        <div style={{display:'grid',placeItems:'center',gap:28}}>
+          <div>PROBLEM</div>
+          <StoryFlowArrow accent="#2E90FA" startFrame={6} endFrame={34} length={260}/>
+        </div>
+      </Panel>
     </TransitionSeries.Sequence>
     <TransitionSeries.Transition presentation={wipe({direction:'from-left'})} timing={linearTiming({durationInFrames:12})} />
     <TransitionSeries.Sequence durationInFrames={54}>
