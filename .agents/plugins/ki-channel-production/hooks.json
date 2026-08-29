@@ -1,8 +1,31 @@
 {
+  "ki-channel-session-context": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "node scripts/antigravity-session-reminder.mjs",
+        "timeout": 10
+      }
+    ]
+  },
+  "ki-channel-safety-gate": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/antigravity-safety-gate.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "ki-channel-post-edit": {
     "PostToolUse": [
       {
-        "matcher": "edit_file|create_file",
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
         "hooks": [
           {
             "type": "command",
@@ -10,6 +33,15 @@
             "timeout": 30
           }
         ]
+      }
+    ]
+  },
+  "ki-channel-stop-guard": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node scripts/antigravity-stop-guard.mjs",
+        "timeout": 10
       }
     ]
   }
