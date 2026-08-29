@@ -12,14 +12,14 @@
     "height": 1920,
     "fps": 30,
     "planningDurationInFrames": 1080,
-    "finalDurationInFrames": null,
+    "finalDurationInFrames": 572,
     "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-    "timingAuthority": false,
+    "status": "RUNTIME_PCM_WAV_LOCKED",
+    "timingAuthority": true,
     "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
     "pauseCompression": {
       "enabled": true,
@@ -29,15 +29,16 @@
       "startKeepSeconds": 0.03,
       "maxAllowedSilenceSeconds": 0.25,
       "maxReductionRatio": 0.25
-    }
+    },
+    "observedAudioDurationSeconds": 19.047333
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
-    "status": "CONTENT_LOCKED_TIMING_PENDING"
+    "status": "VOICE_LOCKED"
   },
   "captions": {
     "file": "03-caption/subtitle-cues.json",
-    "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+    "status": "VOICE_LOCKED_SCENE_MAPPED",
     "maxLines": 2,
     "bottom": 250,
     "horizontalInset": 104,
@@ -66,15 +67,63 @@
     "coverTimeSeconds": 2.4,
     "coverText": "GPT-5.6 API: 80 % GÜNSTIGER + 2,5× SCHNELLER",
     "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
-    "requiredPackage": ["video", "cover", "caption", "manifest"],
-    "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
+    "requiredPackage": [
+      "video",
+      "cover",
+      "caption",
+      "manifest"
+    ],
+    "socialAudioMaster": {
+      "integratedLufs": -16,
+      "truePeakDbtp": -1.5
+    }
   },
   "scenes": [
-    {"sceneId":"scene1","title":"API-Preise sinken","startFrame":0,"endFrame":180,"accent":"#12B76A","heroMoment":"Price tag drops beside GPT-5.6 API badge","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene2","title":"Luna minus 80 und Terra minus 20","startFrame":180,"endFrame":420,"accent":"#2E90FA","heroMoment":"80 percent and 20 percent price-drop cards settle","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene3","title":"Sol Fast Mode bis 2.5x","startFrame":420,"endFrame":720,"accent":"#7A5AF8","heroMoment":"Real data-center visual plus speed gauge reaches 2.5x","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene4","title":"Fast Mode kostet doppelt","startFrame":720,"endFrame":840,"accent":"#F79009","heroMoment":"Speed versus cost tradeoff locks at 2x price","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene5","title":"Priority bleibt kompatibel","startFrame":840,"endFrame":1080,"accent":"#12B76A","heroMoment":"priority request routes automatically to FAST and source proof settles","timingStatus":"PLANNING_ONLY"}
+    {
+      "sceneId": "scene1",
+      "title": "API-Preise sinken",
+      "startFrame": 0,
+      "endFrame": 124,
+      "accent": "#12B76A",
+      "heroMoment": "Price tag drops beside GPT-5.6 API badge",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene2",
+      "title": "Luna minus 80 und Terra minus 20",
+      "startFrame": 124,
+      "endFrame": 352,
+      "accent": "#2E90FA",
+      "heroMoment": "80 percent and 20 percent price-drop cards settle",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene3",
+      "title": "Sol Fast Mode bis 2.5x",
+      "startFrame": 352,
+      "endFrame": 548,
+      "accent": "#7A5AF8",
+      "heroMoment": "Real data-center visual plus speed gauge reaches 2.5x",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene4",
+      "title": "Fast Mode kostet doppelt",
+      "startFrame": 548,
+      "endFrame": 554,
+      "accent": "#F79009",
+      "heroMoment": "Speed versus cost tradeoff locks at 2x price",
+      "timingStatus": "VOICE_LOCKED"
+    },
+    {
+      "sceneId": "scene5",
+      "title": "Priority bleibt kompatibel",
+      "startFrame": 554,
+      "endFrame": 572,
+      "accent": "#12B76A",
+      "heroMoment": "priority request routes automatically to FAST and source proof settles",
+      "timingStatus": "VOICE_LOCKED"
+    }
   ],
   "sources": [
     "https://openai.com/de-DE/products/release-notes/"

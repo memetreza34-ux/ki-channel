@@ -1,14 +1,519 @@
 {
   "version": 2,
   "fps": 30,
-  "timingStatus": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+  "timingStatus": "VOICE_LOCKED_SCENE_MAPPED",
+  "timingAuthority": "01-script-audio/WORD-TIMINGS.json",
+  "note": "Word timings come from the exact runtime PCM-WAV. Scene boundaries were derived from the first mapped spoken word of each scene.",
   "cues": [
-    {"id":"c01","sceneId":"scene1","sentenceId":"S01","startFrame":0,"endFrame":180,"text":"OpenAI hat die API-Preise für GPT-5.6 deutlich gesenkt."},
-    {"id":"c02","sceneId":"scene2","sentenceId":"S02","startFrame":180,"endFrame":320,"text":"GPT-5.6 Luna kostet seit dem 30. Juli 80 Prozent weniger."},
-    {"id":"c03","sceneId":"scene2","sentenceId":"S03","startFrame":320,"endFrame":420,"text":"GPT-5.6 Terra ist 20 Prozent günstiger."},
-    {"id":"c04","sceneId":"scene3","sentenceId":"S04","startFrame":420,"endFrame":720,"text":"Für GPT-5.6 Sol gibt es außerdem einen Schnellmodus, der laut OpenAI bis zu 2,5-mal schneller als die Standardverarbeitung sein kann."},
-    {"id":"c05","sceneId":"scene4","sentenceId":"S05","startFrame":720,"endFrame":840,"text":"Dafür kostet der Schnellmodus das Doppelte."},
-    {"id":"c06","sceneId":"scene5","sentenceId":"S06","startFrame":840,"endFrame":1000,"text":"Bestehende Anfragen mit der Kennzeichnung priority wechseln laut OpenAI automatisch auf den Schnellmodus."},
-    {"id":"c07","sceneId":"scene5","sentenceId":"S07","startFrame":1000,"endFrame":1080,"text":"Die Änderung ist damit abwärtskompatibel."}
+    {
+      "id": "c01",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 0,
+      "endFrame": 51,
+      "text": "OpenAI hat die API-Preise für",
+      "words": [
+        {
+          "text": "OpenAI",
+          "startFrame": 0,
+          "endFrame": 1
+        },
+        {
+          "text": "hat",
+          "startFrame": 12,
+          "endFrame": 17
+        },
+        {
+          "text": "die",
+          "startFrame": 17,
+          "endFrame": 22
+        },
+        {
+          "text": "API-Preise",
+          "startFrame": 28,
+          "endFrame": 46
+        },
+        {
+          "text": "für",
+          "startFrame": 46,
+          "endFrame": 51
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "sceneId": "scene1",
+      "sentenceId": "S01",
+      "startFrame": 51,
+      "endFrame": 123,
+      "text": "GPT-5.6 deutlich gesenkt.",
+      "words": [
+        {
+          "text": "GPT-5.6",
+          "startFrame": 51,
+          "endFrame": 94
+        },
+        {
+          "text": "deutlich",
+          "startFrame": 96,
+          "endFrame": 108
+        },
+        {
+          "text": "gesenkt.",
+          "startFrame": 108,
+          "endFrame": 123
+        }
+      ]
+    },
+    {
+      "id": "c03",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 124,
+      "endFrame": 188,
+      "text": "GPT-5.6 Luna kostet seit dem",
+      "words": [
+        {
+          "text": "GPT-5.6",
+          "startFrame": 124,
+          "endFrame": 159
+        },
+        {
+          "text": "Luna",
+          "startFrame": 159,
+          "endFrame": 171
+        },
+        {
+          "text": "kostet",
+          "startFrame": 171,
+          "endFrame": 180
+        },
+        {
+          "text": "seit",
+          "startFrame": 180,
+          "endFrame": 185
+        },
+        {
+          "text": "dem",
+          "startFrame": 185,
+          "endFrame": 188
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "sceneId": "scene2",
+      "sentenceId": "S02",
+      "startFrame": 188,
+      "endFrame": 255,
+      "text": "30. Juli 80 Prozent weniger.",
+      "words": [
+        {
+          "text": "30.",
+          "startFrame": 188,
+          "endFrame": 202
+        },
+        {
+          "text": "Juli",
+          "startFrame": 202,
+          "endFrame": 212
+        },
+        {
+          "text": "80",
+          "startFrame": 213,
+          "endFrame": 240
+        },
+        {
+          "text": "Prozent",
+          "startFrame": 240,
+          "endFrame": 241
+        },
+        {
+          "text": "weniger.",
+          "startFrame": 241,
+          "endFrame": 255
+        }
+      ]
+    },
+    {
+      "id": "c05",
+      "sceneId": "scene2",
+      "sentenceId": "S03",
+      "startFrame": 256,
+      "endFrame": 334,
+      "text": "GPT-5.6 Terra ist 20 Prozent",
+      "words": [
+        {
+          "text": "GPT-5.6",
+          "startFrame": 256,
+          "endFrame": 286
+        },
+        {
+          "text": "Terra",
+          "startFrame": 286,
+          "endFrame": 300
+        },
+        {
+          "text": "ist",
+          "startFrame": 300,
+          "endFrame": 308
+        },
+        {
+          "text": "20",
+          "startFrame": 309,
+          "endFrame": 322
+        },
+        {
+          "text": "Prozent",
+          "startFrame": 322,
+          "endFrame": 334
+        }
+      ]
+    },
+    {
+      "id": "c06",
+      "sceneId": "scene2",
+      "sentenceId": "S03",
+      "startFrame": 334,
+      "endFrame": 351,
+      "text": "günstiger.",
+      "words": [
+        {
+          "text": "günstiger.",
+          "startFrame": 334,
+          "endFrame": 351
+        }
+      ]
+    },
+    {
+      "id": "c07",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 352,
+      "endFrame": 404,
+      "text": "Für GPT-5.6 Sol gibt es",
+      "words": [
+        {
+          "text": "Für",
+          "startFrame": 352,
+          "endFrame": 356
+        },
+        {
+          "text": "GPT-5.6",
+          "startFrame": 356,
+          "endFrame": 387
+        },
+        {
+          "text": "Sol",
+          "startFrame": 387,
+          "endFrame": 394
+        },
+        {
+          "text": "gibt",
+          "startFrame": 394,
+          "endFrame": 401
+        },
+        {
+          "text": "es",
+          "startFrame": 401,
+          "endFrame": 404
+        }
+      ]
+    },
+    {
+      "id": "c08",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 404,
+      "endFrame": 444,
+      "text": "außerdem einen Schnellmodus,",
+      "words": [
+        {
+          "text": "außerdem",
+          "startFrame": 404,
+          "endFrame": 416
+        },
+        {
+          "text": "einen",
+          "startFrame": 416,
+          "endFrame": 423
+        },
+        {
+          "text": "Schnellmodus,",
+          "startFrame": 423,
+          "endFrame": 444
+        }
+      ]
+    },
+    {
+      "id": "c09",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 444,
+      "endFrame": 483,
+      "text": "der laut OpenAI bis zu",
+      "words": [
+        {
+          "text": "der",
+          "startFrame": 444,
+          "endFrame": 449
+        },
+        {
+          "text": "laut",
+          "startFrame": 449,
+          "endFrame": 456
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 456,
+          "endFrame": 473
+        },
+        {
+          "text": "bis",
+          "startFrame": 473,
+          "endFrame": 480
+        },
+        {
+          "text": "zu",
+          "startFrame": 480,
+          "endFrame": 483
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 483,
+      "endFrame": 546,
+      "text": "2,5-mal schneller als die Standardverarbeitung",
+      "words": [
+        {
+          "text": "2,5-mal",
+          "startFrame": 483,
+          "endFrame": 509
+        },
+        {
+          "text": "schneller",
+          "startFrame": 509,
+          "endFrame": 521
+        },
+        {
+          "text": "als",
+          "startFrame": 521,
+          "endFrame": 526
+        },
+        {
+          "text": "die",
+          "startFrame": 526,
+          "endFrame": 531
+        },
+        {
+          "text": "Standardverarbeitung",
+          "startFrame": 531,
+          "endFrame": 546
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "sceneId": "scene3",
+      "sentenceId": "S04",
+      "startFrame": 546,
+      "endFrame": 548,
+      "text": "sein kann.",
+      "words": [
+        {
+          "text": "sein",
+          "startFrame": 546,
+          "endFrame": 547
+        },
+        {
+          "text": "kann.",
+          "startFrame": 547,
+          "endFrame": 548
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "sceneId": "scene4",
+      "sentenceId": "S05",
+      "startFrame": 548,
+      "endFrame": 553,
+      "text": "Dafür kostet der Schnellmodus das",
+      "words": [
+        {
+          "text": "Dafür",
+          "startFrame": 548,
+          "endFrame": 549
+        },
+        {
+          "text": "kostet",
+          "startFrame": 549,
+          "endFrame": 550
+        },
+        {
+          "text": "der",
+          "startFrame": 550,
+          "endFrame": 551
+        },
+        {
+          "text": "Schnellmodus",
+          "startFrame": 551,
+          "endFrame": 552
+        },
+        {
+          "text": "das",
+          "startFrame": 552,
+          "endFrame": 553
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "sceneId": "scene4",
+      "sentenceId": "S05",
+      "startFrame": 553,
+      "endFrame": 554,
+      "text": "Doppelte.",
+      "words": [
+        {
+          "text": "Doppelte.",
+          "startFrame": 553,
+          "endFrame": 554
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "sceneId": "scene5",
+      "sentenceId": "S06",
+      "startFrame": 554,
+      "endFrame": 559,
+      "text": "Bestehende Anfragen mit der Kennzeichnung",
+      "words": [
+        {
+          "text": "Bestehende",
+          "startFrame": 554,
+          "endFrame": 555
+        },
+        {
+          "text": "Anfragen",
+          "startFrame": 555,
+          "endFrame": 556
+        },
+        {
+          "text": "mit",
+          "startFrame": 556,
+          "endFrame": 557
+        },
+        {
+          "text": "der",
+          "startFrame": 557,
+          "endFrame": 558
+        },
+        {
+          "text": "Kennzeichnung",
+          "startFrame": 558,
+          "endFrame": 559
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "sceneId": "scene5",
+      "sentenceId": "S06",
+      "startFrame": 559,
+      "endFrame": 564,
+      "text": "priority wechseln laut OpenAI automatisch",
+      "words": [
+        {
+          "text": "priority",
+          "startFrame": 559,
+          "endFrame": 560
+        },
+        {
+          "text": "wechseln",
+          "startFrame": 560,
+          "endFrame": 561
+        },
+        {
+          "text": "laut",
+          "startFrame": 561,
+          "endFrame": 562
+        },
+        {
+          "text": "OpenAI",
+          "startFrame": 562,
+          "endFrame": 563
+        },
+        {
+          "text": "automatisch",
+          "startFrame": 563,
+          "endFrame": 564
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "sceneId": "scene5",
+      "sentenceId": "S06",
+      "startFrame": 564,
+      "endFrame": 567,
+      "text": "auf den Schnellmodus.",
+      "words": [
+        {
+          "text": "auf",
+          "startFrame": 564,
+          "endFrame": 565
+        },
+        {
+          "text": "den",
+          "startFrame": 565,
+          "endFrame": 566
+        },
+        {
+          "text": "Schnellmodus.",
+          "startFrame": 566,
+          "endFrame": 567
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "sceneId": "scene5",
+      "sentenceId": "S07",
+      "startFrame": 567,
+      "endFrame": 572,
+      "text": "Die Änderung ist damit abwärtskompatibel.",
+      "words": [
+        {
+          "text": "Die",
+          "startFrame": 567,
+          "endFrame": 568
+        },
+        {
+          "text": "Änderung",
+          "startFrame": 568,
+          "endFrame": 569
+        },
+        {
+          "text": "ist",
+          "startFrame": 569,
+          "endFrame": 570
+        },
+        {
+          "text": "damit",
+          "startFrame": 570,
+          "endFrame": 571
+        },
+        {
+          "text": "abwärtskompatibel.",
+          "startFrame": 571,
+          "endFrame": 572
+        }
+      ]
+    }
   ]
 }

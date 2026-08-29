@@ -1,5 +1,161 @@
 {
   "version": 2,
-  "status": "PENDING_LOCAL_VISUAL_RESOLUTION",
-  "assets": []
+  "status": "VISUAL_ASSETS_RESOLVED_LOCAL_LOCK",
+  "compositionId": "KI-GPT56APIPricesFastMode",
+  "generatedAt": "2026-08-29T03:53:02.990Z",
+  "sourceManifest": "ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode/06-projektdateien/visual-assets.json",
+  "policy": {
+    "renderTimeRemoteMedia": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "deterministicAfterResolution": true,
+    "rankedSelectionBeforeDownload": true
+  },
+  "assets": [
+    {
+      "id": "scene1-api-price-ui",
+      "sceneId": "scene1",
+      "provider": "NATIVE_UI",
+      "purpose": "GPT-5.6 API price-drop hook",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene2-price-cards",
+      "sceneId": "scene2",
+      "provider": "NATIVE_UI",
+      "purpose": "Luna 80 percent and Terra 20 percent price-drop cards",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene3-datacenter-photo",
+      "sceneId": "scene3",
+      "provider": "WIKIMEDIA_COMMONS",
+      "purpose": "Real data-center/server-rack visual supporting GPT-5.6 Sol Fast Mode",
+      "searchQuery": "data center server racks computer servers",
+      "selectionPolicy": {
+        "minimumLongEdge": 1400,
+        "minimumShortEdge": 800,
+        "preferredOrientation": "LANDSCAPE",
+        "mediaIntent": "PHOTO_OR_REAL_VISUAL",
+        "preferPublicDomainOrCC0": true,
+        "candidateLimit": 24
+      },
+      "selectedTitle": "File:Technician with laptop working on server rack at NERSC.jpg",
+      "pageId": 17445570,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ATechnician_with_laptop_working_on_server_rack_at_NERSC.jpg",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Technician_with_laptop_working_on_server_rack_at_NERSC.jpg/1920px-Technician_with_laptop_working_on_server_rack_at_NERSC.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rightsStatus": "CC0-1.0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attribution": "Technician with laptop working on server rack at NERSC Uploaded by Dcoetzee",
+      "width": 4288,
+      "height": 2848,
+      "selectionScore": {
+        "total": 90.419,
+        "breakdown": {
+          "relevance": 35,
+          "searchRank": 0,
+          "resolution": 24,
+          "cropSuitability": 13.419,
+          "rights": 18,
+          "genericVisualPenalty": 0,
+          "extremeAspectPenalty": 0
+        },
+        "matchedQueryTokens": [
+          "data",
+          "center",
+          "server",
+          "racks",
+          "computer"
+        ]
+      },
+      "topCandidates": [
+        {
+          "title": "File:Technician with laptop working on server rack at NERSC.jpg",
+          "pageId": 17445570,
+          "width": 4288,
+          "height": 2848,
+          "rightsStatus": "CC0-1.0",
+          "score": {
+            "total": 90.419,
+            "breakdown": {
+              "relevance": 35,
+              "searchRank": 0,
+              "resolution": 24,
+              "cropSuitability": 13.419,
+              "rights": 18,
+              "genericVisualPenalty": 0,
+              "extremeAspectPenalty": 0
+            },
+            "matchedQueryTokens": [
+              "data",
+              "center",
+              "server",
+              "racks",
+              "computer"
+            ]
+          }
+        },
+        {
+          "title": "File:Rear of rack at NERSC data center - closeup.jpg",
+          "pageId": 17460421,
+          "width": 2860,
+          "height": 4304,
+          "rightsStatus": "CC0-1.0",
+          "score": {
+            "total": 74.06,
+            "breakdown": {
+              "relevance": 35,
+              "searchRank": 0,
+              "resolution": 24,
+              "cropSuitability": -2.94,
+              "rights": 18,
+              "genericVisualPenalty": 0,
+              "extremeAspectPenalty": 0
+            },
+            "matchedQueryTokens": [
+              "data",
+              "center",
+              "server",
+              "racks",
+              "computer"
+            ]
+          }
+        }
+      ],
+      "localFile": "public/reel-assets/KI-GPT56APIPricesFastMode/scene3-datacenter-photo.jpg",
+      "staticFile": "reel-assets/KI-GPT56APIPricesFastMode/scene3-datacenter-photo.jpg",
+      "mime": "image/jpeg",
+      "bytes": 427141,
+      "sha256": "fea4bc9be8ef1c511584b7d320054e608bd39d0c5b742416dce39306ae32a0a1"
+    },
+    {
+      "id": "scene4-speed-cost-ui",
+      "sceneId": "scene4",
+      "provider": "NATIVE_UI",
+      "purpose": "2.5x speed versus 2x cost tradeoff",
+      "rightsStatus": "NATIVE_ORIGINAL",
+      "sourceUrl": null,
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    },
+    {
+      "id": "scene5-openai-source",
+      "sceneId": "scene5",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "purpose": "Official OpenAI release-note proof for priority backwards compatibility",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://openai.com/de-DE/products/release-notes/",
+      "localFile": null,
+      "staticFile": null,
+      "sha256": null
+    }
+  ]
 }

@@ -8,9 +8,6 @@
     {"id":"sfx03-terra","sceneId":"scene2","anchor":{"type":"SCENE_OFFSET","frame":92},"roles":["ui-confirm","ui-click"],"keywords":["confirm","click","positive"],"preferredDurationSeconds":0.20,"volume":0.09,"purpose":"20 percent Terra drop lands"},
     {"id":"sfx04-fast-open","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":20},"roles":["ui-click","digital-accent"],"keywords":["click","digital","select"],"preferredDurationSeconds":0.18,"volume":0.08,"purpose":"Fast Mode activates"},
     {"id":"sfx05-speed","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":74},"roles":["transition-rise","tech-accent","digital-accent"],"keywords":["rise","power","digital"],"preferredDurationSeconds":0.42,"volume":0.08,"purpose":"speed gauge rises to 2.5x"},
-    {"id":"sfx06-25x","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":116},"roles":["ui-confirm","impact"],"keywords":["confirm","impact","positive"],"preferredDurationSeconds":0.24,"volume":0.10,"purpose":"2.5x value settles"},
-    {"id":"sfx07-double-cost","sceneId":"scene4","anchor":{"type":"SCENE_OFFSET","frame":38},"roles":["ui-error","impact"],"keywords":["negative","impact","error"],"preferredDurationSeconds":0.24,"volume":0.10,"purpose":"double-price tradeoff appears"},
-    {"id":"sfx08-priority-route","sceneId":"scene5","anchor":{"type":"SCENE_OFFSET","frame":36},"roles":["ui-click","digital-accent"],"keywords":["click","route","digital"],"preferredDurationSeconds":0.20,"volume":0.08,"purpose":"priority request routes to fast mode"},
-    {"id":"sfx09-compatible","sceneId":"scene5","anchor":{"type":"SCENE_OFFSET","frame":112},"roles":["ui-confirm","digital-accent"],"keywords":["confirm","complete","positive"],"preferredDurationSeconds":0.28,"volume":0.10,"purpose":"backwards-compatible state settles"}
+    {"id":"sfx06-25x","sceneId":"scene3","anchor":{"type":"SCENE_OFFSET","frame":116},"roles":["ui-confirm","impact"],"keywords":["confirm","impact","positive"],"preferredDurationSeconds":0.24,"volume":0.10,"purpose":"2.5x value settles"}
   ]
 }

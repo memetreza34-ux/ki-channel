@@ -104,8 +104,11 @@ const words = aligned.map((word,index) => {
   const startSeconds = Number(word.start);
   const endSeconds = Number(word.end);
   if (!Number.isFinite(startSeconds) || !Number.isFinite(endSeconds) || startSeconds < 0 || endSeconds <= startSeconds) fail(`invalid timing for word ${index+1}.`);
-  const startFrame = Math.max(0,Math.floor(startSeconds*fps));
-  const endFrame = Math.max(startFrame+1,Math.ceil(endSeconds*fps));
+  const probe = spawnSync('ffprobe', ['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',runtimeAudio], {encoding:'utf8'});
+  const runtimeSeconds = Number(String(probe.stdout).trim());
+  const maxFrame = Math.ceil(runtimeSeconds * fps) - 1;
+  const startFrame = Math.min(maxFrame, Math.max(0,Math.floor(startSeconds*fps)));
+  const endFrame = Math.min(maxFrame + 1, Math.max(startFrame+1,Math.ceil(endSeconds*fps)));
   return {
     index:index+1,
     text:expectedWord.text,
@@ -118,6 +121,31 @@ const words = aligned.map((word,index) => {
     score:Number.isFinite(Number(word.score)) ? Number(Number(word.score).toFixed(6)) : undefined,
   };
 });
+const probe = spawnSync('ffprobe', ['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',runtimeAudio], {encoding:'utf8'});
+const runtimeSeconds = Number(String(probe.stdout).trim());
+const maxFrame = Math.ceil(runtimeSeconds * fps) - 1;
+
+for (let i=1;i<words.length;i++) {
+  if (words[i].startFrame < words[i-1].endFrame) {
+    words[i].startFrame = words[i-1].endFrame;
+  }
+  if (words[i].endFrame <= words[i].startFrame) {
+    words[i].endFrame = words[i].startFrame + 1;
+  }
+}
+
+if (words.length > 0 && words[words.length-1].endFrame > maxFrame + 1) {
+  words[words.length-1].endFrame = maxFrame + 1;
+  words[words.length-1].startFrame = maxFrame;
+  for (let i=words.length-2; i>=0; i--) {
+    if (words[i].endFrame > words[i+1].startFrame) {
+      words[i].endFrame = words[i+1].startFrame;
+    }
+    if (words[i].startFrame >= words[i].endFrame) {
+      words[i].startFrame = words[i].endFrame - 1;
+    }
+  }
+}
 for (let i=1;i<words.length;i++) if (words[i].startFrame < words[i-1].startFrame) fail(`word timing goes backwards at word ${i+1}.`);
 
 const wordTimingsPath = path.join(reelDir,'01-script-audio','WORD-TIMINGS.json');

@@ -123,8 +123,11 @@ def main():
     for index, word in enumerate(words):
         start = float(word["start"])
         end = float(word["end"])
-        if start < 0 or end <= start:
+        if start < 0:
             raise SystemExit(f"invalid word timing at index {index}: {start}-{end}")
+        if end <= start:
+            end = start + 0.01
+            word["end"] = end
         if start + 0.050 < previous_end:
             raise SystemExit(f"word timing goes backwards at index {index}")
         previous_end = max(previous_end, end)

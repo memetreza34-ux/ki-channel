@@ -1,6 +1,155 @@
 {
   "version": 1,
-  "status": "PENDING_LOCAL_CC0_RESOLUTION",
-  "selectionMode": "AUTO_CC0_DETERMINISTIC",
-  "events": []
+  "status": "SFX_RESOLVED_CC0_AUTO",
+  "selectionMode": "DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING",
+  "compositionId": "KI-GPT56APIPricesFastMode",
+  "fps": 30,
+  "finalDurationInFrames": 572,
+  "generatedAt": "2026-08-29T03:53:01.586Z",
+  "library": {
+    "status": "LOCAL_CC0_SFX_LIBRARY_READY",
+    "totalSounds": 416,
+    "mirror": {
+      "repository": "https://github.com/Silentnoob21/cc0-public-domain-sounds.git",
+      "commit": "f2b6264f9ab89fabc266914c3654685d68c5a39b"
+    },
+    "indexSha256": "3ef475d43381218642fc012a73bf44781e1cd232814de8038a937794c8b85a28"
+  },
+  "sourceEventsSha256": "179a8e83b620212ecad6ab8881181205a82f7207181d652fa6e90946868fe9af",
+  "rules": {
+    "license": "CC0-1.0_ONLY",
+    "randomness": false,
+    "soundReusePenalty": true,
+    "sceneAnchorsFollowFinalSceneFrames": true,
+    "voiceFirstVolumeCaps": true
+  },
+  "events": [
+    {
+      "id": "sfx01-price-drop",
+      "sceneId": "scene1",
+      "purpose": "main API price tag drops",
+      "startFrame": 28,
+      "durationInFrames": 9,
+      "volume": 0.09,
+      "requestedRoles": [
+        "ui-confirm",
+        "digital-accent"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_001",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_001.wav",
+      "durationSeconds": 0.289854,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_001.ogg"
+    },
+    {
+      "id": "sfx02-luna",
+      "sceneId": "scene2",
+      "purpose": "80 percent Luna drop lands",
+      "startFrame": 148,
+      "durationInFrames": 8,
+      "volume": 0.11,
+      "requestedRoles": [
+        "impact",
+        "ui-confirm"
+      ],
+      "selectedRole": "impact",
+      "soundId": "kenney-impact-sounds:impactWood_light_003",
+      "staticFile": "reel-sfx/kenney/kenney-impact-sounds/impactWood_light_003.wav",
+      "durationSeconds": 0.262708,
+      "packId": "kenney-impact-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/impact-sounds",
+      "originalFile": "impactWood_light_003.ogg"
+    },
+    {
+      "id": "sfx03-terra",
+      "sceneId": "scene2",
+      "purpose": "20 percent Terra drop lands",
+      "startFrame": 216,
+      "durationInFrames": 10,
+      "volume": 0.09,
+      "requestedRoles": [
+        "ui-confirm",
+        "ui-click"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_003",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_003.wav",
+      "durationSeconds": 0.322021,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_003.ogg"
+    },
+    {
+      "id": "sfx04-fast-open",
+      "sceneId": "scene3",
+      "purpose": "Fast Mode activates",
+      "startFrame": 372,
+      "durationInFrames": 2,
+      "volume": 0.08,
+      "requestedRoles": [
+        "ui-click",
+        "digital-accent"
+      ],
+      "selectedRole": "ui-click",
+      "soundId": "kenney-interface-sounds:select_008",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/select_008.wav",
+      "durationSeconds": 0.059521,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "select_008.ogg"
+    },
+    {
+      "id": "sfx05-speed",
+      "sceneId": "scene3",
+      "purpose": "speed gauge rises to 2.5x",
+      "startFrame": 426,
+      "durationInFrames": 17,
+      "volume": 0.08,
+      "requestedRoles": [
+        "transition-rise",
+        "tech-accent",
+        "digital-accent"
+      ],
+      "selectedRole": "transition-rise",
+      "soundId": "kenney-digital-audio:highUp",
+      "staticFile": "reel-sfx/kenney/kenney-digital-audio/highUp.wav",
+      "durationSeconds": 0.545688,
+      "packId": "kenney-digital-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/digital-audio",
+      "originalFile": "highUp.ogg"
+    },
+    {
+      "id": "sfx06-25x",
+      "sceneId": "scene3",
+      "purpose": "2.5x value settles",
+      "startFrame": 468,
+      "durationInFrames": 15,
+      "volume": 0.1,
+      "requestedRoles": [
+        "ui-confirm",
+        "impact"
+      ],
+      "selectedRole": "ui-confirm",
+      "soundId": "kenney-interface-sounds:confirmation_004",
+      "staticFile": "reel-sfx/kenney/kenney-interface-sounds/confirmation_004.wav",
+      "durationSeconds": 0.490417,
+      "packId": "kenney-interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "originalFile": "confirmation_004.ogg"
+    }
+  ]
 }
