@@ -9,7 +9,7 @@ Use this skill only when a specific story beat genuinely benefits from a real 3D
 
 ## Hard boundary
 
-This skill is discovery-only.
+This skill is **discovery-only**.
 
 It may:
 - query the official Poly Haven public API;
@@ -30,19 +30,19 @@ It must not:
 For a 3D model:
 
 ```bash
-npm run antigravity:polyhaven -- "server rack" --type=model --top=6
+node scripts/scout-polyhaven-assets.mjs "server rack" --type=model --top=6
 ```
 
 For an HDRI:
 
 ```bash
-npm run antigravity:polyhaven -- "dark studio industrial" --type=hdri --top=6
+node scripts/scout-polyhaven-assets.mjs "dark studio industrial" --type=hdri --top=6
 ```
 
 For a texture:
 
 ```bash
-npm run antigravity:polyhaven -- "brushed metal" --type=texture --top=6
+node scripts/scout-polyhaven-assets.mjs "brushed metal" --type=texture --top=6
 ```
 
 ## Selection policy
