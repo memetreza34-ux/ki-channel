@@ -3,10 +3,10 @@
   "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
   "provider": "AI_Voice_Generator",
   "voiceId": "clear",
-  "contextId": "4d676958080a40a5ba584aabd67fe7bf",
-  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=4d676958080a40a5ba584aabd67fe7bf",
-  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/cb1930d0-2655-4c80-92b8-e3e47ab3723b.mp3",
+  "contextId": "7521558f3b4d4efb90bf5acbbf2fccef",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=7521558f3b4d4efb90bf5acbbf2fccef",
+  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/0ab7a8a1-06df-4eb4-aadf-3ddf881cdf5f.mp3",
   "targetFile": "01-script-audio/voiceover.mp3",
   "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
-  "note": "Freshly regenerated clear-voice Phase-2 source on 2026-08-28. Remote URL is provenance only; download locally before alignment/render."
+  "note": "Fresh clear-voice source regenerated on 2026-08-29 for the new 60-75 second reel standard. Remote URL is provenance only; download locally before alignment/render."
 }
