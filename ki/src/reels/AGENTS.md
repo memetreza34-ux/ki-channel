@@ -22,16 +22,19 @@ Externe Bilder nur, wenn Fotorealistik, reales Produkt/Markenasset oder komplexe
 
 Bei Apps, Websites, Plattformen und Features zuerst eine konkrete Produkt-/UI-Szene prüfen. Generische Kreise/Nodes sind kein Default, wenn UI die Aussage klarer erklärt.
 
-## Phase-1 Script-Budget
+## Phase-1 Script- und Laufzeit-Budget
 
-Für normale kurze Reels gilt als Standard:
+Für neue Reels gilt als Standard:
 
-- bevorzugt **55–75 gesprochene Wörter**
-- bis **80 Wörter** noch zulässig
-- über **80 Wörter** nur mit bewusster dokumentierter Ausnahme in `reel.json.scriptBudget`
-- längere Laufzeit darf nicht durch unnötige Erklärsätze entstehen
+- **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
+- bevorzugt **150–175 gesprochene Wörter**
+- bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60`
+- `reel.json.scriptBudget.targetMaxSeconds = 75`
+- kürzer/länger nur mit bewusster dokumentierter Ausnahme
+- Laufzeit darf nicht durch unnötige Erklärsätze oder künstlich langsames Sprechen erzeugt werden
 
-Der Codex-Transfer-Test mit 86 Wörtern landete trotz sauberer Pause-Kompression bei rund 44 Sekunden. Deshalb wird die Laufzeit bereits in Phase 1 über das Skript begrenzt, nicht erst nach dem Render.
+Das Wortbudget ist nur Phase-1-Planung. Die echte Autorität ist das lokale Voiceover nach Pause-Kompression und Forced Alignment. `prepare-reel-render.mjs` muss die finale Voice-Locked-Dauer gegen 60–75 Sekunden prüfen.
 
 Vor Production-Render prüft:
 
@@ -121,6 +124,7 @@ Neue aktive Reel-Komponenten sollen bei leerem `voiceoverSrc` fehlschlagen statt
 Vor Freigabe:
 
 - Script-Budget bewusst eingehalten oder Ausnahme dokumentiert
+- finale Voice-Locked-Dauer 60–75 Sekunden oder Ausnahme dokumentiert
 - Visual passt exakt zur Sprecherbedeutung
 - Smartphone-lesbar
 - Hauptmechanik groß genug
