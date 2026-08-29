@@ -2,7 +2,7 @@
 
 Gilt für alle Produktionspakete unter `ki/reels/`.
 
-## Struktur
+## Struktur — fail-closed
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -16,6 +16,26 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 ```
 
 Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
+
+**Harte Strukturregel:** Ein Reel-Paket ist nicht gültig, wenn auch nur einer der sechs nummerierten Pflichtordner fehlt. Jeder Pflichtordner muss mindestens eine Datei enthalten (`.gitkeep`, `README.md` oder echte Produktionsdatei), weil Git leere Ordner nicht versioniert.
+
+Neue Reel-Pakete grundsätzlich über den kanonischen Generator anlegen:
+
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
+
+Manuell angelegte oder importierte Reel-Pakete müssen exakt dieselbe Struktur erfüllen.
+
+Nach **jeder** Änderung, Erstellung, Migration oder Integration unter `ki/reels/**` ist vor einer Erfolgsmeldung zwingend auszuführen:
+
+```bash
+npm run ki:reel:structure-check
+```
+
+Schlägt dieser Befehl fehl, darf kein Agent das Reel als `IMPLEMENTIERT`, `PHASE 1 FERTIG`, `BEREIT FÜR AUDIO`, `RENDER-READY` oder ähnlich melden. Erst die Struktur korrigieren und erneut prüfen.
+
+Der Strukturcheck validiert zusätzlich den Generator selbst: Alle sechs Pflichtordner und Git-stabile Platzhalter müssen weiterhin im Scaffold vorhanden sein.
 
 ## Phase 1 — Inhalt + Source
 
@@ -32,6 +52,8 @@ Pflicht:
 - Preview-Captions nur als Planung
 - Plattform-Copy + Final-Caption
 - ausführbarer Source + Composition
+
+Bevor Phase 1 als abgeschlossen und das Reel an den Nutzer für Phase 2 übergeben wird, ist `npm run ki:reel:structure-check` Pflicht.
 
 Vor Production-Render wird das Skriptbudget fail-closed geprüft:
 

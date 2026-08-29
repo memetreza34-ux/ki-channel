@@ -25,6 +25,26 @@ Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit
 - PRs nicht mergen/ready setzen, außer die Aufgabe verlangt es.
 - Keine unrelated Dateien anfassen.
 
+## Reel-Struktur — Pflichtgate
+
+Jedes Reel unter `ki/reels/<Woche>/<Reel>/` besitzt immer exakt die kanonische Produktionsstruktur mit `README.md` sowie `01-script-audio/` bis `06-projektdateien/`.
+
+Git versioniert keine leeren Ordner. Deshalb muss jeder der sechs Pflichtordner mindestens eine Datei enthalten (`.gitkeep`, README oder echte Produktionsdatei).
+
+Neue Reels bevorzugt ausschließlich über den kanonischen Generator anlegen:
+
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
+
+Nach jeder Erstellung, Migration, Integration oder sonstigen Änderung unter `ki/reels/**` muss **vor jeder Erfolgsmeldung** laufen:
+
+```bash
+npm run ki:reel:structure-check
+```
+
+Ein Agent darf ein Reel niemals als implementiert, Phase-1-fertig, bereit für Audio oder renderbereit melden, solange dieser Strukturcheck nicht tatsächlich bestanden wurde. Das gilt ausdrücklich auch für Test-Reels und manuell übernommene Feature-Branches.
+
 ## 3-Phasen-Modell für Reels
 
 ### Phase 1 — Inhalt + Source
@@ -46,6 +66,8 @@ Muss enthalten:
 - klaren `PHASE-STATUS.md`
 
 Geschätzte Timings sind nur Preview. Das Wortbudget ist Planung; die echte Laufzeit kommt später aus dem Voice-Lock.
+
+Vor Übergabe an Phase 2 muss zusätzlich `npm run ki:reel:structure-check` tatsächlich bestanden sein.
 
 ### Phase 2 — Voiceover: ausschließlich Nutzer
 
@@ -138,7 +160,7 @@ Große Binärmedien bleiben standardmäßig außerhalb normalem Git, solange Git
 
 ## Wahrheitspflicht
 
-Nie behaupten, dass Test, Typecheck, Forced Alignment, Voice-Lock, Render, Audio, visuelle Prüfung oder Export bestanden sind, wenn dies nicht tatsächlich ausgeführt wurde.
+Nie behaupten, dass Strukturcheck, Test, Typecheck, Forced Alignment, Voice-Lock, Render, Audio, visuelle Prüfung oder Export bestanden sind, wenn dies nicht tatsächlich ausgeführt wurde.
 
 Bei Blocker nennen:
 

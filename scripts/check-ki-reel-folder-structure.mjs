@@ -1,10 +1,11 @@
-import {readdir, stat} from 'node:fs/promises';
+import {readdir, readFile} from 'node:fs/promises';
 import {resolve, relative, basename} from 'node:path';
 
 const repoRoot = resolve(process.env.KI_REEL_STRUCTURE_ROOT ?? '.');
 const kiRoot = resolve(repoRoot, 'ki');
 const reelsRoot = resolve(kiRoot, 'reels');
 const sourceReelsRoot = resolve(kiRoot, 'src', 'reels');
+const generatorPath = resolve(repoRoot, 'scripts', 'new-ki-reel.mjs');
 
 const WEEK_PATTERN = /^\d{4}-\d{2}-\d{2}_bis_\d{4}-\d{2}-\d{2}$/;
 const REEL_PATTERN = /^\d{2}_.+/;
@@ -76,6 +77,23 @@ const walkFiles = async (root) => {
   return files;
 };
 
+// 0) The canonical generator itself must never lose one of the six folders or
+// its tracked placeholder. This catches a future scaffold regression before a
+// new reel can be treated as valid.
+try {
+  const generator = await readFile(generatorPath, 'utf8');
+  for (const required of REQUIRED_REEL_DIRS) {
+    if (!generator.includes(`'${required}'`) && !generator.includes(`"${required}"`)) {
+      failures.push(`scripts/new-ki-reel.mjs erzeugt den Pflichtordner ${required}/ nicht mehr.`);
+    }
+  }
+  if (!generator.includes("'.gitkeep'") && !generator.includes('".gitkeep"')) {
+    failures.push('scripts/new-ki-reel.mjs erzeugt keine .gitkeep-Platzhalter mehr; leere Pflichtordner könnten dadurch in Git verschwinden.');
+  }
+} catch (error) {
+  failures.push(`scripts/new-ki-reel.mjs fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`);
+}
+
 // 1) Reel projects must never live directly below ki/.
 for (const entry of await readDirSafe(kiRoot)) {
   if (!entry.isDirectory()) continue;
@@ -145,7 +163,22 @@ for (const entry of await readDirSafe(reelsRoot)) {
 
     if (!childFiles.has('README.md')) failures.push(`${display(reelRoot)}: README.md fehlt.`);
     for (const required of REQUIRED_REEL_DIRS) {
-      if (!childDirs.has(required)) failures.push(`${display(reelRoot)}: Pflichtordner ${required}/ fehlt.`);
+      const requiredPath = resolve(reelRoot, required);
+      if (!childDirs.has(required)) {
+        failures.push(`${display(reelRoot)}: Pflichtordner ${required}/ fehlt.`);
+        continue;
+      }
+
+      // Git does not track empty directories. A locally present but empty folder
+      // would disappear after push/clone/pull and recreate exactly the failure
+      // that happened in the GPT-5.6 test reel.
+      const persistentFiles = await walkFiles(requiredPath);
+      if (persistentFiles.length === 0) {
+        failures.push(
+          `${display(requiredPath)} ist leer. Jeder Pflichtordner benötigt mindestens eine Datei ` +
+          '(.gitkeep, README oder echte Produktionsdatei), damit die 01–06-Struktur Git-stabil bleibt.',
+        );
+      }
     }
 
     const flatPlanning = [...ROOT_REEL_MARKERS].filter((name) => childFiles.has(name));
@@ -165,5 +198,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'KI-Reel-Strukturvertrag bestanden: keine Reel-Projekte im ki/-Root, Source und Planung getrennt, Wochenordner gültig und jedes Reel besitzt die feste 01–06-Produktionsstruktur.',
+  'KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil, keine Reel-Projekte im ki/-Root, Source und Planung sind getrennt und jedes Reel besitzt alle sechs persistenten Produktionsordner.',
 );
