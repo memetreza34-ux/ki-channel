@@ -24,6 +24,17 @@
       ],
       "disabled": true
     },
+    "figma": {
+      "serverUrl": "https://mcp.figma.com/mcp",
+      "disabled": true,
+      "disabledTools": [
+        "add_code_connect_map",
+        "create_new_file",
+        "download_assets",
+        "generate_diagram",
+        "generate_figma_design"
+      ]
+    },
     "github": {
       "command": "docker",
       "args": [
