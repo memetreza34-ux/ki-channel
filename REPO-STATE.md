@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-28
+**Status:** 2026-08-29
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -55,13 +55,16 @@ Ausführbarer Remotion-Code liegt getrennt unter:
 
 `ki/src/reels/<slug>/`
 
-## 4. Phase-1 Script-Budget
+## 4. Phase-1 Script- und Laufzeit-Budget
 
-Für normale kurze Reels gilt:
+Für **neue Reels** gilt:
 
-- bevorzugt **55–75 gesprochene Wörter**
-- bis **80 Wörter** zulässig
-- über 80 Wörter nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
+- tatsächliche Voice-Locked-Laufzeit: **60–75 Sekunden**
+- bevorzugt **150–175 gesprochene Wörter**
+- bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60`
+- `reel.json.scriptBudget.targetMaxSeconds = 75`
+- kürzer/länger nur mit bewusst dokumentierter Ausnahme
 
 Vor Production-Render prüft fail-closed:
 
@@ -69,7 +72,7 @@ Vor Production-Render prüft fail-closed:
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Laufzeit wird zuerst über ein knappes Skript kontrolliert, nicht durch nachträgliches aggressives Audio-/Motion-Retiming.
+Das Wortbudget ist nur Phase-1-Planung. Nach Pause-Kompression und lokalem Forced Alignment prüft `prepare-reel-render.mjs` zusätzlich die **echte** Voice-Locked-Laufzeit. Unter 60 oder über 75 Sekunden blockiert neue Production-Reels ohne dokumentierte Ausnahme.
 
 ## 5. Produktions-Audio
 
@@ -109,7 +112,8 @@ Bewährter Default:
 - externe Binärvisuals werden lokal aufgelöst, lizenzgeprüft und per SHA256 gebunden
 - `CameraPush`, Pan, Focus, Parallax und Scan nur mit sichtbarem Erklär-/Fokusnutzen
 - keine Effekt-/Zoom-Kaskade nur für Bewegung
-- semantische CC0-SFX folgen sichtbaren Events
+- längere 60–75-s-Reels brauchen mehrere Visual Beats innerhalb langer Szenen; kein minutenartiger statischer Hold
+- semantische CC0-SFX folgen sichtbaren Events und werden über die gesamte Timeline sinnvoll verteilt
 - Voiceover bleibt Lautstärke-Priorität
 - SFX und Kameraeffekte werden beim echten 1x-Review geprüft
 
@@ -117,7 +121,7 @@ Bewährter Default:
 
 ```text
 PHASE 1 — ChatGPT
-Idee + Fakten + knappes Skript + Copy + Szenen + Visual Beats + Source + Preview-Timing
+Idee + Fakten + 60–75-s-Skript + Copy + Szenen + Visual Beats + Source + Preview-Timing
 
 PHASE 2 — Audio
 reales Voiceover per verfügbarem Voice-Tool oder vom Nutzer
@@ -126,6 +130,7 @@ PHASE 3 — Codex / Antigravity
 Runtime-WAV + Pause-Kompression
 → lokales Forced Alignment
 → WORD-TIMINGS + Scene/Caption-Lock
+→ echtes 60–75-s-Dauergate
 → automatische CC0-SFX
 → externe Visuals lokal auflösen
 → renderrelevante getrackte Dateien committen
@@ -165,7 +170,16 @@ Kanonischer Test-Reel:
 
 `ki/reels/2026-08-24_bis_2026-08-30/05_GPT-5-6-API-Preise-und-Fast-Mode/`
 
-Skript: **73 Wörter** und damit im bevorzugten Bereich.
+Aktueller Sprechertext: **159 Wörter**. Planning-Timeline: **2070 Frames / 69 Sekunden** bei 30 fps. Die endgültige Dauer wird erst aus dem frisch erzeugten `clear`-Voiceover nach Pause-Kompression + Forced Alignment akzeptiert und muss 60–75 Sekunden erreichen.
+
+Das Reel wurde für die längere Laufzeit angepasst:
+
+- Preis-Hook bleibt kompakt
+- Luna/Terra plus Entwickler-Workflow als mehrere Visual Beats
+- Sol Fast Mode mit längerem Smart-Crop/Zoom und 2,5×-Speed-Build
+- Speed-vs-Cost-Trade-off über die Szene verteilt
+- priority-Routing, Integration bleibt bestehen und Abschluss-Payoff als getrennte Beats
+- SFX-Events über die längere Timeline verteilt
 
 ### Lauf 1 — lokale Timing-/Asset-Artefakte erzeugen
 
