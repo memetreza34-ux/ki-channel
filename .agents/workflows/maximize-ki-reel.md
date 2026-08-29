@@ -1,5 +1,5 @@
 ---
-description: Use the full relevant Antigravity capability stack to improve an existing KI-channel reel from research through story implementation, user-audio gate, sync, browser QA and independent release verification.
+description: Use the full relevant Antigravity capability stack to improve an existing KI-channel reel from parallel fact/retention/motion analysis through story implementation, user-audio gate, sync, pixel/browser QA and independent release verification.
 ---
 
 # /maximize-ki-reel <reel-package-dir>
@@ -18,10 +18,11 @@ This is the highest-level KI-channel workflow. Use it when the user wants the st
 Invoke independent subagents concurrently with workspace `inherit`:
 
 - `ki-fact-researcher`: verify current claims, dates, prices and proof-source candidates.
+- `ki-retention-story-auditor`: identify weak hook/progression/proof/consequence/payoff, repetition and likely drop-off stretches.
 - `ki-motion-researcher`: audit every major spoken beat and find stronger shared/Remotion/Remotion-Bits motion options where useful.
 - `ki-dependency-auditor`: check local version/peer/API compatibility when the reel uses Effects, Three, Skia, Rive, Lottie or other sensitive packages.
 
-If a previous render/master exists, also invoke:
+If a previous render/master or story-beat still set exists, also invoke:
 
 - `ki-visual-qa-auditor`: audit the existing real artifacts and identify concrete static/visual/story problems.
 
@@ -32,7 +33,7 @@ Do not let these read-only agents edit files.
 The orchestrator combines the reports into one prioritized change list:
 
 1. factual blockers;
-2. story/pacing blockers;
+2. retention/story/pacing blockers;
 3. readability/visual blockers;
 4. technical compatibility blockers;
 5. optional polish.
@@ -72,12 +73,14 @@ It performs runtime WAV preparation, pause handling, forced alignment, word timi
 
 ## 7. Real visual QA
 
-1. Render the required story/smoke frames and/or production preview.
-2. Use Chrome DevTools MCP and Antigravity Browser when available to inspect Remotion Studio/local preview, console, layout and real visual states.
-3. Invoke `ki-visual-qa-auditor` on the resulting artifacts.
-4. Fix concrete FAIL findings through `ki-remotion-story-engineer`, then re-render/re-review.
+1. Run `/visual-qa-ki-reel <reel-package-dir>`.
+2. Render all narrative story-beat stills.
+3. Generate the pixel-delta diagnostic and manually inspect every `SUSPICIOUS_STATIC` pair.
+4. Use Chrome DevTools MCP and Antigravity Browser when available to inspect Remotion Studio/local preview, console, layout and real visual states.
+5. Invoke `ki-visual-qa-auditor` on the resulting artifacts.
+6. Fix concrete FAIL findings through `ki-remotion-story-engineer`, then re-render/re-review.
 
-Never turn a source-code review into `VISUAL PASS`.
+Never turn source inspection or a high pixel-delta score into `VISUAL PASS`.
 
 ## 8. Production render and independent release verification
 
@@ -91,7 +94,20 @@ After tracked timing/source/contracts are committed and provenance can lock a cl
 6. bind review to exact SHA256;
 7. invoke `ki-release-verifier` independently.
 
-## 9. Final report
+## 9. Optional machine-readable second opinion
+
+When it adds confidence, use headless audits:
+
+```bash
+npm run antigravity:audit -- <reel-package-dir> --mode=facts
+npm run antigravity:audit -- <reel-package-dir> --mode=motion
+npm run antigravity:audit -- <reel-package-dir> --mode=dependencies
+npm run antigravity:audit -- <reel-package-dir> --mode=release
+```
+
+These do not replace deterministic gates or visual review.
+
+## 10. Final report
 
 Return:
 
