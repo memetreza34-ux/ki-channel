@@ -51,9 +51,27 @@ if (changed.some((file) => file.startsWith('ki/reels/'))) {
   log('reel structure check passed after reel-package edit');
 }
 
-if (changed.some((file) => file.startsWith('.agents/') || file === 'GEMINI.md')) {
+const antigravityContractFile = (file) =>
+  file === 'GEMINI.md'
+  || file === 'package.json'
+  || file.startsWith('.agents/')
+  || [
+    'scripts/check-antigravity-integration.mjs',
+    'scripts/antigravity-lightweight-check.mjs',
+    'scripts/antigravity-safety-gate.mjs',
+    'scripts/antigravity-session-reminder.mjs',
+    'scripts/antigravity-stop-guard.mjs',
+    'scripts/list-antigravity-capabilities.mjs',
+    'scripts/sync-remotion-agent-skills.mjs',
+    'scripts/render-story-beat-stills.mjs',
+    'scripts/analyze-story-beat-visual-deltas.mjs',
+    'scripts/run-antigravity-headless-audit.mjs',
+    'scripts/antigravity-audit.schema.json',
+  ].includes(file);
+
+if (changed.some(antigravityContractFile)) {
   run(process.execPath, ['scripts/check-antigravity-integration.mjs']);
-  log('Antigravity integration check passed after customization edit');
+  log('Antigravity integration check passed after customization/contract edit');
 }
 
 process.stdout.write('{}\n');
