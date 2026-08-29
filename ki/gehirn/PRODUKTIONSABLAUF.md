@@ -29,13 +29,13 @@ Pflicht:
 
 ### Script-Budget- und Laufzeit-Gate
 
-Die Short-Form-Länge wird bereits in Phase 1 geplant. Vor Production-Render prüft fail-closed:
+Vor Production-Render prüft fail-closed:
 
 ```bash
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Das Wortbudget ist nur die Planungsnähe. Nach dem Voice-Lock ist die echte Audio-Dauer maßgeblich: neue Reels müssen **60 bis 75 Sekunden** lang sein. Zu kurze Reels werden nicht künstlich mit Leerlauf gestreckt; zu lange Reels werden nicht durch hektisches Sprechen gerettet.
+Nach dem Voice-Lock ist die echte Audio-Dauer maßgeblich: neue Reels müssen **60 bis 75 Sekunden** lang sein. Zu kurze Reels werden nicht mit Leerlauf gestreckt; zu lange Reels werden nicht durch hektisches Sprechen gerettet.
 
 ### Visual Beat Contract
 
@@ -52,8 +52,6 @@ Sprecherphrase
 → NEW_BUILD / REUSE_EXACT
 ```
 
-Bestehende Animation nur bei exaktem semantischem Fit.
-
 ### Visual-Asset-Entscheidung
 
 Pro Szene bewusst wählen:
@@ -63,28 +61,33 @@ Pro Szene bewusst wählen:
 - `WIKIMEDIA_COMMONS`
 - `GITHUB_RAW`
 
-Richtwert: ungefähr 70–80 % native Visuals und 20–30 % echte Bilder/Screens; meist 1–2 starke externe Visual-Momente statt Füllmaterial. Details: `VISUAL_ASSETS.md`.
+Richtwert: ungefähr 70–80 % native Visuals und 20–30 % echte Bilder/Screens; meist 1–2 starke externe Visual-Momente statt Füllmaterial.
 
-Kamera-/Motion-Effekte wie Push, Pan, Focus, Parallax und Scan werden nur eingesetzt, wenn sie Aufmerksamkeit oder Erklärung sichtbar verbessern. Semantische SFX werden an tatsächliche sichtbare Events gebunden und später bei 1x gehört.
+Kamera-/Motion-Effekte wie Push, Pan, Focus, Parallax und Scan nur mit Erklär-/Fokusnutzen. Semantische SFX werden an sichtbare Events gebunden und später bei 1x gehört.
 
 ---
 
-## Phase 2 — reales Voiceover beschaffen
+## Phase 2 — Nutzer erstellt das Voiceover
 
 Verbindlich: `AUDIO_PIPELINE.md`.
 
-Zulässig:
+**Nur der Nutzer erzeugt das Produktions-Voiceover.**
 
-1. Voiceover tatsächlich mit einem verfügbaren Voice-/TTS-Tool erzeugen, oder
-2. Nutzer/Mensch liefert die Audiodatei.
+Ablauf:
 
-Wenn Audio im selben Auftrag bereits real erzeugt wurde, geht die Produktion ohne künstlichen Zwischenstopp direkt weiter.
+1. Agent stellt das finale `VOICEOVER-ZUM-KOPIEREN.txt` bereit.
+2. Nutzer erzeugt das vollständige Voiceover selbst.
+3. Nutzer legt die Audiodatei manuell unter `reel.json -> audio.targetFile` ab, normalerweise `01-script-audio/voiceover.mp3`.
+4. Erst danach darf Phase 3 beginnen.
 
-Der kanonische lokale Ausgangsmaster liegt am Pfad aus:
+Agenten dürfen nicht:
 
-`reel.json -> audio.targetFile`
+- selbst TTS/Voiceover erzeugen,
+- Voice-/TTS-Tools für das Produktionsaudio verwenden,
+- Audiodateien aus Provider-/Remote-URLs herunterladen,
+- Preview-Audio als Ersatz benutzen.
 
-Remote-/Provider-URL ist nur Provenance und **keine** Renderquelle.
+Wenn die Datei fehlt: **STOP — WARTET AUF NUTZER-AUDIO**.
 
 ---
 
@@ -96,11 +99,7 @@ Remote-/Provider-URL ist nur Provenance und **keine** Renderquelle.
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-Ergebnis:
-
-`public/runtime-audio/<compositionId>.wav`
-
-Diese 48-kHz-Stereo-PCM-WAV ist die gemeinsame Timing- und Render-Autorität. Optional aktivierte Pause-Kompression läuft **vor** dem Alignment.
+Ergebnis: `public/runtime-audio/<compositionId>.wav`.
 
 ### 2. Exaktes lokales Forced Alignment
 
@@ -108,31 +107,27 @@ Diese 48-kHz-Stereo-PCM-WAV ist die gemeinsame Timing- und Render-Autorität. Op
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Der bekannte Sprechertext wird gegen genau die Runtime-WAV ausgerichtet. Daraus entstehen:
+Daraus entstehen:
 
 - `WORD-TIMINGS.json`
 - finale Caption-Cues
 - finale Szenengrenzen
 - finale Composition-Dauer
 - `VOICE_LOCKED`
-- automatische SFX-Auflösung nach den finalen Szenenframes
-
-Kein fuzzy matching und kein freies Whisper-Raten als Standard bei bekanntem Sprechertext.
+- automatische SFX-Auflösung nach finalen Szenenframes
 
 ### 3. Externe Visuals lokal auflösen
-
-Wenn Visuals aktiviert sind:
 
 ```bash
 node ki/scripts/resolve-reel-visual-assets.mjs <reel-package-dir>
 node ki/scripts/validate-reel-visual-assets.mjs <reel-package-dir>
 ```
 
-Externe Bilder werden vor dem Render lokal gespeichert, lizenzgefiltert, nach Relevanz/Qualität/Crop-Eignung gerankt und per SHA256 gebunden. Keine Remote-Media-URL im Remotion-Render.
+Keine Remote-Media-URL im Remotion-Render.
 
 ### 4. Source/Timing/Asset-Änderungen committen
 
-Der Production-Render arbeitet fail-closed mit Git-/Hash-Provenance. Erst wenn die renderrelevanten JSON-/Source-Dateien final sind, committen.
+Renderrelevante JSON-/Source-Dateien finalisieren und committen.
 
 ### 5. Pre-Render-Gates
 
@@ -140,22 +135,11 @@ Der Production-Render arbeitet fail-closed mit Git-/Hash-Provenance. Erst wenn d
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Dieser Schritt erzwingt zuerst das Script-Budget und prüft bei neuen Reels zusätzlich die **tatsächliche Voice-Locked-Dauer von 60–75 Sekunden**. Danach bindet er u. a.:
-
-- Source Tree
-- Scene-Voice-Map
-- Word-Timings
-- Captions
-- SFX-Resolved
-- Visual-Manifest + Visual-Resolved
-- kanonisches Audio + Runtime-WAV
-- finale Dauer
-
-Zusätzlich fokussierte Tests + TypeScript ausführen.
+Dieser Schritt prüft Script-Budget, tatsächliche Voice-Locked-Dauer von 60–75 Sekunden und bindet Source, Scene-Voice-Map, Word-Timings, Captions, SFX, Visuals, Nutzer-Audio, Runtime-WAV und finale Dauer.
 
 ### 6. Remotion-Roh-Render
 
-1080×1920, 30 fps, lokale Runtime-Medien. Dieser Roh-Render ist noch **nicht automatisch der finale Social-Audio-Master**.
+1080×1920, 30 fps, lokale Runtime-Medien.
 
 ### 7. Social-Audio-Master
 
@@ -165,53 +149,31 @@ node ki/scripts/validate-social-audio-master.mjs <mastered-render.mp4>
 node ki/scripts/validate-final-video.mjs <mastered-render.mp4>
 ```
 
-Kanonisches Ziel:
-
-- etwa −16 LUFS Integrated
-- True Peak Ziel −1,5 dBTP
-- Video wird beim Mastering nicht neu encodiert
+Ziel: etwa −16 LUFS Integrated, −1,5 dBTP True Peak.
 
 ### 8. Exakten gemasterten MP4 bei 1x reviewen
 
 Prüfen:
 
 - Opening/Hook
-- Pacing und unnötige Pausen
+- Pacing und Pausen
 - Caption-/Voice-Sync
-- SFX-Timing und -Lautstärke
+- SFX-Timing und Lautstärke
 - echte Bilder: Relevanz, Crop, Bewegung
 - Zoom/Focus/Parallax
 - Source-Proof-Lesbarkeit
 - keine visuelle Überladung
-- Stimme klar und Gesamtlautstärke passend
-- tatsächliche Gesamtdauer 60–75 Sekunden oder dokumentierte Ausnahme
-
-`MOTION-READABILITY-REVIEW.md` erst jetzt auf `PASS` setzen und an **genau den gemasterten MP4-SHA256** binden.
+- Stimme klar
+- Gesamtdauer 60–75 Sekunden oder dokumentierte Ausnahme
 
 ### 9. Final-Export
-
-Nicht bei `render complete` stoppen.
 
 ```bash
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <mastered-render.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer führt die relevanten Entertainment-, Forced-Alignment-, Scene-Voice-, Voice-Lock-, SFX-, Visual-, Motion-, Social-Audio-, Provenance- und Video-/Audio-Gates erneut aus.
-
-Kanonischer Endzustand:
-
-```text
-05-export/
-├── <compositionId>.mp4
-├── <compositionId>-cover.png
-├── <compositionId>-caption.txt
-└── <compositionId>-export-manifest.json
-```
-
-Danach den exportierten MP4 tatsächlich ansehen/anhören sowie Cover/Caption prüfen.
-
-Erst dann:
+Erst nach echtem Ansehen/Anhören:
 
 `FINAL VIDEO READY — EXPORT PACKAGE READY`
 
@@ -219,9 +181,10 @@ Erst dann:
 
 Nicht als fertig melden bei:
 
+- fehlendem **Nutzer-Voiceover**
+- Versuch eines Agenten, Voiceover zu erzeugen oder herunterzuladen
 - Script außerhalb des zulässigen Budgets ohne dokumentierte Ausnahme
 - Voice-Locked-Dauer außerhalb 60–75 Sekunden ohne dokumentierte Ausnahme
-- fehlendem lokalen Audio
 - Remote-Audio oder Remote-Bild als Renderquelle
 - fehlendem Forced Alignment / Voice-Lock
 - falscher Szenen-/Audio-Dauer
@@ -232,4 +195,4 @@ Nicht als fertig melden bei:
 - stummem oder zu leisem Video
 - nicht bestandenem Social-Audio-Master
 - fehlendem Export-Paket
-- nicht angesehenem/nicht angehörtem **gemasterten** Final-MP4
+- nicht angesehenem/nicht angehörtem gemasterten Final-MP4
