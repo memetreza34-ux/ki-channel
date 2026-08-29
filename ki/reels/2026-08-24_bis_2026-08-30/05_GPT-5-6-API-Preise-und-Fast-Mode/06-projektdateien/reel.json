@@ -33,7 +33,10 @@
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
     "targetFile": "01-script-audio/voiceover.mp3",
-    "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
+    "status": "WAITING_FOR_USER_LOCAL_MASTER",
+    "provider": "USER_PROVIDED",
+    "agentGenerationAllowed": false,
+    "agentDownloadAllowed": false,
     "timingAuthority": false,
     "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
     "pauseCompression": {
