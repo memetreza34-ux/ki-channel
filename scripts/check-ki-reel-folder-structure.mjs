@@ -77,9 +77,8 @@ const walkFiles = async (root) => {
   return files;
 };
 
-// 0) The canonical generator itself must never lose one of the six folders or
-// its tracked placeholder. This catches a future scaffold regression before a
-// new reel can be treated as valid.
+// 0) The canonical generator itself must never lose required production folders,
+// tracked placeholders or the narrative-story scaffold for new reels.
 try {
   const generator = await readFile(generatorPath, 'utf8');
   for (const required of REQUIRED_REEL_DIRS) {
@@ -89,6 +88,15 @@ try {
   }
   if (!generator.includes("'.gitkeep'") && !generator.includes('".gitkeep"')) {
     failures.push('scripts/new-ki-reel.mjs erzeugt keine .gitkeep-Platzhalter mehr; leere Pflichtordner könnten dadurch in Git verschwinden.');
+  }
+  for (const [needle, label] of [
+    ["'06-projektdateien/story-beats.json'", 'story-beats.json'],
+    ["'06-projektdateien/STORY-PLAN.md'", 'STORY-PLAN.md'],
+    ['minVisualBeats', 'Story-Beat-Mindestdichte'],
+    ['maxStaticSeconds', 'maximale statische Story-Dauer'],
+    ['STATIC_STATE_OVER_LIMIT_VIOLATIONS', 'finales Static-State-Reviewfeld'],
+  ]) {
+    if (!generator.includes(needle)) failures.push(`scripts/new-ki-reel.mjs verliert den Storytelling-Scaffold: ${label}.`);
   }
 } catch (error) {
   failures.push(`scripts/new-ki-reel.mjs fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`);
@@ -170,8 +178,7 @@ for (const entry of await readDirSafe(reelsRoot)) {
       }
 
       // Git does not track empty directories. A locally present but empty folder
-      // would disappear after push/clone/pull and recreate exactly the failure
-      // that happened in the GPT-5.6 test reel.
+      // would disappear after push/clone/pull and recreate the GPT-5.6 failure.
       const persistentFiles = await walkFiles(requiredPath);
       if (persistentFiles.length === 0) {
         failures.push(
@@ -198,5 +205,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil, keine Reel-Projekte im ki/-Root, Source und Planung sind getrennt und jedes Reel besitzt alle sechs persistenten Produktionsordner.',
+  'KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil plus Storytelling-Scaffold, Source und Planung sind getrennt und jedes Reel besitzt alle sechs persistenten Produktionsordner.',
 );

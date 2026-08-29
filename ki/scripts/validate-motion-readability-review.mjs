@@ -48,6 +48,13 @@ if (reel?.sfx?.enabled === true) {
 if (reel?.visuals?.enabled === true) {
   requirePass('VISUAL_ASSETS_1X_REVIEW', 'resolved external/source visuals must be checked for relevance, crop and readability');
 }
+if (reel?.storytelling?.enabled === true) {
+  requirePass('STORY_FLOW_1X_REVIEW', 'the mastered Reel must feel like a coherent visual story rather than a slide deck');
+  requirePass('VISUAL_REACTION_1X_REVIEW', 'core spoken claims must visibly trigger meaningful visual reactions');
+  requirePass('TRANSITIONS_PURPOSE_1X_REVIEW', 'scene/subscene transitions must feel motivated rather than decorative');
+  const staticViolations = Number(get('STATIC_STATE_OVER_LIMIT_VIOLATIONS'));
+  if (!Number.isFinite(staticViolations) || staticViolations !== 0) fail('STATIC_STATE_OVER_LIMIT_VIOLATIONS must be 0 for storytelling-enabled reels.');
+}
 
 const darkScenes = Number(get('DARK_FULL_FRAME_SCENES'));
 if (!Number.isFinite(darkScenes) || darkScenes < 0) fail('DARK_FULL_FRAME_SCENES must be a non-negative number.');
@@ -97,3 +104,4 @@ console.log(`dark fullscreen scenes: ${darkScenes}`);
 console.log(`minimum critical hold: ${minHold} frames`);
 console.log(`SFX review: ${reel?.sfx?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`visual asset review: ${reel?.visuals?.enabled === true ? 'required + passed' : 'not applicable'}`);
+console.log(`storytelling review: ${reel?.storytelling?.enabled === true ? 'required + passed' : 'not applicable'}`);

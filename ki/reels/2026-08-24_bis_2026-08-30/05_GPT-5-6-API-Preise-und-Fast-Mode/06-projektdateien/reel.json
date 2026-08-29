@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "reelId": "gpt56-api-prices-fastmode",
   "compositionId": "KI-GPT56APIPricesFastMode",
   "sourceDir": "ki/src/reels/gpt56-api-prices-fastmode",
@@ -81,6 +81,15 @@
     "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
     "sourceProof": "OFFICIAL_SOURCE_CARD"
   },
+  "storytelling": {
+    "enabled": true,
+    "file": "06-projektdateien/story-beats.json",
+    "style": "NARRATIVE_SOCIAL_EXPLAINER",
+    "minVisualBeats": 15,
+    "maxStaticSeconds": 4.5,
+    "requiredArc": ["HOOK", "PROOF", "CONSEQUENCE", "PAYOFF"],
+    "sourceRequiredTokens": ["StoryBeat", "StoryTexture", "ImpactNumber", "StoryThreeHero", "TransitionSeries"]
+  },
   "export": {
     "coverTimeSeconds": 2.4,
     "coverText": "GPT-5.6 API: 80 % GÜNSTIGER + 2,5× SCHNELLER",
@@ -89,11 +98,11 @@
     "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
   },
   "scenes": [
-    {"sceneId":"scene1","title":"API-Preise sinken","startFrame":0,"endFrame":208,"accent":"#12B76A","heroMoment":"Price tag drops beside GPT-5.6 API badge","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene2","title":"Luna minus 80 und Terra minus 20","startFrame":208,"endFrame":794,"accent":"#2E90FA","heroMoment":"80 percent and 20 percent price-drop cards settle while developer use-case cards appear","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene3","title":"Sol Fast Mode bis 2.5x","startFrame":794,"endFrame":1120,"accent":"#7A5AF8","heroMoment":"Real data-center visual plus speed gauge reaches 2.5x","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene4","title":"Fast Mode kostet doppelt","startFrame":1120,"endFrame":1380,"accent":"#F79009","heroMoment":"Speed versus cost tradeoff locks at 2x price","timingStatus":"PLANNING_ONLY"},
-    {"sceneId":"scene5","title":"Priority bleibt kompatibel","startFrame":1380,"endFrame":2070,"accent":"#12B76A","heroMoment":"priority request routes automatically to FAST, integration stays intact and final source proof settles","timingStatus":"PLANNING_ONLY"}
+    {"sceneId":"scene1","title":"API-Preise sinken","startFrame":0,"endFrame":208,"accent":"#12B76A","heroMoment":"3D API core, visible price drop and Luna/Terra teaser badges","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Luna minus 80 und Terra minus 20","startFrame":208,"endFrame":794,"accent":"#2E90FA","heroMoment":"Opposing price cards, impact numbers, comparison rail and developer-use consequence chain","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Sol Fast Mode bis 2.5x","startFrame":794,"endFrame":1120,"accent":"#7A5AF8","heroMoment":"Resolved real data-center proof or 3D compute fallback plus accelerating 2.5x speed payoff","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Fast Mode kostet doppelt","startFrame":1120,"endFrame":1380,"accent":"#F79009","heroMoment":"Physical speed-versus-cost seesaw lands on 2x price","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Priority bleibt kompatibel","startFrame":1380,"endFrame":2070,"accent":"#12B76A","heroMoment":"priority request moves through TransitionSeries routing into Fast Mode, compatibility and source proof","timingStatus":"PLANNING_ONLY"}
   ],
   "sources": [
     "https://openai.com/de-DE/index/advancing-the-price-performance-frontier-with-gpt-5-6/",
