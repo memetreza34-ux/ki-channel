@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "target", "overallStatus", "summary", "checks", "blockers", "recommendedNextActions"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["release", "facts", "motion", "dependencies"]
+    },
+    "target": {"type": "string"},
+    "overallStatus": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN"]
+    },
+    "summary": {"type": "string"},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status", "evidence", "action"],
+        "properties": {
+          "name": {"type": "string"},
+          "status": {"type": "string", "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN"]},
+          "evidence": {"type": "string"},
+          "action": {"type": "string"}
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "recommendedNextActions": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
