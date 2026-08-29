@@ -16,16 +16,18 @@ const agentNames = [
 ];
 const workflows = [
   'bootstrap-ki-channel',
-  'finish-ki-reel',
-  'verify-ki-reel',
+  'sync-chatgpt-handoff',
+  'parallel-audit-ki-reel',
   'maximize-ki-reel',
   'visual-qa-ki-reel',
-  'parallel-audit-ki-reel',
-  'sync-chatgpt-handoff',
+  'finish-ki-reel',
+  'verify-ki-reel',
+  'audit-remotion-upgrade',
 ];
 const requiredFiles = [
   'GEMINI.md',
   '.agents/agents.md',
+  '.agents/ANTIGRAVITY-LOCAL-SETUP.md',
   ...agentNames.map((name) => `.agents/agents/${name}/agent.md`),
   ...workflows.map((name) => `.agents/workflows/${name}.md`),
   '.agents/skills/remotion-storytelling/SKILL.md',
@@ -42,6 +44,7 @@ const requiredFiles = [
   'scripts/list-antigravity-capabilities.mjs',
   'scripts/sync-remotion-agent-skills.mjs',
   'scripts/render-story-beat-stills.mjs',
+  'scripts/analyze-story-beat-visual-deltas.mjs',
   'scripts/run-antigravity-headless-audit.mjs',
   'scripts/antigravity-audit.schema.json',
 ];
@@ -89,7 +92,7 @@ const postMatcher = String(hooks?.['ki-channel-post-edit']?.PostToolUse?.[0]?.ma
 for (const tool of ['write_to_file', 'replace_file_content', 'multi_replace_file_content']) {
   if (!postMatcher.includes(tool)) fail.push(`PostToolUse matcher missing official Antigravity tool ${tool}`);
 }
-if (/edit_file|create_file/.test(postMatcher)) fail.push('PostToolUse matcher still contains obsolete edit_file/create_file tool names');
+if (/edit_file|create_file/.test(postMatcher)) fail.push('PostToolUse matcher contains obsolete edit_file/create_file tool names');
 if (!hooks?.['ki-channel-session-context']?.PreInvocation) fail.push('PreInvocation session hook missing');
 if (!hooks?.['ki-channel-stop-guard']?.Stop) fail.push('Stop guard hook missing');
 
@@ -121,40 +124,45 @@ requireTokens('.agents/agents/ki-audio-sync-engineer/agent.md', ['PHASE 2 — WA
 requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough']);
 requireTokens('.agents/agents/ki-release-verifier/agent.md', ['fail-closed', 'NOT RUN', 'BLOCKED'], {caseInsensitive: true});
 
-requireTokens('scripts/antigravity-safety-gate.mjs', ['voiceover', "respond('deny'", 'dangerously']);
+requireTokens('scripts/antigravity-safety-gate.mjs', [
+  '01-script-audio', 'Production voiceover is user-owned Phase 2 input', 'Remote production voiceover download is forbidden', "respond('deny'", "respond('force_ask'"
+]);
 requireTokens('scripts/antigravity-session-reminder.mjs', ['invocationNum', 'antigravity:capabilities', 'single-writer']);
 requireTokens('scripts/antigravity-stop-guard.mjs', ['fullyIdle', "decision: 'continue'"]);
+requireTokens('scripts/antigravity-lightweight-check.mjs', ['git', 'status', '--porcelain']);
 requireTokens('scripts/render-story-beat-stills.mjs', ['story-beats', "'remotion', 'still'", '--frame=', 'manifest.json']);
+requireTokens('scripts/analyze-story-beat-visual-deltas.mjs', ['SUSPICIOUS_STATIC', 'normalizedMeanAbsoluteDelta', 'visual-delta-report.json', 'diagnostic signal only']);
 requireTokens('scripts/run-antigravity-headless-audit.mjs', ["'--output-format', 'json'", "'--json-schema'", "'--agent'", "'--sandbox'", 'structured_output', 'ki-release-verifier']);
 if (read('scripts/run-antigravity-headless-audit.mjs').includes('--dangerously-skip-permissions')) fail.push('headless audit must never use --dangerously-skip-permissions');
 
 requireTokens('scripts/list-antigravity-capabilities.mjs', [
-  'workspaceAgents', 'antigravityBuiltInAgents', 'parallel-subagents', 'background-tasks', 'browser-agent',
+  "rel('.agents', 'agents')", 'workspaceAgents', 'antigravityBuiltInAgents', 'parallel-subagents', 'background-tasks', 'browser-agent',
   'headless-structured-output', 'singleWriterPerWorkingTree', 'useEveryRelevantCapability'
 ]);
 
 for (const workflow of workflows) requireTokens(`.agents/workflows/${workflow}.md`, [`# /${workflow}`]);
 requireTokens('.agents/workflows/maximize-ki-reel.md', ['ki-fact-researcher', 'ki-motion-researcher', 'ki-dependency-auditor', 'ki-remotion-story-engineer', 'ki-audio-sync-engineer', 'ki-visual-qa-auditor', 'ki-release-verifier']);
-requireTokens('.agents/workflows/visual-qa-ki-reel.md', ['render-story-beat-stills.mjs', 'Chrome DevTools MCP', 'ki-visual-qa-auditor']);
+requireTokens('.agents/workflows/visual-qa-ki-reel.md', ['antigravity:story-stills', 'analyze-story-beat-visual-deltas.mjs', 'Chrome DevTools MCP', 'ki-visual-qa-auditor']);
 requireTokens('.agents/workflows/sync-chatgpt-handoff.md', ['git fetch --all --prune', 'voiceover.mp3', 'maximize-ki-reel']);
+requireTokens('.agents/workflows/audit-remotion-upgrade.md', ['ki-dependency-auditor', 'STAY_PINNED', 'UPGRADE_AFTER_PR28', 'Do not edit package files']);
 
-const capabilityScanner = read('scripts/list-antigravity-capabilities.mjs');
-for (const name of agentNames) {
-  // Static scanner must discover dynamically from .agents/agents; test its directory contract rather than hardcoding each name.
-  if (!capabilityScanner.includes("rel('.agents', 'agents')")) fail.push('capability scanner no longer scans .agents/agents');
-  break;
-}
-
+requireTokens('.agents/ANTIGRAVITY-LOCAL-SETUP.md', ['--dangerously-skip-permissions', 'Modern Web Guidance', '/teamwork-preview', 'antigravity:audit', 'antigravity:story-stills']);
 requireTokens('GEMINI.md', [
-  '.agents/agents/', 'antigravity:capabilities', '/bootstrap-ki-channel', '/maximize-ki-reel', '/sync-chatgpt-handoff',
-  'Chrome DevTools MCP', 'Remotion Bits MCP', 'GitHub MCP', 'remotion-storytelling'
-]);
+  '.agents/agents/', 'antigravity:capabilities', '/bootstrap-ki-channel', '/sync-chatgpt-handoff', '/parallel-audit-ki-reel', '/maximize-ki-reel',
+  '/visual-qa-ki-reel', '/audit-remotion-upgrade', 'Chrome DevTools MCP', 'Remotion Bits MCP', 'GitHub MCP', 'remotion-storytelling',
+  'analyze-story-beat-visual-deltas.mjs', 'antigravity:audit', 'exactly one writer'
+], {caseInsensitive: true});
 requireTokens('.agents/workflows/bootstrap-ki-channel.md', [
-  'antigravity:skills', 'antigravity:capabilities', 'antigravity:verify', '/agents', 'chrome-devtools', 'remotion-bits', 'github', 'SELECTED FOR THIS TASK'
+  'antigravity:skills', 'antigravity:capabilities', 'antigravity:verify', '/agents', '/hooks', '/mcp', '/tasks',
+  'chrome-devtools', 'remotion-bits', 'github', 'Modern Web Guidance', 'Teamwork', 'SELECTED FOR THIS TASK'
 ]);
 
 const orchestratorSkill = '.agents/plugins/ki-channel-production/skills/ki-reel-orchestrator/SKILL.md';
-requireTokens(orchestratorSkill, ['remotion-storytelling', 'remotion-bits-discovery', 'Remotion Bits MCP', 'Chrome DevTools MCP', 'GitHub MCP', 'PHASE 2'], {caseInsensitive: true});
+requireTokens(orchestratorSkill, [
+  'ki-production-orchestrator', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-remotion-story-engineer', 'ki-audio-sync-engineer',
+  'ki-visual-qa-auditor', 'ki-release-verifier', 'ki-dependency-auditor', 'remotion-storytelling', 'remotion-bits-discovery',
+  'Remotion Bits MCP', 'Chrome DevTools MCP', 'GitHub MCP', 'PHASE 2', 'antigravity:audit'
+], {caseInsensitive: true});
 
 if (fail.length) {
   console.error('ANTIGRAVITY INTEGRATION: FAILED');
@@ -169,6 +177,6 @@ console.log('capability discovery: real agents + skills + workflows + plugins + 
 console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
 console.log('hooks: session context + PreTool safety + PostTool regression + Stop guard');
-console.log('visual QA: per-story-beat Remotion still renderer wired');
+console.log('visual QA: per-story-beat stills + pixel-delta diagnostics wired');
 console.log('headless: structured agy audits wired with sandbox and no permission bypass');
 console.log('audio boundary: user-production-voiceover guard wired');
