@@ -7,6 +7,7 @@ const fail = [];
 const requiredFiles = [
   'GEMINI.md',
   '.agents/agents.md',
+  '.agents/workflows/bootstrap-ki-channel.md',
   '.agents/workflows/finish-ki-reel.md',
   '.agents/workflows/verify-ki-reel.md',
   '.agents/skills/remotion-storytelling/SKILL.md',
@@ -55,6 +56,11 @@ for (const token of ['.agents/agents.md', '.agents/workflows/', 'Chrome DevTools
   if (!gemini.includes(token)) fail.push(`GEMINI.md missing Antigravity token: ${token}`);
 }
 
+const bootstrap = read('.agents/workflows/bootstrap-ki-channel.md');
+for (const token of ['antigravity:skills', 'antigravity:verify', 'chrome-devtools', 'remotion-bits', 'github']) {
+  if (!bootstrap.includes(token)) fail.push(`bootstrap workflow missing ${token}`);
+}
+
 const orchestrator = read('.agents/plugins/ki-channel-production/skills/ki-reel-orchestrator/SKILL.md');
 for (const token of ['remotion-storytelling', 'remotion-bits-discovery', 'Remotion Bits MCP', 'Chrome DevTools MCP', 'GitHub MCP', 'PHASE 2']) {
   if (!orchestrator.includes(token)) fail.push(`orchestrator skill missing ${token}`);
@@ -68,7 +74,7 @@ if (fail.length) {
 
 console.log('ANTIGRAVITY INTEGRATION: PASSED');
 console.log('workspace agents: configured');
-console.log('workflows: finish + verify');
+console.log('workflows: bootstrap + finish + verify');
 console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
 console.log('hooks: lightweight post-edit guard');
