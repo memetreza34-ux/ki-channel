@@ -71,8 +71,6 @@ High Energy bedeutet **nicht** High Speed.
 - lange 60–75-s-Szenen brauchen mehrere semantische Beats statt frühem Animationsende + statischem Rest
 - Post-Render bei 1x prüfen
 
-Details: `ki/skills/high-energy-remotion-reels/` und `ki/skills/motion-readability-light-first/`.
-
 ## Visual Hierarchy Short-Form
 
 ```text
@@ -98,8 +96,8 @@ Die einzige Caption-Geometrie liegt in `ki/src/reels/captionSafe.ts` und `CAPTIO
 
 ## Light-First
 
-- Fullscreen-Hintergründe standardmäßig hell: Offwhite, Hellgrau, Cyan/Mint/Blau/Creme sehr hell
-- kräftige Akzentfarben ausdrücklich erlaubt
+- Fullscreen-Hintergründe standardmäßig hell
+- kräftige Akzentfarben erlaubt
 - dunkle Fullscreen-Szenen nur als dokumentierte Ausnahme
 - kein Stilbruch nur für künstliche Variation
 
@@ -113,12 +111,15 @@ Externe Bilder/Assets nur, wenn sie einen echten Mehrwert haben oder reale Marke
 
 Verbindlich: `AUDIO_PIPELINE.md`.
 
-Voiceover darf real durch ein verfügbares Tool **oder** durch Mensch/Nutzer entstehen.
+**Das Produktions-Voiceover wird ausschließlich vom Nutzer erstellt.** Der Nutzer legt die fertige lokale Datei selbst unter `reel.json.audio.targetFile` ab.
+
+ChatGPT, Codex, Antigravity oder andere Agenten dürfen das Voiceover weder erzeugen noch herunterladen. Remote-/Provider-Audio und Preview-Audio sind kein erlaubter Ersatz.
 
 Final gilt nur:
 
 ```text
-lokaler Audio-Master
+Nutzer erstellt Voiceover
+→ Nutzer legt lokalen Audio-Master in 01-script-audio/
 → Runtime-PCM-WAV + ggf. Pause-Kompression
 → lokales Forced Alignment des bekannten Sprechertexts
 → WORD-TIMINGS.json
@@ -128,11 +129,11 @@ lokaler Audio-Master
 → Remotion-Render aus local runtime asset
 ```
 
-Remote-URL ist nur Provenance, niemals finaler Render-Master.
+Fehlt die lokale Nutzerdatei, stoppt die Produktion in Phase 2.
 
 ## Timing Contract
 
-Das lokal final verwendete Voiceover ist Audio-Autorität.
+Das lokal vom Nutzer bereitgestellte Voiceover ist Audio-Autorität.
 
 - Composition-Dauer nicht aus einer alten Plansekunde ableiten
 - neue Reels müssen nach Voice-Lock 60–75 Sekunden erreichen oder eine dokumentierte Ausnahme besitzen
@@ -140,23 +141,19 @@ Das lokal final verwendete Voiceover ist Audio-Autorität.
 - Captions wortgenau Voice-Locked
 - bei zu kurzer Audio-Laufzeit Skript/Voiceover korrigieren statt künstlichen Leerlauf einzubauen
 - bei zu langer Audio-Laufzeit Inhalt verdichten statt hektisch zu sprechen oder Motion zu beschleunigen
-- lokales Time-Stretching nur natürlich/pitch-erhaltend und begrenzt, nicht zum Umgehen des Dauergates
+- lokales Time-Stretching nicht zum Umgehen des Dauergates verwenden
 
 ## Publishing-Modell
 
 Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, soweit technisch möglich.
 
-Plattform-Copy liegt in `03-caption/platform-copy.md`.
-
 ## Produktionsmodell
 
 ```text
 PHASE 1 — Inhalt + Source + 60–75-s-Ziel
-PHASE 2 — reales Voiceover beschaffen (Tool oder Mensch)
+PHASE 2 — Nutzer erstellt und hinterlegt das Voiceover
 PHASE 3 — Runtime-WAV + Forced Alignment + Dauer-Lock + SFX/Visuals + Reviews + Render + Export
 ```
-
-Wenn Voiceover bereits im selben Auftrag real per Tool erzeugt wurde, darf direkt in Phase 3 weitergearbeitet werden.
 
 ## Finaler Endzustand
 
@@ -181,17 +178,7 @@ Erst dann:
 
 ## Git-/Speicherregel
 
-Git versioniert die **reproduzierbare Produktionswahrheit**:
-
-- Source
-- Skript
-- Provenance
-- Timings/Forced-Alignment-Daten
-- Contracts
-- Reviews
-- Export-Manifest/Metadaten
-
-Große Binärdateien wie MP4/WAV/MP3/PNG bleiben standardmäßig lokal oder in Artifact-Storage, solange Git LFS nicht eingerichtet ist. Eine `.gitignore`-Datei und eine Speichern-Regel dürfen sich nicht widersprechen.
+Git versioniert die reproduzierbare Produktionswahrheit: Source, Skript, Provenance, Timings, Contracts, Reviews und Export-Metadaten. Große Binärdateien wie MP4/WAV/MP3/PNG bleiben standardmäßig lokal oder in Artifact-Storage.
 
 ## Wahrheitspflicht
 
