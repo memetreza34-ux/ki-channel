@@ -29,7 +29,9 @@ Widersprüche werden an der höheren Quelle korrigiert, nicht still geraten.
 - Nutzen/Aha vor Feature-Liste
 - Wahrheit vor Reichweitenversprechen
 - ein kanonischer Content-Master; Plattformen sind Packaging
-- Short-Form typischerweise 40–60 Sekunden, wenn das Thema es trägt; reale Audiodauer ist final
+- neue Short-Form-Reels zielen auf **60–75 Sekunden tatsächliche Voice-Locked-Laufzeit**
+- Phase-1-Planwert bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- reale Audiodauer ist final und wird nach Forced Alignment hart geprüft
 - Longform ist eigenständig und wird nicht aus Reels künstlich aufgeblasen
 
 ## Reel-Entscheidungsreihenfolge
@@ -45,6 +47,7 @@ Widersprüche werden an der höheren Quelle korrigiert, nicht still geraten.
 8. Ist der Ablauf bei 1x lesbar?
 9. Passt alles in die kanonische Caption-/Feed-Geometrie?
 10. Trägt der Schluss bis zur letzten Sprecherphrase?
+11. Bleibt das gesamte Reel ohne statische Füll-Holds über 60–75 Sekunden visuell aktiv?
 ```
 
 Nicht zulässig: „Wir haben diese Animation schon, also benutzen wir sie irgendwie.“
@@ -65,6 +68,7 @@ High Energy bedeutet **nicht** High Speed.
 - wichtige neue Information nicht durchblitzen lassen
 - unabhängige Informationen staffeln
 - Hero-/Payoff-Zustand kurz lesbar halten
+- lange 60–75-s-Szenen brauchen mehrere semantische Beats statt frühem Animationsende + statischem Rest
 - Post-Render bei 1x prüfen
 
 Details: `ki/skills/high-energy-remotion-reels/` und `ki/skills/motion-readability-light-first/`.
@@ -115,10 +119,12 @@ Final gilt nur:
 
 ```text
 lokaler Audio-Master
-→ ffprobe
-→ Whisper / Voice-Lock
-→ Szenen/Captions anpassen
-→ prepare-reel-audio.mjs
+→ Runtime-PCM-WAV + ggf. Pause-Kompression
+→ lokales Forced Alignment des bekannten Sprechertexts
+→ WORD-TIMINGS.json
+→ Szenen/Captions Voice-Locked
+→ tatsächliche 60–75-s-Dauer prüfen
+→ prepare-reel-render.mjs
 → Remotion-Render aus local runtime asset
 ```
 
@@ -129,10 +135,12 @@ Remote-URL ist nur Provenance, niemals finaler Render-Master.
 Das lokal final verwendete Voiceover ist Audio-Autorität.
 
 - Composition-Dauer nicht aus einer alten Plansekunde ableiten
+- neue Reels müssen nach Voice-Lock 60–75 Sekunden erreichen oder eine dokumentierte Ausnahme besitzen
 - Szenengrenzen auf echte Sprecher-/Bedeutungsgrenzen
 - Captions wortgenau Voice-Locked
-- bei zu kurzer Phrase Visual vereinfachen statt hektisch beschleunigen
-- lokales Time-Stretching nur natürlich/pitch-erhaltend und begrenzt
+- bei zu kurzer Audio-Laufzeit Skript/Voiceover korrigieren statt künstlichen Leerlauf einzubauen
+- bei zu langer Audio-Laufzeit Inhalt verdichten statt hektisch zu sprechen oder Motion zu beschleunigen
+- lokales Time-Stretching nur natürlich/pitch-erhaltend und begrenzt, nicht zum Umgehen des Dauergates
 
 ## Publishing-Modell
 
@@ -143,9 +151,9 @@ Plattform-Copy liegt in `03-caption/platform-copy.md`.
 ## Produktionsmodell
 
 ```text
-PHASE 1 — Inhalt + Source
+PHASE 1 — Inhalt + Source + 60–75-s-Ziel
 PHASE 2 — reales Voiceover beschaffen (Tool oder Mensch)
-PHASE 3 — Audio locken + Timeline + Reviews + Render + Export
+PHASE 3 — Runtime-WAV + Forced Alignment + Dauer-Lock + SFX/Visuals + Reviews + Render + Export
 ```
 
 Wenn Voiceover bereits im selben Auftrag real per Tool erzeugt wurde, darf direkt in Phase 3 weitergearbeitet werden.
@@ -156,8 +164,10 @@ Ein Reel ist nicht fertig bei `render complete`.
 
 Pflicht:
 
+- Script-Budget-Gate
+- echte 60–75-s-Voice-Locked-Dauer oder dokumentierte Ausnahme
 - Entertainment-Gate
-- Voice-Lock-Gate
+- Forced-Alignment-/Voice-Lock-Gate
 - Motion-Readability-Gate
 - ggf. Source-Isolation
 - Video-/Audio-Gate
@@ -176,7 +186,7 @@ Git versioniert die **reproduzierbare Produktionswahrheit**:
 - Source
 - Skript
 - Provenance
-- Timings/Whisper-Daten
+- Timings/Forced-Alignment-Daten
 - Contracts
 - Reviews
 - Export-Manifest/Metadaten
