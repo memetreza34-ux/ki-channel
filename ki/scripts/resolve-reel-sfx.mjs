@@ -34,10 +34,33 @@ const indexPath = path.resolve(reel?.sfx?.libraryIndex || 'public/reel-sfx/sfx-i
 const run = (label, command, args) => { const result = spawnSync(command,args,{encoding:'utf8',stdio:'inherit'}); if (result.error || result.status !== 0) fail(`${label} failed${result.error ? `: ${result.error.message}` : ''}.`); };
 if (!existsSync(indexPath)) { console.log('Local CC0 SFX library missing; running one-time setup.'); run('SFX library setup',process.execPath,[path.resolve('ki/scripts/setup-reel-sfx-library.mjs')]); }
 if (!existsSync(indexPath)) fail(`SFX library index missing: ${indexPath}`);
-const index = JSON.parse(await readFile(indexPath,'utf8'));
+const indexRaw=await readFile(indexPath,'utf8');
+const index = JSON.parse(indexRaw);
 if (index?.status !== 'LOCAL_CC0_SFX_LIBRARY_READY') fail('SFX library is not ready.');
-const items = Array.isArray(index?.items) ? index.items : [];
-if (!items.length) fail('SFX library contains no items.');
+const baseItems = Array.isArray(index?.items) ? index.items : [];
+if (!baseItems.length) fail('SFX library contains no items.');
+
+let supplement = null;
+let supplementRaw = null;
+let supplementItems = [];
+const supplementEnabled = reel?.sfx?.allowRemotionCc0Supplement === true;
+const supplementIndexPath = path.resolve(reel?.sfx?.remotionCc0SupplementIndex || 'public/reel-sfx/remotion-cc0-index.json');
+if (supplementEnabled) {
+  if (!existsSync(supplementIndexPath)) {
+    fail('Remotion CC0 supplement was explicitly enabled but its local index is missing. Run node ki/scripts/setup-remotion-cc0-sfx-supplement.mjs first.');
+  }
+  supplementRaw = await readFile(supplementIndexPath, 'utf8');
+  supplement = JSON.parse(supplementRaw);
+  if (supplement?.status !== 'LOCAL_REMOTION_CC0_SFX_SUPPLEMENT_READY') fail('Remotion CC0 supplement index is not ready.');
+  if (supplement?.policy?.license !== 'CC0-1.0_ONLY') fail('Remotion CC0 supplement license policy mismatch.');
+  supplementItems = Array.isArray(supplement?.items) ? supplement.items : [];
+  for (const item of supplementItems) {
+    if (item?.license !== 'CC0-1.0') fail(`Remotion supplement contains non-CC0 item: ${item?.id || 'unknown'}.`);
+    if (!item?.runtimeFile || !existsSync(path.resolve(item.runtimeFile))) fail(`Remotion supplement runtime file missing: ${item?.id || 'unknown'}.`);
+  }
+}
+const items = [...baseItems, ...supplementItems];
+
 const normalize = (value) => String(value ?? '').normalize('NFKC').toLocaleLowerCase('en-US').replace(/[^a-z0-9]+/g,' ').trim();
 const hashFloat = (value) => Number.parseInt(createHash('sha256').update(String(value)).digest('hex').slice(0,8),16) / 0xffffffff;
 const sha256Text = (value) => createHash('sha256').update(value).digest('hex');
@@ -85,10 +108,9 @@ for (const event of events) {
 resolvedEvents.sort((a,b)=>a.startFrame-b.startFrame || a.id.localeCompare(b.id));
 for (let i=1;i<resolvedEvents.length;i++) if (resolvedEvents[i].sceneId===resolvedEvents[i-1].sceneId && resolvedEvents[i].startFrame-resolvedEvents[i-1].startFrame<4) fail(`${resolvedEvents[i].id}: SFX events are too dense.`);
 const eventsRaw=await readFile(eventsPath,'utf8');
-const indexRaw=await readFile(indexPath,'utf8');
-const payload={version:1,status:'SFX_RESOLVED_CC0_AUTO',selectionMode:'DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING',compositionId:reel.compositionId,fps,finalDurationInFrames:finalDuration,generatedAt:new Date().toISOString(),library:{status:index.status,totalSounds:index.totalSounds,mirror:index.mirror,indexSha256:sha256Text(indexRaw)},sourceEventsSha256:sha256Text(eventsRaw),rules:{license:'CC0-1.0_ONLY',randomness:false,soundReusePenalty:true,sceneAnchorsFollowFinalSceneFrames:true,voiceFirstVolumeCaps:true},events:resolvedEvents};
+const payload={version:1,status:'SFX_RESOLVED_CC0_AUTO',selectionMode:'DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING',compositionId:reel.compositionId,fps,finalDurationInFrames:finalDuration,generatedAt:new Date().toISOString(),library:{status:index.status,totalSounds:items.length,baseSounds:baseItems.length,mirror:index.mirror,indexSha256:sha256Text(indexRaw),remotionCc0Supplement:{enabled:supplementEnabled,totalSounds:supplementItems.length,indexSha256:supplementRaw ? sha256Text(supplementRaw) : null}},sourceEventsSha256:sha256Text(eventsRaw),rules:{license:'CC0-1.0_ONLY',randomness:false,soundReusePenalty:true,sceneAnchorsFollowFinalSceneFrames:true,voiceFirstVolumeCaps:true,remoteRenderMedia:false,remotionSupplementRequiresExplicitOptIn:true},events:resolvedEvents};
 await writeFile(resolvedPath,`${JSON.stringify(payload,null,2)}\n`,'utf8');
 console.log('SFX AUTO-RESOLUTION: PASSED');
 console.log(`events: ${resolvedEvents.length}`);
-console.log(`library candidates: ${items.length}`);
+console.log(`library candidates: ${items.length} (base ${baseItems.length} + Remotion CC0 ${supplementItems.length})`);
 console.log(`resolved: ${resolvedPath}`);
