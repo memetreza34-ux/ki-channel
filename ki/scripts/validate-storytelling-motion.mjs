@@ -17,10 +17,12 @@ const fail = (message) => { console.error(`STORYTELLING MOTION FAILED: ${message
 const requiredStackFiles = [
   'ki/gehirn/STORYTELLING_MOTION.md',
   'ki/src/reels/StoryMotion.tsx',
+  'ki/src/reels/StoryShapes.tsx',
   'ki/src/reels/StoryMediaLayers.tsx',
   'ki/src/motion-system/StoryTransitionShowcase.tsx',
   'ki/src/index.ts',
   '.agents/skills/remotion-storytelling/SKILL.md',
+  'scripts/sync-remotion-agent-skills.mjs',
   'remotion.config.ts',
 ];
 for (const file of requiredStackFiles) if (!existsSync(path.resolve(file))) fail(`storytelling stack file missing: ${file}`);
@@ -48,16 +50,20 @@ if (!remotionConfig.includes("Config.setChromiumOpenGlRenderer('angle')")) fail(
 if (!remotionConfig.includes("import {enableSkia} from '@remotion/skia/enable'")) fail('remotion.config.ts must import enableSkia().');
 if (!remotionConfig.includes('Config.overrideWebpackConfig') || !remotionConfig.includes('enableSkia(currentConfiguration)')) fail('remotion.config.ts must apply enableSkia() to the webpack config.');
 const entrySource = await readFile(path.resolve('ki/src/index.ts'), 'utf8');
-if (!entrySource.includes("LoadSkia") || !entrySource.includes("@shopify/react-native-skia/src/web")) fail('ki/src/index.ts must load Skia WebAssembly before registering the Remotion root.');
+if (!entrySource.includes('LoadSkia') || !entrySource.includes('@shopify/react-native-skia/src/web')) fail('ki/src/index.ts must load Skia WebAssembly before registering the Remotion root.');
 if (!entrySource.includes("await import('./Root')") || !entrySource.includes('registerRoot(RemotionRoot)')) fail('ki/src/index.ts must dynamically import Root only after LoadSkia resolves.');
 
 const storyMotionSource = await readFile(path.resolve('ki/src/reels/StoryMotion.tsx'), 'utf8');
 for (const token of ['StoryBeat','StoryCamera','ImpactNumber','StoryTexture','paper(']) if (!storyMotionSource.includes(token)) fail(`StoryMotion.tsx missing ${token}.`);
+const storyShapesSource = await readFile(path.resolve('ki/src/reels/StoryShapes.tsx'), 'utf8');
+for (const token of ['StoryFlowArrow','StoryPulseArrow','@remotion/shapes','<Arrow']) if (!storyShapesSource.includes(token)) fail(`StoryShapes.tsx missing ${token}.`);
 const storyMediaSource = await readFile(path.resolve('ki/src/reels/StoryMediaLayers.tsx'), 'utf8');
 for (const token of ['StoryThreeHero','StoryLottieLayer','StoryRiveLayer','StorySkiaBackdrop','ThreeCanvas','SkiaCanvas']) if (!storyMediaSource.includes(token)) fail(`StoryMediaLayers.tsx missing ${token}.`);
 if (!storyMediaSource.includes('forbids render-time remote URLs')) fail('StoryRiveLayer must reject render-time remote URLs.');
 const transitionSource = await readFile(path.resolve('ki/src/motion-system/StoryTransitionShowcase.tsx'), 'utf8');
 for (const token of ['TransitionSeries','slide','wipe','bookFlip']) if (!transitionSource.includes(token)) fail(`StoryTransitionShowcase.tsx missing ${token}.`);
+const skillSyncSource = await readFile(path.resolve('scripts/sync-remotion-agent-skills.mjs'), 'utf8');
+for (const token of ['remotion', 'skills', "['add', 'update']"]) if (!skillSyncSource.includes(token)) fail(`Remotion skill sync wrapper missing ${token}.`);
 
 if (!existsSync(reelPath)) fail(`reel.json missing: ${reelPath}`);
 let reel;
@@ -143,4 +149,4 @@ console.log(`visual beats: ${beats.length}`);
 console.log(`max static target: ${maxStaticSeconds.toFixed(1)} s`);
 console.log(`story roles: ${[...roles].filter(Boolean).join(', ')}`);
 console.log(`source tokens: ${requiredTokens.join(', ')}`);
-console.log('stack: transitions + effects + sfx capability + shapes + lottie + rive + three + skia pinned; ANGLE + enableSkia + LoadSkia wired');
+console.log('stack: transitions + effects + sfx capability + shapes + lottie + rive + three + skia pinned; ANGLE + enableSkia + LoadSkia wired; official Remotion skills sync wrapper present');
