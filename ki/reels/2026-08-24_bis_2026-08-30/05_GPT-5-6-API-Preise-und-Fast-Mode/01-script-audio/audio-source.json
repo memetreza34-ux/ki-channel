@@ -1,12 +1,11 @@
 {
-  "version": 1,
-  "status": "GENERATED_REMOTE_DOWNLOAD_REQUIRED",
-  "provider": "AI_Voice_Generator",
-  "voiceId": "clear",
-  "contextId": "7521558f3b4d4efb90bf5acbbf2fccef",
-  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=7521558f3b4d4efb90bf5acbbf2fccef",
-  "previewUrl": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/0ab7a8a1-06df-4eb4-aadf-3ddf881cdf5f.mp3",
+  "version": 2,
+  "status": "WAITING_FOR_USER_LOCAL_MASTER",
+  "provider": "USER_PROVIDED",
   "targetFile": "01-script-audio/voiceover.mp3",
   "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
-  "note": "Fresh clear-voice source regenerated on 2026-08-29 for the new 60-75 second reel standard. Remote URL is provenance only; download locally before alignment/render."
+  "remoteAudioAllowed": false,
+  "agentGenerationAllowed": false,
+  "agentDownloadAllowed": false,
+  "note": "Der Nutzer erstellt das vollständige Voiceover selbst und legt voiceover.mp3 in diesen Ordner. Kein Agent, ChatGPT, Codex oder Antigravity darf das Voiceover erzeugen oder herunterladen."
 }
