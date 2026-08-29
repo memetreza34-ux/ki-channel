@@ -12,7 +12,7 @@ Use `.agents/skills/blender-asset-prep/SKILL.md`.
 4. Run:
 
 ```bash
-npm run antigravity:blender-prep -- <local-asset.glb> --target-faces=80000
+node scripts/prepare-blender-3d-asset.mjs <local-asset.glb> --target-faces=80000
 ```
 
 5. Blender must run with `--background`, `--offline-mode` and `--disable-autoexec`.
