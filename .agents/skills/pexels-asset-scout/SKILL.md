@@ -33,13 +33,13 @@ Use `PEXELS_API_KEY` from `.env.local` or the local environment. Never print or 
 Prefer video for B-roll:
 
 ```bash
-npm run antigravity:pexels -- "data center server racks" --type=video --orientation=portrait --size=medium --locale=de-DE --top=6
+node scripts/scout-pexels-assets.mjs "data center server racks" --type=video --orientation=portrait --size=medium --locale=de-DE --top=6
 ```
 
 For still photos:
 
 ```bash
-npm run antigravity:pexels -- "AI server hardware" --type=photo --orientation=portrait --locale=de-DE --top=6
+node scripts/scout-pexels-assets.mjs "AI server hardware" --type=photo --orientation=portrait --locale=de-DE --top=6
 ```
 
 ## Selection policy
