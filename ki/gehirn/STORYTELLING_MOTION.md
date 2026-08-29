@@ -8,13 +8,13 @@ KI-Reels sollen nicht wie statische Präsentationen wirken. Der Zuschauer soll e
 
 - 60–75 Sekunden tatsächliche Voice-Locked-Laufzeit.
 - mindestens **15 konkrete Visual Beats** pro Standard-Reel.
-- kein weitgehend unveränderter Visual State länger als **4,5 Sekunden**, solange Voiceover aktiv ist, außer eine bewusst dokumentierte Lesepause ist nötig.
+- kein weitgehend unveränderter Visual State länger als **4,5 Sekunden**, solange Voiceover aktiv ist, außer eine bewusst dokumentierte Lesepause nötig ist.
 - jede zentrale Aussage bekommt mindestens eine semantisch passende sichtbare Reaktion.
 - jede Szene braucht mindestens zwei erkennbare visuelle Zustandsänderungen.
 - Kamera, Zoom, Transition und SFX müssen erklären, fokussieren, verbinden oder einen Payoff verstärken — kein Effekt-Spam.
 - ungefähr 70–80 % Remotion-native Motion/UI/Diagramm/Typografie, ungefähr 20–30 % reale Visuals; typischerweise 1–2 starke externe Momente.
 - externe Medien vor Render lokal auflösen. Keine Render-Time-HTTP-Downloads.
-- Produktions-SFX bleiben im bestehenden lokalen CC0-System. `@remotion/sfx` ist eine verfügbare Referenz-/Prototyping-Bibliothek, ersetzt aber nicht automatisch den CC0-Lock.
+- Produktions-SFX bleiben im bestehenden lokalen CC0-System. `@remotion/sfx` ist eine verfügbare Remotion-Capability, ersetzt aber nicht automatisch den CC0-Lock.
 
 ## Story-Rollen
 
@@ -41,6 +41,13 @@ Nicht jedes Reel braucht jede Rolle gleich oft. Für neue Standard-Reels müssen
 - `StoryChapterLabel` — Kapitel-/Story-Kontext.
 - `StoryTexture` — dezente `@remotion/effects/paper`-Textur, kein Dauerfilter-Spam.
 
+### `ki/src/reels/StoryShapes.tsx`
+
+- `StoryFlowArrow` — animierter semantischer Prozess-/Routing-Pfeil auf Basis von `@remotion/shapes`.
+- `StoryPulseArrow` — dezente Variante für einen betonten Richtungs-/Weiterleitungsbeat.
+
+Shapes werden für Prozesse, Routing, Ursache→Wirkung und erklärende Connectoren verwendet; nicht als reine Dekoration.
+
 ### `ki/src/reels/StoryMediaLayers.tsx`
 
 - `StoryThreeHero` — 3D-Hero-Momente über `@remotion/three`.
@@ -64,25 +71,58 @@ Der KI-Workspace pinnt die Story-Bausteine auf die bestehende Remotion-Version `
 - `@remotion/rive`
 - `@remotion/three`
 - `@remotion/skia`
-- `@shopify/react-native-skia`
+- `@shopify/react-native-skia@1.12.4` für React-18-Kompatibilität
 
-`remotion.config.ts` setzt ANGLE, weil Effects/Three/Skia WebGL-kompatibles Rendering benötigen.
+### Skia / WebGL — vollständige Einrichtung
+
+Nur ANGLE reicht nicht. Der Story-Stack benötigt drei verdrahtete Teile:
+
+1. `remotion.config.ts` setzt:
+
+```ts
+Config.setChromiumOpenGlRenderer('angle');
+```
+
+2. `remotion.config.ts` aktiviert Skia im Bundler:
+
+```ts
+Config.overrideWebpackConfig((currentConfiguration) => {
+  return enableSkia(currentConfiguration);
+});
+```
+
+3. `ki/src/index.ts` lädt Skia **vor** dem dynamischen Import des Remotion-Roots:
+
+```ts
+LoadSkia().then(async () => {
+  const {RemotionRoot} = await import('./Root');
+  registerRoot(RemotionRoot);
+});
+```
+
+`validate-storytelling-motion.mjs` prüft diese Verdrahtung fail-closed, damit Skia/Effects/Three nicht später halb konfiguriert werden.
 
 ## Agent Skills
 
-Remotion empfiehlt 2026 Agent Skills für Coding Agents. In einer ausführbaren lokalen Umgebung können sie installiert/aktualisiert werden mit:
-
-```bash
-npx -y skills@latest add remotion-dev/skills -g -y
-```
-
-oder projektbezogen:
+Remotion 4.0.488 unterstützt offiziell:
 
 ```bash
 npx remotion skills add
+npx remotion skills update
 ```
 
-Diese Skills liefern aktuelle Remotion-Best-Practices. Die kanonischen KI-Kanal-Regeln in diesem Repository bleiben trotzdem vorrangig: Nutzer-Audio, lokale Medien, Story-Gates, Provenance und Final-Review dürfen nicht umgangen werden.
+Die Skills werden in `.agents/skills/` installiert. Für dieses Repository existiert zusätzlich der feste Wrapper:
+
+```bash
+node scripts/sync-remotion-agent-skills.mjs add
+node scripts/sync-remotion-agent-skills.mjs update
+```
+
+Außerdem besitzt der KI-Kanal die eigene Skill-Schicht:
+
+`.agents/skills/remotion-storytelling/SKILL.md`
+
+Sie ergänzt die generischen Remotion-Skills um unsere 3-Phasen-Regel, Nutzer-Audio-only, lokalen Medien-/CC0-Pfad, Story-Gates und den finalen 1x-Review. Repository-Regeln haben Vorrang vor generischen Beispielen.
 
 ## Phase 1
 
@@ -105,7 +145,7 @@ Das Gate:
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 ```
 
-prüft die Story-Struktur fail-closed.
+prüft die Story-Struktur und den installierten Story-Stack fail-closed.
 
 ## Phase 2
 
