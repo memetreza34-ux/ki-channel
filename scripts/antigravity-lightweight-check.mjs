@@ -20,8 +20,19 @@ const run = (command, args) => {
   return result;
 };
 
-const git = run('git', ['diff', '--name-only', 'HEAD']);
-const changed = git.skipped ? [] : String(git.stdout || '').split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+const git = run('git', ['status', '--porcelain']);
+const changed = git.skipped
+  ? []
+  : String(git.stdout || '')
+      .split(/\r?\n/)
+      .map((line) => line.trimEnd())
+      .filter(Boolean)
+      .map((line) => {
+        const raw = line.length >= 4 ? line.slice(3).trim() : line.trim();
+        const renameTarget = raw.includes(' -> ') ? raw.split(' -> ').at(-1) : raw;
+        return renameTarget?.replace(/^"|"$/g, '') ?? '';
+      })
+      .filter(Boolean);
 
 const jsonFiles = changed.filter((file) => file.startsWith('.agents/') && file.endsWith('.json'));
 for (const relative of jsonFiles) {
