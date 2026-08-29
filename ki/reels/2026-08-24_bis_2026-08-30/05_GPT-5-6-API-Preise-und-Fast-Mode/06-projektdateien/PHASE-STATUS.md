@@ -12,22 +12,31 @@
 - geranktes Wikimedia-Visual mit Auswahlpräferenzen
 - offizieller OpenAI-Source-Proof
 - Script-Budget: bevorzugt 150–175 Wörter, Hard-Limit 190
-- Planning-Timeline: 2070 Frames / 69 Sekunden bei 30 fps; final bleibt echtes Voiceover maßgeblich
+- Planning-Timeline: 2070 Frames / 69 Sekunden bei 30 fps; final bleibt das echte Nutzer-Voiceover maßgeblich
 
 ## Phase 2 — Voiceover
-**Status:** FÜR NEUES LANGES SCRIPT FRISCH ERZEUGT — LOKALER DOWNLOAD AUSSTEHEND
+**Status:** WARTET AUF NUTZER-AUDIO
 
-Voice: `clear`
-Context: `7521558f3b4d4efb90bf5acbbf2fccef`
+Der Nutzer erstellt das vollständige Voiceover selbst und legt es hier ab:
 
-Die Binärdatei bleibt lokal/ignored und wird bei Bedarf durch den Test aus `audio-source.json` heruntergeladen. Das alte kurze Voiceover ist nicht mehr gültig.
+`01-script-audio/voiceover.mp3`
+
+Verbindliche Regel:
+
+- kein Voiceover durch ChatGPT
+- kein Voiceover durch Codex
+- kein Voiceover durch Antigravity
+- kein automatischer Download aus einer Remote-URL
+- keine Preview-Datei als Ersatz
+
+Erst wenn die vom Nutzer erzeugte vollständige `voiceover.mp3` lokal vorhanden ist, darf Phase 3 starten.
 
 ## Phase 3 — Production-Path-Test inklusive Social-Master
-**Status:** JETZT LOKAL AUSFÜHREN
+**Status:** BLOCKIERT BIS NUTZER-AUDIO VORHANDEN IST
 
-Dieser Reel ist der abschließende Transfer-Test für:
+Danach testet der Reel unter anderem:
 
-- neues 60–75-Sekunden-Laufzeitgate
+- 60–75-Sekunden-Laufzeitgate
 - Phase-1 Script-Budget
 - Pause-Kompression
 - exaktes lokales Forced Alignment
@@ -44,17 +53,17 @@ Dieser Reel ist der abschließende Transfer-Test für:
 - Social-Audio-Master auf ungefähr -16 LUFS
 - 1x-Review ausschließlich auf dem gemasterten MP4
 
-### Lauf 1 — Artefakte erzeugen
+### Lauf 1 — nach Einlegen der Nutzer-Audiodatei
 
 ```bash
 node ki/scripts/test-gpt56-api-prices-fastmode.mjs
 ```
 
-Wenn Alignment/Visual-Resolution getrackte JSON-Dateien aktualisieren, stoppt der Test absichtlich **vor** dem Production-Render mit:
+Wenn Alignment/Visual-Resolution getrackte JSON-Dateien aktualisieren, stoppt der Test absichtlich vor dem Production-Render mit:
 
 `PREPARED_REQUIRES_COMMIT_BEFORE_PRODUCTION_RENDER`
 
-Diese Dateien reviewen und committen. Das ist kein Fehler, sondern notwendig, weil `prepare-reel-render.mjs` einen sauberen Worktree verlangt.
+Diese Dateien reviewen und committen.
 
 ### Lauf 2 — gelockter Production-Render
 
@@ -74,4 +83,4 @@ out/gpt56-api-transfer-test/KI-GPT56APIPricesFastMode-contact-sheet.jpg
 out/gpt56-api-transfer-test/TRANSFER-TEST-REPORT.json
 ```
 
-`MOTION-READABILITY-REVIEW.md` bleibt bis zum echten Review dieses **exakten gemasterten MP4** auf `PENDING`. Erst danach dürfen Finalizer und Export-Package-Gate laufen.
+`MOTION-READABILITY-REVIEW.md` bleibt bis zum echten Review dieses exakten gemasterten MP4 auf `PENDING`. Erst danach dürfen Finalizer und Export-Package-Gate laufen.
