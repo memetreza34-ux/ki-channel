@@ -18,6 +18,7 @@ const requiredFiles = [
   '.agents/plugins/ki-channel-production/rules/production.md',
   '.agents/plugins/ki-channel-production/skills/ki-reel-orchestrator/SKILL.md',
   'scripts/antigravity-lightweight-check.mjs',
+  'scripts/list-antigravity-capabilities.mjs',
   'scripts/sync-remotion-agent-skills.mjs',
 ];
 
@@ -51,19 +52,24 @@ if (pkg?.scripts?.['antigravity:verify'] !== 'node scripts/check-antigravity-int
 if (pkg?.scripts?.['antigravity:skills'] !== 'node scripts/sync-remotion-agent-skills.mjs add') fail.push('package.json missing antigravity:skills script');
 if (pkg?.scripts?.['antigravity:skills:update'] !== 'node scripts/sync-remotion-agent-skills.mjs update') fail.push('package.json missing antigravity:skills:update script');
 
+const capabilityScanner = read('scripts/list-antigravity-capabilities.mjs');
+for (const token of ['workspaceSkills', 'workflows', 'plugins', 'mcpServers', 'useEveryRelevantCapability']) {
+  if (!capabilityScanner.includes(token)) fail.push(`capability scanner missing ${token}`);
+}
+
 const gemini = read('GEMINI.md');
 for (const token of ['.agents/agents.md', '.agents/workflows/', 'Chrome DevTools MCP', 'GitHub MCP', 'remotion-storytelling', 'antigravity:verify']) {
   if (!gemini.includes(token)) fail.push(`GEMINI.md missing Antigravity token: ${token}`);
 }
 
 const bootstrap = read('.agents/workflows/bootstrap-ki-channel.md');
-for (const token of ['antigravity:skills', 'antigravity:verify', 'chrome-devtools', 'remotion-bits', 'github']) {
+for (const token of ['antigravity:skills', 'antigravity:verify', 'list-antigravity-capabilities.mjs', 'chrome-devtools', 'remotion-bits', 'github', 'SELECTED FOR THIS TASK']) {
   if (!bootstrap.includes(token)) fail.push(`bootstrap workflow missing ${token}`);
 }
 
 const orchestrator = read('.agents/plugins/ki-channel-production/skills/ki-reel-orchestrator/SKILL.md');
-for (const token of ['remotion-storytelling', 'remotion-bits-discovery', 'Remotion Bits MCP', 'Chrome DevTools MCP', 'GitHub MCP', 'PHASE 2']) {
-  if (!orchestrator.includes(token)) fail.push(`orchestrator skill missing ${token}`);
+for (const token of ['list-antigravity-capabilities.mjs', 'every skill', 'remotion-storytelling', 'remotion-bits-discovery', 'Remotion Bits MCP', 'Chrome DevTools MCP', 'GitHub MCP', 'PHASE 2']) {
+  if (!orchestrator.toLowerCase().includes(token.toLowerCase())) fail.push(`orchestrator skill missing ${token}`);
 }
 
 if (fail.length) {
@@ -74,6 +80,7 @@ if (fail.length) {
 
 console.log('ANTIGRAVITY INTEGRATION: PASSED');
 console.log('workspace agents: configured');
+console.log('capability discovery: configured');
 console.log('workflows: bootstrap + finish + verify');
 console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
