@@ -19,7 +19,7 @@ const helper = read('scripts/blender_optimize_glb.py');
 const skill = read('.agents/skills/blender-asset-prep/SKILL.md');
 const workflow = read('.agents/workflows/prepare-blender-3d.md');
 
-for (const token of ['--background', '--offline-mode', '--disable-autoexec', '--python-exit-code', 'out', 'asset-prep', 'blender', 'PREPARED_NOT_PRODUCTION_APPROVED']) {
+for (const token of ['--background', '--offline-mode', '--disable-autoexec', '--python-exit-code', 'Blender 4.5 LTS', 'BLENDER_ALLOW_UNTESTED', 'out', 'asset-prep', 'blender', 'PREPARED_NOT_PRODUCTION_APPROVED']) {
   if (!runner.includes(token)) errors.push(`runner missing safety token: ${token}`);
 }
 for (const token of ['SPDX-License-Identifier: GPL-3.0-or-later', 'rigged/animated/shape-key', 'export_format="GLB"', 'sourceSha256', 'outputSha256', 'productionManifestModified', 'humanVisualReviewRequired']) {
@@ -46,6 +46,7 @@ if (errors.length) {
 
 console.log('BLENDER ASSET PREP INTEGRATION: PASSED');
 console.log('mode: local static GLB/GLTF only');
+console.log('Blender baseline: 4.5 LTS; other versions require explicit isolated-test override');
 console.log('Blender: background + offline + autoexec disabled');
 console.log('source overwrite: forbidden');
 console.log('rigged/animated/shape-key automatic prep: refused');
