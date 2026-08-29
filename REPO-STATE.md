@@ -6,13 +6,13 @@ Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- o
 
 ## 1. Kanonischer Branch
 
-`main` ist der einzige kanonische Produktionsstand.
+`main` ist der einzige kanonische Produktionsstand nach abgeschlossenen Merges.
 
 Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main` auf:
 
 `fix/repo-stabilisierung-2026-08-24`
 
-Die älteren PRs **#24, #26, #27 und #29** sind superseded/geschlossen. Der GPT-5.6-End-to-End-Test wurde über PR #30 in den Stabilisierungsbranch integriert.
+Solange diese Stabilisierung aktiv ist, wird dieser Branch weitergeführt und nicht still nach `main` gewechselt. Die älteren PRs **#24, #26, #27 und #29** sind superseded/geschlossen. Der GPT-5.6-End-to-End-Test wurde über PR #30 in den Stabilisierungsbranch integriert.
 
 ## 2. Verbindliche Lesereihenfolge
 
@@ -20,12 +20,13 @@ Bei KI-Kanal-Arbeit gilt:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
-3. `ki/AGENTS.md`
-4. `ki/gehirn/MASTER.md`
-5. bei Reels zusätzlich `ki/gehirn/STORYTELLING_MOTION.md`
-6. danach die passende Domäne / `ki/reels/AGENTS.md` / `ki/src/reels/AGENTS.md`
-7. das ausdrücklich genannte Reel
-8. erst danach konkrete Pläne, Source- oder Plattformdateien
+3. bei Antigravity zusätzlich `GEMINI.md`, `.agents/agents.md` und `.agents/ANTIGRAVITY-LOCAL-SETUP.md`
+4. `ki/AGENTS.md`
+5. `ki/gehirn/MASTER.md`
+6. bei Reels zusätzlich `ki/gehirn/STORYTELLING_MOTION.md`
+7. danach die passende Domäne / `ki/reels/AGENTS.md` / `ki/src/reels/AGENTS.md`
+8. das ausdrücklich genannte Reel
+9. erst danach konkrete Pläne, Source- oder Plattformdateien
 
 ## 3. Kanonische Short-Form-Produktionsstruktur
 
@@ -86,6 +87,8 @@ Agenten dürfen niemals:
 - eine Remote-Voiceover-Datei herunterladen,
 - Preview-Audio als Ersatz verwenden.
 
+Antigravity hat dafür zusätzlich ein `PreToolUse`-Safety-Gate, das Agent-Schreibversuche auf Produktions-Voiceover und typische Remote-/TTS-Ersatzversuche blockiert.
+
 Fehlt das Nutzer-Audio, lautet der Status:
 
 `PHASE 2 — WARTET AUF NUTZER-AUDIO`
@@ -115,7 +118,7 @@ Phase-1-Gate:
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 ```
 
-Neue Story-Stack-Bausteine:
+Story-Stack:
 
 - `ki/src/reels/StoryMotion.tsx`
   - `StoryBeat`
@@ -124,16 +127,18 @@ Neue Story-Stack-Bausteine:
   - `StoryProgressRail`
   - `StoryCutFlash`
   - `StoryTexture`
+  - Shape-basierte Flow-/Pulse-Pfeile
 - `ki/src/reels/StoryMediaLayers.tsx`
   - `StoryThreeHero`
   - lokale Lottie-/Rive-Layer
   - `StorySkiaBackdrop`
 - `ki/src/motion-system/StoryTransitionShowcase.tsx`
 - `.agents/skills/remotion-storytelling/SKILL.md`
+- `.agents/skills/remotion-bits-discovery/SKILL.md`
 
 Der KI-Workspace pinnt den Story-Stack auf Remotion `4.0.488`: Transitions, Effects, SFX-Capability, Shapes, Lottie, Rive, Three und Skia. `@shopify/react-native-skia` ist wegen React 18 auf `1.12.4` gepinnt.
 
-Skia ist vollständig verdrahtet:
+Skia ist verdrahtet:
 
 - `remotion.config.ts` → `Config.setChromiumOpenGlRenderer('angle')`
 - `remotion.config.ts` → `enableSkia()` als Webpack-Override
@@ -164,7 +169,97 @@ Bewährter Default:
 - `@remotion/sfx` ist als Capability installiert, ersetzt aber nicht den lokalen CC0-Produktionspfad
 - Lottie/Rive/3D/externe Bilder müssen vor Render lokal sein; keine Render-Time-Remote-Medien
 
-## 9. Verbindliches Produktionsmodell
+## 9. Antigravity — kanonischer Produktionsmodus
+
+Antigravity wird nicht als einzelner Universal-Agent eingesetzt, sondern als fokussiertes Agent-/Skill-/MCP-/Hook-System.
+
+### 9 echte Workspace Agents
+
+Unter `.agents/agents/<name>/agent.md`:
+
+1. `ki-production-orchestrator`
+2. `ki-fact-researcher`
+3. `ki-retention-story-auditor`
+4. `ki-motion-researcher`
+5. `ki-remotion-story-engineer`
+6. `ki-audio-sync-engineer`
+7. `ki-visual-qa-auditor`
+8. `ki-release-verifier`
+9. `ki-dependency-auditor`
+
+Unabhängige read-only Audits dürfen parallel laufen. Auf demselben Working Tree arbeitet gleichzeitig genau **ein** Writer. Konkurrenzvarianten nur in isolierten Branches/Worktrees.
+
+### Fokus-MCPs
+
+- Chrome DevTools MCP — Browser/Remotion-Studio-/Console-/Layout-QA
+- Remotion Bits MCP — gezielte Suche/FETCH kleiner Motion-Patterns
+- GitHub MCP — Remote-PR-/Issue-/Branch-Kontext
+
+Fachfremde MCPs werden nicht blind aktiviert.
+
+### 4 Hook-Ebenen
+
+Plugin: `.agents/plugins/ki-channel-production/`
+
+- `PreInvocation` — Session-/Branch-/Capability-Kontext
+- `PreToolUse` — Sicherheitsgate
+- `PostToolUse` — leichte Antigravity-/Repo-Regression nach echten Write-Tools
+- `Stop` — laufende Background Tasks/Subagents vor Session-Ende einsammeln
+
+### Kanonische Workflows
+
+- `/bootstrap-ki-channel`
+- `/sync-chatgpt-handoff`
+- `/parallel-audit-ki-reel <path>`
+- `/maximize-ki-reel <path>`
+- `/visual-qa-ki-reel <path>`
+- `/finish-ki-reel <path>`
+- `/verify-ki-reel <path>`
+- `/audit-remotion-upgrade`
+
+### Capability-/Regression-Commands
+
+```bash
+npm run antigravity:skills
+npm run antigravity:capabilities
+npm run antigravity:verify
+```
+
+## 10. Antigravity Visual-QA / unabhängige Audits
+
+Alle geplanten Story Beats können als echte Remotion-PNGs gerendert werden:
+
+```bash
+npm run antigravity:story-stills -- <reel-package-dir> --scale=1
+```
+
+Ausgabe:
+
+`out/story-beat-stills/<reel-id>/manifest.json`
+
+Danach kann ein Pixel-Delta-Diagnosebericht aufeinanderfolgende Beats auf verdächtig geringe sichtbare Änderung prüfen:
+
+```bash
+node scripts/analyze-story-beat-visual-deltas.mjs out/story-beat-stills/<reel-id>/manifest.json
+```
+
+`SUSPICIOUS_STATIC` ist nur ein Diagnosehinweis. Pixel-Unterschied ersetzt niemals Story-/Browser-/1x-Review.
+
+Antigravity Headless kann zusätzlich strukturierte Zweit-Audits erzeugen:
+
+```bash
+npm run antigravity:audit -- <reel-package-dir> --mode=facts
+npm run antigravity:audit -- <reel-package-dir> --mode=retention
+npm run antigravity:audit -- <reel-package-dir> --mode=motion
+npm run antigravity:audit -- <reel-package-dir> --mode=dependencies
+npm run antigravity:audit -- <reel-package-dir> --mode=release
+```
+
+Die Runner nutzen Sandbox und keinen Permission-Bypass. Headless-Audits ersetzen keine deterministischen Gates.
+
+Vor Veröffentlichung prüft `ki-release-verifier` zeitkritische Claims erneut gegen aktuelle Primärquellen. Eine materielle Änderung blockiert den Release und kann nach Script-Korrektur ein neues Nutzer-Voiceover erfordern.
+
+## 11. Verbindliches Produktionsmodell
 
 ```text
 PHASE 1 — ChatGPT / Coding-Agent
@@ -178,7 +273,8 @@ PHASE 2 — NUR NUTZER
 Nutzer erzeugt das vollständige Voiceover und legt es lokal in 01-script-audio/
 
 PHASE 3 — Codex / Antigravity
-vorhandenes Nutzer-Audio prüfen
+Capability-Map + relevante Spezialagenten
+→ vorhandenes Nutzer-Audio prüfen
 → Runtime-WAV + Pause-Kompression
 → lokales Forced Alignment
 → WORD-TIMINGS + Scene/Caption-Lock
@@ -186,16 +282,17 @@ vorhandenes Nutzer-Audio prüfen
 → echtes 60–75-s-Dauergate
 → automatische CC0-SFX
 → externe Visuals lokal auflösen
+→ Story-Beat-Stills + Pixel-/Browser-QA
 → renderrelevante Dateien committen
-→ prepare-reel-render.mjs (inkl. Storytelling-Gate) / Provenance-Lock
+→ prepare-reel-render.mjs / Provenance-Lock
 → Remotion-Roh-Render
 → Social-Audio-Master ca. -16 LUFS
-→ 1x-Review des gemasterten MP4
-→ Storyfluss + Visual Reactions + Transition Purpose + keine statischen Überlängen prüfen
+→ exakter 1x-Review
+→ unabhängiger Release-Verifier inkl. Freshness
 → Finalizer + Export-Paket
 ```
 
-## 10. Aktueller Abschluss-Test vor Merge von PR #28
+## 12. Aktueller Abschluss-Test vor Merge von PR #28
 
 Kanonischer Test-Reel:
 
@@ -225,7 +322,13 @@ Der Nutzer muss sein vollständiges Voiceover selbst als
 
 ablegen. Der GPT-5.6-Test lädt nichts automatisch herunter.
 
-Erst danach:
+Nach dem Pull in Antigravity zuerst:
+
+`/sync-chatgpt-handoff`
+
+Danach kann `/maximize-ki-reel <GPT-Reel-Pfad>` den kompletten relevanten Capability-Stack nutzen.
+
+Erst mit Nutzer-Audio:
 
 ```bash
 node ki/scripts/test-gpt56-api-prices-fastmode.mjs
@@ -237,11 +340,12 @@ Nach Commit der erzeugten Timing-/Contract-Dateien:
 node ki/scripts/test-gpt56-api-prices-fastmode.mjs --render-locked
 ```
 
-## 11. Globale Produktions-Regressionen
+## 13. Globale Produktions-Regressionen
 
 Vor Merge/Release:
 
 ```bash
+npm run antigravity:verify
 npm run ki:reel:structure-check
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 npm run production:contracts
@@ -251,7 +355,7 @@ npm run motion:verify
 
 `prepare-reel-render.mjs` führt das Storytelling-Gate für den konkreten Reel erneut aus.
 
-## 12. Finaler 1x-Review
+## 14. Finaler 1x-Review
 
 Bei storytelling-enabled Reels zusätzlich zu Caption/Kamera/Audio/SFX/Visuals zwingend:
 
@@ -262,7 +366,7 @@ Bei storytelling-enabled Reels zusätzlich zu Caption/Kamera/Audio/SFX/Visuals z
 
 Der Review gilt ausschließlich für das exakte gemasterte MP4 und ist per SHA256 gebunden.
 
-## 13. Verbindliche visuelle Identität
+## 15. Verbindliche visuelle Identität
 
 - Short-Form: 1080 × 1920 / 30 FPS
 - Longform: 1920 × 1080 / 30 FPS
@@ -272,7 +376,7 @@ Der Review gilt ausschließlich für das exakte gemasterte MP4 und ist per SHA25
 - clean/premium, aber narrative hohe Visual-Beat-Dichte
 - High Energy ist nicht High Speed: `REVEAL → SETTLE → READABLE HOLD`
 
-## 14. Statusbegriffe niemals vermischen
+## 16. Statusbegriffe niemals vermischen
 
 ```text
 geplant
@@ -286,17 +390,17 @@ veröffentlicht
 
 Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
 
-## 15. Git-/Medienregel
+## 17. Git-/Medienregel
 
 Große Binärmedien (`mp3`, `wav`, `mp4`, `png` usw.) bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
 In Git bleiben Source, Skripte, Story-Beats, Provenance, Timings, Reviews, Contracts und Export-Manifeste.
 
-## 16. Bekannte externe Einschränkungen
+## 18. Bekannte externe Einschränkungen
 
 - GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert.
 - `main` hat derzeit keine Branch Protection.
 - Ein `package-lock.json` ist noch nicht kanonisch erzeugt.
-- Der neue Remotion-Story-Stack wurde über GitHub-Source integriert, aber in dieser Umgebung noch **nicht** per `npm install`, TypeScript, Remotion Bundle/Render oder Skia-Runtime ausgeführt.
+- Der neue Remotion-/Antigravity-Stack wurde über GitHub-Source integriert, aber in dieser ChatGPT-GitHub-Umgebung noch **nicht** per lokalem `npm install`, `npm run antigravity:verify`, TypeScript, MCP-Start, `agy` Headless, Remotion Bundle/Render oder Skia-Runtime ausgeführt.
 
-Diese Betriebsgrenzen sind keine Erlaubnis, Test- oder Qualitätsregeln zu umgehen.
+Diese Betriebsgrenzen sind keine Erlaubnis, Test- oder Qualitätsregeln zu umgehen. Kein Merge-/Final-Ready-Claim, bis die lokalen Runtime-/Render-/Review-Beweise real vorliegen.
