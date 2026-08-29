@@ -40,6 +40,9 @@ Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
 ### Phase 1
 
 - Inhalt/Skript
+- neue Reels auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit planen
+- bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60`, `targetMaxSeconds = 75`
 - Visual Beats
 - Remotion-Source
 - Caption-Basis
@@ -55,13 +58,16 @@ Remote-URL nur als Provenance; lokaler Master ist Pflicht.
 
 ### Phase 3
 
-- reales Audio messen
-- Whisper/Voice-Lock
-- Szenen/Dauer an echte Audio-/Bedeutungsgrenzen
-- `prepare-reel-audio.mjs`
+- `prepare-reel-audio.mjs`: Runtime-WAV + ggf. Pause-Kompression
+- bekanntes Skript per lokalem Forced Alignment exakt gegen die Runtime-WAV ausrichten
+- `WORD-TIMINGS.json`, Szenen und Captions Voice-Locked schreiben
+- tatsächliche finale Dauer prüfen: 60–75 Sekunden oder dokumentierte Ausnahme
+- SFX automatisch nach finalen Szenenframes auflösen
+- externe Visuals lokal auflösen/validieren
+- `prepare-reel-render.mjs` + Provenance-Lock
 - Tests/Smoke/Contact-Sheet
-- 1x Motion-Readability
-- Final-Render
+- Roh-Render + Social-Audio-Master
+- 1x Motion-Readability auf dem gemasterten MP4
 - Finalizer + Export-Package-Validator
 
 ## Caption — eine Wahrheit
@@ -87,7 +93,7 @@ Vor Production-Render:
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
 
-`Root.tsx` nutzt nur `public/runtime-audio/<compositionId>.mp3` via `staticFile`.
+`Root.tsx` nutzt nur die vorbereitete lokale Runtime-Spur `public/runtime-audio/<compositionId>.wav` via `staticFile`.
 
 Keine statischen Imports auf ignorierte Reel-Audiodateien und keine Remote-Audio-URL im Render-Source.
 
@@ -101,6 +107,7 @@ Keine statischen Imports auf ignorierte Reel-Audiodateien und keine Remote-Audio
 - Hero-Moment pro Szene
 - `REVEAL → SETTLE → READABLE HOLD`
 - High Energy ≠ High Speed
+- 60–75-s-Reels brauchen über die ganze Timeline mehrere sichtbare Beats, Zooms/Fokuswechsel/SFX mit Bedeutung; keine langen statischen Füll-Holds
 - dunkle Fullscreen-Szenen nur dokumentierte Ausnahme
 - Logos nur aus echten zulässigen Assets
 
@@ -113,7 +120,7 @@ node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Der Finalizer führt Entertainment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates erneut aus.
+Der Finalizer führt Entertainment-, Forced-Alignment-, Voice-Lock-, Motion-, ggf. Source-Isolation- und Video-/Audio-Gates erneut aus.
 
 Erst danach und nach echtem Ansehen/Anhören:
 
