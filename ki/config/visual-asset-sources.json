@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "status": "CURATED_VISUAL_SOURCE_POLICY",
   "policy": {
     "remoteMediaDuringRender": false,
@@ -26,6 +26,9 @@
       "enabled": true,
       "api": "https://commons.wikimedia.org/w/api.php",
       "requiresApiKey": false,
+      "discoveryScout": "scripts/scout-wikimedia-commons-assets.mjs",
+      "discoveryMustNotDownload": true,
+      "manualReviewForNonCopyrightRestrictions": true,
       "acceptedRights": ["CC0-1.0", "PUBLIC_DOMAIN", "CC-BY-4.0"],
       "requiresAttributionFor": ["CC-BY-4.0"],
       "defaultSelection": {
@@ -36,7 +39,7 @@
         "preferPublicDomainOrCC0": true,
         "candidateLimit": 20
       },
-      "notes": "Search and file metadata come from Wikimedia Commons. Candidates are license-filtered and then deterministically ranked by relevance, resolution, crop suitability and rights status before download."
+      "notes": "Use the discovery scout first for documentary/proof candidates. Search and file metadata come from Wikimedia Commons. Production candidates are license-filtered and deterministically ranked by relevance, resolution, crop suitability and rights status before local download. The exact file page must still be reviewed for attribution and non-copyright restrictions such as personality/privacy/trademark concerns where relevant."
     },
     "GITHUB_RAW": {
       "enabled": true,
