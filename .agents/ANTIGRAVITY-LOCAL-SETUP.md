@@ -66,7 +66,38 @@ Use only when the shared StoryMotion/StoryMedia stack and official Remotion APIs
 
 Use for remote branch/PR/issue context. Local Git remains the working-tree authority. If Docker/OAuth is unavailable, local Git must continue to work; GitHub MCP is an enhancement, not a release bypass.
 
-## 6. Google Build-with-Google bundle
+### Lottie Creator MCP — optional and disabled by default
+
+The workspace also contains a pinned optional server:
+
+`@lottiefiles/creator-mcp@0.2.1`
+
+It is intentionally configured with `disabled: true`. Enable it in `/mcp` only when `/create-lottie-motion` is being used for a specific story beat.
+
+Local use:
+
+1. open `https://creator.lottiefiles.com/`;
+2. sign in with a LottieFiles account;
+3. enable Creator MCP inside the Creator tab;
+4. enable `lottiefiles-creator` in Antigravity;
+5. author the small animation;
+6. export `.json` or `.lottie` locally;
+7. disable the MCP again.
+
+Never use a remote LottieFiles URL in Remotion production source. Exported assets require local compatibility/render review before production use. A Creator/MCP outage is never a reel-production blocker because native Remotion remains the fallback.
+
+## 6. Free external visual discovery
+
+Pexels and Pixabay scouts are discovery-only helpers. Real API keys live only in `.env.local`:
+
+```text
+PEXELS_API_KEY=...
+PIXABAY_API_KEY=...
+```
+
+Use `/scout-free-assets <query>` for a defined story beat. These scouts never download or wire assets into Remotion automatically.
+
+## 7. Google Build-with-Google bundle
 
 For extra current React/Web implementation guidance, optionally enable:
 
@@ -74,7 +105,7 @@ For extra current React/Web implementation guidance, optionally enable:
 
 This is useful for web/React performance, security and implementation quality. It does not override Remotion or KI-channel production rules and is not required to render a reel.
 
-## 7. Teamwork
+## 8. Teamwork
 
 For a normal 60–75 second reel, the repository's custom subagents are normally more focused.
 
@@ -82,13 +113,15 @@ For a genuinely large multi-day/system-wide change — for example upgrading the
 
 Do not use Teamwork merely to edit one reel; extra agents are useful only when the task decomposes into independent workstreams with clear verification criteria.
 
-## 8. Highest-quality reel commands
+## 9. Highest-quality reel commands
 
 After bootstrap:
 
 ```text
 /parallel-audit-ki-reel <reel-package-dir>
 /maximize-ki-reel <reel-package-dir>
+/scout-free-assets <query>
+/create-lottie-motion <reel-package-dir> <beat-id>
 /visual-qa-ki-reel <reel-package-dir>
 /finish-ki-reel <reel-package-dir>
 /verify-ki-reel <reel-package-dir>
@@ -96,7 +129,7 @@ After bootstrap:
 
 Use only what matches the current phase.
 
-## 9. Story-beat pixel audit
+## 10. Story-beat pixel audit
 
 ```bash
 npm run antigravity:story-stills -- <reel-package-dir> --scale=1
@@ -104,7 +137,7 @@ npm run antigravity:story-stills -- <reel-package-dir> --scale=1
 
 This renders every planned narrative beat to `out/story-beat-stills/<reel-id>/` with a manifest for independent visual QA.
 
-## 10. Headless structured audits
+## 11. Headless structured audits
 
 Examples:
 
@@ -119,6 +152,6 @@ Outputs are written under `out/antigravity-audits/` as the raw Antigravity envel
 
 A headless audit is an independent second opinion; it never replaces required deterministic repository gates or the final human/visual 1x review.
 
-## 11. Remotion upgrades
+## 12. Remotion upgrades
 
 Use `/audit-remotion-upgrade` first. Keep upgrade work on a separate branch/worktree and only after the current stabilization baseline has real runtime evidence.
