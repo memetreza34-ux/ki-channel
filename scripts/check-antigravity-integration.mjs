@@ -33,6 +33,8 @@ const requiredFiles = [
   ...agentNames.map((name) => `.agents/agents/${name}/agent.md`),
   ...workflows.map((name) => `.agents/workflows/${name}.md`),
   '.agents/skills/remotion-storytelling/SKILL.md',
+  '.agents/skills/reel-render-review-standard/SKILL.md',
+  '.agents/skills/reel-level-up-standard/SKILL.md',
   '.agents/skills/remotion-bits-discovery/SKILL.md',
   '.agents/skills/image-asset-prep/SKILL.md',
   '.agents/plugins/ki-channel-production/plugin.json',
@@ -40,6 +42,8 @@ const requiredFiles = [
   '.agents/plugins/ki-channel-production/hooks.json',
   '.agents/plugins/ki-channel-production/rules/production.md',
   '.agents/plugins/ki-channel-production/skills/ki-reel-orchestrator/SKILL.md',
+  'ki/gehirn/LEVEL_UP_STANDARD.md',
+  'ki/scripts/validate-reel-level-up.mjs',
   'scripts/antigravity-lightweight-check.mjs',
   'scripts/antigravity-safety-gate.mjs',
   'scripts/antigravity-session-reminder.mjs',
@@ -112,11 +116,17 @@ if (auditSchema?.type !== 'object') fail.push('headless audit schema must be an 
 for (const field of ['mode', 'target', 'overallStatus', 'summary', 'checks', 'blockers', 'recommendedNextActions']) if (!auditSchema?.required?.includes(field)) fail.push(`headless audit schema missing required field ${field}`);
 
 for (const name of agentNames) requireTokens(`.agents/agents/${name}/agent.md`, [`name: ${name}`, 'subagent: true', '# System Prompt']);
-requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/image-asset-prep', '/prepare-local-image-asset']);
+requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'skills/image-asset-prep', '/prepare-local-image-asset']);
+requireTokens('.agents/agents/ki-remotion-story-engineer/agent.md', ['skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'generic icon', 'word/phrase', 'motion families'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-retention-story-auditor/agent.md', ['TOP DROP-OFF RISKS', 'VISUAL GRAMMAR REPETITION', 'REQUIRES_RETURN_TO_PHASE_2']);
 requireTokens('.agents/agents/ki-audio-sync-engineer/agent.md', ['PHASE 2 — WARTET AUF NUTZER-AUDIO', 'Never synthesize', 'forced alignment'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough']);
 requireTokens('.agents/agents/ki-release-verifier/agent.md', ['fail-closed', 'NOT RUN', 'BLOCKED'], {caseInsensitive: true});
+
+requireTokens('ki/gehirn/LEVEL_UP_STANDARD.md', ['Brand Fidelity', 'Real Proof', 'Voice Semantic Lock', 'Motion Diversity', 'bottom 330', 'LEVEL-UP-PLAN.json']);
+requireTokens('ki/scripts/validate-reel-level-up.mjs', ['REEL LEVEL-UP PASSED', 'WORD_TIMINGS_AFTER_FORCED_ALIGNMENT', 'OFFICIAL_SOURCE_CROP', 'genericIconAsBrand', 'motionFamilies', 'fullFrameSceneIds', 'captionTarget.bottom']);
+requireTokens('.agents/skills/reel-render-review-standard/SKILL.md', ['CAPTIONS_HIGH_ENOUGH', 'VOICE_TO_ANIMATION_SYNC', 'MOTION_VARIETY', 'SFX_DENSITY_BALANCED']);
+requireTokens('.agents/skills/reel-level-up-standard/SKILL.md', ['Brand fidelity', 'real proof', 'anchorPhrase', 'motion grammar', 'NO_FAKE_BRAND_ICON'], {caseInsensitive: true});
 
 requireTokens('scripts/antigravity-safety-gate.mjs', ['01-script-audio', 'Production voiceover is user-owned Phase 2 input', 'Remote production voiceover download is forbidden', "respond('deny'", "respond('force_ask'"]);
 requireTokens('scripts/antigravity-session-reminder.mjs', ['invocationNum', 'antigravity:capabilities', 'single-writer policy']);
@@ -162,6 +172,7 @@ console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
 console.log('hooks: session context + PreTool safety + PostTool regression + Stop guard');
 console.log('visual QA: per-story-beat stills + pixel-delta diagnostics wired');
+console.log('level-up: brand fidelity + real proof + word/phrase lock + motion diversity + full-stage review wired');
 console.log('image prep: local Sharp derivative + provenance + visual-review gate wired');
 console.log('headless: structured agy audits wired with sandbox and no permission bypass');
 console.log('audio boundary: user-production-voiceover guard wired');
