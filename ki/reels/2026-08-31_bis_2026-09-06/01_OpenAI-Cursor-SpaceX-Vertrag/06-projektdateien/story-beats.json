@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "status": "PHASE1_STORY_SOURCE_IMPLEMENTED_TIMING_PENDING",
+  "storyArc": ["HOOK","PROBLEM","PROOF","CHANGE","CONSEQUENCE","PAYOFF"],
+  "rules": {"minVisualBeats":15,"maxStaticSeconds":4.5,"everySpokenCoreClaimNeedsVisualReaction":true,"transitionMustHaveMeaning":true,"cameraMotionMustHaveMeaning":true,"sfxMustMatchVisibleEvent":true,"externalVisualTarget":"0_BINARY_PLUS_OFFICIAL_SOURCE_CARDS","nativeMotionTargetPercent":"90-100"},
+  "beats": [
+    {"id":"b01","sceneId":"scene1","atRatio":0.00,"role":"HOOK","visualAction":"Headline slams in: OpenAI pulls the brake on Cursor","motion":"STORY_BEAT_PUNCH"},
+    {"id":"b02","sceneId":"scene1","atRatio":0.16,"role":"HOOK","visualAction":"OpenAI and Cursor cards connect with a live model cable","motion":"CONNECTION_DRAW"},
+    {"id":"b03","sceneId":"scene1","atRatio":0.42,"role":"CHANGE","visualAction":"SpaceX ownership card drops between both companies","motion":"OWNER_CARD_DROP"},
+    {"id":"b04","sceneId":"scene1","atRatio":0.68,"role":"CONSEQUENCE","visualAction":"The model cable cracks and changes to contract wind-down state","motion":"CABLE_BREAK"},
+    {"id":"b05","sceneId":"scene2","atRatio":0.04,"role":"PROOF","visualAction":"Announcement date August 28 appears on a contract timeline","motion":"TIMELINE_START"},
+    {"id":"b06","sceneId":"scene2","atRatio":0.34,"role":"CHANGE","visualAction":"Timeline races toward proposed November 12 transition endpoint","motion":"PROGRESS_RAIL"},
+    {"id":"b07","sceneId":"scene2","atRatio":0.65,"role":"PAYOFF","visualAction":"12 NOV 2026 lands as the proposed transition date with pending badge","motion":"IMPACT_NUMBER_DATE"},
+    {"id":"b08","sceneId":"scene3","atRatio":0.03,"role":"PROBLEM","visualAction":"Contract and safety cards form two gates in front of future models","motion":"DUAL_GATE_REVEAL"},
+    {"id":"b09","sceneId":"scene3","atRatio":0.27,"role":"PROOF","visualAction":"OpenAI-attributed concern appears as a restrained source statement","motion":"SOURCE_STATEMENT"},
+    {"id":"b10","sceneId":"scene3","atRatio":0.52,"role":"CHANGE","visualAction":"Astra model approaches the gate and is routed away from Cursor","motion":"ROUTE_BLOCK"},
+    {"id":"b11","sceneId":"scene3","atRatio":0.76,"role":"PROOF","visualAction":"Pending final termination badge clarifies proposed date is not confirmed","motion":"PENDING_STATUS_REVEAL"},
+    {"id":"b12","sceneId":"scene4","atRatio":0.02,"role":"CHANGE","visualAction":"Cursor remains visible while direct OpenAI route dims","motion":"ROUTE_DIM"},
+    {"id":"b13","sceneId":"scene4","atRatio":0.25,"role":"CONSEQUENCE","visualAction":"Own OpenAI API key route branches into Cursor","motion":"ROUTE_BRANCH_ONE"},
+    {"id":"b14","sceneId":"scene4","atRatio":0.46,"role":"CONSEQUENCE","visualAction":"Codex IDE extension route appears as second branch","motion":"ROUTE_BRANCH_TWO"},
+    {"id":"b15","sceneId":"scene4","atRatio":0.67,"role":"PAYOFF","visualAction":"Compatible AI gateway completes the three-option path","motion":"ROUTE_BRANCH_THREE"},
+    {"id":"b16","sceneId":"scene5","atRatio":0.03,"role":"PROBLEM","visualAction":"Model quality alone appears as only one of three decision gates","motion":"GATE_ONE"},
+    {"id":"b17","sceneId":"scene5","atRatio":0.28,"role":"CONSEQUENCE","visualAction":"Contract and owner gates slide into the path and narrow availability","motion":"GATE_CHAIN"},
+    {"id":"b18","sceneId":"scene5","atRatio":0.58,"role":"PROOF","visualAction":"Official OpenAI announcement and help-center cards confirm the story","motion":"SOURCE_PROOF_CARDS"},
+    {"id":"b19","sceneId":"scene5","atRatio":0.82,"role":"PAYOFF","visualAction":"Final takeaway lands: access is shaped by platform relationships too","motion":"FINAL_PUNCHLINE"}
+  ]
+}

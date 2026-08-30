@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "status": "CONTENT_LOCKED_SOURCE_CARDS_ONLY",
+  "rules": {"nativeFirst":true,"remoteRenderMediaAllowed":false,"googleImageSearchAsLicenseAuthority":false,"externalBinariesMustResolveLocally":true},
+  "assets": [
+    {"id":"scene3-openai-announcement","sceneId":"scene3","provider":"OFFICIAL_SOURCE_CARD","purpose":"Primary-source proof for contract wind-down, proposed November 12 date and future-model policy","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/"},
+    {"id":"scene4-openai-help","sceneId":"scene4","provider":"OFFICIAL_SOURCE_CARD","purpose":"Primary-source proof for current transition status and three alternative ways to keep using OpenAI models in Cursor","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://help.openai.com/articles/20001506-using-openai-models-in-cursor"},
+    {"id":"scene1-cursor-acquisition","sceneId":"scene1","provider":"OFFICIAL_SOURCE_CARD","purpose":"Primary-source proof that Cursor officially became part of SpaceX","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://cursor.com/blog/joining-spacex"}
+  ]
+}

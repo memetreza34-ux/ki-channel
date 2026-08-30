@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "status": "CONTENT_PLANNED_TIMING_PENDING",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","purpose":"SpaceX ownership card lands","anchor":{"type":"SCENE_OFFSET","frame":138},"roles":["impact","transition-down"],"keywords":["impact","drop"],"preferredDurationSeconds":0.35,"volume":0.12},
+    {"id":"sfx02","sceneId":"scene1","purpose":"Model connection breaks","anchor":{"type":"SCENE_OFFSET","frame":230},"roles":["tech-accent","ui-error"],"keywords":["break","digital"],"preferredDurationSeconds":0.25,"volume":0.10},
+    {"id":"sfx03","sceneId":"scene2","purpose":"Proposed date locks into timeline","anchor":{"type":"SCENE_OFFSET","frame":238},"roles":["ui-confirm","impact"],"keywords":["confirm","date"],"preferredDurationSeconds":0.22,"volume":0.09},
+    {"id":"sfx04","sceneId":"scene3","purpose":"Astra route is blocked by safety gate","anchor":{"type":"SCENE_OFFSET","frame":270},"roles":["ui-error","tech-accent"],"keywords":["deny","scan"],"preferredDurationSeconds":0.30,"volume":0.10},
+    {"id":"sfx05","sceneId":"scene4","purpose":"Three alternative access routes complete","anchor":{"type":"SCENE_OFFSET","frame":310},"roles":["ui-confirm","digital-accent"],"keywords":["success","route"],"preferredDurationSeconds":0.25,"volume":0.09},
+    {"id":"sfx06","sceneId":"scene5","purpose":"Final platform-access takeaway lands","anchor":{"type":"SCENE_OFFSET","frame":286},"roles":["impact","ui-confirm"],"keywords":["final","confirm"],"preferredDurationSeconds":0.32,"volume":0.11}
+  ]
+}

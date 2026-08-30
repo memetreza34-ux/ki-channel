@@ -1,0 +1,3 @@
+OpenAI will die direkte Bereitstellung seiner Modelle in Cursor nach der SpaceX-Übernahme beenden. Der 12. November 2026 ist aktuell als Übergangsende vorgeschlagen – endgültig bestätigt ist der Termin laut OpenAI noch nicht. Cursor selbst verschwindet dadurch nicht: OpenAI nennt API-Key, Codex-IDE-Erweiterung und kompatible Gateways als Alternativen. Welche KI nutzt du aktuell zum Coden?
+
+#KI #OpenAI #Cursor #Coding #AI

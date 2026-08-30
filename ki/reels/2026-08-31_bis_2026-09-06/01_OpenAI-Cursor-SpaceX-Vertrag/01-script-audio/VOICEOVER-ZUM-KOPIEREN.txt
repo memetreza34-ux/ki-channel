@@ -1,0 +1,7 @@
+OpenAI zieht bei Cursor die Reißleine – nach der Übernahme durch SpaceX. Am 28. August kündigte OpenAI an, den Vertrag für seine Modelle in Cursor auslaufen zu lassen. Vorgeschlagen ist eine Übergangsfrist bis zum 12. November 2026. Bis dahin sollen die heute verfügbaren OpenAI-Modelle weiterlaufen; Cursor könnte den Zugang aber auch früher beenden.
+
+OpenAI begründet die Entscheidung mit Vertrags- und Sicherheitsbedenken nach dem Eigentümerwechsel. Gleichzeitig will das Unternehmen kommende Modelle wie Astra nicht mehr über Cursor bereitstellen. Die offizielle endgültige Abschaltung ist zwischen den Unternehmen laut OpenAI noch nicht bestätigt.
+
+Für Nutzer wichtig: Cursor selbst verschwindet nicht. Und selbst wenn der direkte Modellzugang endet, nennt OpenAI drei Wege, seine Modelle weiter in Cursor zu nutzen: einen eigenen OpenAI-API-Key, die Codex-IDE-Erweiterung oder einen kompatiblen AI-Gateway-Anbieter.
+
+Der größere Punkt dahinter: Bei KI entscheidet künftig nicht nur, welches Modell am besten ist. Verträge, Sicherheit und Eigentümerwechsel können bestimmen, welche KI in deinem Lieblings-Tool direkt verfügbar bleibt.

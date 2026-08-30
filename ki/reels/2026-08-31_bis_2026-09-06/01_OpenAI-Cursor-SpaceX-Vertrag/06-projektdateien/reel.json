@@ -1,0 +1,62 @@
+{
+  "version": 5,
+  "reelId": "openai-cursor-spacex-contract",
+  "compositionId": "KI-OpenAICursorSpaceXContract",
+  "sourceDir": "ki/src/reels/openai-cursor-spacex-contract",
+  "title": "OpenAI beendet Cursor-Vertrag nach SpaceX-Übernahme",
+  "publishDate": "2026-08-31",
+  "week": "2026-08-31_bis_2026-09-06",
+  "productionMode": "REMOTION_NATIVE_PLUS_OFFICIAL_SOURCE_PROOF",
+  "scriptBudget": {
+    "targetMinWords": 150,
+    "targetMaxWords": 175,
+    "hardMinWords": 140,
+    "hardMaxWords": 190,
+    "referenceWpm": 140,
+    "targetMinSeconds": 60,
+    "targetMaxSeconds": 75,
+    "allowShorter": false,
+    "shorterReason": "",
+    "allowLonger": false,
+    "longerReason": "",
+    "allowDurationOutsideTarget": false,
+    "durationExceptionReason": ""
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 2010,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "WAITING_FOR_USER_LOCAL_MASTER",
+    "provider": "USER_PROVIDED",
+    "agentGenerationAllowed": false,
+    "agentDownloadAllowed": false,
+    "timingAuthority": false,
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "pauseCompression": {"enabled":true,"thresholdDb":-35,"triggerSeconds":0.15,"keepSeconds":0.05,"startKeepSeconds":0.03,"maxAllowedSilenceSeconds":0.25,"maxReductionRatio":0.25}
+  },
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":250,"horizontalInset":104,"maxWidth":860,"style":"transparent_glass_overlay"},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"SOURCE_CARDS_PENDING_LOCAL_RESOLUTION","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":0,"cameraMotion":"CONTROLLED_PUSH_FOCUS_PARALLAX","sourceProof":"OFFICIAL_SOURCE_CARD"},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":15,"maxStaticSeconds":4.5,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","ImpactNumber","SourceProofCard"]},
+  "export": {"coverTimeSeconds":2.6,"coverText":"OPENAI × CURSOR: VERTRAG ENDET?","finalCaptionFile":"03-caption/FINAL-CAPTION.txt","requiredPackage":["video","cover","caption","manifest"],"socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"OpenAI zieht die Reißleine","startFrame":0,"endFrame":330,"accent":"#F04438","heroMoment":"OpenAI-to-Cursor connection breaks as SpaceX ownership card lands","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Übergang bis 12. November","startFrame":330,"endFrame":690,"accent":"#F79009","heroMoment":"Contract timeline runs from announcement to proposed cutoff date","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Vertrag, Sicherheit und Astra","startFrame":690,"endFrame":1200,"accent":"#7A5AF8","heroMoment":"Terms-and-safety gate closes before future Astra model","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Cursor bleibt – drei Wege","startFrame":1200,"endFrame":1650,"accent":"#2E90FA","heroMoment":"Cursor remains while three OpenAI access routes branch around direct contract","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Das größere Plattform-Risiko","startFrame":1650,"endFrame":2010,"accent":"#12B76A","heroMoment":"Model, contract and owner gates decide what reaches the developer tool","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/",
+    "https://help.openai.com/articles/20001506-using-openai-models-in-cursor",
+    "https://cursor.com/blog/joining-spacex"
+  ]
+}
