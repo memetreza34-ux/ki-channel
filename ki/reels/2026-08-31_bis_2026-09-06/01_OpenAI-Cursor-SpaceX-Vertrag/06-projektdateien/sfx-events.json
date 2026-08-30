@@ -1,13 +1,30 @@
 {
-  "version": 1,
-  "status": "CONTENT_PLANNED_TIMING_PENDING",
+  "version": 2,
+  "status": "PREVIEW_SYNCED_TO_CAPTIONS_ALIGNMENT_REQUIRED",
   "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "captionSync": {
+    "script": "ki/scripts/sync-reel-sfx-to-captions.mjs",
+    "rule": "SENTENCE_PROGRESS_TO_SCENE_OFFSET",
+    "rerunAfterForcedAlignment": true
+  },
   "events": [
-    {"id":"sfx01","sceneId":"scene1","purpose":"SpaceX ownership card lands","anchor":{"type":"SCENE_OFFSET","frame":138},"roles":["impact","transition-down"],"keywords":["impact","drop"],"preferredDurationSeconds":0.35,"volume":0.12},
-    {"id":"sfx02","sceneId":"scene1","purpose":"Model connection breaks","anchor":{"type":"SCENE_OFFSET","frame":230},"roles":["tech-accent","ui-error"],"keywords":["break","digital"],"preferredDurationSeconds":0.25,"volume":0.10},
-    {"id":"sfx03","sceneId":"scene2","purpose":"Proposed date locks into timeline","anchor":{"type":"SCENE_OFFSET","frame":238},"roles":["ui-confirm","impact"],"keywords":["confirm","date"],"preferredDurationSeconds":0.22,"volume":0.09},
-    {"id":"sfx04","sceneId":"scene3","purpose":"Astra route is blocked by safety gate","anchor":{"type":"SCENE_OFFSET","frame":270},"roles":["ui-error","tech-accent"],"keywords":["deny","scan"],"preferredDurationSeconds":0.30,"volume":0.10},
-    {"id":"sfx05","sceneId":"scene4","purpose":"Three alternative access routes complete","anchor":{"type":"SCENE_OFFSET","frame":310},"roles":["ui-confirm","digital-accent"],"keywords":["success","route"],"preferredDurationSeconds":0.25,"volume":0.09},
-    {"id":"sfx06","sceneId":"scene5","purpose":"Final platform-access takeaway lands","anchor":{"type":"SCENE_OFFSET","frame":286},"roles":["impact","ui-confirm"],"keywords":["final","confirm"],"preferredDurationSeconds":0.32,"volume":0.11}
+    {"id":"sfx01","sceneId":"scene1","purpose":"SpaceX ownership card lands on the ownership phrase","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.72},"anchor":{"type":"SCENE_OFFSET","frame":107},"roles":["impact","transition-down"],"keywords":["impact","drop"],"preferredDurationSeconds":0.30,"volume":0.10},
+    {"id":"sfx02","sceneId":"scene1","purpose":"28 August announcement date stamps in","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.08},"anchor":{"type":"SCENE_OFFSET","frame":160},"roles":["ui-click","tech-accent"],"keywords":["click","date"],"preferredDurationSeconds":0.16,"volume":0.065},
+    {"id":"sfx03","sceneId":"scene1","purpose":"OpenAI-Cursor provider cable fractures","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.63},"anchor":{"type":"SCENE_OFFSET","frame":262},"roles":["tech-accent","ui-error"],"keywords":["break","digital"],"preferredDurationSeconds":0.24,"volume":0.095},
+    {"id":"sfx04","sceneId":"scene1","purpose":"Contract wind-down consequence card lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.78},"anchor":{"type":"SCENE_OFFSET","frame":289},"roles":["impact","ui-confirm"],"keywords":["impact","status"],"preferredDurationSeconds":0.24,"volume":0.085},
+
+    {"id":"sfx05","sceneId":"scene2","purpose":"Proposed November 12 date locks into the timeline","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.66},"anchor":{"type":"SCENE_OFFSET","frame":96},"roles":["ui-confirm","impact"],"keywords":["confirm","date"],"preferredDurationSeconds":0.20,"volume":0.08},
+    {"id":"sfx06","sceneId":"scene2","purpose":"Existing models receive CONTINUE state","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.12},"anchor":{"type":"SCENE_OFFSET","frame":171},"roles":["ui-confirm","digital-accent"],"keywords":["success","continue"],"preferredDurationSeconds":0.18,"volume":0.065},
+    {"id":"sfx07","sceneId":"scene2","purpose":"Earlier-stop warning card appears","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.74},"anchor":{"type":"SCENE_OFFSET","frame":304},"roles":["ui-error","tech-accent"],"keywords":["warning","deny"],"preferredDurationSeconds":0.22,"volume":0.075},
+
+    {"id":"sfx08","sceneId":"scene3","purpose":"OpenAI explanation scan beam crosses the proof card","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.64},"anchor":{"type":"SCENE_OFFSET","frame":106},"roles":["tech-accent","digital-accent"],"keywords":["scan","digital"],"preferredDurationSeconds":0.22,"volume":0.065},
+    {"id":"sfx09","sceneId":"scene3","purpose":"Astra hits the Cursor lock gate","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.62},"anchor":{"type":"SCENE_OFFSET","frame":270},"roles":["ui-error","impact"],"keywords":["deny","lock"],"preferredDurationSeconds":0.26,"volume":0.09},
+    {"id":"sfx10","sceneId":"scene3","purpose":"Final termination status changes to NOT CONFIRMED","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s07","progress":0.36},"anchor":{"type":"SCENE_OFFSET","frame":398},"roles":["ui-click","tech-accent"],"keywords":["status","pending"],"preferredDurationSeconds":0.16,"volume":0.06},
+
+    {"id":"sfx11","sceneId":"scene4","purpose":"Own API key route clicks into place","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.50},"anchor":{"type":"SCENE_OFFSET","frame":278},"roles":["ui-click","digital-accent"],"keywords":["click","route"],"preferredDurationSeconds":0.16,"volume":0.06},
+    {"id":"sfx12","sceneId":"scene4","purpose":"Codex IDE route clicks into place","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.68},"anchor":{"type":"SCENE_OFFSET","frame":340},"roles":["ui-click","digital-accent"],"keywords":["click","route"],"preferredDurationSeconds":0.16,"volume":0.06},
+    {"id":"sfx13","sceneId":"scene4","purpose":"AI Gateway completes the three-route stack","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.84},"anchor":{"type":"SCENE_OFFSET","frame":395},"roles":["ui-confirm","digital-accent"],"keywords":["success","route"],"preferredDurationSeconds":0.20,"volume":0.075},
+
+    {"id":"sfx14","sceneId":"scene5","purpose":"Final platform-relationship payoff lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s11","progress":0.85},"anchor":{"type":"SCENE_OFFSET","frame":323},"roles":["impact","ui-confirm"],"keywords":["final","confirm"],"preferredDurationSeconds":0.28,"volume":0.095}
   ]
 }
