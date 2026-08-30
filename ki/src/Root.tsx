@@ -98,6 +98,14 @@ import {
   ReelGPT56APIPricesFastMode,
 } from './reels/gpt56-api-prices-fastmode';
 import {
+  OPENAI_CURSOR_COMPOSITION_ID,
+  OPENAI_CURSOR_DURATION_IN_FRAMES,
+  OPENAI_CURSOR_FPS,
+  OPENAI_CURSOR_HEIGHT,
+  OPENAI_CURSOR_WIDTH,
+  ReelOpenAICursorSpaceXContract,
+} from './reels/openai-cursor-spacex-contract';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -223,6 +231,15 @@ export const RemotionRoot: React.FC = () => (
         fps={GPT56_API_FPS}
         width={GPT56_API_WIDTH}
         height={GPT56_API_HEIGHT}
+      />
+      <Composition
+        id={OPENAI_CURSOR_COMPOSITION_ID}
+        component={ReelOpenAICursorSpaceXContract}
+        defaultProps={{voiceoverSrc: runtimeAudio(OPENAI_CURSOR_COMPOSITION_ID), showCaptions: true, showSfx: true}}
+        durationInFrames={OPENAI_CURSOR_DURATION_IN_FRAMES}
+        fps={OPENAI_CURSOR_FPS}
+        width={OPENAI_CURSOR_WIDTH}
+        height={OPENAI_CURSOR_HEIGHT}
       />
     </Folder>
 
