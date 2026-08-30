@@ -9,7 +9,7 @@ This is the highest-level KI-channel workflow. Use it when the user wants the st
 ## 1. Bootstrap
 
 1. Call `/bootstrap-ki-channel`.
-2. Read `REPO-STATE.md`, `GEMINI.md`, `.agents/agents.md`, the target `PHASE-STATUS.md`, `reel.json`, `story-beats.json`, script and current Remotion source.
+2. Read `REPO-STATE.md`, `GEMINI.md`, `.agents/agents.md`, the target `PHASE-STATUS.md`, `reel.json`, `story-beats.json`, `LEVEL-UP-PLAN.json` when present, script and current Remotion source.
 3. Confirm the active branch and current production phase.
 4. Never silently switch to `main`.
 
@@ -22,9 +22,16 @@ Invoke independent subagents concurrently with workspace `inherit`:
 - `ki-motion-researcher`: audit every major spoken beat and find stronger shared/Remotion/Remotion-Bits motion options where useful.
 - `ki-dependency-auditor`: check local version/peer/API compatibility when the reel uses Effects, Three, Skia, Rive, Lottie or other sensitive packages.
 
-If a previous render/master or story-beat still set exists, also invoke:
+For branded/current-news reels, explicitly audit the Level-Up contract:
 
-- `ki-visual-qa-auditor`: audit the existing real artifacts and identify concrete static/visual/story problems.
+- central brand names must have a real brand/product/source strategy or plain typographic fallback;
+- no generic icon may impersonate a brand logo;
+- at least one real official proof moment when useful;
+- major names/numbers/dates/statuses need `anchorPhrase`/`anchorWord` plans;
+- target at least five meaningful motion families and one spatial/full-frame scene where appropriate;
+- captions/microdetails must remain phone-readable.
+
+If a previous render/master or story-beat still set exists, also invoke `ki-visual-qa-auditor`.
 
 Do not let these read-only agents edit files.
 
@@ -34,9 +41,10 @@ The orchestrator combines the reports into one prioritized change list:
 
 1. factual blockers;
 2. retention/story/pacing blockers;
-3. readability/visual blockers;
-4. technical compatibility blockers;
-5. optional polish.
+3. brand/proof/voice-sync blockers;
+4. readability/visual blockers;
+5. technical compatibility blockers;
+6. optional polish.
 
 If the user has already supplied production audio, **do not silently rewrite the speaker text**. A required wording change invalidates the current audio and returns the reel to Phase 2 after the text is approved.
 
@@ -47,10 +55,12 @@ Invoke `ki-remotion-story-engineer` as the only writer on the current working tr
 It may:
 
 - reuse shared StoryMotion/StoryMedia primitives;
+- use `reel-level-up-standard` and `reel-render-review-standard`;
 - use relevant official Remotion skills;
 - use `remotion-bits-discovery` and Remotion Bits MCP for a genuinely missing pattern;
-- strengthen camera/reframe, transitions, physical motion, proof visuals and visual reactions;
-- run focused story/type checks.
+- strengthen real brand fidelity, proof crops, camera/reframe, transitions, physical motion and visual reactions;
+- use typographic brand names rather than fake-logo generic icons when no approved asset exists;
+- run focused story/type/level-up checks.
 
 Do not spawn a second writer against the same files. Competing design experiments must use isolated Git worktrees/branches.
 
@@ -61,15 +71,18 @@ Look for the complete user-created `01-script-audio/voiceover.mp3` or `.wav`.
 If missing:
 
 1. run Phase-1 structure/story gates;
-2. ensure the copyable voiceover text is final;
-3. report `PHASE 2 — WARTET AUF NUTZER-AUDIO`;
-4. stop. Never create, synthesize or download the voiceover.
+2. for new Level-Up reels run `node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>`;
+3. ensure brand/proof plans and copyable voiceover text are final;
+4. report `PHASE 2 — WARTET AUF NUTZER-AUDIO`;
+5. stop. Never create, synthesize or download the voiceover.
 
 ## 6. Phase-3 audio lock
 
 If user audio exists, invoke `ki-audio-sync-engineer`.
 
 It performs runtime WAV preparation, pause handling, forced alignment, word timings, caption/scene lock, beat retiming and semantic SFX alignment using the actual final audio.
+
+For Level-Up reels, major reveals must then be checked against the real `WORD-TIMINGS.json`. Brand names, dates, numbers and state changes should lock to the actual spoken phrase where practical. Sentence-progress timing remains fallback only.
 
 ## 7. Real visual QA
 
@@ -78,7 +91,8 @@ It performs runtime WAV preparation, pause handling, forced alignment, word timi
 3. Generate the pixel-delta diagnostic and manually inspect every `SUSPICIOUS_STATIC` pair.
 4. Use Chrome DevTools MCP and Antigravity Browser when available to inspect Remotion Studio/local preview, console, layout and real visual states.
 5. Invoke `ki-visual-qa-auditor` on the resulting artifacts.
-6. Fix concrete FAIL findings through `ki-remotion-story-engineer`, then re-render/re-review.
+6. Explicitly review `BRAND_FIDELITY`, `REAL_PROOF_MOMENT`, `NO_FAKE_BRAND_ICON`, `WORD_LOCKED_MAJOR_REVEALS`, `MOTION_GRAMMAR_DIVERSITY`, `NO_CARD_DECK_FEEL`, `FULL_VERTICAL_STAGE_USE`, `MICRODETAILS_PHONE_READABLE` and `SFX_SEMANTIC_DENSITY` on the real render.
+7. Fix concrete FAIL findings through `ki-remotion-story-engineer`, then re-render/re-review.
 
 Never turn source inspection or a high pixel-delta score into `VISUAL PASS`.
 
