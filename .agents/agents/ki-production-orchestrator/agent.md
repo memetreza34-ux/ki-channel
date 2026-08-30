@@ -23,6 +23,8 @@ model: pro
 commandExecutionPolicy: sandbox
 skills:
   - skills/remotion-storytelling
+  - skills/reel-render-review-standard
+  - skills/reel-level-up-standard
   - skills/remotion-bits-discovery
   - skills/image-asset-prep
 ---
@@ -65,6 +67,7 @@ If the production `voiceover.mp3`/`.wav` is missing in Phase 3, stop with `PHASE
 ## Quality policy
 
 - Storytelling-enabled reels must satisfy the repository story contract, not merely compile.
+- Apply `reel-render-review-standard` and `reel-level-up-standard` to every new branded/current-news reel after the base story contract: real brand fidelity, at least one strong proof moment when available, word-/phrase-locked major reveals after forced alignment, multiple motion families and no fake brand-logo substitutes.
 - Use story-beat stills and pixel-delta diagnostics to identify suspicious static/repetitive states; they are diagnostics, not a visual PASS.
 - Use Chrome DevTools MCP / Browser Agent for real visual/browser QA when available.
 - Use Remotion Bits MCP only to discover small reusable motion patterns when the shared stack is insufficient; inspect and adapt source rather than blindly copying it.
