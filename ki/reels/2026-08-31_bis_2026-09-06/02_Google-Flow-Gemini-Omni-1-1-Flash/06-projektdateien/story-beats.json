@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "status": "PHASE1_LEVEL_UP_PLANNED",
+  "storyArc": ["HOOK","PROOF","CHANGE","CONSEQUENCE","PAYOFF"],
+  "rules": {"minVisualBeats":15,"maxStaticSeconds":4.5,"everySpokenCoreClaimNeedsVisualReaction":true,"transitionMustHaveMeaning":true,"cameraMotionMustHaveMeaning":true,"sfxMustMatchVisibleEvent":true},
+  "beats": [
+    {"id":"b01","sceneId":"scene1","atRatio":0.02,"role":"HOOK","visualAction":"Google and Flow names lock into a clean branded title field","motion":"BRAND_TYPE_LOCKUP"},
+    {"id":"b02","sceneId":"scene1","atRatio":0.18,"role":"CHANGE","visualAction":"Gemini Omni 1.1 Flash model name expands behind the Flow layer","motion":"DEPTH_REVEAL"},
+    {"id":"b03","sceneId":"scene1","atRatio":0.38,"role":"PROOF","visualAction":"GA status and Aug 27 date snap into view as readable metadata","motion":"STATUS_DATE_IMPACT"},
+    {"id":"b04","sceneId":"scene1","atRatio":0.62,"role":"CONSEQUENCE","visualAction":"Four control handles appear around a video frame to signal creator control","motion":"CONTROL_HANDLE_BUILD"},
+    {"id":"b05","sceneId":"scene1","atRatio":0.82,"role":"PROOF","visualAction":"Official Google source proof frame rises into the lower stage","motion":"SOURCE_CROP_HIGHLIGHT"},
+    {"id":"b06","sceneId":"scene2","atRatio":0.04,"role":"CHANGE","visualAction":"Start frame fills the left side of the full visual stage","motion":"FULL_FRAME_IMAGE_STAGE"},
+    {"id":"b07","sceneId":"scene2","atRatio":0.22,"role":"CHANGE","visualAction":"End frame fills the right side with a distinct final state","motion":"FULL_FRAME_IMAGE_STAGE"},
+    {"id":"b08","sceneId":"scene2","atRatio":0.38,"role":"PROOF","visualAction":"A moving playhead travels from START to END","motion":"FRAME_INTERPOLATION"},
+    {"id":"b09","sceneId":"scene2","atRatio":0.58,"role":"CHANGE","visualAction":"Intermediate frames materialize along the path instead of cards","motion":"FRAME_INTERPOLATION"},
+    {"id":"b10","sceneId":"scene2","atRatio":0.78,"role":"PAYOFF","visualAction":"Consistency label lands after the interpolation completes","motion":"KINETIC_TEXT_PAYOFF"},
+    {"id":"b11","sceneId":"scene3","atRatio":0.05,"role":"PROBLEM","visualAction":"A short filmstrip visibly stops at its current endpoint","motion":"FILMSTRIP_STAGE"},
+    {"id":"b12","sceneId":"scene3","atRatio":0.30,"role":"CHANGE","visualAction":"The endpoint glows and a continuation rail opens beyond it","motion":"FILMSTRIP_EXTENSION"},
+    {"id":"b13","sceneId":"scene3","atRatio":0.48,"role":"CHANGE","visualAction":"New frames grow one after another to extend the shot","motion":"FILMSTRIP_EXTENSION"},
+    {"id":"b14","sceneId":"scene3","atRatio":0.72,"role":"CONSEQUENCE","visualAction":"Original and generated continuation remain visibly connected","motion":"CONTINUITY_LINK"},
+    {"id":"b15","sceneId":"scene3","atRatio":0.88,"role":"PAYOFF","visualAction":"A longer-scene duration bracket lands under the extended strip","motion":"MEASURE_PAYOFF"},
+    {"id":"b16","sceneId":"scene4","atRatio":0.03,"role":"CHANGE","visualAction":"360p enters as the small fast draft tile","motion":"RESOLUTION_LADDER"},
+    {"id":"b17","sceneId":"scene4","atRatio":0.24,"role":"CHANGE","visualAction":"720p expands to the next rung","motion":"RESOLUTION_LADDER"},
+    {"id":"b18","sceneId":"scene4","atRatio":0.42,"role":"CHANGE","visualAction":"1080p grows larger with an UPSCALED state tag","motion":"RESOLUTION_LADDER"},
+    {"id":"b19","sceneId":"scene4","atRatio":0.58,"role":"PAYOFF","visualAction":"4K fills the largest rung and receives the second UPSCALED tag","motion":"KINETIC_NUMBER"},
+    {"id":"b20","sceneId":"scene4","atRatio":0.74,"role":"CONSEQUENCE","visualAction":"Draft-to-final workflow draws from 360p to the selected final render","motion":"WORKFLOW_PATH"},
+    {"id":"b21","sceneId":"scene5","atRatio":0.03,"role":"PROOF","visualAction":"Stable model identifier appears as developer-style monospace text","motion":"MODEL_ID_LOCK"},
+    {"id":"b22","sceneId":"scene5","atRatio":0.27,"role":"PROOF","visualAction":"GA badge and official Gemini API proof frame appear","motion":"SOURCE_CROP_HIGHLIGHT"},
+    {"id":"b23","sceneId":"scene5","atRatio":0.48,"role":"CHANGE","visualAction":"Preview model moves onto a deprecation timeline","motion":"TIMELINE_PLAYHEAD"},
+    {"id":"b24","sceneId":"scene5","atRatio":0.67,"role":"CONSEQUENCE","visualAction":"30 SEP 2026 locks into the shutdown endpoint","motion":"DATE_IMPACT"},
+    {"id":"b25","sceneId":"scene5","atRatio":0.82,"role":"PAYOFF","visualAction":"Four controls — start, end, length, resolution — assemble into one creator-control frame","motion":"FULL_FRAME_DIAGRAM"}
+  ]
+}

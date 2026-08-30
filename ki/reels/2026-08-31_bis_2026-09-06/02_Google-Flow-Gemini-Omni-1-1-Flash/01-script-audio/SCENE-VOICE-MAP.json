@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {"sceneStartAnchor":"FIRST_MAPPED_WORD","sceneStartToleranceFrames":4,"firstSceneLeadFrames":8,"captionGroupingMaySplitSentences":true,"sceneTextMustReconstructExactly":true,"sceneOrderMustFollowVoiceOrder":true},
+  "sentences": [
+    {"sentenceId":"s01","sceneId":"scene1","text":"Google hat Flow gerade ein Video-Upgrade gegeben, das für Creator deutlich wichtiger ist als nur bessere Bildqualität."},
+    {"sentenceId":"s02","sceneId":"scene1","text":"Gemini Omni 1.1 Flash ist jetzt allgemein verfügbar und kann Videos nicht nur neu erzeugen, sondern gezielter kontrollieren."},
+    {"sentenceId":"s03","sceneId":"scene2","text":"Erstens: Du kannst ein Start- und ein Endbild vorgeben."},
+    {"sentenceId":"s04","sceneId":"scene2","text":"Omni erzeugt die Bewegung dazwischen. Das macht Übergänge und Charakter-Konsistenz deutlich planbarer."},
+    {"sentenceId":"s05","sceneId":"scene3","text":"Zweitens: Bestehende Clips lassen sich am Ende verlängern."},
+    {"sentenceId":"s06","sceneId":"scene3","text":"Aus einem kurzen Shot kann so eine längere Szene werden, ohne komplett neu anzufangen."},
+    {"sentenceId":"s07","sceneId":"scene4","text":"Drittens: Google unterstützt jetzt 360p, 720p, 1080p und 4K. 360p eignet sich für schnelle Entwürfe; 1080p und 4K werden hochskaliert."},
+    {"sentenceId":"s08","sceneId":"scene4","text":"Für Flow bedeutet das: erst günstig Ideen testen, dann nur die besten Varianten größer ausgeben."},
+    {"sentenceId":"s09","sceneId":"scene5","text":"Und noch wichtig für Entwickler: Das stabile Modell heißt gemini-omni-1.1-flash. Die alte Preview-Version soll am 30. September abgeschaltet werden."},
+    {"sentenceId":"s10","sceneId":"scene5","text":"Der eigentliche Sprung ist also nicht nur Qualität. Google gibt Creatorn mehr Kontrolle über Anfang, Ende, Länge und Auflösung eines KI-Clips."}
+  ]
+}

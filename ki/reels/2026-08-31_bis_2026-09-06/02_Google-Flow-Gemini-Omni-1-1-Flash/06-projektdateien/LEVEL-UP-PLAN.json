@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": true,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "brandMoments": [
+    {"brand":"Google","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false},
+    {"brand":"Flow","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false},
+    {"brand":"Gemini Omni 1.1 Flash","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false}
+  ],
+  "realProofMoments": [
+    {"sceneId":"scene1","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-labs/new-creative-controls-google-flow/","remoteRenderAllowed":false},
+    {"sceneId":"scene5","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://ai.google.dev/gemini-api/docs/models/gemini-omni-flash","remoteRenderAllowed":false}
+  ],
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"Google hat Flow","fallbackProgress":0.08},
+    {"sceneId":"scene1","sentenceId":"s02","anchorPhrase":"Gemini Omni 1.1 Flash","fallbackProgress":0.12},
+    {"sceneId":"scene2","sentenceId":"s03","anchorPhrase":"Start- und ein Endbild","fallbackProgress":0.56},
+    {"sceneId":"scene3","sentenceId":"s05","anchorPhrase":"am Ende verlängern","fallbackProgress":0.62},
+    {"sceneId":"scene4","sentenceId":"s07","anchorPhrase":"360p, 720p, 1080p und 4K","fallbackProgress":0.28},
+    {"sceneId":"scene5","sentenceId":"s09","anchorPhrase":"gemini-omni-1.1-flash","fallbackProgress":0.38},
+    {"sceneId":"scene5","sentenceId":"s09","anchorPhrase":"30. September","fallbackProgress":0.78}
+  ],
+  "motionFamilies": ["BRAND_TYPE_LOCKUP","FRAME_INTERPOLATION","FILMSTRIP_EXTENSION","RESOLUTION_LADDER","CAMERA_REFRAME","SOURCE_CROP_HIGHLIGHT","KINETIC_NUMBER","FULL_FRAME_DIAGRAM"],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "fullFrameSceneIds": ["scene2","scene3"],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}
+}
