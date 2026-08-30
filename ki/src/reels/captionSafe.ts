@@ -1,13 +1,15 @@
 export const REEL_CAPTION_SAFE = Object.freeze({
-  bottom: 250,
-  horizontalInset: 104,
-  maxWidth: 860,
+  // User-reviewed 9:16 placement: captions sit clearly above the platform UI zone
+  // and leave a continuous visual stage between headline and subtitle.
+  bottom: 330,
+  horizontalInset: 76,
+  maxWidth: 928,
   maxVisibleLines: 2,
   maxWordsPerGroup: 6,
-  lowerCriticalDeadZone: 180,
-  lowerBufferEnd: 230,
-  preferredVisualEndY: 1440,
-  preferredVisualEndYMax: 1480,
+  lowerCriticalDeadZone: 220,
+  lowerBufferEnd: 300,
+  preferredVisualEndY: 1435,
+  preferredVisualEndYMax: 1485,
 } as const);
 
 export const REEL_CAPTION_WRAPPER_STYLE = Object.freeze({
@@ -25,11 +27,16 @@ export const REEL_CAPTION_GLASS_STYLE = Object.freeze({
   width: '100%',
   maxWidth: REEL_CAPTION_SAFE.maxWidth,
   textAlign: 'center' as const,
-  background: 'rgba(255,255,255,.60)',
-  border: '1px solid rgba(255,255,255,.66)',
-  borderRadius: 26,
-  padding: '15px 22px 17px',
-  boxShadow: '0 12px 34px rgba(16,32,51,.11)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
+  color: '#102033',
+  fontSize: 40,
+  lineHeight: 1.14,
+  fontWeight: 900,
+  letterSpacing: '-.018em',
+  background: 'rgba(255,255,255,.76)',
+  border: '1px solid rgba(255,255,255,.82)',
+  borderRadius: 28,
+  padding: '18px 26px 20px',
+  boxShadow: '0 16px 42px rgba(16,32,51,.13)',
+  backdropFilter: 'blur(14px)',
+  WebkitBackdropFilter: 'blur(14px)',
 } as const);
