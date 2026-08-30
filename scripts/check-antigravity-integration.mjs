@@ -24,6 +24,7 @@ const workflows = [
   'finish-ki-reel',
   'verify-ki-reel',
   'audit-remotion-upgrade',
+  'prepare-local-image-asset',
 ];
 const requiredFiles = [
   'GEMINI.md',
@@ -33,6 +34,7 @@ const requiredFiles = [
   ...workflows.map((name) => `.agents/workflows/${name}.md`),
   '.agents/skills/remotion-storytelling/SKILL.md',
   '.agents/skills/remotion-bits-discovery/SKILL.md',
+  '.agents/skills/image-asset-prep/SKILL.md',
   '.agents/plugins/ki-channel-production/plugin.json',
   '.agents/plugins/ki-channel-production/mcp_config.json',
   '.agents/plugins/ki-channel-production/hooks.json',
@@ -48,6 +50,8 @@ const requiredFiles = [
   'scripts/analyze-story-beat-visual-deltas.mjs',
   'scripts/run-antigravity-headless-audit.mjs',
   'scripts/antigravity-audit.schema.json',
+  'scripts/prepare-local-image-asset.mjs',
+  'scripts/check-image-asset-prep-integration.mjs',
 ];
 
 for (const file of requiredFiles) if (!existsSync(path.resolve(root, file))) fail.push(`missing ${file}`);
@@ -101,13 +105,14 @@ const expectedScripts = {
   'antigravity:audit': 'node scripts/run-antigravity-headless-audit.mjs',
 };
 for (const [name, command] of Object.entries(expectedScripts)) if (pkg?.scripts?.[name] !== command) fail.push(`package.json missing/wrong ${name} script`);
+if (!pkg?.dependencies?.sharp) fail.push('package.json must keep sharp dependency for local image prep');
 
 const auditSchema = parseJson('scripts/antigravity-audit.schema.json');
 if (auditSchema?.type !== 'object') fail.push('headless audit schema must be an object schema');
 for (const field of ['mode', 'target', 'overallStatus', 'summary', 'checks', 'blockers', 'recommendedNextActions']) if (!auditSchema?.required?.includes(field)) fail.push(`headless audit schema missing required field ${field}`);
 
 for (const name of agentNames) requireTokens(`.agents/agents/${name}/agent.md`, [`name: ${name}`, 'subagent: true', '# System Prompt']);
-requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier']);
+requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/image-asset-prep', '/prepare-local-image-asset']);
 requireTokens('.agents/agents/ki-retention-story-auditor/agent.md', ['TOP DROP-OFF RISKS', 'VISUAL GRAMMAR REPETITION', 'REQUIRES_RETURN_TO_PHASE_2']);
 requireTokens('.agents/agents/ki-audio-sync-engineer/agent.md', ['PHASE 2 — WARTET AUF NUTZER-AUDIO', 'Never synthesize', 'forced alignment'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough']);
@@ -124,12 +129,17 @@ if (read('scripts/run-antigravity-headless-audit.mjs').includes('--dangerously-s
 
 requireTokens('scripts/list-antigravity-capabilities.mjs', ["rel('.agents', 'agents')", 'workspaceAgents', 'antigravityBuiltInAgents', 'parallel-subagents', 'background-tasks', 'browser-agent', 'headless-structured-output', 'singleWriterPerWorkingTree', 'useEveryRelevantCapability']);
 
+requireTokens('scripts/prepare-local-image-asset.mjs', ["import sharp from 'sharp'", 'limitInputPixels: 64_000_000', 'PREPARED_NOT_PRODUCTION_APPROVED', 'metadataStripped: true', 'sourceOverwritten: false', 'productionManifestModified: false', 'humanVisualReviewRequired: true']);
+requireTokens('scripts/check-image-asset-prep-integration.mjs', ['IMAGE ASSET PREP INTEGRATION: PASSED', 'metadata: stripped', 'production approval: separate provenance + visual gate required']);
+requireTokens('.agents/skills/image-asset-prep/SKILL.md', ['already-local', 'provenance', 'PREPARED_NOT_PRODUCTION_APPROVED', 'SHA256', 'visual review'], {caseInsensitive: true});
+
 for (const workflow of workflows) requireTokens(`.agents/workflows/${workflow}.md`, [`# /${workflow}`]);
 requireTokens('.agents/workflows/maximize-ki-reel.md', ['ki-fact-researcher', 'ki-retention-story-auditor', 'ki-motion-researcher', 'ki-dependency-auditor', 'ki-remotion-story-engineer', 'ki-audio-sync-engineer', 'ki-visual-qa-auditor', 'ki-release-verifier']);
 requireTokens('.agents/workflows/parallel-audit-ki-reel.md', ['ki-fact-researcher', 'ki-retention-story-auditor', 'ki-motion-researcher', 'ki-dependency-auditor']);
 requireTokens('.agents/workflows/visual-qa-ki-reel.md', ['antigravity:story-stills', 'analyze-story-beat-visual-deltas.mjs', 'Chrome DevTools MCP', 'ki-visual-qa-auditor']);
 requireTokens('.agents/workflows/sync-chatgpt-handoff.md', ['git fetch --all --prune', 'voiceover.mp3', 'maximize-ki-reel']);
 requireTokens('.agents/workflows/audit-remotion-upgrade.md', ['ki-dependency-auditor', 'STAY_PINNED', 'UPGRADE_AFTER_PR28', 'Do not edit package files']);
+requireTokens('.agents/workflows/prepare-local-image-asset.md', ['node scripts/prepare-local-image-asset.mjs', '--provenance=', 'PREPARED_NOT_PRODUCTION_APPROVED', 'Do not', 'visual']);
 
 requireTokens('.agents/ANTIGRAVITY-LOCAL-SETUP.md', ['--dangerously-skip-permissions', 'Modern Web Guidance', '/teamwork-preview', 'antigravity:audit', 'antigravity:story-stills']);
 requireTokens('GEMINI.md', ['.agents/agents/', 'antigravity:capabilities', '/bootstrap-ki-channel', '/sync-chatgpt-handoff', '/parallel-audit-ki-reel', '/maximize-ki-reel', '/visual-qa-ki-reel', '/audit-remotion-upgrade', 'Chrome DevTools MCP', 'Remotion Bits MCP', 'GitHub MCP', 'remotion-storytelling', 'analyze-story-beat-visual-deltas.mjs', 'antigravity:audit', 'genau ein Writer'], {caseInsensitive: true});
@@ -152,5 +162,6 @@ console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
 console.log('hooks: session context + PreTool safety + PostTool regression + Stop guard');
 console.log('visual QA: per-story-beat stills + pixel-delta diagnostics wired');
+console.log('image prep: local Sharp derivative + provenance + visual-review gate wired');
 console.log('headless: structured agy audits wired with sandbox and no permission bypass');
 console.log('audio boundary: user-production-voiceover guard wired');
