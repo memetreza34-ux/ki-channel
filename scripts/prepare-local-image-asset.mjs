@@ -91,8 +91,9 @@ if (!metadata.width || !metadata.height) fail('input dimensions could not be rea
 if ((metadata.pages ?? 1) > 1) fail('animated/multipage images are not accepted in the automatic path.', 2);
 if (!['jpeg', 'png', 'webp'].includes(String(metadata.format || '').toLowerCase())) fail(`decoded input format ${metadata.format || 'unknown'} is not allowlisted.`, 2);
 
-const orientedWidth = metadata.autoOrient?.width ?? metadata.width;
-const orientedHeight = metadata.autoOrient?.height ?? metadata.height;
+const orientationSwapsAxes = [5, 6, 7, 8].includes(Number(metadata.orientation || 1));
+const orientedWidth = orientationSwapsAxes ? metadata.height : metadata.width;
+const orientedHeight = orientationSwapsAxes ? metadata.width : metadata.height;
 const coverScale = Math.max(width / orientedWidth, height / orientedHeight);
 const containScale = Math.min(width / orientedWidth, height / orientedHeight);
 const requiredScale = fit === 'cover' ? coverScale : containScale;
@@ -150,6 +151,7 @@ const manifest = {
     decodedFormat: metadata.format,
     width: metadata.width,
     height: metadata.height,
+    exifOrientation: metadata.orientation ?? null,
     orientedWidth,
     orientedHeight,
     pages: metadata.pages ?? 1,
