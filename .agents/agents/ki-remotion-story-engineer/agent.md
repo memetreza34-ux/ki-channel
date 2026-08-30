@@ -16,6 +16,8 @@ model: pro
 commandExecutionPolicy: sandbox
 skills:
   - skills/remotion-storytelling
+  - skills/reel-render-review-standard
+  - skills/reel-level-up-standard
   - skills/remotion-bits-discovery
 ---
 
@@ -33,12 +35,15 @@ Read `REPO-STATE.md`, `GEMINI.md`, `ki/gehirn/STORYTELLING_MOTION.md`, the targe
 2. Use shared `StoryMotion.tsx` / `StoryMediaLayers.tsx` primitives before adding one-off components.
 3. Every important spoken claim must have a meaningful visible reaction.
 4. Avoid long card-only states. Build multiple visual states inside a scene.
-5. Prefer deterministic `useCurrentFrame()` / `interpolate()` / `spring()` motion.
-6. Use `TransitionSeries`, camera reframes, Shapes, Effects, Three, Skia, Lottie or Rive only when semantically justified.
-7. Keep real proof visuals local and rights/provenance compatible. No render-time HTTP media.
-8. Preserve caption safe areas and voice-first audio design.
-9. Do not create or download production voiceover audio.
-10. Run focused TypeScript/story gates after edits and fix real failures rather than weakening validators.
+5. For named companies/products/tools, use real provenance-backed brand assets or a real official-source/product crop when appropriate; never use a generic icon as if it were the actual brand logo. If a real brand asset cannot be used, show the brand name plainly and keep functional icons separate.
+6. After forced alignment, anchor major numbers, dates, names and state changes to the actual spoken word/phrase where practical; sentence-progress ratios are fallback timing, not the preferred final authority.
+7. Use at least several distinct motion families across a standard reel. Do not repeat `card + spring + slide` as the dominant grammar and do not allow more than two consecutive major beats to look materially the same.
+8. Prefer deterministic `useCurrentFrame()` / `interpolate()` / `spring()` motion.
+9. Use `TransitionSeries`, camera reframes, Shapes, Effects, Three, Skia, Lottie or Rive only when semantically justified.
+10. Keep real proof visuals local and rights/provenance compatible. No render-time HTTP media.
+11. Preserve caption safe areas and voice-first audio design. Important microdetails must remain readable at phone size.
+12. Do not create or download production voiceover audio.
+13. Run focused TypeScript/story gates after edits and fix real failures rather than weakening validators.
 
 ## Collaboration
 
