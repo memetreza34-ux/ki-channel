@@ -12,6 +12,21 @@ export const REEL_CAPTION_SAFE = Object.freeze({
   preferredVisualEndYMax: 1485,
 } as const);
 
+export const REEL_COVER_HOOK = Object.freeze({
+  // Standard 30-fps cover candidate: frame 18 (~0.6 s) with 15-frame clean hold.
+  // Level-Up reels may choose another candidate, but it must stay inside the first second.
+  defaultCandidateFrame: 18,
+  maxCandidateFrame: 30,
+  minHoldFrames: 12,
+  defaultHoldFrames: 15,
+  defaultCaptionSuppressUntilFrame: 33,
+} as const);
+
+export const shouldShowReelCaption = (
+  frame: number,
+  suppressUntilFrame = REEL_COVER_HOOK.defaultCaptionSuppressUntilFrame,
+) => frame >= Math.max(0, suppressUntilFrame);
+
 export const REEL_CAPTION_WRAPPER_STYLE = Object.freeze({
   position: 'absolute' as const,
   left: REEL_CAPTION_SAFE.horizontalInset,
