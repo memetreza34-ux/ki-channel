@@ -13,13 +13,13 @@ export const REEL_CAPTION_SAFE = Object.freeze({
 } as const);
 
 export const REEL_COVER_HOOK = Object.freeze({
-  // Level-Up v2 default at 30 fps: candidate frame 18 (~0.6 s) plus a clean hold.
-  // The whole candidate must remain inside the first second; captions are suppressed beyond it by default.
-  defaultCandidateFrame: 18,
+  // Level-Up v2 default at 30 fps: candidate frame 15 (0.5 s) + 15-frame clean hold.
+  // The planned hold stays fully inside the first second. Captions start after that window.
+  defaultCandidateFrame: 15,
   maxCandidateFrame: 30,
   minHoldFrames: 12,
   defaultHoldFrames: 15,
-  defaultCaptionSuppressUntilFrame: 33,
+  defaultCaptionSuppressUntilFrame: 31,
 } as const);
 
 export const shouldShowReelCaption = (
