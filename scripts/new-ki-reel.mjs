@@ -82,7 +82,7 @@ const files = {
   '03-caption/FINAL-CAPTION.txt': `OFFEN — vor Final-Export durch die publish-ready Hauptcaption ersetzen.\n`,
   '04-pdf/README.md': `# 04 — PDF\n\nOptional. Nur reel-bezogene PDF-Quellen/Exports.\n`,
 
-  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render: Struktur-, Script-Budget-, Storytelling-, Level-Up-, Dauer-, Alignment-, Scene-Voice-, Voice-Lock-, SFX- und Visual-Gates ausführen.\n\nLevel-Up:\nnode ki/scripts/validate-reel-level-up.mjs <reel-package-dir>\n\nDer in reel.json gesetzte coverTimeSeconds muss bei Level-Up-Reels in der ersten Sekunde liegen und auf einen sauberen Cover-Kandidaten zeigen.\n\nDanach normaler Render-, Social-Master- und exakter 1x-Review-Pfad. COVER_FRAME_READY, COVER_FRAME_CLEAN, BRAND_FIDELITY, REAL_PROOF_MOMENT, REAL_MEDIA_MIX, WORD_LOCKED_MAJOR_REVEALS, SCENE_DENSITY, NO_VISUAL_OVERLAP, MOTION_GRAMMAR_DIVERSITY, NO_CARD_DECK_FEEL, FULL_VERTICAL_STAGE_USE, MICRODETAILS_PHONE_READABLE und SFX_SEMANTIC_DENSITY dürfen nur am echten gemasterten MP4 auf PASS gesetzt werden.\n`,
+  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render: Struktur-, Script-Budget-, Storytelling-, Level-Up-, Dauer-, Alignment-, Scene-Voice-, Voice-Lock-, SFX- und Visual-Gates ausführen.\n\nLevel-Up:\nnode ki/scripts/validate-reel-level-up.mjs <reel-package-dir>\n\nDer in reel.json gesetzte coverTimeSeconds muss bei Level-Up-Reels in der ersten Sekunde liegen und auf einen sauberen Cover-Kandidaten zeigen. Der komplette geplante Cover-Hold bleibt ebenfalls innerhalb der ersten Sekunde.\n\nDanach normaler Render-, Social-Master- und exakter 1x-Review-Pfad. COVER_FRAME_READY, COVER_FRAME_CLEAN, BRAND_FIDELITY, REAL_PROOF_MOMENT, REAL_MEDIA_MIX, WORD_LOCKED_MAJOR_REVEALS, SCENE_DENSITY, NO_VISUAL_OVERLAP, MOTION_GRAMMAR_DIVERSITY, NO_CARD_DECK_FEEL, FULL_VERTICAL_STAGE_USE, MICRODETAILS_PHONE_READABLE und SFX_SEMANTIC_DENSITY dürfen nur am echten gemasterten MP4 auf PASS gesetzt werden.\n`,
 
   '06-projektdateien/README.md': `# 06 — Projektdateien\n\nEnthält reel.json, Story-/Level-Up-/Visual-/SFX-Verträge und Reviews. Ausführbarer Source liegt unter ki/src/reels/<slug>/.\n\nNeue Reels ab 2026-09-01 benötigen LEVEL-UP-PLAN.json v2 und müssen validate-reel-level-up.mjs bestehen. Cover, Brand/Proof, Real-Media-Mix, Szenendichte und Overlap werden schon in Phase 1 geplant.\n`,
 
@@ -104,7 +104,7 @@ const files = {
 }
 `,
 
-  '06-projektdateien/STORY-PLAN.md': `# Story-Plan — ${title}\n\nPflicht vor Phase 2:\n- mindestens 15 konkrete Visual Beats\n- Hook/Proof/Consequence/Payoff\n- Cover-Kandidat innerhalb der ersten Sekunde\n- aktive Voiceover-Strecken entwickeln sich etwa alle 1,5–3,0 s sichtbar weiter\n- max. ca. 4,0 s praktisch unveränderter Hauptzustand\n- jede Szene mehrere sichtbare Zustände, nicht nur dieselbe Karte\n- wichtige Reveals nach Audio an Wörter/Phrasen locken\n- nicht mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik\n- mindestens eine räumliche/full-frame Hauptszene, wenn das Thema es erlaubt\n- ein primärer Fokus pro Moment; supporting details progressiv\n`,
+  '06-projektdateien/STORY-PLAN.md': `# Story-Plan — ${title}\n\nPflicht vor Phase 2:\n- mindestens 15 konkrete Visual Beats\n- Hook/Proof/Consequence/Payoff\n- Cover-Kandidat + sauberer Hold vollständig innerhalb der ersten Sekunde\n- aktive Voiceover-Strecken entwickeln sich etwa alle 1,5–3,0 s sichtbar weiter\n- max. ca. 4,0 s praktisch unveränderter Hauptzustand\n- jede Szene mehrere sichtbare Zustände, nicht nur dieselbe Karte\n- wichtige Reveals nach Audio an Wörter/Phrasen locken\n- nicht mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik\n- mindestens eine räumliche/full-frame Hauptszene, wenn das Thema es erlaubt\n- ein primärer Fokus pro Moment; supporting details progressiv\n`,
 
   '06-projektdateien/LEVEL-UP-PLAN.json': `{
   "version": 2,
@@ -113,7 +113,7 @@ const files = {
   "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
   "coverHook": {
     "enabled": true,
-    "candidateFrame": 18,
+    "candidateFrame": 15,
     "holdFrames": 15,
     "captionFree": true,
     "headlineRequired": true,
@@ -201,7 +201,7 @@ for (const [relative,content] of Object.entries(files)) await writeFile(resolve(
 
 console.log(`KI-Reel angelegt: ${reelRoot}`);
 console.log('Phase 1: 60–75 s Voice-Locked, bevorzugt 150–175 Wörter, Hard-Limit 190.');
-console.log('Cover-first: fertiger Cover-Kandidat innerhalb Frame 0–30, mindestens 12 Frames sauber haltbar.');
+console.log('Cover-first: Default Frame 15 + 15 Frames sauberer Hold, vollständig innerhalb der ersten Sekunde.');
 console.log('Scene Density: sichtbare Entwicklung etwa alle 1,5–3,0 s, max. ca. 4,0 s praktisch unverändert.');
 console.log('Real Media: bei branded/current-news normalerweise mindestens zwei purposeful real/official Momente oder dokumentierte Ausnahme.');
 console.log('Video Prep: bereits lokale provenance-backed Kurzclips können sicher über /prepare-local-video-asset vorbereitet werden.');
