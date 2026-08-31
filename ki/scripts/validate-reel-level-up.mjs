@@ -46,12 +46,15 @@ const candidateFrame = Number(cover?.candidateFrame);
 const holdFrames = Number(cover?.holdFrames);
 if (!Number.isFinite(candidateFrame) || candidateFrame < 0 || candidateFrame > 30) fail('coverHook.candidateFrame must be 0..30.');
 if (!Number.isFinite(holdFrames) || holdFrames < 12) fail('coverHook.holdFrames must be at least 12.');
+if (candidateFrame + holdFrames > 30) fail('coverHook candidateFrame + holdFrames must be <=30 so the clean cover hold stays inside the first second.');
 if (cover?.captionFree !== true) fail('coverHook.captionFree must be true.');
 if (cover?.headlineRequired !== true) fail('coverHook.headlineRequired must be true.');
 if (cover?.primarySubjectRequired !== true) fail('coverHook.primarySubjectRequired must be true.');
 if (cover?.coverMatchesStory !== true) fail('coverHook.coverMatchesStory must be true.');
 const coverTime = Number(reel?.export?.coverTimeSeconds);
 if (!Number.isFinite(coverTime) || coverTime < 0 || coverTime > 1) fail('reel.export.coverTimeSeconds must point into the first second for Level-Up reels.');
+const coverFrameFromTime = Math.round(coverTime * Number(reel?.format?.fps || 30));
+if (Math.abs(coverFrameFromTime - candidateFrame) > 2) fail('reel.export.coverTimeSeconds must point to the planned coverHook.candidateFrame (within 2 frames).');
 
 // Brand fidelity.
 const brandMoments = Array.isArray(plan?.brandMoments) ? plan.brandMoments : [];
