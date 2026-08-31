@@ -6,7 +6,7 @@ Der Baseline-Storytelling-Standard verhindert statische Präsentations-Reels. Di
 
 Für neue branded/current-news Reels ab 2026-09-01 gilt zusätzlich zum Storytelling-Standard:
 
-1. **Cover-first Hook:** In den ersten 0–30 Frames muss mindestens ein bewusst geplanter, cover-tauglicher Frame existieren. Er braucht eine große klare Headline, ein eindeutiges Hauptmotiv/Produkt/Brand-Signal, starken Kontrast und darf nicht von Captions oder Kleingedrucktem überlagert werden. Ziel-Hold: mindestens 12 Frames, bevor der Frame stark umgebaut wird.
+1. **Cover-first Hook:** In den ersten 0–30 Frames muss mindestens ein bewusst geplanter, cover-tauglicher Frame existieren. Er braucht eine große klare Headline, ein eindeutiges Hauptmotiv/Produkt/Brand-Signal, starken Kontrast und darf nicht von Captions oder Kleingedrucktem überlagert werden. Der geplante saubere Hold muss vollständig innerhalb der ersten Sekunde liegen und mindestens 12 Frames dauern.
 2. **Brand Fidelity:** zentrale Marken/Produkte werden als echtes, provenance-backed Brand-/Produkt-Visual, echter offizieller UI-/Source-Crop oder als klare Typografie gezeigt. Ein generisches Icon darf niemals ein Markenlogo imitieren.
 3. **Real Proof:** wenn eine offizielle Quelle visuell sinnvoll ist, mindestens ein echter Proof-Moment (Screenshot/Crop/UI/Dokument) statt nur einer selbstgebauten Source-Card.
 4. **Real-Media Mix:** bei aktuellen Marken-/Produktstories sollen normalerweise mindestens zwei reale/official Visual-Momente geplant werden — z. B. Logo/Wordmark, echte UI, offizieller Source-Crop, reales Bild oder kurze reale B-Roll. Wenn das nicht sinnvoll/rechtlich sauber möglich ist, muss die Ausnahme dokumentiert werden. Video/B-Roll wird bevorzugt, wenn echte Bewegung selbst Teil des Claims ist.
@@ -28,6 +28,7 @@ Der erste starke Frame ist gleichzeitig Hook und potenzielles Social-Cover.
 Pflichtziel:
 
 - Kandidat liegt zwischen Frame 0 und Frame 30 bei 30 fps;
+- `candidateFrame + holdFrames <= 30`, damit der geplante saubere Hold vollständig in der ersten Sekunde liegt;
 - mindestens 12 Frames stabil genug für einen sauberen Screenshot;
 - Headline kurz und groß;
 - ein klarer Hauptgegenstand / Brandname / Produktvisual;
