@@ -42,7 +42,7 @@ const walkFiles = async (root) => {
   return files;
 };
 
-// 0) Canonical generator contract: Git-stable 01–06 + Storytelling + Level-Up scaffold.
+// 0) Canonical generator contract: Git-stable 01–06 + Storytelling + Level-Up v2 scaffold.
 try {
   const generator = await readFile(generatorPath,'utf8');
   for (const required of REQUIRED_REEL_DIRS) {
@@ -53,17 +53,33 @@ try {
     ["'06-projektdateien/story-beats.json'",'story-beats.json'],
     ["'06-projektdateien/STORY-PLAN.md'",'STORY-PLAN.md'],
     ["'06-projektdateien/LEVEL-UP-PLAN.json'",'LEVEL-UP-PLAN.json'],
+    ['"version": 2','Level-Up-Plan-Version 2'],
     ['minVisualBeats','Story-Beat-Mindestdichte'],
     ['maxStaticSeconds','maximale statische Story-Dauer'],
     ['WORD_TIMINGS_AFTER_FORCED_ALIGNMENT','Word/Phrase-Timing-Autorität'],
     ['genericIconMayImpersonateBrand','Brand-Fidelity-Regel'],
+    ['coverHook','Cover-first-Vertrag'],
+    ['candidateFrame','Cover-Kandidatenframe'],
+    ['holdFrames','Cover-Hold'],
+    ['realMediaMix','Real-Media-Mix'],
+    ['videoPreferredWhenMotionIsClaim','Video-bei-Motion-Regel'],
+    ['sceneDensity','Szenendichte-Vertrag'],
+    ['targetMeaningfulChangeSecondsMin','minimale Szenendichte'],
+    ['targetMeaningfulChangeSecondsMax','maximale Szenendichte'],
+    ['overlapPolicy','Overlap-Vertrag'],
+    ['onePrimaryFocusAtATime','Ein-Fokus-Regel'],
+    ['captionMayCoverCriticalVisual','Caption-Overlap-Regel'],
     ['bottom 330','Caption bottom 330'],
     ['max 6 Wörter','Caption-Gruppierung'],
+    ['COVER_FRAME_READY','Cover-Reviewfeld'],
+    ['REAL_MEDIA_MIX','Real-Media-Reviewfeld'],
     ['BRAND_FIDELITY','Brand-Fidelity-Reviewfeld'],
     ['WORD_LOCKED_MAJOR_REVEALS','Word-Lock-Reviewfeld'],
+    ['SCENE_DENSITY','Szenendichte-Reviewfeld'],
+    ['NO_VISUAL_OVERLAP','Overlap-Reviewfeld'],
     ['MOTION_GRAMMAR_DIVERSITY','Motion-Diversity-Reviewfeld'],
     ['STATIC_STATE_OVER_LIMIT_VIOLATIONS','Static-State-Reviewfeld'],
-  ]) if (!generator.includes(needle)) failures.push(`scripts/new-ki-reel.mjs verliert den Story/Level-Up-Scaffold: ${label}.`);
+  ]) if (!generator.includes(needle)) failures.push(`scripts/new-ki-reel.mjs verliert den Story/Level-Up-v2-Scaffold: ${label}.`);
 } catch (error) {
   failures.push(`scripts/new-ki-reel.mjs fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`);
 }
@@ -129,4 +145,4 @@ if (failures.length>0) {
   process.exit(1);
 }
 
-console.log('KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil plus Storytelling- und Level-Up-Scaffold; Source und Planung sind getrennt und jeder Reel-Ordner ist persistent.');
+console.log('KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil plus Storytelling- und Level-Up-v2-Scaffold mit Cover-first, Real-Media, Szenendichte und Overlap-Regeln; Source und Planung sind getrennt und jeder Reel-Ordner ist persistent.');
