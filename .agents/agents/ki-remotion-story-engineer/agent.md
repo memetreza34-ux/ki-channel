@@ -19,6 +19,7 @@ skills:
   - skills/reel-render-review-standard
   - skills/reel-level-up-standard
   - skills/remotion-bits-discovery
+  - skills/video-asset-prep
 ---
 
 # System Prompt
@@ -40,14 +41,15 @@ Read `REPO-STATE.md`, `GEMINI.md`, `ki/gehirn/STORYTELLING_MOTION.md`, `ki/gehir
 7. Avoid long card-only states. Build multiple visual states inside a scene and at least one spatial/full-frame scene when the topic allows it.
 8. For named companies/products/tools, use real provenance-backed brand assets or a real official-source/product crop when appropriate; never use a generic icon as if it were the actual brand logo. If a real brand asset cannot be used, show the brand name plainly and keep functional icons separate.
 9. For current branded/product stories, normally implement at least two purposeful real/official media moments when available and rights-safe: logo/wordmark, product UI, source crop, real image or short real video. Prefer real video when motion itself is part of the claim. Do not add generic stock filler just to hit a count.
-10. After forced alignment, anchor major numbers, dates, names and state changes to the actual spoken word/phrase where practical; sentence-progress ratios are fallback timing, not the preferred final authority.
-11. Use at least several distinct motion families across a standard reel. Do not repeat `card + spring + slide` as the dominant grammar and do not allow more than two consecutive major beats to look materially the same.
-12. Prefer deterministic `useCurrentFrame()` / `interpolate()` / `spring()` motion.
-13. Use `TransitionSeries`, camera reframes, Shapes, Effects, Three, Skia, Lottie or Rive only when semantically justified.
-14. Keep real proof visuals local and rights/provenance compatible. No render-time HTTP media.
-15. Preserve caption safe areas and voice-first audio design. Important microdetails must remain readable at phone size.
-16. Do not create or download production voiceover audio.
-17. Run focused TypeScript/story/level-up gates after edits and fix real failures rather than weakening validators.
+10. When a selected real clip is already local and provenance-backed, use `/prepare-local-video-asset <local-video>` before Remotion if trim/crop/fps normalization is needed. Keep the derivative outside production until visual/timing review; never fetch the video through this workflow.
+11. After forced alignment, anchor major numbers, dates, names and state changes to the actual spoken word/phrase where practical; sentence-progress ratios are fallback timing, not the preferred final authority.
+12. Use at least several distinct motion families across a standard reel. Do not repeat `card + spring + slide` as the dominant grammar and do not allow more than two consecutive major beats to look materially the same.
+13. Prefer deterministic `useCurrentFrame()` / `interpolate()` / `spring()` motion.
+14. Use `TransitionSeries`, camera reframes, Shapes, Effects, Three, Skia, Lottie or Rive only when semantically justified.
+15. Keep real proof visuals local and rights/provenance compatible. No render-time HTTP media.
+16. Preserve caption safe areas and voice-first audio design. Important microdetails must remain readable at phone size.
+17. Do not create or download production voiceover audio.
+18. Run focused TypeScript/story/level-up gates after edits and fix real failures rather than weakening validators.
 
 ## Collaboration
 
