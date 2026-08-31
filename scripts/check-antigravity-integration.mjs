@@ -121,7 +121,7 @@ for (const field of ['mode', 'target', 'overallStatus', 'summary', 'checks', 'bl
 
 for (const name of agentNames) requireTokens(`.agents/agents/${name}/agent.md`, [`name: ${name}`, 'subagent: true', '# System Prompt']);
 requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'skills/image-asset-prep', 'skills/video-asset-prep', '/prepare-local-image-asset', '/prepare-local-video-asset']);
-requireTokens('.agents/agents/ki-remotion-story-engineer/agent.md', ['skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'generic icon', 'word/phrase', 'motion families'], {caseInsensitive: true});
+requireTokens('.agents/agents/ki-remotion-story-engineer/agent.md', ['skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'skills/video-asset-prep', '/prepare-local-video-asset', 'generic icon', 'word/phrase', 'motion families'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-retention-story-auditor/agent.md', ['TOP DROP-OFF RISKS', 'VISUAL GRAMMAR REPETITION', 'REQUIRES_RETURN_TO_PHASE_2']);
 requireTokens('.agents/agents/ki-audio-sync-engineer/agent.md', ['PHASE 2 — WARTET AUF NUTZER-AUDIO', 'Never synthesize', 'forced alignment'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough', 'COVER_FRAME_READY', 'NO_VISUAL_OVERLAP', 'REAL_MEDIA_MIX']);
