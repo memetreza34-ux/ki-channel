@@ -56,6 +56,25 @@ if (reel?.storytelling?.enabled === true) {
   if (!Number.isFinite(staticViolations) || staticViolations !== 0) fail('STATIC_STATE_OVER_LIMIT_VIOLATIONS must be 0 for storytelling-enabled reels.');
 }
 
+const publishDate = String(reel?.publishDate || '');
+const levelUpEnabled = reel?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-01');
+if (levelUpEnabled) {
+  requirePass('COVER_FRAME_READY', 'a finished cover candidate must exist inside the first second');
+  requirePass('COVER_FRAME_CLEAN', 'cover must be caption-free, readable and screenshot-ready');
+  requirePass('BRAND_FIDELITY', 'central named brands/products must be visually recognizable');
+  requirePass('REAL_PROOF_MOMENT', 'at least one useful real official proof moment must be visible where planned');
+  requirePass('REAL_MEDIA_MIX', 'planned real/official media moments must materially appear or have an approved exception');
+  requirePass('NO_FAKE_BRAND_ICON', 'generic functional icons may not impersonate brands');
+  requirePass('WORD_LOCKED_MAJOR_REVEALS', 'major names/dates/numbers/states must land with the spoken phrase');
+  requirePass('SCENE_DENSITY', 'active voiceover should meaningfully develop roughly every 1.5–3 seconds without frantic cutting');
+  requirePass('NO_VISUAL_OVERLAP', 'one primary focus at a time; captions and critical visuals must not collide');
+  requirePass('MOTION_GRAMMAR_DIVERSITY', 'major beats must use varied meaningful motion families');
+  requirePass('NO_CARD_DECK_FEEL', 'reel must not read like stacked presentation cards');
+  requirePass('FULL_VERTICAL_STAGE_USE', 'usable 9:16 stage should be intentionally occupied');
+  requirePass('MICRODETAILS_PHONE_READABLE', 'important dates/status/source labels must remain phone-readable');
+  requirePass('SFX_SEMANTIC_DENSITY', 'sound density must follow visible semantic event density');
+}
+
 const darkScenes = Number(get('DARK_FULL_FRAME_SCENES'));
 if (!Number.isFinite(darkScenes) || darkScenes < 0) fail('DARK_FULL_FRAME_SCENES must be a non-negative number.');
 const darkApproved = get('DARK_EXCEPTION_APPROVED');
@@ -105,3 +124,4 @@ console.log(`minimum critical hold: ${minHold} frames`);
 console.log(`SFX review: ${reel?.sfx?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`visual asset review: ${reel?.visuals?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`storytelling review: ${reel?.storytelling?.enabled === true ? 'required + passed' : 'not applicable'}`);
+console.log(`Level-Up v2 review: ${levelUpEnabled ? 'required + passed' : 'not applicable'}`);
