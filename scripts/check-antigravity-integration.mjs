@@ -25,6 +25,7 @@ const workflows = [
   'verify-ki-reel',
   'audit-remotion-upgrade',
   'prepare-local-image-asset',
+  'prepare-local-video-asset',
 ];
 const requiredFiles = [
   'GEMINI.md',
@@ -37,6 +38,7 @@ const requiredFiles = [
   '.agents/skills/reel-level-up-standard/SKILL.md',
   '.agents/skills/remotion-bits-discovery/SKILL.md',
   '.agents/skills/image-asset-prep/SKILL.md',
+  '.agents/skills/video-asset-prep/SKILL.md',
   '.agents/plugins/ki-channel-production/plugin.json',
   '.agents/plugins/ki-channel-production/mcp_config.json',
   '.agents/plugins/ki-channel-production/hooks.json',
@@ -56,6 +58,8 @@ const requiredFiles = [
   'scripts/antigravity-audit.schema.json',
   'scripts/prepare-local-image-asset.mjs',
   'scripts/check-image-asset-prep-integration.mjs',
+  'scripts/prepare-local-video-asset.mjs',
+  'scripts/check-video-asset-prep-integration.mjs',
 ];
 
 for (const file of requiredFiles) if (!existsSync(path.resolve(root, file))) fail.push(`missing ${file}`);
@@ -116,17 +120,17 @@ if (auditSchema?.type !== 'object') fail.push('headless audit schema must be an 
 for (const field of ['mode', 'target', 'overallStatus', 'summary', 'checks', 'blockers', 'recommendedNextActions']) if (!auditSchema?.required?.includes(field)) fail.push(`headless audit schema missing required field ${field}`);
 
 for (const name of agentNames) requireTokens(`.agents/agents/${name}/agent.md`, [`name: ${name}`, 'subagent: true', '# System Prompt']);
-requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'skills/image-asset-prep', '/prepare-local-image-asset']);
+requireTokens('.agents/agents/ki-production-orchestrator/agent.md', ['mainAgent: true', 'invoke_subagent', 'manage_subagents', 'ki-fact-researcher', 'ki-motion-researcher', 'ki-release-verifier', 'skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'skills/image-asset-prep', 'skills/video-asset-prep', '/prepare-local-image-asset', '/prepare-local-video-asset']);
 requireTokens('.agents/agents/ki-remotion-story-engineer/agent.md', ['skills/reel-render-review-standard', 'skills/reel-level-up-standard', 'generic icon', 'word/phrase', 'motion families'], {caseInsensitive: true});
 requireTokens('.agents/agents/ki-retention-story-auditor/agent.md', ['TOP DROP-OFF RISKS', 'VISUAL GRAMMAR REPETITION', 'REQUIRES_RETURN_TO_PHASE_2']);
 requireTokens('.agents/agents/ki-audio-sync-engineer/agent.md', ['PHASE 2 — WARTET AUF NUTZER-AUDIO', 'Never synthesize', 'forced alignment'], {caseInsensitive: true});
-requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough']);
+requireTokens('.agents/agents/ki-visual-qa-auditor/agent.md', ['NOT ENOUGH EVIDENCE', 'Source code alone is never enough', 'COVER_FRAME_READY', 'NO_VISUAL_OVERLAP', 'REAL_MEDIA_MIX']);
 requireTokens('.agents/agents/ki-release-verifier/agent.md', ['fail-closed', 'NOT RUN', 'BLOCKED'], {caseInsensitive: true});
 
-requireTokens('ki/gehirn/LEVEL_UP_STANDARD.md', ['Brand Fidelity', 'Real Proof', 'Voice Semantic Lock', 'Motion Diversity', 'bottom 330', 'LEVEL-UP-PLAN.json']);
-requireTokens('ki/scripts/validate-reel-level-up.mjs', ['REEL LEVEL-UP PASSED', 'WORD_TIMINGS_AFTER_FORCED_ALIGNMENT', 'OFFICIAL_SOURCE_CROP', 'genericIconAsBrand', 'motionFamilies', 'fullFrameSceneIds', 'captionTarget.bottom']);
+requireTokens('ki/gehirn/LEVEL_UP_STANDARD.md', ['Cover-first Hook', 'Brand Fidelity', 'Real Proof', 'Real-Media Mix', 'Scene Density', 'Overlap Discipline', 'LEVEL-UP-PLAN.json']);
+requireTokens('ki/scripts/validate-reel-level-up.mjs', ['REEL LEVEL-UP PASSED', 'coverHook', 'realMediaMix', 'sceneDensity', 'overlapPolicy', 'WORD_TIMINGS_AFTER_FORCED_ALIGNMENT', 'genericIconAsBrand', 'motionFamilies', 'captionTarget.bottom']);
 requireTokens('.agents/skills/reel-render-review-standard/SKILL.md', ['CAPTIONS_HIGH_ENOUGH', 'VOICE_TO_ANIMATION_SYNC', 'MOTION_VARIETY', 'SFX_DENSITY_BALANCED']);
-requireTokens('.agents/skills/reel-level-up-standard/SKILL.md', ['Brand fidelity', 'real proof', 'anchorPhrase', 'motion grammar', 'NO_FAKE_BRAND_ICON'], {caseInsensitive: true});
+requireTokens('.agents/skills/reel-level-up-standard/SKILL.md', ['Cover-first', 'Brand fidelity', 'real proof', 'real media', 'scene density', 'Overlap discipline', 'NO_VISUAL_OVERLAP'], {caseInsensitive: true});
 
 requireTokens('scripts/antigravity-safety-gate.mjs', ['01-script-audio', 'Production voiceover is user-owned Phase 2 input', 'Remote production voiceover download is forbidden', "respond('deny'", "respond('force_ask'"]);
 requireTokens('scripts/antigravity-session-reminder.mjs', ['invocationNum', 'antigravity:capabilities', 'single-writer policy']);
@@ -143,13 +147,18 @@ requireTokens('scripts/prepare-local-image-asset.mjs', ["import sharp from 'shar
 requireTokens('scripts/check-image-asset-prep-integration.mjs', ['IMAGE ASSET PREP INTEGRATION: PASSED', 'metadata: stripped', 'production approval: separate provenance + visual gate required']);
 requireTokens('.agents/skills/image-asset-prep/SKILL.md', ['already-local', 'provenance', 'PREPARED_NOT_PRODUCTION_APPROVED', 'SHA256', 'visual review'], {caseInsensitive: true});
 
+requireTokens('scripts/prepare-local-video-asset.mjs', ['PREPARED_NOT_PRODUCTION_APPROVED', 'remote URLs are forbidden', "'-c:v','libx264'", "'-pix_fmt','yuv420p'", "'-movflags','+faststart'", "outputRoot: 'out/asset-prep/video'", 'productionManifestModified: false', 'humanVisualReviewRequired: true', 'humanTimingReviewRequired: true']);
+requireTokens('scripts/check-video-asset-prep-integration.mjs', ['VIDEO ASSET PREP INTEGRATION: PASSED', 'already-local + provenance-backed only', 'production approval: separate visual/provenance review required']);
+requireTokens('.agents/skills/video-asset-prep/SKILL.md', ['already local', 'provenance', 'PREPARED_NOT_PRODUCTION_APPROVED', 'No HTTP/remote input', 'Never overwrite the source'], {caseInsensitive: true});
+
 for (const workflow of workflows) requireTokens(`.agents/workflows/${workflow}.md`, [`# /${workflow}`]);
-requireTokens('.agents/workflows/maximize-ki-reel.md', ['ki-fact-researcher', 'ki-retention-story-auditor', 'ki-motion-researcher', 'ki-dependency-auditor', 'ki-remotion-story-engineer', 'ki-audio-sync-engineer', 'ki-visual-qa-auditor', 'ki-release-verifier']);
+requireTokens('.agents/workflows/maximize-ki-reel.md', ['ki-fact-researcher', 'ki-retention-story-auditor', 'ki-motion-researcher', 'ki-dependency-auditor', 'ki-remotion-story-engineer', 'ki-audio-sync-engineer', 'ki-visual-qa-auditor', 'ki-release-verifier', 'COVER_FRAME_READY', 'REAL_MEDIA_MIX', 'SCENE_DENSITY', 'NO_VISUAL_OVERLAP']);
 requireTokens('.agents/workflows/parallel-audit-ki-reel.md', ['ki-fact-researcher', 'ki-retention-story-auditor', 'ki-motion-researcher', 'ki-dependency-auditor']);
 requireTokens('.agents/workflows/visual-qa-ki-reel.md', ['antigravity:story-stills', 'analyze-story-beat-visual-deltas.mjs', 'Chrome DevTools MCP', 'ki-visual-qa-auditor']);
 requireTokens('.agents/workflows/sync-chatgpt-handoff.md', ['git fetch --all --prune', 'voiceover.mp3', 'maximize-ki-reel']);
 requireTokens('.agents/workflows/audit-remotion-upgrade.md', ['ki-dependency-auditor', 'STAY_PINNED', 'UPGRADE_AFTER_PR28', 'Do not edit package files']);
 requireTokens('.agents/workflows/prepare-local-image-asset.md', ['node scripts/prepare-local-image-asset.mjs', '--provenance=', 'PREPARED_NOT_PRODUCTION_APPROVED', 'Do not', 'visual']);
+requireTokens('.agents/workflows/prepare-local-video-asset.md', ['node scripts/prepare-local-video-asset.mjs', '--provenance=', 'PREPARED_NOT_PRODUCTION_APPROVED', 'do not modify `visual-assets.json` automatically']);
 
 requireTokens('.agents/ANTIGRAVITY-LOCAL-SETUP.md', ['--dangerously-skip-permissions', 'Modern Web Guidance', '/teamwork-preview', 'antigravity:audit', 'antigravity:story-stills']);
 requireTokens('GEMINI.md', ['.agents/agents/', 'antigravity:capabilities', '/bootstrap-ki-channel', '/sync-chatgpt-handoff', '/parallel-audit-ki-reel', '/maximize-ki-reel', '/visual-qa-ki-reel', '/audit-remotion-upgrade', 'Chrome DevTools MCP', 'Remotion Bits MCP', 'GitHub MCP', 'remotion-storytelling', 'analyze-story-beat-visual-deltas.mjs', 'antigravity:audit', 'genau ein Writer'], {caseInsensitive: true});
@@ -172,7 +181,8 @@ console.log('plugin: ki-channel-production');
 console.log('MCP: Chrome DevTools + Remotion Bits + GitHub');
 console.log('hooks: session context + PreTool safety + PostTool regression + Stop guard');
 console.log('visual QA: per-story-beat stills + pixel-delta diagnostics wired');
-console.log('level-up: brand fidelity + real proof + word/phrase lock + motion diversity + full-stage review wired');
+console.log('level-up v2: cover-first + brand fidelity + real media + word lock + scene density + overlap + motion diversity wired');
 console.log('image prep: local Sharp derivative + provenance + visual-review gate wired');
+console.log('video prep: local FFmpeg short-clip derivative + provenance + visual/timing-review gate wired');
 console.log('headless: structured agy audits wired with sandbox and no permission bypass');
 console.log('audio boundary: user-production-voiceover guard wired');
