@@ -21,6 +21,7 @@ const wordTimingsPath = path.join(reelDir, '01-script-audio', 'WORD-TIMINGS.json
 const captionSource = path.join(reelDir, '03-caption', 'FINAL-CAPTION.txt');
 
 const scripts = {
+  levelUp: path.resolve('ki', 'scripts', 'validate-reel-level-up.mjs'),
   entertainment: path.resolve('ki', 'scripts', 'validate-entertainment-review.mjs'),
   localAlignment: path.resolve('ki', 'scripts', 'validate-local-forced-alignment.mjs'),
   sceneVoiceMap: path.resolve('ki', 'scripts', 'validate-scene-voice-map.mjs'),
@@ -52,6 +53,11 @@ const sceneVoiceMapRelative = reelConfig?.sceneVoiceMap?.file || '01-script-audi
 const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
 if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
 
+const publishDate = String(reelConfig?.publishDate || '');
+const levelUpEnabled = reelConfig?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-01');
+const levelUpPath = path.resolve(reelDir, reelConfig?.levelUp?.file || '06-projektdateien/LEVEL-UP-PLAN.json');
+if (levelUpEnabled && !existsSync(levelUpPath)) fail(`Level-Up plan missing: ${levelUpPath}`);
+
 const sfxEnabled = reelConfig?.sfx?.enabled === true;
 const sfxResolvedPath = sfxEnabled
   ? path.resolve(reelDir, reelConfig?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
@@ -76,6 +82,7 @@ const runGate = (label, script, args) => {
   if (gate.status !== 0) fail(`${label} failed. No final export package was created.`);
 };
 
+runGate('Level-Up gate', scripts.levelUp, [reelDir]);
 runGate('entertainment gate', scripts.entertainment, [reelDir]);
 runGate('local forced-alignment gate', scripts.localAlignment, [reelDir]);
 runGate('scene/voice map gate', scripts.sceneVoiceMap, [reelDir]);
@@ -95,6 +102,7 @@ try { renderLock = JSON.parse(await readFile(lockPath, 'utf8')); }
 catch (error) { fail(`render provenance lock is invalid: ${error.message}`); }
 if (renderLock.status !== 'RENDER_LOCKED' || renderLock.compositionId !== compositionId) fail('render provenance lock does not match this composition.');
 if (Number(renderLock.finalDurationInFrames) !== Number(reelConfig?.format?.finalDurationInFrames)) fail('final duration changed after render preparation.');
+if (Boolean(renderLock.levelUpEnabled) !== Boolean(levelUpEnabled)) fail('Level-Up enablement changed after render preparation.');
 
 let git;
 try { git = getGitState(); } catch (error) { fail(error.message); }
@@ -111,6 +119,7 @@ const currentHashes = {
   sourceTreeSha256: await sha256Directory(path.resolve(sourceDir)),
   renderContractSha256: renderContractSha256(reelConfig),
   reelJsonSha256AtFinalization: await sha256File(reelJsonPath),
+  levelUpPlanSha256: levelUpEnabled ? await sha256File(levelUpPath) : null,
   sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
   wordTimingsSha256: await sha256File(wordTimingsPath),
   captionJsonSha256: await sha256File(captionJsonPath),
@@ -121,6 +130,7 @@ const currentHashes = {
   runtimeAudioSha256: await sha256File(runtimeAudio),
 };
 const lockedKeys = ['sourceTreeSha256', 'renderContractSha256', 'sceneVoiceMapSha256', 'wordTimingsSha256', 'captionJsonSha256', 'canonicalAudioSha256', 'runtimeAudioSha256'];
+if (levelUpEnabled) lockedKeys.push('levelUpPlanSha256');
 if (sfxEnabled) lockedKeys.push('sfxResolvedSha256');
 if (visualsEnabled) lockedKeys.push('visualManifestSha256', 'visualResolvedSha256');
 for (const key of lockedKeys) {
@@ -135,6 +145,8 @@ const coverInput = rawCoverTime != null && rawCoverTime !== '' ? rawCoverTime : 
 if (coverInput == null || coverInput === '') fail('cover time missing. Set reel.json -> export.coverTimeSeconds after Hero/Contact-Sheet review or pass it as the third argument.');
 const coverTime = Number(coverInput);
 if (!Number.isFinite(coverTime) || coverTime < 0) fail('cover time is invalid.');
+if (levelUpEnabled && coverTime > 1) fail('Level-Up reels require the exported cover frame inside the first second.');
+if (levelUpEnabled && reelConfig?.export?.coverMustBeCaptionFree !== true) fail('Level-Up reel must set export.coverMustBeCaptionFree=true.');
 
 if (!existsSync(captionSource)) fail(`canonical caption missing: ${captionSource}`);
 const caption = (await readFile(captionSource, 'utf8')).trim();
@@ -157,7 +169,7 @@ try {
     '-hide_banner', '-loglevel', 'error', '-y',
     '-ss', String(coverTime), '-i', sourceVideo, '-frames:v', '1',
     '-vf', 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2', stageCover,
-  ], {encoding: 'utf8'});
+  ], {encoding:'utf8'});
   if (ffmpeg.error) throw new Error(`ffmpeg could not start: ${ffmpeg.error.message}`);
   if (ffmpeg.status !== 0) throw new Error(`cover render failed: ${ffmpeg.stderr || ffmpeg.stdout}`);
 
@@ -182,6 +194,7 @@ try {
     coverTimeSeconds: coverTime,
     caption: captionName,
     gates: {
+      levelUp: levelUpEnabled ? 'PASSED_V2_COVER_BRAND_MEDIA_DENSITY_OVERLAP' : 'NOT_APPLICABLE',
       entertainment: 'PASSED',
       localForcedAlignment: 'PASSED_EXACT_KNOWN_TRANSCRIPT',
       sceneVoiceMap: 'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS',
@@ -203,6 +216,7 @@ try {
       renderContractSha256: currentHashes.renderContractSha256,
       reelJsonSha256AtRenderLock: renderLock.hashes.reelJsonSha256AtLock,
       reelJsonSha256AtFinalization: currentHashes.reelJsonSha256AtFinalization,
+      levelUpPlanSha256: currentHashes.levelUpPlanSha256,
       sceneVoiceMapSha256: currentHashes.sceneVoiceMapSha256,
       wordTimingsSha256: currentHashes.wordTimingsSha256,
       captionJsonSha256: currentHashes.captionJsonSha256,
@@ -227,6 +241,7 @@ try {
 
   console.log('FINAL EXPORT PACKAGE READY');
   console.log(`video: ${path.join(exportDir, videoName)}`);
+  console.log(`cover: ${path.join(exportDir, coverName)} @ ${coverTime}s`);
   console.log(`manifest: ${path.join(exportDir, manifestName)}`);
   console.log(`render source commit: ${renderLock.gitCommitSha}`);
   console.log(`reviewed video sha256: ${sourceVideoSha256}`);
