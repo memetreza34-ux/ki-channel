@@ -5,7 +5,7 @@
   "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
   "coverHook": {
     "enabled": true,
-    "candidateFrame": 18,
+    "candidateFrame": 15,
     "holdFrames": 15,
     "captionFree": true,
     "headlineRequired": true,
