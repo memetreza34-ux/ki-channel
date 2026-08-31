@@ -58,7 +58,7 @@ Only one write-capable implementation agent should modify the same working tree 
 
 ## Three phases
 
-- Phase 1: script, facts, story beats, source, visuals/SFX plan and implementation.
+- Phase 1: script, facts, story beats, source, cover/brand/proof/real-media plan, visuals/SFX plan and implementation.
 - Phase 2: only the user creates the production voiceover.
 - Phase 3: sync, forced alignment, captions, final timing, render, social master and 1x review.
 
@@ -67,12 +67,18 @@ If the production `voiceover.mp3`/`.wav` is missing in Phase 3, stop with `PHASE
 ## Quality policy
 
 - Storytelling-enabled reels must satisfy the repository story contract, not merely compile.
-- Apply `reel-render-review-standard` and `reel-level-up-standard` to every new branded/current-news reel after the base story contract: real brand fidelity, at least one strong proof moment when available, word-/phrase-locked major reveals after forced alignment, multiple motion families and no fake brand-logo substitutes.
+- Apply `reel-render-review-standard` and `reel-level-up-standard` to every new branded/current-news reel after the base story contract.
+- The first second must contain a deliberate cover candidate: finished headline + clear main subject/brand/product signal, caption-free, strong contrast and stable enough for a screenshot. `reel.export.coverTimeSeconds` must point into the first second for Level-Up reels.
+- During active voiceover, target meaningful visual development roughly every 1.5–3.0 seconds without frantic cutting. Flag practically unchanged main states above about 4 seconds.
+- Enforce overlap discipline: one primary focus at a time, normally no more than two supporting details, and captions must never cover critical visuals.
+- For current branded/product stories, normally plan at least two purposeful real/official media moments — logo/wordmark, real product UI, official source crop, real image or short real video — unless a documented rights/story exception applies. Prefer real video when motion itself is the claim.
+- Never use a generic functional icon as if it were a real brand logo. If no approved brand asset exists, use a clear typographic brand name.
 - Use story-beat stills and pixel-delta diagnostics to identify suspicious static/repetitive states; they are diagnostics, not a visual PASS.
 - Use Chrome DevTools MCP / Browser Agent for real visual/browser QA when available.
 - Use Remotion Bits MCP only to discover small reusable motion patterns when the shared stack is insufficient; inspect and adapt source rather than blindly copying it.
 - For a real documentary/proof beat, prefer the exact official company/product source when it directly proves the claim. If broader real-world or historical imagery materially improves the story, use `/scout-wikimedia-proof-visuals <query>` as discovery-only. Pexels/Pixabay remain generic B-roll alternatives. Never put remote scout URLs into Remotion; selected external visuals must go through the existing local license/SHA resolver.
 - Once an external image is already local and provenance-backed, use `/prepare-local-image-asset <local-image>` only when a crop/format/size derivative materially improves the intended 9:16 beat. The Sharp prep is local-only, refuses upscale by default, preserves provenance outside embedded metadata, never edits production manifests and remains `PREPARED_NOT_PRODUCTION_APPROVED` until the exact crop passes visual QA.
+- After forced alignment, major brand names, dates, numbers, products and state changes should lock to the actual spoken word/phrase where practical. Sentence-progress timing is fallback only.
 - Use headless structured audits as independent second opinions when useful; they never replace deterministic gates or 1x review.
 - Run the canonical gates and never weaken a validator to get green.
 - Collect background tasks/subagents before stopping.
