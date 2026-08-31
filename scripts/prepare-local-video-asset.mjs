@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {createHash} from 'node:crypto';
-import {existsSync, lstatSync, statSync} from 'node:fs';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {createReadStream, existsSync, lstatSync, statSync} from 'node:fs';
+import {mkdir, writeFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
@@ -99,10 +99,13 @@ const scaleFactor = fit === 'cover'
   : Math.min(width / sourceWidth, height / sourceHeight);
 if (!allowUpscale && scaleFactor > 1.001) fail(`requested ${width}x${height} would upscale source ${sourceWidth}x${sourceHeight}; use a higher-resolution source or --allow-upscale.`);
 
-const sha256File = async (file) => {
-  const data = await readFile(file);
-  return createHash('sha256').update(data).digest('hex');
-};
+const sha256File = (file) => new Promise((resolveHash, reject) => {
+  const hash = createHash('sha256');
+  const stream = createReadStream(file);
+  stream.on('data', (chunk) => hash.update(chunk));
+  stream.on('end', () => resolveHash(hash.digest('hex')));
+  stream.on('error', reject);
+});
 const sourceSha256 = await sha256File(input);
 const base = path.basename(input, ext).replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'') || 'video';
 const key = createHash('sha256').update(`${sourceSha256}:${start}:${duration}:${width}:${height}:${fps}:${fit}:${audio}:${crf}`).digest('hex').slice(0,12);
