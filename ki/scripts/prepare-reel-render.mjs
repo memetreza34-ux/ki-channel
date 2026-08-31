@@ -29,6 +29,11 @@ const sceneVoiceMapRelative = reel?.sceneVoiceMap?.file || '01-script-audio/SCEN
 const sceneVoiceMapPath = path.resolve(reelDir, sceneVoiceMapRelative);
 if (!existsSync(sceneVoiceMapPath)) fail(`scene voice map missing: ${sceneVoiceMapPath}`);
 
+const levelUpRelative = reel?.levelUp?.file || '06-projektdateien/LEVEL-UP-PLAN.json';
+const levelUpPath = path.resolve(reelDir, levelUpRelative);
+const levelUpEnabled = reel?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(String(reel?.publishDate || '')) && String(reel.publishDate) >= '2026-09-01');
+if (levelUpEnabled && !existsSync(levelUpPath)) fail(`Level-Up plan missing: ${levelUpPath}`);
+
 const sfxEnabled = reel?.sfx?.enabled === true;
 const sfxResolvedPath = sfxEnabled
   ? path.resolve(reelDir, reel?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
@@ -93,6 +98,7 @@ const run = (label, script, args) => {
 
 run('script budget gate', path.resolve('ki/scripts/validate-reel-script-budget.mjs'), [reelDir]);
 run('storytelling motion gate', path.resolve('ki/scripts/validate-storytelling-motion.mjs'), [reelDir]);
+run('Level-Up gate', path.resolve('ki/scripts/validate-reel-level-up.mjs'), [reelDir]);
 run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
 run('local forced-alignment gate', path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), [reelDir]);
 run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
@@ -125,10 +131,12 @@ const lock = {
   compositionId,
   finalDurationInFrames: finalDuration,
   sourceDir,
+  levelUpEnabled,
   hashes: {
     sourceTreeSha256: await sha256Directory(absoluteSourceDir),
     renderContractSha256: renderContractSha256(reel),
     reelJsonSha256AtLock: await sha256File(reelPath),
+    levelUpPlanSha256: levelUpEnabled ? await sha256File(levelUpPath) : null,
     sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
     wordTimingsSha256: await sha256File(wordTimingsPath),
     captionJsonSha256: await sha256File(captionPath),
@@ -147,6 +155,7 @@ console.log(`compositionId: ${compositionId}`);
 console.log(`final duration: ${finalDuration} frames / ${(finalDuration / fps).toFixed(3)} s`);
 console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
+if (levelUpEnabled) console.log(`level-up plan sha256: ${lock.hashes.levelUpPlanSha256}`);
 console.log(`scene voice map sha256: ${lock.hashes.sceneVoiceMapSha256}`);
 console.log(`word timings sha256: ${lock.hashes.wordTimingsSha256}`);
 if (sfxEnabled) console.log(`sfx resolved sha256: ${lock.hashes.sfxResolvedSha256}`);
@@ -156,4 +165,4 @@ if (visualsEnabled) {
 }
 console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
-console.log('Production render may now use the registered composition and all locked audio/SFX/visual inputs.');
+console.log('Production render may now use the registered composition and all locked audio/SFX/visual/Level-Up inputs.');
