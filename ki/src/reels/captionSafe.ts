@@ -13,8 +13,8 @@ export const REEL_CAPTION_SAFE = Object.freeze({
 } as const);
 
 export const REEL_COVER_HOOK = Object.freeze({
-  // Standard 30-fps cover candidate: frame 18 (~0.6 s) with 15-frame clean hold.
-  // Level-Up reels may choose another candidate, but it must stay inside the first second.
+  // Level-Up v2 default at 30 fps: candidate frame 18 (~0.6 s) plus a clean hold.
+  // The whole candidate must remain inside the first second; captions are suppressed beyond it by default.
   defaultCandidateFrame: 18,
   maxCandidateFrame: 30,
   minHoldFrames: 12,
