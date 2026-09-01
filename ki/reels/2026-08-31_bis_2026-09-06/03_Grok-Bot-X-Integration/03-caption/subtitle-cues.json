@@ -26,14 +26,18 @@
     {"id":"c22","sceneId":"scene4","sentenceId":"s08","startFrame":1340,"endFrame":1395,"text":"Browser, Dateisystem und Terminal"},
     {"id":"c23","sceneId":"scene4","sentenceId":"s08","startFrame":1395,"endFrame":1450,"text":"und kann Aufgaben in"},
     {"id":"c24","sceneId":"scene4","sentenceId":"s08","startFrame":1450,"endFrame":1505,"text":"echten Tools ausführen."},
-    {"id":"c25","sceneId":"scene4","sentenceId":"s09","startFrame":1505,"endFrame":1550,"text":"Damit wird X für solche"},
-    {"id":"c26","sceneId":"scene4","sentenceId":"s09","startFrame":1550,"endFrame":1590,"text":"Bots eher zur Arbeitsquelle."},
-    {"id":"c27","sceneId":"scene5","sentenceId":"s10","startFrame":1590,"endFrame":1660,"text":"Praktisch könntest du einen Bot"},
-    {"id":"c28","sceneId":"scene5","sentenceId":"s10","startFrame":1660,"endFrame":1730,"text":"täglich relevante Posts, Erwähnungen"},
-    {"id":"c29","sceneId":"scene5","sentenceId":"s10","startFrame":1730,"endFrame":1785,"text":"und Trends sammeln lassen."},
-    {"id":"c30","sceneId":"scene5","sentenceId":"s11","startFrame":1785,"endFrame":1840,"text":"Aber: Laut offizieller Ankündigung"},
-    {"id":"c31","sceneId":"scene5","sentenceId":"s11","startFrame":1840,"endFrame":1885,"text":"ist das die erste Version."},
-    {"id":"c32","sceneId":"scene5","sentenceId":"s12","startFrame":1885,"endFrame":1915,"text":"Wie gut und zuverlässig"},
-    {"id":"c33","sceneId":"scene5","sentenceId":"s12","startFrame":1915,"endFrame":1950,"text":"muss sich noch zeigen."}
+    {"id":"c25","sceneId":"scene4","sentenceId":"s09","startFrame":1505,"endFrame":1533,"text":"Damit wird X für solche"},
+    {"id":"c26","sceneId":"scene4","sentenceId":"s09","startFrame":1533,"endFrame":1562,"text":"Bots eher zu einer Arbeitsquelle"},
+    {"id":"c27","sceneId":"scene4","sentenceId":"s09","startFrame":1562,"endFrame":1590,"text":"als nur zu einem Feed."},
+    {"id":"c28","sceneId":"scene5","sentenceId":"s10","startFrame":1590,"endFrame":1655,"text":"Praktisch könntest du einen Bot"},
+    {"id":"c29","sceneId":"scene5","sentenceId":"s10","startFrame":1655,"endFrame":1715,"text":"zum Beispiel täglich relevante Posts,"},
+    {"id":"c30","sceneId":"scene5","sentenceId":"s10","startFrame":1715,"endFrame":1770,"text":"Erwähnungen und Trends sammeln lassen."},
+    {"id":"c31","sceneId":"scene5","sentenceId":"s11","startFrame":1770,"endFrame":1810,"text":"Aber: Laut offizieller Ankündigung"},
+    {"id":"c32","sceneId":"scene5","sentenceId":"s11","startFrame":1810,"endFrame":1848,"text":"ist das die erste Version"},
+    {"id":"c33","sceneId":"scene5","sentenceId":"s11","startFrame":1848,"endFrame":1878,"text":"der Integration."},
+    {"id":"c34","sceneId":"scene5","sentenceId":"s12","startFrame":1878,"endFrame":1898,"text":"Wie gut und zuverlässig"},
+    {"id":"c35","sceneId":"scene5","sentenceId":"s12","startFrame":1898,"endFrame":1916,"text":"solche automatisierten X-Workflows"},
+    {"id":"c36","sceneId":"scene5","sentenceId":"s12","startFrame":1916,"endFrame":1933,"text":"im Alltag funktionieren,"},
+    {"id":"c37","sceneId":"scene5","sentenceId":"s12","startFrame":1933,"endFrame":1950,"text":"muss sich also noch zeigen."}
   ]
 }
