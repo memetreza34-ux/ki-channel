@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "status": "CONTENT_PLANNED_TIMING_PENDING",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","purpose":"Cover brand lock","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.08},"anchor":{"type":"SCENE_OFFSET","frame":18},"roles":["impact","ui-confirm"],"keywords":["lock","impact"],"preferredDurationSeconds":0.24,"volume":0.09},
+    {"id":"sfx02","sceneId":"scene1","purpose":"X connector completes","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.62},"anchor":{"type":"SCENE_OFFSET","frame":285},"roles":["ui-confirm","transition-right"],"keywords":["connect","confirm"],"preferredDurationSeconds":0.22,"volume":0.08},
+    {"id":"sfx03","sceneId":"scene2","purpose":"Developer account created","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.58},"anchor":{"type":"SCENE_OFFSET","frame":120},"roles":["ui-confirm"],"keywords":["create","confirm"],"preferredDurationSeconds":0.18,"volume":0.08},
+    {"id":"sfx04","sceneId":"scene2","purpose":"API credits appear","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.58},"anchor":{"type":"SCENE_OFFSET","frame":285},"roles":["tech-accent","ui-confirm"],"keywords":["credit","tick"],"preferredDurationSeconds":0.24,"volume":0.08},
+    {"id":"sfx05","sceneId":"scene3","purpose":"Post search sweep","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.18},"anchor":{"type":"SCENE_OFFSET","frame":70},"roles":["transition-right"],"keywords":["search","sweep"],"preferredDurationSeconds":0.32,"volume":0.07},
+    {"id":"sfx06","sceneId":"scene3","purpose":"Timeline scan","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.40},"anchor":{"type":"SCENE_OFFSET","frame":150},"roles":["tech-accent"],"keywords":["scan","move"],"preferredDurationSeconds":0.28,"volume":0.07},
+    {"id":"sfx07","sceneId":"scene3","purpose":"Mention ping","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.62},"anchor":{"type":"SCENE_OFFSET","frame":230},"roles":["ui-click"],"keywords":["mention","ping"],"preferredDurationSeconds":0.16,"volume":0.07},
+    {"id":"sfx08","sceneId":"scene3","purpose":"Trend rises","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.28},"anchor":{"type":"SCENE_OFFSET","frame":330},"roles":["transition-up","tech-accent"],"keywords":["trend","rise"],"preferredDurationSeconds":0.26,"volume":0.08},
+    {"id":"sfx09","sceneId":"scene3","purpose":"Bookmark locks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.76},"anchor":{"type":"SCENE_OFFSET","frame":390},"roles":["ui-confirm"],"keywords":["bookmark","lock"],"preferredDurationSeconds":0.18,"volume":0.07},
+    {"id":"sfx10","sceneId":"scene4","purpose":"Chat transforms into computer","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s07","progress":0.55},"anchor":{"type":"SCENE_OFFSET","frame":90},"roles":["impact","transition-out"],"keywords":["transform","impact"],"preferredDurationSeconds":0.30,"volume":0.09},
+    {"id":"sfx11","sceneId":"scene4","purpose":"Cloud computer boots","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.28},"anchor":{"type":"SCENE_OFFSET","frame":220},"roles":["tech-accent","ui-confirm"],"keywords":["boot","computer"],"preferredDurationSeconds":0.28,"volume":0.08},
+    {"id":"sfx12","sceneId":"scene4","purpose":"Tool handoff completes","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.72},"anchor":{"type":"SCENE_OFFSET","frame":360},"roles":["transition-right","ui-confirm"],"keywords":["handoff","route"],"preferredDurationSeconds":0.28,"volume":0.08},
+    {"id":"sfx13","sceneId":"scene5","purpose":"Daily automation loop resolves","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s10","progress":0.66},"anchor":{"type":"SCENE_OFFSET","frame":145},"roles":["ui-confirm"],"keywords":["loop","done"],"preferredDurationSeconds":0.20,"volume":0.08},
+    {"id":"sfx14","sceneId":"scene5","purpose":"First version caution lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s11","progress":0.52},"anchor":{"type":"SCENE_OFFSET","frame":255},"roles":["impact","ui-confirm"],"keywords":["status","caution"],"preferredDurationSeconds":0.24,"volume":0.08}
+  ]
+}

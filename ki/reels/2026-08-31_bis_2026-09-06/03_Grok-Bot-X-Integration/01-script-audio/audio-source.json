@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "provider": "USER_PROVIDED",
+  "status": "WAITING_FOR_USER_LOCAL_MASTER",
+  "targetFile": "voiceover.mp3",
+  "agentGenerationAllowed": false,
+  "agentDownloadAllowed": false
+}
