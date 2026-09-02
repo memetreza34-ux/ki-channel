@@ -2,85 +2,115 @@
 
 ## Ziel
 
-Der Baseline-Storytelling-Standard verhindert statische Präsentations-Reels. Dieser Level-Up-Standard verhindert den nächsten Qualitätsfehler: ein technisch sauberes Reel, das trotzdem wie ein generisches Motion-Template wirkt.
+Der Baseline-Storytelling-Standard verhindert statische Präsentations-Reels. Der Level-Up-Standard verhindert den nächsten Qualitätsfehler: ein technisch sauberes Reel, das trotzdem wie ein generisches Motion-Template wirkt oder die genannte Marke visuell kaum erkennen lässt.
 
-Für neue branded/current-news Reels ab 2026-09-01 gilt zusätzlich zum Storytelling-Standard:
+- Reels vom 2026-09-01 bis 2026-09-02 bleiben mit **Level-Up v2** kompatibel.
+- Für neue Reels ab **2026-09-03** gilt **Level-Up v3**.
+- v3 übernimmt alle v2-Regeln und verschärft Brand Recognition, Real Media und visuelle Welten.
 
-1. **Cover-first Hook:** In den ersten 0–30 Frames muss mindestens ein bewusst geplanter, cover-tauglicher Frame existieren. Er braucht eine große klare Headline, ein eindeutiges Hauptmotiv/Produkt/Brand-Signal, starken Kontrast und darf nicht von Captions oder Kleingedrucktem überlagert werden. Der geplante saubere Hold muss vollständig innerhalb der ersten Sekunde liegen und mindestens 12 Frames dauern.
-2. **Brand Fidelity:** zentrale Marken/Produkte werden als echtes, provenance-backed Brand-/Produkt-Visual, echter offizieller UI-/Source-Crop oder als klare Typografie gezeigt. Ein generisches Icon darf niemals ein Markenlogo imitieren.
-3. **Real Proof:** wenn eine offizielle Quelle visuell sinnvoll ist, mindestens ein echter Proof-Moment (Screenshot/Crop/UI/Dokument) statt nur einer selbstgebauten Source-Card.
-4. **Real-Media Mix:** bei aktuellen Marken-/Produktstories sollen normalerweise mindestens zwei reale/official Visual-Momente geplant werden — z. B. Logo/Wordmark, echte UI, offizieller Source-Crop, reales Bild oder kurze reale B-Roll. Wenn das nicht sinnvoll/rechtlich sauber möglich ist, muss die Ausnahme dokumentiert werden. Video/B-Roll wird bevorzugt, wenn echte Bewegung selbst Teil des Claims ist.
-5. **Voice Semantic Lock:** große Namen, Zahlen, Daten und Statuswechsel werden nach Forced Alignment an `anchorPhrase`/`anchorWord` gekoppelt. `sentenceId + progress` ist nur der robuste Fallback.
-6. **Motion Diversity:** mindestens fünf sinnvolle Motion-Familien pro Standard-Reel; nie mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik.
-7. **Scene Density:** aktive Voiceover-Strecken sollen sich ungefähr alle 1,5–3,0 Sekunden sichtbar weiterentwickeln — neuer Zustand, Reframe, Objekt, Proof, Route oder klarer Fokuswechsel. Ein harter Schnitt ist nicht jedes Mal nötig. Praktisch unveränderte Hauptzustände über 4,0 Sekunden sind ein Review-Risiko.
-8. **Spatial Scene:** mindestens eine Hauptszene soll überwiegend räumlich/full-frame funktionieren statt als Sammlung weißer Cards, sofern das Thema dies zulässt.
-9. **Full Vertical Stage:** die Fläche von Kapitel/Headline bis zur Caption-Safe-Zone wird bewusst genutzt. Große leere Mittelzonen sind nur mit Story-Grund erlaubt.
-10. **Overlap Discipline:** pro Moment genau ein primärer Fokus. Richtwert: höchstens 1 Hauptaussage/Hauptobjekt plus 1–2 unterstützende Details. Caption, Headline, Proof, Logo und Daten dürfen nicht ungeplant denselben visuellen Raum beanspruchen. Kritische Visuals dürfen nicht unter Caption/Overlay verschwinden.
-11. **Phone-readable Details:** wichtige Microdetails mindestens ca. 22–26 px; Datum, Status, Route und Quelle progressiv statt als Kleingedrucktes.
-12. **Caption Standard:** Shared Default `bottom 330`, horizontal `76`, max width `928`, ca. `40 px`, max zwei Zeilen, Ziel max sechs Wörter pro sichtbarer Gruppe.
-13. **Semantic SFX:** mehr Sound nur bei mehr sichtbaren Events. Connector, Impact, Break, Lock, Route, Proof und Payoff sind sinnvolle Trigger; Voice bleibt dominant.
-14. **Real Render Review:** die Level-Up-Zustände werden ausschließlich am exakten gemasterten MP4 freigegeben.
+## Level-Up v3 — Pflichtregeln
+
+1. **Cover-first Hook:** In den ersten 0–30 Frames muss ein fertiger, cover-tauglicher Frame existieren. Der geplante saubere Hold bleibt vollständig innerhalb der ersten Sekunde und dauert mindestens 12 Frames.
+2. **Brand sofort erkennbar:** Bei einer Marken-/Produktstory muss die primäre Marke bereits im Cover oder unmittelbar danach eindeutig erkennbar sein — über offizielles Logo/Wordmark, echte Produkt-UI oder einen klaren typografischen Brand-Lockup.
+3. **Brand-Reappearance:** Eine zentrale Marke darf nicht nur einmal im Hook auftauchen. Bei branded/current-news Reels sind normalerweise mindestens zwei erkennbare Brand-Momente in mindestens zwei unterschiedlichen Szenen geplant.
+4. **Keine erfundenen Logos:** Offizielles Logo/Wordmark > echte Produkt-UI > offizieller Source-Crop > klarer typografischer Markenname. Ein generisches Icon darf niemals als Markenlogo erscheinen. Ein offizielles Logo wird nicht frei „nachgebaut“, wenn dadurch eine ungenaue Fake-Version entsteht.
+5. **Real Proof:** Mindestens ein echter offizieller Proof-Moment, wenn die Story auf einer aktuellen Produkt-/Firmenbehauptung basiert. Eine selbstgebaute Source-Card allein zählt nicht als echter Proof-Crop.
+6. **Real-Media Mix v3:** Bei branded/current-news Reels normalerweise mindestens drei purposeful real/official Momente über mindestens zwei Szenen: mindestens ein Brand-/Produkt-Moment, mindestens ein offizieller Proof und mindestens ein immersiver Produkt-/Real-Media-Moment wie echte UI, reales Bild oder kurzes reales Video. Ausnahmen müssen dokumentiert werden.
+7. **Video, wenn Bewegung der Claim ist:** Wenn die Aussage eine echte Produktbewegung, Bedienung oder Video-Funktion beschreibt, wird reales Produktvideo/B-Roll bevorzugt. Ist kein sauber nutzbarer Clip verfügbar, wird die Ausnahme im Plan dokumentiert statt beliebiges Stockmaterial zu erzwingen.
+8. **Voice Semantic Lock:** Namen, Zahlen, Daten, Statuswechsel und Brand-Reveals werden nach Forced Alignment an echte Wörter/Phrasen gekoppelt. `sentenceId + progress` bleibt Fallback.
+9. **Mindestens 20 Visual Beats:** Für ein normales 60–75-s-Reel werden in v3 mindestens 20 konkrete Story-/Visual-Beats geplant. Mehr Beats bedeuten neue verständliche Zustände, nicht Effektspam.
+10. **Visual-World Variety:** Mindestens vier unterscheidbare visuelle Welten/Grammatiken pro Reel, z. B. Brand-Hook, echte Product-UI, räumliche Diagrammwelt, Real-Media/Proof und Payoff. Nur dieselbe weiße Card mit anderem Text zählt nicht als neue Welt.
+11. **Mid-Reel Reframes:** Mindestens zwei bewusst geplante Mid-Reel-Reframes/World-Breaks verhindern, dass der Mittelteil trotz vieler kleiner Animationen gleich aussieht.
+12. **Scene Density:** Aktive Voiceover-Strecken entwickeln sich ungefähr alle 1,5–3,0 s sichtbar weiter. Praktisch unveränderte Hauptzustände über 4,0 s sind ein Review-Risiko.
+13. **Motion Diversity:** Mindestens fünf sinnvolle Motion-Familien; nie mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik.
+14. **Spatial Scene:** Mindestens eine Hauptszene soll überwiegend räumlich/full-frame funktionieren, sofern das Thema es zulässt.
+15. **Full Vertical Stage:** Die Fläche von Kapitel/Headline bis zur Caption-Safe-Zone wird bewusst genutzt. Große leere Mittelzonen brauchen Story-Grund.
+16. **Overlap Discipline:** Pro Moment ein primärer Fokus und normalerweise höchstens zwei unterstützende Details. Caption, Logo, Proof, Datum und Diagramm dürfen nicht ungeplant um denselben Raum kämpfen.
+17. **Phone-readable Details:** Wichtige Microdetails mindestens ca. 22–26 px und progressiv einblenden.
+18. **Caption Standard:** Shared Default `bottom 330`, horizontal `76`, max width `928`, ca. `40 px`, max zwei Zeilen, Ziel max sechs Wörter pro sichtbarer Gruppe.
+19. **Semantic SFX:** Sound folgt sichtbaren Ereignissen. Mehr SFX nur bei mehr echten semantischen Aktionen; Voice bleibt dominant.
+20. **Real Render Review:** Keine Level-Up-Freigabe aus Source-Code. Ausschließlich der exakte gemasterte MP4 kann PASS liefern.
+
+## Brand-Fidelity-Standard
+
+Bei einer zentralen Marke soll ein Zuschauer das Produkt auch dann erkennen können, wenn er die Untertitel kurz ignoriert.
+
+Bevorzugte Reihenfolge:
+
+1. provenance-backed offizielles Logo/Wordmark, wenn sauber nutzbar;
+2. echte offizielle Produkt-UI;
+3. offizieller Source-/Docs-Crop mit klarer Markenidentität;
+4. klarer typografischer Markenname als Fallback.
+
+Nicht erlaubt:
+
+- irgendein Lucide-/Funktionsicon als scheinbares Markenlogo;
+- frei erfundene oder ungenaue Rekonstruktion eines Logos;
+- Brandname nur im Sprechertext, während das Bild generisch bleibt.
+
+Für branded/current-news v3:
+
+- mindestens zwei erkennbare Brand-Momente;
+- normalerweise in mindestens zwei unterschiedlichen Szenen;
+- mindestens einer davon soll ein offizielles Logo/Wordmark, echte UI oder anderer echter Brand-/Produkt-Asset-Moment sein;
+- wenn nur Typografie sauber möglich ist, `assetExceptionReason` dokumentieren.
 
 ## Cover-Frame Standard
 
-Der erste starke Frame ist gleichzeitig Hook und potenzielles Social-Cover.
-
 Pflichtziel:
 
-- Kandidat liegt zwischen Frame 0 und Frame 30 bei 30 fps;
-- `candidateFrame + holdFrames <= 30`, damit der geplante saubere Hold vollständig in der ersten Sekunde liegt;
-- mindestens 12 Frames stabil genug für einen sauberen Screenshot;
-- Headline kurz und groß;
+- Kandidat zwischen Frame 0 und Frame 30 bei 30 fps;
+- `candidateFrame + holdFrames <= 30`;
+- mindestens 12 Frames sauber haltbar;
+- kurze große Headline;
 - ein klarer Hauptgegenstand / Brandname / Produktvisual;
+- branded Story: `brandRecognizable: true`;
 - kein Caption-Block im Cover-Kandidaten;
-- keine winzigen Quellen-/Statusdetails im Hauptfokus;
-- keine Animation darf den Kandidaten zu einem halbfertigen Zwischenframe machen.
+- keine winzigen Details als Hauptinformation;
+- keine halbfertige Entrance-Animation im Screenshot-Zeitpunkt.
 
-Das Cover muss zum Inhalt passen. Kein Clickbait-Cover, das im Reel nicht eingelöst wird.
+## Scene-/Visual-World-Standard
 
-## Scene-/Overlap-Standard
+Mehr Szenen bedeutet mehr klare Zustände, nicht mehr Chaos.
 
-Mehr Szenen bedeutet **mehr klare Zustände**, nicht mehr Chaos.
-
-- Ziel: sichtbare Entwicklung etwa alle 1,5–3,0 s bei aktiver Sprache;
-- ein State darf intern animiert werden, wenn der Fokus wirklich wechselt;
-- nicht mehrere neue Texte, Logos, Zahlen und Wege gleichzeitig einblenden;
+- Ziel: sichtbare Entwicklung etwa alle 1,5–3,0 s;
+- v3: mindestens 20 konkrete Visual Beats bei 60–75 s;
+- v3: mindestens vier unterscheidbare visuelle Welten;
+- v3: mindestens zwei Mid-Reel-Reframes/World-Breaks;
+- ein State darf intern animiert werden, wenn sich Fokus und Bedeutung tatsächlich ändern;
 - lieber sequenziell: Aussage → Visual → Beweis → Detail;
-- wenn ein Frame nicht in einer Sekunde verständlich ist, ist er wahrscheinlich zu voll;
-- Überlappungen zwischen Caption und wichtigen Visuals gelten als FAIL.
+- wenn ein Frame nicht in ungefähr einer Sekunde verstanden wird, ist er wahrscheinlich zu voll;
+- Caption/Brand/Proof-Überlappung mit kritischem Inhalt gilt als FAIL.
 
 ## Real-Media-Standard
 
 Für aktuelle Marken-/Produktstories bevorzugte Reihenfolge:
 
-1. offizielles Logo/Wordmark oder echte Produkt-UI, wenn sauber nutzbar;
+1. offizielles Logo/Wordmark oder echte Produkt-UI;
 2. offizieller Source-/Help-/Docs-Crop als Proof;
-3. reale Bilder / reale B-Roll, wenn sie die Aussage visuell tragen;
-4. erst danach generisches Stockmaterial;
-5. typografischer Markenname als sauberer Fallback.
+3. reales Produktbild / reales Bild / kurze reale B-Roll;
+4. generisches Stockmaterial nur, wenn es tatsächlich Story-Wert hat;
+5. typografischer Markenname als sicherer Brand-Fallback.
 
-Echte Bilder/Videos sind keine Pflicht-Deko. Jeder reale Medienmoment braucht einen Zweck: Brand erkennen, Claim beweisen, Ort/Produkt zeigen oder Bewegung demonstrieren.
+v3-Ziel bei branded/current-news:
+
+- mindestens drei purposeful real/official Medienmomente oder dokumentierte Ausnahme;
+- mindestens zwei unterschiedliche Szenen;
+- mindestens ein Brand-/Produkt-Moment;
+- mindestens ein echter Proof-Moment;
+- mindestens ein immersiver Nicht-Source-Card-Moment: echte UI, reales Bild oder echtes Video;
+- wenn Bewegung selbst der Claim ist, echtes Video bevorzugen oder `videoExceptionReason` dokumentieren.
 
 ## Per-Reel Contract
 
-Neue Level-Up-Reels führen zusätzlich:
-
 `06-projektdateien/LEVEL-UP-PLAN.json`
 
-Pflichtbereiche:
+v2-Pflichtbereiche bleiben erhalten. v3 ergänzt:
 
-- `coverHook`
-- `brandMoments`
-- `realProofMoments`
-- `realMediaMix`
-- `majorReveals`
-- `motionFamilies`
-- `sceneDensity`
-- `overlapPolicy`
-- `fullFrameSceneIds`
-- `captionTarget`
-- `microdetails`
-- `sfxDesign`
+- `brandFidelity`
+- `visualWorlds`
+- `midReelReframes`
+- erweiterte `realMediaMix`-Ausnahmen
 
 Vor Phase 2 bzw. spätestens vor Source-Freeze:
 
@@ -88,9 +118,11 @@ Vor Phase 2 bzw. spätestens vor Source-Freeze:
 node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
 ```
 
-Nach Nutzer-Audio müssen die `majorReveals` anhand der echten `WORD-TIMINGS.json` kontrolliert/angepasst werden. Ein Phase-1-Plan ist niemals Timing-Autorität.
+Nach Nutzer-Audio werden `majorReveals` anhand `WORD-TIMINGS.json` kontrolliert/angepasst. Phase-1-Timing ist niemals finale Autorität.
 
 ## Pflichtfelder im echten 1x-Review
+
+Für alle Level-Up-Reels:
 
 - `COVER_FRAME_READY`
 - `COVER_FRAME_CLEAN`
@@ -107,3 +139,12 @@ Nach Nutzer-Audio müssen die `majorReveals` anhand der echten `WORD-TIMINGS.jso
 - `MICRODETAILS_PHONE_READABLE`
 - `SFX_SEMANTIC_DENSITY`
 - `VOICE_PRIORITY_OVER_SFX`
+
+Zusätzlich für v3:
+
+- `BRAND_RECOGNIZABLE_WITHOUT_CAPTION`
+- `PRIMARY_BRAND_REAPPEARS`
+- `REAL_BRAND_ASSET_USED_OR_EXCEPTION`
+- `REAL_MEDIA_NOT_JUST_SOURCE_CARDS`
+- `VISUAL_WORLD_VARIETY`
+- `MID_REEL_REFRAMES`
