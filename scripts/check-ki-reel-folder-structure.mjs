@@ -9,60 +9,58 @@ const generatorPath = resolve(repoRoot, 'scripts', 'new-ki-reel.mjs');
 
 const WEEK_PATTERN = /^\d{4}-\d{2}-\d{2}_bis_\d{4}-\d{2}-\d{2}$/;
 const REEL_PATTERN = /^\d{2}_.+/;
-const REQUIRED_REEL_DIRS = [
-  '01-script-audio',
-  '02-bilder',
-  '03-caption',
-  '04-pdf',
-  '05-export',
-  '06-projektdateien',
-];
-const ROOT_REEL_MARKERS = new Set([
-  'brief.json','reel.json','voiceover.md','scene-plan.md','animation-plan.md','subtitle-cues.json','asset-manifest.json','CODEX_ASSEMBLY_TASK.md','review-checklist.md',
-]);
-const SOURCE_FORBIDDEN_PLANNING_MARKERS = new Set([
-  'brief.json','reel.json','voiceover.md','scene-plan.md','animation-plan.md','subtitle-cues.json','asset-manifest.json','CODEX_ASSEMBLY_TASK.md','review-checklist.md','caption.md','audio-plan.md','asset-prompts.md',
-]);
+const REQUIRED_REEL_DIRS = ['01-script-audio','02-bilder','03-caption','04-pdf','05-export','06-projektdateien'];
+const ROOT_REEL_MARKERS = new Set(['brief.json','reel.json','voiceover.md','scene-plan.md','animation-plan.md','subtitle-cues.json','asset-manifest.json','CODEX_ASSEMBLY_TASK.md','review-checklist.md']);
+const SOURCE_FORBIDDEN_PLANNING_MARKERS = new Set(['brief.json','reel.json','voiceover.md','scene-plan.md','animation-plan.md','subtitle-cues.json','asset-manifest.json','CODEX_ASSEMBLY_TASK.md','review-checklist.md','caption.md','audio-plan.md','asset-prompts.md']);
 const ALLOWED_REELS_ROOT_FILES = new Set(['README.md','AGENTS.md','animation-history.json','.gitkeep']);
 
 const failures = [];
-const display = (path) => relative(repoRoot, path) || '.';
-const readDirSafe = async (path) => {
-  try { return await readdir(path, {withFileTypes:true}); }
-  catch (error) { failures.push(`${display(path)} fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`); return []; }
+const display = (filePath) => relative(repoRoot, filePath) || '.';
+const readDirSafe = async (filePath) => {
+  try { return await readdir(filePath, {withFileTypes:true}); }
+  catch (error) { failures.push(`${display(filePath)} fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`); return []; }
 };
-const directFileNames = async (path) => new Set((await readDirSafe(path)).filter((entry)=>entry.isFile()).map((entry)=>entry.name));
+const directFileNames = async (filePath) => new Set((await readDirSafe(filePath)).filter((entry)=>entry.isFile()).map((entry)=>entry.name));
 const walkFiles = async (root) => {
   const files=[];
   for (const entry of await readDirSafe(root)) {
-    const path=resolve(root,entry.name);
-    if (entry.isDirectory()) files.push(...await walkFiles(path));
-    else if (entry.isFile()) files.push(path);
+    const filePath=resolve(root,entry.name);
+    if (entry.isDirectory()) files.push(...await walkFiles(filePath));
+    else if (entry.isFile()) files.push(filePath);
   }
   return files;
 };
 
-// 0) Canonical generator contract: Git-stable 01–06 + Storytelling + Level-Up v2 scaffold.
+// 0) Canonical generator contract: Git-stable 01–06 + Storytelling + Level-Up v3 scaffold for future reels.
 try {
   const generator = await readFile(generatorPath,'utf8');
   for (const required of REQUIRED_REEL_DIRS) {
     if (!generator.includes(`'${required}'`) && !generator.includes(`"${required}"`)) failures.push(`scripts/new-ki-reel.mjs erzeugt den Pflichtordner ${required}/ nicht mehr.`);
   }
   if (!generator.includes("'.gitkeep'") && !generator.includes('".gitkeep"')) failures.push('scripts/new-ki-reel.mjs erzeugt keine .gitkeep-Platzhalter mehr.');
-  for (const [needle,label] of [
+
+  const requiredGeneratorTokens = [
     ["'06-projektdateien/story-beats.json'",'story-beats.json'],
     ["'06-projektdateien/STORY-PLAN.md'",'STORY-PLAN.md'],
     ["'06-projektdateien/LEVEL-UP-PLAN.json'",'LEVEL-UP-PLAN.json'],
-    ['"version": 2','Level-Up-Plan-Version 2'],
+    ["publishDate >= '2026-09-03' ? 3 : 2",'Level-Up-v3-Datumsgrenze'],
+    ['minVisualBeats = levelUpVersion >= 3 ? 20 : 15','v3-Beat-Mindestdichte'],
+    ['realMediaMinimum = levelUpVersion >= 3 ? 3 : 2','v3-Real-Media-Mindestdichte'],
     ['"candidateFrame": 15','Cover-Kandidat Frame 15'],
     ['"holdFrames": 15','Cover-Hold 15 Frames'],
-    ['minVisualBeats','Story-Beat-Mindestdichte'],
-    ['maxStaticSeconds','maximale statische Story-Dauer'],
-    ['WORD_TIMINGS_AFTER_FORCED_ALIGNMENT','Word/Phrase-Timing-Autorität'],
-    ['genericIconMayImpersonateBrand','Brand-Fidelity-Regel'],
-    ['coverHook','Cover-first-Vertrag'],
+    ['brandRecognizable','Cover-Brand-Erkennbarkeit'],
+    ['brandFidelity','Brand-Fidelity-v3-Block'],
+    ['minimumRecognizableMoments','Brand-Wiederholungs-Mindestzahl'],
+    ['minimumDistinctScenes','Brand-Szenen-Mindestzahl'],
+    ['officialLogoOrWordmarkPreferred','Official-Brand-Asset-Priorität'],
+    ['genericSymbolFallbackForbidden','Verbot generischer Brand-Ersatzsymbole'],
+    ['approximateLogoReconstructionAllowed','Logo-Rekonstruktionsregel'],
     ['realMediaMix','Real-Media-Mix'],
-    ['videoPreferredWhenMotionIsClaim','Video-bei-Motion-Regel'],
+    ['motionIsClaim','Motion-ist-Claim-Regel'],
+    ['videoExceptionReason','Video-Ausnahme'],
+    ['visualWorlds','Visual-World-v3-Vertrag'],
+    ['midReelReframes','Mid-Reel-Reframe-v3-Vertrag'],
+    ['WORD_TIMINGS_AFTER_FORCED_ALIGNMENT','Word/Phrase-Timing-Autorität'],
     ['sceneDensity','Szenendichte-Vertrag'],
     ['targetMeaningfulChangeSecondsMin','minimale Szenendichte'],
     ['targetMeaningfulChangeSecondsMax','maximale Szenendichte'],
@@ -74,12 +72,21 @@ try {
     ['COVER_FRAME_READY','Cover-Reviewfeld'],
     ['REAL_MEDIA_MIX','Real-Media-Reviewfeld'],
     ['BRAND_FIDELITY','Brand-Fidelity-Reviewfeld'],
+    ['BRAND_RECOGNIZABLE_WITHOUT_CAPTION','Brand-Erkennbarkeit-v3-Reviewfeld'],
+    ['PRIMARY_BRAND_REAPPEARS','Brand-Reappearance-v3-Reviewfeld'],
+    ['REAL_BRAND_ASSET_USED_OR_EXCEPTION','Real-Brand-Asset-v3-Reviewfeld'],
+    ['REAL_MEDIA_NOT_JUST_SOURCE_CARDS','Real-Media-v3-Reviewfeld'],
+    ['VISUAL_WORLD_VARIETY','Visual-World-v3-Reviewfeld'],
+    ['MID_REEL_REFRAMES','Mid-Reframe-v3-Reviewfeld'],
     ['WORD_LOCKED_MAJOR_REVEALS','Word-Lock-Reviewfeld'],
     ['SCENE_DENSITY','Szenendichte-Reviewfeld'],
     ['NO_VISUAL_OVERLAP','Overlap-Reviewfeld'],
     ['MOTION_GRAMMAR_DIVERSITY','Motion-Diversity-Reviewfeld'],
     ['STATIC_STATE_OVER_LIMIT_VIOLATIONS','Static-State-Reviewfeld'],
-  ]) if (!generator.includes(needle)) failures.push(`scripts/new-ki-reel.mjs verliert den Story/Level-Up-v2-Scaffold: ${label}.`);
+  ];
+  for (const [needle,label] of requiredGeneratorTokens) {
+    if (!generator.includes(needle)) failures.push(`scripts/new-ki-reel.mjs verliert den Story/Level-Up-v3-Scaffold: ${label}.`);
+  }
 } catch (error) {
   failures.push(`scripts/new-ki-reel.mjs fehlt oder ist nicht lesbar: ${error instanceof Error ? error.message : error}`);
 }
@@ -99,9 +106,9 @@ for (const entry of await readDirSafe(sourceReelsRoot)) {
   if (!entry.isDirectory()) continue;
   const sourcePackage=resolve(sourceReelsRoot,entry.name);
   const files=await walkFiles(sourcePackage);
-  for (const path of files) {
-    const name=basename(path);
-    if (SOURCE_FORBIDDEN_PLANNING_MARKERS.has(name)) failures.push(`${display(path)} ist eine Planungsdatei im Source-Bereich. ki/src/reels/<slug>/ ist nur für ausführbaren TS/TSX-Code vorgesehen.`);
+  for (const filePath of files) {
+    const name=basename(filePath);
+    if (SOURCE_FORBIDDEN_PLANNING_MARKERS.has(name)) failures.push(`${display(filePath)} ist eine Planungsdatei im Source-Bereich. ki/src/reels/<slug>/ ist nur für ausführbaren TS/TSX-Code vorgesehen.`);
   }
 }
 
@@ -145,4 +152,4 @@ if (failures.length>0) {
   process.exit(1);
 }
 
-console.log('KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil plus Storytelling- und Level-Up-v2-Scaffold mit Cover-first, Real-Media, Szenendichte und Overlap-Regeln; Source und Planung sind getrennt und jeder Reel-Ordner ist persistent.');
+console.log('KI-Reel-Strukturvertrag bestanden: Generator erzeugt 01–06 Git-stabil plus Level-Up-v3-Scaffold für zukünftige Reels mit Cover-first, Brand-Wiederholung, Real-Media, mindestens 20 Beats, Visual Worlds, Mid-Reframes, Szenendichte und Overlap-Regeln.');
