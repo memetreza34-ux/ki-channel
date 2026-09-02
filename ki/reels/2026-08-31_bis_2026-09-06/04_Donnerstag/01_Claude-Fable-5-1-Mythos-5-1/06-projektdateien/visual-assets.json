@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "status": "CONTENT_LOCKED_REAL_MEDIA_SELECTION_PENDING",
+  "rules": {"nativeFirst":true,"remoteRenderMediaAllowed":false,"externalBinariesMustResolveLocally":true,"genericIconMayImpersonateBrand":false,"realMediaMustHaveStoryPurpose":true},
+  "assets": [
+    {"id":"scene1-anthropic-brand","sceneId":"scene1","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizielles Anthropic/Claude-Wordmark oder Press-Kit-Asset für eindeutig erkennbare Brand-Fidelity im Cover","rightsStatus":"SOURCE_REFERENCE_ONLY_MANUAL_BRAND_ASSET_REVIEW_REQUIRED","sourceUrl":"https://www.anthropic.com/news"},
+    {"id":"scene1-launch-proof","sceneId":"scene1","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizieller Newsroom-Crop zum Launch von Claude Fable 5.1 und Claude Mythos 5.1","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://www.anthropic.com/news"},
+    {"id":"scene2-fable-product","sceneId":"scene2","provider":"OFFICIAL_SOURCE_CARD","purpose":"Echter offizieller Fable-5.1-Product-/Availability-Crop für Pro, Max, Team, Enterprise und Cloud-Plattformen","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://www.anthropic.com/claude/fable"},
+    {"id":"scene3-mythos-product","sceneId":"scene3","provider":"OFFICIAL_SOURCE_CARD","purpose":"Echter offizieller Mythos-5.1-Product-/Trusted-Access-Crop für vetted organizations und Safeguards","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://www.anthropic.com/claude/mythos"},
+    {"id":"scene5-fable-pricing","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizieller Fable-5.1-Pricing-Crop für $10 Input, $50 Output, $0.25 Cache Reads und Anthropic-Kostenschätzung","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://www.anthropic.com/claude/fable"}
+  ]
+}
