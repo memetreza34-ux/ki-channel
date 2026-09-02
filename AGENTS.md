@@ -27,15 +27,38 @@ Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit
 
 ## Reel-Struktur — Pflichtgate
 
-Jedes Reel unter `ki/reels/<Woche>/<Reel>/` besitzt immer exakt die kanonische Produktionsstruktur mit `README.md` sowie `01-script-audio/` bis `06-projektdateien/`.
+Für die aktive Woche und alle neuen Reels gilt:
 
-Git versioniert keine leeren Ordner. Deshalb muss jeder der sechs Pflichtordner mindestens eine Datei enthalten (`.gitkeep`, README oder echte Produktionsdatei).
+```text
+ki/reels/<Woche>/<Wochentag>/<NN_Thema>/
+```
 
-Neue Reels bevorzugt ausschließlich über den kanonischen Generator anlegen:
+Beispiel:
+
+```text
+ki/reels/2026-08-31_bis_2026-09-06/
+├── 01_Montag/
+│   └── 01_OpenAI-Cursor-SpaceX-Vertrag/
+├── 02_Dienstag/
+│   └── 01_Google-Flow-Gemini-Omni-1-1-Flash/
+└── 03_Mittwoch/
+    └── 01_Grok-Bot-X-Integration/
+```
+
+Wochentage sind fest `01_Montag` bis `07_Sonntag`. Mehrere Reels am selben Tag werden **innerhalb des Tages** als `01_`, `02_`, `03_` nummeriert.
+
+Jeder Themen-/Reel-Ordner besitzt `README.md` sowie `01-script-audio/` bis `06-projektdateien/`.
+
+Git versioniert keine leeren Ordner. Deshalb muss jeder der sechs Pflichtordner mindestens eine persistente Datei enthalten (`.gitkeep`, README oder echte Produktionsdatei).
+
+Neue Reels ausschließlich über den kanonischen Generator anlegen:
 
 ```bash
 npm run new-video -- "Reel Titel" YYYY-MM-DD
 ```
+
+- `scripts/new-ki-reel.mjs` routet nach Woche + Wochentag + Topic-Slot.
+- `scripts/new-ki-reel-core.mjs` erzeugt den vollständigen Produktions-/Story-/Level-Up-Scaffold.
 
 Nach jeder Erstellung, Migration, Integration oder sonstigen Änderung unter `ki/reels/**` muss **vor jeder Erfolgsmeldung** laufen:
 
@@ -43,7 +66,9 @@ Nach jeder Erstellung, Migration, Integration oder sonstigen Änderung unter `ki
 npm run ki:reel:structure-check
 ```
 
-Ein Agent darf ein Reel niemals als implementiert, Phase-1-fertig, bereit für Audio oder renderbereit melden, solange dieser Strukturcheck nicht tatsächlich bestanden wurde. Das gilt ausdrücklich auch für Test-Reels und manuell übernommene Feature-Branches.
+Ein Agent darf ein Reel niemals als implementiert, Phase-1-fertig, bereit für Audio oder renderbereit melden, solange dieser Strukturcheck nicht tatsächlich bestanden wurde.
+
+Ab Wochenstart `2026-08-31` ist die Tagesebene fail-closed Pflicht. Ältere abgeschlossene Wochen bleiben Legacy-kompatibel, dürfen aber nicht als Vorlage für neue Reels kopiert werden.
 
 ## 3-Phasen-Modell für Reels
 
@@ -56,18 +81,28 @@ Muss enthalten:
 - bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
 - `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
 - Szenen-/Animationsplan
+- `story-beats.json`
+- `LEVEL-UP-PLAN.json`
 - Caption-Basis
 - Plattform-Copy
-- Bild-/Asset-Entscheidung
+- Bild-/Asset-/Brand-/Proof-/Real-Media-Entscheidung
 - `reel.json`
 - ausführbaren Remotion-Source
 - Composition-Registrierung
 - Entertainment-/Motion-Readability-Grundlage
 - klaren `PHASE-STATUS.md`
 
+Für neue Reels ab `2026-09-03` gilt Level-Up v3 zusätzlich: mindestens 20 Visual Beats, 4 Visual Worlds, 2 Mid-Reel-Reframes, stärkere Brand-Fidelity und normalerweise 3 purposeful real/official Medienmomente bei branded/current-news Stories.
+
 Geschätzte Timings sind nur Preview. Das Wortbudget ist Planung; die echte Laufzeit kommt später aus dem Voice-Lock.
 
-Vor Übergabe an Phase 2 muss zusätzlich `npm run ki:reel:structure-check` tatsächlich bestanden sein.
+Vor Übergabe an Phase 2 müssen tatsächlich bestanden sein:
+
+```bash
+npm run ki:reel:structure-check
+node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
+node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
+```
 
 ### Phase 2 — Voiceover: ausschließlich Nutzer
 
@@ -118,14 +153,12 @@ Wenn vorhanden, gilt grob:
 4. `01-script-audio/audio-source.json`
 5. `01-script-audio/SCENE-VOICE-MAP.json`
 6. `01-script-audio/WORD-TIMINGS.json` nach Voice-Lock
-7. `scene-plan.md`
-8. `animation-plan.md`
+7. `06-projektdateien/story-beats.json`
+8. `06-projektdateien/LEVEL-UP-PLAN.json`
 9. `03-caption/subtitle-cues.json`
 10. `03-caption/platform-copy.md`
-11. Asset-Manifest/Prompts
-12. `ENTERTAINMENT-REVIEW.md`
-13. `MOTION-READABILITY-REVIEW.md`
-14. Assembly-/Review-Dateien
+11. Asset-/Provenance-Dateien
+12. `MOTION-READABILITY-REVIEW.md`
 
 Widersprüche nicht still übergehen; an der Ursache korrigieren.
 
@@ -137,7 +170,7 @@ Widersprüche nicht still übergehen; an der Ursache korrigieren.
 - lokale Runtime-Medien über vorbereitete `public/`-Assets / `staticFile`
 - High Energy bedeutet nicht High Speed
 - wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
-- längere 60–75-s-Reels brauchen mehrere Visual Beats; keine langen statischen Holds nur zum Füllen
+- keine langen statischen Holds nur zum Füllen
 - keine Demo-Zahlen als Fakten
 - keine internen Regie-/Goal-Texte sichtbar
 
