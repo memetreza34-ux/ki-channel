@@ -2,12 +2,33 @@
 
 Gilt für alle Produktionspakete unter `ki/reels/`.
 
-Zusätzlich verbindlich für neue/narrative Reels: `ki/gehirn/STORYTELLING_MOTION.md`.
+Zusätzlich verbindlich für neue/narrative Reels:
+
+- `ki/gehirn/STORYTELLING_MOTION.md`
+- `ki/gehirn/LEVEL_UP_STANDARD.md`
 
 ## Struktur — fail-closed
 
+Seit der aktiven Woche `2026-08-31_bis_2026-09-06` gilt kanonisch:
+
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+│   └── 01_Reel-Titel/
+├── 02_Dienstag/
+│   └── 01_Reel-Titel/
+├── 03_Mittwoch/
+│   └── 01_Reel-Titel/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
+```
+
+Innerhalb jedes Themen-/Reel-Ordners:
+
+```text
+NN_Reel-Titel/
 ├── README.md
 ├── 01-script-audio/
 ├── 02-bilder/
@@ -17,9 +38,15 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
+Die Hierarchie ist immer:
+
+`Woche → Wochentag → Thema/Reel → 01–06 Produktionsordner`
+
+Mehrere Reels am selben Tag werden **innerhalb des Tages** nummeriert (`01_`, `02_`, `03_` ...). Die Reel-Nummer ist nicht mehr die Wochentagsnummer.
+
 Ausführbarer TS/TSX-Code liegt separat unter `ki/src/reels/<slug>/`.
 
-**Harte Strukturregel:** Ein Reel-Paket ist nicht gültig, wenn auch nur einer der sechs nummerierten Pflichtordner fehlt. Jeder Pflichtordner muss mindestens eine Datei enthalten (`.gitkeep`, `README.md` oder echte Produktionsdatei), weil Git leere Ordner nicht versioniert.
+**Harte Strukturregel:** Ein aktuelles/neues Reel-Paket ist nicht gültig, wenn Wochentagsordner, Themenordner oder einer der sechs Pflichtordner fehlt. Jeder Pflichtordner muss mindestens eine persistente Datei enthalten.
 
 Neue Reel-Pakete grundsätzlich über den kanonischen Generator anlegen:
 
@@ -27,58 +54,66 @@ Neue Reel-Pakete grundsätzlich über den kanonischen Generator anlegen:
 npm run new-video -- "Reel Titel" YYYY-MM-DD
 ```
 
-Der Generator muss zusätzlich `story-beats.json` und `STORY-PLAN.md` scaffolden. Manuell angelegte oder importierte Reel-Pakete müssen dieselbe Produktionsstruktur erfüllen.
+Der Generator besteht aus:
 
-Nach **jeder** Änderung, Erstellung, Migration oder Integration unter `ki/reels/**` ist vor einer Erfolgsmeldung zwingend auszuführen:
+- `scripts/new-ki-reel.mjs` — bestimmt Woche + Wochentag + Topic-Slot;
+- `scripts/new-ki-reel-core.mjs` — erzeugt den vollständigen 01–06-/Story-/Level-Up-Scaffold.
+
+Nach **jeder** Änderung, Erstellung oder Migration unter `ki/reels/**` zwingend:
 
 ```bash
 npm run ki:reel:structure-check
 ```
 
-Schlägt dieser Befehl fehl, darf kein Agent das Reel als `IMPLEMENTIERT`, `PHASE 1 FERTIG`, `BEREIT FÜR AUDIO`, `RENDER-READY` oder ähnlich melden. Erst die Struktur korrigieren und erneut prüfen.
+Schlägt der Check fehl, darf kein Agent das Reel als `IMPLEMENTIERT`, `PHASE 1 FERTIG`, `BEREIT FÜR AUDIO` oder `RENDER-READY` melden.
 
-Der Strukturcheck validiert zusätzlich den Generator selbst: Alle sechs Pflichtordner, Git-stabile Platzhalter und der Storytelling-Scaffold müssen weiterhin vorhanden sein.
+Ältere abgeschlossene Wochen vor `2026-08-31` bleiben Legacy-kompatibel, bis sie aktiv weiterentwickelt/migriert werden. Neue Arbeit darf die alte flache Wochenstruktur nicht kopieren.
 
 ## Phase 1 — Inhalt + Source
 
-Pflicht:
+Pflicht für neue Standard-Reels:
 
 - `VOICEOVER-ZUM-KOPIEREN.txt` mit exakt dem später gesprochenen Text
-- neues Standard-Reel zielt auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
-- bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe
-- `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
-- `SCENE-VOICE-MAP.json`: jeder Satz wird vor dem Audio-Lock einer Szene zugeordnet
+- **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
+- bevorzugt **150–175 Wörter**, Hard-Limit **190 Wörter** ohne dokumentierte Ausnahme
+- `SCENE-VOICE-MAP.json`
 - `reel.json`
-- Szene-/Animationsplan
 - `story-beats.json`
-- `reel.json.storytelling.enabled = true` für neue Reels ab 2026-08-29
-- mindestens **15 konkrete Visual Beats** für ein 60–75-s-Standard-Reel
-- Story-Arc enthält mindestens `HOOK`, `PROOF`, `CONSEQUENCE`, `PAYOFF`
-- jede Szene besitzt mindestens zwei erkennbare visuelle Zustandsänderungen
-- Story-Ziel: kein praktisch unveränderter Visual State länger als **4,5 Sekunden** bei aktivem Voiceover, außer begründete Lesepause
-- Entertainment- und Motion-Review-Struktur
-- Preview-Captions nur als Planung
+- `LEVEL-UP-PLAN.json`
+- Story-/Visual-/Brand-/Proof-/Real-Media-/SFX-Plan
 - Plattform-Copy + Final-Caption
-- ausführbarer Source + Composition
+- ausführbarer Remotion-Source + Composition
 
-Bevor Phase 1 als abgeschlossen und das Reel an den Nutzer für Phase 2 übergeben wird, müssen tatsächlich bestehen:
+Für neue Reels ab `2026-09-03` gilt Level-Up v3:
+
+- mindestens **20 konkrete Visual Beats**
+- mindestens **4 unterscheidbare Visual Worlds**
+- mindestens **2 Mid-Reel-Reframes/World-Breaks**
+- fertiger Cover-Kandidat in der ersten Sekunde
+- bei branded/current-news normalerweise mindestens 2 erkennbare Brand-Momente über mindestens 2 Szenen
+- normalerweise mindestens 3 purposeful real/official Media-Momente oder dokumentierte Ausnahme
+- keine generischen Funktionsicons als Fake-Logo
+- keine ungenaue frei erfundene Logo-Rekonstruktion
+- sichtbare Entwicklung ungefähr alle 1,5–3,0 s bei aktiver Sprache
+- ein primärer Fokus pro Moment; Caption nie über kritischem Visual
+
+Vor Phase 2 tatsächlich ausführen:
 
 ```bash
 npm run ki:reel:structure-check
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
+node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
 ```
 
-Vor Production-Render wird zusätzlich das Skriptbudget fail-closed geprüft:
+Vor Production-Render zusätzlich:
 
 ```bash
 node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 ```
 
-Nach dem lokalen Voice-Lock prüft `prepare-reel-render.mjs` zusätzlich die echte finale Laufzeit. Für neue Reels gilt: unter 60 oder über 75 Sekunden blockiert den Production-Render, solange keine dokumentierte Ausnahme vorliegt.
-
 ## Phase 2 — Voiceover ausschließlich vom Nutzer
 
-Der Nutzer erstellt das vollständige Produktions-Voiceover selbst und legt es manuell unter `reel.json.audio.targetFile` ab.
+Der Nutzer erstellt das vollständige Produktions-Voiceover selbst und legt es manuell im Reel-Paket ab.
 
 Normaler Pfad:
 
@@ -86,22 +121,20 @@ Normaler Pfad:
 
 Agenten dürfen **kein** Produktions-Voiceover erzeugen oder herunterladen. Keine TTS-/Voice-Tools, keine Provider-URLs und keine Preview-Dateien als Ersatz.
 
-Fehlt die Datei, bleibt der Reel auf:
+Fehlt die Datei:
 
 `PHASE 2 — WARTET AUF NUTZER-AUDIO`
 
 ## Phase 3 — lokaler Sync, Render, Export
 
-Primärer Timing-Weg bei bekanntem Sprechertext:
-
 ```text
 Nutzer-Voiceover
 → Runtime-PCM-WAV
-→ lokales Forced Alignment des bekannten Textes
+→ Pause-Kompression
+→ lokales Forced Alignment
 → WORD-TIMINGS.json
 → finale Caption-Cues
-→ automatische Szenengrenzen aus SCENE-VOICE-MAP
-→ Story-Beats auf echte Voice-/Szenenzeit anpassen
+→ Scene-/Reveal-/SFX-Lock
 → VOICE_LOCKED
 ```
 
@@ -111,35 +144,20 @@ Ein-Kommando-Sync:
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Danach müssen bestehen:
+Danach müssen die kanonischen Voice-/Story-/Level-Up-/Render-Gates bestehen.
 
-```bash
-node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
-node ki/scripts/validate-local-forced-alignment.mjs <reel-package-dir>
-node ki/scripts/validate-scene-voice-map.mjs <reel-package-dir>
-node ki/scripts/validate-voice-locked-captions.mjs <reel-package-dir>
-node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
-```
+## Visual / Motion
 
-`prepare-reel-render.mjs` führt das Storytelling-Gate selbst erneut aus. Die gelockten JSON-Dateien werden vor dem Production-Render committed.
-
-## Visual / Motion — narrative Pflicht
-
-- nicht „eine Szene = eine statische Karte“; eine Szene besteht aus mehreren Story-Beats
+- nicht „eine Szene = eine statische Karte“
 - `HOOK → PROBLEM/CHANGE → PROOF → CONSEQUENCE → PAYOFF`
-- Product/UI-first bei konkreten Apps/Features, aber Proof-/Real-Visual-Momente bewusst einbauen
-- Light-First
-- wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
-- höchstens 1–2 neue unabhängige Informationen gleichzeitig
-- ungefähr 70–80 % native UI/Text/Diagramm/Motion
-- ungefähr 20–30 % echte Bilder/Screens, normalerweise 1–2 starke externe Visual-Momente
-- externe Visuals nur bei echtem Mehrwert und mit lokalem Rechte-/SHA256-Vertrag
-- `StoryBeat`, `StoryCamera`, `ImpactNumber`, `StoryTexture`, `StoryThreeHero`, lokale Lottie/Rive- und Skia-Layer bevorzugt wiederverwenden
-- echte `@remotion/transitions`-Übergänge nur bei inhaltlichem Szenen-/Zustandswechsel
-- Kameraeffekte wie Push, Pan, Focus, Parallax, Reframe und Scan nur mit Erklärfunktion
-- SFX müssen semantisch zum sichtbaren Ereignis passen und bei 1x tatsächlich angehört werden
-- `@remotion/sfx` ist als Capability installiert, aber der Produktionspfad bleibt beim lokalen deterministischen CC0-SFX-Lock
-- keine Render-Time-Remote-Medien, auch nicht für Lottie/Rive
+- zentrale Marke/Produkt visuell wirklich erkennbar machen
+- echte offizielle UI/Wordmark/Source bevorzugen, wenn sauber nutzbar
+- echte Bilder/Videos nur mit Story-Zweck
+- reales Video bevorzugen, wenn Bewegung selbst Teil des Claims ist
+- externe Medien vor Render lokal + Provenance + SHA256
+- keine Render-Time-Remote-Medien
+- `StoryBeat`, `StoryCamera`, `ImpactNumber`, `StoryTexture`, `StoryThreeHero`, lokale Lottie/Rive-/Skia-Layer bevorzugt wiederverwenden
+- SFX nur an sichtbaren semantischen Events; Voice bleibt dominant
 
 ## Caption Layout
 
@@ -148,28 +166,43 @@ Einzige Wahrheit:
 - `ki/gehirn/CAPTION_SAFE_POSITION.md`
 - `ki/src/reels/captionSafe.ts`
 
-Bei 1080×1920: bottom 250px, 104px Inset, max 860px, max 2 Zeilen, Glass-/Blur-Overlay, kein separater Footer.
+Aktueller 1080×1920-Default:
+
+- bottom **330 px**
+- horizontal inset **76 px**
+- max width **928 px**
+- ca. **40 px** Schrift
+- max. 2 Zeilen
+- Ziel max. 6 Wörter je sichtbarer Gruppe
+- Cover-Fenster caption-frei
 
 ## Finaler 1x-Review
 
-Bei storytelling-enabled Reels zusätzlich explizit:
+Der exakte gemasterte MP4 ist die einzige Autorität. Für Level-Up-v3-Reels zusätzlich explizit prüfen:
 
-- `STORY_FLOW_1X_REVIEW: PASS`
-- `VISUAL_REACTION_1X_REVIEW: PASS`
-- `TRANSITIONS_PURPOSE_1X_REVIEW: PASS`
-- `STATIC_STATE_OVER_LIMIT_VIOLATIONS: 0`
-
-Der exakte gemasterte MP4 muss die visuelle Geschichte tatsächlich zeigen; ein formal gefülltes `story-beats.json` reicht nicht.
+- `COVER_FRAME_READY`
+- `COVER_FRAME_CLEAN`
+- `BRAND_FIDELITY`
+- `BRAND_RECOGNIZABLE_WITHOUT_CAPTION`
+- `PRIMARY_BRAND_REAPPEARS`
+- `REAL_BRAND_ASSET_USED_OR_EXCEPTION`
+- `REAL_PROOF_MOMENT`
+- `REAL_MEDIA_MIX`
+- `REAL_MEDIA_NOT_JUST_SOURCE_CARDS`
+- `SCENE_DENSITY`
+- `NO_VISUAL_OVERLAP`
+- `VISUAL_WORLD_VARIETY`
+- `MID_REEL_REFRAMES`
+- `MOTION_GRAMMAR_DIVERSITY`
+- `VOICE_PRIORITY_OVER_SFX`
 
 ## Finaler Export
-
-Nach finalem MP4 + echtem 1x-Review:
 
 ```bash
 node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <rendered-video.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
-Erst nach vollständiger Prüfung:
+Erst nach vollständiger realer Prüfung:
 
 `FINAL VIDEO READY — EXPORT PACKAGE READY`
