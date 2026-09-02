@@ -1,0 +1,34 @@
+{
+  "version": 8,
+  "reelId": "claude-fable-mythos-5-1",
+  "compositionId": "KI-ClaudeFableMythos51",
+  "sourceDir": "ki/src/reels/claude-fable-mythos-5-1",
+  "title": "Claude Fable 5.1 und Mythos 5.1: ein Modellkern, andere Grenzen",
+  "publishDate": "2026-09-03",
+  "week": "2026-08-31_bis_2026-09-06",
+  "weekdayFolder": "04_Donnerstag",
+  "productionMode": "LEVEL_UP_V3_NATIVE_PLUS_REAL_MEDIA",
+  "scriptBudget": {"targetMinWords":150,"targetMaxWords":175,"hardMinWords":140,"hardMaxWords":190,"referenceWpm":140,"targetMinSeconds":60,"targetMaxSeconds":75,"allowShorter":false,"shorterReason":"","allowLonger":false,"longerReason":"","allowDurationOutsideTarget":false,"durationExceptionReason":""},
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1950,"finalDurationInFrames":null,"finalDurationAuthority":"PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"},
+  "audio": {"sourceMetadata":"01-script-audio/audio-source.json","targetFile":"01-script-audio/voiceover.mp3","status":"WAITING_FOR_USER_LOCAL_MASTER","provider":"USER_PROVIDED","agentGenerationAllowed":false,"agentDownloadAllowed":false,"timingAuthority":false,"alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"},
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxWordsPerGroup":6,"style":"transparent_glass_overlay","suppressUntilFrame":31},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"REAL_OFFICIAL_MEDIA_PLANNED","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":4,"targetRealOfficialMomentsMin":3},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":20,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","SourceProofCard"]},
+  "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":3},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"CLAUDE 5.1 · FABLE vs MYTHOS","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"Zwei Claude-Namen, ein Modellkern","startFrame":0,"endFrame":330,"accent":"#D97757","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Wer Fable 5.1 bekommt","startFrame":330,"endFrame":690,"accent":"#7A5AF8","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Warum Mythos 5.1 begrenzt bleibt","startFrame":690,"endFrame":1110,"accent":"#B54708","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Gleicher Kern, andere Sicherheitsgrenzen","startFrame":1110,"endFrame":1530,"accent":"#D92D20","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Preis und praktischer Payoff","startFrame":1530,"endFrame":1950,"accent":"#039855","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://www.anthropic.com/news",
+    "https://www.anthropic.com/claude/fable",
+    "https://www.anthropic.com/claude/mythos",
+    "https://www.anthropic.com/system-cards"
+  ]
+}
