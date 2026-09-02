@@ -22,15 +22,38 @@ Für jedes Short-Form-Reel zusätzlich diese Skills:
 
 ## Ordnerstruktur
 
+Für die aktive Woche und alle neuen Reels:
+
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-bilder/
-├── 03-caption/
-├── 04-pdf/
-├── 05-export/
-└── 06-projektdateien/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+│   └── 01_Reel-Titel/
+├── 02_Dienstag/
+│   └── 01_Reel-Titel/
+├── 03_Mittwoch/
+│   └── 01_Reel-Titel/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
+```
+
+Im Reel-Themenordner bleiben `README.md` sowie `01-script-audio/` bis `06-projektdateien/` Pflicht.
+
+Kurz: `Woche → Wochentag → Thema → 01–06`.
+
+Mehrere Reels am selben Tag werden innerhalb dieses Tages `01_`, `02_`, `03_` nummeriert.
+
+Neue Reels nur über:
+
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
+
+Danach zwingend:
+
+```bash
+npm run ki:reel:structure-check
 ```
 
 Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
@@ -42,13 +65,14 @@ Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
 - Inhalt/Skript
 - neue Reels auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit planen
 - bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
-- `reel.json.scriptBudget.targetMinSeconds = 60`, `targetMaxSeconds = 75`
-- Visual Beats
+- Visual Beats + Story-/Level-Up-Vertrag
 - Remotion-Source
 - Caption-Basis
 - Plattform-Copy
-- Entertainment-Review
+- Brand-/Proof-/Real-Media-Plan
 - Motion-Readability-Datei PENDING
+
+Ab `2026-09-03` gilt Level-Up v3: mindestens 20 Visual Beats, 4 Visual Worlds, 2 Mid-Reel-Reframes und stärkere Brand-/Real-Media-Fidelity.
 
 ### Phase 2 — ausschließlich Nutzer-Audio
 
@@ -56,17 +80,17 @@ Der Nutzer erstellt das vollständige Voiceover selbst und legt es manuell unter
 
 Agenten dürfen das Produktions-Voiceover **weder erzeugen noch herunterladen**. Keine TTS-/Voice-Tools, keine Provider-URLs und keine Preview-Dateien als Ersatz.
 
-Fehlt die Datei, wird gestoppt mit:
+Fehlt die Datei:
 
 `PHASE 2 — WARTET AUF NUTZER-AUDIO`
 
 ### Phase 3
 
 - `prepare-reel-audio.mjs`: Runtime-WAV + ggf. Pause-Kompression
-- bekanntes Skript per lokalem Forced Alignment exakt gegen die Runtime-WAV ausrichten
-- `WORD-TIMINGS.json`, Szenen und Captions Voice-Locked schreiben
-- tatsächliche finale Dauer prüfen: 60–75 Sekunden oder dokumentierte Ausnahme
-- SFX automatisch nach finalen Szenenframes auflösen
+- lokales Forced Alignment
+- `WORD-TIMINGS.json`, Szenen und Captions Voice-Locked
+- tatsächliche finale Dauer 60–75 s oder dokumentierte Ausnahme
+- SFX nach finalen Szenenframes auflösen
 - externe Visuals lokal auflösen/validieren
 - `prepare-reel-render.mjs` + Provenance-Lock
 - Tests/Smoke/Contact-Sheet
@@ -78,14 +102,13 @@ Fehlt die Datei, wird gestoppt mit:
 
 Bei 1080×1920 ausschließlich Shared-Geometrie aus `ki/src/reels/captionSafe.ts`:
 
-- `bottom: 250px`
-- `104px` horizontal
-- `860px` max width
+- `bottom: 330px`
+- `76px` horizontal
+- `928px` max width
+- ca. `40px` Schrift
 - max. 2 Zeilen
-- Glass-/Blur-Overlay
-- kein eigener Footer
-
-Keine alten 520px-/Boxless-Regeln neu einführen.
+- Ziel max. 6 Wörter je sichtbarer Gruppe
+- Cover-Fenster caption-frei
 
 ## Audio — eine Wahrheit
 
@@ -99,8 +122,6 @@ node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 
 `Root.tsx` nutzt nur die vorbereitete lokale Runtime-Spur `public/runtime-audio/<compositionId>.wav` via `staticFile`.
 
-Keine statischen Imports auf ignorierte Reel-Audiodateien und keine Remote-Audio-URL im Render-Source.
-
 ## Visual Standard
 
 - Light-First
@@ -108,12 +129,13 @@ Keine statischen Imports auf ignorierte Reel-Audiodateien und keine Remote-Audio
 - Fullscreen-Hintergrund
 - keine kleine Card-Insel in riesigem Leerraum
 - `SETUP → AKTION → KONSEQUENZ → PAYOFF`
-- Hero-Moment pro Szene
 - `REVEAL → SETTLE → READABLE HOLD`
 - High Energy ≠ High Speed
-- 60–75-s-Reels brauchen über die ganze Timeline mehrere sichtbare Beats, Zooms/Fokuswechsel/SFX mit Bedeutung; keine langen statischen Füll-Holds
-- dunkle Fullscreen-Szenen nur dokumentierte Ausnahme
-- Logos nur aus echten zulässigen Assets
+- Brand muss bei zentralen Markenstories visuell wirklich erkennbar sein
+- Logos/Wordmarks nur aus echten zulässigen Assets oder klare Typografie als Fallback
+- keine generischen Funktionsicons als Fake-Logo
+- reale UI/Proof/Bilder/Videos nur mit Story-Zweck und lokaler Provenance
+- keine Render-Time-Remote-Medien
 
 ## Final-Export
 
@@ -132,7 +154,7 @@ Erst danach und nach echtem Ansehen/Anhören:
 
 Git hält Source, Skripte, Provenance, Timings, Reviews und Manifest.
 
-Große MP4/WAV/MP3/PNG bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist. Keine Regel darf verlangen, per `.gitignore` ausgeschlossene Binärdateien normal zu committen.
+Große MP4/WAV/MP3/PNG bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
 ## Wahrheitspflicht
 
