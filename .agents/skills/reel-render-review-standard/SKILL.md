@@ -1,11 +1,11 @@
 ---
 name: reel-render-review-standard
-description: Applies the KI-channel post-render visual quality standard learned from the 2026-08-30 OpenAI-Cursor render review: raised readable captions, full vertical-stage use, voice-synchronized reveals, varied motion grammar, meaningful microdetails and balanced semantic SFX.
+description: Applies the KI-channel post-render visual quality standard: raised readable captions, full vertical-stage use, voice-synchronized reveals, varied motion grammar, strong brand recognition, real media, meaningful microdetails and balanced semantic SFX.
 ---
 
 # Reel Render Review Standard
 
-Use this skill when building a new reel after a prior render review, when reviewing a real MP4, or when a reel feels too empty, repetitive, early-timed or weak on impact.
+Use this skill when building a new reel after a prior render review, reviewing a real MP4, or when a reel feels too empty, repetitive, early-timed, weak on brand identity or too template-like.
 
 ## 1. Captions
 
@@ -18,85 +18,84 @@ Default portrait target:
 - max 2 visible lines;
 - target max **6 words per displayed group**.
 
-Do not shrink a whole long sentence to make it fit. Chunk long preview cues. Final captions still come from forced-aligned user audio.
+Do not shrink a long sentence to make it fit. Chunk preview cues. Final captions still come from forced-aligned user audio.
 
 ## 2. Use the full vertical stage
 
-The composition is not only the top half of 1080×1920.
-
-Use the continuous visual stage from the chapter/headline region down to the raised caption-safe zone. Avoid large empty middle/lower areas unless silence/emptiness has deliberate story meaning.
-
-Spread supporting details vertically: timeline, route, state, proof, date, source and consequence can occupy different levels rather than clustering every card around y=400–800.
+Use the continuous stage from chapter/headline down to the raised caption-safe zone. Avoid unexplained empty middle/lower areas. Large hero objects, UI, proof, logos and diagrams may occupy real space instead of living inside small cards.
 
 ## 3. Voice-synchronized reveals
 
-The final user voice is the timing authority.
+The final user voice is timing authority.
 
 - Phase-1 ratios are fallback only.
-- After alignment, prefer semantic anchors from caption/word timing.
-- `sentenceId + progress` is an acceptable robust anchor when exact word mapping is not needed.
-- Numbers, dates, names, route labels and key states should land when the phrase is spoken, not substantially before it.
-- A few frames of anticipation are allowed; the information payoff must be synchronized.
+- After alignment, prefer semantic anchors from word timing.
+- Major brands, names, dates, numbers and state changes should land with the spoken phrase, not substantially before it.
+- SFX should follow the same semantic event.
 
-For sentence-synchronized SFX events, run:
+## 4. Brand recognition review
 
-```bash
-node ki/scripts/sync-reel-sfx-to-captions.mjs <reel-package-dir>
-```
+For a branded/product reel, ask:
 
-after final forced alignment and before `resolve-reel-sfx.mjs`.
+- can the primary brand/product be recognized without relying on captions?
+- is it recognizable in the opening/cover?
+- does it reappear later instead of vanishing after the hook?
+- is at least one moment based on a genuine official logo/wordmark/product UI, or is there a documented reason why only typography is safe?
+- are functional icons clearly separate from brand identity?
 
-## 4. Motion variety
+Never approve a rough improvised logo recreation just because it resembles the brand. Official asset/UI or a clean typographic name is better than an inaccurate fake mark.
 
-Do not repeat the same card + spring + direction as the default grammar.
+## 5. Real media review
 
-Select from meaningful motion types:
+A real-media mix should make the reel feel connected to the actual product/story, not just decorate it.
 
-- connector/path draw;
-- cable split/fracture;
-- object collision/bounce;
-- timeline/playhead motion;
-- date/number impact;
-- scan/focus sweep;
-- gate/lock state change;
-- route branching;
-- progress/access pulse;
-- camera push/reframe;
-- source proof reveal;
-- selective transition/cut flash.
+Check whether the mastered MP4 contains, when planned:
 
-The reel should feel coherent, but consecutive beats should not look like the same component with different text.
+- a brand/product identity moment;
+- a genuine official proof crop/document;
+- real product UI, image or video rather than only self-made source cards.
 
-## 5. Microdetails
+If motion itself is the claim, check whether a real product video/B-roll moment would materially improve trust and comprehension. Do not add generic stock as a quota filler.
 
-Add small details when they clarify the story:
+## 6. Scene and visual-world variety
 
-- exact dates;
-- `PROPOSED`, `FINAL`, `PENDING`, `CONTINUE` states;
-- API/model/tool roles;
-- route counters (`1/3`, `2/3`, `3/3`);
-- source + date metadata;
-- ownership/contract state;
-- function labels.
+Do not review only frame-to-frame movement. Review whether the reel changes **visual worlds**.
 
-Microdetails should make the frame feel authored, not crowded.
+A 60–75 s v3 reel should normally have at least four clearly distinct worlds/grammars and at least two mid-reel reframes/world breaks.
 
-## 6. SFX density
+Examples:
 
-More SFX are useful only when there are more visible semantic events.
+- brand cover;
+- real UI;
+- spatial diagram;
+- source/proof world;
+- real image/video;
+- code/developer world;
+- timeline/data world;
+- physical metaphor;
+- payoff world.
 
-- every sound requires a visible trigger;
-- keep voice clearly dominant;
-- use different role families for different event types;
-- do not add a sound under every text entrance;
-- for an energetic 60–75 s reel, roughly one meaningful effect every 4–7 s can be a useful review heuristic, never a quota;
-- remove redundant effects during the final 1x listen.
+Changing the text inside the same white card does not count as a new world.
 
-## 7. Required real-render review
+## 7. Motion variety
+
+Do not repeat card + spring + slide as default grammar.
+
+Use meaningful types such as connector/path draw, object reaction, timeline/playhead, date/number impact, scan/focus, gate/lock, route branching, camera reframe, source proof, full-frame diagram and selective real-media insert.
+
+## 8. Microdetails
+
+Use dates, status, route counters, product roles and source metadata when they clarify the story. Important microdetails should remain phone-readable and appear progressively.
+
+## 9. SFX density
+
+Every sound requires a visible semantic trigger. Voice remains dominant. Remove redundant effects during final 1x listen.
+
+## 10. Required real-render review
 
 Never infer PASS from source code.
 
-On the exact mastered MP4 check:
+Base render checks:
 
 - `CAPTIONS_HIGH_ENOUGH`
 - `CAPTIONS_READABLE_AT_PHONE_SIZE`
@@ -109,4 +108,13 @@ On the exact mastered MP4 check:
 - `SFX_DENSITY_BALANCED`
 - `VOICE_PRIORITY_OVER_SFX`
 
-A source rework is only **implemented** until a new render proves these states.
+Level-Up v3 additionally checks:
+
+- `BRAND_RECOGNIZABLE_WITHOUT_CAPTION`
+- `PRIMARY_BRAND_REAPPEARS`
+- `REAL_BRAND_ASSET_USED_OR_EXCEPTION`
+- `REAL_MEDIA_NOT_JUST_SOURCE_CARDS`
+- `VISUAL_WORLD_VARIETY`
+- `MID_REEL_REFRAMES`
+
+A source rework is only implemented until a new render proves these states.
