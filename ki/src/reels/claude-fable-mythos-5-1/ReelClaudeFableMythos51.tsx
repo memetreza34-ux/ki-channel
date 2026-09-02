@@ -13,7 +13,6 @@ const FONT='Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const ANTHROPIC='#D97757';
 const INK='#181614';
-const CREAM='#F7F3EC';
 
 const sceneFor=(sceneId:string)=>CLAUDE_51_SCENES.find((scene)=>scene.sceneId===sceneId);
 const sentenceWindow=(sceneId:string,sentenceId:string,duration:number,fallbackStart:number,fallbackEnd:number):Window=>{
@@ -28,7 +27,7 @@ const progressIn=(frame:number,w:Window)=>interpolate(frame,[w.start,Math.max(w.
 
 const Stage:React.FC<React.PropsWithChildren<{accent:string;chapter:string;dark?:boolean}>>=({accent,chapter,dark=false,children})=>(
   <AbsoluteFill style={{background:dark?'linear-gradient(180deg,#151311 0%,#211B18 100%)':'linear-gradient(180deg,#FBF9F5 0%,#F2EDE6 100%)',color:dark?'#FFFFFF':INK,fontFamily:FONT,overflow:'hidden'}}>
-    <StoryTexture color={dark?'#FFFFFF':'#FFFFFF'} opacity={dark?.08:.16}/>
+    <StoryTexture color="#FFFFFF" opacity={dark?0.08:0.16}/>
     <div style={{position:'absolute',left:62,top:58,zIndex:50}}><StoryChapterLabel accent={accent}>{chapter}</StoryChapterLabel></div>
     {children}
   </AbsoluteFill>
@@ -58,7 +57,7 @@ const Scene1:React.FC<{duration:number}>=({duration})=>{
         <div style={{fontSize:39,fontWeight:900,marginTop:22,color:'#5D514A'}}>ZWEI NAMEN · EIN MODELLKERN</div>
         <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:24,marginTop:64}}>
           <div style={{transform:`translateX(${(1-split)*80}px)`}}><BrandText size={47}>FABLE 5.1</BrandText></div>
-          <div style={{fontSize:44,fontWeight:950,color={ANTHROPIC}}>+</div>
+          <div style={{fontSize:44,fontWeight:950,color:ANTHROPIC}}>+</div>
           <div style={{transform:`translateX(${-(1-split)*80}px)`}}><BrandText size={47} inverse>MYTHOS 5.1</BrandText></div>
         </div>
       </div>
@@ -73,11 +72,11 @@ const Scene1:React.FC<{duration:number}>=({duration})=>{
   </Stage>;
 };
 
-const AccessChip:React.FC<{label:string;on:boolean;delay:number}>=({label,on,delay})=>{
+const AccessChip:React.FC<{label:string;delay:number}>=({label,delay})=>{
   const frame=useCurrentFrame();
   const {fps}=useVideoConfig();
   const p=spring({frame:frame-delay,fps,config:{damping:18,stiffness:210}});
-  return <div style={{opacity:p,transform:`translateY(${(1-p)*18}px) scale(${.93+.07*p})`,padding:'20px 18px',borderRadius:22,background:on?'#FFFFFF':'#EFEAE4',border:`1px solid ${on?'#D8D0C8':'#E4DDD5'}`,textAlign:'center',fontSize:23,fontWeight:950,boxShadow:on?'0 12px 34px rgba(24,22,20,.08)':'none'}}>{label}</div>;
+  return <div style={{opacity:p,transform:`translateY(${(1-p)*18}px) scale(${.93+.07*p})`,padding:'20px 18px',borderRadius:22,background:'#FFFFFF',border:'1px solid #D8D0C8',textAlign:'center',fontSize:23,fontWeight:950,boxShadow:'0 12px 34px rgba(24,22,20,.08)'}}>{label}</div>;
 };
 
 const Scene2:React.FC<{duration:number}>=({duration})=>{
@@ -90,7 +89,7 @@ const Scene2:React.FC<{duration:number}>=({duration})=>{
       <div style={{fontSize:72,lineHeight:.98,fontWeight:950,letterSpacing:'-.06em'}}>Wer bekommt<br/>Fable 5.1?</div>
       <StoryBeat startFrame={s03.start+18} role="PROOF" direction="up" style={{marginTop:58}}>
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14}}>
-          <AccessChip label="PRO" on delay={s03.start+20}/><AccessChip label="MAX" on delay={s03.start+35}/><AccessChip label="TEAM" on delay={s03.start+50}/><AccessChip label="ENTERPRISE" on delay={s03.start+65}/>
+          <AccessChip label="PRO" delay={s03.start+20}/><AccessChip label="MAX" delay={s03.start+35}/><AccessChip label="TEAM" delay={s03.start+50}/><AccessChip label="ENTERPRISE" delay={s03.start+65}/>
         </div>
       </StoryBeat>
       <StoryBeat startFrame={s04.start+18} role="PROOF" direction="up" style={{marginTop:48}}>
@@ -131,7 +130,7 @@ const Scene3:React.FC<{duration:number}>=({duration})=>{
       <StoryBeat startFrame={s06.start+8} role="CHANGE" direction="up" style={{position:'absolute',left:86,right:86,top:1190}}>
         <div style={{fontSize:58,fontWeight:950,letterSpacing:'-.05em'}}>WARUM?</div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,marginTop:26}}>
-          {[{label:'CYBERSECURITY',p:.38},{label:'BIOLOGIE',p:.68}].map(({label,p})=><div key={label} style={{position:'relative',height:220,borderRadius:32,background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.16)',overflow:'hidden',padding:26}}><div style={{fontSize:25,fontWeight:950}}>{label}</div><div style={{position:'absolute',left:0,right:0,top:`${interpolate(scan,[p-0.15,p],[100,0],clamp)}%`,height:4,background:'#F7906A',boxShadow:'0 0 24px #F7906A'}}/><ShieldCheck size={64} style={{position:'absolute',right:24,bottom:24,color:'#FEC84B'}}/></div>)}
+          {[{label:'CYBERSECURITY',p:.38},{label:'BIOLOGIE',p:.68}].map(({label,p})=><div key={label} style={{position:'relative',height:220,borderRadius:32,background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.16)',overflow:'hidden',padding:26}}><div style={{fontSize:25,fontWeight:950}}>{label}</div><div style={{position:'absolute',left:0,right:0,top:`${interpolate(scan,[p-.15,p],[100,0],clamp)}%`,height:4,background:'#F7906A',boxShadow:'0 0 24px #F7906A'}}/><ShieldCheck size={64} style={{position:'absolute',right:24,bottom:24,color:'#FEC84B'}}/></div>)}
         </div>
       </StoryBeat>
     </StoryCamera>
@@ -215,9 +214,8 @@ const CaptionLayer:React.FC=()=>{
 };
 
 export const ReelClaudeFableMythos51:React.FC<Props>=({voiceoverSrc,showCaptions=true,showSfx=true})=>{
-  const scenes=CLAUDE_51_SCENES;
   return <AbsoluteFill>
-    {scenes.map((scene)=>{
+    {CLAUDE_51_SCENES.map((scene)=>{
       const duration=scene.endFrame-scene.startFrame;
       const component=scene.sceneId==='scene1'?<Scene1 duration={duration}/>:scene.sceneId==='scene2'?<Scene2 duration={duration}/>:scene.sceneId==='scene3'?<Scene3 duration={duration}/>:scene.sceneId==='scene4'?<Scene4 duration={duration}/>:<Scene5 duration={duration}/>;
       return <Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={duration} name={scene.title}>{component}</Sequence>;
