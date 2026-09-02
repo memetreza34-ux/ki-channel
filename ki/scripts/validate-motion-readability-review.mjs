@@ -58,6 +58,7 @@ if (reel?.storytelling?.enabled === true) {
 
 const publishDate = String(reel?.publishDate || '');
 const levelUpEnabled = reel?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-01');
+const levelUpV3 = Number(reel?.levelUp?.standardVersion) >= 3 || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-03');
 if (levelUpEnabled) {
   requirePass('COVER_FRAME_READY', 'a finished cover candidate must exist inside the first second');
   requirePass('COVER_FRAME_CLEAN', 'cover must be caption-free, readable and screenshot-ready');
@@ -73,6 +74,14 @@ if (levelUpEnabled) {
   requirePass('FULL_VERTICAL_STAGE_USE', 'usable 9:16 stage should be intentionally occupied');
   requirePass('MICRODETAILS_PHONE_READABLE', 'important dates/status/source labels must remain phone-readable');
   requirePass('SFX_SEMANTIC_DENSITY', 'sound density must follow visible semantic event density');
+}
+if (levelUpV3) {
+  requirePass('BRAND_RECOGNIZABLE_WITHOUT_CAPTION', 'the primary brand/product should be visually recognizable even without reading captions');
+  requirePass('PRIMARY_BRAND_REAPPEARS', 'a central brand must not exist only in the opening hook');
+  requirePass('REAL_BRAND_ASSET_USED_OR_EXCEPTION', 'use a genuine logo/wordmark/product-UI moment or explicitly approved exception');
+  requirePass('REAL_MEDIA_NOT_JUST_SOURCE_CARDS', 'real-media mix must include genuine UI/image/video, not only homemade source cards');
+  requirePass('VISUAL_WORLD_VARIETY', 'the reel must contain multiple clearly distinct visual worlds/grammars');
+  requirePass('MID_REEL_REFRAMES', 'the middle of the reel must contain planned visual-world/reframe breaks');
 }
 
 const darkScenes = Number(get('DARK_FULL_FRAME_SCENES'));
@@ -100,9 +109,7 @@ await new Promise((resolve, reject) => {
   stream.on('error', reject);
 });
 const actualHash = hash.digest('hex');
-if (actualHash.toLowerCase() !== expectedHash.toLowerCase()) {
-  fail('review file belongs to a different MP4/source render (SHA256 mismatch).');
-}
+if (actualHash.toLowerCase() !== expectedHash.toLowerCase()) fail('review file belongs to a different MP4/source render (SHA256 mismatch).');
 
 const probe = spawnSync('ffprobe',['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',video],{encoding:'utf8'});
 if (probe.error) fail(`ffprobe could not start: ${probe.error.message}`);
@@ -110,9 +117,7 @@ if (probe.status !== 0) fail(`ffprobe failed: ${probe.stderr || probe.stdout}`);
 const actualDuration = Number(probe.stdout.trim());
 const reviewedDuration = Number(get('REVIEWED_VIDEO_DURATION_SECONDS'));
 if (!Number.isFinite(reviewedDuration) || reviewedDuration <= 0) fail('REVIEWED_VIDEO_DURATION_SECONDS missing/invalid.');
-if (!Number.isFinite(actualDuration) || Math.abs(actualDuration-reviewedDuration) > 0.12) {
-  fail(`reviewed duration ${reviewedDuration}s does not match MP4 ${actualDuration}s.`);
-}
+if (!Number.isFinite(actualDuration) || Math.abs(actualDuration-reviewedDuration) > 0.12) fail(`reviewed duration ${reviewedDuration}s does not match MP4 ${actualDuration}s.`);
 
 console.log('MOTION READABILITY GATE PASSED');
 console.log(`review: ${review}`);
@@ -124,4 +129,4 @@ console.log(`minimum critical hold: ${minHold} frames`);
 console.log(`SFX review: ${reel?.sfx?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`visual asset review: ${reel?.visuals?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`storytelling review: ${reel?.storytelling?.enabled === true ? 'required + passed' : 'not applicable'}`);
-console.log(`Level-Up v2 review: ${levelUpEnabled ? 'required + passed' : 'not applicable'}`);
+console.log(`Level-Up review: ${levelUpEnabled ? (levelUpV3 ? 'v3 required + passed' : 'v2 required + passed') : 'not applicable'}`);
