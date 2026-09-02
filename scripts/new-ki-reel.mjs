@@ -29,6 +29,9 @@ const slug = slugify(title);
 if (!slug) throw new Error('Kein gültiger Ordnername aus Titel erzeugbar.');
 const selectedDate = parseDate(rawDate);
 const publishDate = iso(selectedDate);
+const levelUpVersion = publishDate >= '2026-09-03' ? 3 : 2;
+const minVisualBeats = levelUpVersion >= 3 ? 20 : 15;
+const realMediaMinimum = levelUpVersion >= 3 ? 3 : 2;
 const {monday,sunday} = weekBounds(selectedDate);
 const weekName = `${iso(monday)}_bis_${iso(sunday)}`;
 const weekRoot = resolve('ki','reels',weekName);
@@ -49,8 +52,23 @@ for (const dir of dirs) {
   await writeFile(resolve(reelRoot,dir,'.gitkeep'),'Verbindlicher Produktionsordner — nicht entfernen.\n','utf8');
 }
 
+const levelUpPlanV3Fields = levelUpVersion >= 3 ? `,
+  "brandFidelity": {
+    "primaryBrands": [],
+    "minimumRecognizableMoments": 2,
+    "minimumDistinctScenes": 2,
+    "coverBrandRecognizable": true,
+    "officialLogoOrWordmarkPreferred": true,
+    "realProductUiPreferred": true,
+    "typographicFallbackAllowed": true,
+    "genericSymbolFallbackForbidden": true,
+    "assetExceptionReason": ""
+  },
+  "visualWorlds": [],
+  "midReelReframes": []` : '';
+
 const files = {
-  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Publish-Date:** ${publishDate}\n\n## Produktionsphasen\n\n1. **Phase 1:** Inhalt + Source + Scene-Voice-Map + Story-Arc + mindestens 15 Visual Beats + LEVEL-UP-PLAN v2 + semantische SFX + Visual-/Brand-/Proof-/Real-Media-Entscheidung. Standard-Reel: 60–75 s Voice-Locked, bevorzugt 150–175 Wörter, 190 Hard-Limit.\n2. **Phase 2:** Voiceover ausschließlich durch den Nutzer.\n3. **Phase 3:** Pause-Kompression → Forced Alignment → Word-/Phrase-Lock → finale Captions/Szenen → SFX/Visuals lokal auflösen → Render → Social-Master → echter 1x Review.\n\nVerbindlich: REPO-STATE.md, ki/gehirn/STORYTELLING_MOTION.md, ki/gehirn/LEVEL_UP_STANDARD.md, AUDIO_PIPELINE.md, FORCED_ALIGNMENT.md, VISUAL_ASSETS.md und PRODUKTIONSABLAUF.md.\n`,
+  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Publish-Date:** ${publishDate}\n**Level-Up:** v${levelUpVersion}\n\n## Produktionsphasen\n\n1. **Phase 1:** Inhalt + Source + Scene-Voice-Map + Story-Arc + mindestens ${minVisualBeats} Visual Beats + LEVEL-UP-PLAN v${levelUpVersion} + Brand-/Proof-/Real-Media-/Visual-World-Plan + semantische SFX. Standard-Reel: 60–75 s Voice-Locked, bevorzugt 150–175 Wörter, 190 Hard-Limit.\n2. **Phase 2:** Voiceover ausschließlich durch den Nutzer.\n3. **Phase 3:** Pause-Kompression → Forced Alignment → Word-/Phrase-Lock → finale Captions/Szenen → SFX/Visuals lokal auflösen → Render → Social-Master → echter 1x Review.\n\nVerbindlich: REPO-STATE.md, ki/gehirn/STORYTELLING_MOTION.md, ki/gehirn/LEVEL_UP_STANDARD.md, AUDIO_PIPELINE.md, FORCED_ALIGNMENT.md, VISUAL_ASSETS.md und PRODUKTIONSABLAUF.md.\n`,
 
   '01-script-audio/README.md': `# 01 — Script & Audio\n\nPflicht in Phase 1:\n- VOICEOVER-ZUM-KOPIEREN.txt = exakter Sprechertext\n- 60–75 s Voice-Locked-Ziel\n- bevorzugt 150–175 Wörter, Hard-Limit 190\n- SCENE-VOICE-MAP.json = exakte Satz→Szene-Zuordnung\n\nPhase 2 bleibt ausschließlich Nutzer-Audio. Agenten erzeugen oder laden kein Produktions-Voiceover.\n\nNach echtem Nutzer-Audio erzeugt Phase 3 WORD-TIMINGS.json. Große Brand-/Zahl-/Datums-/Status-Reveals werden danach an echte Wörter/Phrasen gekoppelt; sentenceId + progress ist nur Fallback.\n`,
 
@@ -71,9 +89,9 @@ const files = {
 }
 `,
 
-  '02-bilder/README.md': `# 02 — Bilder / Videos / Brand Assets\n\nBrand-/Proof-Reihenfolge für aktuelle Markenstories:\n1. offizielles Logo/Wordmark oder echte Produkt-UI, wenn rechtlich/provenance-seitig sauber;\n2. echter offizieller Source-/Help-/Docs-Crop;\n3. reales Bild oder kurze reale B-Roll, wenn sie den Claim besser trägt;\n4. typografischer Markenname als sauberer Fallback;\n5. Funktionsicons nur für Funktionen — niemals als Fake-Logo.\n\nNormalziel: mindestens zwei reale/official Visual-Momente pro branded/current-news Reel oder dokumentierte Ausnahme. Externe Medien vor Render lokal auflösen, Lizenz/Provenance dokumentieren und SHA256 binden. Keine Render-Time-Remote-Medien.\n\nBereits lokale, provenance-backed Kurzclips können mit /prepare-local-video-asset bzw. node scripts/prepare-local-video-asset.mjs sicher auf 9:16/30fps vorbereitet werden. Der Output bleibt PREPARED_NOT_PRODUCTION_APPROVED bis zum echten Visual-/Timing-Review.\n`,
+  '02-bilder/README.md': `# 02 — Bilder / Videos / Brand Assets\n\nBrand-/Proof-Reihenfolge für aktuelle Markenstories:\n1. offizielles Logo/Wordmark oder echte Produkt-UI, wenn rechtlich/provenance-seitig sauber;\n2. echter offizieller Source-/Help-/Docs-Crop;\n3. reales Bild oder kurze reale B-Roll, wenn sie den Claim besser trägt;\n4. typografischer Markenname als sauberer Fallback;\n5. Funktionsicons nur für Funktionen — niemals als Fake-Logo.\n\nNie ein Markenlogo frei und ungenau nachbauen. Ein sauberer typografischer Name ist besser als eine Fake-Rekonstruktion.\n\nLevel-Up v${levelUpVersion}: branded/current-news Ziel sind normalerweise mindestens ${realMediaMinimum} purposeful real/official Momente${levelUpVersion >= 3 ? ' über mindestens zwei Szenen: Brand/Produkt + Proof + echte UI/Bild/Video' : ''} oder dokumentierte Ausnahme. Keine Render-Time-Remote-Medien.\n\nBereits lokale provenance-backed Kurzclips können mit /prepare-local-video-asset bzw. node scripts/prepare-local-video-asset.mjs sicher auf 9:16/30fps vorbereitet werden. Der Output bleibt PREPARED_NOT_PRODUCTION_APPROVED bis zum echten Visual-/Timing-Review.\n`,
 
-  '02-bilder/image-prompts.md': `# Image / Video / Asset Prompts\n\n**Status:** OFFEN\n\nPro Szene festlegen:\n- native Motion, echte Brand/UI/Source, reales Bild oder reales Video?\n- welcher Claim wird bewiesen?\n- welche Marke darf nicht durch ein generisches Icon ersetzt werden?\n- welcher Crop/Highlight/Zoom unterstützt den Proof?\n- ist echte Bewegung Teil des Claims? Dann Video/B-Roll bevorzugen.\n- keine Google-Bildsuche als Lizenznachweis.\n`,
+  '02-bilder/image-prompts.md': `# Image / Video / Asset Prompts\n\n**Status:** OFFEN\n\nPro Szene festlegen:\n- native Motion, echte Brand/UI/Source, reales Bild oder reales Video?\n- welcher Claim wird bewiesen?\n- welche Marke muss ohne Caption erkennbar sein?\n- welches offizielle Asset/echte UI ist möglich?\n- welcher Crop/Highlight/Zoom unterstützt den Proof?\n- ist echte Bewegung Teil des Claims? Dann Video/B-Roll bevorzugen oder Ausnahme dokumentieren.\n- keine Google-Bildsuche als Lizenznachweis.\n`,
 
   '03-caption/README.md': `# 03 — Captions & Plattform-Copy\n\nPreview-Cues sind Planung; finale Cues kommen aus WORD-TIMINGS.json.\n\nShared Default:\n- bottom 330 px\n- horizontal inset 76 px\n- max width 928 px\n- ca. 40 px Text\n- max 2 Zeilen\n- Ziel max 6 Wörter je sichtbarer Gruppe\n- Glass-/Blur-Overlay, kein Footer\n\nLange Sätze werden gruppiert statt auf Mini-Schrift verkleinert. Der Cover-Kandidat in der ersten Sekunde bleibt caption-frei.\n`,
 
@@ -82,32 +100,32 @@ const files = {
   '03-caption/FINAL-CAPTION.txt': `OFFEN — vor Final-Export durch die publish-ready Hauptcaption ersetzen.\n`,
   '04-pdf/README.md': `# 04 — PDF\n\nOptional. Nur reel-bezogene PDF-Quellen/Exports.\n`,
 
-  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render: Struktur-, Script-Budget-, Storytelling-, Level-Up-, Dauer-, Alignment-, Scene-Voice-, Voice-Lock-, SFX- und Visual-Gates ausführen.\n\nLevel-Up:\nnode ki/scripts/validate-reel-level-up.mjs <reel-package-dir>\n\nDer in reel.json gesetzte coverTimeSeconds muss bei Level-Up-Reels in der ersten Sekunde liegen und auf einen sauberen Cover-Kandidaten zeigen. Der komplette geplante Cover-Hold bleibt ebenfalls innerhalb der ersten Sekunde.\n\nDanach normaler Render-, Social-Master- und exakter 1x-Review-Pfad. COVER_FRAME_READY, COVER_FRAME_CLEAN, BRAND_FIDELITY, REAL_PROOF_MOMENT, REAL_MEDIA_MIX, WORD_LOCKED_MAJOR_REVEALS, SCENE_DENSITY, NO_VISUAL_OVERLAP, MOTION_GRAMMAR_DIVERSITY, NO_CARD_DECK_FEEL, FULL_VERTICAL_STAGE_USE, MICRODETAILS_PHONE_READABLE und SFX_SEMANTIC_DENSITY dürfen nur am echten gemasterten MP4 auf PASS gesetzt werden.\n`,
+  '05-export/README.md': `# 05 — Final Export\n\nVor Production-Render: Struktur-, Script-Budget-, Storytelling-, Level-Up-, Dauer-, Alignment-, Scene-Voice-, Voice-Lock-, SFX- und Visual-Gates ausführen.\n\nLevel-Up:\nnode ki/scripts/validate-reel-level-up.mjs <reel-package-dir>\n\nDer in reel.json gesetzte coverTimeSeconds muss in der ersten Sekunde liegen und der komplette Cover-Hold bleibt ebenfalls darin.\n\nLevel-Up v3 kann nur final PASS werden, wenn zusätzlich BRAND_RECOGNIZABLE_WITHOUT_CAPTION, PRIMARY_BRAND_REAPPEARS, REAL_BRAND_ASSET_USED_OR_EXCEPTION, REAL_MEDIA_NOT_JUST_SOURCE_CARDS, VISUAL_WORLD_VARIETY und MID_REEL_REFRAMES am echten gemasterten MP4 geprüft wurden.\n`,
 
-  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nEnthält reel.json, Story-/Level-Up-/Visual-/SFX-Verträge und Reviews. Ausführbarer Source liegt unter ki/src/reels/<slug>/.\n\nNeue Reels ab 2026-09-01 benötigen LEVEL-UP-PLAN.json v2 und müssen validate-reel-level-up.mjs bestehen. Cover, Brand/Proof, Real-Media-Mix, Szenendichte und Overlap werden schon in Phase 1 geplant.\n`,
+  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nEnthält Story-/Level-Up-/Visual-/SFX-Verträge und Reviews. Ausführbarer Source liegt unter ki/src/reels/<slug>/.\n\nDieses Reel nutzt LEVEL-UP-PLAN.json v${levelUpVersion}. Cover, Brand/Proof, Real-Media-Mix, Szenendichte, Overlap${levelUpVersion >= 3 ? ', Brand-Wiederholung, Visual Worlds und Mid-Reel-Reframes' : ''} werden schon in Phase 1 geplant.\n`,
 
   '06-projektdateien/story-beats.json': `{
   "version": 1,
   "status": "DRAFT",
   "storyArc": ["HOOK", "PROBLEM", "PROOF", "CHANGE", "CONSEQUENCE", "PAYOFF"],
   "rules": {
-    "minVisualBeats": 15,
+    "minVisualBeats": ${minVisualBeats},
     "maxStaticSeconds": 4.0,
     "everySpokenCoreClaimNeedsVisualReaction": true,
     "transitionMustHaveMeaning": true,
     "cameraMotionMustHaveMeaning": true,
     "sfxMustMatchVisibleEvent": true,
-    "externalVisualTarget": "2_PLUS_PURPOSEFUL_REAL_OR_OFFICIAL_MOMENTS_WHEN_BRANDED",
+    "externalVisualTarget": "${levelUpVersion >= 3 ? '3_PURPOSEFUL_REAL_OR_OFFICIAL_MOMENTS_WHEN_BRANDED' : '2_PLUS_PURPOSEFUL_REAL_OR_OFFICIAL_MOMENTS_WHEN_BRANDED'}",
     "nativeMotionTargetPercent": "FLEXIBLE_NATIVE_FIRST"
   },
   "beats": []
 }
 `,
 
-  '06-projektdateien/STORY-PLAN.md': `# Story-Plan — ${title}\n\nPflicht vor Phase 2:\n- mindestens 15 konkrete Visual Beats\n- Hook/Proof/Consequence/Payoff\n- Cover-Kandidat + sauberer Hold vollständig innerhalb der ersten Sekunde\n- aktive Voiceover-Strecken entwickeln sich etwa alle 1,5–3,0 s sichtbar weiter\n- max. ca. 4,0 s praktisch unveränderter Hauptzustand\n- jede Szene mehrere sichtbare Zustände, nicht nur dieselbe Karte\n- wichtige Reveals nach Audio an Wörter/Phrasen locken\n- nicht mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik\n- mindestens eine räumliche/full-frame Hauptszene, wenn das Thema es erlaubt\n- ein primärer Fokus pro Moment; supporting details progressiv\n`,
+  '06-projektdateien/STORY-PLAN.md': `# Story-Plan — ${title}\n\nPflicht vor Phase 2:\n- mindestens ${minVisualBeats} konkrete Visual Beats\n- Hook/Proof/Consequence/Payoff\n- Cover-Kandidat + sauberer Hold vollständig innerhalb der ersten Sekunde\n- aktive Voiceover-Strecken entwickeln sich etwa alle 1,5–3,0 s sichtbar weiter\n- max. ca. 4,0 s praktisch unveränderter Hauptzustand\n- jede Szene mehrere sichtbare Zustände, nicht nur dieselbe Karte\n- wichtige Reveals nach Audio an Wörter/Phrasen locken\n- nicht mehr als zwei große Beats hintereinander mit derselben Card/Spring/Slide-Grammatik\n- mindestens eine räumliche/full-frame Hauptszene, wenn das Thema es erlaubt\n- ein primärer Fokus pro Moment; supporting details progressiv\n${levelUpVersion >= 3 ? '- mindestens vier unterscheidbare Visual Worlds\n- mindestens zwei Mid-Reel-Reframes/World-Breaks\n- primäre Marke im Cover erkennbar und später erneut sichtbar\n' : ''}`,
 
   '06-projektdateien/LEVEL-UP-PLAN.json': `{
-  "version": 2,
+  "version": ${levelUpVersion},
   "status": "DRAFT",
   "currentNewsBrandStory": true,
   "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
@@ -118,15 +136,15 @@ const files = {
     "captionFree": true,
     "headlineRequired": true,
     "primarySubjectRequired": true,
-    "coverMatchesStory": true
+    "coverMatchesStory": true${levelUpVersion >= 3 ? ',\n    "brandRecognizable": true' : ''}
   },
   "brandMoments": [],
   "realProofMoments": [],
   "realMediaMix": {
-    "minimumMoments": 2,
+    "minimumMoments": ${realMediaMinimum},
     "moments": [],
     "exceptionReason": "",
-    "videoPreferredWhenMotionIsClaim": true
+    "videoPreferredWhenMotionIsClaim": true${levelUpVersion >= 3 ? ',\n    "motionIsClaim": false,\n    "videoExceptionReason": ""' : ''}
   },
   "majorReveals": [],
   "motionFamilies": [],
@@ -146,7 +164,7 @@ const files = {
   "fullFrameSceneIds": [],
   "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
   "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
-  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}${levelUpPlanV3Fields}
 }
 `,
 
@@ -177,6 +195,7 @@ const files = {
     "googleImageSearchAsLicenseAuthority": false,
     "externalBinariesMustResolveLocally": true,
     "genericIconMayImpersonateBrand": false,
+    "approximateLogoReconstructionAllowed": false,
     "realMediaMustHaveStoryPurpose": true
   },
   "assets": []
@@ -190,23 +209,27 @@ const files = {
 }
 `,
 
-  '06-projektdateien/VISUAL-PLAN.md': `# Visual-Plan — ${title}\n\nFür branded/current-news Reels zuerst echte Brand-/Produkt-/Source-Fidelity planen. Normalziel: mindestens zwei reale/official Momente — Logo/Wordmark, echte UI, Source-Crop, reales Bild oder kurzes reales Video — sofern sinnvoll und sauber nutzbar. Eine SourceProofCard ersetzt einen echten Proof-Crop nicht automatisch.\n\nWenn Bewegung selbst Teil des Claims ist, echtes Video/B-Roll bevorzugen. Bereits lokale provenance-backed Clips bei Bedarf über /prepare-local-video-asset normalisieren; kein Download in diesem Schritt. Keine Remote-Medien im Render. Der gesamte 9:16-Bereich zwischen Headline und Caption-Safe-Zone ist aktive Bühne. Pro Moment ein primärer Fokus; Caption und wichtige Visuals dürfen nicht überlappen.\n`,
+  '06-projektdateien/VISUAL-PLAN.md': `# Visual-Plan — ${title}\n\nBrand zuerst wirklich erkennbar machen: offizielles Logo/Wordmark oder echte Produkt-UI bevorzugen. Kein generisches Icon und keine ungenaue Logo-Rekonstruktion.\n\nLevel-Up v${levelUpVersion}: branded/current-news Ziel sind normalerweise mindestens ${realMediaMinimum} reale/official Momente${levelUpVersion >= 3 ? ' über mindestens zwei Szenen: Brand/Produkt + echter Proof + echte UI/Bild/Video. Die primäre Marke soll im Cover erkennbar sein und später erneut auftauchen.' : ''}\n\nWenn Bewegung selbst Teil des Claims ist, echtes Video/B-Roll bevorzugen oder Ausnahme dokumentieren. Bereits lokale provenance-backed Clips bei Bedarf über /prepare-local-video-asset normalisieren. Keine Remote-Medien im Render. Pro Moment ein primärer Fokus; Caption und wichtige Visuals dürfen nicht überlappen.\n`,
 
-  '06-projektdateien/MOTION-READABILITY-REVIEW.md': `# Motion Readability Review — ${title}\n\nSTATUS: PENDING\nLIGHT_FIRST: PENDING\nDARK_FULL_FRAME_SCENES: 0\nDARK_EXCEPTION_APPROVED: NO\nDARK_EXCEPTION_REASON: NONE\nTOO_FAST_BEATS: 0\nSIMULTANEOUS_INFO_OVERLOADS: 0\nMIN_CRITICAL_HOLD_FRAMES: 12\nPOST_RENDER_1X_REVIEW: PENDING\nCOVER_FRAME_READY: PENDING\nCOVER_FRAME_CLEAN: PENDING\nCAPTION_SYNC_1X_REVIEW: PENDING\nCAMERA_EFFECTS_1X_REVIEW: PENDING\nAUDIO_MIX_1X_REVIEW: PENDING\nSFX_1X_REVIEW: PENDING\nVOICE_PRIORITY_OVER_SFX: PENDING\nVISUAL_ASSETS_1X_REVIEW: PENDING\nSTORY_FLOW_1X_REVIEW: PENDING\nVISUAL_REACTION_1X_REVIEW: PENDING\nTRANSITIONS_PURPOSE_1X_REVIEW: PENDING\nSTATIC_STATE_OVER_LIMIT_VIOLATIONS: 0\nBRAND_FIDELITY: PENDING\nREAL_PROOF_MOMENT: PENDING\nREAL_MEDIA_MIX: PENDING\nNO_FAKE_BRAND_ICON: PENDING\nWORD_LOCKED_MAJOR_REVEALS: PENDING\nSCENE_DENSITY: PENDING\nNO_VISUAL_OVERLAP: PENDING\nMOTION_GRAMMAR_DIVERSITY: PENDING\nNO_CARD_DECK_FEEL: PENDING\nFULL_VERTICAL_STAGE_USE: PENDING\nMICRODETAILS_PHONE_READABLE: PENDING\nSFX_SEMANTIC_DENSITY: PENDING\nREVIEWED_VIDEO_SHA256: PENDING\nREVIEWED_VIDEO_DURATION_SECONDS: PENDING\n`,
+  '06-projektdateien/MOTION-READABILITY-REVIEW.md': `# Motion Readability Review — ${title}\n\nSTATUS: PENDING\nLIGHT_FIRST: PENDING\nDARK_FULL_FRAME_SCENES: 0\nDARK_EXCEPTION_APPROVED: NO\nDARK_EXCEPTION_REASON: NONE\nTOO_FAST_BEATS: 0\nSIMULTANEOUS_INFO_OVERLOADS: 0\nMIN_CRITICAL_HOLD_FRAMES: 12\nPOST_RENDER_1X_REVIEW: PENDING\nCOVER_FRAME_READY: PENDING\nCOVER_FRAME_CLEAN: PENDING\nCAPTION_SYNC_1X_REVIEW: PENDING\nCAMERA_EFFECTS_1X_REVIEW: PENDING\nAUDIO_MIX_1X_REVIEW: PENDING\nSFX_1X_REVIEW: PENDING\nVOICE_PRIORITY_OVER_SFX: PENDING\nVISUAL_ASSETS_1X_REVIEW: PENDING\nSTORY_FLOW_1X_REVIEW: PENDING\nVISUAL_REACTION_1X_REVIEW: PENDING\nTRANSITIONS_PURPOSE_1X_REVIEW: PENDING\nSTATIC_STATE_OVER_LIMIT_VIOLATIONS: 0\nBRAND_FIDELITY: PENDING\nREAL_PROOF_MOMENT: PENDING\nREAL_MEDIA_MIX: PENDING\nNO_FAKE_BRAND_ICON: PENDING\nWORD_LOCKED_MAJOR_REVEALS: PENDING\nSCENE_DENSITY: PENDING\nNO_VISUAL_OVERLAP: PENDING\nMOTION_GRAMMAR_DIVERSITY: PENDING\nNO_CARD_DECK_FEEL: PENDING\nFULL_VERTICAL_STAGE_USE: PENDING\nMICRODETAILS_PHONE_READABLE: PENDING\nSFX_SEMANTIC_DENSITY: PENDING\nBRAND_RECOGNIZABLE_WITHOUT_CAPTION: PENDING\nPRIMARY_BRAND_REAPPEARS: PENDING\nREAL_BRAND_ASSET_USED_OR_EXCEPTION: PENDING\nREAL_MEDIA_NOT_JUST_SOURCE_CARDS: PENDING\nVISUAL_WORLD_VARIETY: PENDING\nMID_REEL_REFRAMES: PENDING\nREVIEWED_VIDEO_SHA256: PENDING\nREVIEWED_VIDEO_DURATION_SECONDS: PENDING\n`,
 
-  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1\n**Status:** OFFEN\n\nPflicht: Script + SCENE-VOICE-MAP + story-beats + LEVEL-UP-PLAN v2 + Cover-Plan + SFX + Visual-/Brand-/Proof-/Real-Media-Plan + Source. Vor Phase 2 Struktur-, Storytelling- und Level-Up-Validator real ausführen.\n\n## Phase 2\n**Status:** WARTET AUF PHASE 1\nNur Nutzer erstellt Produktions-Voiceover.\n\n## Phase 3\n**Status:** WARTET AUF LOKALES NUTZER-AUDIO\nNach Forced Alignment große Reveals an echte Wörter/Phrasen locken, SFX neu synchronisieren, lokale Visuals/SFX auflösen, rendern, mastern und exakt bei 1x prüfen. Cover-Frame, Szenendichte, Überlappungen und Real-Media-Mix werden am echten MP4 geprüft.\n`,
+  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1\n**Status:** OFFEN\n\nPflicht: Script + SCENE-VOICE-MAP + story-beats + LEVEL-UP-PLAN v${levelUpVersion} + Cover + Brand/Proof/Real-Media${levelUpVersion >= 3 ? ' + Visual Worlds + Mid-Reel-Reframes' : ''} + SFX + Source. Vor Phase 2 Struktur-, Storytelling- und Level-Up-Validator real ausführen.\n\n## Phase 2\n**Status:** WARTET AUF PHASE 1\nNur Nutzer erstellt Produktions-Voiceover.\n\n## Phase 3\n**Status:** WARTET AUF LOKALES NUTZER-AUDIO\nNach Forced Alignment große Reveals an echte Wörter/Phrasen locken, SFX neu synchronisieren, lokale Visuals/SFX auflösen, rendern, mastern und exakt bei 1x prüfen.\n`,
 };
 
 for (const [relative,content] of Object.entries(files)) await writeFile(resolve(reelRoot,relative),content,'utf8');
 
 console.log(`KI-Reel angelegt: ${reelRoot}`);
-console.log('Phase 1: 60–75 s Voice-Locked, bevorzugt 150–175 Wörter, Hard-Limit 190.');
+console.log(`Level-Up: v${levelUpVersion}`);
+console.log(`Phase 1: mindestens ${minVisualBeats} Visual Beats; 60–75 s Voice-Locked; bevorzugt 150–175 Wörter.`);
 console.log('Cover-first: Default Frame 15 + 15 Frames sauberer Hold, vollständig innerhalb der ersten Sekunde.');
+console.log(`Real Media: branded/current-news normalerweise mindestens ${realMediaMinimum} purposeful real/official Momente oder dokumentierte Ausnahme.`);
+if (levelUpVersion >= 3) {
+  console.log('Brand v3: mindestens zwei erkennbare Brand-Momente über zwei Szenen; echter Brand/Product-Asset-Moment oder dokumentierte Ausnahme.');
+  console.log('Visual Worlds v3: mindestens vier verschiedene Welten + zwei Mid-Reel-Reframes.');
+}
 console.log('Scene Density: sichtbare Entwicklung etwa alle 1,5–3,0 s, max. ca. 4,0 s praktisch unverändert.');
-console.log('Real Media: bei branded/current-news normalerweise mindestens zwei purposeful real/official Momente oder dokumentierte Ausnahme.');
-console.log('Video Prep: bereits lokale provenance-backed Kurzclips können sicher über /prepare-local-video-asset vorbereitet werden.');
+console.log('Video Prep: lokale provenance-backed Kurzclips können über /prepare-local-video-asset vorbereitet werden.');
 console.log('Overlap: ein primärer Fokus + höchstens zwei unterstützende Details; Caption nie über kritischem Visual.');
-console.log('Level-Up: Brand Fidelity + Real Proof + Word/Phrase Lock + mindestens fünf Motion-Familien + Full-Frame-Szene.');
 console.log('Caption Default: bottom 330 / inset 76 / max 928 / ca. 40 px / max 6 Wörter pro sichtbarer Gruppe.');
 console.log('Vor Nutzer-Audio: Strukturcheck + validate-storytelling-motion + validate-reel-level-up.');
 console.log('Phase 2: Voiceover ausschließlich durch den Nutzer.');
