@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "provider": "USER_PROVIDED",
+  "targetFile": "01-script-audio/voiceover.mp3",
+  "status": "WAITING_FOR_USER_LOCAL_MASTER",
+  "agentGenerationAllowed": false,
+  "agentDownloadAllowed": false,
+  "timingAuthority": false,
+  "notes": "Produktions-Voiceover ausschließlich durch den Nutzer. Finale Timing-Autorität erst nach lokaler Pause-Kompression und Forced Alignment."
+}
