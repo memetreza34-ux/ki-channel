@@ -1,6 +1,6 @@
-import reelData from '../../../reels/2026-08-31_bis_2026-09-06/01_OpenAI-Cursor-SpaceX-Vertrag/06-projektdateien/reel.json';
-import captionData from '../../../reels/2026-08-31_bis_2026-09-06/01_OpenAI-Cursor-SpaceX-Vertrag/03-caption/subtitle-cues.json';
-import sfxData from '../../../reels/2026-08-31_bis_2026-09-06/01_OpenAI-Cursor-SpaceX-Vertrag/06-projektdateien/sfx-resolved.json';
+import reelData from '../../../reels/2026-08-31_bis_2026-09-06/01_Montag/01_OpenAI-Cursor-SpaceX-Vertrag/06-projektdateien/reel.json';
+import captionData from '../../../reels/2026-08-31_bis_2026-09-06/01_Montag/01_OpenAI-Cursor-SpaceX-Vertrag/03-caption/subtitle-cues.json';
+import sfxData from '../../../reels/2026-08-31_bis_2026-09-06/01_Montag/01_OpenAI-Cursor-SpaceX-Vertrag/06-projektdateien/sfx-resolved.json';
 
 export type OpenAICursorCue = {id:string;sceneId:string;sentenceId?:string;startFrame:number;endFrame:number;text:string};
 export type OpenAICursorSfx = {id:string;sceneId:string;startFrame:number;durationInFrames:number;volume:number;staticFile:string};
