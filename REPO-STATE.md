@@ -8,31 +8,51 @@ Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- o
 
 `main` ist der kanonische Produktionsstand nach abgeschlossenen Merges.
 
-Aktuelle Stabilisierung läuft über Draft-PR **#28** direkt gegen `main` auf:
+Aktuelle Stabilisierung:
 
-`fix/repo-stabilisierung-2026-08-24`
-
-Solange diese Stabilisierung aktiv ist, wird dieser Branch weitergeführt und nicht still nach `main` gewechselt. PR #28 bleibt Draft, bis lokale Runtime-, Render- und 1x-Review-Beweise real vorliegen.
+- Draft-PR **#28** gegen `main`
+- Branch: `fix/repo-stabilisierung-2026-08-24`
+- nicht still nach `main` wechseln
+- PR nicht ready/mergebar melden, solange lokale Runtime-, Render- und 1x-Review-Beweise fehlen
 
 ## 2. Verbindliche Lesereihenfolge
 
-Bei KI-Kanal-Arbeit gilt:
+Bei KI-Kanal-Arbeit:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
-3. bei Antigravity zusätzlich `GEMINI.md`, `.agents/agents.md` und `.agents/ANTIGRAVITY-LOCAL-SETUP.md`
+3. bei Antigravity zusätzlich `GEMINI.md`, `.agents/agents.md`, `.agents/ANTIGRAVITY-LOCAL-SETUP.md`
 4. `ki/AGENTS.md`
 5. `ki/gehirn/MASTER.md`
 6. bei Reels `ki/gehirn/STORYTELLING_MOTION.md`
-7. bei neuen Reels zusätzlich `ki/gehirn/LEVEL_UP_STANDARD.md`
-8. danach passende Domäne / `ki/reels/AGENTS.md` / `ki/src/reels/AGENTS.md`
+7. bei neuen Reels `ki/gehirn/LEVEL_UP_STANDARD.md`
+8. `ki/reels/AGENTS.md`
 9. das ausdrücklich genannte Reel
-10. erst danach konkrete Pläne, Source- oder Plattformdateien
+10. erst danach konkrete Source-/Plan-/Plattformdateien
 
-## 3. Kanonische Short-Form-Struktur
+## 3. Kanonische Reel-Ordnerstruktur
+
+Seit der aktiven Woche `2026-08-31_bis_2026-09-06` und für **alle neuen Reels** gilt zwingend:
 
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+│   ├── 01_Thema-A/
+│   └── 02_Thema-B/
+├── 02_Dienstag/
+│   └── 01_Thema/
+├── 03_Mittwoch/
+│   └── 01_Thema/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
+```
+
+Im Themenordner:
+
+```text
+NN_Thema/
 ├── README.md
 ├── 01-script-audio/
 ├── 02-bilder/
@@ -42,29 +62,69 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Ausführbarer Remotion-Code liegt getrennt unter:
+Kurzform:
 
-`ki/src/reels/<slug>/`
+`Woche → Wochentag → Thema/Reel → 01–06`
 
-`scripts/new-ki-reel.mjs` erzeugt die 01–06-Struktur Git-stabil und scaffoldet Story-, Level-Up-, Visual-, SFX- und Review-Verträge.
+### Nummerierung
 
-- Reels vom 2026-09-01 bis 2026-09-02 bleiben Level-Up-v2-kompatibel.
-- Neue Reels ab **2026-09-03** verwenden **Level-Up v3**.
+- Wochentage sind fest `01_Montag` bis `07_Sonntag`.
+- Reel-Themen werden **innerhalb des jeweiligen Tages** nummeriert: `01_`, `02_`, `03_` ...
+- Eine Reel-Nummer auf Wochenebene ist nicht mehr kanonisch.
 
-Der Strukturcheck überwacht den Generator selbst:
+### Generator
+
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
+
+Implementierung:
+
+- `scripts/new-ki-reel.mjs` → bestimmt Wochentag und Topic-Slot
+- `scripts/new-ki-reel-core.mjs` → erzeugt vollständigen 01–06-/Story-/Level-Up-Scaffold
+
+Nach jeder Strukturänderung:
 
 ```bash
 npm run ki:reel:structure-check
 ```
 
-## 4. Script- und Laufzeit-Budget
+Der Strukturcheck ist ab Wochenstart `2026-08-31` fail-closed auf die Tagesebene. Ältere abgeschlossene Wochen davor bleiben Legacy-kompatibel, damit historische Spezialtests nicht unnötig brechen. Sobald ein Legacy-Reel aktiv weiterentwickelt wird, soll es auf die aktuelle Struktur migriert werden.
+
+## 4. Aktive Woche
+
+Aktuell:
+
+```text
+ki/reels/2026-08-31_bis_2026-09-06/
+├── 01_Montag/
+│   └── 01_OpenAI-Cursor-SpaceX-Vertrag/
+├── 02_Dienstag/
+│   └── 01_Google-Flow-Gemini-Omni-1-1-Flash/
+└── 03_Mittwoch/
+    └── 01_Grok-Bot-X-Integration/
+```
+
+Donnerstag und spätere Tage werden beim ersten Reel automatisch angelegt.
+
+## 5. Source-Trennung
+
+Ausführbarer Remotion-Code liegt separat unter:
+
+`ki/src/reels/<slug>/`
+
+Planungsdateien gehören nicht nach `ki/src/reels/`.
+
+Wenn Source JSON/Captions/SFX aus einem Reel-Paket importiert, muss der Import den vollständigen Pfad inklusive Wochentag verwenden.
+
+## 6. Script- und Laufzeit-Budget
 
 Für Standard-Reels:
 
 - tatsächliche Voice-Locked-Laufzeit: **60–75 Sekunden**
 - bevorzugt **150–175 gesprochene Wörter**
 - Hard-Limit **190 Wörter** ohne dokumentierte Ausnahme
-- 1080×1920 / 30 FPS
+- Format **1080×1920 / 30 FPS**
 
 Vor Production-Render:
 
@@ -74,26 +134,26 @@ node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>
 
 Finale Laufzeitautorität ist das Nutzer-Audio nach Pause-Kompression und lokalem Forced Alignment.
 
-## 5. Produktions-Audio — ausschließlich Nutzer
+## 7. Produktions-Audio — ausschließlich Nutzer
 
 **Harte Regel:** Das Produktions-Voiceover wird ausschließlich vom Nutzer erstellt und manuell abgelegt.
 
-Normaler Pfad:
+Normaler Pfad innerhalb des Themenordners:
 
 `01-script-audio/voiceover.mp3`
 
 Agenten dürfen niemals:
 
-- Produktions-Voiceover erzeugen;
-- TTS-/Voice-Tools dafür aufrufen;
-- Remote-Voiceover herunterladen;
-- Preview-Audio als Ersatz verwenden.
+- Produktions-Voiceover erzeugen
+- TTS-/Voice-Tools dafür aufrufen
+- Remote-Voiceover herunterladen
+- Preview-Audio als Produktionsersatz verwenden
 
-Fehlt die Datei:
+Fehlt das Audio:
 
 `PHASE 2 — WARTET AUF NUTZER-AUDIO`
 
-Nach Nutzer-Audio:
+Danach:
 
 ```text
 voiceover.mp3
@@ -101,156 +161,136 @@ voiceover.mp3
 → Runtime-WAV
 → lokales Forced Alignment
 → WORD-TIMINGS.json
-→ Scene/Caption/Reveal/SFX-Lock
+→ Scene-/Caption-/Reveal-/SFX-Lock
 ```
 
 Runtime-Ziel:
 
 `public/runtime-audio/<compositionId>.wav`
 
-## 6. Storytelling-Baseline
+## 8. Storytelling-Baseline
 
-Neue Reels sind narrative Social-Explainer, keine Folge langer UI-/PowerPoint-Karten.
+Neue Reels sind narrative Social-Explainer, keine Folge langer Präsentationskarten.
 
-Basisregeln:
+Basis:
 
-- Story-Arc mindestens `HOOK`, `PROOF`, `CONSEQUENCE`, `PAYOFF`;
-- jede zentrale Sprecher-Aussage löst eine sichtbare Reaktion aus;
-- jede Hauptszene enthält mehrere sichtbare Zustände;
-- Kamera/Zoom/Transition/SFX nur mit Erklär-, Fokus-, Verbindungs- oder Payoff-Funktion;
-- ein praktisch unveränderter Hauptzustand über ca. 4 s ist ein Review-Risiko.
+- Story-Arc mindestens `HOOK`, `PROOF`, `CONSEQUENCE`, `PAYOFF`
+- jede zentrale Sprecher-Aussage löst eine sichtbare Reaktion aus
+- jede Hauptszene enthält mehrere erkennbare Zustände
+- praktisch unveränderter Hauptzustand über ca. 4 s ist Review-Risiko
+- Kamera/Zoom/Transition/SFX nur mit Erklär-, Fokus-, Verbindungs- oder Payoff-Funktion
 
-Basis-Gate:
+Gate:
 
 ```bash
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 ```
 
-## 7. Level-Up v3 — Zukunftsstandard ab 03.09.2026
+## 9. Level-Up v3 — Zukunftsstandard ab 03.09.2026
 
-Level-Up v3 ist aus den realen Render-Reviews von Montag bis Mittwoch abgeleitet.
+Reels vom 01./02.09. bleiben Level-Up-v2-kompatibel. Neue Reels ab `2026-09-03` benötigen v3.
 
 ### Cover
 
-- fertiger Cover-Kandidat in der ersten Sekunde;
-- Default Frame 15 / 0,5 s;
-- mindestens 12 Frames sauber haltbar;
-- kompletter Hold innerhalb Frame 0–30;
-- caption-frei;
-- branded Story: Marke/Produkt im Cover erkennbar.
+- fertiger Cover-Kandidat innerhalb der ersten Sekunde
+- Default Frame 15 / 0,5 s
+- mindestens 12 Frames sauber haltbar
+- kompletter Hold innerhalb Frame 0–30
+- caption-frei
+- bei Markenstorys Marke/Produkt im Cover erkennbar
 
 ### Brand Fidelity
 
-Bei branded/current-news Reels:
+Bei branded/current-news:
 
-- mindestens **2 erkennbare Brand-Momente**;
-- normalerweise in mindestens **2 unterschiedlichen Szenen**;
-- mindestens ein echtes offizielles Logo/Wordmark, echte Produkt-UI oder anderer genuine Brand-/Produkt-Moment;
-- wenn nur Typografie sauber möglich ist, Ausnahme dokumentieren;
-- nie generisches Funktionsicon als Fake-Logo;
-- nie ungenaues frei erfundenes Logo nachbauen.
-
-Priorität:
-
-```text
-offizielles Logo/Wordmark
-→ echte Produkt-UI
-→ offizieller Source-/Docs-Crop
-→ klarer typografischer Markenname
-```
+- mindestens 2 erkennbare Brand-Momente
+- normalerweise in mindestens 2 unterschiedlichen Szenen
+- offizielles Logo/Wordmark oder echte Produkt-UI bevorzugen
+- offizieller Source-/Docs-Crop als Proof
+- klare Typografie als sauberer Fallback
+- kein generisches Funktionsicon als Fake-Logo
+- kein ungenau frei erfundenes Logo nachbauen
 
 ### Visual Beats / Welten
 
-Für ein normales 60–75-s-v3-Reel:
+Normales 60–75-s-v3-Reel:
 
-- mindestens **20 konkrete Visual Beats**;
-- sichtbare Entwicklung ungefähr alle **1,5–3,0 s**;
-- mindestens **4 unterscheidbare visuelle Welten/Grammatiken**;
-- mindestens **2 Mid-Reel-Reframes/World-Breaks**;
-- Textwechsel in derselben Card zählt nicht automatisch als neue Welt;
-- mindestens eine räumliche/full-frame Hauptszene, wenn das Thema es erlaubt.
+- mindestens **20 konkrete Visual Beats**
+- sichtbare Entwicklung ungefähr alle **1,5–3,0 s**
+- mindestens **4 unterscheidbare Visual Worlds**
+- mindestens **2 Mid-Reel-Reframes/World-Breaks**
+- mindestens eine räumliche/full-frame Hauptszene, wenn sinnvoll
+- Textwechsel in derselben Karte zählt nicht automatisch als neue Welt
 
 ### Real Media
 
-Bei branded/current-news v3 normalerweise mindestens **3 purposeful real/official Momente über mindestens 2 Szenen**:
+Branded/current-news v3 plant normalerweise mindestens **3 purposeful real/official Momente** über mindestens 2 Szenen:
 
-1. Brand-/Produkt-Identität;
-2. echter offizieller Proof;
-3. echte UI, reales Bild oder reales Video.
+1. Brand-/Produkt-Moment
+2. echter Proof-/Source-Moment
+3. echte Produkt-UI, reales Bild oder reales Video
 
-Wenn Bewegung selbst der Claim ist, echtes Produktvideo/B-Roll bevorzugen. Ist kein sauber nutzbarer Clip verfügbar, Ausnahme dokumentieren statt Füllmaterial erzwingen.
+Video wird bevorzugt, wenn Bewegung selbst Teil des Claims ist. Wenn sauberes Video nicht möglich ist, Ausnahme dokumentieren.
 
-### Overlap
+### Timing
 
-- pro Moment ein primärer Fokus;
-- normalerweise höchstens zwei unterstützende Details;
-- Caption darf kein kritisches Visual verdecken;
-- Brand, Proof, Datum, Diagramm und Caption werden progressiv statt gleichzeitig gestapelt.
+Nach Nutzer-Audio werden große Namen, Zahlen, Daten und Statuswechsel an echte Wörter/Phrasen aus `WORD-TIMINGS.json` gekoppelt. `sentenceId + progress` ist nur Fallback.
 
-### Voice Sync
-
-Nach Forced Alignment werden wichtige Namen, Marken, Daten, Zahlen und Statuswechsel an echte Wörter/Phrasen gekoppelt. `sentenceId + progress` ist nur Fallback.
-
-Level-Up-Gate:
+Gate:
 
 ```bash
 node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
 ```
 
-## 8. Caption-Geometrie
+## 10. Caption-Standard
 
-Für neue 1080×1920-Reels gilt der user-reviewte Shared Default:
+Einzige technische Wahrheit:
 
-- `bottom: 330`
-- `horizontalInset: 76`
-- `maxWidth: 928`
-- Text ca. `40 px`
-- maximal 2 Zeilen
-- Ziel max. 6 Wörter pro sichtbarer Gruppe
-- Glass-/Blur-Overlay
-- Cover-Fenster in der ersten Sekunde bleibt caption-frei
+- `ki/src/reels/captionSafe.ts`
+- `ki/gehirn/CAPTION_SAFE_POSITION.md`
 
-Shared Source:
+Aktueller Default:
 
-`ki/src/reels/captionSafe.ts`
+- bottom **330 px**
+- horizontal inset **76 px**
+- max width **928 px**
+- ca. **40 px** Schrift
+- max. 2 Zeilen
+- Ziel max. 6 Wörter je sichtbarer Gruppe
+- Cover-Fenster caption-frei
 
-## 9. Visual-/Asset-Standard
+## 11. Visual-/Asset-Stack
 
-Native Motion bleibt Basis, aber reale/official Medien werden gezielt eingesetzt, wenn sie Brand, Beweis, Produkt oder Bewegung besser vermitteln.
+Native Remotion bleibt Produktionsbasis. Reale Medien werden gezielt eingesetzt, wenn sie Brand, Proof, Produkt oder Bewegung besser vermitteln.
 
-Bevorzugte Quellen:
+Verfügbare Wege:
 
-- offizielle Primärquelle / Produktseite;
-- offizielle Logo-/Brand-/UI-Assets, wenn sauber nutzbar;
-- Wikimedia Commons für dokumentarisch/historisch relevante Visuals;
-- Pexels/Pixabay für generisches B-Roll nur mit Story-Zweck;
-- Poly Haven für 3D/HDRI/Texturen;
-- lokale Lottie/Rive/Three/Skia-Layer nach Bedarf.
+- Official Source / Product UI
+- Wikimedia Commons Proof Scout
+- Pexels Discovery
+- Pixabay Discovery
+- Poly Haven 3D/HDRI/Texturen
+- Blender lokaler 3D-Prep
+- Lottie Creator optional
+- Rive nur lokale vorhandene `.riv`
+- Figma Remote MCP optional/usage-budgeted
+- Sharp lokaler Bild-Prep
+- FFmpeg lokaler Video-Prep
+- Three / Skia / Shapes / Effects / Transitions
 
-Keine Render-Time-Remote-Medien.
+Keine Render-Time-Remote-Medien. Ausgewählte externe Medien werden lokal, provenance-backed und per SHA256 gebunden.
 
-Ausgewählte externe Assets werden lokal aufgelöst, Rechte/Provenance geprüft und per SHA256 gebunden.
+## 12. SFX
 
-Lokale Prep-Pfade:
+- lokale kuratierte CC0-Bibliothek bleibt Standard
+- zusätzlicher geprüfter `@remotion/sfx`-CC0-Pfad nur explizit
+- jeder Sound braucht sichtbaren semantischen Trigger
+- Voice bleibt dominant
+- SFX nach finalem Voice-/Scene-Lock erneut synchronisieren
 
-- Bilder: `scripts/prepare-local-image-asset.mjs`
-- Videos: `scripts/prepare-local-video-asset.mjs`
-- 3D: Blender-Prep nur optional und lokal
+## 13. Antigravity
 
-Prep-Output bleibt `PREPARED_NOT_PRODUCTION_APPROVED`, bis das exakte Ergebnis visuell geprüft wurde.
-
-## 10. SFX
-
-- semantische Events statt Soundspam;
-- jeder Sound braucht sichtbaren Trigger;
-- Voice bleibt Lautstärke-Priorität;
-- lokale CC0-Bibliothek bleibt Standard;
-- optionaler geprüfter Remotion-CC0-Zusatz nur explizit;
-- SFX nach finalem Alignment erneut an echte Sprach-/Caption-Zeit synchronisieren.
-
-## 11. Antigravity Produktionsmodus
-
-### Workspace Agents
+Kern-Agenten:
 
 1. `ki-production-orchestrator`
 2. `ki-fact-researcher`
@@ -262,17 +302,9 @@ Prep-Output bleibt `PREPARED_NOT_PRODUCTION_APPROVED`, bis das exakte Ergebnis v
 8. `ki-release-verifier`
 9. `ki-dependency-auditor`
 
-Unabhängige read-only Audits dürfen parallel laufen. Auf demselben Working Tree arbeitet gleichzeitig genau **ein** Writer.
+Genau ein write-capable Agent pro Working Tree. Read-only Audits dürfen parallel laufen.
 
-### Kern-MCPs
-
-- Chrome DevTools MCP
-- Remotion Bits MCP
-- GitHub MCP
-
-Weitere MCPs/Skills nur, wenn sie die konkrete Aufgabe verbessern.
-
-### Wichtige Workflows
+Wichtige Workflows:
 
 - `/bootstrap-ki-channel`
 - `/sync-chatgpt-handoff`
@@ -282,41 +314,41 @@ Weitere MCPs/Skills nur, wenn sie die konkrete Aufgabe verbessern.
 - `/finish-ki-reel <path>`
 - `/verify-ki-reel <path>`
 
-## 12. Verbindliches Produktionsmodell
+Fokus-MCPs:
+
+- Chrome DevTools
+- Remotion Bits
+- GitHub
+- optional Figma Remote
+- optional Lottie Creator
+
+## 14. Drei Produktionsphasen
 
 ```text
-PHASE 1 — Inhalt / Story / Source
-Fakten + 60–75-s-Skript
-→ Story-Arc
-→ v3: >=20 Visual Beats
-→ Cover + Brand + Proof + Real Media
-→ v3: >=4 Visual Worlds + >=2 Mid-Reframes
-→ SFX-/Visual-Plan
-→ Remotion Source
-→ Storytelling + Level-Up Gates
+PHASE 1 — ChatGPT / Coding-Agent
+Fakten + Skript + Story + Cover + Brand/Proof/Media + Motion + Source
+→ Struktur-/Story-/Level-Up-Gates
 
 PHASE 2 — NUR NUTZER
-Nutzer erstellt vollständiges Voiceover und legt es lokal ab
+vollständiges Produktions-Voiceover lokal ablegen
 
-PHASE 3 — Sync / Render / Review
-Runtime-WAV
-→ Pause-Kompression
-→ Forced Alignment
+PHASE 3 — Codex / Antigravity
+Pause-Kompression + Forced Alignment
 → WORD-TIMINGS
-→ Phrase-Lock für Animation/SFX
-→ lokale Visual-/SFX-Auflösung
-→ Story-Beat-Stills + Browser/Pixel QA
-→ Render-Provenance-Lock
+→ Captions / Scenes / Reveals / SFX locken
+→ lokale Visuals/SFX auflösen
+→ Story-Stills / Browser-QA
+→ Render-Provenance
 → Roh-Render
 → Social Master ca. -16 LUFS
 → exakter 1x Sicht-/Hörreview
 → unabhängiger Release-Verifier
-→ Finalizer / Export
+→ Finalizer / Export-Paket
 ```
 
-## 13. Globale Regressionen
+## 15. Pflichtchecks
 
-Vor Merge/Release bzw. bei großen Repo-Änderungen:
+Vor Merge/Release mindestens:
 
 ```bash
 npm run antigravity:verify
@@ -328,38 +360,13 @@ npm run repo:verify
 npm run motion:verify
 ```
 
-`prepare-reel-render.mjs` führt Storytelling-/Level-Up-Gates erneut aus, bevor ein Render-Lock entstehen darf.
+Die Befehle gelten nur als bestanden, wenn sie real lokal ausgeführt wurden.
 
-## 14. Finaler 1x-Review
+## 16. Finaler 1x-Review
 
 Der Review gilt ausschließlich für das exakte gemasterte MP4 und ist per SHA256 gebunden.
 
-Storytelling-Pflicht:
-
-- `STORY_FLOW_1X_REVIEW: PASS`
-- `VISUAL_REACTION_1X_REVIEW: PASS`
-- `TRANSITIONS_PURPOSE_1X_REVIEW: PASS`
-- `STATIC_STATE_OVER_LIMIT_VIOLATIONS: 0`
-
-Level-Up-Basis:
-
-- `COVER_FRAME_READY: PASS`
-- `COVER_FRAME_CLEAN: PASS`
-- `BRAND_FIDELITY: PASS`
-- `REAL_PROOF_MOMENT: PASS`
-- `REAL_MEDIA_MIX: PASS`
-- `NO_FAKE_BRAND_ICON: PASS`
-- `WORD_LOCKED_MAJOR_REVEALS: PASS`
-- `SCENE_DENSITY: PASS`
-- `NO_VISUAL_OVERLAP: PASS`
-- `MOTION_GRAMMAR_DIVERSITY: PASS`
-- `NO_CARD_DECK_FEEL: PASS`
-- `FULL_VERTICAL_STAGE_USE: PASS`
-- `MICRODETAILS_PHONE_READABLE: PASS`
-- `SFX_SEMANTIC_DENSITY: PASS`
-- `VOICE_PRIORITY_OVER_SFX: PASS`
-
-Zusätzlich v3:
+Bei v3 zusätzlich unter anderem:
 
 - `BRAND_RECOGNIZABLE_WITHOUT_CAPTION: PASS`
 - `PRIMARY_BRAND_REAPPEARS: PASS`
@@ -367,20 +374,12 @@ Zusätzlich v3:
 - `REAL_MEDIA_NOT_JUST_SOURCE_CARDS: PASS`
 - `VISUAL_WORLD_VARIETY: PASS`
 - `MID_REEL_REFRAMES: PASS`
+- `NO_VISUAL_OVERLAP: PASS`
+- `VOICE_PRIORITY_OVER_SFX: PASS`
 
-## 15. Visuelle Identität
+Source-Code allein kann keinen Visual-PASS beweisen.
 
-- Short-Form: 1080×1920 / 30 FPS
-- Longform: 1920×1080 / 30 FPS
-- Light-First
-- faceless
-- clean/premium
-- dokumentarischer Social-Explainer statt Präsentationsdeck
-- keine Cyberpunk-/Neon-Standardästhetik
-- High Energy ist nicht High Speed: `REVEAL → SETTLE → READABLE HOLD`
-- echte Marken-/Produktmomente werden dort eingesetzt, wo sie Glaubwürdigkeit und Wiedererkennung erhöhen
-
-## 16. Statusbegriffe niemals vermischen
+## 17. Statusbegriffe niemals vermischen
 
 ```text
 geplant
@@ -394,17 +393,17 @@ veröffentlicht
 
 Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
 
-## 17. Git-/Medienregel
+## 18. Git-/Medienregel
 
 Große Binärmedien (`mp3`, `wav`, `mp4`, `png` usw.) bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
 In Git bleiben Source, Skripte, Story-Beats, Provenance, Timings, Reviews, Contracts und Export-Manifeste.
 
-## 18. Bekannte externe Einschränkungen
+## 19. Bekannte externe Einschränkungen
 
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert.
-- `main` hat derzeit keine Branch Protection.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt.
-- Der neue Remotion-/Antigravity-/Level-Up-v3-Stack wurde über GitHub-Source integriert, aber in dieser ChatGPT-GitHub-Umgebung noch **nicht** per lokalem npm/TypeScript/Remotion-Render vollständig ausgeführt.
+- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene kein Runtime-Beweis.
+- `main` hat derzeit keine verlässliche Branch-Protection als Qualitätsbeweis.
+- ein kanonischer `package-lock.json` ist noch nicht vollständig etabliert
+- viele neue Repo-/Antigravity-/Remotion-Schichten wurden über GitHub-Source integriert, aber nicht alle in dieser ChatGPT-GitHub-Umgebung lokal ausgeführt
 
-Diese Betriebsgrenzen sind keine Erlaubnis, Test- oder Qualitätsregeln zu umgehen. Kein Merge-/Final-Ready-Claim, bis lokale Runtime-/Render-/Review-Beweise real vorliegen.
+Diese Einschränkungen erlauben niemals das Umgehen von Tests, Render- oder Review-Gates.
