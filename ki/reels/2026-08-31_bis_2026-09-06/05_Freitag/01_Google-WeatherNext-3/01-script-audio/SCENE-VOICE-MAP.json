@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"id":"s01","sceneId":"scene1","text":"Google hat WeatherNext 3 vorgestellt – eine Wetter-KI, die jede Stunde neue Prognosen aus aktuellen Satellitendaten erzeugt."},
+    {"id":"s02","sceneId":"scene1","text":"Der größte Sprung ist die Auflösung: Temperatur und Feuchtigkeit können bis auf fünf Kilometer dargestellt werden."},
+    {"id":"s03","sceneId":"scene2","text":"WeatherNext 2 arbeitete noch auf einem 25-Kilometer-Raster und in Sechs-Stunden-Schritten."},
+    {"id":"s04","sceneId":"scene2","text":"Google spricht deshalb von einem globalen Wetterbild, das ungefähr fünfmal schärfer ist."},
+    {"id":"s05","sceneId":"scene2","text":"Auch lokale Topografie und schnell wechselnde Wetterlagen sollen dadurch besser sichtbar werden."},
+    {"id":"s06","sceneId":"scene3","text":"Besonders wichtig ist Regen und Schnee."},
+    {"id":"s07","sceneId":"scene3","text":"In Google-Produkten sollen längerfristige Niederschlagsprognosen bis zu 50 Prozent genauer werden."},
+    {"id":"s08","sceneId":"scene4","text":"Und WeatherNext 3 bleibt nicht im Forschungslabor: Das Modell startet in Google Search, der Gemini-App, Google Maps, der Maps Platform Weather API und Earth Engine."},
+    {"id":"s09","sceneId":"scene4","text":"Entwickler und Unternehmen können stündlich aktualisierte globale Daten außerdem über BigQuery, Earth Engine und Cloud Storage nutzen, ohne selbst ein Wettermodell aufzusetzen."},
+    {"id":"s10","sceneId":"scene5","text":"Praktisch heißt das: Google macht aus Wetter-KI eine Infrastruktur, die direkt in Apps, Reisen, Landwirtschaft und Energieplanung landet."},
+    {"id":"s11","sceneId":"scene5","text":"Bei amtlichen Unwetterwarnungen bleibt trotzdem dein lokaler Wetterdienst die richtige Quelle."}
+  ]
+}
