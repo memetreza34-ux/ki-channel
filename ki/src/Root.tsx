@@ -17,6 +17,7 @@ import {OPENAI_CURSOR_COMPOSITION_ID,OPENAI_CURSOR_DURATION_IN_FRAMES,OPENAI_CUR
 import {GEMINI_OMNI_COMPOSITION_ID,GEMINI_OMNI_DURATION_IN_FRAMES,GEMINI_OMNI_FPS,GEMINI_OMNI_HEIGHT,GEMINI_OMNI_WIDTH,ReelGeminiOmniFlowControl} from './reels/gemini-omni-flow-control';
 import {GROK_X_COMPOSITION_ID,GROK_X_DURATION_IN_FRAMES,GROK_X_FPS,GROK_X_HEIGHT,GROK_X_WIDTH,ReelGrokBotXIntegration} from './reels/grok-bot-x-integration';
 import {CLAUDE_51_COMPOSITION_ID,CLAUDE_51_DURATION_IN_FRAMES,CLAUDE_51_FPS,CLAUDE_51_HEIGHT,CLAUDE_51_WIDTH,ReelClaudeFableMythos51} from './reels/claude-fable-mythos-5-1';
+import {WEATHER_NEXT_3_COMPOSITION_ID,WEATHER_NEXT_3_DURATION_IN_FRAMES,WEATHER_NEXT_3_FPS,WEATHER_NEXT_3_HEIGHT,WEATHER_NEXT_3_WIDTH,ReelGoogleWeatherNext3} from './reels/google-weathernext-3';
 import {AI_APP_WORKFLOW_COMPOSITION_ID,AI_APP_WORKFLOW_DURATION_IN_FRAMES,AI_APP_WORKFLOW_FPS,AI_APP_WORKFLOW_HEIGHT,AI_APP_WORKFLOW_THUMBNAIL_ID,AI_APP_WORKFLOW_WIDTH,LongformAIAppWorkflow,ThumbnailAIAppWorkflow} from './longform/ai-app-workflow';
 
 const runtimeAudio=(compositionId:string)=>staticFile(`runtime-audio/${compositionId}.wav`);
@@ -40,6 +41,7 @@ export const RemotionRoot:React.FC=()=>(
       <Composition id={GEMINI_OMNI_COMPOSITION_ID} component={ReelGeminiOmniFlowControl} defaultProps={{voiceoverSrc:runtimeAudio(GEMINI_OMNI_COMPOSITION_ID),showCaptions:true,showSfx:true}} durationInFrames={GEMINI_OMNI_DURATION_IN_FRAMES} fps={GEMINI_OMNI_FPS} width={GEMINI_OMNI_WIDTH} height={GEMINI_OMNI_HEIGHT}/>
       <Composition id={GROK_X_COMPOSITION_ID} component={ReelGrokBotXIntegration} defaultProps={{voiceoverSrc:runtimeAudio(GROK_X_COMPOSITION_ID),showCaptions:true,showSfx:true}} durationInFrames={GROK_X_DURATION_IN_FRAMES} fps={GROK_X_FPS} width={GROK_X_WIDTH} height={GROK_X_HEIGHT}/>
       <Composition id={CLAUDE_51_COMPOSITION_ID} component={ReelClaudeFableMythos51} defaultProps={{voiceoverSrc:runtimeAudio(CLAUDE_51_COMPOSITION_ID),showCaptions:true,showSfx:true}} durationInFrames={CLAUDE_51_DURATION_IN_FRAMES} fps={CLAUDE_51_FPS} width={CLAUDE_51_WIDTH} height={CLAUDE_51_HEIGHT}/>
+      <Composition id={WEATHER_NEXT_3_COMPOSITION_ID} component={ReelGoogleWeatherNext3} defaultProps={{voiceoverSrc:runtimeAudio(WEATHER_NEXT_3_COMPOSITION_ID),showCaptions:true,showSfx:true}} durationInFrames={WEATHER_NEXT_3_DURATION_IN_FRAMES} fps={WEATHER_NEXT_3_FPS} width={WEATHER_NEXT_3_WIDTH} height={WEATHER_NEXT_3_HEIGHT}/>
     </Folder>
     <Folder name="KI-YouTube-Longform">
       <Composition id={AI_APP_WORKFLOW_COMPOSITION_ID} component={LongformAIAppWorkflow} defaultProps={{}} durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
