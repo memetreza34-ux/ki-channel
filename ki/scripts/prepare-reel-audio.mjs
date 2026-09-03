@@ -50,18 +50,19 @@ const sourceDuration = Number(info?.format?.duration || 0);
 if (!Number.isFinite(sourceDuration) || sourceDuration <= 0) fail('canonical voiceover has invalid duration.');
 
 const publishDate = String(reel?.publishDate || '');
-const defaultSpeechTempo = /^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-03' ? 1.10 : 1.0;
+const isLevelUpV3Date = /^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-03';
+const defaultSpeechTempo = isLevelUpV3Date ? 1.10 : 1.0;
 const configuredSpeechTempo = Number(reel?.audio?.speechTempo);
 const speechTempo = Number.isFinite(configuredSpeechTempo) ? configuredSpeechTempo : defaultSpeechTempo;
 if (!(speechTempo >= 0.90 && speechTempo <= 1.25)) fail('audio.speechTempo must be between 0.90 and 1.25.');
 
 const pauseConfig = reel?.audio?.pauseCompression || {};
-const pauseCompressionEnabled = pauseConfig.enabled === true;
+const pauseCompressionEnabled = typeof pauseConfig.enabled === 'boolean' ? pauseConfig.enabled : isLevelUpV3Date;
 const thresholdDb = Number.isFinite(Number(pauseConfig.thresholdDb)) ? Number(pauseConfig.thresholdDb) : -35;
-const triggerSeconds = Number.isFinite(Number(pauseConfig.triggerSeconds)) ? Number(pauseConfig.triggerSeconds) : 0.15;
-const keepSeconds = Number.isFinite(Number(pauseConfig.keepSeconds)) ? Number(pauseConfig.keepSeconds) : 0.05;
+const triggerSeconds = Number.isFinite(Number(pauseConfig.triggerSeconds)) ? Number(pauseConfig.triggerSeconds) : (isLevelUpV3Date ? 0.32 : 0.15);
+const keepSeconds = Number.isFinite(Number(pauseConfig.keepSeconds)) ? Number(pauseConfig.keepSeconds) : (isLevelUpV3Date ? 0.22 : 0.05);
 const startKeepSeconds = Number.isFinite(Number(pauseConfig.startKeepSeconds)) ? Number(pauseConfig.startKeepSeconds) : 0.03;
-const maxAllowedSilenceSeconds = Number.isFinite(Number(pauseConfig.maxAllowedSilenceSeconds)) ? Number(pauseConfig.maxAllowedSilenceSeconds) : 0.25;
+const maxAllowedSilenceSeconds = Number.isFinite(Number(pauseConfig.maxAllowedSilenceSeconds)) ? Number(pauseConfig.maxAllowedSilenceSeconds) : (isLevelUpV3Date ? 0.30 : 0.25);
 const maxReductionRatio = Number.isFinite(Number(pauseConfig.maxReductionRatio)) ? Number(pauseConfig.maxReductionRatio) : 0.25;
 
 if (pauseCompressionEnabled) {
@@ -69,7 +70,7 @@ if (pauseCompressionEnabled) {
   if (!(triggerSeconds >= 0.08 && triggerSeconds <= 0.6)) fail('audio.pauseCompression.triggerSeconds must be between 0.08 and 0.6.');
   if (!(keepSeconds >= 0.02 && keepSeconds < triggerSeconds)) fail('audio.pauseCompression.keepSeconds must be >=0.02 and smaller than triggerSeconds.');
   if (!(startKeepSeconds >= 0 && startKeepSeconds <= 0.15)) fail('audio.pauseCompression.startKeepSeconds must be between 0 and 0.15.');
-  if (!(maxAllowedSilenceSeconds >= triggerSeconds && maxAllowedSilenceSeconds <= 0.6)) fail('audio.pauseCompression.maxAllowedSilenceSeconds is invalid.');
+  if (!(maxAllowedSilenceSeconds >= 0.20 && maxAllowedSilenceSeconds <= 0.6)) fail('audio.pauseCompression.maxAllowedSilenceSeconds is invalid.');
   if (!(maxReductionRatio > 0 && maxReductionRatio <= 0.4)) fail('audio.pauseCompression.maxReductionRatio must be >0 and <=0.4.');
 }
 
@@ -148,6 +149,7 @@ const report = {
   tempoPolicy: 'FFMPEG_ATEMPO_PITCH_PRESERVING_BEFORE_FORCED_ALIGNMENT',
   pauseCompression: {
     enabled: pauseCompressionEnabled,
+    defaultApplied: typeof pauseConfig.enabled !== 'boolean',
     thresholdDb,
     triggerSeconds,
     keepSeconds,
@@ -173,7 +175,7 @@ console.log(`speech tempo: ${speechTempo.toFixed(2)}x (pitch-preserving atempo)`
 console.log(`tempo baseline duration: ${tempoBaselineDuration.toFixed(3)} s`);
 console.log(`pause compression: ${pauseCompressionEnabled ? 'ENABLED' : 'DISABLED'}`);
 if (pauseCompressionEnabled) {
-  console.log(`pause policy: trigger >= ${triggerSeconds.toFixed(2)} s → keep about ${keepSeconds.toFixed(2)} s before tempo scaling`);
+  console.log(`pause policy: gaps >= ${triggerSeconds.toFixed(2)} s are compressed toward ${keepSeconds.toFixed(2)} s before 1/${speechTempo.toFixed(2)} tempo scaling`);
   console.log(`pause-only reduction after tempo: ${pauseRemovedSecondsRuntime.toFixed(3)} s (${(pauseReductionRatio * 100).toFixed(1)}%)`);
 }
 console.log(`total shortened vs source: ${totalShortenedSeconds.toFixed(3)} s`);
