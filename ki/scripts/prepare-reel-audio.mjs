@@ -49,6 +49,12 @@ if (!info?.streams?.length) fail('canonical voiceover has no audio stream.');
 const sourceDuration = Number(info?.format?.duration || 0);
 if (!Number.isFinite(sourceDuration) || sourceDuration <= 0) fail('canonical voiceover has invalid duration.');
 
+const publishDate = String(reel?.publishDate || '');
+const defaultSpeechTempo = /^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-03' ? 1.10 : 1.0;
+const configuredSpeechTempo = Number(reel?.audio?.speechTempo);
+const speechTempo = Number.isFinite(configuredSpeechTempo) ? configuredSpeechTempo : defaultSpeechTempo;
+if (!(speechTempo >= 0.90 && speechTempo <= 1.25)) fail('audio.speechTempo must be between 0.90 and 1.25.');
+
 const pauseConfig = reel?.audio?.pauseCompression || {};
 const pauseCompressionEnabled = pauseConfig.enabled === true;
 const thresholdDb = Number.isFinite(Number(pauseConfig.thresholdDb)) ? Number(pauseConfig.thresholdDb) : -35;
@@ -74,9 +80,9 @@ const pacingReport = path.join(runtimeDir, `${compositionId}.pacing.json`);
 await rm(runtimeAudio, {force:true});
 await rm(pacingReport, {force:true});
 
-const ffmpegArgs = ['-hide_banner','-loglevel','error','-y','-i',sourceAudio,'-vn'];
+const filters = [];
 if (pauseCompressionEnabled) {
-  const filter = [
+  filters.push([
     'silenceremove=',
     'start_periods=1',
     ':start_duration=0.02',
@@ -87,9 +93,12 @@ if (pauseCompressionEnabled) {
     `:stop_threshold=${thresholdDb}dB`,
     `:stop_silence=${keepSeconds}`,
     ':detection=rms',
-  ].join('');
-  ffmpegArgs.push('-af', filter);
+  ].join(''));
 }
+if (Math.abs(speechTempo - 1) > 0.0001) filters.push(`atempo=${speechTempo.toFixed(4)}`);
+
+const ffmpegArgs = ['-hide_banner','-loglevel','error','-y','-i',sourceAudio,'-vn'];
+if (filters.length) ffmpegArgs.push('-af', filters.join(','));
 ffmpegArgs.push('-ac','2','-ar','48000','-c:a','pcm_s16le',runtimeAudio);
 
 const ffmpeg = spawnSync('ffmpeg', ffmpegArgs, {encoding:'utf8'});
@@ -102,13 +111,15 @@ const runtimeDuration = Number(runtimeInfo?.format?.duration || 0);
 if (!runtimeInfo?.streams?.length || runtimeInfo.streams[0]?.codec_name !== 'pcm_s16le') fail('runtime audio is not PCM s16le WAV.');
 if (!Number.isFinite(runtimeDuration) || runtimeDuration <= 0) fail('runtime WAV has invalid duration.');
 
-let removedSeconds = Math.max(0, sourceDuration - runtimeDuration);
-let reductionRatio = removedSeconds / sourceDuration;
+const tempoBaselineDuration = sourceDuration / speechTempo;
+const pauseRemovedSecondsRuntime = Math.max(0, tempoBaselineDuration - runtimeDuration);
+const pauseReductionRatio = pauseRemovedSecondsRuntime / tempoBaselineDuration;
+const totalShortenedSeconds = Math.max(0, sourceDuration - runtimeDuration);
 
 if (pauseCompressionEnabled) {
-  if (runtimeDuration > sourceDuration + 0.12) fail('pause-compressed runtime audio unexpectedly became longer than its source.');
-  if (reductionRatio > maxReductionRatio) {
-    fail(`pause compression removed ${(reductionRatio * 100).toFixed(1)}% of the audio; safety max is ${(maxReductionRatio * 100).toFixed(1)}%.`);
+  if (runtimeDuration > tempoBaselineDuration + 0.12) fail('pause-compressed runtime audio unexpectedly became longer than the tempo-adjusted source baseline.');
+  if (pauseReductionRatio > maxReductionRatio) {
+    fail(`pause compression removed ${(pauseReductionRatio * 100).toFixed(1)}% after tempo normalization; safety max is ${(maxReductionRatio * 100).toFixed(1)}%.`);
   }
 
   const silenceCheck = spawnSync('ffmpeg', [
@@ -124,15 +135,17 @@ if (pauseCompressionEnabled) {
   if (longSilences.length) {
     fail(`runtime WAV still contains ${longSilences.length} silence gap(s) longer than ${maxAllowedSilenceSeconds.toFixed(2)}s; longest ${Math.max(...longSilences).toFixed(3)}s.`);
   }
-} else if (Math.abs(runtimeDuration - sourceDuration) > 0.12) {
-  // Without pacing, only container/decoder padding differences are acceptable.
-  fail(`runtime audio duration differs too much from source (${runtimeDuration.toFixed(3)}s vs ${sourceDuration.toFixed(3)}s).`);
+} else if (Math.abs(runtimeDuration - tempoBaselineDuration) > 0.12) {
+  fail(`runtime audio duration differs too much from 1/${speechTempo.toFixed(2)} tempo baseline (${runtimeDuration.toFixed(3)}s vs ${tempoBaselineDuration.toFixed(3)}s).`);
 }
 
 const report = {
-  version: 1,
+  version: 2,
   status: 'RUNTIME_AUDIO_PREPARED',
   compositionId,
+  speechTempo,
+  speechTempoDefaultApplied: !Number.isFinite(configuredSpeechTempo),
+  tempoPolicy: 'FFMPEG_ATEMPO_PITCH_PRESERVING_BEFORE_FORCED_ALIGNMENT',
   pauseCompression: {
     enabled: pauseCompressionEnabled,
     thresholdDb,
@@ -143,9 +156,11 @@ const report = {
     maxReductionRatio,
   },
   sourceDurationSeconds: Number(sourceDuration.toFixed(6)),
+  tempoBaselineDurationSeconds: Number(tempoBaselineDuration.toFixed(6)),
   runtimeDurationSeconds: Number(runtimeDuration.toFixed(6)),
-  removedSeconds: Number(removedSeconds.toFixed(6)),
-  reductionRatio: Number(reductionRatio.toFixed(6)),
+  pauseRemovedSecondsAfterTempo: Number(pauseRemovedSecondsRuntime.toFixed(6)),
+  pauseReductionRatio: Number(pauseReductionRatio.toFixed(6)),
+  totalShortenedSeconds: Number(totalShortenedSeconds.toFixed(6)),
   generatedAt: new Date().toISOString(),
 };
 await writeFile(pacingReport, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
@@ -154,11 +169,14 @@ console.log('REEL AUDIO PREP PASSED');
 console.log(`compositionId: ${compositionId}`);
 console.log(`source: ${sourceAudio}`);
 console.log(`source container duration: ${sourceDuration.toFixed(3)} s`);
+console.log(`speech tempo: ${speechTempo.toFixed(2)}x (pitch-preserving atempo)`);
+console.log(`tempo baseline duration: ${tempoBaselineDuration.toFixed(3)} s`);
 console.log(`pause compression: ${pauseCompressionEnabled ? 'ENABLED' : 'DISABLED'}`);
 if (pauseCompressionEnabled) {
-  console.log(`pause policy: trigger >= ${triggerSeconds.toFixed(2)} s → keep about ${keepSeconds.toFixed(2)} s`);
-  console.log(`removed silence: ${removedSeconds.toFixed(3)} s (${(reductionRatio * 100).toFixed(1)}%)`);
+  console.log(`pause policy: trigger >= ${triggerSeconds.toFixed(2)} s → keep about ${keepSeconds.toFixed(2)} s before tempo scaling`);
+  console.log(`pause-only reduction after tempo: ${pauseRemovedSecondsRuntime.toFixed(3)} s (${(pauseReductionRatio * 100).toFixed(1)}%)`);
 }
+console.log(`total shortened vs source: ${totalShortenedSeconds.toFixed(3)} s`);
 console.log(`runtime timing duration: ${runtimeDuration.toFixed(3)} s`);
 console.log(`runtime: ${runtimeAudio}`);
 console.log(`pacing report: ${pacingReport}`);
