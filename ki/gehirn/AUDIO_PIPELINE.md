@@ -43,7 +43,7 @@ Erst wenn diese Datei existiert, darf die Pipeline fortfahren.
 Danach:
 
 1. lokale Datei mit `ffprobe` prüfen
-2. Runtime-Audio inklusive optionaler Pause-Kompression erzeugen
+2. Runtime-Audio inklusive Pacing erzeugen
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
@@ -58,25 +58,61 @@ public/runtime-audio/<compositionId>.pacing.json
 
 Die WAV ist immer **48 kHz Stereo PCM s16le** und exakt die Audiospur, die Remotion später rendert. MP3-Container-/Encoder-Padding ist deshalb keine Timing-Autorität.
 
-## Pause-Kompression — kein Leerlauf zwischen Beats
+## Level-Up-v3 Sprachtempo — 1,10×
 
-Für Reels kann in `reel.json -> audio.pauseCompression` ein dichteres Sprach-Pacing aktiviert werden.
+Für neue Reels ab **03.09.2026** gilt standardmäßig:
 
-Kanonischer Startwert:
+```json
+{
+  "speechTempo": 1.10,
+  "tempoPolicy": "PITCH_PRESERVING_FFMPEG_ATEMPO_BEFORE_FORCED_ALIGNMENT"
+}
+```
+
+Das bedeutet:
+
+```text
+Nutzer-Voiceover
+→ lange Pausen kompakter machen
+→ ffmpeg atempo=1.10 mit Pitch-Erhalt
+→ Runtime-WAV
+→ erst danach Forced Alignment
+→ neue Word-Timings
+→ Captions / Szenen / Reveals / SFX folgen dem schnelleren Audio
+```
+
+**Nicht erlaubt:** fertiges MP4 nachträglich pauschal auf 1,10× beschleunigen. Das würde Animation, Caption- und SFX-Synchronität umgehen. Die 1,10×-Änderung gehört in die Runtime-Audio-Stufe vor dem Alignment.
+
+`reel.json -> audio.speechTempo` kann einen Reel-spezifischen Wert definieren. Ohne expliziten Wert gilt ab 03.09.2026 automatisch `1.10`; ältere Reels bleiben standardmäßig `1.00`, solange sie nicht bewusst migriert werden.
+
+## Pause-Kompression — lange KI-Pausen entfernen, natürliche Pausen behalten
+
+Ab Level-Up v3 ist die Pause-Kompression standardmäßig aktiv, sofern ein Reel sie nicht bewusst überschreibt.
+
+Kanonischer v3-Startwert:
 
 ```json
 {
   "enabled": true,
   "thresholdDb": -35,
-  "triggerSeconds": 0.15,
-  "keepSeconds": 0.05,
+  "triggerSeconds": 0.32,
+  "keepSeconds": 0.22,
   "startKeepSeconds": 0.03,
-  "maxAllowedSilenceSeconds": 0.25,
+  "maxAllowedSilenceSeconds": 0.30,
   "maxReductionRatio": 0.25
 }
 ```
 
-Wichtig: **Forced Alignment läuft erst nach dieser Pause-Kompression.** Dadurch verwenden Stimme, Wortzeiten, Captions, Szenengrenzen und Composition-Dauer dieselbe Runtime-WAV.
+Ziel:
+
+- kurze natürliche Sprachpausen bleiben erhalten;
+- längere typische KI-Pausen werden auf einen kompakten Rhythmus reduziert;
+- nach dem anschließenden `1.10×`-Tempo liegen die behaltenen Pausen typischerweise noch etwas kürzer;
+- keine harte Dauerbeschleunigung des gesamten fertigen Videos.
+
+Das Script validiert nach der Runtime-Erstellung erneut, dass keine unerwartet langen Silence-Gaps übrig bleiben und dass nicht zu viel Audiomaterial entfernt wurde.
+
+**Forced Alignment läuft immer erst nach Pause-Kompression und Tempoanpassung.** Dadurch verwenden Stimme, Wortzeiten, Captions, Szenengrenzen, Reveals, SFX und Composition-Dauer dieselbe Runtime-WAV.
 
 ## Finale Timing-Autorität
 
@@ -87,13 +123,17 @@ SCENE-VOICE-MAP.json
 +
 NUTZER-VOICEOVER
         ↓
+Pause-Kompression
+        ↓
+1,10× Pitch-preserving Tempo (v3 Default)
+        ↓
 Runtime-PCM-WAV
         ↓
 LOCAL FORCED ALIGNMENT
         ↓
 WORD-TIMINGS.json
         ↓
-Captions + Szenen + finale Duration
+Captions + Szenen + Reveals + SFX + finale Duration
 ```
 
 Ein-Kommando-Alignment:
@@ -128,6 +168,17 @@ node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ## Render-Provenance
 
 `prepare-reel-render.mjs` bindet Git-Commit, Source, Timing, Captions, SFX, Visuals, kanonisches Nutzer-Audio, Runtime-WAV und finale Dauer per SHA256.
+
+`public/runtime-audio/<compositionId>.pacing.json` protokolliert zusätzlich:
+
+- angewendetes `speechTempo`
+- ob der Tempo-Default automatisch kam
+- Pause-Kompressionsparameter
+- Quelldauer
+- reine Tempo-Baseline
+- Runtime-Dauer
+- Pause-Reduktion
+- gesamte Verkürzung gegenüber dem Nutzer-Master
 
 ## Social-Audio-Master
 
