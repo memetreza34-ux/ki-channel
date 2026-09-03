@@ -59,10 +59,10 @@ if (!(speechTempo >= 0.90 && speechTempo <= 1.25)) fail('audio.speechTempo must 
 const pauseConfig = reel?.audio?.pauseCompression || {};
 const pauseCompressionEnabled = typeof pauseConfig.enabled === 'boolean' ? pauseConfig.enabled : isLevelUpV3Date;
 const thresholdDb = Number.isFinite(Number(pauseConfig.thresholdDb)) ? Number(pauseConfig.thresholdDb) : -35;
-const triggerSeconds = Number.isFinite(Number(pauseConfig.triggerSeconds)) ? Number(pauseConfig.triggerSeconds) : (isLevelUpV3Date ? 0.32 : 0.15);
-const keepSeconds = Number.isFinite(Number(pauseConfig.keepSeconds)) ? Number(pauseConfig.keepSeconds) : (isLevelUpV3Date ? 0.22 : 0.05);
+const triggerSeconds = Number.isFinite(Number(pauseConfig.triggerSeconds)) ? Number(pauseConfig.triggerSeconds) : (isLevelUpV3Date ? 0.30 : 0.15);
+const keepSeconds = Number.isFinite(Number(pauseConfig.keepSeconds)) ? Number(pauseConfig.keepSeconds) : (isLevelUpV3Date ? 0.10 : 0.05);
 const startKeepSeconds = Number.isFinite(Number(pauseConfig.startKeepSeconds)) ? Number(pauseConfig.startKeepSeconds) : 0.03;
-const maxAllowedSilenceSeconds = Number.isFinite(Number(pauseConfig.maxAllowedSilenceSeconds)) ? Number(pauseConfig.maxAllowedSilenceSeconds) : (isLevelUpV3Date ? 0.30 : 0.25);
+const maxAllowedSilenceSeconds = Number.isFinite(Number(pauseConfig.maxAllowedSilenceSeconds)) ? Number(pauseConfig.maxAllowedSilenceSeconds) : (isLevelUpV3Date ? 0.38 : 0.25);
 const maxReductionRatio = Number.isFinite(Number(pauseConfig.maxReductionRatio)) ? Number(pauseConfig.maxReductionRatio) : 0.25;
 
 if (pauseCompressionEnabled) {
@@ -132,7 +132,7 @@ if (pauseCompressionEnabled) {
   if (silenceCheck.status !== 0) fail(`silence validation failed: ${silenceCheck.stderr || silenceCheck.stdout}`);
   const longSilences = [...String(silenceCheck.stderr || '').matchAll(/silence_duration:\s*([0-9.]+)/g)]
     .map((match) => Number(match[1]))
-    .filter((duration) => Number.isFinite(duration) && duration > maxAllowedSilenceSeconds + 0.03);
+    .filter((duration) => Number.isFinite(duration) && duration > maxAllowedSilenceSeconds + 0.01);
   if (longSilences.length) {
     fail(`runtime WAV still contains ${longSilences.length} silence gap(s) longer than ${maxAllowedSilenceSeconds.toFixed(2)}s; longest ${Math.max(...longSilences).toFixed(3)}s.`);
   }
@@ -141,7 +141,7 @@ if (pauseCompressionEnabled) {
 }
 
 const report = {
-  version: 2,
+  version: 3,
   status: 'RUNTIME_AUDIO_PREPARED',
   compositionId,
   speechTempo,
