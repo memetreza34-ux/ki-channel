@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "reelId": "claude-fable-mythos-5-1",
   "compositionId": "KI-ClaudeFableMythos51",
   "sourceDir": "ki/src/reels/claude-fable-mythos-5-1",
@@ -20,7 +20,7 @@
     "timingAuthority":false,
     "speechTempo":1.10,
     "tempoPolicy":"PITCH_PRESERVING_FFMPEG_ATEMPO_BEFORE_FORCED_ALIGNMENT",
-    "pauseCompression":{"enabled":true,"thresholdDb":-35,"triggerSeconds":0.32,"keepSeconds":0.22,"startKeepSeconds":0.03,"maxAllowedSilenceSeconds":0.30,"maxReductionRatio":0.25},
+    "pauseCompression":{"enabled":true,"thresholdDb":-35,"triggerSeconds":0.30,"keepSeconds":0.10,"startKeepSeconds":0.03,"maxAllowedSilenceSeconds":0.38,"maxReductionRatio":0.25},
     "alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"
   },
   "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
