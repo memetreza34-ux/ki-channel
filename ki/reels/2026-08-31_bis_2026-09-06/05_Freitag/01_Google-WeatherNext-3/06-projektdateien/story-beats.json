@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "status": "PHASE1_PLANNED",
+  "storyArc": ["HOOK","PROOF","CONSEQUENCE","PAYOFF"],
+  "rules": {"minVisualBeats":20,"maxStaticSeconds":4.0,"everySpokenCoreClaimNeedsVisualReaction":true,"transitionMustHaveMeaning":true,"cameraMotionMustHaveMeaning":true,"sfxMustMatchVisibleEvent":true,"externalVisualTarget":"3_PLUS_PURPOSEFUL_REAL_OR_OFFICIAL_MOMENTS_WHEN_BRANDED","nativeMotionTargetPercent":"FLEXIBLE_NATIVE_FIRST"},
+  "beats": [
+    {"id":"b01","sceneId":"scene1","atRatio":0.00,"role":"HOOK","visualAction":"Cover zeigt GOOGLE DEEPMIND / WEATHERNEXT 3 und 5× SCHÄRFER sofort stabil in der ersten Sekunde.","motion":"BRAND_COVER_LOCK"},
+    {"id":"b02","sceneId":"scene1","atRatio":0.10,"role":"CHANGE","visualAction":"Satellit-Symbol zieht eine helle Orbitbahn um eine abstrahierte Erde.","motion":"SATELLITE_ORBIT"},
+    {"id":"b03","sceneId":"scene1","atRatio":0.22,"role":"PROOF","visualAction":"Offizieller WeatherNext-3-Hero bzw. Google-Source-Moment wird als echter visueller Beweis eingeplant.","motion":"SOURCE_HIGHLIGHT"},
+    {"id":"b04","sceneId":"scene1","atRatio":0.36,"role":"CHANGE","visualAction":"Eine Stunden-Uhr läuft sichtbar von Forecast zu Forecast und endet bei 1 HOUR REFRESH.","motion":"HOURLY_CLOCK_SWEEP"},
+    {"id":"b05","sceneId":"scene1","atRatio":0.52,"role":"CHANGE","visualAction":"Satellitendaten fließen als Pixelstreifen aus dem Orbit in die Wetterkarte.","motion":"SATELLITE_DATA_STREAM"},
+    {"id":"b06","sceneId":"scene1","atRatio":0.70,"role":"PROOF","visualAction":"5 KM wird groß und verdrängt ein grobes 25-KM-Raster ohne gleichzeitig zu viel Text zu zeigen.","motion":"RESOLUTION_IMPACT"},
+
+    {"id":"b07","sceneId":"scene2","atRatio":0.02,"role":"PROOF","visualAction":"Grobes 25-KM-Grid legt sich über eine vereinfachte Landschaft und zeigt fehlende lokale Details.","motion":"GRID_DENSITY_MORPH"},
+    {"id":"b08","sceneId":"scene2","atRatio":0.18,"role":"CHANGE","visualAction":"6-HOUR STEP springt auf einer Timeline in großen Schritten vorwärts.","motion":"TIMELINE_STEP"},
+    {"id":"b09","sceneId":"scene2","atRatio":0.32,"role":"CHANGE","visualAction":"Das Grid verdichtet sich sichtbar von 25 km auf 10 km und schließlich 5 km.","motion":"GRID_DENSITY_MORPH"},
+    {"id":"b10","sceneId":"scene2","atRatio":0.48,"role":"PROOF","visualAction":"Offizieller WeatherNext-2-vs-3-Temperaturvergleich wird als lokaler Real-Media-Crop eingeplant.","motion":"PROOF_COMPARE_SPLIT"},
+    {"id":"b11","sceneId":"scene2","atRatio":0.64,"role":"PAYOFF","visualAction":"5× SCHÄRFER landet als einzelne große Zahl und bekommt genug Hold für Smartphone-Lesbarkeit.","motion":"RESOLUTION_IMPACT"},
+    {"id":"b12","sceneId":"scene2","atRatio":0.80,"role":"CONSEQUENCE","visualAction":"Topografie gewinnt Hügel, Küsten- und Temperaturdetails, während die Kamera näher an die Karte fährt.","motion":"TOPOGRAPHY_ZOOM"},
+
+    {"id":"b13","sceneId":"scene3","atRatio":0.02,"role":"CHANGE","visualAction":"Kompletter World-Break: Regenradar füllt den Bildschirm statt weiterer Karten.","motion":"WEATHER_RADAR_FLOW"},
+    {"id":"b14","sceneId":"scene3","atRatio":0.16,"role":"PROOF","visualAction":"Regen-Symbol und blaue Niederschlagsbänder bewegen sich über die Karte.","motion":"PRECIPITATION_BANDS"},
+    {"id":"b15","sceneId":"scene3","atRatio":0.30,"role":"PROOF","visualAction":"Schnee-Symbol aktiviert eine getrennte kalte Zone statt Regen und Schnee gleichzeitig zu vermischen.","motion":"SNOW_ZONE_REVEAL"},
+    {"id":"b16","sceneId":"scene3","atRatio":0.46,"role":"PROOF","visualAction":"Offizieller WeatherNext-2-vs-3-vs-Ground-Truth-Niederschlagsvergleich erscheint als echter Proof-Crop.","motion":"PROOF_COMPARE_SPLIT"},
+    {"id":"b17","sceneId":"scene3","atRatio":0.64,"role":"PAYOFF","visualAction":"50% GENAUER wird groß mit dem Zusatz LANGFRISTIGE NIEDERSCHLAGSPROGNOSEN IN GOOGLE-PRODUKTEN.","motion":"ACCURACY_IMPACT"},
+    {"id":"b18","sceneId":"scene3","atRatio":0.82,"role":"CONSEQUENCE","visualAction":"Eine scharfe Sturmgrenze ersetzt eine zuvor verschwommene Niederschlagsfläche.","motion":"STORM_EDGE_SHARPEN"},
+
+    {"id":"b19","sceneId":"scene4","atRatio":0.02,"role":"CHANGE","visualAction":"Forschungslabor klappt weg und ein Google-Produktnetz öffnet sich fullscreen.","motion":"PRODUCT_ECOSYSTEM_ORBIT"},
+    {"id":"b20","sceneId":"scene4","atRatio":0.16,"role":"PROOF","visualAction":"SEARCH wird typografisch mit Such-Icon aktiviert; kein Icon imitiert das Google-Logo.","motion":"PRODUCT_NODE_ACTIVATE"},
+    {"id":"b21","sceneId":"scene4","atRatio":0.29,"role":"PROOF","visualAction":"GEMINI wird als eigener Brandname aktiviert und bekommt einen Wetterkarten-Preview-Platzhalter für echte Produkt-UI.","motion":"PRODUCT_NODE_ACTIVATE"},
+    {"id":"b22","sceneId":"scene4","atRatio":0.42,"role":"PROOF","visualAction":"MAPS wird mit Karten-Pin und Wetterlayer sichtbar aktiviert.","motion":"PRODUCT_NODE_ACTIVATE"},
+    {"id":"b23","sceneId":"scene4","atRatio":0.56,"role":"PROOF","visualAction":"WEATHER API und EARTH ENGINE erscheinen nacheinander als Entwickler-Lanes.","motion":"API_ROUTE_DRAW"},
+    {"id":"b24","sceneId":"scene4","atRatio":0.72,"role":"CHANGE","visualAction":"BigQuery, Earth Engine und Cloud Storage werden als Datenpipeline statt als drei statische Karten verbunden.","motion":"DATA_PIPELINE"},
+    {"id":"b25","sceneId":"scene4","atRatio":0.88,"role":"PAYOFF","visualAction":"NO MODEL SETUP REQUIRED löst die Entwicklerwelt mit einem klaren Confirm-State auf.","motion":"STATE_RESOLVE"},
+
+    {"id":"b26","sceneId":"scene5","atRatio":0.03,"role":"CHANGE","visualAction":"Datenpipeline verlässt die Cloud und teilt sich in vier reale Anwendungswege.","motion":"USE_CASE_WORLD"},
+    {"id":"b27","sceneId":"scene5","atRatio":0.20,"role":"CONSEQUENCE","visualAction":"Reiseplanung wird mit Karte und Regenschirm als erster Use Case hervorgehoben.","motion":"USE_CASE_FOCUS"},
+    {"id":"b28","sceneId":"scene5","atRatio":0.38,"role":"CONSEQUENCE","visualAction":"Landwirtschaft bekommt Pflanzen-/Regen-Fokus, danach Energieplanung Wind-/Solar-Fokus.","motion":"USE_CASE_FOCUS"},
+    {"id":"b29","sceneId":"scene5","atRatio":0.58,"role":"PAYOFF","visualAction":"WETTER-KI → INFRASTRUKTUR wird als große finale Transformation über die gesamte Bühne gezeigt.","motion":"FULL_FRAME_PAYOFF"},
+    {"id":"b30","sceneId":"scene5","atRatio":0.78,"role":"CONSEQUENCE","visualAction":"Warnsymbol und LOKALER WETTERDIENST erscheinen ruhig und klar für amtliche Unwetterwarnungen.","motion":"SAFETY_WARNING_LOCK"},
+    {"id":"b31","sceneId":"scene5","atRatio":0.92,"role":"PAYOFF","visualAction":"Finaler Cover-ähnlicher WeatherNext-3-Lockup schließt die Story ohne zusätzliche neue Informationen.","motion":"BRAND_END_LOCK"}
+  ]
+}
