@@ -89,16 +89,16 @@ Nutzer-Voiceover
 
 Ab Level-Up v3 ist die Pause-Kompression standardmäßig aktiv, sofern ein Reel sie nicht bewusst überschreibt.
 
-Kanonischer v3-Startwert:
+Kanonischer v3-Startwert, real gegen den Donnerstag-Render kalibriert:
 
 ```json
 {
   "enabled": true,
   "thresholdDb": -35,
-  "triggerSeconds": 0.32,
-  "keepSeconds": 0.22,
+  "triggerSeconds": 0.30,
+  "keepSeconds": 0.10,
   "startKeepSeconds": 0.03,
-  "maxAllowedSilenceSeconds": 0.30,
+  "maxAllowedSilenceSeconds": 0.38,
   "maxReductionRatio": 0.25
 }
 ```
@@ -106,9 +106,12 @@ Kanonischer v3-Startwert:
 Ziel:
 
 - kurze natürliche Sprachpausen bleiben erhalten;
-- längere typische KI-Pausen werden auf einen kompakten Rhythmus reduziert;
-- nach dem anschließenden `1.10×`-Tempo liegen die behaltenen Pausen typischerweise noch etwas kürzer;
+- typische lange KI-Pausen werden stark gekürzt;
+- nach `1.10×` sollen keine deutlich trägen Silence-Gaps übrig bleiben;
+- ein 60–75-s-Reel darf durch die Pacing-Stufe nicht versehentlich unter das Dauergate fallen;
 - keine harte Dauerbeschleunigung des gesamten fertigen Videos.
+
+Der v3-Startwert wurde am echten Donnerstag-MP4 getestet: Die Audio-Kette `silenceremove → atempo=1.10` ergab dabei ungefähr **60,05 s** Runtime und keine gemessene Silence-Gap ab **0,38 s**. Dieser Messwert ist eine Kalibrierungsreferenz für genau diesen Render, kein allgemeines Dauer-Versprechen für andere Voiceovers.
 
 Das Script validiert nach der Runtime-Erstellung erneut, dass keine unerwartet langen Silence-Gaps übrig bleiben und dass nicht zu viel Audiomaterial entfernt wurde.
 
