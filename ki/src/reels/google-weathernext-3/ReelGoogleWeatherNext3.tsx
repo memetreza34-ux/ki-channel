@@ -30,7 +30,7 @@ const progressIn=(frame:number,w:Window)=>interpolate(frame,[w.start,Math.max(w.
 
 const Stage:React.FC<React.PropsWithChildren<{accent:string;chapter:string;dark?:boolean}>>=({accent,chapter,dark=false,children})=>(
   <AbsoluteFill style={{background:dark?'linear-gradient(180deg,#16324A 0%,#224B67 100%)':'linear-gradient(180deg,#FBFDFF 0%,#EEF7FF 100%)',color:dark?'#FFFFFF':INK,fontFamily:FONT,overflow:'hidden'}}>
-    <StoryTexture color="#FFFFFF" opacity={dark?.08:.14}/>
+    <StoryTexture color="#FFFFFF" opacity={dark ? .08 : .14}/>
     <div style={{position:'absolute',left:62,top:58,zIndex:50}}><StoryChapterLabel accent={accent}>{chapter}</StoryChapterLabel></div>
     {children}
   </AbsoluteFill>
@@ -52,9 +52,7 @@ const IconPill:React.FC<{label:string;icon:React.ReactNode;accent:string}>=({lab
 const Scene1:React.FC<{duration:number}>=({duration})=>{
   const frame=useCurrentFrame();
   const s01=sentenceWindow('scene1','s01',duration,.02,.65);
-  const s02=sentenceWindow('scene1','s02',duration,.58,.98);
   const p1=progressIn(frame,s01);
-  const p2=progressIn(frame,s02);
   const orbit=interpolate(p1,[0,1],[-110,430],clamp);
   const hour=Math.min(24,Math.max(1,Math.round(interpolate(p1,[.28,.72],[1,24],clamp))));
   return <Stage accent={BLUE} chapter="WEATHERNEXT 3">
@@ -81,10 +79,8 @@ const Scene1:React.FC<{duration:number}>=({duration})=>{
 
 const Scene2:React.FC<{duration:number}>=({duration})=>{
   const frame=useCurrentFrame();
-  const s03=sentenceWindow('scene2','s03',duration,.02,.40);
   const s04=sentenceWindow('scene2','s04',duration,.36,.72);
   const s05=sentenceWindow('scene2','s05',duration,.68,.98);
-  const p3=progressIn(frame,s03);
   const p4=progressIn(frame,s04);
   const p5=progressIn(frame,s05);
   const cells=Math.round(interpolate(p4,[0,1],[5,15],clamp));
@@ -125,10 +121,6 @@ const Scene2:React.FC<{duration:number}>=({duration})=>{
 
 const Scene3:React.FC<{duration:number}>=({duration})=>{
   const frame=useCurrentFrame();
-  const s06=sentenceWindow('scene3','s06',duration,.02,.32);
-  const s07=sentenceWindow('scene3','s07',duration,.26,.98);
-  const p6=progressIn(frame,s06);
-  const p7=progressIn(frame,s07);
   const sweep=interpolate(frame,[0,duration],[-260,980],clamp);
   return <Stage accent="#00A8E8" chapter="REGEN & SCHNEE" dark>
     <div style={{position:'absolute',left:56,right:56,top:180,bottom:330}}>
@@ -237,6 +229,7 @@ const CaptionLayer:React.FC<{enabled:boolean}>=({enabled})=>{
 };
 
 export const ReelGoogleWeatherNext3:React.FC<Props>=({voiceoverSrc,showCaptions=true,showSfx=true})=>{
+  const frame=useCurrentFrame();
   const {durationInFrames}=useVideoConfig();
   if(!voiceoverSrc)throw new Error('WeatherNext 3 requires the local runtime user voiceover.');
   return <AbsoluteFill style={{background:'#F7FBFF'}}>
@@ -248,6 +241,6 @@ export const ReelGoogleWeatherNext3:React.FC<Props>=({voiceoverSrc,showCaptions=
     <Html5Audio src={voiceoverSrc}/>
     <ReelSfxTrack events={WEATHER_NEXT_3_SFX} enabled={showSfx}/>
     <CaptionLayer enabled={showCaptions}/>
-    <div style={{position:'absolute',left:0,right:0,bottom:0,height:5,background:'#D9E7F2'}}><div style={{height:'100%',width:'100%',transformOrigin:'left',transform:`scaleX(${Math.max(0,Math.min(1,useCurrentFrame()/Math.max(1,durationInFrames-1)))})`,background:`linear-gradient(90deg,${BLUE},${GREEN},${YELLOW},${RED})`}}/></div>
+    <div style={{position:'absolute',left:0,right:0,bottom:0,height:5,background:'#D9E7F2'}}><div style={{height:'100%',width:'100%',transformOrigin:'left',transform:`scaleX(${Math.max(0,Math.min(1,frame/Math.max(1,durationInFrames-1)))})`,background:`linear-gradient(90deg,${BLUE},${GREEN},${YELLOW},${RED})`}}/></div>
   </AbsoluteFill>;
 };
