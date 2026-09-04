@@ -21,13 +21,13 @@ if (!existsSync(review)) fail(`missing ${review}`);
 if (!existsSync(reelPath)) fail(`missing ${reelPath}`);
 if (!existsSync(video)) fail(`reviewed video missing: ${video}`);
 
-const text = await readFile(review, 'utf8');
+const reviewText = await readFile(review, 'utf8');
 let reel;
 try { reel = JSON.parse(await readFile(reelPath, 'utf8')); }
 catch (error) { fail(`invalid reel.json: ${error.message}`); }
 
 const get = (key) => {
-  const match = text.match(new RegExp(`^${key}:\\s*(.+)$`, 'mi'));
+  const match = reviewText.match(new RegExp(`^${key}:\\s*(.+)$`, 'mi'));
   return match?.[1]?.trim() ?? null;
 };
 const requirePass = (key, reason) => {
@@ -59,6 +59,7 @@ if (reel?.storytelling?.enabled === true) {
 const publishDate = String(reel?.publishDate || '');
 const levelUpEnabled = reel?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-01');
 const levelUpV3 = Number(reel?.levelUp?.standardVersion) >= 3 || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-03');
+const levelUpV4 = Number(reel?.levelUp?.standardVersion) >= 4 || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-05');
 if (levelUpEnabled) {
   requirePass('COVER_FRAME_READY', 'a finished cover candidate must exist inside the first second');
   requirePass('COVER_FRAME_CLEAN', 'cover must be caption-free, readable and screenshot-ready');
@@ -82,6 +83,15 @@ if (levelUpV3) {
   requirePass('REAL_MEDIA_NOT_JUST_SOURCE_CARDS', 'real-media mix must include genuine UI/image/video, not only homemade source cards');
   requirePass('VISUAL_WORLD_VARIETY', 'the reel must contain multiple clearly distinct visual worlds/grammars');
   requirePass('MID_REEL_REFRAMES', 'the middle of the reel must contain planned visual-world/reframe breaks');
+}
+if (levelUpV4) {
+  requirePass('BRAND_ASSET_VISIBLE_OR_JUSTIFIED', 'planned official/local brand media must actually be visible or have a legitimate documented exception');
+  requirePass('BRAND_COLOR_COHERENCE', 'scene palettes must remain coherent with the planned brand/reference palette');
+  requirePass('FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS', 'functional icons must remain clearly separate from brand identity');
+  requirePass('MOTION_NOT_TEMPLATE_LOCKED', 'animation should not appear constrained to a repetitive template grammar');
+  requirePass('ANIMATION_TECHNIQUE_FITS_STORY', 'new or existing motion techniques must serve story/clarity/payoff rather than novelty');
+  requirePass('NO_ACCIDENTAL_COLOR_DRIFT', 'off-brand color changes must be intentional semantic choices, not accidental drift');
+  requirePass('REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED', 'planned real/official media must be materialized locally or have an approved exception');
 }
 
 const darkScenes = Number(get('DARK_FULL_FRAME_SCENES'));
@@ -129,4 +139,4 @@ console.log(`minimum critical hold: ${minHold} frames`);
 console.log(`SFX review: ${reel?.sfx?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`visual asset review: ${reel?.visuals?.enabled === true ? 'required + passed' : 'not applicable'}`);
 console.log(`storytelling review: ${reel?.storytelling?.enabled === true ? 'required + passed' : 'not applicable'}`);
-console.log(`Level-Up review: ${levelUpEnabled ? (levelUpV3 ? 'v3 required + passed' : 'v2 required + passed') : 'not applicable'}`);
+console.log(`Level-Up review: ${levelUpEnabled ? (levelUpV4 ? 'v4 required + passed' : levelUpV3 ? 'v3 required + passed' : 'v2 required + passed') : 'not applicable'}`);
