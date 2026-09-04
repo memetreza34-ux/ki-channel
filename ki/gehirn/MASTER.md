@@ -86,13 +86,14 @@ ANIMATIONSTEXT
 
 CAPTION
 = Voice-Locked
-= kanonisch bottom: 250px
+= Geometrie ausschließlich aus ki/src/reels/captionSafe.ts
+= aktuell bottom 330px / inset 76px / maxWidth 928px
 = max. 2 Zeilen
 = halbtransparente Glass-/Blur-Overlay-Fläche
 = aktiver Sprecherfokus in Szenen-Akzentfarbe
 ```
 
-Die einzige Caption-Geometrie liegt in `ki/src/reels/captionSafe.ts` und `CAPTION_SAFE_POSITION.md`.
+`ki/src/reels/captionSafe.ts` ist die technische Single Source of Truth. `CAPTION_SAFE_POSITION.md` dokumentiert dieselben Werte menschenlesbar; bei Abweichung gewinnt der Source und die Dokumentation muss korrigiert werden.
 
 ## Light-First
 
