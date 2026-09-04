@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {existsSync} from 'node:fs';
-import {readFile, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -15,6 +15,8 @@ const reelPath = path.join(reelDir, '06-projektdateien', 'reel.json');
 const levelPath = path.join(reelDir, '06-projektdateien', 'LEVEL-UP-PLAN.json');
 const brandMotionPath = path.join(reelDir, '06-projektdateien', 'BRAND-MOTION-PLAN.json');
 const reviewPath = path.join(reelDir, '06-projektdateien', 'MOTION-READABILITY-REVIEW.md');
+const brandAssetsDir = path.join(reelDir, '02-bilder', 'brand-assets');
+const brandAssetsReadme = path.join(brandAssetsDir, 'README.md');
 const fail = (message) => { console.error(`LEVEL-UP V4 SCAFFOLD FAILED: ${message}`); process.exit(1); };
 const readJson = async (file) => {
   try { return JSON.parse(await readFile(file, 'utf8')); }
@@ -27,6 +29,11 @@ const publishDate = String(reel?.publishDate || '');
 if (!/^\d{4}-\d{2}-\d{2}$/.test(publishDate) || publishDate < '2026-09-05') {
   console.log('LEVEL-UP V4 SCAFFOLD: SKIPPED');
   process.exit(0);
+}
+
+await mkdir(brandAssetsDir, {recursive: true});
+if (!existsSync(brandAssetsReadme)) {
+  await writeFile(brandAssetsReadme, `# Brand Assets\n\nHier liegen ausschließlich bereits lokal vorhandene offizielle Logo-/Wordmark-/Produkt-UI-Bilder für dieses Reel.\n\nProduktionspfad: \`LOCAL_OFFICIAL_MEDIA\`.\n\nPflicht pro Asset im Manifest: offizieller sourceUrl, sourceKind, assetRole, rightsStatus=OFFICIAL_SOURCE_REFERENCE und usageReviewNote.\n\nKeine Fake-Logo-Rekonstruktion und kein automatischer Download durch den Resolver.\n`, 'utf8');
 }
 
 const level = await readJson(levelPath);
@@ -139,4 +146,5 @@ if (existsSync(reviewPath)) {
 console.log('LEVEL-UP V4 SCAFFOLD APPLIED');
 console.log(`reel: ${reelDir}`);
 console.log(`brand motion plan: ${brandMotionPath}`);
+console.log(`brand assets folder: ${brandAssetsDir}`);
 console.log(`review template: ${existsSync(reviewPath) ? 'v4 fields ensured' : 'not present yet'}`);
