@@ -34,6 +34,12 @@ const levelUpPath = path.resolve(reelDir, levelUpRelative);
 const levelUpEnabled = reel?.levelUp?.enabled === true || (/^\d{4}-\d{2}-\d{2}$/.test(String(reel?.publishDate || '')) && String(reel.publishDate) >= '2026-09-01');
 if (levelUpEnabled && !existsSync(levelUpPath)) fail(`Level-Up plan missing: ${levelUpPath}`);
 
+const publishDate = String(reel?.publishDate || '');
+const levelUpV4Enabled = Number(reel?.levelUp?.standardVersion || 0) >= 4 || (/^\d{4}-\d{2}-\d{2}$/.test(publishDate) && publishDate >= '2026-09-05');
+const brandMotionRelative = reel?.levelUp?.brandMotionPlanFile || '06-projektdateien/BRAND-MOTION-PLAN.json';
+const brandMotionPath = path.resolve(reelDir, brandMotionRelative);
+if (levelUpV4Enabled && !existsSync(brandMotionPath)) fail(`Level-Up v4 brand/motion plan missing: ${brandMotionPath}`);
+
 const sfxEnabled = reel?.sfx?.enabled === true;
 const sfxResolvedPath = sfxEnabled
   ? path.resolve(reelDir, reel?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
@@ -99,6 +105,7 @@ const run = (label, script, args) => {
 run('script budget gate', path.resolve('ki/scripts/validate-reel-script-budget.mjs'), [reelDir]);
 run('storytelling motion gate', path.resolve('ki/scripts/validate-storytelling-motion.mjs'), [reelDir]);
 run('Level-Up gate', path.resolve('ki/scripts/validate-reel-level-up.mjs'), [reelDir]);
+if (levelUpV4Enabled) run('Level-Up v4 brand/motion gate', path.resolve('ki/scripts/validate-reel-brand-motion-v4.mjs'), [reelDir]);
 run('runtime audio preparation', path.resolve('ki/scripts/prepare-reel-audio.mjs'), [reelDir]);
 run('local forced-alignment gate', path.resolve('ki/scripts/validate-local-forced-alignment.mjs'), [reelDir]);
 run('scene/voice map gate', path.resolve('ki/scripts/validate-scene-voice-map.mjs'), [reelDir]);
@@ -132,11 +139,13 @@ const lock = {
   finalDurationInFrames: finalDuration,
   sourceDir,
   levelUpEnabled,
+  levelUpV4Enabled,
   hashes: {
     sourceTreeSha256: await sha256Directory(absoluteSourceDir),
     renderContractSha256: renderContractSha256(reel),
     reelJsonSha256AtLock: await sha256File(reelPath),
     levelUpPlanSha256: levelUpEnabled ? await sha256File(levelUpPath) : null,
+    brandMotionPlanSha256: levelUpV4Enabled ? await sha256File(brandMotionPath) : null,
     sceneVoiceMapSha256: await sha256File(sceneVoiceMapPath),
     wordTimingsSha256: await sha256File(wordTimingsPath),
     captionJsonSha256: await sha256File(captionPath),
@@ -156,6 +165,7 @@ console.log(`final duration: ${finalDuration} frames / ${(finalDuration / fps).t
 console.log(`git commit: ${git.commitSha}`);
 console.log(`source tree sha256: ${lock.hashes.sourceTreeSha256}`);
 if (levelUpEnabled) console.log(`level-up plan sha256: ${lock.hashes.levelUpPlanSha256}`);
+if (levelUpV4Enabled) console.log(`brand/motion plan sha256: ${lock.hashes.brandMotionPlanSha256}`);
 console.log(`scene voice map sha256: ${lock.hashes.sceneVoiceMapSha256}`);
 console.log(`word timings sha256: ${lock.hashes.wordTimingsSha256}`);
 if (sfxEnabled) console.log(`sfx resolved sha256: ${lock.hashes.sfxResolvedSha256}`);
