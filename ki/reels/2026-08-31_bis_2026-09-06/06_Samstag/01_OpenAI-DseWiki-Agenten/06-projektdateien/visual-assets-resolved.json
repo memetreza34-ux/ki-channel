@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "VISUAL_ASSETS_RESOLVED_LOCAL_LOCK",
+  "policy": {
+    "renderTimeRemoteMedia": false,
+    "googleImageSearchAsLicenseAuthority": false
+  },
+  "assets": [
+    {"id":"native-wiki-board","sceneId":"scene1","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-agent-network","sceneId":"scene2","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-evidence-trace","sceneId":"scene3","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-claim-response","sceneId":"scene4","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-control-stack","sceneId":"scene5","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","rightsStatus":"NATIVE_ORIGINAL"}
+  ]
+}
