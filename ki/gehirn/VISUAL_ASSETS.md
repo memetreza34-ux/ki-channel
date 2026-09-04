@@ -2,135 +2,169 @@
 
 ## Ziel
 
-Reels bleiben **native-first**, nutzen aber gezielt echte Visuals, wenn ein reales Bild, Produkt, Gerät, Ort, Server, Chip, Interface oder anderes Motiv die Aussage schneller verständlich oder glaubwürdiger macht.
+Reels bleiben **native-first**, nutzen aber gezielt echte Visuals, wenn Logo, Wordmark, Produkt-UI, reales Bild, Gerät, Ort, Server, Chip, Interface oder Video die Aussage schneller verständlich, glaubwürdiger oder markentypischer macht.
 
-Bewährter Richtwert aus den Apple-Messages- und Codex-Transfer-Tests:
+Richtwert:
 
 - ungefähr **70–80 % Remotion-native UI / Text / Diagramm / Motion**
-- ungefähr **20–30 % echte Bilder oder Screens**, typischerweise **1–2 starke externe Visual-Momente pro Reel**
-- Standard-Hard-Max: **2 externe Binärvisuals pro Reel**
-- `0` ist ausdrücklich erlaubt, wenn kein echtes Bild einen erklärenden Mehrwert bringt
-- mehr als `2` nur bewusst über `reel.visuals.maxExternalBinaries` und nach Review
-- kein Stockbild nur zum Füllen
+- ungefähr **20–30 % echte Bilder, UI oder Screens**
+- v4 branded/current-news: lieber **2–3 starke purposeful real/official Momente** als viele Füllbilder
+- kein Stockmaterial nur zum Füllen
+- externer Binär-Hard-Max bleibt über `reel.visuals.maxExternalBinaries` bewusst steuerbar
 
-`validate-reel-visual-assets.mjs` erzwingt diesen Standard-Hard-Max jetzt technisch. Ohne expliziten Override in `reel.json` bricht der Production-Gate bei mehr als zwei externen Binärvisuals ab.
+## Erlaubte Produktionsprovider
 
-Der Grundsatz ist: **ein starkes echtes Bild ist besser als mehrere mittelmäßige Füllbilder**.
-
-## Erlaubte Quellen
-
-Automatischer Kern:
+Bevorzugte Reihenfolge:
 
 1. `NATIVE_UI`
-2. `OFFICIAL_SOURCE_CARD`
-3. `WIKIMEDIA_COMMONS`
-4. `GITHUB_RAW`
+2. `LOCAL_OFFICIAL_MEDIA`
+3. `OFFICIAL_SOURCE_CARD`
+4. `WIKIMEDIA_COMMONS`
+5. `GITHUB_RAW`
 
 Google-Bildersuche ist **niemals Lizenznachweis** und wird nicht als automatischer Produktionsprovider verwendet.
 
+## LOCAL_OFFICIAL_MEDIA — echte Logos, Wordmarks und Produkt-UI
+
+Dieser Provider schließt die bisherige Brand-Lücke.
+
+Er ist für bereits **lokal vorhandene** offizielle Assets gedacht:
+
+- Logo
+- Wordmark
+- Produkt-UI
+- offizieller Screenshot
+- offizielles Produktbild
+
+Der Provider lädt **nichts automatisch herunter**.
+
+Das Asset wird zuerst lokal unter dem jeweiligen Reel abgelegt, z. B.:
+
+```text
+02-bilder/
+└── brand-assets/
+    └── google-wordmark.png
+```
+
+Manifest-Beispiel:
+
+```json
+{
+  "id": "scene1-google-wordmark",
+  "sceneId": "scene1",
+  "provider": "LOCAL_OFFICIAL_MEDIA",
+  "renderMode": "LOCAL_OFFICIAL_IMAGE",
+  "purpose": "Echte Google-Brand-Fidelity im Cover",
+  "sourceFile": "02-bilder/brand-assets/google-wordmark.png",
+  "sourceUrl": "https://official.example/press-kit",
+  "sourceKind": "PRESS_KIT",
+  "assetRole": "WORDMARK",
+  "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+  "usageReviewNote": "Offizieller lokaler Press-Kit-Export; Brand-/Trademark-Nutzung manuell geprüft."
+}
+```
+
+Erlaubte `sourceKind`:
+
+- `PRESS_KIT`
+- `OFFICIAL_WEBSITE`
+- `OFFICIAL_PRODUCT_UI`
+- `USER_PROVIDED_OFFICIAL_EXPORT`
+
+Erlaubte `assetRole`:
+
+- `LOGO`
+- `WORDMARK`
+- `PRODUCT_UI`
+- `SCREENSHOT`
+- `PRODUCT_IMAGE`
+
+Der Resolver prüft:
+
+- Datei liegt wirklich unter `02-bilder/`
+- kein Symlink / kein Path-Escape
+- JPEG / PNG / WebP anhand Dateiinhalts
+- Größe max. 20 MB
+- offizielle HTTPS-Quell-URL vorhanden
+- Source-Kind + Asset-Rolle erlaubt
+- `usageReviewNote` vorhanden
+
+Danach wird das Asset nach:
+
+`public/reel-assets/<compositionId>/...`
+
+kopiert und per SHA256 gebunden.
+
+`manualRightsReviewRequired: true` bleibt im aufgelösten Manifest erhalten.
+
+Wichtig: `OFFICIAL_SOURCE_REFERENCE` dokumentiert Herkunft. Es ist **keine automatische pauschale Rechtsfreigabe**.
+
+## OFFICIAL_SOURCE_CARD
+
+Bleibt ein nativer Remotion-Proof mit Quellen-URL. Es kopiert keine Remote-Webseite als Binärbild und zählt deshalb nicht als echtes lokal materialisiertes Logo/UI-Asset.
+
 ## Wikimedia Commons
 
-`resolve-reel-visual-assets.mjs` sucht mehrere Kandidaten und filtert zuerst hart nach:
+`resolve-reel-visual-assets.mjs` sucht mehrere Kandidaten und filtert hart nach:
 
-- erlaubter Lizenz: `CC0-1.0`, `PUBLIC_DOMAIN`, `CC-BY-4.0`
+- `CC0-1.0`, `PUBLIC_DOMAIN`, `CC-BY-4.0`
 - JPEG / PNG / WebP
 - Mindestauflösung
 
-Danach werden die Kandidaten **deterministisch gerankt**. Bewertet werden:
+Danach deterministisches Ranking nach Relevanz, Suchrang, Auflösung, Crop-Eignung und Lizenz. Public Domain / CC0 werden bevorzugt, wenn Qualität vergleichbar ist.
 
-- semantische Übereinstimmung zwischen Suchbegriff und Titel/Beschreibung
-- Suchrang
-- Auflösung
-- Crop-/Seitenverhältnis-Eignung
-- Lizenzstatus
-- negative Punkte für Logo/Icon/Diagramm/Map/Screenshot, wenn ein echtes Foto gewünscht ist
-- negative Punkte für extreme Panorama-/Hochkant-Verhältnisse
-
-Public Domain und CC0 werden bevorzugt, sofern die visuelle Qualität vergleichbar ist. Das reduziert unnötige On-Screen-Credits.
-
-Der Gewinner und die Top-Kandidaten werden in `visual-assets-resolved.json` gespeichert. Damit ist nachvollziehbar, **warum genau dieses Bild ausgewählt wurde**.
+Der Gewinner und Top-Kandidaten werden in `visual-assets-resolved.json` gespeichert.
 
 ## GitHub Raw
 
-Nur erlaubt, wenn im Manifest vorhanden:
+Nur erlaubt mit:
 
-- exakte `raw.githubusercontent.com` URL
+- exakter `raw.githubusercontent.com` URL
 - voller 40-Zeichen-Commit-SHA
-- deklarierte erlaubte Lizenz
-- konkrete GitHub-Lizenzquelle
+- deklarierter erlaubter Lizenz
+- konkreter GitHub-Lizenzquelle
 
 Keine Repository-weite Lizenzvermutung.
 
 ## Lokaler Render
 
-Externe Bilder werden **vor dem Remotion-Render** heruntergeladen nach:
-
-`public/reel-assets/<compositionId>/...`
-
 Der Render selbst darf keine Remote-Media-URL verwenden.
 
-`visual-assets-resolved.json` enthält u. a.:
+`visual-assets-resolved.json` enthält je nach Provider:
 
 - lokale Datei
 - `staticFile`-Pfad
 - SHA256
 - MIME
 - Quelle
-- Lizenz
+- Lizenz-/Provenance-Status
 - Attribution, falls erforderlich
 - bei Commons: Auswahlscore + Top-Kandidaten
+- bei `LOCAL_OFFICIAL_MEDIA`: Source-Kind, Asset-Rolle, Usage-Review und manuelles Rights-Review-Flag
 
-`validate-reel-visual-assets.mjs` prüft die lokale Datei erneut gegen SHA256.
+`validate-reel-visual-assets.mjs` prüft lokale Dateien erneut gegen SHA256.
 
-## Rendering
+## Brand-Regel
 
-`ReelExternalVisual.tsx` ist die Standardkomponente für echte Bilder:
+Bei Markenstories:
 
-- `object-fit: cover`
-- definierter Fokuspunkt
-- kontrollierter Push-In
-- leichter Pan
-- kein Remote-Src
-
-On-Screen-Credit wird standardmäßig nur erzwungen, wenn die Lizenz ihn verlangt (`CC-BY-4.0`). Bei Public Domain / CC0 bleibt die Herkunft vollständig im Manifest dokumentiert, ohne unnötigen Textbalken im Bild.
-
-## Motion-Bausteine
-
-`ReelVisualMotion.tsx` enthält die nach echten Render-Tests akzeptierten Bausteine:
-
-- `CameraPush`
-- `FocusHalo`
-- `ScanSweep`
-- `ParallaxFloat`
-- `SourceProofCard`
-
-Focus-Halos bleiben bewusst dezent: sie sollen den Blick lenken und nicht wie Editor-Markierungen aussehen.
+- echtes lokales offizielles Logo/Wordmark/UI-Asset bevorzugen, wenn sauber vorhanden;
+- klare Typografie ist besser als eine falsche Rekonstruktion;
+- Funktionsicons dürfen Marken nie imitieren;
+- echte Brand-Assets sollen nicht nur im Plan stehen, sondern vor Production-Render materialisiert sein oder eine dokumentierte Ausnahme haben.
 
 ## Ablauf pro Reel
 
-1. Phase 1 entscheidet pro Szene: `NATIVE_UI`, `OFFICIAL_SOURCE_CARD`, `WIKIMEDIA_COMMONS` oder `GITHUB_RAW`.
-2. Für externe Bilder Suchbegriff + Zweck + optional Auswahlpräferenzen definieren.
-3. Standardmäßig höchstens 2 externe Binärvisuals verwenden; nur bei echtem Mehrwert erhöhen.
+1. Phase 1 entscheidet pro Szene: native Motion, lokales offizielles Brand/UI-Asset, Source-Proof, Commons/GitHub oder echtes Video.
+2. Brand/Motion Director prüft offizielle Asset- und Farbquellen.
+3. Offizielle lokale Dateien unter `02-bilder/` ablegen und im Manifest als `LOCAL_OFFICIAL_MEDIA` registrieren.
 4. `node ki/scripts/resolve-reel-visual-assets.mjs <reel-package-dir>`
 5. `node ki/scripts/validate-reel-visual-assets.mjs <reel-package-dir>`
 6. Nur lokale `staticFile`-Assets im Remotion-Source verwenden.
-7. Nach Render bei 1x prüfen: Relevanz, Crop, Lesbarkeit, Bewegung, Überladung.
+7. Nach Render bei 1x prüfen: Brand-Erkennbarkeit, Farbtreue, Relevanz, Crop, Lesbarkeit, Bewegung, Überladung.
 
-## Auswahlpräferenzen im Manifest
+## Rendering
 
-Optional für Wikimedia:
+`ReelExternalVisual.tsx` bleibt Standardkomponente für echte Bilder. Neue v4-Reels dürfen zusätzlich eigene Brand-/UI-spezifische Compositing-Komponenten bauen, wenn diese den Story-Beat besser lösen.
 
-```json
-{
-  "selection": {
-    "minimumLongEdge": 1400,
-    "minimumShortEdge": 800,
-    "preferredOrientation": "LANDSCAPE",
-    "mediaIntent": "PHOTO_OR_REAL_VISUAL",
-    "preferPublicDomainOrCC0": true,
-    "candidateLimit": 20
-  }
-}
-```
-
-`preferredOrientation`: `AUTO`, `PORTRAIT`, `LANDSCAPE`, `SQUARE`.
+Die Shared Library ist **keine Animations-Whitelist**. Neue Motion-Techniken sind erlaubt, wenn sie Story, Lesbarkeit, Determinismus, Performance und QA bestehen.
