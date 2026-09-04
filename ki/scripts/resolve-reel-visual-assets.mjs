@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {createHash} from 'node:crypto';
 import {existsSync} from 'node:fs';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {lstat, mkdir, readFile, realpath, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -45,28 +45,89 @@ const extForMime = (mime) => mime === 'image/jpeg' ? '.jpg' : mime === 'image/pn
 const htmlToText = (value) => String(value || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'").replace(/\s+/g, ' ').trim();
 const words = (value) => (String(value || '').toLocaleLowerCase('de-DE').normalize('NFKD').match(/[\p{L}\p{N}]+/gu) || []).filter((token) => token.length >= 3);
 const unique = (values) => [...new Set(values)];
+const toPosix = (value) => value.split(path.sep).join('/');
+const inside = (child, parent) => child === parent || child.startsWith(`${parent}${path.sep}`);
+
+const detectImageMime = (bytes) => {
+  if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47 && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a) return 'image/png';
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'image/jpeg';
+  if (bytes.length >= 12 && bytes.subarray(0, 4).toString('ascii') === 'RIFF' && bytes.subarray(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+  return null;
+};
 
 const assetDir = path.resolve('public', 'reel-assets', compositionId);
 await mkdir(assetDir, {recursive: true});
 
-const downloadImage = async ({url, id}) => {
-  const response = await fetch(url, {redirect: 'follow', headers: {'User-Agent': 'ki-channel-visual-resolver/2.0'}});
-  if (!response.ok) fail(`${id}: download failed: ${response.status} ${response.statusText}`);
-  const mime = String(response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
-  if (!acceptedMimes.has(mime)) fail(`${id}: unsupported content-type ${mime || 'missing'}. Only JPEG/PNG/WebP are accepted.`);
-  const bytes = Buffer.from(await response.arrayBuffer());
-  if (bytes.length < 4096) fail(`${id}: downloaded image is unexpectedly small (${bytes.length} bytes).`);
-  if (bytes.length > 20 * 1024 * 1024) fail(`${id}: downloaded image exceeds 20 MB safety limit.`);
+const materializeBytes = async ({bytes, mime, id}) => {
+  if (!acceptedMimes.has(mime)) fail(`${id}: unsupported image MIME ${mime || 'missing'}.`);
+  if (bytes.length < 1024) fail(`${id}: image is unexpectedly small (${bytes.length} bytes).`);
+  if (bytes.length > 20 * 1024 * 1024) fail(`${id}: image exceeds 20 MB safety limit.`);
   const extension = extForMime(mime);
   const fileName = `${safeId(id)}${extension}`;
   const absolute = path.join(assetDir, fileName);
   await writeFile(absolute, bytes);
   return {
-    localFile: path.relative(process.cwd(), absolute).split(path.sep).join('/'),
-    staticFile: path.relative(path.resolve('public'), absolute).split(path.sep).join('/'),
+    localFile: toPosix(path.relative(process.cwd(), absolute)),
+    staticFile: toPosix(path.relative(path.resolve('public'), absolute)),
     mime,
     bytes: bytes.length,
     sha256: sha256(bytes),
+  };
+};
+
+const downloadImage = async ({url, id}) => {
+  const response = await fetch(url, {redirect: 'follow', headers: {'User-Agent': 'ki-channel-visual-resolver/3.0'}});
+  if (!response.ok) fail(`${id}: download failed: ${response.status} ${response.statusText}`);
+  const declaredMime = String(response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+  const bytes = Buffer.from(await response.arrayBuffer());
+  const detectedMime = detectImageMime(bytes);
+  const mime = detectedMime || declaredMime;
+  return materializeBytes({bytes, mime, id});
+};
+
+const resolveLocalOfficialMedia = async (asset) => {
+  const provider = sourcePolicy?.providers?.LOCAL_OFFICIAL_MEDIA;
+  if (!provider?.enabled) fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA provider is disabled.`);
+  const sourceFileRelative = String(asset.sourceFile || '').trim();
+  const sourceUrl = String(asset.sourceUrl || '').trim();
+  const sourceKind = String(asset.sourceKind || '').trim();
+  const assetRole = String(asset.assetRole || '').trim();
+  const rightsStatus = String(asset.rightsStatus || '').trim();
+  const usageReviewNote = String(asset.usageReviewNote || '').trim();
+  if (!sourceFileRelative) fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA requires sourceFile.`);
+  if (!/^https:\/\//i.test(sourceUrl)) fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA requires official https sourceUrl.`);
+  if (!provider.acceptedSourceKinds?.includes(sourceKind)) fail(`${asset.id}: unsupported sourceKind ${sourceKind || 'missing'}.`);
+  if (!provider.acceptedAssetRoles?.includes(assetRole)) fail(`${asset.id}: unsupported assetRole ${assetRole || 'missing'}.`);
+  if (!provider.acceptedRights?.includes(rightsStatus)) fail(`${asset.id}: rightsStatus ${rightsStatus || 'missing'} is not accepted.`);
+  if (usageReviewNote.length < 12) fail(`${asset.id}: usageReviewNote must document the manual brand/rights review.`);
+
+  const sourceRoot = path.resolve(reelDir, provider.requiredRootInsideReel || '02-bilder');
+  const sourceFile = path.resolve(reelDir, sourceFileRelative);
+  if (!inside(sourceFile, sourceRoot)) fail(`${asset.id}: sourceFile must stay inside ${toPosix(path.relative(reelDir, sourceRoot))}/.`);
+  if (!existsSync(sourceFile)) fail(`${asset.id}: local official media missing: ${sourceFileRelative}`);
+  const stats = await lstat(sourceFile);
+  if (stats.isSymbolicLink()) fail(`${asset.id}: symlinked official media is forbidden.`);
+  if (!stats.isFile()) fail(`${asset.id}: sourceFile is not a regular file.`);
+  const [realRoot, realFile] = await Promise.all([realpath(sourceRoot), realpath(sourceFile)]);
+  if (!inside(realFile, realRoot)) fail(`${asset.id}: resolved sourceFile escapes 02-bilder/.`);
+
+  const bytes = await readFile(realFile);
+  const mime = detectImageMime(bytes);
+  if (!mime || !provider.acceptedMimes?.includes(mime)) fail(`${asset.id}: local official media must be JPEG/PNG/WebP.`);
+  const materialized = await materializeBytes({bytes, mime, id: asset.id});
+  return {
+    id: asset.id,
+    sceneId: asset.sceneId,
+    provider: 'LOCAL_OFFICIAL_MEDIA',
+    purpose: asset.purpose,
+    sourceFileOriginal: toPosix(path.relative(reelDir, realFile)),
+    sourceUrl,
+    sourceKind,
+    assetRole,
+    rightsStatus,
+    usageReviewNote,
+    manualRightsReviewRequired: true,
+    ...materialized,
   };
 };
 
@@ -83,7 +144,7 @@ const orientationScore = (width, height, preference) => {
 };
 
 const scoreCommonsCandidate = ({asset, candidate, selection, queryTokens}) => {
-  const {page, info, metadata, rightsStatus, width, height} = candidate;
+  const {page, metadata, rightsStatus, width, height} = candidate;
   const title = htmlToText(page?.title || '');
   const description = htmlToText(metadata?.ImageDescription?.value || '');
   const objectName = htmlToText(metadata?.ObjectName?.value || '');
@@ -144,7 +205,7 @@ const resolveCommons = async (asset) => {
     origin: '*',
   });
   const url = `${provider.api}?${params}`;
-  const response = await fetch(url, {headers: {'User-Agent': 'ki-channel-visual-resolver/2.0'}});
+  const response = await fetch(url, {headers: {'User-Agent': 'ki-channel-visual-resolver/3.0'}});
   if (!response.ok) fail(`${asset.id}: Commons search failed: ${response.status}.`);
   const payload = await response.json();
   const pages = Object.values(payload?.query?.pages || {}).sort((a, b) => Number(a?.index ?? 9999) - Number(b?.index ?? 9999));
@@ -247,6 +308,8 @@ for (const asset of assets) {
       staticFile: null,
       sha256: null,
     });
+  } else if (asset.provider === 'LOCAL_OFFICIAL_MEDIA') {
+    resolved.push(await resolveLocalOfficialMedia(asset));
   } else if (asset.provider === 'WIKIMEDIA_COMMONS') {
     resolved.push(await resolveCommons(asset));
   } else if (asset.provider === 'GITHUB_RAW') {
@@ -257,16 +320,17 @@ for (const asset of assets) {
 }
 
 const payload = {
-  version: 2,
+  version: 3,
   status: 'VISUAL_ASSETS_RESOLVED_LOCAL_LOCK',
   compositionId,
   generatedAt: new Date().toISOString(),
-  sourceManifest: path.relative(process.cwd(), manifestPath).split(path.sep).join('/'),
+  sourceManifest: toPosix(path.relative(process.cwd(), manifestPath)),
   policy: {
     renderTimeRemoteMedia: false,
     googleImageSearchAsLicenseAuthority: false,
     deterministicAfterResolution: true,
     rankedSelectionBeforeDownload: true,
+    localOfficialMediaAutoDownload: false,
   },
   assets: resolved,
 };
@@ -277,5 +341,8 @@ console.log(`assets: ${resolved.length}`);
 console.log(`external local files: ${resolved.filter((asset) => asset.localFile).length}`);
 for (const asset of resolved.filter((item) => item.provider === 'WIKIMEDIA_COMMONS')) {
   console.log(`${asset.id}: ${asset.selectedTitle} | score ${asset.selectionScore?.total ?? '?'} | ${asset.rightsStatus}`);
+}
+for (const asset of resolved.filter((item) => item.provider === 'LOCAL_OFFICIAL_MEDIA')) {
+  console.log(`${asset.id}: ${asset.assetRole} | local official media | ${asset.sha256}`);
 }
 console.log(`resolved manifest: ${resolvedPath}`);
