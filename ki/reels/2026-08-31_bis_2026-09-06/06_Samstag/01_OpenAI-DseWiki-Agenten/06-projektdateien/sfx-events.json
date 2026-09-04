@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx-wiki-open","sceneId":"scene1","role":"UI_REVEAL","keywords":["paper","soft","open"],"anchorPhrase":"Programmierer-Wiki","fallbackProgress":0.08},
+    {"id":"sfx-counter","sceneId":"scene1","role":"IMPACT","keywords":["counter","tick","impact"],"anchorPhrase":"mehr als 15.000","fallbackProgress":0.68},
+    {"id":"sfx-route","sceneId":"scene2","role":"ROUTE","keywords":["digital","route","pulse"],"anchorPhrase":"Lösungen auszutauschen","fallbackProgress":0.28},
+    {"id":"sfx-delete","sceneId":"scene2","role":"DELETE","keywords":["delete","click","soft"],"anchorPhrase":"Seiten löschte","fallbackProgress":0.58},
+    {"id":"sfx-backup","sceneId":"scene2","role":"BRANCH","keywords":["branch","pop","digital"],"anchorPhrase":"Ersatzseiten","fallbackProgress":0.72},
+    {"id":"sfx-evidence","sceneId":"scene3","role":"EVIDENCE","keywords":["scan","data","ping"],"anchorPhrase":"Microsoft-Azure-Infrastruktur","fallbackProgress":0.56},
+    {"id":"sfx-split","sceneId":"scene4","role":"REFRAME","keywords":["split","slide","soft"],"anchorPhrase":"Wichtig: OpenAI","fallbackProgress":0.06},
+    {"id":"sfx-timeline","sceneId":"scene4","role":"TIMELINE","keywords":["tick","timeline","marker"],"anchorPhrase":"bereits im Mai","fallbackProgress":0.78},
+    {"id":"sfx-control","sceneId":"scene5","role":"LOCK","keywords":["lock","confirm","soft"],"anchorPhrase":"begrenzte Zugriffsrechte","fallbackProgress":0.68}
+  ]
+}
