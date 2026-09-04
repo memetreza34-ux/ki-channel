@@ -6,11 +6,22 @@ Diese Datei regelt, wie ein fertiger Inhalt auf einzelne Plattformen verteilt wi
 
 Short-Form wird **nicht pro Plattform neu produziert**.
 
-Kanonische Quelle:
+Für neue Reels gilt die kanonische Produktionsstruktur:
 
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+└── NN_Wochentag/
+    └── NN_Reel-Titel/
+        ├── README.md
+        ├── 01-script-audio/
+        ├── 02-bilder/
+        ├── 03-caption/
+        ├── 04-pdf/
+        ├── 05-export/
+        └── 06-projektdateien/
 ```
+
+Kurzform: **Woche → Wochentag → Thema/Reel → Produktionsordner**.
 
 Kanonischer ausführbarer Source:
 
@@ -107,6 +118,10 @@ Longform besitzt eigenes Skript, Kapitel, Visualplan, Thumbnail, Metadaten, Expo
 
 Diese Plattformen dürfen denselben freigegebenen Short-Form-Master verwenden. Unterschiedlich sind primär Hook-Verpackung, Caption und CTA. Die fachliche Aussage, Animation und Voiceover-Wahrheit bleiben gleich.
 
+## Technische Exportprofile
+
+Wenn eine Plattform technisch abweichende Safe-Zones, Cover-Frames oder Exportparameter verlangt, darf dafür ein **technisches Exportprofil** verwendet werden. Ein solches Profil darf niemals eine zweite inhaltliche Wahrheit erzeugen: Skript, Fakten, Voiceover und Story bleiben identisch zum freigegebenen Master.
+
 ## Aktualitätsregel
 
 Plattformregeln, Upload-Limits, Monetarisierungsbedingungen und Produktfunktionen können sich ändern. Solche aktuellen Plattformfakten **nicht** als dauerhafte Repo-Wahrheit festschreiben, wenn sie zeitabhängig sind. Vor einer konkreten Veröffentlichung bei Bedarf aktuell prüfen.
@@ -120,5 +135,6 @@ Publishing ist erst sauber, wenn:
 - Titel/Captions keine falschen Versprechen enthalten
 - Cover/Thumbnail der tatsächlichen Aussage entspricht
 - Plattformtexte nicht unnötig denselben Sprechertext vollständig wiederholen
+- technische Exportprofile keine inhaltlichen Änderungen einführen
 - bei Longform finale Kapitelzeitstempel aus dem tatsächlich verwendeten Audio stammen
 - aktuelle Plattformregeln bei Bedarf separat verifiziert wurden

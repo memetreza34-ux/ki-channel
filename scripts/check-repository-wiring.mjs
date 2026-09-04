@@ -46,33 +46,27 @@ const forbidMarkers = (label, text, markers) => {
   }
 };
 
+const extractNumericProperty = (label, source, property) => {
+  const match = source.match(new RegExp(`\\b${property}\\s*:\\s*(\\d+(?:\\.\\d+)?)`));
+  if (!match) {
+    failures.push(`${label}: numerische Property ${property} fehlt.`);
+    return null;
+  }
+  return Number(match[1]);
+};
+
 const root = await readJson('package.json');
 const core = await readJson('core/package.json');
 const ki = await readJson('ki/package.json');
 const vitest = await readText('vitest.config.ts');
 const repoState = await readText('REPO-STATE.md');
 const rootReadme = await readText('README.md');
-const kiReadme = await readText('ki/README.md');
 const agents = await readText('AGENTS.md');
-const kiAgents = await readText('ki/AGENTS.md');
-const reelAgents = await readText('ki/reels/AGENTS.md');
-const platformAgents = await readText('ki/plattformen/AGENTS.md');
-const gemini = await readText('GEMINI.md');
 const master = await readText('ki/gehirn/MASTER.md');
-const channel = await readText('ki/gehirn/KANAL.md');
-const production = await readText('ki/gehirn/PRODUKTIONSABLAUF.md');
-const reels = await readText('ki/gehirn/REELS.md');
 const platforms = await readText('ki/gehirn/PLATTFORMEN.md');
-const imageStyle = await readText('ki/BILDSTIL.md');
-const youtubeReadme = await readText('ki/plattformen/youtube/README.md');
-const youtubeShorts = await readText('ki/plattformen/youtube/SHORTS.md');
-const youtubeLongform = await readText('ki/plattformen/youtube/LONGFORM.md');
-const youtubeThumbnails = await readText('ki/plattformen/youtube/THUMBNAILS.md');
-const youtubeUpload = await readText('ki/plattformen/youtube/UPLOAD.md');
-const codexWorkflow = await readText('docs/CODEX_REEL_WORKFLOW.md');
-const contextIndex = await readText('docs/CODEX_CONTEXT_INDEX.md');
+const captionDoc = await readText('ki/gehirn/CAPTION_SAFE_POSITION.md');
+const captionSource = await readText('ki/src/reels/captionSafe.ts');
 const generator = await readText('scripts/new-ki-reel.mjs');
-const phase3Skill = await readText('.agents/skills/build-context-overload-reel/SKILL.md');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -83,91 +77,203 @@ if (root) {
   if (root.engines?.node !== '>=20 <21') failures.push('package.json muss Node 20 festlegen (>=20 <21).');
 
   const requiredScripts = {
-    'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
     'repo:wiring-check': 'node scripts/check-repository-wiring.mjs',
+    'production:contracts': 'node ki/scripts/validate-production-contracts.mjs',
+    'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
+    'antigravity:verify': 'node scripts/check-antigravity-integration.mjs',
     'content:runtime:verify': 'node scripts/verify-content-matched-runtime.mjs',
     'release:verify': 'node scripts/run-content-release.mjs verify',
     'release:smoke': 'node scripts/run-content-release.mjs smoke',
     'release:full': 'node scripts/run-content-release.mjs full',
     'new-video': 'node scripts/new-ki-reel.mjs',
   };
+
   for (const [name, command] of Object.entries(requiredScripts)) {
     if (root.scripts?.[name] !== command) failures.push(`package.json script ${name} muss exakt "${command}" sein.`);
   }
 
   const serializedScripts = JSON.stringify(root.scripts ?? {});
-  for (const target of ['validate-worktree-rules.mjs','validate-channels.mjs','validate-studio-skills.mjs','scripts/typecheck.mjs','scripts/new-channel.sh','prepare-voiceover.mjs','transcribe.mjs']) {
+  for (const target of [
+    'validate-worktree-rules.mjs',
+    'validate-channels.mjs',
+    'validate-studio-skills.mjs',
+    'scripts/typecheck.mjs',
+    'scripts/new-channel.sh',
+    'prepare-voiceover.mjs',
+    'transcribe.mjs',
+  ]) {
     if (serializedScripts.includes(target)) failures.push(`Totes Legacy-Skript ist wieder eingetragen: ${target}`);
   }
 }
 
 if (core) {
   if (core.name !== '@studio/core') failures.push('core/package.json name muss @studio/core sein.');
-  if (core.exports?.['.']?.import !== './brand-kit/index.ts') failures.push('core/package.json muss @studio/core auf ./brand-kit/index.ts exportieren.');
+  if (core.exports?.['.']?.import !== './brand-kit/index.ts') {
+    failures.push('core/package.json muss @studio/core auf ./brand-kit/index.ts exportieren.');
+  }
 }
+
 if (ki) {
   if (ki.name !== '@studio/ki') failures.push('ki/package.json name muss @studio/ki sein.');
-  if (ki.dependencies?.['@studio/core'] !== '*') failures.push('ki/package.json muss @studio/core als Workspace-Abhängigkeit deklarieren.');
+  if (ki.dependencies?.['@studio/core'] !== '*') {
+    failures.push('ki/package.json muss @studio/core als Workspace-Abhängigkeit deklarieren.');
+  }
 }
 
-if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
-if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts enthält wieder channels/**.');
+if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) {
+  failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
+}
+if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
+  failures.push('vitest.config.ts enthält wieder channels/**.');
+}
 
-requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','PHASE 1 — ChatGPT','PHASE 2 — Mensch','PHASE 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
-requireMarkers('README.md', rootReadme, ['REPO-STATE.md','ki/plattformen/','YouTube Shorts','platform-copy.md']);
-requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
-requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
-requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
-requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
-requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
-requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
-requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
-requireMarkers('KANAL.md', channel, ['YouTube Shorts','Instagram Reels','TikTok','Facebook Reels','PLATTFORMEN.md']);
-requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT','platform-copy.md']);
-requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','niemals interner `goal`','BILDER NICHT ERFORDERLICH']);
-requireMarkers('PLATTFORMEN.md', platforms, ['Content einmal, Publishing mehrfach','03-caption/platform-copy.md','YouTube Shorts','YouTube Longform']);
-requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
-requireMarkers('YouTube README', youtubeReadme, ['YouTube — Kanalstruktur','SHORTS.md','LONGFORM.md','THUMBNAILS.md','UPLOAD.md']);
-requireMarkers('YouTube SHORTS', youtubeShorts, ['03-caption/platform-copy.md','kein eigenes Produktionsprojekt','UPLOAD.md']);
-requireMarkers('YouTube LONGFORM', youtubeLongform, ['eigenes Content-Format','nicht automatisch aus einem Reel verlängert','THUMBNAILS.md']);
-requireMarkers('YouTube THUMBNAILS', youtubeThumbnails, ['faceless','#B98CFF','Kein visuelles Rätsel']);
-requireMarkers('YouTube UPLOAD', youtubeUpload, ['03-caption/platform-copy.md','Zeitabhängige Plattformfakten','freigegebenen Master']);
-requireMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['beschreibt **nur Phase 3**','implementiert das Reel nicht erneut von Null','PHASE 2 AUDIO FEHLT']);
-requireMarkers('CODEX_CONTEXT_INDEX.md', contextIndex, ['`main` ist kanonisch','Phase 2','vorhandenen Phase-1-Source']);
-requireMarkers('Phase-3-Skill', phase3Skill, ['not** a from-scratch builder','PHASE 2 AUDIO FEHLT','do not rebuild the reel from zero']);
+// Current repository truth. These checks intentionally target stable invariants,
+// not old prose wording, so documentation can evolve without silently restoring
+// obsolete architecture.
+requireMarkers('REPO-STATE.md', repoState, [
+  'fix/repo-stabilisierung-2026-08-24',
+  'Woche → Wochentag → Thema/Reel → 01–06',
+  'BRAND-MOTION-PLAN.json',
+  'WORD-TIMINGS.json',
+  'bottom 330 px',
+  'horizontal inset 76 px',
+  'max width 928 px',
+]);
 
-forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
-forbidMarkers('GEMINI.md', gemini, ['channels/ki','--workspaces=false','Only after preflight may executable implementation be created']);
-forbidMarkers('ki/README.md', kiReadme, ['channels/ki','agent/ki-reel-builder-v1','CHATGPT_START_HIER.md','Draft-PR']);
-forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template']);
+requireMarkers('README.md', rootReadme, [
+  'REPO-STATE.md',
+  'NN_Wochentag',
+  'NN_Reel-Titel',
+  'npm run new-video -- "Reel Titel" YYYY-MM-DD',
+  'ki/src/reels/captionSafe.ts',
+]);
 
-for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platform-copy.md', "'05-export'", 'PHASE-STATUS.md']) {
-  if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
+requireMarkers('AGENTS.md', agents, [
+  '`REPO-STATE.md` bestimmt den aktuell autoritativen Arbeitsstand.',
+  'ki/reels/<Woche>/<Wochentag>/<NN_Thema>/',
+  'Phase 1 — Inhalt + Source',
+  'Phase 2 — Voiceover: ausschließlich Nutzer',
+  'Phase 3 — Sync, Review, Render, Export',
+  'BRAND-MOTION-PLAN.json',
+]);
+
+requireMarkers('ki/gehirn/MASTER.md', master, [
+  '60–75 Sekunden',
+  '150–175 Wörter',
+  'ki/src/reels/captionSafe.ts',
+  'PHASE 2 — Nutzer erstellt und hinterlegt das Voiceover',
+]);
+
+requireMarkers('ki/gehirn/PLATTFORMEN.md', platforms, [
+  'Content einmal, Publishing mehrfach',
+  'NN_Wochentag',
+  'NN_Reel-Titel',
+  '03-caption/platform-copy.md',
+  'technisches Exportprofil',
+]);
+
+forbidMarkers('README.md', rootReadme, [
+  'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/',
+  '`main` ist der kanonische Produktionsstand.',
+]);
+forbidMarkers('PLATTFORMEN.md', platforms, [
+  'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/',
+]);
+
+// Caption geometry must never drift between executable source and documentation.
+const captionBottom = extractNumericProperty('captionSafe.ts', captionSource, 'bottom');
+const captionInset = extractNumericProperty('captionSafe.ts', captionSource, 'horizontalInset');
+const captionMaxWidth = extractNumericProperty('captionSafe.ts', captionSource, 'maxWidth');
+const captionMaxLines = extractNumericProperty('captionSafe.ts', captionSource, 'maxVisibleLines');
+const captionMaxWords = extractNumericProperty('captionSafe.ts', captionSource, 'maxWordsPerGroup');
+const lowerDeadZone = extractNumericProperty('captionSafe.ts', captionSource, 'lowerCriticalDeadZone');
+const lowerBufferEnd = extractNumericProperty('captionSafe.ts', captionSource, 'lowerBufferEnd');
+const preferredVisualEndY = extractNumericProperty('captionSafe.ts', captionSource, 'preferredVisualEndY');
+const preferredVisualEndYMax = extractNumericProperty('captionSafe.ts', captionSource, 'preferredVisualEndYMax');
+
+if (captionBottom !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`Caption Bottom Offset: **\`${captionBottom}px\`**`]);
+if (captionInset !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`**\`${captionInset}px\` links/rechts**`]);
+if (captionMaxWidth !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`**\`${captionMaxWidth}px\`**`]);
+if (captionMaxLines !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`maximal **${captionMaxLines} Zeilen gleichzeitig**`]);
+if (captionMaxWords !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`4–${captionMaxWords} Wörter pro Sinnblock`]);
+if (lowerDeadZone !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`lowerCriticalDeadZone: ${lowerDeadZone}`]);
+if (lowerBufferEnd !== null) requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`lowerBufferEnd: ${lowerBufferEnd}`]);
+if (preferredVisualEndY !== null && preferredVisualEndYMax !== null) {
+  requireMarkers('CAPTION_SAFE_POSITION.md', captionDoc, [`y=${preferredVisualEndY}–${preferredVisualEndYMax}`]);
+}
+
+for (const marker of [
+  '01_Montag',
+  '07_Sonntag',
+  'new-ki-reel-core.mjs',
+]) {
+  if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: aktueller Routing-Marker fehlt: ${marker}`);
 }
 
 for (const path of [
-  'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
-  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md',
-  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
-  'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
-  'ki/plattformen/youtube/README.md','ki/plattformen/youtube/SHORTS.md','ki/plattformen/youtube/LONGFORM.md','ki/plattformen/youtube/THUMBNAILS.md','ki/plattformen/youtube/UPLOAD.md',
-  'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
-  'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
-  'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
-  '.agents/skills/build-context-overload-reel/SKILL.md'
-]) await assertFile(path);
+  'REPO-STATE.md',
+  'AGENTS.md',
+  'GEMINI.md',
+  'README.md',
+  'core/brand-kit/index.ts',
+  'ki/brand/brand.ts',
+  'ki/README.md',
+  'ki/AGENTS.md',
+  'ki/reels/AGENTS.md',
+  'ki/gehirn/MASTER.md',
+  'ki/gehirn/KANAL.md',
+  'ki/gehirn/REELS.md',
+  'ki/gehirn/STORYTELLING_MOTION.md',
+  'ki/gehirn/LEVEL_UP_STANDARD.md',
+  'ki/gehirn/VISUAL_ASSETS.md',
+  'ki/gehirn/CAPTION_SAFE_POSITION.md',
+  'ki/gehirn/PLATTFORMEN.md',
+  'ki/gehirn/PRODUKTIONSABLAUF.md',
+  'ki/gehirn/AUDIO_PIPELINE.md',
+  'ki/BILDSTIL.md',
+  'ki/plattformen/AGENTS.md',
+  'ki/plattformen/README.md',
+  'ki/plattformen/youtube/README.md',
+  'ki/plattformen/youtube/SHORTS.md',
+  'ki/plattformen/youtube/LONGFORM.md',
+  'ki/plattformen/youtube/THUMBNAILS.md',
+  'ki/plattformen/youtube/UPLOAD.md',
+  'ki/plattformen/instagram/README.md',
+  'ki/plattformen/tiktok/README.md',
+  'ki/plattformen/facebook/README.md',
+  'ki/plattformen/snapchat/README.md',
+  'ki/src/reels/captionSafe.ts',
+  'ki/tsconfig.motion.json',
+  'ki/tsconfig.animation-library.json',
+  'scripts/new-ki-reel.mjs',
+  'scripts/new-ki-reel-core.mjs',
+  'scripts/check-ki-reel-folder-structure.mjs',
+  'scripts/check-antigravity-integration.mjs',
+  'scripts/verify-content-matched-runtime.mjs',
+  'scripts/run-content-release.mjs',
+  'ki/scripts/validate-production-contracts.mjs',
+  'ki/scripts/validate-storytelling-motion.mjs',
+  'ki/scripts/validate-reel-level-up.mjs',
+  'ki/scripts/validate-reel-brand-motion-v4.mjs',
+  'ki/scripts/validate-reel-visual-assets.mjs',
+]) {
+  await assertFile(path);
+}
 
-if (await exists('ki/reels/_codex-hybrid-template')) failures.push('Veralteter ki/reels/_codex-hybrid-template darf nicht mehr existieren.');
-if (await exists('ki/reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/PHASE-2-IMPLEMENTATION.md')) failures.push('Legacy-Datei PHASE-2-IMPLEMENTATION.md darf nicht mehr existieren.');
+if (await exists('ki/reels/_codex-hybrid-template')) {
+  failures.push('Veralteter ki/reels/_codex-hybrid-template darf nicht mehr existieren.');
+}
 
-if (!(await exists('package-lock.json'))) warnings.push('package-lock.json fehlt noch; erst nach echtem npm-Installationslauf vertrauenswürdig erzeugen.');
+if (!(await exists('package-lock.json'))) {
+  warnings.push('package-lock.json fehlt noch; erst nach echtem npm-Installationslauf vertrauenswürdig erzeugen.');
+}
 
 for (const warning of warnings) console.warn(`WARN: ${warning}`);
+
 if (failures.length > 0) {
-  console.error('Repository-Wiring/Agent-Contract fehlgeschlagen:');
+  console.error('Repository-Wiring/Canonical-Consistency fehlgeschlagen:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Gehirn, Bildprompt-System, Plattformstruktur, YouTube-Handoff und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring konsistent: Workspaces, aktuelle Reel-Hierarchie, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
