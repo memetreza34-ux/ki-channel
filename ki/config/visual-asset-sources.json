@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "status": "CURATED_VISUAL_SOURCE_POLICY",
   "policy": {
     "remoteMediaDuringRender": false,
@@ -8,20 +8,33 @@
     "preferRightsWithoutRequiredOnScreenCredit": true,
     "preferredOrder": [
       "NATIVE_UI",
+      "LOCAL_OFFICIAL_MEDIA",
       "OFFICIAL_SOURCE_CARD",
       "WIKIMEDIA_COMMONS",
       "GITHUB_RAW"
     ],
     "externalRealVisualGuideline": {
       "idealMin": 1,
-      "idealMax": 2,
-      "defaultHardMax": 2,
+      "idealMax": 3,
+      "defaultHardMax": 3,
       "zeroAllowedWhenNoExplanatoryValue": true,
       "overrideField": "reel.visuals.maxExternalBinaries",
-      "principle": "One or two strong real visual moments are preferred over generic stock filler; native UI remains the base layer."
+      "principle": "Use a small number of purposeful real/official visuals. For branded stories, a real local official logo/wordmark/UI asset is preferred over a generic substitute when it is available and reviewed."
     }
   },
   "providers": {
+    "LOCAL_OFFICIAL_MEDIA": {
+      "enabled": true,
+      "requiresApiKey": false,
+      "autoDownload": false,
+      "requiredRootInsideReel": "02-bilder",
+      "acceptedMimes": ["image/jpeg", "image/png", "image/webp"],
+      "acceptedRights": ["OFFICIAL_SOURCE_REFERENCE"],
+      "acceptedSourceKinds": ["PRESS_KIT", "OFFICIAL_WEBSITE", "OFFICIAL_PRODUCT_UI", "USER_PROVIDED_OFFICIAL_EXPORT"],
+      "acceptedAssetRoles": ["LOGO", "WORDMARK", "PRODUCT_UI", "SCREENSHOT", "PRODUCT_IMAGE"],
+      "manualRightsReviewRequired": true,
+      "notes": "This provider never downloads a brand asset. A human/authorized local workflow first places the exact official file under the reel's 02-bilder folder and records the official source URL plus usage review note. Resolution only validates/copies the local file into public/reel-assets/<compositionId>/ and binds SHA256. OFFICIAL_SOURCE_REFERENCE is provenance metadata, not a blanket legal permission."
+    },
     "WIKIMEDIA_COMMONS": {
       "enabled": true,
       "api": "https://commons.wikimedia.org/w/api.php",
