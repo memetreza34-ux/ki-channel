@@ -29,6 +29,7 @@ const WEEKDAY_FOLDERS = Object.freeze({
 });
 
 const selectedDate = parseDate(rawDate);
+const publishDate = selectedDate.toISOString().slice(0, 10);
 const weekdayFolder = WEEKDAY_FOLDERS[selectedDate.getUTCDay()];
 if (!weekdayFolder) throw new Error('Wochentag konnte nicht bestimmt werden.');
 
@@ -87,6 +88,21 @@ try {
   console.warn(`README-Wochentag konnte nicht ergänzt werden: ${error instanceof Error ? error.message : error}`);
 }
 
+if (publishDate >= '2026-09-05') {
+  const v4 = spawnSync(process.execPath, [resolve('scripts', 'apply-level-up-v4.mjs'), finalReelRoot], {
+    encoding: 'utf8',
+    stdio: ['inherit', 'pipe', 'pipe'],
+  });
+  if (v4.stdout) process.stdout.write(v4.stdout);
+  if (v4.stderr) process.stderr.write(v4.stderr);
+  if (v4.error) {
+    console.error(`Level-Up-v4-Scaffold konnte nicht gestartet werden: ${v4.error.message}`);
+    process.exit(1);
+  }
+  if (v4.status !== 0) process.exit(v4.status ?? 1);
+}
+
 console.log(`KI-Reel Tagesstruktur: ${finalReelRoot}`);
 console.log(`Wochentag: ${weekdayFolder}`);
+console.log(`Level-Up: ${publishDate >= '2026-09-05' ? 'v4' : publishDate >= '2026-09-03' ? 'v3' : 'v2'}`);
 console.log('Kanonisch: Woche → Wochentag → NN_Thema → 01–06 Produktionsordner.');
