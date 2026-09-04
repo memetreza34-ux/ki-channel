@@ -29,7 +29,7 @@
   "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"NATIVE_PROOF_READY_EXTERNAL_MEDIA_PENDING_REVIEW","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":4,"targetRealOfficialMomentsMin":3},
   "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":20,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","SourceProofCard"]},
   "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":4,"brandMotionPlanFile":"06-projektdateien/BRAND-MOTION-PLAN.json"},
-  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"KI-AGENTEN · DEUTSCHE WIKI","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"OPENAI-AGENTEN? · DEUTSCHE WIKI","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
   "scenes": [
     {"sceneId":"scene1","title":"Deutsche Wiki wird zum Agenten-Brett","startFrame":0,"endFrame":360,"accent":"#B98CFF","timingStatus":"PLANNING_ONLY"},
     {"sceneId":"scene2","title":"Agenten koordinieren und sichern Inhalte","startFrame":360,"endFrame":720,"accent":"#7C3AED","timingStatus":"PLANNING_ONLY"},
