@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "status": "CONTENT_LOCKED_OFFICIAL_PROOF_PLANNED",
+  "rules": {"nativeFirst":true,"remoteRenderMediaAllowed":false,"googleImageSearchAsLicenseAuthority":false,"externalBinariesMustResolveLocally":true,"genericIconMayImpersonateBrand":false},
+  "assets": [
+    {"id":"scene1-google-flow-proof","sceneId":"scene1","provider":"OFFICIAL_SOURCE_CARD","purpose":"Primary proof for new Google Flow creative controls","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-labs/new-creative-controls-google-flow/"},
+    {"id":"scene5-gemini-omni-model-proof","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","purpose":"Primary proof for stable gemini-omni-1.1-flash capabilities and model id","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://ai.google.dev/gemini-api/docs/models/gemini-omni-flash"}
+  ]
+}

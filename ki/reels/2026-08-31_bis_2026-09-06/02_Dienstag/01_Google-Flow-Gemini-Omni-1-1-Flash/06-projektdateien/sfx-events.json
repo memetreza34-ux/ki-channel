@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "status": "CONTENT_PLANNED_TIMING_PENDING",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","purpose":"Flow brand field locks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.10},"anchor":{"type":"SCENE_OFFSET","frame":24},"roles":["ui-confirm"],"keywords":["lock","confirm"],"preferredDurationSeconds":0.18,"volume":0.08},
+    {"id":"sfx02","sceneId":"scene1","purpose":"Omni model name lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.16},"anchor":{"type":"SCENE_OFFSET","frame":190},"roles":["impact","tech-accent"],"keywords":["model","impact"],"preferredDurationSeconds":0.28,"volume":0.10},
+    {"id":"sfx03","sceneId":"scene2","purpose":"Start frame locks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.36},"anchor":{"type":"SCENE_OFFSET","frame":70},"roles":["ui-confirm"],"keywords":["frame","click"],"preferredDurationSeconds":0.18,"volume":0.08},
+    {"id":"sfx04","sceneId":"scene2","purpose":"End frame locks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.72},"anchor":{"type":"SCENE_OFFSET","frame":145},"roles":["ui-confirm"],"keywords":["frame","click"],"preferredDurationSeconds":0.18,"volume":0.08},
+    {"id":"sfx05","sceneId":"scene2","purpose":"Interpolation playhead completes","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.55},"anchor":{"type":"SCENE_OFFSET","frame":305},"roles":["transition-right","tech-accent"],"keywords":["sweep","move"],"preferredDurationSeconds":0.35,"volume":0.09},
+    {"id":"sfx06","sceneId":"scene3","purpose":"Extension endpoint opens","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.60},"anchor":{"type":"SCENE_OFFSET","frame":105},"roles":["ui-confirm","tech-accent"],"keywords":["extend","open"],"preferredDurationSeconds":0.20,"volume":0.09},
+    {"id":"sfx07","sceneId":"scene3","purpose":"New generated frames grow","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.36},"anchor":{"type":"SCENE_OFFSET","frame":230},"roles":["transition-right"],"keywords":["whoosh","extend"],"preferredDurationSeconds":0.32,"volume":0.08},
+    {"id":"sfx08","sceneId":"scene4","purpose":"360p draft tile lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s07","progress":0.17},"anchor":{"type":"SCENE_OFFSET","frame":70},"roles":["ui-click"],"keywords":["click","draft"],"preferredDurationSeconds":0.16,"volume":0.07},
+    {"id":"sfx09","sceneId":"scene4","purpose":"4K rung lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s07","progress":0.42},"anchor":{"type":"SCENE_OFFSET","frame":165},"roles":["impact","ui-confirm"],"keywords":["quality","impact"],"preferredDurationSeconds":0.28,"volume":0.10},
+    {"id":"sfx10","sceneId":"scene4","purpose":"Draft-to-final path completes","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.70},"anchor":{"type":"SCENE_OFFSET","frame":360},"roles":["ui-confirm"],"keywords":["success","confirm"],"preferredDurationSeconds":0.20,"volume":0.08},
+    {"id":"sfx11","sceneId":"scene5","purpose":"Stable model id locks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.38},"anchor":{"type":"SCENE_OFFSET","frame":110},"roles":["tech-accent","ui-confirm"],"keywords":["code","lock"],"preferredDurationSeconds":0.22,"volume":0.08},
+    {"id":"sfx12","sceneId":"scene5","purpose":"September 30 endpoint lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.80},"anchor":{"type":"SCENE_OFFSET","frame":235},"roles":["impact","ui-confirm"],"keywords":["date","final"],"preferredDurationSeconds":0.26,"volume":0.10}
+  ]
+}

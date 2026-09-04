@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "sentences": [
+    {"sentenceId":"s01","sceneId":"scene1","text":"Grok Bot kann jetzt direkt mit X arbeiten — und das ist mehr als nur ein neuer Connector."},
+    {"sentenceId":"s02","sceneId":"scene1","text":"Du meldest dein X-Konto in Grok Bot an."},
+    {"sentenceId":"s03","sceneId":"scene2","text":"Falls dir noch ein Developer-Account fehlt, soll beim Verbinden automatisch einer erstellt werden."},
+    {"sentenceId":"s04","sceneId":"scene2","text":"Bezahlte Grok-Bot-Nutzer bekommen außerdem kostenlose X-API-Credits zum Start."},
+    {"sentenceId":"s05","sceneId":"scene3","text":"Danach kann ein Bot Posts suchen, deine Timeline lesen, Erwähnungen prüfen und zusammenfassen, was gerade auf X passiert."},
+    {"sentenceId":"s06","sceneId":"scene3","text":"Zusätzlich gibt es ein X-Plugin für Trends und Bookmarks."},
+    {"sentenceId":"s07","sceneId":"scene4","text":"Der wichtige Punkt: Grok Bot ist nicht nur ein Chat."},
+    {"sentenceId":"s08","sceneId":"scene4","text":"Jeder Bot arbeitet auf einem persistenten Cloud-Computer mit Browser, Dateisystem und Terminal und kann Aufgaben in echten Tools ausführen."},
+    {"sentenceId":"s09","sceneId":"scene4","text":"Damit wird X für solche Bots eher zu einer Arbeitsquelle als nur zu einem Feed."},
+    {"sentenceId":"s10","sceneId":"scene5","text":"Praktisch könntest du einen Bot zum Beispiel täglich relevante Posts, Erwähnungen und Trends sammeln lassen."},
+    {"sentenceId":"s11","sceneId":"scene5","text":"Aber: Laut offizieller Ankündigung ist das die erste Version der Integration."},
+    {"sentenceId":"s12","sceneId":"scene5","text":"Wie gut und zuverlässig solche automatisierten X-Workflows im Alltag funktionieren, muss sich also noch zeigen."}
+  ]
+}

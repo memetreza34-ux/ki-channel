@@ -1,0 +1,23 @@
+{
+  "compositionId": "KI-ChatGPTForTeens",
+  "sourceDir": "ki/src/reels/chatgpt-for-teens",
+  "rootImportNeedle": "./reels/chatgpt-for-teens",
+  "requiredStrings": [
+    "ChatGPT",
+    "TEEN",
+    "Altersschätzung",
+    "Study Mode",
+    "Schutz aktiv",
+    "Chats bleiben privat"
+  ],
+  "forbiddenStrings": [
+    "NOVA",
+    "CREATIVE BRIEF",
+    "WERBECLIP",
+    "Produkt bleibt konsistent",
+    "KEYFRAME → MOTION",
+    "ZIELGRUPPE",
+    "STIMMUNG",
+    "Mach daraus Werbung"
+  ]
+}

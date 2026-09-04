@@ -1,0 +1,9 @@
+CLAUDE 5.1: Zwei Namen, ein Modellkern — aber nicht dieselben Grenzen.
+
+Anthropic hat Fable 5.1 und Mythos 5.1 veröffentlicht. Laut Anthropic steckt darunter dasselbe zugrunde liegende Modell. Der entscheidende Unterschied liegt beim Zugriff und bei den Sicherheitsgrenzen: Fable 5.1 ist breit für Nutzer und Entwickler verfügbar, während Mythos 5.1 nur über geprüfte Trusted-Access-Programme zugänglich bleibt.
+
+Dazu kommt ein interessanter Preis-Punkt: Fable 5.1 kostet laut Anthropic 10 US-Dollar pro Million Input-Tokens und 50 US-Dollar pro Million Output-Tokens; Cache-Reads liegen bei 0,25 US-Dollar pro Million Tokens.
+
+Was findest du spannender: mehr Modellleistung für alle oder stärkere Zugangsbeschränkungen bei besonders riskanten Fähigkeiten?
+
+#Claude #Anthropic #KünstlicheIntelligenz #AI #TechNews

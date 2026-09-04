@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "status": "CONTENT_PLANNED_TIMING_PENDING",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","purpose":"WeatherNext-3 Cover lock","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.08},"anchor":{"type":"SCENE_OFFSET","frame":15},"roles":["impact","ui-confirm"],"keywords":["brand","lock"],"preferredDurationSeconds":0.22,"volume":0.08},
+    {"id":"sfx02","sceneId":"scene1","purpose":"Satellite enters orbit","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.34},"anchor":{"type":"SCENE_OFFSET","frame":95},"roles":["transition-right","tech-accent"],"keywords":["satellite","orbit","sweep"],"preferredDurationSeconds":0.30,"volume":0.07},
+    {"id":"sfx03","sceneId":"scene1","purpose":"Hourly refresh ticks","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.52},"anchor":{"type":"SCENE_OFFSET","frame":165},"roles":["ui-click","ui-confirm"],"keywords":["clock","tick"],"preferredDurationSeconds":0.16,"volume":0.06},
+    {"id":"sfx04","sceneId":"scene1","purpose":"5 km resolution impact","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s02","progress":0.62},"anchor":{"type":"SCENE_OFFSET","frame":285},"roles":["impact"],"keywords":["resolution","impact"],"preferredDurationSeconds":0.25,"volume":0.09},
+
+    {"id":"sfx05","sceneId":"scene2","purpose":"25 km grid appears","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.28},"anchor":{"type":"SCENE_OFFSET","frame":75},"roles":["tech-accent"],"keywords":["grid","scan"],"preferredDurationSeconds":0.22,"volume":0.07},
+    {"id":"sfx06","sceneId":"scene2","purpose":"Grid compresses to 5 km","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.36},"anchor":{"type":"SCENE_OFFSET","frame":190},"roles":["transition-right","tech-accent"],"keywords":["compress","zoom"],"preferredDurationSeconds":0.28,"volume":0.08},
+    {"id":"sfx07","sceneId":"scene2","purpose":"5x sharper lands","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s04","progress":0.62},"anchor":{"type":"SCENE_OFFSET","frame":245},"roles":["impact","ui-confirm"],"keywords":["five","sharp"],"preferredDurationSeconds":0.24,"volume":0.09},
+    {"id":"sfx08","sceneId":"scene2","purpose":"Topography detail reveal","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.60},"anchor":{"type":"SCENE_OFFSET","frame":315},"roles":["transition-up"],"keywords":["detail","rise"],"preferredDurationSeconds":0.26,"volume":0.07},
+
+    {"id":"sfx09","sceneId":"scene3","purpose":"Radar world opens","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.18},"anchor":{"type":"SCENE_OFFSET","frame":40},"roles":["transition-out","tech-accent"],"keywords":["radar","weather"],"preferredDurationSeconds":0.32,"volume":0.08},
+    {"id":"sfx10","sceneId":"scene3","purpose":"Rain band sweeps","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s06","progress":0.55},"anchor":{"type":"SCENE_OFFSET","frame":105},"roles":["transition-right"],"keywords":["rain","sweep"],"preferredDurationSeconds":0.30,"volume":0.07},
+    {"id":"sfx11","sceneId":"scene3","purpose":"50 percent accuracy impact","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s07","progress":0.66},"anchor":{"type":"SCENE_OFFSET","frame":260},"roles":["impact","ui-confirm"],"keywords":["accuracy","fifty"],"preferredDurationSeconds":0.26,"volume":0.09},
+
+    {"id":"sfx12","sceneId":"scene4","purpose":"Google ecosystem opens","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.22},"anchor":{"type":"SCENE_OFFSET","frame":65},"roles":["transition-up","ui-confirm"],"keywords":["products","open"],"preferredDurationSeconds":0.28,"volume":0.07},
+    {"id":"sfx13","sceneId":"scene4","purpose":"Product nodes activate","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.60},"anchor":{"type":"SCENE_OFFSET","frame":210},"roles":["ui-click","ui-confirm"],"keywords":["node","activate"],"preferredDurationSeconds":0.18,"volume":0.06},
+    {"id":"sfx14","sceneId":"scene4","purpose":"Cloud data route completes","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.60},"anchor":{"type":"SCENE_OFFSET","frame":345},"roles":["transition-right","tech-accent"],"keywords":["data","route"],"preferredDurationSeconds":0.28,"volume":0.07},
+
+    {"id":"sfx15","sceneId":"scene5","purpose":"Infrastructure payoff","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s10","progress":0.52},"anchor":{"type":"SCENE_OFFSET","frame":220},"roles":["impact","ui-confirm"],"keywords":["infrastructure","payoff"],"preferredDurationSeconds":0.28,"volume":0.09},
+    {"id":"sfx16","sceneId":"scene5","purpose":"Official warning lock","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s11","progress":0.60},"anchor":{"type":"SCENE_OFFSET","frame":365},"roles":["ui-confirm"],"keywords":["warning","lock"],"preferredDurationSeconds":0.20,"volume":0.07}
+  ]
+}

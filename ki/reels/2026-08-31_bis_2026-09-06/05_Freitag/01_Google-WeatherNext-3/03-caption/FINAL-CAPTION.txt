@@ -1,0 +1,11 @@
+GOOGLE MACHT WETTER-KI DEUTLICH SCHÄRFER
+
+WeatherNext 3 nutzt aktuelle Satellitendaten, erstellt jede Stunde neue Prognosen und erhöht die räumliche Auflösung deutlich. Besonders spannend: Google integriert das Modell direkt in Search, Gemini, Maps, die Weather API und seine Cloud-Dienste.
+
+Damit wird Wetter-KI nicht nur ein Forschungsprojekt, sondern zunehmend Infrastruktur für Alltag, Entwickler, Landwirtschaft und Energieplanung.
+
+Bei amtlichen Unwetterwarnungen bleibt natürlich der lokale Wetterdienst die entscheidende Quelle.
+
+Was findest du spannender: die 5-km-Auflösung oder die direkte Integration in Google-Produkte?
+
+#KünstlicheIntelligenz #GoogleAI #WeatherNext #Gemini #Technologie

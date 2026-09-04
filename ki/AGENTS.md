@@ -2,172 +2,160 @@
 
 Diese Datei erweitert `REPO-STATE.md` und `AGENTS.md`.
 
-## Gehirn zuerst
+## Lesereihenfolge
 
-Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die autoritativen Bereiche:
+Für KI-Aufgaben:
 
-- `KANAL.md` — Identität und Ton
-- `REELS.md` — Reel- und Text-Hierarchie
-- `PLATTFORMEN.md` — Publishing, YouTube und weitere Plattformen
-- `PRODUKTIONSABLAUF.md` — 3 Phasen
-- `../BILDSTIL.md` — Bild-/Prompt-Qualität
+1. `ki/gehirn/MASTER.md`
+2. bei Short-Form zusätzlich `ki/reels/AGENTS.md`
+3. bei Audio `ki/gehirn/AUDIO_PIPELINE.md`
+4. named Reel + Source
 
-Danach den passenden Produktionsvertrag lesen:
+Für jedes Short-Form-Reel zusätzlich diese Skills:
 
-- Short-Form → `ki/reels/AGENTS.md`
-- YouTube Longform → `ki/youtube-longform/AGENTS.md`
+- `ki/skills/entertainment-first-reels/SKILL.md`
+- `ki/skills/high-energy-remotion-reels/SKILL.md`
+- `ki/skills/motion-readability-light-first/SKILL.md`
+- `ki/skills/voice-locked-captions/SKILL.md`
+- `ki/skills/final-video-delivery/SKILL.md`
+- `ki/skills/final-export-package/SKILL.md`
 
-## Harte Short-Form-Ordnerstruktur
+## Ordnerstruktur
 
-Jedes Produktionsreel liegt dauerhaft hier:
-
-```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-bilder/
-├── 03-caption/
-├── 04-pdf/
-├── 05-export/
-└── 06-projektdateien/
-```
-
-Nicht zulässig:
+Für die aktive Woche und alle neuen Reels:
 
 ```text
-ki/<reel-name>/
-ki/reels/<slug>/
-ki/src/reels/<planning-package>/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+│   └── 01_Reel-Titel/
+├── 02_Dienstag/
+│   └── 01_Reel-Titel/
+├── 03_Mittwoch/
+│   └── 01_Reel-Titel/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
 ```
 
-Neue Pakete nur mit:
+Im Reel-Themenordner bleiben `README.md` sowie `01-script-audio/` bis `06-projektdateien/` Pflicht.
+
+Kurz: `Woche → Wochentag → Thema → 01–06`.
+
+Mehrere Reels am selben Tag werden innerhalb dieses Tages `01_`, `02_`, `03_` nummeriert.
+
+Neue Reels nur über:
 
 ```bash
-node scripts/new-ki-reel.mjs "Reel Titel"
+npm run new-video -- "Reel Titel" YYYY-MM-DD
 ```
 
-Vor und nach Strukturänderungen:
+Danach zwingend:
 
 ```bash
-node scripts/check-ki-reel-folder-structure.mjs
+npm run ki:reel:structure-check
 ```
 
-## Harte YouTube-Longform-Struktur
-
-Longform ist ein separates aktives Produktionsformat:
-
-```text
-ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-visuals/
-├── 03-thumbnail/
-├── 04-metadata/
-├── 05-export/
-└── 06-projektdateien/
-```
-
-Ausführbarer Longform-Source liegt ausschließlich hier:
-
-```text
-ki/src/longform/<slug>/
-```
-
-Aktueller Formatstandard: 1920×1080, 30 FPS, 16:9, 5:00–6:00 Minuten nach echtem Voiceover.
-
-## Datei-Eigentum Short-Form
-
-- `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
-- `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
-- `04-pdf/` — optionale PDF-Assets
-- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
-- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
-
-Ausführbarer TS/TSX-Code ausschließlich separat:
-
-```text
-ki/src/reels/<slug>/
-```
-
-Keine Planungsdokumente in den Source-Ordner kopieren.
-
-## Datei-Eigentum Longform
-
-- `01-script-audio/` — finaler Sprechertext, Copy-Text, echtes Voiceover
-- `02-visuals/` — Kapitel-/Visualplan und Asset-Entscheidungen
-- `03-thumbnail/` — Thumbnail-Briefing und Thumbnail-Handoff
-- `04-metadata/` — YouTube-Titel, Beschreibung, Kapitel und Keywords
-- `05-export/` — Smoke-Frames, Thumbnail-Export, finaler 16:9-Master
-- `06-projektdateien/` — Status, Longform-Contract, Kapitel-/Animationsplan, Assembly und Review
-
-Longform-Source folgt zusätzlich `ki/src/longform/AGENTS.md`.
-
-## Plattformbereich
-
-Publishing-Regeln liegen unter:
-
-```text
-ki/plattformen/
-```
-
-Bei Plattformaufgaben zusätzlich `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/AGENTS.md` lesen.
-
-Plattformordner dürfen kein zweites Skript, keinen zweiten Source und keine zweite Master-Wahrheit anlegen. Short-Form wird einmal produziert; YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden den freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
-
-YouTube Longform wird separat unter `ki/youtube-longform/` produziert und nicht automatisch aus Reels erzeugt.
+Ausführbarer Source nur unter `ki/src/reels/<slug>/`.
 
 ## Phasen
 
-Für Short-Form und Longform gilt:
+### Phase 1
 
-- Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten.
-- Phase 2 ist nur das menschliche Voiceover.
-- Phase 3 integriert das Audio in den vorhandenen Source, synchronisiert an die reale Stimme, testet, smoke-reviewt und rendert.
+- Inhalt/Skript
+- neue Reels auf **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit planen
+- bevorzugt **150–175 Wörter**, bis **190 Wörter** ohne Sonderfreigabe
+- Visual Beats + Story-/Level-Up-Vertrag
+- Remotion-Source
+- Caption-Basis
+- Plattform-Copy
+- Brand-/Proof-/Real-Media-Plan
+- Motion-Readability-Datei PENDING
 
-Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler.
+Ab `2026-09-03` gilt Level-Up v3: mindestens 20 Visual Beats, 4 Visual Worlds, 2 Mid-Reel-Reframes und stärkere Brand-/Real-Media-Fidelity.
 
-Wenn Phase-3-Audio fehlt: `PHASE 2 AUDIO FEHLT`.
+### Phase 2 — ausschließlich Nutzer-Audio
+
+Der Nutzer erstellt das vollständige Voiceover selbst und legt es manuell unter dem in `reel.json.audio.targetFile` definierten Pfad ab, normalerweise `01-script-audio/voiceover.mp3`.
+
+Agenten dürfen das Produktions-Voiceover **weder erzeugen noch herunterladen**. Keine TTS-/Voice-Tools, keine Provider-URLs und keine Preview-Dateien als Ersatz.
+
+Fehlt die Datei:
+
+`PHASE 2 — WARTET AUF NUTZER-AUDIO`
+
+### Phase 3
+
+- `prepare-reel-audio.mjs`: Runtime-WAV + ggf. Pause-Kompression
+- lokales Forced Alignment
+- `WORD-TIMINGS.json`, Szenen und Captions Voice-Locked
+- tatsächliche finale Dauer 60–75 s oder dokumentierte Ausnahme
+- SFX nach finalen Szenenframes auflösen
+- externe Visuals lokal auflösen/validieren
+- `prepare-reel-render.mjs` + Provenance-Lock
+- Tests/Smoke/Contact-Sheet
+- Roh-Render + Social-Audio-Master
+- 1x Motion-Readability auf dem gemasterten MP4
+- Finalizer + Export-Package-Validator
+
+## Caption — eine Wahrheit
+
+Bei 1080×1920 ausschließlich Shared-Geometrie aus `ki/src/reels/captionSafe.ts`:
+
+- `bottom: 330px`
+- `76px` horizontal
+- `928px` max width
+- ca. `40px` Schrift
+- max. 2 Zeilen
+- Ziel max. 6 Wörter je sichtbarer Gruppe
+- Cover-Fenster caption-frei
+
+## Audio — eine Wahrheit
+
+Verbindlich `ki/gehirn/AUDIO_PIPELINE.md`.
+
+Vor Production-Render:
+
+```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+```
+
+`Root.tsx` nutzt nur die vorbereitete lokale Runtime-Spur `public/runtime-audio/<compositionId>.wav` via `staticFile`.
 
 ## Visual Standard
 
-- heller oder weißer editorialer Hintergrund
-- dunkle, formatgerecht lesbare Typografie
-- `#B98CFF` primärer Fokus-Akzent
-- `#6E45C9` Tiefe/Kontrast
-- faceless
-- keine generische Cyberpunk-/Neon-Ästhetik
-- `REMOTION_NATIVE_MAXIMUM`: möglichst alles Sichtbare direkt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- bei zu flachen Code-Visuals zuerst Komposition, Perspektive, Schatten, Tiefe und Layering verbessern
-- externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
-- keine erfundenen Zahlen
+- Light-First
+- Product/UI-first bei Apps/Features
+- Fullscreen-Hintergrund
+- keine kleine Card-Insel in riesigem Leerraum
+- `SETUP → AKTION → KONSEQUENZ → PAYOFF`
+- `REVEAL → SETTLE → READABLE HOLD`
+- High Energy ≠ High Speed
+- Brand muss bei zentralen Markenstories visuell wirklich erkennbar sein
+- Logos/Wordmarks nur aus echten zulässigen Assets oder klare Typografie als Fallback
+- keine generischen Funktionsicons als Fake-Logo
+- reale UI/Proof/Bilder/Videos nur mit Story-Zweck und lokaler Provenance
+- keine Render-Time-Remote-Medien
 
-## Text-Hierarchie
+## Final-Export
 
-- Überschrift/Kapitelmarker: kurz, Zuschauer-Sprache
-- Short-Form-Caption: Sprechertext synchron
-- Longform: keine dauerhaft eingebrannten Volltext-Untertitel als Standard
-- Animationslabels: kurze Objekt-/Zustandsbegriffe
-- interne Regie-/Goal-Texte: niemals sichtbar
+Ein Reel ist nicht fertig bei `render complete`.
 
-Kein langer Sprechertext doppelt als Headline und Animationstext. Keine wortweise Kopie des Transcripts in die Animation.
+```bash
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <final-video.mp4>
+node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
+```
 
-## Bilder
+Erst danach und nach echtem Ansehen/Anhören:
 
-Bilder nur, wenn sie echten Mehrwert gegenüber Maximum-Remotion liefern. `ki/BILDSTIL.md` bestimmt Prompt-Aufbau, Safe-Zones, Dateinamen und Qualitätsgate. Für UI, Icons, Diagramme, technische Illustrationen, Mockups, Cover und pseudo-3D zuerst Remotion ausreizen.
+`FINAL VIDEO READY — EXPORT PACKAGE READY`
 
-## Testing
+## Git/Medien
 
-Mindestens formatbezogen prüfen:
+Git hält Source, Skripte, Provenance, Timings, Reviews und Manifest.
 
-- Format/FPS/Dauer
-- kontinuierliche Szenen-/Kapitelbereiche
-- eindeutige IDs
-- Asset-Pfade
-- keine ungrounded Werte
-- Visual-Safe-Zones über reale Smoke-Frames
-- Packaging/Metadaten vorhanden
-- Thumbnail bei Longform separat und in kleiner Darstellung geprüft
-- finaler Render gehört exakt zum aktuellen Source-Stand
+Große MP4/WAV/MP3/PNG bleiben standardmäßig lokal/Artifact-Storage, solange Git LFS nicht eingerichtet ist.
 
-Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.
+## Wahrheitspflicht
+
+Keine erfundenen Medien, Dateien, URLs, Testergebnisse oder Render-Claims. Nur tatsächlich ausgeführte Schritte als bestanden melden.

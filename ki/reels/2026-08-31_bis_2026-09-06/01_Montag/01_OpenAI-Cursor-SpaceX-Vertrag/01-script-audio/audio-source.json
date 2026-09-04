@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "status": "WAITING_FOR_USER_LOCAL_MASTER",
+  "provider": "USER_PROVIDED",
+  "targetFile": "01-script-audio/voiceover.mp3",
+  "transcriptAuthority": "VOICEOVER-ZUM-KOPIEREN.txt",
+  "remoteAudioAllowed": false,
+  "agentGenerationAllowed": false,
+  "agentDownloadAllowed": false,
+  "note": "Der Nutzer erstellt das vollständige Voiceover selbst und legt voiceover.mp3 in diesen Ordner. Kein Agent, ChatGPT, Codex oder Antigravity darf das Produktions-Voiceover erzeugen oder herunterladen."
+}

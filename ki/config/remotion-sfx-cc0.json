@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "status": "REVIEWED_CC0_ALLOWLIST",
+  "sourcePackage": "@remotion/sfx@4.0.488",
+  "policy": {
+    "license": "CC0-1.0_ONLY",
+    "remoteRenderAllowed": false,
+    "automaticUse": false,
+    "requiresExplicitReelOptIn": true,
+    "note": "Only sounds whose official Remotion detail page explicitly states Creative Commons 0 are allowlisted. Unclear/meme sounds such as ding and recordScratch are intentionally excluded."
+  },
+  "items": [
+    {
+      "id": "remotion-cc0:whip",
+      "exportName": "whip",
+      "role": "transition-fast",
+      "url": "https://remotion.media/whip.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/whip",
+      "creator": "JW_Audio",
+      "originalSource": "https://freesound.org/s/838766/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:whoosh",
+      "exportName": "whoosh",
+      "role": "transition-fast",
+      "url": "https://remotion.media/whoosh.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/whoosh",
+      "creator": "1bob",
+      "originalSource": "https://freesound.org/s/831936/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:page-turn",
+      "exportName": "pageTurn",
+      "role": "transition-document",
+      "url": "https://remotion.media/page-turn.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/page-turn",
+      "creator": "kenney.nl",
+      "originalSource": "https://kenney.nl/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:ui-switch",
+      "exportName": "uiSwitch",
+      "role": "ui-toggle",
+      "url": "https://remotion.media/switch.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/ui-switch",
+      "creator": "kenney.nl",
+      "originalSource": "https://kenney.nl/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:mouse-click",
+      "exportName": "mouseClick",
+      "role": "ui-click",
+      "url": "https://remotion.media/mouse-click.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/mouse-click",
+      "creator": "Pixeliota",
+      "originalSource": "https://freesound.org/s/678248/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:shutter-modern",
+      "exportName": "shutterModern",
+      "role": "proof-capture",
+      "url": "https://remotion.media/shutter-modern.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/shutter-modern",
+      "creator": "ristooooo1",
+      "originalSource": "https://freesound.org/s/539136/",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "remotion-cc0:shutter-old",
+      "exportName": "shutterOld",
+      "role": "proof-capture-vintage",
+      "url": "https://remotion.media/shutter-old.wav",
+      "docsUrl": "https://www.remotion.dev/docs/sfx/shutter-old",
+      "creator": "hmilleo",
+      "originalSource": "https://freesound.org/s/409093/",
+      "license": "CC0-1.0"
+    }
+  ],
+  "explicitlyBlockedExamples": [
+    {
+      "exportName": "ding",
+      "reason": "Official Remotion detail page states it is not explicitly released under a free license."
+    },
+    {
+      "exportName": "recordScratch",
+      "reason": "Official Remotion detail page states it is not explicitly released under a free license."
+    }
+  ]
+}

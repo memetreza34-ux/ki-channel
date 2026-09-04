@@ -1,0 +1,33 @@
+{
+  "version": 6,
+  "reelId": "gemini-omni-flow-control",
+  "compositionId": "KI-GeminiOmniFlowControl",
+  "sourceDir": "ki/src/reels/gemini-omni-flow-control",
+  "title": "Google Flow: Gemini Omni 1.1 Flash gibt Creatorn mehr Video-Kontrolle",
+  "publishDate": "2026-09-01",
+  "week": "2026-08-31_bis_2026-09-06",
+  "productionMode": "LEVEL_UP_NATIVE_PLUS_OFFICIAL_PROOF",
+  "scriptBudget": {"targetMinWords":150,"targetMaxWords":175,"hardMinWords":140,"hardMaxWords":190,"referenceWpm":140,"targetMinSeconds":60,"targetMaxSeconds":75,"allowShorter":false,"shorterReason":"","allowLonger":false,"longerReason":"","allowDurationOutsideTarget":false,"durationExceptionReason":""},
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1950,"finalDurationInFrames":null,"finalDurationAuthority":"PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"},
+  "audio": {"sourceMetadata":"01-script-audio/audio-source.json","targetFile":"01-script-audio/voiceover.mp3","status":"WAITING_FOR_USER_LOCAL_MASTER","provider":"USER_PROVIDED","agentGenerationAllowed":false,"agentDownloadAllowed":false,"timingAuthority":false,"alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"},
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxWordsPerGroup":6,"style":"transparent_glass_overlay"},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"OFFICIAL_PROOF_PLANNED","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":2,"sourceProof":"OFFICIAL_SOURCE_CROP_PLUS_CARD","targetRealOfficialMomentsMin":2},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":15,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","ImpactNumber","SourceProofCard"]},
+  "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":2},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"FLOW: START + ENDE + 4K","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"Google Flow bekommt Omni 1.1","startFrame":0,"endFrame":330,"accent":"#4285F4","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Start- und Endframe","startFrame":330,"endFrame":720,"accent":"#A142F4","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Video verlängern","startFrame":720,"endFrame":1110,"accent":"#EA4335","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"360p bis 4K","startFrame":1110,"endFrame":1545,"accent":"#FBBC04","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Stable + Preview-Ende","startFrame":1545,"endFrame":1950,"accent":"#34A853","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://blog.google/innovation-and-ai/models-and-research/google-labs/new-creative-controls-google-flow/",
+    "https://ai.google.dev/gemini-api/docs/models/gemini-omni-flash",
+    "https://ai.google.dev/gemini-api/docs/changelog",
+    "https://ai.google.dev/gemini-api/docs/deprecations"
+  ]
+}

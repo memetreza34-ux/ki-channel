@@ -1,167 +1,391 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-16
+**Status:** 2026-09-04
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
 ## 1. Kanonischer Branch
 
-`main` ist der einzige kanonische Produktionsstand.
+Aktuelle Stabilisierung:
 
-Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
-
-Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
+- Draft-PR **#28** gegen `main`
+- Branch: `fix/repo-stabilisierung-2026-08-24`
+- nicht still nach `main` wechseln
+- PR nicht ready/mergebar melden, solange lokale Runtime-, Render- und 1x-Review-Beweise fehlen
 
 ## 2. Verbindliche Lesereihenfolge
 
-Bei KI-Kanal-Arbeit gilt:
+Bei KI-Kanal-Arbeit:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
-3. `ki/AGENTS.md`
-4. `ki/gehirn/MASTER.md`
-5. danach die passende Domäne:
-   - Reel-Arbeit → `ki/reels/AGENTS.md`
-   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
-   - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
-6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
-7. erst danach konkrete Pläne, Source- oder Plattformdateien
+3. bei Antigravity zusätzlich `GEMINI.md`, `.agents/agents.md`, `.agents/ANTIGRAVITY-LOCAL-SETUP.md`
+4. `ki/AGENTS.md`
+5. `ki/gehirn/MASTER.md`
+6. `ki/gehirn/STORYTELLING_MOTION.md`
+7. `ki/gehirn/LEVEL_UP_STANDARD.md`
+8. `ki/gehirn/VISUAL_ASSETS.md`
+9. `ki/reels/AGENTS.md`
+10. Ziel-Reel + seine Projektdateien
 
-Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
+## 3. Kanonische Reel-Ordnerstruktur
 
-- Reels → `ki/src/reels/AGENTS.md`
-- Longform → `ki/src/longform/AGENTS.md`
-
-Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
-
-## 3. Kanonische Short-Form-Produktionsstruktur
-
-Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
+Seit `2026-08-31_bis_2026-09-06` und für **alle neuen Reels**:
 
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-bilder/
-├── 03-caption/
-├── 04-pdf/
-├── 05-export/
-└── 06-projektdateien/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+├── 02_Dienstag/
+├── 03_Mittwoch/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
 ```
 
-Ausführbarer Remotion-Code liegt getrennt hier:
+Pro Tag:
 
 ```text
-ki/src/reels/<slug>/
+NN_Wochentag/
+└── 01_Thema/
+    ├── README.md
+    ├── 01-script-audio/
+    ├── 02-bilder/
+    ├── 03-caption/
+    ├── 04-pdf/
+    ├── 05-export/
+    └── 06-projektdateien/
 ```
 
-Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
+Kurzform:
 
-## 4. Kanonische YouTube-Longform-Struktur
+`Woche → Wochentag → Thema/Reel → 01–06`
 
-YouTube Longform ist seit 2026-08-16 als eigenes Produktionsformat aktiv.
+Generator:
 
-Produktionspakete liegen hier:
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
+
+`scripts/new-ki-reel.mjs` routet Woche/Wochentag/Topic-Slot. `scripts/new-ki-reel-core.mjs` erzeugt den Basisscaffold. Für Reels ab **2026-09-05** wendet der Wrapper anschließend automatisch `scripts/apply-level-up-v4.mjs` an.
+
+## 4. Aktive Woche
 
 ```text
-ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-visuals/
-├── 03-thumbnail/
-├── 04-metadata/
-├── 05-export/
-└── 06-projektdateien/
+ki/reels/2026-08-31_bis_2026-09-06/
+├── 01_Montag/
+│   └── 01_OpenAI-Cursor-SpaceX-Vertrag/
+├── 02_Dienstag/
+│   └── 01_Google-Flow-Gemini-Omni-1-1-Flash/
+├── 03_Mittwoch/
+│   └── 01_Grok-Bot-X-Integration/
+├── 04_Donnerstag/
+│   └── 01_Claude-Fable-5-1-Mythos-5-1/
+└── 05_Freitag/
+    └── 01_Google-WeatherNext-3/
 ```
 
-Ausführbarer Source:
+Samstag und Sonntag werden beim ersten Reel automatisch angelegt.
 
-```text
-ki/src/longform/<slug>/
-```
+## 5. Source-Trennung
 
-Aktive Startvorgabe:
+Ausführbarer Remotion-Code liegt separat unter:
 
-- 1920 × 1080
+`ki/src/reels/<slug>/`
+
+Planungs-/Produktionsdateien bleiben im jeweiligen Reel-Paket. JSON-/Caption-/SFX-Imports müssen den vollständigen Woche→Wochentag→Thema-Pfad verwenden.
+
+## 6. Script / Format / Audio
+
+Standard-Reel:
+
+- 1080×1920
 - 30 FPS
-- 16:9
-- finale Laufzeit nach echtem Voiceover: 5:00–6:00 Minuten
-- `REMOTION_NATIVE_MAXIMUM`
-- Thumbnail als eigene Composition
+- tatsächliche Voice-Locked-Laufzeit 60–75 s
+- bevorzugt 150–175 Wörter
+- Hard-Limit 190 Wörter ohne Ausnahme
 
-Aktives erstes Video:
+Produktions-Voiceover kommt **ausschließlich vom Nutzer** und liegt normalerweise unter:
 
-```text
-ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
+`01-script-audio/voiceover.mp3`
+
+Agenten erzeugen, ersetzen oder laden kein Produktions-Voiceover.
+
+Für Level-Up v3/v4 gilt aktuell:
+
+- Pitch-erhaltendes Sprachtempo **1,10×**
+- lange KI-Pausen vor Forced Alignment komprimieren
+- danach lokale Runtime-WAV
+- erst dann Forced Alignment
+- `WORD-TIMINGS.json` ist Timing-Autorität für Captions, Szenen, Reveals und SFX
+
+## 7. Storytelling-Baseline
+
+Neue Reels sind narrative Social-Explainer, keine Präsentationskartenfolge.
+
+- Story-Arc mindestens Hook → Proof → Consequence → Payoff
+- jede zentrale Sprecher-Aussage löst sichtbare Reaktion aus
+- mehrere Zustände pro Hauptszene
+- sichtbare Entwicklung ca. alle 1,5–3,0 s
+- praktisch unverändert >4 s ist Review-Risiko
+- Kamera/Zoom/Transition/SFX nur mit Funktion
+
+Gate:
+
+```bash
+node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 ```
 
-Video-Composition: `KI-Longform-AIAppWorkflow`
-Thumbnail-Composition: `KI-Longform-AIAppWorkflow-Thumbnail`
+## 8. Level-Up-Versionen
 
-## 5. Plattform-/Publishing-Struktur
+- 01.–02.09.2026: v2-kompatibel
+- ab 03.09.2026: **Level-Up v3**
+- ab **05.09.2026: Level-Up v4**
 
-Plattformlogik liegt hier:
+### v3 bleibt Grundlage
 
-```text
-ki/plattformen/
-├── youtube/
-├── instagram/
-├── tiktok/
-├── facebook/
-└── snapchat/
+- Cover innerhalb erster Sekunde
+- Brand im Cover + später erneut
+- keine Fake-Logos
+- normalerweise mindestens 3 purposeful real/official Medienmomente
+- mindestens 20 Visual Beats
+- mindestens 4 Visual Worlds
+- mindestens 2 Mid-Reel-Reframes
+- Word/Phrase-Lock nach Forced Alignment
+- Overlap-/Phone-Readability-/SFX-Gates
+
+### v4 ergänzt Brand-/Motion-Fidelity
+
+Jedes neue Reel ab 05.09. erhält zusätzlich:
+
+`06-projektdateien/BRAND-MOTION-PLAN.json`
+
+Pflichtbereiche:
+
+- `brandIdentity`
+- `brandPalette`
+- `functionalIconPolicy`
+- `animationFreedom`
+- `capabilityEvolution`
+- `requiredFinalReviewGates`
+
+Gate:
+
+```bash
+node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
+node ki/scripts/validate-reel-brand-motion-v4.mjs <reel-package-dir>
 ```
 
-Diese Ordner enthalten **Publishing-Regeln und Templates, keine zweite Produktionswahrheit**.
+Der Production-Render führt den v4-Gate erneut aus und bindet `BRAND-MOTION-PLAN.json` per SHA256 in den Render-Lock.
 
-Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Plattform-spezifische Copy eines Reels gehört nach:
+## 9. Echte Logos / Wordmarks / Produkt-UI
 
-```text
-03-caption/platform-copy.md
-```
+Das bisherige Problem „Logo im Plan, aber nicht im Render“ wird über `LOCAL_OFFICIAL_MEDIA` geschlossen.
 
-YouTube Longform ist ein separates Format unter `ki/youtube-longform/` und wird nicht automatisch aus Reels erzeugt.
-
-Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
-
-## 6. Verbindliches 3-Phasen-Modell
-
-Für Short-Form und Longform gilt derselbe Verantwortungsrahmen:
+Wenn ein exaktes offizielles Asset bereits lokal vorliegt:
 
 ```text
-PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen/Kapitel + Visual Beats + Visual-/Asset-Entscheidungen + Packaging + Remotion-Code-Grundlage + Checks
-
-PHASE 2 — Mensch
-nur das echte Voiceover erzeugen und in 01-script-audio ablegen
-
-PHASE 3 — Codex / Antigravity
-Audio integrieren + echte Timeline synchronisieren + Tests + Smoke-Review + Final-Render + Export
+02-bilder/brand-assets/...png
 ```
 
-Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Format nicht neu von Null.
+wird es in `visual-assets.json` als `LOCAL_OFFICIAL_MEDIA` registriert.
 
-Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
+Pflicht:
 
-## 7. Verbindliche visuelle Identität
+- lokales `sourceFile` unter `02-bilder/`
+- offizielle HTTPS-`sourceUrl`
+- `sourceKind`
+- `assetRole`
+- `rightsStatus: OFFICIAL_SOURCE_REFERENCE`
+- aussagekräftige `usageReviewNote`
 
-- Short-Form standardmäßig 1080 × 1920 / 30 FPS
-- Longform aktuell 1920 × 1080 / 30 FPS
-- heller editorialer Look
-- dunkle Schrift
-- Marken-Lila `#B98CFF` als primärer Akzent
-- dunkles Lila `#6E45C9` für Tiefe/Kontrast
-- faceless, keine erkennbaren Gesichter
-- keine Cyberpunk-/Neon-Standardästhetik
-- `REMOTION_NATIVE_MAXIMUM`: sichtbare Inhalte so weit wie technisch und gestalterisch sinnvoll in React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- externe Bilder nur als begründete Ausnahme; keine erfundenen Assets
-- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
-- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
+Der Resolver lädt **nichts** automatisch herunter. Er prüft die lokale Datei, blockiert Symlinks/Path-Escape, akzeptiert nur JPEG/PNG/WebP, kopiert nach `public/reel-assets/<compositionId>/` und bindet SHA256.
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`, `ki/reels/REMOTION_NATIVE_VISUALS_MAXIMUM.md`.
+`manualRightsReviewRequired: true` bleibt erhalten. Herkunftsnachweis ist keine pauschale Rechtsfreigabe.
 
-## 8. Statusbegriffe niemals vermischen
+Workflow:
 
-Diese Zustände sind getrennt:
+`/use-local-official-media <reel-package-dir>`
+
+## 10. Brand-Farben v4
+
+Vor Source-Freeze enthält `BRAND-MOTION-PLAN.json`:
+
+- offizielle/reference Farbquelle
+- Primary/Secondary/Neutral-Palette
+- Scene-Farbnotizen
+- erlaubte semantische Ausnahmefarben
+
+Ziel: **markentreue Kohärenz**, nicht jede Fläche zwanghaft in Brand-Farben färben.
+
+Final Review muss u. a. `BRAND_COLOR_COHERENCE` und `NO_ACCIDENTAL_COLOR_DRIFT` prüfen.
+
+## 11. Funktionale Icons v4
+
+Funktionsicons sind ausdrücklich erwünscht, z. B. für:
+
+- API / Code
+- Cloud / Database
+- Security
+- Map / Location
+- Weather / Satellite / Rain / Snow
+- Timeline
+- Input / Output / Cache
+- Route / Search
+- Travel / Agriculture / Energy
+- Warning / Success
+
+Aber:
+
+`Funktionsicon ≠ Markenlogo`
+
+Brand und Funktion bleiben visuell getrennt.
+
+## 12. Animation v4 — keine künstliche Technikgrenze
+
+Policy:
+
+`OPEN_ENDED_STORY_DRIVEN`
+
+Es gibt keine feste Animations-Whitelist. Die Shared Library ist ein Werkzeugkasten, **keine Grenze**.
+
+Jede neue Technik ist erlaubt, wenn sie Story, Lesbarkeit, Determinismus, Performance und QA besteht. Dazu gehören auch neue/prozedurale Techniken, die bisher nicht im Repo existieren.
+
+Beispiele: 2D, 3D, SVG-/Path-Morphs, Skia, Lottie, Rive, Partikel, Masks/Wipes, Maps, Routing, UI-Simulation, Compositing, physische Metaphern, Shader-artige Effekte und künftig neu integrierte kompatible Techniken.
+
+Offene Motion bedeutet nicht Effektspam: jede Animation muss erklären, fokussieren, vergleichen, beweisen, überleiten oder Payoff erzeugen.
+
+## 13. Capability-Evolution
+
+Neuer Read-only Agent:
+
+`ki-brand-motion-director`
+
+Er prüft:
+
+- offizielle Brand-/UI-Asset-Möglichkeiten
+- Brand-Palette
+- funktionale Icons
+- Motion-Richtung / Wiederholungen
+- neue sinnvolle Skills/MCPs/Packages/Tools
+
+Neue Capability nur bei **materiellem Qualitätsgewinn oder echtem wiederkehrendem Engpass**. Keine redundante Tool-Sammlung.
+
+Neuer Skill:
+
+`brand-motion-fidelity`
+
+## 14. Visual-/Asset-Stack
+
+Native Remotion bleibt Produktionsbasis. Verfügbar:
+
+- `LOCAL_OFFICIAL_MEDIA`
+- Official Source Cards
+- Wikimedia Commons
+- Pexels / Pixabay Discovery
+- Poly Haven
+- Blender
+- Lottie
+- lokale Rive-Assets
+- Figma Remote optional
+- Sharp Bild-Prep
+- FFmpeg Video-Prep
+- Three / Skia / Shapes / Effects / Transitions
+
+Keine Render-Time-Remote-Medien.
+
+## 15. Caption-Standard
+
+- bottom 330 px
+- horizontal inset 76 px
+- max width 928 px
+- ca. 40 px
+- max. 2 Zeilen
+- Ziel max. 6 Wörter pro sichtbarer Gruppe
+- Cover caption-frei
+
+## 16. SFX
+
+- lokale kuratierte CC0-Bibliothek als Standard
+- SFX nur an sichtbaren semantischen Aktionen
+- Voice bleibt dominant
+- nach finalem Voice-Lock erneut synchronisieren
+
+## 17. Antigravity-Team
+
+Kern-Agenten:
+
+1. `ki-production-orchestrator`
+2. `ki-fact-researcher`
+3. `ki-retention-story-auditor`
+4. `ki-motion-researcher`
+5. `ki-brand-motion-director`
+6. `ki-remotion-story-engineer`
+7. `ki-audio-sync-engineer`
+8. `ki-visual-qa-auditor`
+9. `ki-release-verifier`
+10. `ki-dependency-auditor`
+
+Genau ein write-capable Agent pro Working Tree. Read-only Audits dürfen parallel laufen.
+
+## 18. Produktionsphasen
+
+```text
+PHASE 1
+Fakten + Skript + Story + Brand/Palette/Proof/Media + freie Motion-Planung + Source
+
+PHASE 2
+nur Nutzer-Voiceover
+
+PHASE 3
+Pause-Kompression + 1,10× + Forced Alignment
+→ Captions/Scenes/Reveals/SFX locken
+→ lokale Visuals materialisieren
+→ Story-Stills / Browser-QA
+→ Render-Lock
+→ Roh-Render
+→ Social Master
+→ exakter 1x Review
+→ Release Verifier
+```
+
+## 19. Pflichtchecks
+
+```bash
+npm run antigravity:verify
+npm run ki:reel:structure-check
+node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
+node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
+node ki/scripts/validate-reel-brand-motion-v4.mjs <reel-package-dir>   # v4
+node ki/scripts/validate-reel-visual-assets.mjs <reel-package-dir>
+npm run production:contracts
+npm run repo:verify
+npm run motion:verify
+```
+
+Zusätzlicher statischer Integrationscheck:
+
+```bash
+node scripts/check-brand-motion-v4-integration.mjs
+```
+
+Die Befehle gelten nur als bestanden, wenn sie real lokal ausgeführt wurden.
+
+## 20. Finaler 1x-Review v4
+
+Zusätzlich zu bisherigen Gates:
+
+- `BRAND_ASSET_VISIBLE_OR_JUSTIFIED`
+- `BRAND_COLOR_COHERENCE`
+- `FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS`
+- `MOTION_NOT_TEMPLATE_LOCKED`
+- `ANIMATION_TECHNIQUE_FITS_STORY`
+- `NO_ACCIDENTAL_COLOR_DRIFT`
+- `REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED`
+
+Source-Code allein kann keinen Visual-PASS beweisen.
+
+## 21. Statusbegriffe niemals vermischen
 
 ```text
 geplant
@@ -173,11 +397,12 @@ freigegeben
 veröffentlicht
 ```
 
-Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. `veröffentlicht` bedeutet nicht automatisch `fachlich freigegeben`, wenn der Freigabeprozess übersprungen wurde.
+Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.
 
-## 9. Bekannte externe Einschränkungen
+## 22. Externe Einschränkungen
 
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
+- GitHub Actions ist für dieses private Repository derzeit kein verlässlicher Runtime-Beweis.
+- `main` hat derzeit keine verlässliche Branch-Protection als Qualitätsbeweis.
+- viele neue Repo-/Antigravity-/Remotion-Schichten wurden über GitHub-Source integriert, aber nicht alle lokal ausgeführt.
 
-Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
+Diese Einschränkungen erlauben niemals das Umgehen von Tests, Render- oder Review-Gates.

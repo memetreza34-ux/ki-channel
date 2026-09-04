@@ -1,0 +1,111 @@
+{
+  "version": 5,
+  "reelId": "gpt56-api-prices-fastmode",
+  "compositionId": "KI-GPT56APIPricesFastMode",
+  "sourceDir": "ki/src/reels/gpt56-api-prices-fastmode",
+  "title": "GPT-5.6 API wird günstiger und bekommt Fast Mode",
+  "publishDate": "2026-08-28",
+  "week": "2026-08-24_bis_2026-08-30",
+  "productionMode": "REMOTION_NATIVE_PLUS_CURATED_REAL_VISUAL",
+  "scriptBudget": {
+    "targetMinWords": 150,
+    "targetMaxWords": 175,
+    "hardMinWords": 140,
+    "hardMaxWords": 190,
+    "referenceWpm": 140,
+    "targetMinSeconds": 60,
+    "targetMaxSeconds": 75,
+    "allowShorter": false,
+    "shorterReason": "",
+    "allowLonger": false,
+    "longerReason": "",
+    "allowDurationOutsideTarget": false,
+    "durationExceptionReason": ""
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 2070,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "WAITING_FOR_USER_LOCAL_MASTER",
+    "provider": "USER_PROVIDED",
+    "agentGenerationAllowed": false,
+    "agentDownloadAllowed": false,
+    "timingAuthority": false,
+    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>",
+    "pauseCompression": {
+      "enabled": true,
+      "thresholdDb": -35,
+      "triggerSeconds": 0.15,
+      "keepSeconds": 0.05,
+      "startKeepSeconds": 0.03,
+      "maxAllowedSilenceSeconds": 0.25,
+      "maxReductionRatio": 0.25
+    }
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+    "maxLines": 2,
+    "bottom": 250,
+    "horizontalInset": 104,
+    "maxWidth": 860,
+    "style": "transparent_glass_overlay"
+  },
+  "sfx": {
+    "enabled": true,
+    "eventsFile": "06-projektdateien/sfx-events.json",
+    "resolvedFile": "06-projektdateien/sfx-resolved.json",
+    "libraryIndex": "public/reel-sfx/sfx-index.json",
+    "selectionMode": "AUTO_CC0_DETERMINISTIC",
+    "status": "PENDING_LOCAL_CC0_RESOLUTION"
+  },
+  "visuals": {
+    "enabled": true,
+    "manifestFile": "06-projektdateien/visual-assets.json",
+    "resolvedFile": "06-projektdateien/visual-assets-resolved.json",
+    "status": "PENDING_LOCAL_VISUAL_RESOLUTION",
+    "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
+    "remoteRenderUrlsAllowed": false,
+    "maxExternalBinaries": 2,
+    "cameraMotion": "CONTROLLED_PUSH_FOCUS_PARALLAX",
+    "sourceProof": "OFFICIAL_SOURCE_CARD"
+  },
+  "storytelling": {
+    "enabled": true,
+    "file": "06-projektdateien/story-beats.json",
+    "style": "NARRATIVE_SOCIAL_EXPLAINER",
+    "minVisualBeats": 15,
+    "maxStaticSeconds": 4.5,
+    "requiredArc": ["HOOK", "PROOF", "CONSEQUENCE", "PAYOFF"],
+    "sourceRequiredTokens": ["StoryBeat", "StoryTexture", "ImpactNumber", "StoryThreeHero", "TransitionSeries"]
+  },
+  "export": {
+    "coverTimeSeconds": 2.4,
+    "coverText": "GPT-5.6 API: 80 % GÜNSTIGER + 2,5× SCHNELLER",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video", "cover", "caption", "manifest"],
+    "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"API-Preise sinken","startFrame":0,"endFrame":208,"accent":"#12B76A","heroMoment":"3D API core, visible price drop and Luna/Terra teaser badges","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Luna minus 80 und Terra minus 20","startFrame":208,"endFrame":794,"accent":"#2E90FA","heroMoment":"Opposing price cards, impact numbers, comparison rail and developer-use consequence chain","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Sol Fast Mode bis 2.5x","startFrame":794,"endFrame":1120,"accent":"#7A5AF8","heroMoment":"Resolved real data-center proof or 3D compute fallback plus accelerating 2.5x speed payoff","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Fast Mode kostet doppelt","startFrame":1120,"endFrame":1380,"accent":"#F79009","heroMoment":"Physical speed-versus-cost seesaw lands on 2x price","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Priority bleibt kompatibel","startFrame":1380,"endFrame":2070,"accent":"#12B76A","heroMoment":"priority request moves through TransitionSeries routing into Fast Mode, compatibility and source proof","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://openai.com/de-DE/index/advancing-the-price-performance-frontier-with-gpt-5-6/",
+    "https://openai.com/de-DE/api-fast-mode/"
+  ]
+}

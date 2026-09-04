@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","sentenceId":"s01","startFrame":8,"endFrame":145,"text":"OpenAI zieht bei Cursor die Reißleine – nach der Übernahme durch SpaceX."},
+    {"id":"c02","sceneId":"scene1","sentenceId":"s02","startFrame":145,"endFrame":330,"text":"Am 28. August kündigte OpenAI an, den Vertrag für seine Modelle in Cursor auslaufen zu lassen."},
+    {"id":"c03","sceneId":"scene2","sentenceId":"s03","startFrame":330,"endFrame":475,"text":"Vorgeschlagen ist eine Übergangsfrist bis zum 12. November 2026."},
+    {"id":"c04","sceneId":"scene2","sentenceId":"s04","startFrame":475,"endFrame":690,"text":"Bis dahin sollen die heute verfügbaren OpenAI-Modelle weiterlaufen; Cursor könnte den Zugang aber auch früher beenden."},
+    {"id":"c05","sceneId":"scene3","sentenceId":"s05","startFrame":690,"endFrame":855,"text":"OpenAI begründet die Entscheidung mit Vertrags- und Sicherheitsbedenken nach dem Eigentümerwechsel."},
+    {"id":"c06","sceneId":"scene3","sentenceId":"s06","startFrame":855,"endFrame":1025,"text":"Gleichzeitig will das Unternehmen kommende Modelle wie Astra nicht mehr über Cursor bereitstellen."},
+    {"id":"c07","sceneId":"scene3","sentenceId":"s07","startFrame":1025,"endFrame":1200,"text":"Die offizielle endgültige Abschaltung ist zwischen den Unternehmen laut OpenAI noch nicht bestätigt."},
+    {"id":"c08","sceneId":"scene4","sentenceId":"s08","startFrame":1200,"endFrame":1305,"text":"Für Nutzer wichtig: Cursor selbst verschwindet nicht."},
+    {"id":"c09","sceneId":"scene4","sentenceId":"s09","startFrame":1305,"endFrame":1650,"text":"Und selbst wenn der direkte Modellzugang endet, nennt OpenAI drei Wege, seine Modelle weiter in Cursor zu nutzen: einen eigenen OpenAI-API-Key, die Codex-IDE-Erweiterung oder einen kompatiblen AI-Gateway-Anbieter."},
+    {"id":"c10","sceneId":"scene5","sentenceId":"s10","startFrame":1650,"endFrame":1810,"text":"Der größere Punkt dahinter: Bei KI entscheidet künftig nicht nur, welches Modell am besten ist."},
+    {"id":"c11","sceneId":"scene5","sentenceId":"s11","startFrame":1810,"endFrame":2002,"text":"Verträge, Sicherheit und Eigentümerwechsel können bestimmen, welche KI in deinem Lieblings-Tool direkt verfügbar bleibt."}
+  ]
+}

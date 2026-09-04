@@ -1,0 +1,13 @@
+Google hat Flow gerade ein Video-Upgrade gegeben, das für Creator deutlich wichtiger ist als nur bessere Bildqualität. Gemini Omni 1.1 Flash ist jetzt allgemein verfügbar und kann Videos nicht nur neu erzeugen, sondern gezielter kontrollieren.
+
+Erstens: Du kannst ein Start- und ein Endbild vorgeben. Omni erzeugt die Bewegung dazwischen. Das macht Übergänge und Charakter-Konsistenz deutlich planbarer.
+
+Zweitens: Bestehende Clips lassen sich am Ende verlängern. Aus einem kurzen Shot kann so eine längere Szene werden, ohne komplett neu anzufangen.
+
+Drittens: Google unterstützt jetzt 360p, 720p, 1080p und 4K. 360p eignet sich für schnelle Entwürfe; 1080p und 4K werden hochskaliert.
+
+Für Flow bedeutet das: erst günstig Ideen testen, dann nur die besten Varianten größer ausgeben.
+
+Und noch wichtig für Entwickler: Das stabile Modell heißt gemini-omni-1.1-flash. Die alte Preview-Version soll am 30. September abgeschaltet werden.
+
+Der eigentliche Sprung ist also nicht nur Qualität. Google gibt Creatorn mehr Kontrolle über Anfang, Ende, Länge und Auflösung eines KI-Clips.

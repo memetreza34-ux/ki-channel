@@ -13,14 +13,19 @@ frames/
 *.mov
 *.mkv
 
-# ---- Audio (kommt pro Video von Arman) ----
+# ---- Audio (lokal / regenerierbar; Provenance + Timing bleiben in Git) ----
 *.wav
 *.mp3
 *.m4a
 *.aiff
+public/runtime-audio/
+public/reel-sfx/
+
+# ---- Visual Assets (lokal / regenerierbar; Auswahl + Rechte + SHA bleiben im Manifest) ----
+public/reel-assets/
 
 # ---- Reel-Bilder (groß, viel pro Reel, sprengt GitHub-Storage) ----
-# nur lokal — auf GitHub landet nur Code/Doku/Timing-JSON
+# nur lokal — auf GitHub landet Code/Doku/Timing/Manifest
 public/reels/**/images/
 public/reels/**/*.jpeg
 public/reels/**/*.jpg

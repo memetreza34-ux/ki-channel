@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "fps": 30,
+  "timingStatus": "PREVIEW_ONLY_REQUIRES_WHISPER_LOCK_TO_DOWNLOADED_AUDIO",
+  "finalRule": "Before final render, replace these estimated ranges with word-level timestamps from the exact downloaded voiceover.mp3. Do not use proportional interpolation as final timing.",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","startFrame":0,"endFrame":105,"text":"ChatGPT hat einen Study Mode."},
+    {"id":"c02","sceneId":"scene1","startFrame":105,"endFrame":225,"text":"Und der Unterschied ist wichtig:"},
+    {"id":"c03","sceneId":"scene1","startFrame":225,"endFrame":405,"text":"Statt dir sofort nur die fertige Lösung hinzuklatschen,"},
+    {"id":"c04","sceneId":"scene1","startFrame":405,"endFrame":510,"text":"soll es dir beim Verstehen helfen."},
+    {"id":"c05","sceneId":"scene2","startFrame":510,"endFrame":660,"text":"Normalerweise tippst du eine Aufgabe ein"},
+    {"id":"c06","sceneId":"scene2","startFrame":660,"endFrame":765,"text":"und bekommst direkt eine Antwort."},
+    {"id":"c07","sceneId":"scene2","startFrame":765,"endFrame":900,"text":"Das ist schnell – aber oft lernt man dabei kaum etwas."},
+    {"id":"c08","sceneId":"scene3","startFrame":900,"endFrame":1050,"text":"Im Study Mode zerlegt ChatGPT die Aufgabe"},
+    {"id":"c09","sceneId":"scene3","startFrame":1050,"endFrame":1190,"text":"eher in Schritte, Fragen und kleine Lernhilfen."},
+    {"id":"c10","sceneId":"scene3","startFrame":1190,"endFrame":1305,"text":"Du wirst also mehr durch den Prozess geführt."},
+    {"id":"c11","sceneId":"scene4","startFrame":1305,"endFrame":1430,"text":"Du sollst die Lösung nicht nur abschreiben,"},
+    {"id":"c12","sceneId":"scene4","startFrame":1430,"endFrame":1545,"text":"sondern wirklich verstehen, wie man dahin kommt."},
+    {"id":"c13","sceneId":"scene5","startFrame":1545,"endFrame":1650,"text":"Der Study Mode macht ChatGPT nicht perfekt."},
+    {"id":"c14","sceneId":"scene5","startFrame":1650,"endFrame":1845,"text":"Aber wenn du wirklich lernen willst, ist das deutlich sinnvoller"},
+    {"id":"c15","sceneId":"scene5","startFrame":1845,"endFrame":1950,"text":"als einfach nur eine fertige Antwort zu kopieren."}
+  ]
+}

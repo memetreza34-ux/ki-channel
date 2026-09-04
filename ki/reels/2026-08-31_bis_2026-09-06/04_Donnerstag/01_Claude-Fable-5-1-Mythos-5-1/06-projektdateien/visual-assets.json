@@ -1,0 +1,58 @@
+{
+  "version": 4,
+  "status": "CONTENT_LOCKED_REAL_MEDIA_SELECTION_PENDING",
+  "rules": {
+    "nativeFirst": true,
+    "remoteRenderMediaAllowed": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "externalBinariesMustResolveLocally": true,
+    "genericIconMayImpersonateBrand": false,
+    "realMediaMustHaveStoryPurpose": true
+  },
+  "assets": [
+    {
+      "id": "scene1-anthropic-brand-lockup",
+      "sceneId": "scene1",
+      "provider": "NATIVE_UI",
+      "renderMode": "REMOTION_NATIVE",
+      "purpose": "Sauberer typografischer Anthropic/Claude-Brand-Lockup als Fallback; niemals ein frei rekonstruiertes Fake-Logo.",
+      "rightsStatus": "NATIVE_ORIGINAL"
+    },
+    {
+      "id": "scene1-launch-proof",
+      "sceneId": "scene1",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "renderMode": "NATIVE_SOURCE_PROOF",
+      "purpose": "Offizieller Newsroom-Proof zum Launch von Claude Fable 5.1 und Claude Mythos 5.1.",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://www.anthropic.com/news"
+    },
+    {
+      "id": "scene2-fable-product-proof",
+      "sceneId": "scene2",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "renderMode": "NATIVE_SOURCE_PROOF",
+      "purpose": "Offizieller Fable-5.1-Source-Proof für Pro, Max, Team, Enterprise sowie die genannten Plattformen; echte Product-UI bleibt zusätzliches v3-Ziel.",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://www.anthropic.com/claude/fable"
+    },
+    {
+      "id": "scene3-mythos-product-proof",
+      "sceneId": "scene3",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "renderMode": "NATIVE_SOURCE_PROOF",
+      "purpose": "Offizieller Mythos-5.1-Source-Proof für Trusted Access und Safeguards; echte Product-UI bleibt zusätzliches v3-Ziel.",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://www.anthropic.com/claude/mythos"
+    },
+    {
+      "id": "scene5-fable-pricing-proof",
+      "sceneId": "scene5",
+      "provider": "OFFICIAL_SOURCE_CARD",
+      "renderMode": "NATIVE_SOURCE_PROOF",
+      "purpose": "Offizieller Fable-5.1-Source-Proof für Input-, Output- und Cache-Read-Preise sowie Anthropic-Kostenschätzung.",
+      "rightsStatus": "OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl": "https://www.anthropic.com/claude/fable"
+    }
+  ]
+}

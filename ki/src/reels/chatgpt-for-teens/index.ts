@@ -1,0 +1,9 @@
+export {ReelChatGPTForTeens, type ReelChatGPTForTeensProps} from './ReelChatGPTForTeens';
+export {
+  CHATGPT_TEENS_COMPOSITION_ID,
+  CHATGPT_TEENS_DURATION_IN_FRAMES,
+  CHATGPT_TEENS_FPS,
+  CHATGPT_TEENS_HEIGHT,
+  CHATGPT_TEENS_WIDTH,
+  CHATGPT_TEENS_SCENES,
+} from './contract';

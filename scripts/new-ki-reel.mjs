@@ -1,5 +1,8 @@
-import {mkdir, readdir, writeFile} from 'node:fs/promises';
-import {resolve} from 'node:path';
+#!/usr/bin/env node
+import {mkdir, readdir, readFile, rename, writeFile} from 'node:fs/promises';
+import {basename, dirname, join, resolve} from 'node:path';
+import process from 'node:process';
+import {spawnSync} from 'node:child_process';
 
 const [rawTitle, rawDate] = process.argv.slice(2);
 if (!rawTitle?.trim()) {
@@ -14,57 +17,92 @@ const parseDate = (value) => {
   if (Number.isNaN(parsed.getTime())) throw new Error('Ungültiges Datum.');
   return parsed;
 };
-const iso = (date) => date.toISOString().slice(0, 10);
-const addDays = (date, days) => { const copy = new Date(date); copy.setUTCDate(copy.getUTCDate() + days); return copy; };
-const weekBounds = (date) => {
-  const utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12));
-  const weekday = utc.getUTCDay();
-  const monday = addDays(utc, weekday === 0 ? -6 : 1 - weekday);
-  return {monday, sunday: addDays(monday, 6)};
-};
-const slugify = (title) => title.trim().replace(/[–—]/g, '-').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
 
-const title = rawTitle.trim();
-const slug = slugify(title);
-if (!slug) throw new Error('Kein gültiger Ordnername aus Titel erzeugbar.');
+const WEEKDAY_FOLDERS = Object.freeze({
+  1: '01_Montag',
+  2: '02_Dienstag',
+  3: '03_Mittwoch',
+  4: '04_Donnerstag',
+  5: '05_Freitag',
+  6: '06_Samstag',
+  0: '07_Sonntag',
+});
 
-const {monday, sunday} = weekBounds(parseDate(rawDate));
-const weekName = `${iso(monday)}_bis_${iso(sunday)}`;
-const weekRoot = resolve('ki', 'reels', weekName);
-await mkdir(weekRoot, {recursive: true});
+const selectedDate = parseDate(rawDate);
+const publishDate = selectedDate.toISOString().slice(0, 10);
+const weekdayFolder = WEEKDAY_FOLDERS[selectedDate.getUTCDay()];
+if (!weekdayFolder) throw new Error('Wochentag konnte nicht bestimmt werden.');
 
-const existing = await readdir(weekRoot, {withFileTypes: true});
-const used = existing.filter((entry) => entry.isDirectory()).map((entry) => Number(entry.name.match(/^(\d{2})_/)?.[1])).filter(Number.isFinite);
-let index = 1;
-while (used.includes(index)) index += 1;
-if (index > 99) throw new Error(`${weekName} enthält bereits 99 Reel-Slots.`);
+const coreGenerator = resolve('scripts', 'new-ki-reel-core.mjs');
+const coreArgs = [coreGenerator, rawTitle];
+if (rawDate) coreArgs.push(rawDate);
 
-const reelName = `${String(index).padStart(2, '0')}_${slug}`;
-const reelRoot = resolve(weekRoot, reelName);
-const dirs = ['01-script-audio','02-bilder','03-caption','04-pdf','05-export','06-projektdateien'];
-await mkdir(reelRoot, {recursive: false});
-for (const dir of dirs) {
-  await mkdir(resolve(reelRoot, dir), {recursive: false});
-  await writeFile(resolve(reelRoot, dir, '.gitkeep'), 'Verbindlicher Produktionsordner — nicht entfernen.\n', 'utf8');
+const core = spawnSync(process.execPath, coreArgs, {
+  encoding: 'utf8',
+  stdio: ['inherit', 'pipe', 'pipe'],
+});
+
+if (core.stdout) process.stdout.write(core.stdout);
+if (core.stderr) process.stderr.write(core.stderr);
+if (core.error) {
+  console.error(`Core-Generator konnte nicht gestartet werden: ${core.error.message}`);
+  process.exit(1);
+}
+if (core.status !== 0) process.exit(core.status ?? 1);
+
+const match = String(core.stdout || '').match(/KI-Reel angelegt:\s*(.+)/);
+if (!match?.[1]) {
+  console.error('Tagesstruktur fehlgeschlagen: Core-Generator hat keinen Reel-Pfad gemeldet.');
+  process.exit(1);
 }
 
-const files = {
-  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n\n## 3 Phasen\n\n1. **Phase 1 — ChatGPT:** komplette Planung + Plattform-Copy + ausführbare Remotion-Code-Grundlage\n2. **Phase 2 — Mensch:** nur echtes Voiceover\n3. **Phase 3 — Codex/Antigravity:** Audio integrieren + prüfen + rendern\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`, \`ki/gehirn/PLATTFORMEN.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
-  '01-script-audio/README.md': `# 01 — Script & Audio\n\nPhase 1 muss hier \`voiceover.md\` und den reinen Fließtext \`VOICEOVER-ZUM-KOPIEREN.txt\` anlegen.\n\nPhase 2 erzeugt ausschließlich \`voiceover.wav\` (bevorzugt) oder \`voiceover.mp3\`. Keine Planungs-/Code-Dateien in Phase 2 ändern.\n`,
-  '02-bilder/README.md': `# 02 — Bilder\n\nPhase 1 entscheidet zuerst ausdrücklich: **BILDER ERFORDERLICH** oder **BILDER NICHT ERFORDERLICH**.\n\nBei Bildbedarf: \`ki/BILDSTIL.md\` anwenden, finale Prompts in \`image-prompts.md\`, Assets in \`asset-manifest.json\`. Bild-KI baut räumliche/illustrative Komplexität; Überschriften, Captions, Zahlen, Pfeile und präzise UI-Texte bleiben Remotion.\n`,
-  '02-bilder/image-prompts.md': `# Image Prompts\n\n**Status:** OFFEN — Phase 1 muss entscheiden: BILDER ERFORDERLICH / BILDER NICHT ERFORDERLICH.\n\nWenn Bilder nötig sind, pro Asset dokumentieren:\n\n- sceneId\n- Zweck / eine Kernaussage\n- erwarteter Dateiname \`scene-XX-kurzname.png\`\n- was Bild-KI erzeugt\n- was Remotion später ergänzt\n- vollständiger englischer Premium-Prompt nach \`ki/BILDSTIL.md\`\n- Crop/Fokus/Layers, falls relevant\n\nKeine dekorativen Füllbilder.\n`,
-  '03-caption/README.md': `# 03 — Captions & Plattform-Copy\n\nPhase 1 legt Audio-unabhängige Basiscues an und vervollständigt \`platform-copy.md\`. Phase 3 ersetzt/justiert Subtitle-Cues mit realem Audio-Timing. Jeder gesprochene Inhalt bleibt vollständig abgedeckt; aktive Fenster kompakt halten.\n\nPlattform-Copy verändert die fachliche Aussage nicht. Regeln: \`ki/gehirn/PLATTFORMEN.md\`.\n`,
-  '03-caption/platform-copy.md': `# Plattform-Copy — ${title}\n\n**Status:** OFFEN — Phase 1 vervollständigt diese Datei.\n\n## Neutraler Kerntitel\n\n${title}\n\n## YouTube Shorts\n\n**Titel:**\n\n**Beschreibung:**\n\n**Optionale Keywords/Hashtags:**\n\n**Eigenes Cover nötig:** NEIN / JA — Begründung\n\n## Instagram Reels\n\n**Caption:**\n\n**Optionaler CTA:**\n\n## TikTok\n\n**Caption:**\n\n**Optionaler CTA:**\n\n## Facebook Reels\n\n**Begleittext:**\n\n## Snapchat\n\n**Kurztext / nicht genutzt:**\n\n---\n\nRegeln: kein Transcript-Dump, kein Fake-Hype, keine fachliche Änderung, keine Plattformkopie des Produktionsprojekts. Vor Veröffentlichung zeitabhängige Plattformregeln aktuell prüfen.\n`,
-  '04-pdf/README.md': `# 04 — PDF\n\nOptional. Nur reel-bezogene PDF-Quellen/Exports ablegen. Keine Reel-Planung hierhin verschieben.\n`,
-  '05-export/README.md': `# 05 — Export\n\nPhase 3 legt hier reel-bezogene Smoke-Frames, Review-Renders und finale Exporte ab, sofern der reel-spezifische Vertrag keinen anderen Pfad festlegt. Ein gerendertes MP4 ist erst nach technischer und visueller Prüfung freigegeben.\n`,
-  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nHier liegen \`PHASE-STATUS.md\`, \`reel.json\`, Szene-/Animationsplan, Assembly-Auftrag und Review-Checkliste. Ausführbarer TS/TSX-Code gehört **nicht** hierhin, sondern nach \`ki/src/reels/<slug>/\`.\n`,
-  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n## Phase 1 — ChatGPT\n\n**Status:** OFFEN\n\nFertig erst mit finalem Skript + Copy-Fließtext, Szenen/Animationen, Bildentscheidung/Prompts/Manifest, Captions, Plattform-Copy, \`reel.json\`, ausführbarem Source unter \`ki/src/reels/<slug>/\`, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nNur echtes Voiceover aus \`VOICEOVER-ZUM-KOPIEREN.txt\` erzeugen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render und visuelle Freigabe.\n`,
-};
+const temporaryReelRoot = resolve(match[1].trim());
+const weekRoot = dirname(temporaryReelRoot);
+const dayRoot = join(weekRoot, weekdayFolder);
+await mkdir(dayRoot, {recursive: true});
 
-for (const [relative, content] of Object.entries(files)) {
-  await writeFile(resolve(reelRoot, relative), content, 'utf8');
+const existingDayEntries = await readdir(dayRoot, {withFileTypes: true});
+const usedTopicSlots = existingDayEntries
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => Number(entry.name.match(/^(\d{2})_/)?.[1]))
+  .filter(Number.isFinite);
+
+let topicIndex = 1;
+while (usedTopicSlots.includes(topicIndex)) topicIndex++;
+if (topicIndex > 99) throw new Error(`${weekdayFolder} enthält bereits 99 Reel-Themen.`);
+
+const topicSlug = basename(temporaryReelRoot).replace(/^\d{2}_/, '');
+const finalReelName = `${String(topicIndex).padStart(2, '0')}_${topicSlug}`;
+const finalReelRoot = join(dayRoot, finalReelName);
+await rename(temporaryReelRoot, finalReelRoot);
+
+const readmePath = join(finalReelRoot, 'README.md');
+try {
+  const dayLabel = weekdayFolder.replace(/^\d{2}_/, '');
+  const current = await readFile(readmePath, 'utf8');
+  const next = current.includes('**Wochentag:**')
+    ? current
+    : current.replace(/(\*\*Woche:\*\*[^\n]*\n)/, `$1**Wochentag:** ${dayLabel}\n`);
+  if (next !== current) await writeFile(readmePath, next, 'utf8');
+} catch (error) {
+  console.warn(`README-Wochentag konnte nicht ergänzt werden: ${error instanceof Error ? error.message : error}`);
 }
 
-console.log(`KI-Reel angelegt: ${reelRoot}`);
-console.log('Pflicht: node scripts/check-ki-reel-folder-structure.mjs');
-console.log('Phase 1 muss alles außer dem echten Audio vervollständigen.');
+if (publishDate >= '2026-09-05') {
+  const v4 = spawnSync(process.execPath, [resolve('scripts', 'apply-level-up-v4.mjs'), finalReelRoot], {
+    encoding: 'utf8',
+    stdio: ['inherit', 'pipe', 'pipe'],
+  });
+  if (v4.stdout) process.stdout.write(v4.stdout);
+  if (v4.stderr) process.stderr.write(v4.stderr);
+  if (v4.error) {
+    console.error(`Level-Up-v4-Scaffold konnte nicht gestartet werden: ${v4.error.message}`);
+    process.exit(1);
+  }
+  if (v4.status !== 0) process.exit(v4.status ?? 1);
+}
+
+console.log(`KI-Reel Tagesstruktur: ${finalReelRoot}`);
+console.log(`Wochentag: ${weekdayFolder}`);
+console.log(`Level-Up: ${publishDate >= '2026-09-05' ? 'v4' : publishDate >= '2026-09-03' ? 'v3' : 'v2'}`);
+console.log('Kanonisch: Woche → Wochentag → NN_Thema → 01–06 Produktionsordner.');

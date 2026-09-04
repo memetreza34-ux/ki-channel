@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"id":"s01","sceneId":"scene1","text":"ChatGPT kann dich künftig automatisch in einen Teen-Modus schalten."},
+    {"id":"s02","sceneId":"scene1","text":"OpenAI hat dafür „ChatGPT for Teens“ angekündigt."},
+    {"id":"s03","sceneId":"scene2","text":"Wenn das System dich als unter 18 einschätzt oder du 13 bis 17 angibst, wird die Teen-Erfahrung automatisch aktiviert."},
+    {"id":"s04","sceneId":"scene2","text":"Für die Altersschätzung können unter anderem Gesprächsthemen, Nutzungszeiten, Kontonutzung und das Alter des Accounts einfließen."},
+    {"id":"s05","sceneId":"scene2","text":"In der EU soll diese Erkennung in den kommenden Wochen ausgerollt werden."},
+    {"id":"s06","sceneId":"scene3","text":"Im Teen-Modus verändert sich ChatGPT spürbar: Study Mode führt Schritt für Schritt durch Aufgaben, neue Hausaufgaben-Hinweise sollen Abkürzungen erkennen, und Quiz- sowie Lernvisualisierungen prüfen das Verständnis."},
+    {"id":"s07","sceneId":"scene4","text":"Dazu kommen Pausen-Erinnerungen und stärkere Schutzmechanismen für sensible Inhalte."},
+    {"id":"s08","sceneId":"scene5","text":"Eltern können Study Hours oder Quiet Hours einstellen."},
+    {"id":"s09","sceneId":"scene5","text":"Wichtig: Diese Kontrollen geben Eltern keinen Zugriff auf die Chats."},
+    {"id":"s10","sceneId":"scene5","text":"ChatGPT wird damit nicht nur personalisierter, sondern künftig auch je nach Alter unterschiedlich funktionieren."}
+  ]
+}

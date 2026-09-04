@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "status": "PHASE1_STORY_SOURCE_IMPLEMENTED_TIMING_PENDING",
+  "storyArc": ["HOOK", "PROBLEM", "PROOF", "CHANGE", "CONSEQUENCE", "PAYOFF"],
+  "rules": {
+    "minVisualBeats": 15,
+    "maxStaticSeconds": 4.5,
+    "everySpokenCoreClaimNeedsVisualReaction": true,
+    "transitionMustHaveMeaning": true,
+    "cameraMotionMustHaveMeaning": true,
+    "sfxMustMatchVisibleEvent": true,
+    "externalVisualTarget": "1-2_STRONG_MOMENTS",
+    "nativeMotionTargetPercent": "70-80"
+  },
+  "beats": [
+    {"id":"b01","sceneId":"scene1","atRatio":0.00,"role":"HOOK","visualAction":"Headline opens the story with the price-drop claim","motion":"STORY_BEAT"},
+    {"id":"b02","sceneId":"scene1","atRatio":0.12,"role":"HOOK","visualAction":"3D GPT/API core rotates into view","motion":"THREE_HERO_CAMERA"},
+    {"id":"b03","sceneId":"scene1","atRatio":0.38,"role":"CHANGE","visualAction":"API price visibly drops","motion":"IMPACT_DROP"},
+    {"id":"b04","sceneId":"scene1","atRatio":0.68,"role":"PAYOFF","visualAction":"Luna minus 80 and Terra minus 20 teaser badges settle","motion":"DUAL_BADGE_REVEAL"},
+    {"id":"b05","sceneId":"scene2","atRatio":0.06,"role":"CHANGE","visualAction":"Luna card enters and camera pushes into the 80 percent figure","motion":"CAMERA_PUSH_IMPACT_NUMBER"},
+    {"id":"b06","sceneId":"scene2","atRatio":0.29,"role":"CHANGE","visualAction":"Terra 20 percent card enters from the opposite direction","motion":"OPPOSING_CARD_REVEAL"},
+    {"id":"b07","sceneId":"scene2","atRatio":0.47,"role":"PROOF","visualAction":"Direct comparison rail visually shows the gap between 20 and 80","motion":"PROGRESS_RAIL"},
+    {"id":"b08","sceneId":"scene2","atRatio":0.64,"role":"CONSEQUENCE","visualAction":"Apps, automation and workflow use-cases arrive as a chained consequence","motion":"CASCADE_REVEAL"},
+    {"id":"b09","sceneId":"scene2","atRatio":0.84,"role":"PAYOFF","visualAction":"Developer benefit lands as a short payoff","motion":"PUNCHLINE_REVEAL"},
+    {"id":"b10","sceneId":"scene3","atRatio":0.08,"role":"PROOF","visualAction":"Real data-center visual if resolved, otherwise 3D compute core","motion":"REAL_VISUAL_OR_THREE_HERO"},
+    {"id":"b11","sceneId":"scene3","atRatio":0.28,"role":"CHANGE","visualAction":"Standard-to-Fast speed gauge begins accelerating","motion":"SPEED_RAIL"},
+    {"id":"b12","sceneId":"scene3","atRatio":0.72,"role":"PAYOFF","visualAction":"2.5x number punches into the frame","motion":"IMPACT_NUMBER"},
+    {"id":"b13","sceneId":"scene4","atRatio":0.08,"role":"PROBLEM","visualAction":"Speed card establishes the upside","motion":"LEFT_CARD_REVEAL"},
+    {"id":"b14","sceneId":"scene4","atRatio":0.24,"role":"PROBLEM","visualAction":"2x price card establishes the tradeoff","motion":"RIGHT_CARD_REVEAL"},
+    {"id":"b15","sceneId":"scene4","atRatio":0.42,"role":"CONSEQUENCE","visualAction":"Seesaw physically visualizes faster versus more expensive","motion":"PHYSICAL_SEESAW"},
+    {"id":"b16","sceneId":"scene5","atRatio":0.08,"role":"CHANGE","visualAction":"priority request transitions through routing into Fast Mode","motion":"TRANSITION_SERIES"},
+    {"id":"b17","sceneId":"scene5","atRatio":0.56,"role":"PROOF","visualAction":"Compatibility is confirmed with a locked integration card","motion":"CHECK_CONFIRM"},
+    {"id":"b18","sceneId":"scene5","atRatio":0.81,"role":"PAYOFF","visualAction":"Official OpenAI proof and final cheaper-or-faster takeaway close the story","motion":"SOURCE_PROOF_PAYOFF"}
+  ]
+}

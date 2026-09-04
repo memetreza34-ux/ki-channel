@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "runtimeRoot": "public/reel-sfx",
+  "mirror": {
+    "repository": "https://github.com/Silentnoob21/cc0-public-domain-sounds.git",
+    "branch": "main",
+    "purpose": "Download mirror only. Legal/source authority remains the official Kenney pack page plus the included License.txt."
+  },
+  "packs": [
+    {
+      "id": "kenney-ui-audio",
+      "mirrorDir": "kenney_uiaudio",
+      "officialUrl": "https://kenney.nl/assets/ui-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "advertisedFiles": 50,
+      "roles": ["ui-click", "ui-toggle", "ui-hover", "ui-tap"]
+    },
+    {
+      "id": "kenney-interface-sounds",
+      "mirrorDir": "kenney_interfacesounds",
+      "officialUrl": "https://kenney.nl/assets/interface-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "advertisedFiles": 100,
+      "roles": ["ui-click", "ui-confirm", "ui-error", "ui-open-close", "ui-toggle"]
+    },
+    {
+      "id": "kenney-impact-sounds",
+      "mirrorDir": "kenney_impactsounds",
+      "officialUrl": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "advertisedFiles": 130,
+      "roles": ["impact-soft", "impact-hard", "stamp", "hit", "accent"]
+    },
+    {
+      "id": "kenney-sci-fi-sounds",
+      "mirrorDir": "sci-fi-sounds",
+      "officialUrl": "https://kenney.nl/assets/sci-fi-sounds",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "advertisedFiles": 70,
+      "roles": ["tech-accent", "transition", "power", "scan", "notification"]
+    },
+    {
+      "id": "kenney-digital-audio",
+      "mirrorDir": "kenney_digitalaudio",
+      "officialUrl": "https://kenney.nl/assets/digital-audio",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "advertisedFiles": 60,
+      "roles": ["digital-accent", "riser", "transition", "confirm", "tech"]
+    }
+  ]
+}

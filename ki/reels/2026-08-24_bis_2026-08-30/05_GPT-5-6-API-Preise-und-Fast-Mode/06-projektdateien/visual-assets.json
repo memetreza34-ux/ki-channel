@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "status": "STEP3_VISUAL_PLAN_LOCKED",
+  "rules": {
+    "nativeFirst": true,
+    "remoteRenderMediaAllowed": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "externalBinariesMustResolveLocally": true
+  },
+  "assets": [
+    {"id":"scene1-api-price-ui","sceneId":"scene1","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"GPT-5.6 API price-drop hook","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"scene2-price-cards","sceneId":"scene2","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Luna 80 percent and Terra 20 percent price-drop cards","rightsStatus":"NATIVE_ORIGINAL"},
+    {
+      "id":"scene3-datacenter-photo",
+      "sceneId":"scene3",
+      "provider":"WIKIMEDIA_COMMONS",
+      "renderMode":"LOCAL_SMART_CROP",
+      "purpose":"Real data-center/server-rack visual supporting GPT-5.6 Sol Fast Mode",
+      "searchQuery":"data center server racks computer servers",
+      "selection": {
+        "minimumLongEdge": 1400,
+        "minimumShortEdge": 800,
+        "preferredOrientation": "LANDSCAPE",
+        "mediaIntent": "PHOTO_OR_REAL_VISUAL",
+        "preferPublicDomainOrCC0": true,
+        "candidateLimit": 24
+      }
+    },
+    {"id":"scene4-speed-cost-ui","sceneId":"scene4","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"2.5x speed versus 2x cost tradeoff","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"scene5-openai-source","sceneId":"scene5","provider":"OFFICIAL_SOURCE_CARD","renderMode":"NATIVE_SOURCE_PROOF","purpose":"Official OpenAI July 30 pricing/Fast Mode proof for priority backwards compatibility","rightsStatus":"OFFICIAL_SOURCE_REFERENCE","sourceUrl":"https://openai.com/de-DE/index/advancing-the-price-performance-frontier-with-gpt-5-6/"}
+  ]
+}
