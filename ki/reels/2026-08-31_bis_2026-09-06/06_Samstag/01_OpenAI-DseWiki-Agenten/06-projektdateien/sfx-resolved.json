@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "status": "PENDING_LOCAL_CC0_RESOLUTION_AFTER_VOICE_LOCK",
+  "selectionMode": "DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING",
+  "rules": {
+    "license": "CC0-1.0_ONLY",
+    "randomness": false,
+    "voiceFirstVolumeCaps": true
+  },
+  "events": []
+}
