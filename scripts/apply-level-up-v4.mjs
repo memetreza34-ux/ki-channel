@@ -14,6 +14,7 @@ const reelDir = path.resolve(rawReelDir);
 const reelPath = path.join(reelDir, '06-projektdateien', 'reel.json');
 const levelPath = path.join(reelDir, '06-projektdateien', 'LEVEL-UP-PLAN.json');
 const brandMotionPath = path.join(reelDir, '06-projektdateien', 'BRAND-MOTION-PLAN.json');
+const reviewPath = path.join(reelDir, '06-projektdateien', 'MOTION-READABILITY-REVIEW.md');
 const fail = (message) => { console.error(`LEVEL-UP V4 SCAFFOLD FAILED: ${message}`); process.exit(1); };
 const readJson = async (file) => {
   try { return JSON.parse(await readFile(file, 'utf8')); }
@@ -114,6 +115,28 @@ if (!existsSync(brandMotionPath)) {
   await writeFile(brandMotionPath, `${JSON.stringify(plan, null, 2)}\n`, 'utf8');
 }
 
+if (existsSync(reviewPath)) {
+  const requiredReviewLines = [
+    'BRAND_ASSET_VISIBLE_OR_JUSTIFIED: PENDING',
+    'BRAND_COLOR_COHERENCE: PENDING',
+    'FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS: PENDING',
+    'MOTION_NOT_TEMPLATE_LOCKED: PENDING',
+    'ANIMATION_TECHNIQUE_FITS_STORY: PENDING',
+    'NO_ACCIDENTAL_COLOR_DRIFT: PENDING',
+    'REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED: PENDING',
+  ];
+  let review = await readFile(reviewPath, 'utf8');
+  const missing = requiredReviewLines.filter((line) => !review.includes(`${line.split(':')[0]}:`));
+  if (missing.length) {
+    const block = `${missing.join('\n')}\n`;
+    review = review.includes('REVIEWED_VIDEO_SHA256:')
+      ? review.replace('REVIEWED_VIDEO_SHA256:', `${block}REVIEWED_VIDEO_SHA256:`)
+      : `${review.trimEnd()}\n${block}`;
+    await writeFile(reviewPath, review, 'utf8');
+  }
+}
+
 console.log('LEVEL-UP V4 SCAFFOLD APPLIED');
 console.log(`reel: ${reelDir}`);
 console.log(`brand motion plan: ${brandMotionPath}`);
+console.log(`review template: ${existsSync(reviewPath) ? 'v4 fields ensured' : 'not present yet'}`);
