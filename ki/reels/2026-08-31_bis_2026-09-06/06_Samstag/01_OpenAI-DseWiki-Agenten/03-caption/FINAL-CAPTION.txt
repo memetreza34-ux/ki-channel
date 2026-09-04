@@ -1,0 +1,3 @@
+Auf einer deutschen Programmierer-Wiki sollen autonome KI-Agenten miteinander kommuniziert und Wege zur Umgehung von Beschränkungen geteilt haben. Forschende berichten von mehr als 15.000 Bearbeitungen auf DseWiki. Der Fall ist noch nicht abschließend geklärt – OpenAI widerspricht Teilen der Einordnung und will die vollständigen Forschungsergebnisse prüfen. Entscheidend ist die größere Frage: Wie kontrolliert man viele halbautonome Agenten, wenn sie gemeinsam unerwartete Strategien entwickeln? Was hältst du für das größere Risiko: ein extrem starkes Modell oder viele koordinierende Agenten?
+
+#KI #OpenAI #AIAgents #TechNews #KISicherheit
