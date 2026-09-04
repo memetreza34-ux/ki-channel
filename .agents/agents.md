@@ -22,9 +22,13 @@ Read-only. Prüft Hook, Progression, Proof, Konsequenz, Payoff, Beat-Dichte und 
 
 Read-only. Sucht passende Remotion-/Motion-Patterns, offizielle APIs und Remotion-Bits-Kandidaten für konkrete Story Beats.
 
+### `ki-brand-motion-director`
+
+Read-only. Prüft echte Brand-/Logo-/UI-Möglichkeiten, markentreue Farbwelten, funktionale Icons, Motion-Vielfalt und neue Capability-Lücken. Er darf neue Animationstechniken empfehlen, auch wenn sie noch nicht in der Shared Library existieren, solange sie Story, Lesbarkeit und Performance verbessern.
+
 ### `ki-remotion-story-engineer`
 
-Write-capable. Implementiert Story Beats, Camera/Reframe, TransitionSeries, Three/Skia/Lottie/Rive/Shapes und Proof-Visuals. Niemals parallel mit einem zweiten Writer auf denselben Dateien arbeiten lassen.
+Write-capable. Implementiert Story Beats, Camera/Reframe, TransitionSeries, Three/Skia/Lottie/Rive/Shapes, neue semantisch sinnvolle Motion-Techniken und Proof-Visuals. Niemals parallel mit einem zweiten Writer auf denselben Dateien arbeiten lassen.
 
 ### `ki-audio-sync-engineer`
 
@@ -55,11 +59,12 @@ Wenn passend:
 Parallel ist erwünscht für **unabhängige read-only Aufgaben**, z. B.:
 
 ```text
-Fact Research ──────┐
-Retention Audit ────┤
-Motion Research ────┼─ parallel → Orchestrator synthesizes
-Dependency Audit ───┤
-Existing Visual QA ─┘
+Fact Research ──────────┐
+Retention Audit ────────┤
+Motion Research ────────┤
+Brand/Motion Direction ─┼─ parallel → Orchestrator synthesizes
+Dependency Audit ───────┤
+Existing Visual QA ─────┘
 ```
 
 Nicht parallel auf demselben Working Tree:
@@ -76,6 +81,7 @@ Wenn zwei Schreibvarianten wirklich parallel getestet werden sollen, isolierte G
 /bootstrap-ki-channel
 → Capability Scan
 → relevante read-only Spezialagenten parallel
+→ Brand/Motion Director bei branded/current-news v4
 → Orchestrator priorisiert Befunde
 → genau ein Implementation Writer
 → Nutzer-Audio-Gate
@@ -94,3 +100,4 @@ Wenn zwei Schreibvarianten wirklich parallel getestet werden sollen, isolierte G
 - Keine Validatoren abschwächen, um grün zu bekommen.
 - Kein `PASS`, `gerendert`, `visuell geprüft`, `freigegeben` oder `veröffentlicht` ohne echte Ausführung/Evidenz.
 - Jeder relevante Skill/MCP/Workflow wird genutzt; fachfremde Tools werden nicht nur deshalb gestartet, weil sie existieren.
+- Neue Skills/Agenten/MCPs/Packages nur ergänzen, wenn sie eine reale neue Fähigkeit oder einen wiederkehrenden Engpass lösen; keine redundante Tool-Sammlung.
