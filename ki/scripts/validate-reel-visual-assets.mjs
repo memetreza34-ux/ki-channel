@@ -28,9 +28,9 @@ catch (error) { fail(`invalid visual-assets-resolved.json: ${error.message}`); }
 try { reel = JSON.parse(await readFile(reelPath, 'utf8')); }
 catch (error) { fail(`invalid reel.json: ${error.message}`); }
 
-const allowedProviders = new Set(['NATIVE_UI', 'OFFICIAL_SOURCE_CARD', 'WIKIMEDIA_COMMONS', 'GITHUB_RAW']);
+const allowedProviders = new Set(['NATIVE_UI', 'LOCAL_OFFICIAL_MEDIA', 'OFFICIAL_SOURCE_CARD', 'WIKIMEDIA_COMMONS', 'GITHUB_RAW']);
 const allowedRights = new Set(['NATIVE_ORIGINAL', 'OFFICIAL_SOURCE_REFERENCE', 'CC0-1.0', 'PUBLIC_DOMAIN', 'CC-BY-4.0', 'MIT', 'Apache-2.0']);
-const binaryProviders = new Set(['WIKIMEDIA_COMMONS', 'GITHUB_RAW']);
+const binaryProviders = new Set(['LOCAL_OFFICIAL_MEDIA', 'WIKIMEDIA_COMMONS', 'GITHUB_RAW']);
 const assets = Array.isArray(manifest?.assets) ? manifest.assets : [];
 const resolvedAssets = Array.isArray(resolved?.assets) ? resolved.assets : [];
 if (!assets.length) fail('visual-assets.json has no assets.');
@@ -67,6 +67,17 @@ for (const asset of assets) {
   if (asset.provider === 'NATIVE_UI') {
     if (asset.rightsStatus !== 'NATIVE_ORIGINAL') fail(`${asset.id}: NATIVE_UI requires NATIVE_ORIGINAL.`);
     if (materialized.localFile || materialized.staticFile) fail(`${asset.id}: NATIVE_UI must not declare an external binary.`);
+  }
+
+  if (asset.provider === 'LOCAL_OFFICIAL_MEDIA') {
+    if (asset.rightsStatus !== 'OFFICIAL_SOURCE_REFERENCE') fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA requires OFFICIAL_SOURCE_REFERENCE.`);
+    if (!String(asset.sourceFile || '').trim()) fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA requires sourceFile.`);
+    if (!/^https:\/\//i.test(asset.sourceUrl || '')) fail(`${asset.id}: LOCAL_OFFICIAL_MEDIA requires official https sourceUrl.`);
+    if (!['PRESS_KIT','OFFICIAL_WEBSITE','OFFICIAL_PRODUCT_UI','USER_PROVIDED_OFFICIAL_EXPORT'].includes(String(asset.sourceKind || ''))) fail(`${asset.id}: invalid sourceKind.`);
+    if (!['LOGO','WORDMARK','PRODUCT_UI','SCREENSHOT','PRODUCT_IMAGE'].includes(String(asset.assetRole || ''))) fail(`${asset.id}: invalid assetRole.`);
+    if (String(asset.usageReviewNote || '').trim().length < 12) fail(`${asset.id}: usageReviewNote missing/too short.`);
+    if (materialized.manualRightsReviewRequired !== true) fail(`${asset.id}: resolved local official media must retain manualRightsReviewRequired=true.`);
+    if (materialized.sourceUrl !== asset.sourceUrl || materialized.sourceKind !== asset.sourceKind || materialized.assetRole !== asset.assetRole) fail(`${asset.id}: resolved official-media provenance mismatch.`);
   }
 
   if (asset.provider === 'OFFICIAL_SOURCE_CARD') {
@@ -118,14 +129,15 @@ const walk = async (dir) => {
 };
 await walk(sourceDir);
 for (const file of sourceFiles) {
-  const text = await readFile(file, 'utf8');
-  if (/\bsrc\s*=\s*["'{`]https?:\/\//i.test(text)) fail(`${path.relative(process.cwd(), file)} contains a render-time remote src URL.`);
-  if (/\b(?:Img|Html5Video|Video|Audio|Html5Audio)\b[\s\S]{0,160}\bsrc\s*=\s*["'{`]https?:\/\//i.test(text)) fail(`${path.relative(process.cwd(), file)} references remote render media.`);
+  const sourceText = await readFile(file, 'utf8');
+  if (/\bsrc\s*=\s*["'{`]https?:\/\//i.test(sourceText)) fail(`${path.relative(process.cwd(), file)} contains a render-time remote src URL.`);
+  if (/\b(?:Img|Html5Video|Video|Audio|Html5Audio)\b[\s\S]{0,160}\bsrc\s*=\s*["'{`]https?:\/\//i.test(sourceText)) fail(`${path.relative(process.cwd(), file)} references remote render media.`);
 }
 
 console.log('VISUAL ASSET GATE PASSED');
 console.log(`assets: ${assets.length}`);
 console.log(`external local binaries: ${resolvedExternalCount}/${maxExternalBinaries} max`);
+console.log(`local official media: ${assets.filter((asset) => asset.provider === 'LOCAL_OFFICIAL_MEDIA').length}`);
 console.log(`source files scanned: ${sourceFiles.length}`);
 console.log('ranked external selection: verified');
 console.log('render-time remote URLs: forbidden');
