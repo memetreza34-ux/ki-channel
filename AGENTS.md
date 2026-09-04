@@ -18,7 +18,9 @@ Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte mit
 
 ## Git und Branches
 
-- `main` ist der kanonische Produktionsstand.
+- `REPO-STATE.md` bestimmt den aktuell autoritativen Arbeitsstand.
+- `main` bleibt das Ziel für den kanonischen Produktionsstand.
+- Wenn `REPO-STATE.md` ausdrücklich einen laufenden Stabilisierungsbranch nennt, ist dieser für die aktuelle Arbeit autoritativ und darf nicht still durch `main` ersetzt werden.
 - Normale Änderungen auf einem Arbeitsbranch.
 - `main` nicht direkt verändern, außer der Nutzer verlangt ausdrücklich Stabilisierung/Kanonisierung.
 - Historische Branches/PRs sind keine aktuelle Wahrheit.
@@ -94,6 +96,8 @@ Muss enthalten:
 
 Für neue Reels ab `2026-09-03` gilt Level-Up v3 zusätzlich: mindestens 20 Visual Beats, 4 Visual Worlds, 2 Mid-Reel-Reframes, stärkere Brand-Fidelity und normalerweise 3 purposeful real/official Medienmomente bei branded/current-news Stories.
 
+Für neue Reels ab `2026-09-05` gilt zusätzlich Level-Up v4 mit `06-projektdateien/BRAND-MOTION-PLAN.json` und dem dazugehörigen Brand-/Motion-Gate.
+
 Geschätzte Timings sind nur Preview. Das Wortbudget ist Planung; die echte Laufzeit kommt später aus dem Voice-Lock.
 
 Vor Übergabe an Phase 2 müssen tatsächlich bestanden sein:
@@ -102,6 +106,12 @@ Vor Übergabe an Phase 2 müssen tatsächlich bestanden sein:
 npm run ki:reel:structure-check
 node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>
 node ki/scripts/validate-reel-level-up.mjs <reel-package-dir>
+```
+
+Für v4 zusätzlich:
+
+```bash
+node ki/scripts/validate-reel-brand-motion-v4.mjs <reel-package-dir>
 ```
 
 ### Phase 2 — Voiceover: ausschließlich Nutzer
@@ -155,10 +165,11 @@ Wenn vorhanden, gilt grob:
 6. `01-script-audio/WORD-TIMINGS.json` nach Voice-Lock
 7. `06-projektdateien/story-beats.json`
 8. `06-projektdateien/LEVEL-UP-PLAN.json`
-9. `03-caption/subtitle-cues.json`
-10. `03-caption/platform-copy.md`
-11. Asset-/Provenance-Dateien
-12. `MOTION-READABILITY-REVIEW.md`
+9. `06-projektdateien/BRAND-MOTION-PLAN.json` für v4
+10. `03-caption/subtitle-cues.json`
+11. `03-caption/platform-copy.md`
+12. Asset-/Provenance-Dateien
+13. `MOTION-READABILITY-REVIEW.md`
 
 Widersprüche nicht still übergehen; an der Ursache korrigieren.
 
@@ -181,7 +192,7 @@ Widersprüche nicht still übergehen; an der Ursache korrigieren.
 - Animationstext: kurze Objekt-/Zustandslabels
 - Animation: zeigt Mechanismus
 
-Caption-Geometrie ausschließlich aus `ki/src/reels/captionSafe.ts` / `CAPTION_SAFE_POSITION.md`.
+Caption-Geometrie ausschließlich aus `ki/src/reels/captionSafe.ts`. `ki/gehirn/CAPTION_SAFE_POSITION.md` dokumentiert dieselbe Source-Geometrie und darf ihr nicht widersprechen.
 
 ## Medien-Wahrheit
 
