@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "standard": "LEVEL_UP_V4",
+  "brandIdentity": {
+    "primaryBrands": ["OpenAI"],
+    "officialAssetPreferred": true,
+    "realAssetRequiredOrException": true,
+    "fakeLogoForbidden": true,
+    "typographicFallbackAllowed": true,
+    "functionalIconsMayImpersonateBrand": false,
+    "plannedOfficialAssets": [
+      {"sceneId":"scene1","role":"WORDMARK_OR_OFFICIAL_BRAND_REFERENCE","sourceUrl":"https://openai.com/"},
+      {"sceneId":"scene4","role":"OFFICIAL_SAFETY_SOURCE_REFERENCE","sourceUrl":"https://openai.com/index/safety-overview-gpt-6-astra/"}
+    ],
+    "assetExceptionReason": "Kein Markenlogo wird aus dem Gedächtnis rekonstruiert. Falls kein lokal geprüftes offizielles Asset vorliegt, nutzt der Render ausschließlich den typografischen Namen OpenAI mit klarer Quellen-/Unsicherheitskennzeichnung."
+  },
+  "brandPalette": {
+    "referenceUrl": "https://openai.com/",
+    "primary": ["#000000"],
+    "secondary": ["#B98CFF", "#6E45C9"],
+    "neutral": ["#FFFFFF", "#101828"],
+    "semanticColorExceptionsAllowed": true,
+    "scenePaletteConsistencyRequired": true,
+    "brandColorAccuracyReviewRequired": true,
+    "sceneNotes": [
+      {"sceneId":"scene1","note":"OpenAI nur schwarz/weiß typografisch; Kanal-Lila trägt Hook und Netzwerkbewegung."},
+      {"sceneId":"scene3","note":"Azure wird als neutrales Infrastruktur-Label mit Blau gezeigt, niemals als nachgebautes Microsoft-Logo."},
+      {"sceneId":"scene4","note":"Gelb kennzeichnet Unsicherheit/Prüfstatus, nicht Schuld."},
+      {"sceneId":"scene5","note":"Grün steht ausschließlich für Kontroll-/Lösungsmaßnahmen."}
+    ]
+  },
+  "functionalIconPolicy": {
+    "enabled": true,
+    "brandIconsForbidden": true,
+    "functionalIconsEncouraged": true,
+    "brandAndFunctionMustStayVisuallyDistinct": true,
+    "plannedFunctions": ["message", "network", "server", "shield", "eye", "timeline", "lock", "audit"]
+  },
+  "animationFreedom": {
+    "policy": "OPEN_ENDED_STORY_DRIVEN",
+    "noFixedTechniqueAllowlist": true,
+    "anyTechniqueAllowedIfStoryUseful": true,
+    "experimentalTechniquesAllowed": true,
+    "readabilitySafetyPerformanceGatesRequired": true,
+    "fallbackRequiredForFragileTechnique": true,
+    "effectSpamForbidden": true,
+    "plannedFamilies": [
+      "wiki-thread-expansion",
+      "agent-network-routing",
+      "impact-counter",
+      "evidence-trace",
+      "claim-versus-response-split",
+      "timeline-rail",
+      "control-stack"
+    ],
+    "experimentalIdeas": [
+      "A single wiki page morphs into a graph node only when the narration shifts from page activity to multi-agent coordination."
+    ]
+  },
+  "capabilityEvolution": {
+    "scanAvailableSkillsBeforeBuild": true,
+    "addCapabilityOnlyWhenMaterialGain": true,
+    "doNotAddRedundantTools": true,
+    "preferOfficialFreeLocalFirst": true,
+    "consideredNewCapabilities": [
+      {"capability":"No new package","decision":"REJECTED","reason":"Existing Remotion + StoryMotion primitives are sufficient for this story."}
+    ]
+  },
+  "requiredFinalReviewGates": [
+    "BRAND_ASSET_VISIBLE_OR_JUSTIFIED",
+    "BRAND_COLOR_COHERENCE",
+    "FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS",
+    "BRAND_RECOGNIZABLE_WITHOUT_CAPTION",
+    "MOTION_NOT_TEMPLATE_LOCKED",
+    "ANIMATION_TECHNIQUE_FITS_STORY",
+    "NO_ACCIDENTAL_COLOR_DRIFT",
+    "REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED"
+  ]
+}
