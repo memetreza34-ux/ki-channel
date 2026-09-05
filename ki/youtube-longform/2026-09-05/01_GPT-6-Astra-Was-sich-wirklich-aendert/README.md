@@ -19,15 +19,29 @@ Nach dem Video soll klar sein:
 4. wie ein Modell sicherer und trotzdem schwerer überwachbar sein kann,
 5. was das für normale Nutzer, Unternehmen und agentische Workflows praktisch bedeutet.
 
+## Verantwortlichkeiten
+
+**Nutzer:** ausschließlich finales Produktions-Voiceover.
+
+**Agent/Produktionssystem:** komplette Medienarbeit. Dazu gehören Bilder, B-Roll, offizielle Screenshots/Assets, Quellenrecherche, Rechte-/Lizenzprüfung, Provenance, lokale Materialisierung, Zuschnitt und Integration.
+
+Workflow für Medien:
+
+- Phase 1: benötigte Medien bestimmen, konkrete Quellen/Kandidaten suchen und Rechte/Provenance vorprüfen.
+- Phase 3 nach Voice-Lock: finale Kandidaten auswählen, lokal materialisieren, SHA-256 binden und exakt auf die echten Voiceover-Timings zuschneiden.
+
+Der Nutzer muss **keine B-Roll und keine Bilder selbst besorgen**.
+
 ## Phase
 
 - Research: abgeschlossen für Skriptstand 2026-09-05
 - Claims: strukturiert und mit Quellen belegt
 - Kapitel: strukturiert, Timings noch nicht voice-locked
 - Sprechertext: finaler Phase-1-Entwurf vorhanden
+- Media-/B-Roll-Bedarf: geplant; konkrete Kandidaten/Quellen werden vom Agenten beschafft
 - Produktions-Voiceover: **FEHLT / USER_PROVIDED**
 - Forced Alignment: ausstehend
-- Medien-Materialisierung: ausstehend
+- finale Medien-Materialisierung/Zuschnitt: Phase 3 nach Voice-Lock
 - Remotion-Timeline/Animation: erst nach Voice-Lock finalisieren
 - Thumbnail: 3 Konzepte geplant, noch nicht gerendert/ausgewählt
 - Finalrender/Review/Release: ausstehend
