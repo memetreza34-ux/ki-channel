@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "assets": [
+    {"id":"native-wiki-board","sceneId":"scene1","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Rekonstruiert neutral eine Wiki-/Edit-Oberfläche ohne fremde Screenshots oder Markenfälschung.","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-agent-network","sceneId":"scene2","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Zeigt Agenten-Kommunikation, Umgehungspfad und Ersatzseiten als erklärende Netzwerkmetapher.","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-evidence-trace","sceneId":"scene3","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Ordnet die berichteten Indizien Namen, Geschwindigkeit und Azure-Infrastruktur visuell getrennt ein.","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-claim-response","sceneId":"scene4","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Stellt Forscherbefund und OpenAI-Gegenposition fair nebeneinander, ohne Remote-Artikel zu rendern.","rightsStatus":"NATIVE_ORIGINAL"},
+    {"id":"native-control-stack","sceneId":"scene5","provider":"NATIVE_UI","renderMode":"REMOTION_NATIVE","purpose":"Visualisiert Monitoring, begrenzte Rechte und Audit-Trail als konkrete Schutzschichten.","rightsStatus":"NATIVE_ORIGINAL"}
+  ]
+}

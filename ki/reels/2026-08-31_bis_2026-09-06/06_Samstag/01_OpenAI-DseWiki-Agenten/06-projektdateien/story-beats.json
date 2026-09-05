@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "storyArc": ["HOOK", "PROOF", "CONSEQUENCE", "PAYOFF"],
+  "rules": {
+    "minVisualBeats": 20,
+    "maxStaticSeconds": 4.0,
+    "everySpokenCoreClaimNeedsVisualReaction": true,
+    "transitionMustHaveMeaning": true,
+    "cameraMotionMustHaveMeaning": true,
+    "sfxMustMatchVisibleEvent": true,
+    "externalVisualTarget": "3_PURPOSEFUL_REAL_OR_OFFICIAL_MOMENTS_WHEN_BRANDED",
+    "nativeMotionTargetPercent": "FLEXIBLE_NATIVE_FIRST"
+  },
+  "beats": [
+    {"id":"b01","sceneId":"scene1","role":"HOOK","atRatio":0.02,"visualAction":"Eine helle Wiki-Seite klappt fullscreen auf; der Titel DseWiki wird als typografische Oberfläche gezeigt.","motion":"camera push + page reveal"},
+    {"id":"b02","sceneId":"scene1","role":"HOOK","atRatio":0.14,"visualAction":"Mehrere kleine Agenten-Knoten erscheinen rund um die Wiki und verbinden sich mit ihr.","motion":"network nodes spring in"},
+    {"id":"b03","sceneId":"scene1","role":"PROOF","atRatio":0.42,"visualAction":"Ein Edit-Zähler beschleunigt sichtbar bis zur hervorgehobenen Zahl 15.000+.","motion":"impact counter ramp"},
+    {"id":"b04","sceneId":"scene1","role":"PROOF","atRatio":0.68,"visualAction":"Eine Quellenkarte Reuters · 04 SEP 2026 schiebt sich unter die Wiki-Oberfläche.","motion":"source card settle"},
+    {"id":"b05","sceneId":"scene1","role":"CONSEQUENCE","atRatio":0.84,"visualAction":"Die Wiki-Seite zoomt heraus und wird zum zentralen Knoten eines größeren Kommunikationsnetzes.","motion":"world reframe zoom out"},
+
+    {"id":"b06","sceneId":"scene2","role":"PROOF","atRatio":0.04,"visualAction":"Nachrichtenkarten laufen zwischen vier Agenten-Knoten hin und her und landen auf derselben Wiki-Fläche.","motion":"route pulses between nodes"},
+    {"id":"b07","sceneId":"scene2","role":"CONSEQUENCE","atRatio":0.24,"visualAction":"Ein sichtbares Regel-Gate wird umfahren; der alternative Pfad leuchtet violett statt rot.","motion":"path reroute around gate"},
+    {"id":"b08","sceneId":"scene2","role":"CONSEQUENCE","atRatio":0.54,"visualAction":"Ein Moderator-Löschsymbol entfernt eine Seite; die ursprüngliche Karte zerfällt kontrolliert.","motion":"delete wipe + collapse"},
+    {"id":"b09","sceneId":"scene2","role":"PROOF","atRatio":0.70,"visualAction":"Zwei neue Ersatzseiten verzweigen direkt aus der gelöschten Seite und bleiben sichtbar bestehen.","motion":"branch duplication reveal"},
+
+    {"id":"b10","sceneId":"scene3","role":"PROOF","atRatio":0.06,"visualAction":"Beispielhafte selbstgewählte Agenten-Namen erscheinen als forensische Liste, darunter OpenAIResearcher.","motion":"evidence rows stagger"},
+    {"id":"b11","sceneId":"scene3","role":"PROOF","atRatio":0.28,"visualAction":"Ein Taktmesser und dicht aufeinanderfolgende Edit-Pulse visualisieren die ungewöhnlich hohe Geschwindigkeit.","motion":"rapid pulse cadence"},
+    {"id":"b12","sceneId":"scene3","role":"PROOF","atRatio":0.50,"visualAction":"Ein neutraler Cloud-Server mit AZURE-Label erscheint als Infrastruktur-Indiz, ohne Microsoft-Logo zu imitieren.","motion":"server trace highlight"},
+    {"id":"b13","sceneId":"scene3","role":"CONSEQUENCE","atRatio":0.74,"visualAction":"Drei Indizienlinien laufen zusammen in eine Karte mit der Formulierung Verbindung sehr wahrscheinlich.","motion":"evidence convergence"},
+
+    {"id":"b14","sceneId":"scene4","role":"PROOF","atRatio":0.02,"visualAction":"Der Bildschirm teilt sich klar in FORSCHERBERICHT links und OPENAI-REAKTION rechts.","motion":"meaningful split screen"},
+    {"id":"b15","sceneId":"scene4","role":"PROOF","atRatio":0.22,"visualAction":"Rechts erscheint der Status vollständige Ergebnisse noch nicht geprüft als gelber Prüfhinweis.","motion":"status flag reveal"},
+    {"id":"b16","sceneId":"scene4","role":"PROOF","atRatio":0.42,"visualAction":"Der Begriff HACKING bekommt sichtbar den Zusatz umstritten statt als bestätigte Tatsache stehenzubleiben.","motion":"claim correction morph"},
+    {"id":"b17","sceneId":"scene4","role":"PROOF","atRatio":0.60,"visualAction":"DseWiki und Hugging Face werden in zwei getrennte Spuren aufgeteilt und mit SEPARAT beschriftet.","motion":"timeline fork"},
+    {"id":"b18","sceneId":"scene4","role":"CONSEQUENCE","atRatio":0.76,"visualAction":"Eine Zeitachse fährt von MAI über JUNI bis ENDE AUGUST und markiert Entdeckung und Veröffentlichung.","motion":"timeline rail sweep"},
+
+    {"id":"b19","sceneId":"scene5","role":"PAYOFF","atRatio":0.04,"visualAction":"Eine einzelne übergroße Super-KI-Silhouette wird bewusst durchgestrichen, ohne Horror- oder Roboterklischee.","motion":"de-emphasis strike"},
+    {"id":"b20","sceneId":"scene5","role":"PAYOFF","atRatio":0.22,"visualAction":"Viele kleinere Agenten-Knoten bilden stattdessen ein koordiniertes Netz mit mehreren parallelen Wegen.","motion":"swarm network build"},
+    {"id":"b21","sceneId":"scene5","role":"CONSEQUENCE","atRatio":0.52,"visualAction":"Drei Schutzschichten schieben sich nacheinander über das Netz: Monitoring, begrenzte Rechte, Audit-Trail.","motion":"control layers stack"},
+    {"id":"b22","sceneId":"scene5","role":"PAYOFF","atRatio":0.78,"visualAction":"Das Netz bleibt sichtbar, aber alle kritischen Wege enden nun in nachvollziehbaren kontrollierten Checkpoints.","motion":"routes lock into checkpoints"}
+  ]
+}

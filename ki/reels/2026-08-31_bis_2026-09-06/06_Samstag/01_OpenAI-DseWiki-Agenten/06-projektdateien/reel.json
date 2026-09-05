@@ -1,0 +1,45 @@
+{
+  "version": 11,
+  "reelId": "openai-dsewiki-agents",
+  "compositionId": "KI-OpenAIDseWikiAgents",
+  "sourceDir": "ki/src/reels/openai-dsewiki-agents",
+  "title": "KI-Agenten auf deutscher Wiki: der DseWiki-Fall",
+  "publishDate": "2026-09-05",
+  "week": "2026-08-31_bis_2026-09-06",
+  "weekdayFolder": "06_Samstag",
+  "productionMode": "LEVEL_UP_V4_BRAND_FIDELITY_OPEN_MOTION",
+  "scriptBudget": {"targetMinWords":150,"targetMaxWords":175,"hardMinWords":140,"hardMaxWords":190,"referenceWpm":140,"targetMinSeconds":60,"targetMaxSeconds":75,"allowShorter":false,"shorterReason":"","allowLonger":false,"longerReason":"","allowDurationOutsideTarget":false,"durationExceptionReason":""},
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1950,"finalDurationInFrames":null,"finalDurationAuthority":"PAUSE_COMPRESSED_TEMPO_ADJUSTED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"},
+  "audio": {
+    "sourceMetadata":"01-script-audio/audio-source.json",
+    "targetFile":"01-script-audio/voiceover.mp3",
+    "status":"WAITING_FOR_USER_LOCAL_MASTER",
+    "provider":"USER_PROVIDED",
+    "agentGenerationAllowed":false,
+    "agentDownloadAllowed":false,
+    "timingAuthority":false,
+    "speechTempo":1.10,
+    "tempoPolicy":"PITCH_PRESERVING_FFMPEG_ATEMPO_BEFORE_FORCED_ALIGNMENT",
+    "pauseCompression":{"enabled":true,"thresholdDb":-35,"triggerSeconds":0.30,"keepSeconds":0.10,"startKeepSeconds":0.03,"maxAllowedSilenceSeconds":0.38,"maxReductionRatio":0.25},
+    "alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"
+  },
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxWordsPerGroup":6,"style":"transparent_glass_overlay","suppressUntilFrame":31},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"NATIVE_PROOF_READY_EXTERNAL_MEDIA_PENDING_REVIEW","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":4,"targetRealOfficialMomentsMin":3},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":20,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","SourceProofCard"]},
+  "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":4,"brandMotionPlanFile":"06-projektdateien/BRAND-MOTION-PLAN.json"},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"OPENAI-AGENTEN? · DEUTSCHE WIKI","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"Deutsche Wiki wird zum Agenten-Brett","startFrame":0,"endFrame":360,"accent":"#B98CFF","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Agenten koordinieren und sichern Inhalte","startFrame":360,"endFrame":720,"accent":"#7C3AED","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Spuren: Namen, Tempo und Azure","startFrame":720,"endFrame":1080,"accent":"#2563EB","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Was bestätigt ist und was bestritten wird","startFrame":1080,"endFrame":1500,"accent":"#F59E0B","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Das eigentliche Risiko ist Koordination","startFrame":1500,"endFrame":1950,"accent":"#10B981","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://www.reuters.com/world/europe/openai-agents-hijacked-german-website-previously-undisclosed-ai-breakout-this-2026-09-04/",
+    "https://techcrunch.com/2026/09/04/another-swarm-of-openai-agents-reached-the-open-internet-without-the-frontier-labs-knowledge/",
+    "https://openai.com/index/safety-overview-gpt-6-astra/"
+  ]
+}

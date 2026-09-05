@@ -1,0 +1,93 @@
+{
+  "version": 4,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": true,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "brandMotionPlanFile": "06-projektdateien/BRAND-MOTION-PLAN.json",
+  "coverHook": {
+    "enabled": true,
+    "candidateFrame": 15,
+    "holdFrames": 15,
+    "captionFree": true,
+    "headlineRequired": true,
+    "primarySubjectRequired": true,
+    "coverMatchesStory": true,
+    "brandRecognizable": true
+  },
+  "brandMoments": [
+    {"sceneId":"scene1","brand":"OpenAI","strategy":"OFFICIAL_WORDMARK","genericIconAsBrand":false,"purpose":"OpenAI als berichtete Systemzuordnung sichtbar, mit Fragezeichen/Caveat statt Tatsachenbehauptung."},
+    {"sceneId":"scene4","brand":"OpenAI","strategy":"OFFICIAL_SOURCE_CROP","genericIconAsBrand":false,"purpose":"OpenAIs eigene Gegenposition und Prüfstatus klar vom Forscher-Claim trennen."}
+  ],
+  "brandFidelity": {
+    "primaryBrands": ["OpenAI"],
+    "minimumRecognizableMoments": 2,
+    "minimumDistinctScenes": 2,
+    "coverBrandRecognizable": true,
+    "officialLogoOrWordmarkPreferred": true,
+    "realProductUiPreferred": true,
+    "typographicFallbackAllowed": true,
+    "genericSymbolFallbackForbidden": true,
+    "assetExceptionReason": "Wenn kein lokal geprüftes offizielles OpenAI-Asset vorliegt, wird nur der typografische Markenname verwendet; kein Logo wird rekonstruiert."
+  },
+  "realProofMoments": [
+    {"sceneId":"scene1","type":"OFFICIAL_DOCUMENT","sourceUrl":"https://www.reuters.com/world/europe/openai-agents-hijacked-german-website-previously-undisclosed-ai-breakout-this-2026-09-04/","remoteRenderAllowed":false,"purpose":"Primärbericht für DseWiki, 15.000+ Bearbeitungen und Forscherbefund."},
+    {"sceneId":"scene4","type":"OFFICIAL_DOCUMENT","sourceUrl":"https://openai.com/index/safety-overview-gpt-6-astra/","remoteRenderAllowed":false,"purpose":"Offizielle OpenAI-Sicherheitsquelle als Kontext für Monitoring/Agenten-Schutzmaßnahmen, nicht als Bestätigung des DseWiki-Falls."}
+  ],
+  "realMediaMix": {
+    "minimumMoments": 3,
+    "moments": [
+      {"sceneId":"scene1","type":"OFFICIAL_WORDMARK","purpose":"OpenAI als berichtete Zuordnung klar kennzeichnen; visuell mit Fragezeichen und Forscher-Attribution.","remoteRenderAllowed":false},
+      {"sceneId":"scene1","type":"REAL_IMAGE","purpose":"Geplanter lokal geprüfter DseWiki-/Research-Screenshot als konkrete Umgebung statt abstrakter Cyber-Metapher.","remoteRenderAllowed":false},
+      {"sceneId":"scene4","type":"OFFICIAL_SOURCE_CROP","purpose":"OpenAIs Gegenposition/Prüfstatus als reale Quellenebene sichtbar machen.","remoteRenderAllowed":false}
+    ],
+    "exceptionReason": "Externe Binärmedien werden erst nach lokalem Rechte-/Provenance-Review materialisiert; Phase 1 rendert keine Remote-Screenshots.",
+    "videoPreferredWhenMotionIsClaim": true,
+    "motionIsClaim": false,
+    "videoExceptionReason": "Der Kernclaim betrifft Koordination/Posting und benötigt keinen Real-Video-Beweis."
+  },
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"deutschen Programmierer-Wiki","fallbackProgress":0.18},
+    {"sceneId":"scene1","sentenceId":"s02","anchorPhrase":"mehr als 15.000","fallbackProgress":0.68},
+    {"sceneId":"scene2","sentenceId":"s04","anchorPhrase":"Ersatzseiten","fallbackProgress":0.70},
+    {"sceneId":"scene4","sentenceId":"s07","anchorPhrase":"nicht prüfen können","fallbackProgress":0.34},
+    {"sceneId":"scene5","sentenceId":"s10","anchorPhrase":"Viele halbautonome Agenten","fallbackProgress":0.42}
+  ],
+  "motionFamilies": [
+    "wiki-thread-expansion",
+    "agent-network-routing",
+    "impact-counter",
+    "evidence-trace",
+    "claim-versus-response-split",
+    "timeline-rail",
+    "control-stack"
+  ],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "sceneDensity": {
+    "targetMeaningfulChangeSecondsMin": 1.5,
+    "targetMeaningfulChangeSecondsMax": 3.0,
+    "maxPracticallyUnchangedSeconds": 4.0,
+    "hardCutRequiredEveryChange": false
+  },
+  "overlapPolicy": {
+    "onePrimaryFocusAtATime": true,
+    "maxSupportingDetails": 2,
+    "captionMayCoverCriticalVisual": false,
+    "progressiveRevealRequired": true
+  },
+  "fullFrameSceneIds": ["scene2","scene5"],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true},
+  "functionalIconPolicy": {"enabled":true,"brandIconsForbidden":true,"functionalIconsEncouraged":true,"brandAndFunctionMustStayVisuallyDistinct":true},
+  "visualWorlds": [
+    {"id":"wiki-board","purpose":"Konkrete deutsche Wiki-Oberfläche und Edit-Strom statt abstrakter Hackeroptik."},
+    {"id":"agent-network","purpose":"Mehrere Agenten und ihre Kommunikationswege räumlich sichtbar machen."},
+    {"id":"evidence-trace","purpose":"Namen, Geschwindigkeit und Azure-Infrastruktur als getrennte Indizien zeigen."},
+    {"id":"claim-response","purpose":"Forscherbefund und OpenAI-Gegenposition fair nebeneinanderstellen."},
+    {"id":"control-stack","purpose":"Payoff als konkrete Schutzschichten: Monitoring, Rechte, Audit-Trail."}
+  ],
+  "midReelReframes": [
+    {"sceneId":"scene2","anchorPhrase":"Ersatzseiten","toWorld":"agent-network","purpose":"Vom Wiki-Post zur koordinierten Backup-Struktur wechseln."},
+    {"sceneId":"scene4","anchorPhrase":"Wichtig: OpenAI","toWorld":"claim-response","purpose":"News-Erzählung bewusst stoppen und Beleglage/Gegenposition neu rahmen."}
+  ]
+}

@@ -1,10 +1,10 @@
 # Themen-Log — KI-Kanal
 
 > Gepflegt von `trend-scout` (automatisch) + manuell. Verhindert doppelte Themen-Vorschläge.
-> Erstes echtes Reel gebaut: 01_OpenAI-Hack (OpenAI-Testmodelle brechen aus Sandbox aus, hacken Hugging Face, Juli 2026).
 
-## Bereits gebaut (nie wiederholen)
+## Bereits gebaut / in Phase 1 implementiert (nicht doppelt vorschlagen)
 - 2026-07 — "OpenAI-Testmodelle hacken Hugging Face (Sandbox-Ausbruch)" — Reel-Ordner: 01_OpenAI-Hack
+- 2026-09-05 — "KI-Agenten auf deutscher Wiki: der DseWiki-Fall" — separat vom Hugging-Face-Zwischenfall; Phase 1 auf `feat/reel-openai-dsewiki-2026-09-05` implementiert, Nutzer-Audio/Phase 3 noch offen.
 
 ## Fest eingeplant (noch nicht gebaut — nicht als "neu" vorschlagen)
 *(noch leer)*

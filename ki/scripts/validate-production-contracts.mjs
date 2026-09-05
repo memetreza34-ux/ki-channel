@@ -3,8 +3,11 @@ import {existsSync} from 'node:fs';
 import {readFile, readdir} from 'node:fs/promises';
 import path from 'node:path';
 
-const fail = [];
-const mustExist = [
+const failures = [];
+const fail = (message) => failures.push(message);
+const read = async (file) => readFile(path.resolve(file), 'utf8');
+
+const requiredFiles = [
   'ki/gehirn/AUDIO_PIPELINE.md',
   'ki/gehirn/FORCED_ALIGNMENT.md',
   'ki/gehirn/CAPTION_SAFE_POSITION.md',
@@ -28,6 +31,7 @@ const mustExist = [
   'ki/scripts/resolve-reel-visual-assets.mjs',
   'ki/scripts/validate-reel-visual-assets.mjs',
   'ki/scripts/master-reel-video.mjs',
+  'ki/scripts/render-social-reel.mjs',
   'ki/scripts/validate-social-audio-master.mjs',
   'ki/scripts/lock-scene-timing-from-captions.mjs',
   'ki/scripts/prepare-reel-render.mjs',
@@ -37,22 +41,57 @@ const mustExist = [
   'ki/scripts/validate-final-video.mjs',
   'ki/scripts/finalize-reel-export.mjs',
   'ki/scripts/validate-reel-export-package.mjs',
+  'scripts/new-ki-reel.mjs',
+  'scripts/new-ki-reel-core.mjs',
+  'scripts/apply-level-up-v4.mjs',
 ];
-for (const file of mustExist) if (!existsSync(path.resolve(file))) fail.push(`missing required production file: ${file}`);
+for (const file of requiredFiles) {
+  if (!existsSync(path.resolve(file))) fail(`missing required production file: ${file}`);
+}
 
-const read = async (file) => readFile(path.resolve(file), 'utf8');
+const requireTokens = (label, source, tokens) => {
+  for (const token of tokens) {
+    if (!source.includes(token)) fail(`${label} missing contract token: ${token}`);
+  }
+};
+
+const forbidTokens = (label, source, tokens) => {
+  for (const token of tokens) {
+    if (source.includes(token)) fail(`${label} contains obsolete/forbidden token: ${token}`);
+  }
+};
+
+const extractNumber = (label, source, property) => {
+  const match = source.match(new RegExp(`\\b${property}\\s*:\\s*(\\d+(?:\\.\\d+)?)`));
+  if (!match) {
+    fail(`${label} missing numeric property ${property}.`);
+    return null;
+  }
+  return Number(match[1]);
+};
+
+// Root/runtime media contract.
 const root = await read('ki/src/Root.tsx');
-if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|mp4)['"]/i.test(root)) fail.push('Root.tsx contains a static binary audio/video import.');
-if (/https?:\/\//i.test(root)) fail.push('Root.tsx contains a remote media URL.');
-if (!root.includes('runtime-audio/') || !root.includes('staticFile') || !root.includes('.wav')) fail.push('Root.tsx is not wired to PCM WAV runtime audio via staticFile.');
+if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|mp4)['"]/i.test(root)) {
+  fail('Root.tsx contains a static binary audio/video import.');
+}
+if (/https?:\/\//i.test(root)) fail('Root.tsx contains a remote media URL.');
+requireTokens('Root.tsx', root, ['runtime-audio/', 'staticFile', '.wav']);
 
+// Shared caption truth. Source is authoritative; docs are checked by repo:wiring-check.
 const caption = await read('ki/src/reels/captionSafe.ts');
-for (const [needle, label] of [
-  ['bottom: 250', 'caption bottom 250'],
-  ['horizontalInset: 104', 'caption horizontal inset 104'],
-  ['maxWidth: 860', 'caption max width 860'],
-  ['REEL_CAPTION_GLASS_STYLE', 'shared glass caption style'],
-]) if (!caption.includes(needle)) fail.push(`captionSafe.ts missing ${label}.`);
+const captionBottom = extractNumber('captionSafe.ts', caption, 'bottom');
+const captionInset = extractNumber('captionSafe.ts', caption, 'horizontalInset');
+const captionMaxWidth = extractNumber('captionSafe.ts', caption, 'maxWidth');
+if (captionBottom !== 330) fail(`captionSafe.ts bottom must be 330, got ${captionBottom}.`);
+if (captionInset !== 76) fail(`captionSafe.ts horizontalInset must be 76, got ${captionInset}.`);
+if (captionMaxWidth !== 928) fail(`captionSafe.ts maxWidth must be 928, got ${captionMaxWidth}.`);
+requireTokens('captionSafe.ts', caption, [
+  'REEL_CAPTION_GLASS_STYLE',
+  'REEL_CAPTION_FONT_FAMILY',
+  'fontFamily: REEL_CAPTION_FONT_FAMILY',
+]);
+forbidTokens('captionSafe.ts', caption, ['bottom: 250', 'horizontalInset: 104', 'maxWidth: 860']);
 
 const activeContracts = [
   'AGENTS.md',
@@ -66,15 +105,21 @@ const activeContracts = [
 ];
 for (const file of activeContracts) {
   const text = await read(file);
-  if (text.includes('bottom: 520') || text.includes('bottom: 520px')) fail.push(`${file} still declares legacy bottom:520 caption geometry.`);
+  for (const obsolete of ['bottom: 520', 'bottom: 520px']) {
+    if (text.includes(obsolete)) fail(`${file} still declares legacy ${obsolete} caption geometry.`);
+  }
 }
 
+// Local-only runtime artifacts.
 const ignore = await read('.gitignore');
-if (!ignore.includes('public/runtime-audio/')) fail.push('.gitignore does not ignore public/runtime-audio/.');
-if (!ignore.includes('public/reel-sfx/')) fail.push('.gitignore does not ignore public/reel-sfx/.');
-if (!ignore.includes('public/reel-assets/')) fail.push('.gitignore does not ignore public/reel-assets/.');
-if (!ignore.includes('.cache/')) fail.push('.gitignore does not ignore local aligner/model cache work.');
+requireTokens('.gitignore', ignore, [
+  'public/runtime-audio/',
+  'public/reel-sfx/',
+  'public/reel-assets/',
+  '.cache/',
+]);
 
+// Deterministic render-source scan.
 const sourceFiles = [];
 const walk = async (dir) => {
   for (const entry of await readdir(dir, {withFileTypes: true})) {
@@ -87,92 +132,229 @@ await walk(path.resolve('ki', 'src', 'reels'));
 for (const file of sourceFiles) {
   const relative = path.relative(process.cwd(), file);
   const text = await readFile(file, 'utf8');
-  if (/bottom\s*:\s*(?:264|270|360|440|460|500|520)\b/.test(text)) fail.push(`${relative} contains a legacy hard-coded caption bottom value.`);
-  if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|aiff|mp4|mov)['"]/i.test(text)) fail.push(`${relative} directly imports binary media.`);
-  if (text.includes('Math.random(')) fail.push(`${relative} uses Math.random() in deterministic render source.`);
+  if (/bottom\s*:\s*(?:250|264|270|360|440|460|500|520)\b/.test(text)) {
+    fail(`${relative} contains a legacy hard-coded caption bottom value.`);
+  }
+  if (/from\s+['"][^'"]+\.(?:mp3|wav|m4a|aiff|mp4|mov)['"]/i.test(text)) {
+    fail(`${relative} directly imports binary media.`);
+  }
+  if (text.includes('Math.random(')) fail(`${relative} uses Math.random() in deterministic render source.`);
 }
 
+// Audio preparation and local forced alignment.
 const audioPrep = await read('ki/scripts/prepare-reel-audio.mjs');
-for (const needle of ['pauseCompression', 'silenceremove=', 'maxReductionRatio', 'silencedetect', 'pacing.json']) {
-  if (!audioPrep.includes(needle)) fail.push(`prepare-reel-audio.mjs missing pause-compression contract token: ${needle}`);
-}
+requireTokens('prepare-reel-audio.mjs', audioPrep, [
+  'pauseCompression',
+  'silenceremove=',
+  'maxReductionRatio',
+  'silencedetect',
+  'pacing.json',
+]);
 const audioDoc = await read('ki/gehirn/AUDIO_PIPELINE.md');
-if (!audioDoc.includes('Pause-Kompression') || !audioDoc.includes('Forced Alignment läuft erst nach dieser Pause-Kompression')) fail.push('AUDIO_PIPELINE.md does not make pause compression precede forced alignment.');
+requireTokens('AUDIO_PIPELINE.md', audioDoc, [
+  'Pause-Kompression',
+  'Forced Alignment läuft erst nach dieser Pause-Kompression',
+]);
 
 const alignRunner = await read('ki/scripts/python/align_words.py');
-if (!alignRunner.includes('mlx-community/Qwen3-ForcedAligner-0.6B-8bit')) fail.push('Apple-Silicon forced aligner model is missing.');
-if (!alignRunner.includes('facebook/wav2vec2-large-xlsr-53-german')) fail.push('commercial-safe German CTC fallback model is missing.');
-if (alignRunner.includes('MahmoudAshraf/mms-300m-1130-forced-aligner')) fail.push('production aligner references the noncommercial default MMS model.');
-
+requireTokens('align_words.py', alignRunner, [
+  'mlx-community/Qwen3-ForcedAligner-0.6B-8bit',
+  'facebook/wav2vec2-large-xlsr-53-german',
+]);
+if (alignRunner.includes('MahmoudAshraf/mms-300m-1130-forced-aligner')) {
+  fail('production aligner references the noncommercial default MMS model.');
+}
 const setupAligner = await read('ki/scripts/setup-local-forced-aligner.mjs');
-if (!setupAligner.includes('mlx-audio==0.5.0') || !setupAligner.includes('11855d1de76af2b490dd2e8e2db2661805ae90a0')) fail.push('local aligner dependencies are not pinned.');
+requireTokens('setup-local-forced-aligner.mjs', setupAligner, [
+  'mlx-audio==0.5.0',
+  '11855d1de76af2b490dd2e8e2db2661805ae90a0',
+]);
 const localGate = await read('ki/scripts/validate-local-forced-alignment.mjs');
-if (!localGate.includes('fuzzyWordMatching') || !localGate.includes('PASSED') || !localGate.includes('Apache-2.0')) fail.push('local forced-alignment gate is incomplete.');
+requireTokens('validate-local-forced-alignment.mjs', localGate, [
+  'fuzzyWordMatching',
+  'PASSED',
+  'Apache-2.0',
+]);
 
+// CC0 SFX pipeline.
 const sfxSources = JSON.parse(await read('ki/config/sfx-sources.json'));
-if (!Array.isArray(sfxSources?.packs) || sfxSources.packs.length < 5) fail.push('SFX source allowlist must contain at least five curated packs.');
-for (const pack of sfxSources?.packs || []) if (pack.license !== 'CC0-1.0') fail.push(`SFX pack ${pack.id} is not CC0-1.0.`);
-const sfxSetup = await read('ki/scripts/setup-reel-sfx-library.mjs');
-for (const needle of ['CC0-1.0', 'License.txt', 'sfx-index.json', '48000', 'pcm_s16le']) if (!sfxSetup.includes(needle)) fail.push(`SFX setup missing contract token: ${needle}`);
-const sfxResolver = await read('ki/scripts/resolve-reel-sfx.mjs');
-for (const needle of ['SFX_RESOLVED_CC0_AUTO', 'DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING', 'randomness:false', 'voiceFirstVolumeCaps']) if (!sfxResolver.includes(needle)) fail.push(`SFX resolver missing contract token: ${needle}`);
-const sfxGate = await read('ki/scripts/validate-reel-sfx-plan.mjs');
-for (const needle of ['CC0-1.0', 'SFX_RESOLVED_CC0_AUTO', '0.20']) if (!sfxGate.includes(needle)) fail.push(`SFX gate missing contract token: ${needle}`);
-const sfxTrack = await read('ki/src/reels/ReelSfxTrack.tsx');
-if (!sfxTrack.includes('staticFile(event.staticFile)') || !sfxTrack.includes('Html5Audio')) fail.push('ReelSfxTrack.tsx does not render local static SFX assets.');
+if (!Array.isArray(sfxSources?.packs) || sfxSources.packs.length < 5) {
+  fail('SFX source allowlist must contain at least five curated packs.');
+}
+for (const pack of sfxSources?.packs || []) {
+  if (pack.license !== 'CC0-1.0') fail(`SFX pack ${pack.id} is not CC0-1.0.`);
+}
+requireTokens('setup-reel-sfx-library.mjs', await read('ki/scripts/setup-reel-sfx-library.mjs'), [
+  'CC0-1.0',
+  'License.txt',
+  'sfx-index.json',
+  '48000',
+  'pcm_s16le',
+]);
+requireTokens('resolve-reel-sfx.mjs', await read('ki/scripts/resolve-reel-sfx.mjs'), [
+  'SFX_RESOLVED_CC0_AUTO',
+  'DETERMINISTIC_ROLE_KEYWORD_DURATION_RANKING',
+  'randomness:false',
+  'voiceFirstVolumeCaps',
+]);
+requireTokens('validate-reel-sfx-plan.mjs', await read('ki/scripts/validate-reel-sfx-plan.mjs'), [
+  'CC0-1.0',
+  'SFX_RESOLVED_CC0_AUTO',
+  '0.20',
+]);
+requireTokens('ReelSfxTrack.tsx', await read('ki/src/reels/ReelSfxTrack.tsx'), [
+  'staticFile(event.staticFile)',
+  'Html5Audio',
+]);
 
+// Visual provenance pipeline.
 const visualPolicy = JSON.parse(await read('ki/config/visual-asset-sources.json'));
-if (visualPolicy?.policy?.remoteMediaDuringRender !== false) fail.push('visual source policy must forbid render-time remote media.');
-if (visualPolicy?.policy?.googleImageSearchAsLicenseAuthority !== false) fail.push('visual source policy must reject Google image search as license authority.');
-if (!visualPolicy?.providers?.WIKIMEDIA_COMMONS?.enabled || visualPolicy.providers.WIKIMEDIA_COMMONS.requiresApiKey !== false) fail.push('Wikimedia Commons provider must be enabled without an API key.');
-const visualResolver = await read('ki/scripts/resolve-reel-visual-assets.mjs');
-for (const needle of ['VISUAL_ASSETS_RESOLVED_LOCAL_LOCK', 'selectionScore', 'topCandidates', 'rankedSelectionBeforeDownload', 'PUBLIC_DOMAIN', 'CC0-1.0']) if (!visualResolver.includes(needle)) fail.push(`visual resolver missing contract token: ${needle}`);
-const visualGate = await read('ki/scripts/validate-reel-visual-assets.mjs');
-for (const needle of ['local image SHA256 mismatch', 'render-time remote URLs: forbidden', 'ranked external selection: verified', 'CC-BY-4.0']) if (!visualGate.includes(needle)) fail.push(`visual gate missing contract token: ${needle}`);
-const externalVisual = await read('ki/src/reels/ReelExternalVisual.tsx');
-if (!externalVisual.includes('staticFile(staticSrc)') || !externalVisual.includes("rightsStatus === 'CC-BY-4.0'") || !externalVisual.includes('objectFit')) fail.push('ReelExternalVisual.tsx does not enforce local smart-crop and rights-aware credit behavior.');
-const visualMotion = await read('ki/src/reels/ReelVisualMotion.tsx');
-for (const needle of ['CameraPush', 'FocusHalo', 'ScanSweep', 'ParallaxFloat', 'SourceProofCard']) if (!visualMotion.includes(needle)) fail.push(`ReelVisualMotion.tsx missing ${needle}.`);
+if (visualPolicy?.policy?.remoteMediaDuringRender !== false) {
+  fail('visual source policy must forbid render-time remote media.');
+}
+if (visualPolicy?.policy?.googleImageSearchAsLicenseAuthority !== false) {
+  fail('visual source policy must reject Google image search as license authority.');
+}
+if (
+  !visualPolicy?.providers?.WIKIMEDIA_COMMONS?.enabled ||
+  visualPolicy.providers.WIKIMEDIA_COMMONS.requiresApiKey !== false
+) {
+  fail('Wikimedia Commons provider must be enabled without an API key.');
+}
+requireTokens('resolve-reel-visual-assets.mjs', await read('ki/scripts/resolve-reel-visual-assets.mjs'), [
+  'VISUAL_ASSETS_RESOLVED_LOCAL_LOCK',
+  'selectionScore',
+  'topCandidates',
+  'rankedSelectionBeforeDownload',
+  'PUBLIC_DOMAIN',
+  'CC0-1.0',
+]);
+requireTokens('validate-reel-visual-assets.mjs', await read('ki/scripts/validate-reel-visual-assets.mjs'), [
+  'local image SHA256 mismatch',
+  'render-time remote URLs: forbidden',
+  'ranked external selection: verified',
+  'CC-BY-4.0',
+]);
+requireTokens('ReelExternalVisual.tsx', await read('ki/src/reels/ReelExternalVisual.tsx'), [
+  'staticFile(staticSrc)',
+  "rightsStatus === 'CC-BY-4.0'",
+  'objectFit',
+]);
+requireTokens('ReelVisualMotion.tsx', await read('ki/src/reels/ReelVisualMotion.tsx'), [
+  'CameraPush',
+  'FocusHalo',
+  'ScanSweep',
+  'ParallaxFloat',
+  'SourceProofCard',
+]);
+
+// Canonical social review render. Raw Remotion MP4 is not upload-ready.
+const socialRenderer = await read('ki/scripts/render-social-reel.mjs');
+requireTokens('render-social-reel.mjs', socialRenderer, [
+  '--codec=h264',
+  '--crf=18',
+  '--audio-codec=aac',
+  'master-reel-video.mjs',
+  'validate-social-audio-master.mjs',
+  'SOCIAL_REVIEW_MASTER_READY',
+  'exactOneXVisualAudioReviewRequired',
+]);
 
 const audioMaster = await read('ki/scripts/master-reel-video.mjs');
-for (const needle of ['loudnorm=I=${targetI}', 'targetI = -16', 'targetTP = -1.5', "'-c:v', 'copy'", "'-c:a', 'aac'"]) if (!audioMaster.includes(needle)) fail.push(`master-reel-video.mjs missing social mastering token: ${needle}`);
+requireTokens('master-reel-video.mjs', audioMaster, [
+  'loudnorm=I=${targetI}',
+  'targetI = -16',
+  'targetTP = -1.5',
+  "'-c:v', 'copy'",
+  "'-c:a', 'aac'",
+]);
 const socialAudioGate = await read('ki/scripts/validate-social-audio-master.mjs');
-for (const needle of ['loudnorm=I=-16:TP=-1.5:LRA=7', 'integrated < -17.0', 'integrated > -15.0', 'truePeak > -1.0']) if (!socialAudioGate.includes(needle)) fail.push(`validate-social-audio-master.mjs missing gate token: ${needle}`);
+requireTokens('validate-social-audio-master.mjs', socialAudioGate, [
+  'loudnorm=I=-16:TP=-1.5:LRA=7',
+  'integrated < -17.0',
+  'integrated > -15.0',
+  'truePeak > -1.0',
+]);
 
+// Render-lock and finalization provenance.
 const prepare = await read('ki/scripts/prepare-reel-render.mjs');
-if (!prepare.includes('RENDER_LOCKED') || !prepare.includes('sourceTreeSha256')) fail.push('prepare-reel-render.mjs does not create a render provenance lock.');
-if (!prepare.includes('validate-scene-voice-map.mjs') || !prepare.includes('sceneVoiceMapSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash scene-to-voice mapping.');
-if (!prepare.includes('validate-local-forced-alignment.mjs') || !prepare.includes('wordTimingsSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash local forced alignment.');
-if (!prepare.includes('validate-reel-sfx-plan.mjs') || !prepare.includes('sfxResolvedSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash resolved SFX.');
-if (!prepare.includes('validate-reel-visual-assets.mjs') || !prepare.includes('visualManifestSha256') || !prepare.includes('visualResolvedSha256')) fail.push('prepare-reel-render.mjs does not enforce/hash source + resolved visual assets.');
+requireTokens('prepare-reel-render.mjs', prepare, [
+  'RENDER_LOCKED',
+  'sourceTreeSha256',
+  'validate-scene-voice-map.mjs',
+  'sceneVoiceMapSha256',
+  'validate-local-forced-alignment.mjs',
+  'wordTimingsSha256',
+  'validate-reel-sfx-plan.mjs',
+  'sfxResolvedSha256',
+  'validate-reel-visual-assets.mjs',
+  'visualManifestSha256',
+  'visualResolvedSha256',
+]);
 
 const lockScenes = await read('ki/scripts/lock-scene-timing-from-captions.mjs');
-if (!lockScenes.includes('firstWordFrame') || !lockScenes.includes('finalDurationInFrames') || !lockScenes.includes('VOICE_LOCKED_SCENE_MAPPED')) fail.push('scene timing lock script does not derive final scene timing from real word anchors.');
+requireTokens('lock-scene-timing-from-captions.mjs', lockScenes, [
+  'firstWordFrame',
+  'finalDurationInFrames',
+  'VOICE_LOCKED_SCENE_MAPPED',
+]);
 
 const finalize = await read('ki/scripts/finalize-reel-export.mjs');
-if (!finalize.includes('PASSED_LOCKED_INPUT_HASHES') || !finalize.includes('reviewedVideoSha256')) fail.push('finalize-reel-export.mjs does not enforce render provenance.');
-if (!finalize.includes('PASSED_EXACT_SCENE_TEXT_AND_ANCHORS') || !finalize.includes('sceneVoiceMapSha256')) fail.push('finalize-reel-export.mjs does not enforce scene-to-voice provenance.');
-if (!finalize.includes('PASSED_EXACT_KNOWN_TRANSCRIPT') || !finalize.includes('wordTimingsSha256')) fail.push('finalize-reel-export.mjs does not enforce local forced-alignment provenance.');
-if (!finalize.includes('PASSED_CC0_AUTO_RESOLVED_AND_LOCKED') || !finalize.includes('sfxResolvedSha256')) fail.push('finalize-reel-export.mjs does not enforce SFX provenance.');
-if (!finalize.includes('PASSED_RIGHTS_LOCAL_FILE_SHA256_AND_LOCK') || !finalize.includes('visualManifestSha256') || !finalize.includes('visualResolvedSha256')) fail.push('finalize-reel-export.mjs does not enforce visual provenance.');
-if (!finalize.includes('validate-social-audio-master.mjs') || !finalize.includes('PASSED_MINUS16_LUFS')) fail.push('finalize-reel-export.mjs does not enforce the social audio master.');
-
+requireTokens('finalize-reel-export.mjs', finalize, [
+  'PASSED_LOCKED_INPUT_HASHES',
+  'reviewedVideoSha256',
+  'PASSED_EXACT_SCENE_TEXT_AND_ANCHORS',
+  'sceneVoiceMapSha256',
+  'PASSED_EXACT_KNOWN_TRANSCRIPT',
+  'wordTimingsSha256',
+  'PASSED_CC0_AUTO_RESOLVED_AND_LOCKED',
+  'sfxResolvedSha256',
+  'PASSED_RIGHTS_LOCAL_FILE_SHA256_AND_LOCK',
+  'visualManifestSha256',
+  'visualResolvedSha256',
+  'validate-social-audio-master.mjs',
+  'PASSED_MINUS16_LUFS',
+]);
 const exportGate = await read('ki/scripts/validate-reel-export-package.mjs');
-if (!exportGate.includes('PASSED_MINUS16_LUFS') || !exportGate.includes('validate-social-audio-master.mjs')) fail.push('validate-reel-export-package.mjs does not enforce the social audio master.');
+requireTokens('validate-reel-export-package.mjs', exportGate, [
+  'PASSED_MINUS16_LUFS',
+  'validate-social-audio-master.mjs',
+]);
 
-const generator = await read('scripts/new-ki-reel.mjs');
-if (!generator.includes('SCENE-VOICE-MAP.json') || !generator.includes('FIRST_MAPPED_WORD')) fail.push('new reel generator does not create the canonical scene-to-voice mapping contract.');
-if (!generator.includes('sfx-events.json') || !generator.includes('sfx-resolved.json') || !generator.includes('AUTO_CC0_DETERMINISTIC')) fail.push('new reel generator does not scaffold automatic SFX files.');
-if (!generator.includes('visual-assets.json') || !generator.includes('visual-assets-resolved.json') || !generator.includes('VISUAL-PLAN.md')) fail.push('new reel generator does not scaffold the visual asset pipeline.');
+// Generator split: wrapper owns week/day routing + v4 application; core owns scaffold files.
+const generatorWrapper = await read('scripts/new-ki-reel.mjs');
+requireTokens('new-ki-reel.mjs wrapper', generatorWrapper, [
+  'new-ki-reel-core.mjs',
+  '01_Montag',
+  '06_Samstag',
+  '07_Sonntag',
+  'apply-level-up-v4.mjs',
+  'Kanonisch: Woche → Wochentag',
+]);
+const generatorCore = await read('scripts/new-ki-reel-core.mjs');
+requireTokens('new-ki-reel-core.mjs', generatorCore, [
+  'SCENE-VOICE-MAP.json',
+  'FIRST_MAPPED_WORD',
+  'sfx-events.json',
+  'sfx-resolved.json',
+  'AUTO_CC0_DETERMINISTIC',
+  'visual-assets.json',
+  'visual-assets-resolved.json',
+  'VISUAL-PLAN.md',
+  'bottom 330',
+]);
 
-if (fail.length) {
+if (failures.length) {
   console.error('PRODUCTION CONTRACT AUDIT: FAILED');
-  for (const issue of fail) console.error(`- ${issue}`);
+  for (const issue of failures) console.error(`- ${issue}`);
   process.exit(1);
 }
 
 console.log('PRODUCTION CONTRACT AUDIT: PASSED');
-console.log(`checked required files: ${mustExist.length}`);
+console.log(`checked required files: ${requiredFiles.length}`);
 console.log(`checked active contracts: ${activeContracts.length}`);
 console.log(`scanned reel source files: ${sourceFiles.length}`);
-console.log('checked pause-compression + forced-alignment + scene-voice + automatic CC0-SFX + ranked local visual pipeline + -16 LUFS social master: yes');
+console.log('caption source: 330 / 76 / 928 + explicit shared sans-serif font');
+console.log('generator: weekday wrapper + scaffold core + Level-Up v4 split verified');
+console.log('review render: H.264 CRF18 -> -16 LUFS social master -> exact 1x review candidate');
+console.log('forced alignment + scene voice + CC0 SFX + local visual provenance + final export locks: verified');
