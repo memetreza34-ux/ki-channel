@@ -106,6 +106,7 @@ await write('02-visuals/MEDIA-PLAN.json', json({
       'OFFICIAL_SOURCE',
       'WIKIMEDIA_COMMONS',
       'OPEN_LICENSE_VERIFIED',
+      'LICENSED_SOURCE_VERIFIED',
       'GENERATED_NON_EVIDENTIARY'
     ]
   },
