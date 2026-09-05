@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "status": "PLANNED_MATERIALIZATION_PENDING",
+  "status": "PHASE1_SOURCE_DISCOVERY_COMPLETE_MATERIALIZATION_PENDING",
   "policy": {
     "renderTimeRemoteDownloadsAllowed": false,
     "rightsVerificationRequired": true,
     "localMaterializationRequired": true,
     "generatedMediaMayProveRealWorldClaims": false,
+    "userMustSourceMedia": false,
+    "agentOwnsMediaDiscoveryAndMaterialization": true,
     "approvedSourceTypes": [
       "USER_PROVIDED",
       "OFFICIAL_SOURCE",
@@ -23,11 +25,14 @@
       "mediaType": "IMAGE",
       "sourceType": "OFFICIAL_SOURCE",
       "sourceUrl": "https://openai.com/index/gpt-6-astra/",
+      "sourceVerified": true,
+      "licensePrechecked": false,
+      "rightsReviewNote": "Offizielle OpenAI-Originalquelle bestätigt. Exakter Screenshot/Ausschnitt wird in Phase 3 lokal materialisiert und vor Nutzung final geprüft.",
       "localFile": null,
       "sha256": null,
       "rightsVerified": false,
       "provesRealWorldClaim": true,
-      "status": "PLANNED"
+      "status": "SOURCE_LOCKED_PHASE1"
     },
     {
       "assetId": "official-astra-safety-overview",
@@ -36,11 +41,14 @@
       "mediaType": "IMAGE",
       "sourceType": "OFFICIAL_SOURCE",
       "sourceUrl": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "sourceVerified": true,
+      "licensePrechecked": false,
+      "rightsReviewNote": "Offizielle OpenAI-Originalquelle bestätigt. Nur der für den Claim notwendige Ausschnitt wird in Phase 3 materialisiert und geprüft.",
       "localFile": null,
       "sha256": null,
       "rightsVerified": false,
       "provesRealWorldClaim": true,
-      "status": "PLANNED"
+      "status": "SOURCE_LOCKED_PHASE1"
     },
     {
       "assetId": "official-monitorability-system-card",
@@ -49,37 +57,56 @@
       "mediaType": "IMAGE",
       "sourceType": "OFFICIAL_SOURCE",
       "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/vision",
+      "sourceVerified": true,
+      "licensePrechecked": false,
+      "rightsReviewNote": "Offizielle OpenAI-Deployment-Safety-Quelle. Exakte Figure/Passage wird erst nach Voice-Lock lokal gebunden.",
       "localFile": null,
       "sha256": null,
       "rightsVerified": false,
       "provesRealWorldClaim": true,
-      "status": "PLANNED"
+      "status": "SOURCE_LOCKED_PHASE1"
     },
     {
-      "assetId": "open-license-server-broll",
+      "assetId": "licensed-server-broll",
       "chapterId": "chapter-03",
-      "purpose": "Kurze reale B-Roll für Infrastruktur/Cyber-Kontext; nur wenn ein klar lizenzierter hochwertiger Clip gefunden wird.",
+      "purpose": "Kurze reale Infrastruktur-/Cyber-B-Roll als visueller Rhythmuswechsel; dient nicht als Beweis für einen konkreten Astra-Claim.",
       "mediaType": "VIDEO",
-      "sourceType": "OPEN_LICENSE_VERIFIED",
-      "sourceUrl": null,
+      "sourceType": "LICENSED_SOURCE_VERIFIED",
+      "sourceProvider": "Pexels",
+      "sourceUrl": "https://www.pexels.com/video/close-up-of-a-cpu-7140928/",
+      "sourceTitle": "Detailed view of server units with LED lights in a dark data center room",
+      "creator": "MrColo",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "licensePrechecked": true,
+      "licensePrecheckNote": "Pexels erlaubt Fotos/Videos kostenlos für kommerzielle Nutzung und Bearbeitung; keine Endorsement-Implikation. Finaler Rechtecheck bleibt an der konkret heruntergeladenen Datei gebunden.",
+      "sourceVerified": true,
       "localFile": null,
       "sha256": null,
       "rightsVerified": false,
       "provesRealWorldClaim": false,
-      "status": "DISCOVERY_PENDING"
+      "status": "CANDIDATE_LOCKED_PHASE1"
     },
     {
-      "assetId": "open-license-workflow-broll",
+      "assetId": "licensed-workflow-broll",
       "chapterId": "chapter-05",
-      "purpose": "Kurze reale Computer-/Arbeitsplatz-B-Roll als Rhythmuswechsel zwischen nativen UI-/Agentenvisuals.",
+      "purpose": "Reale Computer-/Arbeitsplatz-B-Roll als kurzer Rhythmuswechsel zwischen nativen UI-/Agentenvisuals; keine Behauptung, dass die gezeigte Person Astra nutzt.",
       "mediaType": "VIDEO",
-      "sourceType": "OPEN_LICENSE_VERIFIED",
-      "sourceUrl": null,
+      "sourceType": "LICENSED_SOURCE_VERIFIED",
+      "sourceProvider": "Pexels",
+      "sourceUrl": "https://www.pexels.com/video/coding-session-in-modern-office-36628017/",
+      "sourceTitle": "Programmer typing code on a laptop during a work session",
+      "creator": "Jakub Zerdzicki",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "licensePrechecked": true,
+      "licensePrecheckNote": "Pexels erlaubt kommerzielle Nutzung und Bearbeitung. Die Szene wird nur als generische Arbeitsplatz-B-Roll eingesetzt und impliziert keine Unterstützung durch Person/Marke.",
+      "sourceVerified": true,
       "localFile": null,
       "sha256": null,
       "rightsVerified": false,
       "provesRealWorldClaim": false,
-      "status": "DISCOVERY_PENDING"
+      "status": "CANDIDATE_LOCKED_PHASE1"
     }
   ]
 }
