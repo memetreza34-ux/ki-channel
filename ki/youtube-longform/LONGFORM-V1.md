@@ -11,15 +11,53 @@ Ein Longform-Video soll als reproduzierbares Produktionspaket entstehen:
 ```text
 Research / Story
 → Kapitel + Claims
+→ Media-/B-Roll-Discovery + Quellen-/Rechteprüfung
 → finales Nutzer-Voiceover
 → reale Audio-Timings
-→ Media-/B-Roll-Plan
+→ finale Media-Materialisierung + exakter Zuschnitt
 → story-driven Remotion-Source
 → Untertitel + Thumbnail + Master
 → technische Gates
 → vollständiger visueller/akustischer Review
 → Upload-Paket
 ```
+
+## Verantwortlichkeiten
+
+Der Nutzer liefert **nur das finale Produktions-Voiceover**.
+
+Bilder, B-Roll und sonstige Produktionsmedien sind Aufgabe des Produktionssystems/Agents:
+
+### Phase 1 — Discovery und Absicherung
+
+- benötigte Bilder/B-Roll pro Claim/Kapitel bestimmen
+- passende Originalquellen suchen
+- offizielle Medien und belastbare Quellen bevorzugen
+- Lizenz/Nutzungsrecht/Attribution dokumentieren
+- ungeeignete oder rechtlich unklare Kandidaten aussortieren
+- `MEDIA-PLAN.json` mit konkreten Kandidaten befüllen
+
+Phase 1 soll damit vor dem Voiceover sicherstellen, dass die geplante Story **realistisch mit verfügbaren Medien umsetzbar ist**.
+
+### Phase 2 — Nutzer
+
+- ausschließlich finales Produktions-Voiceover erstellen und bereitstellen
+
+Der Nutzer muss **keine B-Roll, Bilder, Logos, Screenshots oder Stock-Medien beschaffen**.
+
+### Phase 3 — Materialisierung und Timing
+
+Nach Voice-Lock:
+
+- final passende Medien aus den bereits geprüften Kandidaten auswählen
+- Medien lokal materialisieren/downloaden
+- SHA-256 und Provenance binden
+- Video-B-Roll auf echte Sprecher-Timings trimmen
+- Crops/Framing/Speed/Transitions sinnvoll anpassen
+- fehlende Medien bei Bedarf selbst nachrecherchieren und denselben Rechte-/Provenance-Prozess durchlaufen
+- anschließend in Remotion integrieren und visuell prüfen
+
+Damit gilt: **Discovery gehört zu Phase 1; finale Datei-/Timing-Materialisierung gehört zu Phase 3. Beides übernimmt der Agent, nicht der Nutzer.**
 
 ## Format
 
