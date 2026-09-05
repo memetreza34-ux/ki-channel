@@ -13,7 +13,7 @@ export const REEL_CAPTION_SAFE = Object.freeze({
 } as const);
 
 export const REEL_COVER_HOOK = Object.freeze({
-  // Level-Up v2 default at 30 fps: candidate frame 15 (0.5 s) + 15-frame clean hold.
+  // Level-Up default at 30 fps: candidate frame 15 (0.5 s) + 15-frame clean hold.
   // The planned hold stays fully inside the first second. Captions start after that window.
   defaultCandidateFrame: 15,
   maxCandidateFrame: 30,
@@ -21,6 +21,9 @@ export const REEL_COVER_HOOK = Object.freeze({
   defaultHoldFrames: 15,
   defaultCaptionSuppressUntilFrame: 31,
 } as const);
+
+export const REEL_CAPTION_FONT_FAMILY =
+  'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 export const shouldShowReelCaption = (
   frame: number,
@@ -43,6 +46,7 @@ export const REEL_CAPTION_GLASS_STYLE = Object.freeze({
   maxWidth: REEL_CAPTION_SAFE.maxWidth,
   textAlign: 'center' as const,
   color: '#102033',
+  fontFamily: REEL_CAPTION_FONT_FAMILY,
   fontSize: 40,
   lineHeight: 1.14,
   fontWeight: 900,
