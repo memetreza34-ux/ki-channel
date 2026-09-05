@@ -28,6 +28,7 @@ Produktions-Repository für einen deutschen, vollständig faceless KI-Erklärkan
 │   │   └── PRODUKTIONSABLAUF.md
 │   ├── animation-library/
 │   ├── reels/                    # kanonische Short-Form-Produktionspakete
+│   ├── youtube-longform/         # kanonische YouTube-Longform-Produktionspakete
 │   ├── plattformen/              # Publishing-Regeln, keine Medien-Duplikate
 │   │   ├── youtube/
 │   │   ├── instagram/
@@ -80,6 +81,62 @@ Strukturprüfung:
 npm run ki:reel:structure-check
 ```
 
+## YouTube Longform v1
+
+YouTube Longform ist ein eigenes Format und wird nicht aus Reels aufgeblasen. Neue Pakete ab **2026-09-05** nutzen Longform v1; ältere Pakete bleiben Legacy-kompatibel.
+
+Kanonisches Produktionspaket:
+
+```text
+ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
+├── README.md
+├── 01-script-audio/              # Skript, Kapitel, Claims, finales Nutzer-Voiceover
+├── 02-visuals/                   # MEDIA-PLAN + lokale Bilder/B-Roll/Official/Generated
+├── 03-thumbnail/                 # mindestens drei Thumbnail-Konzepte
+├── 04-metadata/                  # YouTube-Titel/Beschreibung/Kapitel/Subtitle-Plan
+├── 05-export/                    # finaler Master + Upload-Paket
+└── 06-projektdateien/            # Version, Release-Plan, Review
+```
+
+Ausführbarer Source bleibt getrennt unter `ki/src/longform/<sourceSlug>/`.
+
+Neues Longform-Paket:
+
+```bash
+node scripts/new-ki-longform.mjs "Video Titel" YYYY-MM-DD
+```
+
+Strukturgate:
+
+```bash
+node scripts/check-ki-longform-structure.mjs
+```
+
+Finales Release-Gate:
+
+```bash
+node scripts/check-ki-longform-release.mjs ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel
+```
+
+Lokale Video-B-Roll sicher auf 1920×1080 / 30 FPS vorbereiten:
+
+```bash
+node scripts/prepare-longform-video-asset.mjs <lokales-video> --provenance=<manifest|USER_PROVIDED> --start=0 --duration=6
+```
+
+Verbindliche Longform-v1-Grundsätze:
+
+- `OPEN_ENDED_STORY_DRIVEN`: keine feste Animationstechnik-Whitelist
+- vorhandenen Stack, Repo-Komponenten, passende Remotion-Skills und Remotion Bits zuerst prüfen; neue Open-Source-Dependencies nur bei echtem Capability-Gap
+- reale Bilder/B-Roll sind erlaubt, wenn Originalquelle, Rechte/Lizenz, Attribution, lokale Datei und Hash sauber dokumentiert sind
+- keine Remote-Downloads zur Renderzeit
+- generierte Medien niemals als Fake-Beleg realer Claims verwenden
+- `CHAPTERS.json`, `CLAIMS.json`, `MEDIA-PLAN.json`, `THUMBNAIL-PLAN.json` und `RELEASE-PLAN.json` bilden zusammen die Longform-Produktionswahrheit
+- finale SRT/VTT, Transcript, Quellen, Thumbnail und Master gehören zum Upload-Paket
+- ein technischer Render ist keine visuelle/akustische Freigabe
+
+Details: `ki/youtube-longform/LONGFORM-V1.md`.
+
 ## Publishing / Plattformen
 
 Ein Short-Form-Reel wird **einmal** produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
@@ -101,8 +158,6 @@ ki/plattformen/youtube/
 └── UPLOAD.md
 ```
 
-YouTube Longform ist ein eigenes Format und wird nicht automatisch aus Reels aufgeblasen.
-
 ## Produktionsphasen
 
 ```text
@@ -113,10 +168,10 @@ Phase 2 — Voiceover: ausschließlich Nutzer
 Der Nutzer erzeugt und hinterlegt das Produktions-Voiceover.
 
 Phase 3 — Sync, Review, Render, Export
-Runtime-Audio + Forced Alignment + Voice-Lock + SFX/Visuals + Tests + Render + Social Master + 1x Review + Release-Verifier
+Runtime-Audio + Forced Alignment + Voice-Lock + SFX/Visuals + Tests + Render + Master + 1x vollständiger Review + Release-Verifier
 ```
 
-Details: `REPO-STATE.md` und `ki/gehirn/PRODUKTIONSABLAUF.md`.
+Details: `REPO-STATE.md`, `ki/gehirn/PRODUKTIONSABLAUF.md` und für Longform `ki/youtube-longform/LONGFORM-V1.md`.
 
 ## Visuelle Wahrheit
 
@@ -130,7 +185,7 @@ Details: `REPO-STATE.md` und `ki/gehirn/PRODUKTIONSABLAUF.md`.
 - Überschrift, Caption und Animationstext duplizieren sich nicht unnötig
 - Plattformtitel/Thumbnail versprechen nie mehr als der Inhalt liefert
 
-Caption-Geometrie hat genau eine technische Quelle: `ki/src/reels/captionSafe.ts`. Die zugehörige menschlich lesbare Dokumentation liegt in `ki/gehirn/CAPTION_SAFE_POSITION.md`.
+Caption-Geometrie für Reels hat genau eine technische Quelle: `ki/src/reels/captionSafe.ts`. Die zugehörige menschlich lesbare Dokumentation liegt in `ki/gehirn/CAPTION_SAFE_POSITION.md`.
 
 Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`.
 
@@ -146,6 +201,7 @@ npm test
 npm run content:runtime:verify
 npm run repo:verify
 npm run motion:verify
+node scripts/check-ki-longform-structure.mjs
 ```
 
 Reel-spezifische Storytelling-, Level-Up-, Brand-/Motion- und Visual-Asset-Gates stehen in `REPO-STATE.md`.
@@ -158,10 +214,10 @@ npm run release:smoke
 npm run release:full
 ```
 
-Ein technischer Render ist keine visuelle Freigabe.
+Longform besitzt zusätzlich sein paketbezogenes Release-Gate. Ein technischer Render ist keine visuelle Freigabe.
 
 ## Bekannte Betriebsgrenzen
 
 - GitHub Actions ist derzeit kein verlässlicher Runtime-Beweis, solange der private Runner auf Konto-/Billing-/Runner-Ebene blockiert ist.
-- Ein vertrauenswürdig erzeugter `package-lock.json` fehlt noch. Er darf erst nach einem echten npm-Installationslauf committed werden; bis dahin keine erfundenen Lockfile-Inhalte.
+- Ein vertrauenswürdig erzeugter `package-lock.json` fehlt noch. Er darf erst nach einem echten npm-Installationslauf committed werden; bis dahin keine erfundenen Lockfile-Inhalte und kein blindes Umschalten auf `npm ci`.
 - Source-, Test-, Render- und Review-Erfolge dürfen nur behauptet werden, wenn sie tatsächlich ausgeführt wurden.
