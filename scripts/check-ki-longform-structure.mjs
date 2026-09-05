@@ -160,10 +160,17 @@ for (const dateEntry of dateEntries) {
       if (media?.policy?.localMaterializationRequired !== true || media?.policy?.rightsVerificationRequired !== true) {
         error(`${posix(packageRoot)}: lokale Materialisierung und Rechteprüfung müssen Pflicht sein.`);
       }
+      const approvedSourceTypes = new Set(Array.isArray(media?.policy?.approvedSourceTypes) ? media.policy.approvedSourceTypes : []);
+      if (approvedSourceTypes.size === 0) {
+        error(`${posix(packageRoot)}: MEDIA-PLAN.policy.approvedSourceTypes darf nicht leer sein.`);
+      }
       for (const asset of media.assets ?? []) {
         if (!asset?.assetId || !asset?.chapterId || !asset?.purpose || !asset?.mediaType || !asset?.sourceType) {
           error(`${posix(packageRoot)}: jeder Media-Eintrag braucht assetId, chapterId, purpose, mediaType und sourceType.`);
           continue;
+        }
+        if (!approvedSourceTypes.has(asset.sourceType)) {
+          error(`${posix(packageRoot)}: ${asset.assetId} verwendet nicht freigegebenen sourceType ${asset.sourceType}.`);
         }
         if (typeof asset.localFile === 'string' && /^https?:\/\//i.test(asset.localFile)) {
           error(`${posix(packageRoot)}: ${asset.assetId} localFile darf keine Remote-URL sein.`);
