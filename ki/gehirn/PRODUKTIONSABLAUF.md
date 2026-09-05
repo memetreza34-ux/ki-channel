@@ -9,17 +9,17 @@ Ziel: vollständige Produktionsgrundlage, bevor Timing geraten werden müsste.
 Pflicht:
 
 - Thema/Fakten/Quellen
-- finales `voiceover.md`
 - exaktes `VOICEOVER-ZUM-KOPIEREN.txt`
 - neues Standard-Reel: **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
 - bevorzugt **150–175 gesprochene Wörter**, bis **190 Wörter** ohne Sonderfreigabe
 - `reel.json.scriptBudget.targetMinSeconds = 60` und `targetMaxSeconds = 75`
 - kürzer/länger nur mit dokumentierter Ausnahme in `reel.json.scriptBudget`
 - `SCENE-VOICE-MAP.json`: jeder exakte Satz gehört genau zu einer Szene
-- Szenenplan + `animation-plan.md`
+- Story-/Szenenplan + mindestens die geforderte Visual-Beat-Dichte
 - semantische `sfx-events.json`
 - `visual-assets.json`: bewusste Visual-Entscheidung pro Szene
-- `ENTERTAINMENT-REVIEW.md`
+- für Level-Up v4: `BRAND-MOTION-PLAN.json`
+- `ENTERTAINMENT-REVIEW.md`, sofern der Reel-Vertrag ihn vorsieht
 - `MOTION-READABILITY-REVIEW.md` zunächst `PENDING`
 - `subtitle-cues.json` nur als Preview-Basis, solange kein Audio-Lock vorliegt
 - Plattform-Copy + `FINAL-CAPTION.txt`
@@ -57,11 +57,12 @@ Sprecherphrase
 Pro Szene bewusst wählen:
 
 - `NATIVE_UI`
+- `LOCAL_OFFICIAL_MEDIA`
 - `OFFICIAL_SOURCE_CARD`
 - `WIKIMEDIA_COMMONS`
 - `GITHUB_RAW`
 
-Richtwert: ungefähr 70–80 % native Visuals und 20–30 % echte Bilder/Screens; meist 1–2 starke externe Visual-Momente statt Füllmaterial.
+Native Visuals bleiben der Normalfall. Echte/official Media wird nur eingesetzt, wenn sie Marke, Proof oder die reale Produktoberfläche besser trägt. Keine Render-Time-Remote-Medien und keine Google-Bildsuche als Lizenznachweis.
 
 Kamera-/Motion-Effekte wie Push, Pan, Focus, Parallax und Scan nur mit Erklär-/Fokusnutzen. Semantische SFX werden an sichtbare Events gebunden und später bei 1x gehört.
 
@@ -91,7 +92,7 @@ Wenn die Datei fehlt: **STOP — WARTET AUF NUTZER-AUDIO**.
 
 ---
 
-## Phase 3 — Timing-Lock, Assets, Render, Master, Review, Export
+## Phase 3 — Timing-Lock, Assets, Review-Master, Review, Export
 
 ### 1. Runtime-Audio + Pause-Kompression
 
@@ -107,7 +108,7 @@ Ergebnis: `public/runtime-audio/<compositionId>.wav`.
 node ki/scripts/align-reel-local.mjs <reel-package-dir>
 ```
 
-Daraus entstehen:
+Daraus entstehen bzw. werden gelockt:
 
 - `WORD-TIMINGS.json`
 - finale Caption-Cues
@@ -129,7 +130,7 @@ Keine Remote-Media-URL im Remotion-Render.
 
 Renderrelevante JSON-/Source-Dateien finalisieren und committen.
 
-### 5. Pre-Render-Gates
+### 5. Pre-Render-Gates + Render-Lock
 
 ```bash
 node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
@@ -137,39 +138,49 @@ node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 
 Dieser Schritt prüft Script-Budget, tatsächliche Voice-Locked-Dauer von 60–75 Sekunden und bindet Source, Scene-Voice-Map, Word-Timings, Captions, SFX, Visuals, Nutzer-Audio, Runtime-WAV und finale Dauer.
 
-### 6. Remotion-Roh-Render
+### 6. Kanonischen Social-Review-Master rendern
 
-1080×1920, 30 fps, lokale Runtime-Medien.
-
-### 7. Social-Audio-Master
+Für aktuelle Reels ist ein beliebiger Studio-/Roh-Export **nicht** der Upload- oder Review-Master.
 
 ```bash
-node ki/scripts/master-reel-video.mjs <raw-render.mp4> <mastered-render.mp4>
-node ki/scripts/validate-social-audio-master.mjs <mastered-render.mp4>
-node ki/scripts/validate-final-video.mjs <mastered-render.mp4>
+node ki/scripts/render-social-reel.mjs <reel-package-dir>
 ```
 
-Ziel: etwa −16 LUFS Integrated, −1,5 dBTP True Peak.
+Der Wrapper führt in definierter Reihenfolge aus:
 
-### 8. Exakten gemasterten MP4 bei 1x reviewen
+1. Remotion-Render mit **H.264 / CRF 18 / AAC**,
+2. Social-Audio-Master über `master-reel-video.mjs`,
+3. Ziel **ca. −16 LUFS Integrated / −1,5 dBTP True Peak**,
+4. `validate-social-audio-master.mjs`,
+5. `validate-final-video.mjs`,
+6. SHA256-gebundenes `*.render-report.json`.
+
+Der Roh-Render ist nur ein Zwischenprodukt und wird nach erfolgreichem Mastering entfernt. Der ausgegebene `*-review-master.mp4` ist der einzige Kandidat für den anschließenden 1x-Review.
+
+### 7. Exakten gemasterten Review-Master bei 1x prüfen
 
 Prüfen:
 
-- Opening/Hook
+- Opening/Hook und Cover-Kandidat
 - Pacing und Pausen
 - Caption-/Voice-Sync
+- Caption-Typografie und Safe-Zone
 - SFX-Timing und Lautstärke
-- echte Bilder: Relevanz, Crop, Bewegung
-- Zoom/Focus/Parallax
+- echte Bilder/Official Media: Relevanz, Crop, Bewegung, Brand-Erkennbarkeit
+- Zoom/Focus/Parallax und Motion-Grammatik
 - Source-Proof-Lesbarkeit
-- keine visuelle Überladung
-- Stimme klar
+- ein primärer Fokus pro Moment
+- keine langen praktisch statischen Holds
+- Stimme klar und Social-Lautheit korrekt
+- sauberer finaler Hold statt Bewegung bis in den letzten Frame
 - Gesamtdauer 60–75 Sekunden oder dokumentierte Ausnahme
 
-### 9. Final-Export
+**Jede Source-/Timing-/Asset-Änderung nach dem Review macht den alten Review ungültig.** Dann neu rendern und neu bei 1x prüfen.
+
+### 8. Final-Export
 
 ```bash
-node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <mastered-render.mp4>
+node ki/scripts/finalize-reel-export.mjs <reel-package-dir> <review-master.mp4>
 node ki/scripts/validate-reel-export-package.mjs <reel-package-dir>
 ```
 
@@ -192,7 +203,9 @@ Nicht als fertig melden bei:
 - zu schnellen/unlesbaren Beats
 - Caption-/Visual-Kollision
 - fehlgeschlagenen Tests/Validatoren
+- Verwendung eines beliebigen Roh-Renders als Upload-Master
 - stummem oder zu leisem Video
 - nicht bestandenem Social-Audio-Master
+- fehlendem exakten 1x-Review des gemasterten Review-Masters
+- Source-Änderung nach Review ohne neuen Render/Review
 - fehlendem Export-Paket
-- nicht angesehenem/nicht angehörtem gemasterten Final-MP4
