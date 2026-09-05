@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "status": "PLANNED_MATERIALIZATION_PENDING",
+  "policy": {
+    "renderTimeRemoteDownloadsAllowed": false,
+    "rightsVerificationRequired": true,
+    "localMaterializationRequired": true,
+    "generatedMediaMayProveRealWorldClaims": false,
+    "approvedSourceTypes": [
+      "USER_PROVIDED",
+      "OFFICIAL_SOURCE",
+      "WIKIMEDIA_COMMONS",
+      "OPEN_LICENSE_VERIFIED",
+      "LICENSED_SOURCE_VERIFIED",
+      "GENERATED_NON_EVIDENTIARY"
+    ]
+  },
+  "assets": [
+    {
+      "assetId": "official-astra-launch",
+      "chapterId": "chapter-01",
+      "purpose": "Originale OpenAI-Produktseite als reale Source-Proof-Ebene im Cold Open zeigen.",
+      "mediaType": "IMAGE",
+      "sourceType": "OFFICIAL_SOURCE",
+      "sourceUrl": "https://openai.com/index/gpt-6-astra/",
+      "localFile": null,
+      "sha256": null,
+      "rightsVerified": false,
+      "provesRealWorldClaim": true,
+      "status": "PLANNED"
+    },
+    {
+      "assetId": "official-astra-safety-overview",
+      "chapterId": "chapter-03",
+      "purpose": "Den Wortlaut der Critical-Cybereinstufung aus der offiziellen Safety Overview belegen.",
+      "mediaType": "IMAGE",
+      "sourceType": "OFFICIAL_SOURCE",
+      "sourceUrl": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "localFile": null,
+      "sha256": null,
+      "rightsVerified": false,
+      "provesRealWorldClaim": true,
+      "status": "PLANNED"
+    },
+    {
+      "assetId": "official-monitorability-system-card",
+      "chapterId": "chapter-04",
+      "purpose": "System-Card-Ausschnitt/Figur zur Monitorability als reale Evidence-Ebene nutzen.",
+      "mediaType": "IMAGE",
+      "sourceType": "OFFICIAL_SOURCE",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/vision",
+      "localFile": null,
+      "sha256": null,
+      "rightsVerified": false,
+      "provesRealWorldClaim": true,
+      "status": "PLANNED"
+    },
+    {
+      "assetId": "open-license-server-broll",
+      "chapterId": "chapter-03",
+      "purpose": "Kurze reale B-Roll für Infrastruktur/Cyber-Kontext; nur wenn ein klar lizenzierter hochwertiger Clip gefunden wird.",
+      "mediaType": "VIDEO",
+      "sourceType": "OPEN_LICENSE_VERIFIED",
+      "sourceUrl": null,
+      "localFile": null,
+      "sha256": null,
+      "rightsVerified": false,
+      "provesRealWorldClaim": false,
+      "status": "DISCOVERY_PENDING"
+    },
+    {
+      "assetId": "open-license-workflow-broll",
+      "chapterId": "chapter-05",
+      "purpose": "Kurze reale Computer-/Arbeitsplatz-B-Roll als Rhythmuswechsel zwischen nativen UI-/Agentenvisuals.",
+      "mediaType": "VIDEO",
+      "sourceType": "OPEN_LICENSE_VERIFIED",
+      "sourceUrl": null,
+      "localFile": null,
+      "sha256": null,
+      "rightsVerified": false,
+      "provesRealWorldClaim": false,
+      "status": "DISCOVERY_PENDING"
+    }
+  ]
+}

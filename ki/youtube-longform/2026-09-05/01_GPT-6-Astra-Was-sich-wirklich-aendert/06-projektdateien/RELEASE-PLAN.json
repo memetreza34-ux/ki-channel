@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "DRAFT",
+  "requiredDeliverables": [
+    "video.mp4",
+    "thumbnail-selected.png",
+    "title.txt",
+    "description.md",
+    "chapters.txt",
+    "subtitles.srt",
+    "subtitles.vtt",
+    "transcript.txt",
+    "sources.md",
+    "manifest.json"
+  ],
+  "technicalChecksComplete": false,
+  "visualReviewComplete": false,
+  "audioReviewComplete": false,
+  "sourceReviewComplete": false
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "contract": "LONGFORM_V1",
+  "publishDate": "2026-09-05",
+  "title": "GPT-6 Astra: Was sich wirklich geändert hat",
+  "sourceSlug": "2026-09-05-gpt-6-astra-was-sich-wirklich-aendert",
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "aspectRatio": "16:9"
+  },
+  "animationFreedom": "OPEN_ENDED_STORY_DRIVEN",
+  "status": "PHASE1_SCRIPT_READY"
+}
