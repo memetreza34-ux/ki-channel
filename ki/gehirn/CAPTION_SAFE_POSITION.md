@@ -1,6 +1,6 @@
 # Cross-Platform Caption Safe Position — Short-Form
 
-Diese Datei dokumentiert die **kanonische Untertitelgeometrie** für vertikale Production-Reels (1080×1920).
+Diese Datei dokumentiert die **kanonische Untertitelgeometrie und -typografie** für vertikale Production-Reels (1080×1920).
 
 ## Single Source of Truth
 
@@ -8,7 +8,7 @@ Die technische Wahrheit liegt ausschließlich in:
 
 `ki/src/reels/captionSafe.ts`
 
-Diese Markdown-Datei erklärt dieselben Werte menschenlesbar. Wenn Source und Dokumentation jemals voneinander abweichen, gilt **der Source als autoritativ** und die Dokumentation muss korrigiert werden. Neue Reels dürfen keine eigene Caption-Geometrie hart codieren, sofern der Nutzer keine ausdrückliche Ausnahme verlangt.
+Diese Markdown-Datei erklärt dieselben Werte menschenlesbar. Wenn Source und Dokumentation jemals voneinander abweichen, gilt **der Source als autoritativ** und die Dokumentation muss korrigiert werden. Neue Reels dürfen keine eigene Caption-Geometrie oder abweichende Standard-Schrift hart codieren, sofern der Nutzer keine ausdrückliche Ausnahme verlangt.
 
 ## Kanonischer Standard
 
@@ -18,10 +18,12 @@ Aktueller Source-Stand:
 - horizontaler Sicherheitsabstand: **`76px` links/rechts**
 - bevorzugte maximale Caption-Breite: **`928px`**
 - Fontgröße ungefähr **`40px`**
+- Schriftfamilie: **explizite Sans-Serif-Brandtypografie** über `REEL_CAPTION_FONT_FAMILY`
+- die Caption darf **nicht** auf eine geerbte Browser-/Serif-Standardschrift zurückfallen
 - normalerweise **4–6 Wörter pro Sinnblock**
 - maximal **2 Zeilen gleichzeitig**
 - Caption als **halbtransparente Glass-/Blur-Overlay-Fläche** auf demselben Fullscreen-Hintergrund
-- aktive Sprecherposition in der Szenen-Akzentfarbe
+- aktive Sprecherposition in der Szenen-Akzentfarbe, sofern vorgesehen
 - kein separater Footer und kein zweiter Hintergrund nur für Untertitel
 
 ## Unterer UI-/Dead-Bereich
@@ -48,6 +50,7 @@ Für neue Reels:
 - Caption liegt als Overlay darüber, nicht in einer eigenen Footer-Zone
 - wenn Visual und Caption kollidieren: Visual höher/kompakter bauen oder Labels kürzen
 - Caption-Geometrie nicht reel-spezifisch verändern, um ein Layoutproblem zu kaschieren
+- Caption-Typografie nicht vom lokalen Scene-Container erben; sie muss im Shared Style selbst definiert sein
 - bewusste Ausnahmen müssen dokumentiert und erneut im echten Smartphone-/Feed-Kontext geprüft werden
 
 ## Cover-Fenster
@@ -60,9 +63,10 @@ Neue Production-Reels müssen:
 
 - `REEL_CAPTION_SAFE` / `REEL_CAPTION_WRAPPER_STYLE` aus `ki/src/reels/captionSafe.ts` verwenden
 - `REEL_CAPTION_GLASS_STYLE` oder eine daraus abgeleitete gemeinsame Glass-Variante nutzen
+- die gemeinsame `REEL_CAPTION_FONT_FAMILY` respektieren
 - keine eigene alternative Standardgeometrie hart codieren
 - Fullscreen-Hintergründe beibehalten; kein weißer Untertitel-Footer
-- nach jeder bewussten Caption-Geometrieänderung neu rendern und in Smartphone-/Feed-Größe prüfen
+- nach jeder bewussten Caption-Geometrie- oder Typografieänderung neu rendern und in Smartphone-/Feed-Größe prüfen
 
 ## Review-Gate
 
@@ -72,8 +76,9 @@ Ein Reel ist nicht visuell freigegeben, wenn:
 - Caption rechts mit Feed-Interaktions-UI konkurriert
 - Caption und Hauptvisual sich unlesbar überlagern
 - mehr als 2 Caption-Zeilen sichtbar sind
+- die Caption auf eine ungewollte Browser-/Serif-Standardschrift zurückfällt
 - ein zweiter Hintergrund/weißer Footer nur für die Caption entsteht
 - reel-spezifische Geometrie ohne dokumentierte Ausnahme die zentrale Source umgeht
-- ein alter Render nach einer Caption-Positionsänderung weiter als freigegeben gilt
+- ein alter Render nach einer Caption-Positions- oder Typografieänderung weiter als freigegeben gilt
 
-Nach jeder Änderung der Caption-Position ist ein neuer Render plus Smartphone-/Feed-Sichttest Pflicht.
+Nach jeder Änderung der Caption-Position oder -Typografie ist ein neuer Render plus Smartphone-/Feed-Sichttest Pflicht.
