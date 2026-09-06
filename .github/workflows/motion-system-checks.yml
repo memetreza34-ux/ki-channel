@@ -65,9 +65,30 @@ jobs:
             node ki/scripts/validate-script-budget-contract.mjs
           } 2>&1 | tee ci-logs/production-contracts.log
 
+      - name: Verify Longform v1 contracts before install
+        id: longform_contracts
+        if: always() && steps.wiring.outcome == 'success' && steps.contracts.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          {
+            node --check scripts/new-ki-longform.mjs
+            node --check scripts/check-ki-longform-structure.mjs
+            node --check scripts/check-ki-longform-release.mjs
+            node --check scripts/prepare-longform-video-asset.mjs
+            node --check scripts/check-ki-longform-render-readiness.mjs
+            node --check scripts/create-ki-longform-render-lock.mjs
+            node --check scripts/check-ki-longform-master.mjs
+            node --check scripts/render-ki-longform-master.mjs
+            node --check scripts/__tests__/longform-v1-contracts.test.mjs
+            node --check scripts/__tests__/longform-master-gate.test.mjs
+            node scripts/check-ki-longform-structure.mjs
+            node --test scripts/__tests__/longform-v1-contracts.test.mjs scripts/__tests__/longform-master-gate.test.mjs
+          } 2>&1 | tee ci-logs/longform-contracts.log
+
       - name: Install canonical workspaces
         id: install
-        if: always() && steps.wiring.outcome == 'success' && steps.contracts.outcome == 'success'
+        if: always() && steps.wiring.outcome == 'success' && steps.contracts.outcome == 'success' && steps.longform_contracts.outcome == 'success'
         continue-on-error: true
         run: |
           set -o pipefail
@@ -133,6 +154,7 @@ jobs:
           (
             steps.wiring.outcome == 'failure' ||
             steps.contracts.outcome == 'failure' ||
+            steps.longform_contracts.outcome == 'failure' ||
             steps.install.outcome == 'failure' ||
             steps.repo_verify.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
