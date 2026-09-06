@@ -2,7 +2,7 @@
 
 **Format:** YouTube Longform v1  
 **Datum:** 2026-09-05  
-**Status:** PHASE1_SCRIPT_READY  
+**Status:** PHASE1_READY / BAD_RENDER_REJECTED / WAITING_FOR_USER_VOICEOVER  
 **Source:** `ki/src/longform/2026-09-05-gpt-6-astra-was-sich-wirklich-aendert/`
 
 ## Kernfrage
@@ -25,25 +25,57 @@ Nach dem Video soll klar sein:
 
 **Agent/Produktionssystem:** komplette Medienarbeit. Dazu gehören Bilder, B-Roll, offizielle Screenshots/Assets, Quellenrecherche, Rechte-/Lizenzprüfung, Provenance, lokale Materialisierung, Zuschnitt und Integration.
 
-Workflow für Medien:
-
-- Phase 1: benötigte Medien bestimmen, konkrete Quellen/Kandidaten suchen und Rechte/Provenance vorprüfen.
-- Phase 3 nach Voice-Lock: finale Kandidaten auswählen, lokal materialisieren, SHA-256 binden und exakt auf die echten Voiceover-Timings zuschneiden.
-
-Der Nutzer muss **keine B-Roll und keine Bilder selbst besorgen**.
-
-## Phase
+## Phase 1 — abgeschlossen
 
 - Research: abgeschlossen für Skriptstand 2026-09-05
 - Claims: strukturiert und mit Quellen belegt
-- Kapitel: strukturiert, Timings noch nicht voice-locked
-- Sprechertext: finaler Phase-1-Entwurf vorhanden
-- Media-/B-Roll-Bedarf: geplant; konkrete Kandidaten/Quellen werden vom Agenten beschafft
-- Produktions-Voiceover: **FEHLT / USER_PROVIDED**
-- Forced Alignment: ausstehend
-- finale Medien-Materialisierung/Zuschnitt: Phase 3 nach Voice-Lock
-- Remotion-Timeline/Animation: erst nach Voice-Lock finalisieren
-- Thumbnail: 3 Konzepte geplant, noch nicht gerendert/ausgewählt
-- Finalrender/Review/Release: ausstehend
+- Kapitel: strukturiert, reale Timings erst nach Voiceover
+- Sprechertext: vorhanden
+- konkrete offizielle Proof-Quellen: gelockt
+- konkrete B-Roll-Kandidaten: gelockt
+- Medienbeschaffung: Agent-Aufgabe
+- Visual-Story-Plan: vorhanden
+- Thumbnail: drei Konzepte geplant
 
-Vertrag: `ki/youtube-longform/LONGFORM-V1.md`.
+## Abgelehnter Prototyp
+
+Der vom Nutzer hochgeladene 3:23-Test wurde am 2026-09-06 analysiert und **vollständig verworfen**. Er darf weder als Master noch als Source-Vorlage weiterverwendet werden.
+
+Hauptprobleme:
+
+- ca. 84,5 Sekunden Stille am Ende
+- statische Abschnitte von ca. 33–67 Sekunden
+- sichtbare Placeholder-Flächen
+- praktisch keine echte B-Roll
+- ungeeignete/fiktiv wirkende Evidence-UI
+- extrem niedrige Videobitrate
+- Audio-Master außerhalb Ziel
+
+Details: `06-projektdateien/FAILED-RENDER-2026-09-06.md`.
+
+## Neue Render-Regel
+
+Ein neuer Astra-Review-Master darf ausschließlich über den kanonischen Longform-Renderpfad entstehen:
+
+```bash
+node scripts/render-ki-longform-master.mjs ki/youtube-longform/2026-09-05/01_GPT-6-Astra-Was-sich-wirklich-aendert
+```
+
+Der Render wird technisch blockiert, solange unter anderem:
+
+- finales Nutzer-Voiceover fehlt,
+- Kapitel nicht voice-locked sind,
+- benötigte Medien nicht lokal/rights-verified/SHA-gebunden sind,
+- keine echte TSX-Composition existiert,
+- `compositionId` nicht registriert ist,
+- Source Platzhalter enthält.
+
+## Aktueller nächster Schritt
+
+**Nur Nutzer:** finales Voiceover aus `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt` erzeugen und als `voiceover.wav` oder `voiceover.mp3` bereitstellen.
+
+Danach vollständig Agent/Phase 3:
+
+`Audio messen → Forced Alignment → reale Kapitel-Timings → Medien lokal materialisieren → Rechte/SHA binden → TSX-Source komplett neu bauen → freie story-driven Animation → SFX → kanonischer CRF-18-Render → Audio-Master → Master-QA → Kontaktbogen → Thumbnail/Subtitles → kompletter 1x-Review → Release-Gate`.
+
+Verträge: `ki/youtube-longform/LONGFORM-V1.md` und `ki/youtube-longform/RENDER-GATES.md`.
