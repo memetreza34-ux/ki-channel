@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "CONCEPTS_READY_RENDER_PENDING",
+  "promise": "Astra ist nicht nur leistungsfähiger; die eigentliche Veränderung ist mehr Delegation bei gleichzeitig schwierigerer Überwachung.",
+  "variants": [
+    {
+      "id": "A",
+      "concept": "Split-Konflikt: links GPT-6 ASTRA / MEHR KÖNNEN, rechts dunkler Monitor / WENIGER SICHTBAR. Sehr wenig Text, klare Zweiteilung.",
+      "thumbnailText": "MEHR KÖNNEN. WENIGER SICHTBAR?",
+      "primaryObject": "Astra-Modellkarte gegen Monitor-/Control-Layer",
+      "status": "PLANNED"
+    },
+    {
+      "id": "B",
+      "concept": "Große CRITICAL-Stufe in einer Sicherheitsleiter, Astra steht direkt darauf. Kleiner Kontrast-Hinweis: OpenAIs erste Cyber-Critical-Einstufung.",
+      "thumbnailText": "ERSTMALS: CRITICAL",
+      "primaryObject": "Preparedness-Leiter + Astra",
+      "status": "PLANNED"
+    },
+    {
+      "id": "C",
+      "concept": "Agent erledigt mehrere Computeraufgaben gleichzeitig; darüber ein einzelnes Kontrollfenster mit Warnsignal. Fokus auf Delegation statt Hype.",
+      "thumbnailText": "JETZT WIRD KI ZUM AGENTEN",
+      "primaryObject": "Mehrstufiger Computer-Workflow + Approval Gate",
+      "status": "PLANNED"
+    }
+  ],
+  "selectedVariant": null,
+  "selectionRule": "Erst nach drei gerenderten 1280x720-Varianten in kleiner Darstellung auswählen. Titel und Thumbnail dürfen sich nicht 1:1 wiederholen."
+}

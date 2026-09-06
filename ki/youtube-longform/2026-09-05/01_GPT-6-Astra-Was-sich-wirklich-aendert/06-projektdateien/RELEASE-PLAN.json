@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "DRAFT",
+  "requiredDeliverables": [
+    "video.mp4",
+    "thumbnail-selected.png",
+    "title.txt",
+    "description.md",
+    "chapters.txt",
+    "subtitles.srt",
+    "subtitles.vtt",
+    "transcript.txt",
+    "sources.md",
+    "manifest.json"
+  ],
+  "technicalChecksComplete": false,
+  "visualReviewComplete": false,
+  "audioReviewComplete": false,
+  "sourceReviewComplete": false,
+  "oneXReviewCompletedAt": null,
+  "reviewedMasterSha256": null,
+  "requiredRenderEvidence": [
+    "06-projektdateien/RENDER-LOCK.json",
+    "06-projektdateien/review/AUDIO-MASTER.json",
+    "06-projektdateien/review/MASTER-QA.json",
+    "06-projektdateien/review/RENDER-RESULT.json",
+    "06-projektdateien/review/CONTACT-SHEET-*.jpg"
+  ],
+  "releaseRule": "READY only after exact reviewed master is SHA-256 bound and passes live master QA again"
+}

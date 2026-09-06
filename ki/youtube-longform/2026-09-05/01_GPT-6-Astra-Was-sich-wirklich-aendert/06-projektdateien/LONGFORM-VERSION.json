@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "contract": "LONGFORM_V1",
+  "publishDate": "2026-09-05",
+  "title": "GPT-6 Astra: Was sich wirklich geändert hat",
+  "sourceSlug": "2026-09-05-gpt-6-astra-was-sich-wirklich-aendert",
+  "compositionId": null,
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "aspectRatio": "16:9"
+  },
+  "animationFreedom": "OPEN_ENDED_STORY_DRIVEN",
+  "renderPolicy": "GATED_CANONICAL_RENDER_ONLY",
+  "canonicalRenderCommand": "node scripts/render-ki-longform-master.mjs <package>",
+  "status": "PHASE1_MEDIA_SOURCES_LOCKED_BAD_RENDER_REJECTED"
+}
