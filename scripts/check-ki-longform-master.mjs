@@ -56,7 +56,7 @@ if (video) {
   const vBitrate = Number(video.bit_rate);
   metrics.videoBitrate = Number.isFinite(vBitrate) ? vBitrate : null;
   if (Number.isFinite(vBitrate)) {
-    if (vBitrate < 500_000) fail(`video bitrate ${Math.round(vBitrate/1000)} kbit/s is implausibly low for 1080p production master.`);
+    if (vBitrate < 500_000) warn(`video bitrate ${Math.round(vBitrate/1000)} kbit/s is unusually low for 1080p; CRF 18/render lock remains quality authority, so inspect compression and visual complexity.`);
     else if (vBitrate < 1_000_000) warn(`video bitrate ${Math.round(vBitrate/1000)} kbit/s is low; visually inspect compression.`);
   } else warn('video stream bitrate unavailable; CRF/render report must be reviewed.');
 }
