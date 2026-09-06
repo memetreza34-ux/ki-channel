@@ -76,9 +76,14 @@ jobs:
             node --check scripts/check-ki-longform-structure.mjs
             node --check scripts/check-ki-longform-release.mjs
             node --check scripts/prepare-longform-video-asset.mjs
+            node --check scripts/check-ki-longform-render-readiness.mjs
+            node --check scripts/create-ki-longform-render-lock.mjs
+            node --check scripts/check-ki-longform-master.mjs
+            node --check scripts/render-ki-longform-master.mjs
             node --check scripts/__tests__/longform-v1-contracts.test.mjs
+            node --check scripts/__tests__/longform-master-gate.test.mjs
             node scripts/check-ki-longform-structure.mjs
-            node --test scripts/__tests__/longform-v1-contracts.test.mjs
+            node --test scripts/__tests__/longform-v1-contracts.test.mjs scripts/__tests__/longform-master-gate.test.mjs
           } 2>&1 | tee ci-logs/longform-contracts.log
 
       - name: Install canonical workspaces
