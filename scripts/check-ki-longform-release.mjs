@@ -1,130 +1,29 @@
 #!/usr/bin/env node
-import {existsSync, statSync} from 'node:fs';
-import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {createReadStream, existsSync, statSync} from 'node:fs';
+import {readdir, readFile} from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
 import {resolve, join, sep} from 'node:path';
 import process from 'node:process';
 
 const rawPackage = process.argv[2];
-if (!rawPackage) {
-  console.error('Usage: node scripts/check-ki-longform-release.mjs <ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel>');
-  process.exit(1);
-}
-
-const root = resolve(rawPackage);
-const errors = [];
-const posix = (path) => path.split(sep).join('/');
-const isFile = (path) => existsSync(path) && statSync(path).isFile();
-const nonEmptyFile = (path) => isFile(path) && statSync(path).size > 0;
-const fail = (message) => errors.push(message);
-
-const readJson = async (relative) => {
-  const path = join(root, relative);
-  if (!isFile(path)) {
-    fail(`Pflichtdatei fehlt: ${posix(path)}`);
-    return null;
-  }
-  try {
-    return JSON.parse(await readFile(path, 'utf8'));
-  } catch (cause) {
-    fail(`Ungültiges JSON ${posix(path)}: ${cause instanceof Error ? cause.message : cause}`);
-    return null;
-  }
-};
-
-if (!existsSync(root) || !statSync(root).isDirectory()) {
-  console.error(`LONGFORM RELEASE FAILED: Paket fehlt: ${posix(root)}`);
-  process.exit(1);
-}
-
-const version = await readJson('06-projektdateien/LONGFORM-VERSION.json');
-const release = await readJson('06-projektdateien/RELEASE-PLAN.json');
-const claims = await readJson('01-script-audio/CLAIMS.json');
-const chapters = await readJson('01-script-audio/CHAPTERS.json');
-const media = await readJson('02-visuals/MEDIA-PLAN.json');
-const thumbnail = await readJson('03-thumbnail/THUMBNAIL-PLAN.json');
-
-if (version && (version.version !== 1 || version.contract !== 'LONGFORM_V1')) {
-  fail('Release-Gate unterstützt nur LONGFORM_V1.');
-}
-
-if (release) {
-  if (release.status !== 'READY') fail('RELEASE-PLAN.status muss READY sein.');
-  for (const field of ['technicalChecksComplete', 'visualReviewComplete', 'audioReviewComplete', 'sourceReviewComplete']) {
-    if (release[field] !== true) fail(`RELEASE-PLAN.${field} muss true sein.`);
-  }
-  if (!Array.isArray(release.requiredDeliverables)) fail('RELEASE-PLAN.requiredDeliverables fehlt.');
-  for (const deliverable of release.requiredDeliverables ?? []) {
-    if (typeof deliverable !== 'string' || !deliverable.trim()) {
-      fail('Ungültiger Eintrag in requiredDeliverables.');
-      continue;
-    }
-    const path = join(root, '05-export', deliverable);
-    if (!nonEmptyFile(path)) fail(`Export fehlt oder ist leer: 05-export/${deliverable}`);
-  }
-}
-
-if (claims) {
-  if (claims.status !== 'READY') fail('CLAIMS.status muss READY sein.');
-  if (!Array.isArray(claims.claims)) fail('CLAIMS.claims muss ein Array sein.');
-  for (const claim of claims.claims ?? []) {
-    if (claim.factChecked !== true) fail(`Claim ${claim.claimId ?? '?'} ist nicht factChecked.`);
-    if (!claim.sourceUrl || typeof claim.sourceUrl !== 'string') fail(`Claim ${claim.claimId ?? '?'} braucht sourceUrl.`);
-    if (!claim.chapterId) fail(`Claim ${claim.claimId ?? '?'} braucht chapterId.`);
-  }
-}
-
-if (chapters) {
-  if (chapters.status !== 'READY') fail('CHAPTERS.status muss READY sein.');
-  if (!Array.isArray(chapters.chapters) || chapters.chapters.length === 0) fail('Mindestens ein Kapitel ist erforderlich.');
-  let lastEnd = -1;
-  for (const chapter of chapters.chapters ?? []) {
-    const start = Number(chapter.startSeconds);
-    const end = Number(chapter.endSeconds);
-    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end <= start) {
-      fail(`Kapitel ${chapter.id ?? '?'} braucht gültige reale startSeconds/endSeconds.`);
-      continue;
-    }
-    if (start < lastEnd - 0.05) fail(`Kapitel ${chapter.id ?? '?'} überlappt unerwartet die vorige Timeline.`);
-    lastEnd = end;
-  }
-}
-
-if (media) {
-  if (media.status !== 'READY') fail('MEDIA-PLAN.status muss READY sein.');
-  if (!Array.isArray(media.assets)) fail('MEDIA-PLAN.assets muss ein Array sein.');
-  for (const asset of media.assets ?? []) {
-    if (asset.status !== 'APPROVED') fail(`Media ${asset.assetId ?? '?'} ist nicht APPROVED.`);
-    if (asset.rightsVerified !== true) fail(`Media ${asset.assetId ?? '?'} braucht rightsVerified=true.`);
-    if (!asset.localFile || /^https?:\/\//i.test(String(asset.localFile))) fail(`Media ${asset.assetId ?? '?'} braucht eine lokale Datei.`);
-    if (typeof asset.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(asset.sha256)) fail(`Media ${asset.assetId ?? '?'} braucht SHA-256.`);
-    if (!['USER_PROVIDED', 'GENERATED_NON_EVIDENTIARY'].includes(asset.sourceType) && !asset.sourceUrl) {
-      fail(`Externes Media ${asset.assetId ?? '?'} braucht sourceUrl.`);
-    }
-    if (asset.sourceType === 'GENERATED_NON_EVIDENTIARY' && asset.provesRealWorldClaim === true) {
-      fail(`Generiertes Media ${asset.assetId ?? '?'} darf keinen realen Claim beweisen.`);
-    }
-    const local = resolve(root, String(asset.localFile || ''));
-    if (asset.localFile && !nonEmptyFile(local)) fail(`Lokales Media fehlt/leer: ${asset.localFile}`);
-  }
-}
-
-if (thumbnail) {
-  if (thumbnail.status !== 'READY') fail('THUMBNAIL-PLAN.status muss READY sein.');
-  if (!Array.isArray(thumbnail.variants) || thumbnail.variants.length < 3) fail('Mindestens drei Thumbnail-Varianten erforderlich.');
-  if (!thumbnail.selectedVariant) fail('THUMBNAIL-PLAN.selectedVariant fehlt.');
-  else if (!thumbnail.variants?.some((variant) => variant.id === thumbnail.selectedVariant)) fail('selectedVariant ist nicht in variants vorhanden.');
-}
-
-if (!nonEmptyFile(join(root, '01-script-audio', 'voiceover.wav')) && !nonEmptyFile(join(root, '01-script-audio', 'voiceover.mp3'))) {
-  fail('Finales Nutzer-Voiceover fehlt (voiceover.wav oder voiceover.mp3).');
-}
-
-if (errors.length > 0) {
-  console.error(`LONGFORM RELEASE FAILED (${errors.length}):`);
-  for (const message of errors) console.error(`- ${message}`);
-  process.exit(1);
-}
-
-console.log('LONGFORM RELEASE: PASSED');
-console.log(`package: ${posix(root)}`);
-console.log('Master, Claims, Media, Thumbnail, Voiceover und Review-Vertrag sind release-bereit.');
+if (!rawPackage) { console.error('Usage: node scripts/check-ki-longform-release.mjs <ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel>'); process.exit(1); }
+const root = resolve(rawPackage); const errors=[]; const posix=(p)=>p.split(sep).join('/'); const isFile=(p)=>existsSync(p)&&statSync(p).isFile(); const nonEmptyFile=(p)=>isFile(p)&&statSync(p).size>0; const fail=(m)=>errors.push(m);
+const sha256File=(file)=>new Promise((ok,bad)=>{const h=createHash('sha256');const s=createReadStream(file);s.on('data',(c)=>h.update(c));s.on('end',()=>ok(h.digest('hex')));s.on('error',bad);});
+const readJson=async(relative)=>{const p=join(root,relative);if(!isFile(p)){fail(`Pflichtdatei fehlt: ${posix(p)}`);return null;}try{return JSON.parse(await readFile(p,'utf8'));}catch(cause){fail(`Ungültiges JSON ${posix(p)}: ${cause instanceof Error?cause.message:cause}`);return null;}};
+if(!existsSync(root)||!statSync(root).isDirectory()){console.error(`LONGFORM RELEASE FAILED: Paket fehlt: ${posix(root)}`);process.exit(1);}
+const version=await readJson('06-projektdateien/LONGFORM-VERSION.json'); const release=await readJson('06-projektdateien/RELEASE-PLAN.json'); const claims=await readJson('01-script-audio/CLAIMS.json'); const chapters=await readJson('01-script-audio/CHAPTERS.json'); const media=await readJson('02-visuals/MEDIA-PLAN.json'); const thumbnail=await readJson('03-thumbnail/THUMBNAIL-PLAN.json'); const renderLock=await readJson('06-projektdateien/RENDER-LOCK.json'); const masterQa=await readJson('06-projektdateien/review/MASTER-QA.json'); const renderResult=await readJson('06-projektdateien/review/RENDER-RESULT.json');
+if(version){if(version.version!==1||version.contract!=='LONGFORM_V1')fail('Release-Gate unterstützt nur LONGFORM_V1.');if(!version.compositionId)fail('LONGFORM-VERSION.compositionId fehlt.');}
+if(renderLock){if(renderLock.status!=='LOCKED_FOR_RENDER'||renderLock.contract!=='LONGFORM_V1_RENDER_LOCK')fail('RENDER-LOCK ist nicht gültig/locked.');if(version?.compositionId&&renderLock.compositionId!==version.compositionId)fail('RENDER-LOCK compositionId stimmt nicht mit LONGFORM-VERSION überein.');if(!Array.isArray(renderLock.files)||renderLock.files.length===0)fail('RENDER-LOCK.files fehlt.');}
+if(masterQa){if(masterQa.status!=='PASSED')fail('MASTER-QA.status muss PASSED sein.');if(Array.isArray(masterQa.errors)&&masterQa.errors.length)fail('MASTER-QA enthält Fehler.');}
+if(renderResult){if(renderResult.status!=='LONGFORM_REVIEW_CANDIDATE_READY_NOT_RELEASED')fail('RENDER-RESULT hat unerwarteten Status.');if(version?.compositionId&&renderResult.compositionId!==version.compositionId)fail('RENDER-RESULT compositionId stimmt nicht.');if(renderResult.humanReviewRequired!==true)fail('RENDER-RESULT muss humanReviewRequired=true setzen.');}
+if(release){if(release.status!=='READY')fail('RELEASE-PLAN.status muss READY sein.');for(const field of ['technicalChecksComplete','visualReviewComplete','audioReviewComplete','sourceReviewComplete'])if(release[field]!==true)fail(`RELEASE-PLAN.${field} muss true sein.`);if(typeof release.oneXReviewCompletedAt!=='string'||!release.oneXReviewCompletedAt.trim())fail('RELEASE-PLAN.oneXReviewCompletedAt fehlt.');if(typeof release.reviewedMasterSha256!=='string'||!/^[a-f0-9]{64}$/i.test(release.reviewedMasterSha256))fail('RELEASE-PLAN.reviewedMasterSha256 fehlt/ungültig.');if(!Array.isArray(release.requiredDeliverables))fail('RELEASE-PLAN.requiredDeliverables fehlt.');for(const deliverable of release.requiredDeliverables??[]){if(typeof deliverable!=='string'||!deliverable.trim()){fail('Ungültiger Eintrag in requiredDeliverables.');continue;}const p=join(root,'05-export',deliverable);if(!nonEmptyFile(p))fail(`Export fehlt oder ist leer: 05-export/${deliverable}`);}}
+if(claims){if(claims.status!=='READY')fail('CLAIMS.status muss READY sein.');if(!Array.isArray(claims.claims))fail('CLAIMS.claims muss ein Array sein.');for(const claim of claims.claims??[]){if(claim.factChecked!==true)fail(`Claim ${claim.claimId??'?'} ist nicht factChecked.`);if(!claim.sourceUrl||typeof claim.sourceUrl!=='string')fail(`Claim ${claim.claimId??'?'} braucht sourceUrl.`);if(!claim.chapterId)fail(`Claim ${claim.claimId??'?'} braucht chapterId.`);}}
+if(chapters){if(chapters.status!=='READY')fail('CHAPTERS.status muss READY sein.');if(!Array.isArray(chapters.chapters)||chapters.chapters.length===0)fail('Mindestens ein Kapitel ist erforderlich.');let lastEnd=-1;for(const chapter of chapters.chapters??[]){const start=Number(chapter.startSeconds),end=Number(chapter.endSeconds);if(!Number.isFinite(start)||!Number.isFinite(end)||start<0||end<=start){fail(`Kapitel ${chapter.id??'?'} braucht gültige reale startSeconds/endSeconds.`);continue;}if(start<lastEnd-0.05)fail(`Kapitel ${chapter.id??'?'} überlappt unerwartet die vorige Timeline.`);lastEnd=end;}}
+if(media){if(media.status!=='READY')fail('MEDIA-PLAN.status muss READY sein.');if(!Array.isArray(media.assets))fail('MEDIA-PLAN.assets muss ein Array sein.');for(const asset of media.assets??[]){if(asset.requiredForRender===false)continue;const id=asset.assetId??'?';if(asset.status!=='APPROVED')fail(`Media ${id} ist nicht APPROVED.`);if(asset.rightsVerified!==true)fail(`Media ${id} braucht rightsVerified=true.`);if(!asset.localFile||/^https?:\/\//i.test(String(asset.localFile))){fail(`Media ${id} braucht eine lokale Datei.`);continue;}if(typeof asset.sha256!=='string'||!/^[a-f0-9]{64}$/i.test(asset.sha256))fail(`Media ${id} braucht SHA-256.`);if(!['USER_PROVIDED','GENERATED_NON_EVIDENTIARY'].includes(asset.sourceType)&&!asset.sourceUrl)fail(`Externes Media ${id} braucht sourceUrl.`);if(asset.sourceType==='GENERATED_NON_EVIDENTIARY'&&asset.provesRealWorldClaim===true)fail(`Generiertes Media ${id} darf keinen realen Claim beweisen.`);const local=resolve(root,String(asset.localFile||''));if(asset.localFile&&!nonEmptyFile(local))fail(`Lokales Media fehlt/leer: ${asset.localFile}`);else if(asset.localFile&&typeof asset.sha256==='string'&&/^[a-f0-9]{64}$/i.test(asset.sha256)){const actual=await sha256File(local);if(actual.toLowerCase()!==asset.sha256.toLowerCase())fail(`Media ${id} SHA-256 stimmt nicht mit lokaler Datei überein.`);}}}
+if(thumbnail){if(thumbnail.status!=='READY')fail('THUMBNAIL-PLAN.status muss READY sein.');if(!Array.isArray(thumbnail.variants)||thumbnail.variants.length<3)fail('Mindestens drei Thumbnail-Varianten erforderlich.');if(!thumbnail.selectedVariant)fail('THUMBNAIL-PLAN.selectedVariant fehlt.');else if(!thumbnail.variants?.some((v)=>v.id===thumbnail.selectedVariant))fail('selectedVariant ist nicht in variants vorhanden.');}
+if(!nonEmptyFile(join(root,'01-script-audio','voiceover.wav'))&&!nonEmptyFile(join(root,'01-script-audio','voiceover.mp3')))fail('Finales Nutzer-Voiceover fehlt (voiceover.wav oder voiceover.mp3).');
+const finalMaster=join(root,'05-export','video.mp4');
+if(nonEmptyFile(finalMaster)){const finalSha=await sha256File(finalMaster);if(release?.reviewedMasterSha256&&finalSha.toLowerCase()!==String(release.reviewedMasterSha256).toLowerCase())fail('05-export/video.mp4 stimmt nicht mit reviewedMasterSha256 überein.');const reviewMasterPath=renderResult?.master?resolve(String(renderResult.master)):null;if(reviewMasterPath&&nonEmptyFile(reviewMasterPath)){const reviewSha=await sha256File(reviewMasterPath);if(reviewSha!==finalSha)fail('Finaler video.mp4 ist nicht byte-identisch mit dem technisch geprüften Review-Master.');}const qaRun=spawnSync(process.execPath,[resolve('scripts','check-ki-longform-master.mjs'),finalMaster],{encoding:'utf8',maxBuffer:64*1024*1024});if(qaRun.error||qaRun.status!==0)fail(`Finaler Master besteht Live-QA nicht: ${qaRun.stderr||qaRun.stdout||qaRun.error?.message}`);}else fail('Finaler Master 05-export/video.mp4 fehlt.');
+const reviewDir=join(root,'06-projektdateien','review');if(existsSync(reviewDir)&&statSync(reviewDir).isDirectory()){const sheets=(await readdir(reviewDir)).filter((n)=>/^CONTACT-SHEET-\d+\.jpg$/i.test(n));if(sheets.length===0)fail('Kontaktbogen für visuellen Review fehlt.');}else fail('Review-Ordner fehlt.');
+if(errors.length){console.error(`LONGFORM RELEASE FAILED (${errors.length}):`);for(const m of errors)console.error(`- ${m}`);process.exit(1);}console.log('LONGFORM RELEASE: PASSED');console.log(`package: ${posix(root)}`);console.log('Finaler Master ist hash-gebunden, technisch erneut geprüft und mit abgeschlossenem 1x-/Quellen-/Audio-/Visual-Review release-bereit.');
