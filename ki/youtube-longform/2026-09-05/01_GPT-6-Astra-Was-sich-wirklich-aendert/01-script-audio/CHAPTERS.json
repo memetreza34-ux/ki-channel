@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "status": "SCRIPT_READY_TIMING_PENDING",
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "title": "Warum Astra mehr als ein normales Modell-Update ist",
+      "storyRole": "COLD_OPEN",
+      "purpose": "Den scheinbaren Widerspruch setzen: leistungsfähiger und besser ausgerichtet, aber schwerer zu überwachen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-02",
+      "title": "Was Astra praktisch anders macht",
+      "storyRole": "MECHANISM",
+      "purpose": "Benchmarks von echter agentischer Computerarbeit trennen und den Delegationssprung erklären.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-03",
+      "title": "Was die Critical-Cyberstufe bedeutet",
+      "storyRole": "PROOF",
+      "purpose": "OpenAIs Preparedness-Einstufung, Fähigkeiten und neue Schutzmaßnahmen verständlich machen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-04",
+      "title": "Sicherer und trotzdem schwerer zu überwachen",
+      "storyRole": "COUNTERPOINT",
+      "purpose": "Alignment und Monitorability auseinanderhalten; Sandbagging und Monitor-Evasion sauber einordnen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-05",
+      "title": "Was sich für Nutzer und Unternehmen ändert",
+      "storyRole": "IMPLICATION",
+      "purpose": "Von Modellfähigkeiten zu Berechtigungen, Pausen, Freigaben und Agenten-Architektur überleiten.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-06",
+      "title": "Die eigentliche Grenze ist Kontrolle",
+      "storyRole": "PAYOFF",
+      "purpose": "Den Kernpunkt verdichten: mehr Delegation verlangt bessere technische Kontrolle rund um das Modell.",
+      "startSeconds": null,
+      "endSeconds": null
+    }
+  ]
+}
