@@ -31,6 +31,8 @@ const requiredFiles = [
   '.agents/skills/remotion-bits-discovery/SKILL.md',
   '.agents/skills/image-asset-prep/SKILL.md',
   '.agents/skills/video-asset-prep/SKILL.md',
+  '.agents/agents/ki-longform-production-orchestrator/agent.md',
+  '.agents/agents/ki-longform-remotion-engineer/agent.md',
   'scripts/scout-pexels-assets.mjs',
   'scripts/scout-pixabay-assets.mjs',
   'scripts/scout-wikimedia-commons-assets.mjs',
@@ -47,12 +49,13 @@ const requiredFiles = [
 for (const file of requiredFiles) if (!existsSync(file)) fail(`missing required Longform capability: ${file}`);
 
 const workflow = await requireFile('.agents/workflows/longform-full-cycle.md', [
-  'npm run antigravity:longform',
+  'check-antigravity-longform-capabilities.mjs',
   'materialize-longform-media.mjs',
   'approve-longform-media.mjs',
   'check-ki-longform-render-readiness.mjs',
   'render-ki-longform-master.mjs',
   'direct Remotion render is a prototype',
+  'ki-longform-remotion-engineer',
 ]);
 const mediaSkill = await requireFile('.agents/skills/longform-media-production/SKILL.md', [
   'MATERIALIZED_PENDING_REVIEW',
@@ -63,13 +66,17 @@ const mediaSkill = await requireFile('.agents/skills/longform-media-production/S
   'official',
   'SHA-256',
 ]);
-const orchestrator = await requireFile('.agents/agents/ki-production-orchestrator/agent.md', [
+const orchestrator = await requireFile('.agents/agents/ki-longform-production-orchestrator/agent.md', [
   'skills/longform-media-production',
   'longform-full-cycle',
+  'check-antigravity-longform-capabilities.mjs',
+  'ki-longform-remotion-engineer',
 ]);
-const storyEngineer = await requireFile('.agents/agents/ki-remotion-story-engineer/agent.md', [
+const storyEngineer = await requireFile('.agents/agents/ki-longform-remotion-engineer/agent.md', [
   'skills/longform-media-production',
   'LONGFORM_V1',
+  'OPEN_ENDED_STORY_DRIVEN',
+  '1000 frames',
 ]);
 
 const packageText = await read('package.json');
@@ -79,7 +86,6 @@ else {
   try { pkg = JSON.parse(packageText); }
   catch (error) { fail(`package.json invalid: ${error.message}`); }
   if (pkg) {
-    if (pkg.scripts?.['antigravity:longform'] !== 'node scripts/check-antigravity-longform-capabilities.mjs') fail('package.json must expose npm run antigravity:longform.');
     const deps = {...pkg.dependencies, ...pkg.devDependencies};
     const requiredDeps = [
       'remotion','@remotion/cli','@remotion/transitions','@remotion/paths','@remotion/shapes','@remotion/motion-blur','@remotion/light-leaks','@remotion/noise','@remotion/lottie','@remotion/rive','@remotion/three',
@@ -113,7 +119,7 @@ else fact('PEXELS_API_KEY present');
 if (!process.env.PIXABAY_API_KEY) warn('PIXABAY_API_KEY missing in current process. Pixabay scout unavailable until key is configured; this does not block Wikimedia/browser/local media paths.');
 else fact('PIXABAY_API_KEY present');
 
-if (workflow && mediaSkill && orchestrator && storyEngineer) fact('Antigravity Longform workflow is wired into orchestrator + story engineer');
+if (workflow && mediaSkill && orchestrator && storyEngineer) fact('Dedicated Antigravity Longform workflow is wired into a Longform orchestrator + writer');
 
 const report = {
   version: 1,
