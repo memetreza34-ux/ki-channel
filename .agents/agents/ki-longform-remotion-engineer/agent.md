@@ -36,6 +36,7 @@ Read:
 - `ki/src/longform/AGENTS.md`
 - `ki/youtube-longform/LONGFORM-V1.md`
 - `ki/youtube-longform/RENDER-GATES.md`
+- `.agents/workflows/open-ended-motion-production.md`
 - `.agents/skills/longform-media-production/SKILL.md`
 - target package `CHAPTERS.json`, `CLAIMS.json`, `MEDIA-PLAN.json`, `VISUAL-STORY-PLAN.md`
 - actual final voice/alignment data.
@@ -59,7 +60,7 @@ Do not start the final implementation while the package is still timing-pending.
 
 Animation policy is `OPEN_ENDED_STORY_DRIVEN`.
 
-There is no fixed technique whitelist or ceiling. Use existing deterministic capabilities when they fit:
+Use `.agents/workflows/open-ended-motion-production.md` to decide the medium before choosing an effect. There is no fixed technique whitelist or ceiling. Use existing deterministic capabilities when they fit:
 
 - Remotion `interpolate`, `spring`, sequences and transitions;
 - masks, wipes, transforms, depth/parallax and camera moves;
@@ -112,7 +113,13 @@ Do not imply that generic stock footage depicts the actual product/person/event 
 
 ## Completion
 
-Run focused source/type checks available for the touched code, then the canonical pre-render gate. Do not directly deliver a Remotion prototype render.
+Run focused source/type checks available for the touched code, then the canonical pre-render gate through the portable media environment:
+
+```bash
+node scripts/with-media-path.mjs node scripts/check-ki-longform-render-readiness.mjs <package>
+```
+
+Do not directly deliver a Remotion prototype render.
 
 Return:
 
