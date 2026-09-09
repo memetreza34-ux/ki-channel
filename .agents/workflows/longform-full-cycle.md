@@ -23,12 +23,19 @@ node scripts/check-antigravity-longform-capabilities.mjs
 
 If it exits non-zero, stop. Do not create a substitute prototype and do not claim that Longform production is available.
 
+If it returns `READY_WITH_WARNINGS`, decide whether each warning affects the current video. Examples:
+
+- Chrome DevTools endpoint unreachable -> official browser-proof beats are blocked until the browser endpoint is started.
+- Pexels/Pixabay API key missing -> those scouts are unavailable, but Wikimedia/browser/local paths remain usable.
+- Node version differs from the declared Node 20 -> do not call the production runtime fully verified until Node 20 is used or compatibility is explicitly validated.
+
 Then read:
 
 - `REPO-STATE.md`
 - `ki/youtube-longform/AGENTS.md`
 - `ki/youtube-longform/LONGFORM-V1.md`
 - `ki/youtube-longform/RENDER-GATES.md`
+- `.agents/workflows/open-ended-motion-production.md`
 - `.agents/skills/longform-media-production/SKILL.md`
 - target package `CLAIMS.json`, `CHAPTERS.json`, `MEDIA-PLAN.json`, `VISUAL-STORY-PLAN.md`
 
@@ -37,20 +44,21 @@ Then read:
 1. Research current claims with primary sources first.
 2. Build the final German script without padding to an arbitrary duration.
 3. Build chapter/story progression and visual worlds.
-4. For every beat decide the strongest medium, not the easiest medium:
+4. Use `.agents/workflows/open-ended-motion-production.md` to choose the strongest visual medium for every beat before choosing an effect.
+5. For every beat decide the strongest medium, not the easiest medium:
    - native Remotion/UI/diagram/chart/typography;
    - exact official source proof;
    - real image;
    - real B-roll;
    - 3D/Skia/SVG/Lottie/Rive/Canvas/Three when explanatory;
    - generated non-evidentiary metaphor only when it is not pretending to prove a real claim.
-5. Search concrete real-media candidates when useful:
-   - Pexels / Pixabay for generic real-world B-roll and photos;
+6. Search concrete real-media candidates when useful:
+   - Pexels / Pixabay for generic real-world B-roll and photos when their local API keys are configured;
    - Wikimedia Commons for documentary/proof imagery with per-file rights metadata;
    - official product/company pages for exact source proof;
    - Polyhaven only for suitable CC0 3D/HDRI/texture needs.
-6. Store concrete source candidates and metadata in `MEDIA-PLAN.json`. Abstract entries such as `find server B-roll later` are not Phase-1-complete when a concrete source can already be found.
-7. Discovery is not production approval. Never hotlink candidate URLs in Remotion.
+7. Store concrete source candidates and metadata in `MEDIA-PLAN.json`. Abstract entries such as `find server B-roll later` are not Phase-1-complete when a concrete source can already be found.
+8. Discovery is not production approval. Never hotlink candidate URLs in Remotion.
 
 If final voiceover is not present after Phase 1, stop exactly with:
 
@@ -70,10 +78,12 @@ A composition duration must derive from the final voice timeline, never from pla
 
 ## 3. Phase 3B — materialize every required external medium
 
-For scout-backed media use the production bridge, for example:
+Use the portable media environment so Antigravity non-interactive shells can resolve Homebrew FFmpeg/ffprobe on macOS.
+
+For scout-backed media:
 
 ```bash
-node scripts/materialize-longform-media.mjs <package> \
+node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --scout=<out/asset-scout/...json> \
   --candidate-id=<candidate id>
@@ -82,7 +92,7 @@ node scripts/materialize-longform-media.mjs <package> \
 For an exact official/browser-captured/local file:
 
 ```bash
-node scripts/materialize-longform-media.mjs <package> \
+node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --local-input=<local image/video>
 ```
@@ -105,6 +115,8 @@ No generic `looks fine` notes. The exact file SHA is the unit being approved.
 ### Official source proof
 
 - Prefer exact page/screenshot/figure from the official source when it proves a claim.
+- The configured Antigravity plugin is `.agents/plugins/ki-channel-production/mcp_config.json` and declares `chrome-devtools` for browser proof work.
+- The Chrome DevTools MCP expects a browser endpoint at `http://127.0.0.1:9222`; verify it is actually reachable before claiming browser-proof capability.
 - Browser/Chrome DevTools artifacts may be used to capture the exact source locally.
 - The captured file must then go through `materialize-longform-media.mjs --local-input=...` and `approve-longform-media.mjs`.
 - Never invent an OpenAI/product website, dashboard, benchmark or UI and present it as evidence.
@@ -142,7 +154,7 @@ Do not apply Reel cadence mechanically. Instead:
 Run:
 
 ```bash
-node scripts/check-ki-longform-render-readiness.mjs <package>
+node scripts/with-media-path.mjs node scripts/check-ki-longform-render-readiness.mjs <package>
 ```
 
 If this fails, stop and fix the actual blocker. Never bypass it with direct `npx remotion render`.
@@ -150,7 +162,7 @@ If this fails, stop and fix the actual blocker. Never bypass it with direct `npx
 ## 6. Only canonical production render
 
 ```bash
-node scripts/render-ki-longform-master.mjs <package>
+node scripts/with-media-path.mjs node scripts/render-ki-longform-master.mjs <package>
 ```
 
 A direct Remotion render is a prototype only and must never be handed to the user as `video.review.mp4`, production master or final video.
