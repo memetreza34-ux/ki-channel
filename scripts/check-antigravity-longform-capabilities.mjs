@@ -17,6 +17,11 @@ const requireFile = async (p, patterns = []) => {
   for (const pattern of patterns) if (!text.includes(pattern)) fail(`${p} missing required contract marker: ${pattern}`);
   return text;
 };
+const parseJson = (text, name) => {
+  if (!text) { fail(`${name} missing.`); return null; }
+  try { return JSON.parse(text); }
+  catch (error) { fail(`${name} invalid: ${error.message}`); return null; }
+};
 const commandAvailable = (cmd, args=['--version']) => {
   const result = spawnSync(cmd, args, {encoding:'utf8'});
   return !result.error && result.status === 0;
@@ -79,22 +84,18 @@ const storyEngineer = await requireFile('.agents/agents/ki-longform-remotion-eng
   '1000 frames',
 ]);
 
-const packageText = await read('package.json');
-let pkg = null;
-if (!packageText) fail('package.json missing.');
-else {
-  try { pkg = JSON.parse(packageText); }
-  catch (error) { fail(`package.json invalid: ${error.message}`); }
-  if (pkg) {
-    const deps = {...pkg.dependencies, ...pkg.devDependencies};
-    const requiredDeps = [
-      'remotion','@remotion/cli','@remotion/transitions','@remotion/paths','@remotion/shapes','@remotion/motion-blur','@remotion/light-leaks','@remotion/noise','@remotion/lottie','@remotion/rive','@remotion/three',
-      'three','@react-three/fiber','gsap','lottie-web','@rive-app/canvas-advanced','roughjs','recharts','sharp',
-    ];
-    for (const dep of requiredDeps) if (!deps?.[dep]) fail(`missing motion/media dependency: ${dep}`);
-    fact(`motion stack: ${requiredDeps.length} required packages declared`);
-  }
-}
+const rootPkg = parseJson(await read('package.json'), 'package.json');
+const kiPkg = parseJson(await read('ki/package.json'), 'ki/package.json');
+const rootDeps = rootPkg ? {...rootPkg.dependencies, ...rootPkg.devDependencies} : {};
+const kiDeps = kiPkg ? {...kiPkg.dependencies, ...kiPkg.devDependencies} : {};
+const allDeps = {...rootDeps, ...kiDeps};
+const requiredDeps = [
+  'remotion','@remotion/cli','@remotion/transitions','@remotion/paths','@remotion/shapes','@remotion/motion-blur','@remotion/light-leaks','@remotion/noise','@remotion/lottie','@remotion/rive','@remotion/three',
+  '@remotion/effects','@remotion/skia','@remotion/sfx','@shopify/react-native-skia',
+  'three','@react-three/fiber','gsap','lottie-web','@rive-app/canvas-advanced','roughjs','recharts','sharp',
+];
+for (const dep of requiredDeps) if (!allDeps?.[dep]) fail(`missing motion/media dependency: ${dep}`);
+if (rootPkg && kiPkg) fact(`motion/effects stack: ${requiredDeps.length} required packages declared across root + ki workspace`);
 
 const mcpText = await read('.agents/plugins/ki-channel/mcp_config.json');
 if (!mcpText) fail('.agents/plugins/ki-channel/mcp_config.json missing.');
@@ -120,9 +121,10 @@ if (!process.env.PIXABAY_API_KEY) warn('PIXABAY_API_KEY missing in current proce
 else fact('PIXABAY_API_KEY present');
 
 if (workflow && mediaSkill && orchestrator && storyEngineer) fact('Dedicated Antigravity Longform workflow is wired into a Longform orchestrator + writer');
+fact('No repo-native text-to-image model is declared. Longform can use sourced/local images and procedural Remotion/3D/Skia visuals; external generative-image creation is a separate capability and must not be falsely claimed.');
 
 const report = {
-  version: 1,
+  version: 2,
   status: errors.length ? 'BLOCKED' : 'READY',
   checkedAt: new Date().toISOString(),
   capabilities: {
@@ -134,9 +136,18 @@ const report = {
     polyhavenDiscovery: existsSync('scripts/scout-polyhaven-assets.mjs'),
     controlledMaterialization: existsSync('scripts/materialize-longform-media.mjs'),
     explicitShaBoundApproval: existsSync('scripts/approve-longform-media.mjs'),
-    imagePreparation: existsSync('scripts/prepare-local-image-asset.mjs'),
-    longformVideoPreparation: existsSync('scripts/prepare-longform-video-asset.mjs'),
+    imagePreparationAndUse: existsSync('scripts/prepare-local-image-asset.mjs'),
+    longformVideoBrollPreparationAndUse: existsSync('scripts/prepare-longform-video-asset.mjs'),
+    remotionEffects: Boolean(allDeps['@remotion/effects'] && allDeps['@remotion/motion-blur'] && allDeps['@remotion/transitions']),
+    skia: Boolean(allDeps['@remotion/skia'] && allDeps['@shopify/react-native-skia']),
+    threeAndR3f: Boolean(allDeps['@remotion/three'] && allDeps.three && allDeps['@react-three/fiber']),
+    lottie: Boolean(allDeps['@remotion/lottie'] && allDeps['lottie-web']),
+    rive: Boolean(allDeps['@remotion/rive'] && allDeps['@rive-app/canvas-advanced']),
+    sfx: Boolean(allDeps['@remotion/sfx']),
+    gsap: Boolean(allDeps.gsap),
+    chartsAndIllustration: Boolean(allDeps.recharts && allDeps.roughjs),
     openEndedRemotionMotion: Boolean(storyEngineer?.includes('OPEN_ENDED_STORY_DRIVEN')),
+    repoNativeTextToImageModel: false,
     canonicalPreRenderGate: existsSync('scripts/check-ki-longform-render-readiness.mjs'),
     canonicalMasterRender: existsSync('scripts/render-ki-longform-master.mjs'),
     postRenderMasterQa: existsSync('scripts/check-ki-longform-master.mjs'),
