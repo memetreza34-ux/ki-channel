@@ -18,7 +18,7 @@ This is the canonical Antigravity workflow for `ki/youtube-longform/**` packages
 Run:
 
 ```bash
-npm run antigravity:longform
+node scripts/check-antigravity-longform-capabilities.mjs
 ```
 
 If it exits non-zero, stop. Do not create a substitute prototype and do not claim that Longform production is available.
@@ -111,7 +111,7 @@ No generic `looks fine` notes. The exact file SHA is the unit being approved.
 
 ## 4. Phase 3C — build the real Remotion source
 
-Use `ki-remotion-story-engineer` as the single writer on the active working tree.
+Use `ki-longform-remotion-engineer` as the single writer on the active working tree.
 
 Required behavior:
 
