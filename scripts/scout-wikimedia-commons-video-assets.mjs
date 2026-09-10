@@ -25,6 +25,7 @@ if (!['landscape','portrait','auto'].includes(orientation)) throw new Error(`Uns
 const api = 'https://commons.wikimedia.org/w/api.php';
 const acceptedMimes = new Set(['video/webm']);
 const acceptedRights = new Set(['CC0-1.0','PUBLIC_DOMAIN','CC-BY-4.0']);
+const maxSourceBytes = 250 * 1024 * 1024;
 const clean = (value) => String(value || '')
   .replace(/<[^>]*>/g,' ')
   .replace(/&nbsp;/gi,' ')
@@ -56,10 +57,13 @@ const resolutionScore = (width,height) => {
   return Math.min(25,longEdge/120) + Math.min(15,shortEdge/120);
 };
 
+// CirrusSearch supports filetype and filemime filters. Restrict discovery to actual WebM video files
+// so generic file search results do not crowd real B-roll out of the candidate window.
+const videoSearchQuery = `${query} filetype:video filemime:"video/webm"`;
 const params = new URLSearchParams({
   action:'query',
   generator:'search',
-  gsrsearch:query,
+  gsrsearch:videoSearchQuery,
   gsrnamespace:'6',
   gsrlimit:String(limit),
   prop:'imageinfo',
@@ -84,7 +88,7 @@ if (existsSync(cachePath)) {
   }
 }
 if (!payload) {
-  const response = await fetch(requestIdentity,{headers:{'User-Agent':'ki-channel-wikimedia-video-discovery/1.0'}});
+  const response = await fetch(requestIdentity,{headers:{'User-Agent':'ki-channel-wikimedia-video-discovery/1.1'}});
   if (!response.ok) {
     console.error(`WIKIMEDIA VIDEO SCOUT FAILED: ${response.status} ${response.statusText}`);
     process.exit(1);
@@ -100,6 +104,8 @@ for (const page of pages) {
   const metadata = info?.extmetadata || {};
   const mime = String(info?.mime || '').toLowerCase();
   if (!acceptedMimes.has(mime)) continue;
+  const bytes = Number(info?.size || 0);
+  if (!Number.isFinite(bytes) || bytes <= 0 || bytes > maxSourceBytes) continue;
   const rightsStatus = rightsMap(metadata?.LicenseShortName?.value || metadata?.UsageTerms?.value);
   if (!rightsStatus || !acceptedRights.has(rightsStatus)) continue;
   const width = Number(info?.width || 0);
@@ -115,7 +121,8 @@ for (const page of pages) {
   const relevance = Math.min(42, queryTokens.filter((token)=>corpus.includes(token)).length * 8);
   const rank = Math.max(0, 15 - Number(page?.index ?? 15));
   const rightsBonus = rightsStatus === 'CC0-1.0' || rightsStatus === 'PUBLIC_DOMAIN' ? 18 : 7;
-  const score = relevance + rank + rightsBonus + orientationScore(width,height) + resolutionScore(width,height);
+  const sizeBonus = Math.max(0,12 - bytes / (25 * 1024 * 1024));
+  const score = relevance + rank + rightsBonus + sizeBonus + orientationScore(width,height) + resolutionScore(width,height);
   candidates.push({
     id:String(page?.pageid ?? title),
     pageId:page?.pageid,
@@ -127,7 +134,7 @@ for (const page of pages) {
     mime,
     width,
     height,
-    bytes:Number(info?.size || 0),
+    bytes,
     description,
     categories,
     artist:artist || null,
@@ -142,15 +149,16 @@ for (const page of pages) {
   });
 }
 
-candidates.sort((a,b)=>b.score-a.score || a.title.localeCompare(b.title));
+candidates.sort((a,b)=>b.score-a.score || a.bytes-b.bytes || a.title.localeCompare(b.title));
 const selected = candidates.slice(0,top);
 const result = {
-  version:1,
+  version:2,
   status:'DISCOVERY_ONLY_NOT_PRODUCTION_APPROVED',
   provider:'WIKIMEDIA_COMMONS',
   mediaType:'video',
   query,
-  requested:{orientation,limit,top},
+  effectiveSearchQuery:videoSearchQuery,
+  requested:{orientation,limit,top,maxSourceBytes},
   retrievedAt:new Date().toISOString(),
   apiEndpoint:api,
   cache:{ttlHours:6,fromCache,cacheFile:path.relative(process.cwd(),cachePath).split(path.sep).join('/')},
@@ -176,9 +184,10 @@ await writeFile(outPath,`${JSON.stringify(result,null,2)}\n`,'utf8');
 
 console.log(`WIKIMEDIA VIDEO SCOUT: OK — DISCOVERY ONLY${fromCache ? ' — CACHE HIT' : ''}`);
 console.log(`query: ${query}`);
+console.log(`effective search: ${videoSearchQuery}`);
 console.log(`candidates: ${selected.length}`);
 console.log(`output: ${path.relative(process.cwd(),outPath)}`);
 for (const [index,candidate] of selected.entries()) {
-  console.log(`${index+1}. ${candidate.rightsStatus} | ${candidate.width}x${candidate.height} | score ${candidate.score} | ${candidate.title}`);
+  console.log(`${index+1}. ${candidate.rightsStatus} | ${candidate.width}x${candidate.height} | ${(candidate.bytes/1024/1024).toFixed(1)} MB | score ${candidate.score} | ${candidate.title}`);
 }
 console.log('No video was downloaded and no MEDIA-PLAN was modified.');
