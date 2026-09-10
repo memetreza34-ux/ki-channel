@@ -111,6 +111,16 @@ test('real media smoke cannot fake Wikimedia with a local generated placeholder'
   assert.doesNotMatch(mediaSmoke, /color=c=white/);
 });
 
+test('Wikimedia scout rejects semantically weak and wrong-orientation candidates', () => {
+  const scout = read('scripts/scout-wikimedia-commons-video-assets.mjs');
+  assert.match(scout, /minimumMatchedTokens/);
+  assert.match(scout, /matchedQueryTokens\.length < minimumMatchedTokens/);
+  assert.match(scout, /orientationMatches/);
+  assert.match(scout, /if \(!orientationMatches\(width,height\)\) continue/);
+  assert.match(scout, /requiresSemanticQueryMatchBeforeSelection:true/);
+  assert.match(scout, /requiresRequestedOrientationMatch:true/);
+});
+
 test('canonical master keeps Remotion CLI on the pinned process Node', () => {
   const render = read('scripts/render-ki-longform-master.mjs');
   assert.match(render, /process\.execPath/);
