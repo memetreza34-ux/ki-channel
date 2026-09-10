@@ -13,21 +13,23 @@ This is the canonical Antigravity workflow for `ki/youtube-longform/**` packages
 - Phase 3: agent owns forced alignment, exact timing, media materialization, final rights/provenance binding, Remotion implementation, SFX, render, QA, subtitles, thumbnail and upload package.
 - Never ask the user to find/download B-roll or images as a normal production step.
 
-## 0. Capability preflight — before touching a video
+## 0. Runtime + capability preflight
 
-Run:
+Longform production is pinned to Node 20 by the repository engine. The host machine may use another Node version, but production scripts must run through the portable wrapper:
 
 ```bash
-node scripts/check-antigravity-longform-capabilities.mjs
+node scripts/with-longform-node20.mjs scripts/check-antigravity-longform-capabilities.mjs
 ```
 
-If it exits non-zero, stop. Do not create a substitute prototype and do not claim that Longform production is available.
+The wrapper uses the existing Node 20 directly when available; otherwise it may execute the target with `npx node@20` without globally replacing the host Node installation.
 
-If it returns `READY_WITH_WARNINGS`, decide whether each warning affects the current video. Examples:
+If the capability check exits non-zero, stop. Do not create a substitute prototype and do not claim that Longform production is available.
 
-- Chrome DevTools endpoint unreachable -> official browser-proof beats are blocked until the browser endpoint is started.
-- Pexels/Pixabay API key missing -> those scouts are unavailable, but Wikimedia/browser/local paths remain usable.
-- Node version differs from the declared Node 20 -> do not call the production runtime fully verified until Node 20 is used or compatibility is explicitly validated.
+If it returns `READY_WITH_WARNINGS`, decide whether each warning affects the current video:
+
+- Chrome DevTools offline -> run `node scripts/ensure-chrome-devtools.mjs` before official-browser-proof work, then recheck.
+- Pexels/Pixabay key missing -> those optional scouts are unavailable; key-free Wikimedia image/video discovery remains available.
+- Native image generation unavailable -> use sourced real media and native Remotion/Skia/Three illustration. Never fake evidence.
 
 Then read:
 
@@ -53,8 +55,9 @@ Then read:
    - 3D/Skia/SVG/Lottie/Rive/Canvas/Three when explanatory;
    - generated non-evidentiary metaphor only when it is not pretending to prove a real claim.
 6. Search concrete real-media candidates when useful:
-   - Pexels / Pixabay for generic real-world B-roll and photos when their local API keys are configured;
-   - Wikimedia Commons for documentary/proof imagery with per-file rights metadata;
+   - Wikimedia Commons images via `scripts/scout-wikimedia-commons-assets.mjs`;
+   - Wikimedia Commons WebM video via `scripts/scout-wikimedia-commons-video-assets.mjs` as the key-free real-B-roll baseline;
+   - Pexels / Pixabay for broader generic B-roll/photos when their local API keys are configured;
    - official product/company pages for exact source proof;
    - Polyhaven only for suitable CC0 3D/HDRI/texture needs.
 7. Store concrete source candidates and metadata in `MEDIA-PLAN.json`. Abstract entries such as `find server B-roll later` are not Phase-1-complete when a concrete source can already be found.
@@ -78,12 +81,12 @@ A composition duration must derive from the final voice timeline, never from pla
 
 ## 3. Phase 3B — materialize every required external medium
 
-Use the portable media environment so Antigravity non-interactive shells can resolve Homebrew FFmpeg/ffprobe on macOS.
+All production Node scripts run through the Node-20 wrapper, which also restores conventional Homebrew/media binary paths for child processes.
 
 For scout-backed media:
 
 ```bash
-node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <package> \
+node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --scout=<out/asset-scout/...json> \
   --candidate-id=<candidate id>
@@ -92,7 +95,7 @@ node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <pa
 For an exact official/browser-captured/local file:
 
 ```bash
-node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <package> \
+node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --local-input=<local image/video>
 ```
@@ -104,7 +107,7 @@ Then inspect the exact materialized file. For video, inspect the chosen trim, mo
 After source/rights and visual review, explicitly approve:
 
 ```bash
-node scripts/approve-longform-media.mjs <package> \
+node scripts/with-longform-node20.mjs scripts/approve-longform-media.mjs <package> \
   --asset-id=<assetId> \
   --rights-note="<specific review evidence>" \
   --visual-note="<specific visual/crop/timing review>"
@@ -115,10 +118,16 @@ No generic `looks fine` notes. The exact file SHA is the unit being approved.
 ### Official source proof
 
 - Prefer exact page/screenshot/figure from the official source when it proves a claim.
-- The configured Antigravity plugin is `.agents/plugins/ki-channel-production/mcp_config.json` and declares `chrome-devtools` for browser proof work.
-- The Chrome DevTools MCP expects a browser endpoint at `http://127.0.0.1:9222`; verify it is actually reachable before claiming browser-proof capability.
-- Browser/Chrome DevTools artifacts may be used to capture the exact source locally.
-- The captured file must then go through `materialize-longform-media.mjs --local-input=...` and `approve-longform-media.mjs`.
+- The configured Antigravity plugin is `.agents/plugins/ki-channel-production/mcp_config.json` and declares `chrome-devtools`.
+- Before claiming browser proof, ensure the endpoint exists:
+
+```bash
+node scripts/ensure-chrome-devtools.mjs
+```
+
+- The helper launches an isolated Chrome/Chromium profile on `127.0.0.1:9222` when a supported local browser exists; it never uses the user's normal profile.
+- Browser/Chrome DevTools artifacts may then capture the exact source locally.
+- The captured file must go through materialization + exact-SHA approval.
 - Never invent an OpenAI/product website, dashboard, benchmark or UI and present it as evidence.
 
 ## 4. Phase 3C — build the real Remotion source
@@ -139,8 +148,6 @@ Required behavior:
 
 ### Longform pacing target
 
-Do not apply Reel cadence mechanically. Instead:
-
 - cold open: high information/motion density;
 - explanation: visible state development as meaning changes;
 - source/proof: calmer, readable, purposeful camera/focus motion;
@@ -151,10 +158,8 @@ Do not apply Reel cadence mechanically. Instead:
 
 ## 5. Pre-render must pass
 
-Run:
-
 ```bash
-node scripts/with-media-path.mjs node scripts/check-ki-longform-render-readiness.mjs <package>
+node scripts/with-longform-node20.mjs scripts/check-ki-longform-render-readiness.mjs <package>
 ```
 
 If this fails, stop and fix the actual blocker. Never bypass it with direct `npx remotion render`.
@@ -162,7 +167,7 @@ If this fails, stop and fix the actual blocker. Never bypass it with direct `npx
 ## 6. Only canonical production render
 
 ```bash
-node scripts/with-media-path.mjs node scripts/render-ki-longform-master.mjs <package>
+node scripts/with-longform-node20.mjs scripts/render-ki-longform-master.mjs <package>
 ```
 
 A direct Remotion render is a prototype only and must never be handed to the user as `video.review.mp4`, production master or final video.
@@ -189,4 +194,4 @@ Never do any of the following to "finish" a task:
 - mark an unreviewed asset `APPROVED`;
 - use a scout URL directly in render source;
 - call a prototype render a production master;
-- claim B-roll/image/effect capability merely because a library exists without passing the Longform capability preflight.
+- claim B-roll/image/effect capability merely because a library exists without real execution evidence.
