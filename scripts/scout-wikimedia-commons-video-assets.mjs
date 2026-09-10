@@ -36,6 +36,7 @@ const clean = (value) => String(value || '')
   .trim();
 const tokens = (value) => [...new Set((clean(value).toLowerCase().normalize('NFKD').match(/[a-z0-9]+/g) || []).filter((token) => token.length >= 3))];
 const queryTokens = tokens(query);
+const minimumMatchedTokens = queryTokens.length <= 1 ? queryTokens.length : Math.min(2, queryTokens.length);
 const safeSlug = (value) => clean(value).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70) || 'search';
 const rightsMap = (raw) => {
   const value = clean(raw).toLowerCase();
@@ -50,6 +51,12 @@ const orientationScore = (width,height) => {
   const target = orientation === 'landscape' ? 16/9 : 9/16;
   const distance = Math.abs(Math.log(Math.max(0.001, ratio) / target));
   return Math.max(-15, 28 - distance * 35);
+};
+const orientationMatches = (width,height) => {
+  const ratio = Number(width) / Math.max(1, Number(height));
+  if (orientation === 'auto') return ratio >= 0.5 && ratio <= 2.4;
+  if (orientation === 'landscape') return ratio >= 1.15;
+  return ratio <= 0.87;
 };
 const resolutionScore = (width,height) => {
   const longEdge = Math.max(Number(width),Number(height));
@@ -88,7 +95,7 @@ if (existsSync(cachePath)) {
   }
 }
 if (!payload) {
-  const response = await fetch(requestIdentity,{headers:{'User-Agent':'ki-channel-wikimedia-video-discovery/1.1'}});
+  const response = await fetch(requestIdentity,{headers:{'User-Agent':'ki-channel-wikimedia-video-discovery/1.2'}});
   if (!response.ok) {
     console.error(`WIKIMEDIA VIDEO SCOUT FAILED: ${response.status} ${response.statusText}`);
     process.exit(1);
@@ -111,6 +118,7 @@ for (const page of pages) {
   const width = Number(info?.width || 0);
   const height = Number(info?.height || 0);
   if (width < 640 || height < 360) continue;
+  if (!orientationMatches(width,height)) continue;
   const title = clean(page?.title || '');
   const description = clean(metadata?.ImageDescription?.value || metadata?.ObjectName?.value || '');
   const categories = clean(metadata?.Categories?.value || '');
@@ -118,7 +126,10 @@ for (const page of pages) {
   const credit = clean(metadata?.Credit?.value || '');
   const attribution = clean(metadata?.Attribution?.value || '') || credit || artist;
   const corpus = `${title} ${description} ${categories}`.toLowerCase();
-  const relevance = Math.min(42, queryTokens.filter((token)=>corpus.includes(token)).length * 8);
+  const matchedQueryTokens = queryTokens.filter((token)=>corpus.includes(token));
+  if (minimumMatchedTokens > 0 && matchedQueryTokens.length < minimumMatchedTokens) continue;
+  const queryCoverage = queryTokens.length ? matchedQueryTokens.length / queryTokens.length : 0;
+  const relevance = Math.min(54, matchedQueryTokens.length * 12 + queryCoverage * 18);
   const rank = Math.max(0, 15 - Number(page?.index ?? 15));
   const rightsBonus = rightsStatus === 'CC0-1.0' || rightsStatus === 'PUBLIC_DOMAIN' ? 18 : 7;
   const sizeBonus = Math.max(0,12 - bytes / (25 * 1024 * 1024));
@@ -129,6 +140,8 @@ for (const page of pages) {
     mediaType:'video',
     title,
     score:Number(score.toFixed(3)),
+    matchedQueryTokens,
+    queryCoverage:Number(queryCoverage.toFixed(3)),
     sourceUrl:`https://commons.wikimedia.org/wiki/${encodeURIComponent(title.replace(/ /g,'_'))}`,
     originalUrl:info?.url || null,
     mime,
@@ -149,16 +162,16 @@ for (const page of pages) {
   });
 }
 
-candidates.sort((a,b)=>b.score-a.score || a.bytes-b.bytes || a.title.localeCompare(b.title));
+candidates.sort((a,b)=>b.score-a.score || b.queryCoverage-a.queryCoverage || a.bytes-b.bytes || a.title.localeCompare(b.title));
 const selected = candidates.slice(0,top);
 const result = {
-  version:2,
+  version:3,
   status:'DISCOVERY_ONLY_NOT_PRODUCTION_APPROVED',
   provider:'WIKIMEDIA_COMMONS',
   mediaType:'video',
   query,
   effectiveSearchQuery:videoSearchQuery,
-  requested:{orientation,limit,top,maxSourceBytes},
+  requested:{orientation,limit,top,maxSourceBytes,minimumMatchedTokens},
   retrievedAt:new Date().toISOString(),
   apiEndpoint:api,
   cache:{ttlHours:6,fromCache,cacheFile:path.relative(process.cwd(),cachePath).split(path.sep).join('/')},
@@ -170,6 +183,8 @@ const result = {
     renderSourceModified:false,
     remoteMediaDuringRenderAllowed:false,
     requiresExplicitSelectionBeforeDownload:true,
+    requiresSemanticQueryMatchBeforeSelection:true,
+    requiresRequestedOrientationMatch:true,
     requiresLocalFileAndSha256BeforeProductionRender:true,
     personalityPrivacyTrademarkReviewRequiredWhereRelevant:true,
   },
@@ -185,9 +200,10 @@ await writeFile(outPath,`${JSON.stringify(result,null,2)}\n`,'utf8');
 console.log(`WIKIMEDIA VIDEO SCOUT: OK — DISCOVERY ONLY${fromCache ? ' — CACHE HIT' : ''}`);
 console.log(`query: ${query}`);
 console.log(`effective search: ${videoSearchQuery}`);
+console.log(`required token matches: ${minimumMatchedTokens}`);
 console.log(`candidates: ${selected.length}`);
 console.log(`output: ${path.relative(process.cwd(),outPath)}`);
 for (const [index,candidate] of selected.entries()) {
-  console.log(`${index+1}. ${candidate.rightsStatus} | ${candidate.width}x${candidate.height} | ${(candidate.bytes/1024/1024).toFixed(1)} MB | score ${candidate.score} | ${candidate.title}`);
+  console.log(`${index+1}. ${candidate.rightsStatus} | ${candidate.width}x${candidate.height} | ${(candidate.bytes/1024/1024).toFixed(1)} MB | relevance ${(candidate.queryCoverage*100).toFixed(0)}% | score ${candidate.score} | ${candidate.title}`);
 }
 console.log('No video was downloaded and no MEDIA-PLAN was modified.');
