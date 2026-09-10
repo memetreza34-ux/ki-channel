@@ -6,8 +6,26 @@ Für neue Pakete ab **2026-09-05** gelten zusätzlich und vorrangig:
 
 1. `LONGFORM-V1.md`
 2. `RENDER-GATES.md`
+3. `.agents/workflows/longform-full-cycle.md` für Antigravity-Ausführung
 
 Ältere Pakete bleiben Legacy-kompatibel.
+
+## Antigravity-Preflight — verbindlich
+
+Vor einer neuen YouTube-Longform-Produktion muss Antigravity zuerst ausführen:
+
+```bash
+node scripts/check-antigravity-longform-capabilities.mjs
+```
+
+Bei non-zero Exit: **STOP**. Keine Ersatz-Composition, kein Placeholder-Render, keine Behauptung, dass Bilder/B-Roll/Effects/Longform-Render vollständig verfügbar seien.
+
+Für Longform sind die dedizierten Workspace-Agents zu verwenden:
+
+- `ki-longform-production-orchestrator`
+- `ki-longform-remotion-engineer`
+
+Die Reel-Agenten bleiben für Reels erhalten und sind nicht der kanonische Longform-Writer.
 
 ## Format
 
@@ -22,7 +40,7 @@ Für neue Pakete ab **2026-09-05** gelten zusätzlich und vorrangig:
 
 ## Zuständigkeiten — verbindlich
 
-### Phase 1 — Agent / ChatGPT / Codex
+### Phase 1 — Agent / ChatGPT / Codex / Antigravity
 
 Der Nutzer muss **keine Bilder und keine B-Roll beschaffen**.
 
@@ -76,6 +94,47 @@ Fehlt Audio, exakt stoppen mit:
 - kanonischen Review-Master rendern
 - Thumbnail/Subtitles/Upload-Paket erzeugen
 - kompletten 1x-Review durchführen
+
+## Medienzustände — nicht vermischen
+
+Externe Medien durchlaufen zwingend getrennte Zustände:
+
+1. `DISCOVERED` / Phase-1-Kandidat
+2. `MATERIALIZED_PENDING_REVIEW`
+3. `APPROVED`
+4. erst danach Nutzung im finalen Remotion-Source
+
+Scout-/Browser-URLs dürfen niemals direkt als Render-Asset benutzt werden.
+
+Für Pexels/Pixabay/Wikimedia-Scout-Kandidaten:
+
+```bash
+node scripts/materialize-longform-media.mjs <package> \
+  --asset-id=<assetId> \
+  --scout=<scout-result.json> \
+  --candidate-id=<candidateId>
+```
+
+Für lokal erfasste offizielle Screenshots/Figuren oder andere exakte lokale Inputs:
+
+```bash
+node scripts/materialize-longform-media.mjs <package> \
+  --asset-id=<assetId> \
+  --local-input=<local-file>
+```
+
+Materialisierung setzt **niemals** automatisch `rightsVerified=true`.
+
+Nach Prüfung der exakten lokalen Datei:
+
+```bash
+node scripts/approve-longform-media.mjs <package> \
+  --asset-id=<assetId> \
+  --rights-note="<konkrete Rechte-/Quellenprüfung>" \
+  --visual-note="<konkrete Crop-/Timing-/Semantikprüfung>"
+```
+
+Freigabe ist an den SHA-256 der exakt geprüften Datei gebunden. Ändert sich die Datei, muss neu materialisiert/geprüft werden.
 
 ## Paketstruktur
 

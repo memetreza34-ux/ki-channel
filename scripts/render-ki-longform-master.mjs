@@ -11,7 +11,7 @@ const root=path.resolve(rawPackage);
 const fail=(m)=>{console.error(`LONGFORM RENDER FAILED: ${m}`);process.exit(1);};
 if(!existsSync(root)||!statSync(root).isDirectory()) fail(`package missing: ${root}`);
 const run=(cmd,args,{inherit=false,allowFailure=false}={})=>{
-  const r=spawnSync(cmd,args,{encoding:'utf8',stdio:inherit?'inherit':['ignore','pipe','pipe'],maxBuffer:64*1024*1024});
+  const r=spawnSync(cmd,args,{encoding:'utf8',stdio:inherit?'inherit':['ignore','pipe','pipe'],maxBuffer:64*1024*1024,env:process.env});
   if(r.error) fail(`${cmd} could not start: ${r.error.message}`);
   if(!allowFailure&&r.status!==0) fail(`${cmd} failed:\n${r.stderr||r.stdout||''}`);
   return r;
@@ -29,11 +29,22 @@ const raw=path.join(outDir,'video.raw.mp4');
 const master=path.join(outDir,'video.review.mp4');
 const audioReport=path.join(reviewDir,'AUDIO-MASTER.json');
 const qaReport=path.join(reviewDir,'MASTER-QA.json');
-const npx=process.platform==='win32'?'npx.cmd':'npx';
-run(npx,[
-  'remotion','render','ki/src/index.ts',compositionId,raw,
-  '--codec=h264','--crf=18','--pixel-format=yuv420p','--audio-codec=aac','--audio-bitrate=320k','--overwrite'
-],{inherit:true});
+
+// Keep the Remotion CLI on the exact Node runtime running this script.
+// When invoked through with-longform-node20.mjs, process.execPath is the portable Node 20 binary.
+const remotionBin=path.resolve('node_modules','.bin',process.platform==='win32'?'remotion.cmd':'remotion');
+if(!existsSync(remotionBin)) fail('local Remotion CLI missing. Run npm install --package-lock=false --no-audit --no-fund first.');
+if(process.platform==='win32') {
+  run(remotionBin,[
+    'render','ki/src/index.ts',compositionId,raw,
+    '--codec=h264','--crf=18','--pixel-format=yuv420p','--audio-codec=aac','--audio-bitrate=320k','--overwrite','--gl=angle'
+  ],{inherit:true});
+} else {
+  run(process.execPath,[
+    remotionBin,'render','ki/src/index.ts',compositionId,raw,
+    '--codec=h264','--crf=18','--pixel-format=yuv420p','--audio-codec=aac','--audio-bitrate=320k','--overwrite','--gl=angle'
+  ],{inherit:true});
+}
 if(!existsSync(raw)||statSync(raw).size<1024) fail('raw Remotion render missing or too small.');
 node('ki/scripts/master-reel-video.mjs',[raw,master,audioReport]);
 if(!existsSync(master)||statSync(master).size<1024) fail('mastered review video missing or too small.');
@@ -49,7 +60,8 @@ const payload={
   compositionId,
   package:path.relative(process.cwd(),root).split(path.sep).join('/'),
   master:path.relative(process.cwd(),master).split(path.sep).join('/'),
-  render:{codec:'h264',crf:18,pixelFormat:'yuv420p'},
+  runtime:{node:process.versions.node,execPath:process.execPath,wrapper:process.env.KI_LONGFORM_RUNTIME_WRAPPER==='1'},
+  render:{codec:'h264',crf:18,pixelFormat:'yuv420p',chromiumGl:'angle'},
   audioTarget:{integratedLufs:-16,truePeakDbtp:-1.5},
   qaReport:path.relative(process.cwd(),qaReport).split(path.sep).join('/'),
   contactSheets:path.relative(process.cwd(),path.join(reviewDir,'CONTACT-SHEET-*.jpg')).split(path.sep).join('/'),
@@ -60,6 +72,7 @@ const payload={
 await writeFile(path.join(reviewDir,'RENDER-RESULT.json'),`${JSON.stringify(payload,null,2)}\n`,'utf8');
 await rm(raw,{force:true});
 console.log('LONGFORM REVIEW CANDIDATE READY — NOT RELEASED');
+console.log(`runtime: Node ${process.versions.node}`);
 console.log(`master: ${master}`);
 console.log(`qa: ${qaReport}`);
 console.log(`contact sheets: ${sheetsPattern}`);

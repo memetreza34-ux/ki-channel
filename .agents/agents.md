@@ -10,6 +10,10 @@ Sie ersetzen nicht `REPO-STATE.md`, `GEMINI.md` oder die kanonischen Repo-Gates.
 
 Hauptagent für lange Reel-Sessions. Koordiniert den 3-Phasen-Prozess, liest den Capability-Scan und delegiert unabhängige Arbeit parallel.
 
+### `ki-longform-production-orchestrator`
+
+Hauptagent für **YouTube `LONGFORM_V1`**. Vor jeder Longform-Produktion führt er `node scripts/check-antigravity-longform-capabilities.mjs` aus und folgt `.agents/workflows/longform-full-cycle.md`. Er besitzt Phase 1 und 3 inklusive konkreter Bild-/B-Roll-Suche, kontrollierter Materialisierung, Rechte-/Provenance-Prüfung, Remotion-Orchestrierung und kanonischem Review-Render. Der Nutzer liefert nur das finale Voiceover.
+
 ### `ki-fact-researcher`
 
 Read-only. Verifiziert aktuelle AI-Fakten, Preise, Release-Daten und Primary Sources.
@@ -28,7 +32,11 @@ Read-only. Prüft echte Brand-/Logo-/UI-Möglichkeiten, markentreue Farbwelten, 
 
 ### `ki-remotion-story-engineer`
 
-Write-capable. Implementiert Story Beats, Camera/Reframe, TransitionSeries, Three/Skia/Lottie/Rive/Shapes, neue semantisch sinnvolle Motion-Techniken und Proof-Visuals. Niemals parallel mit einem zweiten Writer auf denselben Dateien arbeiten lassen.
+Write-capable für Reels. Implementiert Story Beats, Camera/Reframe, TransitionSeries, Three/Skia/Lottie/Rive/Shapes, neue semantisch sinnvolle Motion-Techniken und Proof-Visuals. Niemals parallel mit einem zweiten Writer auf denselben Dateien arbeiten lassen.
+
+### `ki-longform-remotion-engineer`
+
+Write-capable für **YouTube `LONGFORM_V1`**. Baut ausschließlich voice-gelockte 1920×1080/30-FPS-Compositions aus freigegebenen lokalen Medien und offenen story-getriebenen Remotion-Techniken. Keine gleichen Fix-Dauern pro Kapitel, keine Placeholder, keine Fake-Evidence, keine Remote-Medien. Er ist der einzige visuelle Writer auf dem Longform-Working-Tree.
 
 ### `ki-audio-sync-engineer`
 
@@ -51,7 +59,7 @@ Read-only. Prüft Remotion/React/Skia/Three/Rive/Lottie-Kompatibilität und aktu
 Wenn passend:
 
 - `research` — schnelle Codebase-/Dokurecherche;
-- `browser` — Browser Agent für interaktive UI-/Remotion-Studio-Prüfung;
+- `browser` — Browser Agent für interaktive UI-/Remotion-Studio-Prüfung und exakte offizielle Source-Captures;
 - `self` — paralleler Clone für klar isolierte Aufgaben.
 
 ## Parallelisierungsregel
@@ -70,26 +78,43 @@ Existing Visual QA ─────┘
 Nicht parallel auf demselben Working Tree:
 
 ```text
-Story Engineer + Audio Sync Engineer + anderer Writer
+Reel Story Engineer / Longform Remotion Engineer + Audio Sync Engineer + anderer Writer
 ```
 
 Wenn zwei Schreibvarianten wirklich parallel getestet werden sollen, isolierte Git-Worktrees/Branches verwenden.
 
-## Standard-Orchestrierung
+## Reel-Orchestrierung
 
 ```text
 /bootstrap-ki-channel
 → Capability Scan
 → relevante read-only Spezialagenten parallel
 → Brand/Motion Director bei branded/current-news v4
-→ Orchestrator priorisiert Befunde
-→ genau ein Implementation Writer
+→ Reel-Orchestrator priorisiert Befunde
+→ genau ein Reel Implementation Writer
 → Nutzer-Audio-Gate
 → Audio Sync Engineer
 → Story-Beat-Stills + Pixel-Delta + Browser/Chrome DevTools
 → Visual QA Auditor
 → Release Verifier
 → erst bei echten PASS-Beweisen finalisieren
+```
+
+## YouTube-Longform-Orchestrierung
+
+```text
+ki-longform-production-orchestrator
+→ node scripts/check-antigravity-longform-capabilities.mjs
+→ .agents/workflows/longform-full-cycle.md
+→ Research / Claims / Script / konkrete Media-Discovery
+→ Nutzer-Voiceover-Gate
+→ Forced Alignment / Voice Lock
+→ Media materialisieren → SHA binden → explizit prüfen/APPROVED
+→ ki-longform-remotion-engineer als einziger visueller Writer
+→ check-ki-longform-render-readiness.mjs
+→ render-ki-longform-master.mjs
+→ Master-QA + Contact Sheets + kompletter 1x Review
+→ Release Verifier
 ```
 
 ## Harte gemeinsame Regeln
