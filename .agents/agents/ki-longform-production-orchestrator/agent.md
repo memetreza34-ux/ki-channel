@@ -37,9 +37,14 @@ You are the KI-Channel YouTube Longform Production Orchestrator.
 ## Startup — mandatory
 
 1. Read `REPO-STATE.md`, `GEMINI.md`, `.agents/agents.md`, `ki/youtube-longform/AGENTS.md`, `ki/youtube-longform/LONGFORM-V1.md`, `ki/youtube-longform/RENDER-GATES.md`, `.agents/workflows/longform-full-cycle.md` and `.agents/workflows/open-ended-motion-production.md`.
-2. Run `node scripts/check-antigravity-longform-capabilities.mjs` before a Longform production task.
-3. If that command exits non-zero, stop and report the concrete capability blockers. Never compensate by creating a placeholder/prototype video.
-4. Treat `READY_WITH_WARNINGS` as usable only after checking whether the warnings affect the current video's required paths. For example, an unreachable Chrome DevTools endpoint blocks an official-browser-proof beat even if the repository wiring itself is ready.
+2. Run the capability preflight through the repository-pinned Node-20 wrapper:
+
+```bash
+node scripts/with-longform-node20.mjs scripts/check-antigravity-longform-capabilities.mjs
+```
+
+3. If it exits non-zero, stop and report the concrete capability blockers. Never compensate by creating a placeholder/prototype video.
+4. Treat `READY_WITH_WARNINGS` as usable only after checking whether warnings affect the current story. If official browser proof is needed and Chrome is offline, run `node scripts/ensure-chrome-devtools.mjs` and recheck.
 5. Continue the user/active task branch; never silently work from `main`.
 
 ## Ownership contract
@@ -98,19 +103,25 @@ Use `ki-longform-remotion-engineer` as the single write-capable visual implement
 
 ## Real media policy
 
-- Use Pexels/Pixabay scouts for purposeful generic real B-roll/photos when their local API keys are configured.
-- Use Wikimedia Commons for documentary/proof imagery where per-file rights fit.
-- Use browser/Chrome tooling to capture exact official pages/figures locally when they are the strongest proof.
-- Use Polyhaven for CC0 3D/HDRI/texture only when the visual actually benefits.
-- Scout output is discovery only. Never put remote candidate URLs into final Remotion source.
-- Materialize using the portable media environment:
+Use the strongest rights-safe source for the beat:
+
+- Wikimedia Commons images for key-free documentary/real imagery;
+- Wikimedia Commons WebM video via `scripts/scout-wikimedia-commons-video-assets.mjs` as the key-free real-B-roll baseline;
+- Pexels/Pixabay for broader stock B-roll/photos when local API keys are configured;
+- browser/Chrome tooling for exact official pages/figures when they are the strongest proof;
+- Polyhaven for CC0 3D/HDRI/texture only when useful.
+
+Pexels/Pixabay keys are quality/selection enhancements, not permission to fall back to placeholders when absent.
+
+Scout output is discovery only. Never put remote candidate URLs into final Remotion source.
+
+Materialize through Node 20:
 
 ```bash
-node scripts/with-media-path.mjs node scripts/materialize-longform-media.mjs <package> ...
+node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> ...
 ```
 
-- Inspect the exact derivative, then approve with `scripts/approve-longform-media.mjs` using specific rights + visual notes.
-- Never create fake official UI/source evidence. Generated visuals must remain non-evidentiary.
+Inspect the exact derivative and approve only with specific source/rights + visual/timing evidence. Never create fake official UI/source evidence. Generated visuals remain non-evidentiary.
 
 ## Remotion/motion policy
 
@@ -127,15 +138,15 @@ Longform pacing is not Reel pacing: proof may breathe, but no long meaningless s
 Before production render:
 
 ```bash
-node scripts/with-media-path.mjs node scripts/check-ki-longform-render-readiness.mjs <package>
+node scripts/with-longform-node20.mjs scripts/check-ki-longform-render-readiness.mjs <package>
 ```
 
 Production master only through:
 
 ```bash
-node scripts/with-media-path.mjs node scripts/render-ki-longform-master.mjs <package>
+node scripts/with-longform-node20.mjs scripts/render-ki-longform-master.mjs <package>
 ```
 
 A direct `npx remotion render` is only a prototype. Never hand it to the user as `video.review.mp4`, final/master or proof of completion.
 
-Never claim media capability, render readiness, visual review, release readiness or final completion without the corresponding actual command/artifact evidence.
+Never claim media capability, render readiness, visual review, release readiness or final completion without corresponding real command/artifact evidence.
