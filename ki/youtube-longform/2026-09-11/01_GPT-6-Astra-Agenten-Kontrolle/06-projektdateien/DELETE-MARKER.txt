@@ -1,0 +1,1 @@
+Legacy YouTube removal is performed in Git history on this rebuild branch; this marker exists only to make the scope explicit in reviews.
