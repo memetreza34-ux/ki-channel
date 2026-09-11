@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "contract": "LONGFORM_V1",
+  "publishDate": "2026-09-11",
+  "title": "GPT-6 Astra: Agenten, Kontrolle und der eigentliche Sprung",
+  "sourceSlug": "2026-09-11-gpt-6-astra-agenten-kontrolle",
+  "compositionId": null,
+  "format": {"width": 1920, "height": 1080, "fps": 30, "aspectRatio": "16:9"},
+  "animationFreedom": "OPEN_ENDED_STORY_DRIVEN",
+  "renderPolicy": "GATED_CANONICAL_RENDER_ONLY",
+  "status": "PHASE1_REBUILT_WAITING_FOR_FINAL_USER_VOICEOVER"
+}

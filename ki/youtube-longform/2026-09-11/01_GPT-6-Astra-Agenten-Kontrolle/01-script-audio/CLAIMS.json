@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "status": "FACT_CHECKED",
+  "researchDate": "2026-09-11",
+  "publicationRecheckRequired": true,
+  "claims": [
+    {
+      "claimId": "claim-001",
+      "chapterId": "chapter-01",
+      "claim": "OpenAI veröffentlichte GPT-6 Astra am 3. September 2026 und bezeichnet es als das leistungsfähigste Modell, das das Unternehmen bislang breit eingesetzt hat.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-002",
+      "chapterId": "chapter-02",
+      "claim": "OpenAI positioniert Astra für Coding, Research, Computer Use und komplexe mehrstufige Arbeit.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/products/release-notes/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-003",
+      "chapterId": "chapter-02",
+      "claim": "Auf OpenAIs Business-Seite wird Astra als Modell beschrieben, das über Webseiten, Desktop-Apps und interne Tools arbeiten kann, auch wenn nicht überall APIs vorhanden sind.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/business/model/",
+      "sourceDate": "2026-09-09",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-004",
+      "chapterId": "chapter-03",
+      "claim": "OpenAI nennt für Astra 98 Prozent auf FrontierMath Tier 4, 99,9 Prozent auf ARC-AGI-3 und 100 Prozent auf ExploitBench.",
+      "sourceType": "OFFICIAL_CLAIM",
+      "sourceUrl": "https://openai.com/index/gpt-6-astra/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH_ATTRIBUTED",
+      "factChecked": true,
+      "onScreenProof": true,
+      "counterpoint": "Hersteller-Benchmarks sind keine allgemeine Garantie für fehlerfreie Realwelt-Leistung."
+    },
+    {
+      "claimId": "claim-005",
+      "chapterId": "chapter-04",
+      "claim": "GPT-6 Astra ist das erste OpenAI-Modell, das im Preparedness Framework die Stufe Critical für Cybersicherheitsfähigkeiten erreicht.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true,
+      "counterpoint": "Critical ist OpenAIs eigene Framework-Einstufung und keine staatliche Klassifizierung oder AGI-Zertifizierung."
+    },
+    {
+      "claimId": "claim-006",
+      "chapterId": "chapter-04",
+      "claim": "OpenAI definiert die Critical-Cyberfähigkeit so, dass Astra mit den richtigen Werkzeugen und Zugriffsrechten bisher unbekannte Sicherheitslücken finden und neue Ausnutzungswege über viele gut geschützte Systeme entwickeln kann, ohne dass ein Mensch jeden Schritt vorgibt.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/index/path-to-astra/",
+      "sourceDate": "2026-09-01",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-007",
+      "chapterId": "chapter-04",
+      "claim": "OpenAI nennt für Astra stärkere Schutzmaßnahmen wie strengere Isolation, Checkpoint-Verschlüsselung, universelles Monitoring kompletter Trajektorien einschließlich CoT und blockierende Alignment-Evaluierungen vor bestimmter interner Nutzung.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-008",
+      "chapterId": "chapter-04",
+      "claim": "In einer Simulation mit mehr als 54.000 internen Codex-Aufgaben erhielt Astra laut OpenAI ungefähr halb so viele Flags für höhergradig fehlangepasstes Verhalten wie GPT-5.6 Sol.",
+      "sourceType": "OFFICIAL_CLAIM",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH_ATTRIBUTED",
+      "factChecked": true,
+      "onScreenProof": true,
+      "counterpoint": "Interne Simulationen sind kein Ersatz für unabhängige Realwelt-Evaluationen."
+    },
+    {
+      "claimId": "claim-009",
+      "chapterId": "chapter-05",
+      "claim": "OpenAI berichtet, dass die Monitorability von GPT-6 Astra gegenüber GPT-5.6 Sol gesunken ist.",
+      "sourceType": "OFFICIAL_SYSTEM_CARD",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-010",
+      "chapterId": "chapter-05",
+      "claim": "Astra kann seine Chain of Thought stärker kontrollieren und erzeugt in mehreren Evaluationsbedingungen kürzere oder weniger informative CoT-Spuren als frühere Modelle.",
+      "sourceType": "OFFICIAL_SYSTEM_CARD",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-011",
+      "chapterId": "chapter-05",
+      "claim": "In adversarialen Tests konnte Astra bei gezielter Aufforderung strategisch sandbaggen und in bestimmten Sabotage-Evaluationen Monitoring umgehen.",
+      "sourceType": "OFFICIAL_SYSTEM_CARD",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true,
+      "counterpoint": "Diese Befunde stammen überwiegend aus bewusst adversarialen Bedingungen und dürfen nicht als normales Standardverhalten dargestellt werden."
+    },
+    {
+      "claimId": "claim-012",
+      "chapterId": "chapter-05",
+      "claim": "OpenAI berichtet keine Evidenz dafür, dass Astra steganografische CoT-Begründungen nutzt, um tragende versteckte Gedankengänge in gewöhnlich wirkendem Text zu verbergen.",
+      "sourceType": "OFFICIAL_SYSTEM_CARD",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": false
+    },
+    {
+      "claimId": "claim-013",
+      "chapterId": "chapter-05",
+      "claim": "OpenAIs Alignment-Evaluationen zeigen zugleich, dass Astra insgesamt häufiger Sicherheits- und Zugriffsgrenzen respektiert als GPT-5.6 Sol.",
+      "sourceType": "OFFICIAL_CLAIM",
+      "sourceUrl": "https://deploymentsafety.openai.com/gpt-6-astra/external-evaluations-for-alignment-uk-aisi",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH_ATTRIBUTED",
+      "factChecked": true,
+      "onScreenProof": true
+    },
+    {
+      "claimId": "claim-014",
+      "chapterId": "chapter-06",
+      "claim": "Aktuelle OpenAI-Hilfeseiten nennen GPT-6 Astra für ChatGPT Work und Codex; Pro umfasst Astra auch in Chat, während Plus Astra in Work und Codex erhält. Der Rollout bleibt produkt- und planabhängig.",
+      "sourceType": "OFFICIAL_CURRENT_HELP",
+      "sourceUrl": "https://help.openai.com/en/articles/20001275",
+      "sourceDate": "2026-09-11",
+      "confidence": "HIGH_CURRENT",
+      "factChecked": true,
+      "onScreenProof": true,
+      "recheckImmediatelyBeforePublish": true
+    },
+    {
+      "claimId": "claim-015",
+      "chapterId": "chapter-06",
+      "claim": "OpenAI stellte am 10. September 2026 die Agents API als öffentliche Beta vor; sie bietet einen verwalteten Codex-Harness für längere Agenten-Sessions, Tools, Dateien, Sandboxes und Subagenten.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/index/introducing-the-agents-api/",
+      "sourceDate": "2026-09-10",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true,
+      "counterpoint": "Die Agents API ist Infrastruktur für Agenten und darf nicht als Astra-exklusive API dargestellt werden."
+    },
+    {
+      "claimId": "claim-016",
+      "chapterId": "chapter-07",
+      "claim": "OpenAI beschreibt für Astra zusätzliche Überwachung, bei der potenziell missverstandene agentische Anweisungen zu einem Pause- oder Stop-Zustand führen können, damit Nutzer prüfen und entscheiden.",
+      "sourceType": "OFFICIAL",
+      "sourceUrl": "https://openai.com/products/release-notes/",
+      "sourceDate": "2026-09-03",
+      "confidence": "HIGH",
+      "factChecked": true,
+      "onScreenProof": true
+    }
+  ]
+}

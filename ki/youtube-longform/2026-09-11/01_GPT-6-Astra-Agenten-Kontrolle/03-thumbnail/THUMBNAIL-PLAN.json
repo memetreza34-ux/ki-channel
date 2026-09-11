@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "status": "CONCEPTS_READY_RENDER_PENDING",
+  "format": {"width": 1280, "height": 720},
+  "promise": "Der echte Astra-Sprung ist mehr Delegation – und dadurch wird Kontrolle wichtiger als bei normalen Chatbots.",
+  "variants": [
+    {
+      "id": "A",
+      "concept": "Ein einzelner Astra-Kern links startet sichtbar Browser, Datei, Code und Tool-Karten; rechts stoppt ein großes Approval Gate die letzte Aktion. Heller Editorial-Look, keine Fake-App.",
+      "thumbnailText": "JETZT HANDELT DIE KI",
+      "primaryObject": "Agenten-Workflow gegen Approval Gate",
+      "status": "PLANNED"
+    },
+    {
+      "id": "B",
+      "concept": "Minimalistische OpenAI-Preparedness-Leiter mit ASTRA auf der obersten roten Stufe. Daneben nur ein kleines, echtes Source-Fragment als Glaubwürdigkeitsanker.",
+      "thumbnailText": "OPENAI: CRITICAL",
+      "primaryObject": "Critical-Stufe + Astra-Modellkern",
+      "status": "PLANNED"
+    },
+    {
+      "id": "C",
+      "concept": "Astra-Modellkern klein im Zentrum; darum wachsen Permissions, Sandbox, Logs, Monitor und Human Approval wie Schutzringe. Ein Ring ist sichtbar offen.",
+      "thumbnailText": "WIE VIEL KONTROLLE BLEIBT?",
+      "primaryObject": "Kontrollarchitektur um Astra",
+      "status": "PLANNED"
+    }
+  ],
+  "selectedVariant": null,
+  "selectionRule": "Alle drei Varianten wirklich rendern, bei kleiner YouTube-Größe prüfen und erst danach auswählen. Titel und Thumbnail dürfen sich nicht wortgleich wiederholen."
+}

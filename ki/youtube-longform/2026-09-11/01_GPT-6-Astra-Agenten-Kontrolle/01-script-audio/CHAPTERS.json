@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "status": "SCRIPT_READY_TIMING_PENDING",
+  "timingAuthority": "FINAL_USER_VOICEOVER_AFTER_FORCED_ALIGNMENT",
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "title": "Der echte Astra-Sprung ist nicht der Benchmark",
+      "storyRole": "COLD_OPEN",
+      "purpose": "Astra als Übergang von Antworten zu delegierten Arbeitsabläufen rahmen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-02",
+      "title": "Vom Chatbot zum Arbeitsagenten",
+      "storyRole": "MECHANISM",
+      "purpose": "Computer-Nutzung, Browser, Dateien, Tools und mehrstufige Arbeit als eigentlichen Produktfortschritt erklären.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-03",
+      "title": "Was die extremen Benchmarks wirklich sagen",
+      "storyRole": "EVIDENCE_WITH_CAVEAT",
+      "purpose": "OpenAIs 98/99.9/100-Werte zeigen, aber klar von Realwelt-Zuverlässigkeit trennen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-04",
+      "title": "Warum OpenAI Astra als Critical einstuft",
+      "storyRole": "RISK_PROOF",
+      "purpose": "Critical Cyber im Preparedness Framework, Tool-/Access-Abhängigkeit und neue Schutzschichten erklären.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-05",
+      "title": "Sicherer und trotzdem schwerer zu überwachen",
+      "storyRole": "COUNTERPOINT",
+      "purpose": "Alignment und Monitorability trennen; CoT-Kontrollierbarkeit, Sandbagging und adversariale Tests korrekt einordnen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-06",
+      "title": "Warum Work und Agents API jetzt wichtig werden",
+      "storyRole": "CURRENT_PRODUCT_IMPLICATION",
+      "purpose": "Den aktuellen Rollout und die Agenten-Infrastruktur als praktische Konsequenz der Modellfähigkeiten einordnen.",
+      "startSeconds": null,
+      "endSeconds": null
+    },
+    {
+      "id": "chapter-07",
+      "title": "Die eigentliche Grenze ist Kontrolle",
+      "storyRole": "PAYOFF",
+      "purpose": "Permissions, Sandboxes, Logs, Approval Gates und Human Review zur zentralen Schlussfolgerung verdichten.",
+      "startSeconds": null,
+      "endSeconds": null
+    }
+  ]
+}
