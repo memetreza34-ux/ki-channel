@@ -1,1 +1,0 @@
-Legacy prototype removal is part of this rebuild branch. Shared Longform tooling is retained; only the old app-building YouTube prototype package/source is removed.

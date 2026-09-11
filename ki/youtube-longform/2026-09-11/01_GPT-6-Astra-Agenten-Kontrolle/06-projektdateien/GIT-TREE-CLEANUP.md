@@ -1,1 +1,0 @@
-The actual legacy directory removal is applied as a Git tree deletion commit because GitHub's Contents API deletes files, not directories.
