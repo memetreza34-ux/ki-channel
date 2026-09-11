@@ -1,0 +1,1 @@
+Only the legacy app-building Longform prototype is removed in this branch. Shared Longform framework, agents, media tooling, render gates and capability checks remain intact.
