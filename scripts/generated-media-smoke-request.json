@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "smoke-vertical-ai-illustration",
+      "kind": "IMAGE",
+      "prompt": "A premium vertical editorial illustration of an abstract AI agent workspace made of layered translucent cards, connected nodes and soft depth, clean light background, no logos, no readable text, no people, designed for a German faceless technology explainer",
+      "purpose": "Prove that the pipeline can materialize an original vertical illustrative image for a reel",
+      "sceneId": "smoke-image",
+      "claimId": "smoke-capability",
+      "evidenceRole": "ILLUSTRATION",
+      "aspectRatio": "9:16",
+      "imageSize": "1K"
+    },
+    {
+      "id": "smoke-vertical-ai-broll",
+      "kind": "BROLL",
+      "prompt": "A premium vertical cinematic macro animation of abstract data nodes connecting across translucent layers, slow controlled camera push, subtle depth and clean lighting, no logos, no readable text, no people, suitable as short background B-roll for a technology explainer",
+      "purpose": "Prove that the pipeline can materialize short vertical synthetic B-roll and hand it to Remotion",
+      "sceneId": "smoke-broll",
+      "claimId": "smoke-capability",
+      "evidenceRole": "ATMOSPHERE",
+      "aspectRatio": "9:16",
+      "durationSeconds": 4,
+      "resolution": "720p"
+    }
+  ]
+}

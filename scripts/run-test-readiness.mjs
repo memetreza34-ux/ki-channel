@@ -59,6 +59,7 @@ if (initialTrackedStatus) {
 
 const steps = [
   ['generated-media-script', 'node --check scripts/materialize-generated-media.mjs'],
+  ['generated-media-smoke-verify', 'node scripts/run-generated-media-smoke.mjs verify'],
   ['showcase-isolation', 'node scripts/check-production-showcase-isolation.mjs'],
   ['antigravity', 'npm run antigravity:verify'],
   ['repository', 'npm run repo:verify'],
