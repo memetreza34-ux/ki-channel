@@ -82,6 +82,9 @@ if (root) {
     'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
     'antigravity:verify': 'node scripts/check-antigravity-integration.mjs',
     'content:runtime:verify': 'node scripts/verify-content-matched-runtime.mjs',
+    test: 'npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run',
+    'repo:verify': 'npm run production:contracts && npm run typecheck && npm test && npm run content:runtime:verify',
+    'test:readiness': 'node scripts/run-test-readiness.mjs',
     'release:verify': 'node scripts/run-content-release.mjs verify',
     'release:smoke': 'node scripts/run-content-release.mjs smoke',
     'release:full': 'node scripts/run-content-release.mjs full',
@@ -127,17 +130,26 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
   failures.push('vitest.config.ts enthält wieder channels/**.');
 }
 
-// Current repository truth. These checks intentionally target stable invariants,
-// not old prose wording, so documentation can evolve without silently restoring
-// obsolete architecture.
+// Current repository truth. Keep this focused on stable operational invariants.
+// Branch names are documented in REPO-STATE.md for humans/agents, but the wiring
+// gate must never make an obsolete branch name look authoritative again.
 requireMarkers('REPO-STATE.md', repoState, [
-  'fix/repo-stabilisierung-2026-08-24',
+  'Aktueller Testbranch:',
+  'Arbeitsbranch nie still wechseln.',
+  'Keine neuen Features vor bestandenem Showcase-Test.',
+  'npm run test:readiness',
   'Woche → Wochentag → Thema/Reel → 01–06',
   'BRAND-MOTION-PLAN.json',
   'WORD-TIMINGS.json',
   'bottom 330 px',
   'horizontal inset 76 px',
   'max width 928 px',
+]);
+
+forbidMarkers('REPO-STATE.md', repoState, [
+  'fix/repo-stabilisierung-2026-08-24',
+  'Draft-PR **#28**',
+  '**Status:** 2026-09-04',
 ]);
 
 requireMarkers('README.md', rootReadme, [
@@ -251,6 +263,7 @@ for (const path of [
   'scripts/check-antigravity-integration.mjs',
   'scripts/verify-content-matched-runtime.mjs',
   'scripts/run-content-release.mjs',
+  'scripts/run-test-readiness.mjs',
   'ki/scripts/validate-production-contracts.mjs',
   'ki/scripts/validate-storytelling-motion.mjs',
   'ki/scripts/validate-reel-level-up.mjs',
@@ -276,4 +289,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring konsistent: Workspaces, aktuelle Reel-Hierarchie, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
+console.log('Repository-Wiring konsistent: Workspaces, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
