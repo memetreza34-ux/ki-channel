@@ -32,6 +32,12 @@ public/reels/**/*.jpg
 public/reels/**/*.png
 public/reels/**/*.webp
 
+# ---- Remotion showcase derivatives (materialized before render) ----
+# The committed user screenshot stays tracked; only reproducible external derivatives are ignored.
+ki/public/showcase/laptop-on-desk.jpg
+ki/public/showcase/speed-typing-poster.jpg
+ki/public/showcase/PROVENANCE.generated.json
+
 # ---- Secrets / Keys (NIE auf GitHub) ----
 .env
 .env.local
