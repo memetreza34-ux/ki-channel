@@ -10,9 +10,24 @@ const outDir=path.resolve('out','remotion-showcase-2026-09-12');
 const output=path.join(outDir,'remotion-showcase.mp4');
 const entry=path.resolve('ki','src','index.ts');
 const remotionBin=path.resolve('node_modules','.bin',process.platform==='win32'?'remotion.cmd':'remotion');
+const mediaPrep=path.resolve('scripts','prepare-remotion-showcase-media.mjs');
+const requiredMedia=[
+  path.resolve('ki','public','showcase','user-remotion-studio.jpg'),
+  path.resolve('ki','public','showcase','laptop-on-desk.jpg'),
+  path.resolve('ki','public','showcase','speed-typing-dvorak.mp4'),
+  path.resolve('ki','public','showcase','PROVENANCE.generated.json'),
+];
+
 await mkdir(outDir,{recursive:true});
 if(Number(process.versions.node.split('.')[0])!==20){console.error(`SHOWCASE RENDER BLOCKED: Node 20 required, got ${process.versions.node}. Use scripts/with-longform-node20.mjs.`);process.exit(1);}
 if(!existsSync(remotionBin)){console.error('SHOWCASE RENDER BLOCKED: local Remotion CLI missing.');process.exit(1);}
+if(!existsSync(mediaPrep)){console.error('SHOWCASE RENDER BLOCKED: media preparation script missing.');process.exit(1);}
+
+console.log('SHOWCASE RENDER: materializing real local media first...');
+const prep=spawnSync(process.execPath,[mediaPrep],{stdio:'inherit',env:process.env});
+if(prep.status!==0){console.error('SHOWCASE RENDER BLOCKED: real media materialization failed. No placeholder render will be produced.');process.exit(1);}
+for(const file of requiredMedia){if(!existsSync(file)||statSync(file).size<1024){console.error(`SHOWCASE RENDER BLOCKED: required local media missing/invalid: ${file}`);process.exit(1);}}
+
 const args=['render',entry,id,output,'--codec=h264','--crf=18','--pixel-format=yuv420p','--overwrite','--gl=angle','--concurrency=1'];
 const result=process.platform==='win32'?spawnSync(remotionBin,args,{stdio:'inherit',env:process.env}):spawnSync(process.execPath,[remotionBin,...args],{stdio:'inherit',env:process.env});
 if(result.status!==0||!existsSync(output)||statSync(output).size<1024){console.error('SHOWCASE RENDER: FAILED');process.exit(1);}
