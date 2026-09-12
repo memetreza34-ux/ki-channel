@@ -19,6 +19,7 @@ import {GROK_X_COMPOSITION_ID,GROK_X_DURATION_IN_FRAMES,GROK_X_FPS,GROK_X_HEIGHT
 import {CLAUDE_51_COMPOSITION_ID,CLAUDE_51_DURATION_IN_FRAMES,CLAUDE_51_FPS,CLAUDE_51_HEIGHT,CLAUDE_51_WIDTH,ReelClaudeFableMythos51} from './reels/claude-fable-mythos-5-1';
 import {WEATHER_NEXT_3_COMPOSITION_ID,WEATHER_NEXT_3_DURATION_IN_FRAMES,WEATHER_NEXT_3_FPS,WEATHER_NEXT_3_HEIGHT,WEATHER_NEXT_3_WIDTH,ReelGoogleWeatherNext3} from './reels/google-weathernext-3';
 import {AI_APP_WORKFLOW_COMPOSITION_ID,AI_APP_WORKFLOW_DURATION_IN_FRAMES,AI_APP_WORKFLOW_FPS,AI_APP_WORKFLOW_HEIGHT,AI_APP_WORKFLOW_THUMBNAIL_ID,AI_APP_WORKFLOW_WIDTH,LongformAIAppWorkflow,ThumbnailAIAppWorkflow} from './longform/ai-app-workflow';
+import {REMOTION_SHOWCASE_DURATION_IN_FRAMES,REMOTION_SHOWCASE_FPS,REMOTION_SHOWCASE_HEIGHT,REMOTION_SHOWCASE_ID,REMOTION_SHOWCASE_WIDTH,RemotionShowcase} from './longform/remotion-showcase-2026-09-12';
 
 const runtimeAudio=(compositionId:string)=>staticFile(`runtime-audio/${compositionId}.wav`);
 
@@ -46,6 +47,9 @@ export const RemotionRoot:React.FC=()=>(
     <Folder name="KI-YouTube-Longform">
       <Composition id={AI_APP_WORKFLOW_COMPOSITION_ID} component={LongformAIAppWorkflow} defaultProps={{}} durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
       <Composition id={AI_APP_WORKFLOW_THUMBNAIL_ID} component={ThumbnailAIAppWorkflow} defaultProps={{}} durationInFrames={1} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
+    </Folder>
+    <Folder name="KI-Motion-Lab">
+      <Composition id={REMOTION_SHOWCASE_ID} component={RemotionShowcase} defaultProps={{}} durationInFrames={REMOTION_SHOWCASE_DURATION_IN_FRAMES} fps={REMOTION_SHOWCASE_FPS} width={REMOTION_SHOWCASE_WIDTH} height={REMOTION_SHOWCASE_HEIGHT}/>
     </Folder>
     <MotionPreviewRoot/>
   </>
