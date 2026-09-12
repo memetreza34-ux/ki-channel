@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-12 — Pre-Test-Stabilisierung
+**Status:** 2026-09-12 — Pre-Test-Stabilisierung + Generated-Media-Capability
 
 Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Detailregeln bleiben in den jeweils zuständigen Dateien; hier stehen nur der aktuelle Arbeitszustand, die verbindlichen Gates und die unveränderlichen Produktionsregeln.
 
@@ -8,7 +8,8 @@ Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravit
 
 - Aktueller Testbranch: `feat/remotion-showcase-test-2026-09-12`
 - Arbeitsbranch nie still wechseln.
-- Keine neuen Features vor bestandenem Showcase-Test.
+- Der bisher fehlende Pre-Test-Blocker „Agent kann Bilder/B-Roll nur planen, aber nicht materialisieren“ wird mit `scripts/materialize-generated-media.mjs` geschlossen.
+- Nach dieser Capability keine weiteren Features vor bestandenem Showcase-Test.
 - `main` ist aktuell nicht automatisch der freigegebene Produktionsstand.
 - Bei Widerspruch zwischen dieser Datei, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
 - Ein Status darf nur als bestanden gemeldet werden, wenn der zugehörige Befehl auf genau dem genannten Commit real ausgeführt wurde.
@@ -81,7 +82,54 @@ Caption-Safe-Zone bleibt zentral synchronisiert mit `ki/src/reels/captionSafe.ts
 - max width 928 px
 - maximal 2 Zeilen
 
-## 5. Ein kanonischer Pre-Test
+## 5. Generated Media — Bilder und B-Roll
+
+Der vorhandene Orchestrator besitzt jetzt eine Materialisierungsstufe statt nur Asset-Planung.
+
+Request-Datei pro Reel:
+
+`06-projektdateien/GENERATED-MEDIA-REQUESTS.json`
+
+Erlaubte Typen:
+
+- `IMAGE`
+- `BROLL`
+
+Erlaubte Rollen:
+
+- `ILLUSTRATION`
+- `ATMOSPHERE`
+- `TRANSITION`
+
+KI-generierte Medien dürfen niemals als Proof, Source, offizielle UI, echte Brand Identity, reales Ereignis oder echtes Footage ausgegeben werden. Dafür bleibt echte/offizielle/provenance-backed Media Pflicht.
+
+Vor Generierung ohne API-Kosten prüfen:
+
+```bash
+node --check scripts/materialize-generated-media.mjs
+node scripts/materialize-generated-media.mjs verify <reel-package-dir>
+```
+
+Echte Materialisierung:
+
+```bash
+GEMINI_API_KEY=... node scripts/materialize-generated-media.mjs materialize <reel-package-dir>
+```
+
+Standardprovider:
+
+- Bild: `gemini-3.1-flash-image`
+- B-Roll: `veo-3.1-generate-preview`
+
+Modelle bleiben über `KI_IMAGE_MODEL` und `KI_VIDEO_MODEL` austauschbar, damit ein Modellwechsel keine Architekturänderung benötigt.
+
+Binärdateien landen git-ignored unter `public/reel-assets/generated/<reel>/`. Die prüfbare Wahrheit landet in `06-projektdateien/GENERATED-MEDIA.json`: Provider, Modell, Prompt/Fingerprint, SHA256, MIME, Größe, lokaler Remotion-Pfad und Synthetic/Evidence-Flags.
+
+B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-Voiceover bleibt Narrationsautorität.
+
+Standardmäßig maximal 8 neue Generierungen pro Lauf; gleiche Request-/Model-Fingerprints mit passender lokaler SHA werden wiederverwendet statt erneut generiert.
+
+## 6. Ein kanonischer Pre-Test
 
 Vor dem nächsten echten Showcase-/Produktions-Test wird genau dieser Gate-Einstieg verwendet:
 
@@ -91,16 +139,19 @@ npm run test:readiness
 
 `test:readiness` muss auf einem sauberen tracked Worktree laufen und bindet den Lauf an den aktuellen Git-Commit. Es führt nacheinander aus:
 
-1. `npm run antigravity:verify`
-2. `npm run repo:verify`
-3. `npm run motion:verify`
-4. `npm run release:verify`
+1. Syntaxcheck der Generated-Media-Materialisierung
+2. `npm run antigravity:verify`
+3. `npm run repo:verify`
+4. `npm run motion:verify`
+5. `npm run release:verify`
+
+Der Pre-Test erzeugt **keine** kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `materialize`-Befehl gestartet.
 
 Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` geschrieben und enthält mindestens Commit, Branch, Node-Version, Einzelschritte, Laufzeiten und Gesamtstatus.
 
 Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben → neuer Commit → `npm run test:readiness` erneut ausführen.
 
-## 6. Bedeutung der Gates
+## 7. Bedeutung der Gates
 
 - `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Dokumentationsmarker und Kernpfade.
 - `npm run production:contracts`: prüft Produktionsverträge.
@@ -110,7 +161,7 @@ Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben �
 - `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender.
 - `npm run test:readiness`: ist der verbindliche Pre-Test-Einstieg und protokolliert den konkreten Commit.
 
-## 7. Showcase-Freigabe
+## 8. Showcase-Freigabe
 
 Der echte Showcase-Test darf erst starten, wenn:
 
@@ -121,15 +172,18 @@ Der echte Showcase-Test darf erst starten, wenn:
 
 Danach wird erst der eigentliche Render-/Showcase-Test ausgeführt. Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis dahin nachrangig.
 
-## 8. Externe Einschränkungen
+## 9. Externe Einschränkungen
 
 GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, ist der lokale `test:readiness`-Report der verbindliche technische Nachweis für den getesteten Commit.
 
-## 9. Statusbegriffe niemals vermischen
+Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
+
+## 10. Statusbegriffe niemals vermischen
 
 ```text
 geplant
 implementiert
+materialisiert
 technisch getestet
 gerendert
 visuell geprüft
