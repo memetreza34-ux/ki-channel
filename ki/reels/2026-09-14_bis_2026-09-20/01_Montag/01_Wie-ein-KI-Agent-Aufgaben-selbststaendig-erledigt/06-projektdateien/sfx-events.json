@@ -1,0 +1,18 @@
+{
+  "version": 3,
+  "status": "PREVIEW_REQUIRES_MASTER_TIMELINE",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "captionSync": {
+    "script": "ki/scripts/build-reel-master-timeline.mjs",
+    "rule": "EXACT_MASTER_EVENT_TO_SCENE_OFFSET",
+    "rerunAfterForcedAlignment": true
+  },
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","syncEventId":"s1-goal","purpose":"Goal card locks into the single-target state","sync":{"type":"MASTER_EVENT","eventId":"s1-goal"},"anchor":{"type":"SCENE_OFFSET","frame":125},"roles":["ui-confirm"],"keywords":["goal","confirm"],"preferredDurationSeconds":0.18,"volume":0.06},
+    {"id":"sfx02","sceneId":"scene2","syncEventId":"s2-tool","purpose":"Tool action activates when Werkzeug is spoken","sync":{"type":"MASTER_EVENT","eventId":"s2-tool"},"anchor":{"type":"SCENE_OFFSET","frame":130},"roles":["digital-accent"],"keywords":["tool","activate"],"preferredDurationSeconds":0.18,"volume":0.055},
+    {"id":"sfx03","sceneId":"scene3","syncEventId":"s3-retry","purpose":"NO branch reroutes the loop exactly on Wenn nicht","sync":{"type":"MASTER_EVENT","eventId":"s3-retry"},"anchor":{"type":"SCENE_OFFSET","frame":185},"roles":["ui-error","tech-accent"],"keywords":["retry","route"],"preferredDurationSeconds":0.22,"volume":0.07},
+    {"id":"sfx04","sceneId":"scene4","syncEventId":"s4-permission","purpose":"Permission stop lands on Berechtigungen","sync":{"type":"MASTER_EVENT","eventId":"s4-permission"},"anchor":{"type":"SCENE_OFFSET","frame":245},"roles":["ui-click","ui-error"],"keywords":["lock","permission"],"preferredDurationSeconds":0.20,"volume":0.065},
+    {"id":"sfx05","sceneId":"scene5","syncEventId":"s5-loop","purpose":"Workflow reaches repeat state on wiederholen","sync":{"type":"MASTER_EVENT","eventId":"s5-loop"},"anchor":{"type":"SCENE_OFFSET","frame":220},"roles":["ui-confirm"],"keywords":["success","workflow"],"preferredDurationSeconds":0.20,"volume":0.06},
+    {"id":"sfx06","sceneId":"scene6","syncEventId":"s6-result","purpose":"Finished work result lands on fertiges Arbeitsergebnis","sync":{"type":"MASTER_EVENT","eventId":"s6-result"},"anchor":{"type":"SCENE_OFFSET","frame":80},"roles":["impact","ui-confirm"],"keywords":["result","final"],"preferredDurationSeconds":0.26,"volume":0.075}
+  ]
+}

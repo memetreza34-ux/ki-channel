@@ -1,0 +1,82 @@
+{
+  "version": 4,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": false,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "coverHook": {
+    "enabled": true,
+    "candidateFrame": 15,
+    "holdFrames": 15,
+    "captionFree": true,
+    "headlineRequired": true,
+    "primarySubjectRequired": true,
+    "coverMatchesStory": true,
+    "brandRecognizable": false
+  },
+  "brandMoments": [],
+  "realProofMoments": [],
+  "realMediaMix": {
+    "minimumMoments": 2,
+    "moments": [],
+    "exceptionReason": "Konzeptionelles Erklär-Reel ohne Realwelt-Beweisclaim. Native Motion plus klar gekennzeichnete generierte Illustration/Atmosphäre ist beabsichtigt; generierte Medien zählen nie als Proof.",
+    "videoPreferredWhenMotionIsClaim": true,
+    "motionIsClaim": false,
+    "videoExceptionReason": ""
+  },
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"nur das Ziel","fallbackProgress":0.36},
+    {"sceneId":"scene2","sentenceId":"s03","anchorPhrase":"welches Werkzeug","fallbackProgress":0.42},
+    {"sceneId":"scene3","sentenceId":"s05","anchorPhrase":"nächsten Schritt","fallbackProgress":0.52},
+    {"sceneId":"scene4","sentenceId":"s08","anchorPhrase":"klare Grenzen","fallbackProgress":0.62},
+    {"sceneId":"scene5","sentenceId":"s09","anchorPhrase":"Ergebnis prüfen","fallbackProgress":0.70},
+    {"sceneId":"scene6","sentenceId":"s12","anchorPhrase":"echten Aktionen","fallbackProgress":0.68}
+  ],
+  "motionFamilies": ["spring-stack","connector-draw","orbit-loop","status-scan","card-morph","camera-push","progress-rail","guardrail-lock"],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "sceneDensity": {
+    "targetMeaningfulChangeSecondsMin": 1.5,
+    "targetMeaningfulChangeSecondsMax": 2.8,
+    "maxPracticallyUnchangedSeconds": 4.0,
+    "hardCutRequiredEveryChange": false
+  },
+  "overlapPolicy": {
+    "onePrimaryFocusAtATime": true,
+    "maxSupportingDetails": 2,
+    "captionMayCoverCriticalVisual": false,
+    "progressiveRevealRequired": true
+  },
+  "fullFrameSceneIds": ["scene3", "scene6"],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true},
+  "brandFidelity": {
+    "primaryBrands": [],
+    "minimumRecognizableMoments": 2,
+    "minimumDistinctScenes": 2,
+    "coverBrandRecognizable": false,
+    "officialLogoOrWordmarkPreferred": true,
+    "realProductUiPreferred": true,
+    "typographicFallbackAllowed": true,
+    "genericSymbolFallbackForbidden": true,
+    "assetExceptionReason": "Kein externer Hauptbrand; Kanal-Brand kommt direkt aus ki/brand/brand.ts."
+  },
+  "visualWorlds": [
+    {"id":"goal-world","purpose":"Ein einziges Ziel ersetzt kleinteilige Chat-Anweisungen."},
+    {"id":"planner-world","purpose":"Teilaufgaben und Toolauswahl werden als verzweigter Arbeitsraum sichtbar."},
+    {"id":"loop-world","purpose":"Ausführen, Prüfen und Wiederholen werden als räumlicher Loop gezeigt."},
+    {"id":"guardrail-world","purpose":"Regeln, Berechtigungen und Freigaben werden als kontrollierte Gates gezeigt."},
+    {"id":"workflow-world","purpose":"Der komplette Fünf-Schritte-Ablauf wird als progressiver Prozess verdichtet."},
+    {"id":"result-world","purpose":"Die fertige Arbeit ersetzt den Chat als visuelles Endergebnis."}
+  ],
+  "midReelReframes": [
+    {"sceneId":"scene3","anchorPhrase":"Reicht das Ergebnis schon","toWorld":"loop-world","purpose":"Vom Plan in einen eigenständigen Ausführen-Prüfen-Loop wechseln."},
+    {"sceneId":"scene4","anchorPhrase":"denkt nicht wie ein Mensch","toWorld":"guardrail-world","purpose":"Autonomie bewusst durch Regeln und Berechtigungen relativieren."}
+  ],
+  "brandMotionPlanFile": "06-projektdateien/BRAND-MOTION-PLAN.json",
+  "functionalIconPolicy": {
+    "enabled": true,
+    "brandIconsForbidden": true,
+    "functionalIconsEncouraged": true,
+    "brandAndFunctionMustStayVisuallyDistinct": true
+  }
+}

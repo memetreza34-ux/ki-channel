@@ -1,0 +1,1 @@
+KI-Agenten sind mehr als Chatbots: Sie zerlegen ein Ziel in Schritte, nutzen erlaubte Tools, prüfen Ergebnisse und wiederholen den Ablauf. Je mehr sie selbstständig handeln dürfen, desto wichtiger werden klare Grenzen, Protokolle und Freigaben.

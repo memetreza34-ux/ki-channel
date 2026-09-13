@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "status": "WAITING_FOR_USER_LOCAL_MASTER",
+  "provider": "USER_PROVIDED",
+  "targetFile": "voiceover.mp3",
+  "agentGenerationAllowed": false,
+  "agentDownloadAllowed": false,
+  "notes": "Produktions-Voiceover wird ausschließlich vom Nutzer erstellt."
+}
