@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "reelId": "ki-agent-workflow",
   "slug": "ki-agent-workflow",
   "compositionId": "KI-AgentWorkflow",
@@ -8,6 +8,14 @@
   "publishDate": "2026-09-14",
   "week": "2026-09-14_bis_2026-09-20",
   "productionMode": "LEVEL_UP_V4_BRAND_FIDELITY_OPEN_MOTION",
+  "timingAuthority": "PREVIEW_UNTIL_FORCED_ALIGNMENT",
+  "timingSync": {
+    "statusFile": "06-projektdateien/timing-sync-status.json",
+    "contractFile": "06-projektdateien/TIMING-SYNC-SYSTEM.md",
+    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>",
+    "finalGate": "node scripts/validate-reel-timing-sync.mjs <reel-package-dir>",
+    "productionPolicy": "AUDIO_MASTER_WORD_LOCKED_CAPTIONS_SCENES_REVEALS_SFX_DURATION"
+  },
   "scriptBudget": {
     "targetMinWords": 150,
     "targetMaxWords": 175,
@@ -39,7 +47,7 @@
     "agentGenerationAllowed": false,
     "agentDownloadAllowed": false,
     "timingAuthority": false,
-    "alignmentCommand": "node ki/scripts/align-reel-local.mjs <reel-package-dir>"
+    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>"
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
@@ -80,7 +88,7 @@
     "minVisualBeats": 20,
     "plannedVisualBeats": 24,
     "maxStaticSeconds": 4.0,
-    "voiceSyncMode": "SENTENCE_PROGRESS_FROM_CAPTION_CUES_UNTIL_ALIGNMENT",
+    "voiceSyncMode": "PREVIEW_FALLBACK_THEN_WORD_TIMINGS_SEMANTIC_ANCHORS",
     "verticalStage": "HEADLINE_TO_RAISED_CAPTION_ZONE",
     "microDetailPolicy": "MEANINGFUL_ONLY",
     "motionVarietyPolicy": "NO_REPEATED_MAJOR_GRAMMAR_MORE_THAN_TWICE",
