@@ -1,0 +1,1 @@
+Final PASS requires timing sync validation after alignment.
