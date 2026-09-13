@@ -1,0 +1,8 @@
+export {ReelKIAgentWorkflow} from './ReelKIAgentWorkflow';
+export {
+  KI_AGENT_WORKFLOW_COMPOSITION_ID,
+  KI_AGENT_WORKFLOW_DURATION_IN_FRAMES,
+  KI_AGENT_WORKFLOW_FPS,
+  KI_AGENT_WORKFLOW_HEIGHT,
+  KI_AGENT_WORKFLOW_WIDTH,
+} from './contract';

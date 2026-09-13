@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "status": "PREVIEW_SYNCED_TO_CAPTIONS_ALIGNMENT_REQUIRED",
+  "selectionMode": "AUTO_CC0_DETERMINISTIC",
+  "captionSync": {"script":"ki/scripts/sync-reel-sfx-to-captions.mjs","rule":"SENTENCE_PROGRESS_TO_SCENE_OFFSET","rerunAfterForcedAlignment":true},
+  "events": [
+    {"id":"sfx01","sceneId":"scene1","purpose":"Goal card locks into the single-target state","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s01","progress":0.48},"anchor":{"type":"SCENE_OFFSET","frame":125},"roles":["ui-confirm"],"keywords":["goal","confirm"],"preferredDurationSeconds":0.18,"volume":0.06},
+    {"id":"sfx02","sceneId":"scene2","purpose":"First functional tool lane activates","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s03","progress":0.42},"anchor":{"type":"SCENE_OFFSET","frame":130},"roles":["digital-accent"],"keywords":["tool","activate"],"preferredDurationSeconds":0.18,"volume":0.055},
+    {"id":"sfx03","sceneId":"scene3","purpose":"NO branch reroutes the loop to another attempt","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s05","progress":0.44},"anchor":{"type":"SCENE_OFFSET","frame":185},"roles":["ui-error","tech-accent"],"keywords":["retry","route"],"preferredDurationSeconds":0.22,"volume":0.07},
+    {"id":"sfx04","sceneId":"scene4","purpose":"Blocked permission gate stops an unallowed tool","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s08","progress":0.35},"anchor":{"type":"SCENE_OFFSET","frame":245},"roles":["ui-click","ui-error"],"keywords":["lock","permission"],"preferredDurationSeconds":0.20,"volume":0.065},
+    {"id":"sfx05","sceneId":"scene5","purpose":"Workflow rail reaches the final repeated-check state","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s09","progress":0.86},"anchor":{"type":"SCENE_OFFSET","frame":220},"roles":["ui-confirm"],"keywords":["success","workflow"],"preferredDurationSeconds":0.20,"volume":0.06},
+    {"id":"sfx06","sceneId":"scene6","purpose":"Finished work result lands as the payoff","sync":{"type":"SENTENCE_PROGRESS","sentenceId":"s11","progress":0.45},"anchor":{"type":"SCENE_OFFSET","frame":80},"roles":["impact","ui-confirm"],"keywords":["result","final"],"preferredDurationSeconds":0.26,"volume":0.075}
+  ]
+}

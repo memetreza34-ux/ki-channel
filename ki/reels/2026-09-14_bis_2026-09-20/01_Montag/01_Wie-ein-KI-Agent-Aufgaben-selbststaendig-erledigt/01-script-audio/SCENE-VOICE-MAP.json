@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "mappingStatus": "CONTENT_LOCKED_TIMING_PENDING",
+  "voiceoverFile": "01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt",
+  "captionFile": "03-caption/subtitle-cues.json",
+  "rules": {
+    "sceneStartAnchor": "FIRST_MAPPED_WORD",
+    "sceneStartToleranceFrames": 4,
+    "firstSceneLeadFrames": 8,
+    "captionGroupingMaySplitSentences": true,
+    "sceneTextMustReconstructExactly": true,
+    "sceneOrderMustFollowVoiceOrder": true
+  },
+  "sentences": [
+    {"sentenceId":"s01","sceneId":"scene1","startFrame":0,"endFrame":270,"text":"Stell dir vor, du sagst einer KI nicht jeden einzelnen Schritt, sondern nur das Ziel: Finde drei passende Lieferanten und fasse die Angebote zusammen."},
+    {"sentenceId":"s02","sceneId":"scene1","startFrame":270,"endFrame":330,"text":"Genau hier beginnt ein KI-Agent."},
+    {"sentenceId":"s03","sceneId":"scene2","startFrame":330,"endFrame":650,"text":"Er zerlegt das Ziel in Teilaufgaben, entscheidet, welches Werkzeug er braucht, durchsucht zum Beispiel Webseiten oder Dateien und speichert Zwischenergebnisse."},
+    {"sentenceId":"s04","sceneId":"scene3","startFrame":650,"endFrame":760,"text":"Danach prüft er: Reicht das Ergebnis schon?"},
+    {"sentenceId":"s05","sceneId":"scene3","startFrame":760,"endFrame":930,"text":"Wenn nicht, startet er den nächsten Schritt oder versucht einen anderen Weg."},
+    {"sentenceId":"s06","sceneId":"scene4","startFrame":930,"endFrame":1045,"text":"Wichtig: Der Agent denkt nicht wie ein Mensch."},
+    {"sentenceId":"s07","sceneId":"scene4","startFrame":1045,"endFrame":1190,"text":"Er folgt einem Modell, Regeln und den Tools, die ihm erlaubt wurden."},
+    {"sentenceId":"s08","sceneId":"scene4","startFrame":1190,"endFrame":1290,"text":"Deshalb sind Berechtigungen und klare Grenzen entscheidend."},
+    {"sentenceId":"s09","sceneId":"scene5","startFrame":1290,"endFrame":1485,"text":"In einem guten Workflow sieht das so aus: Ziel verstehen, planen, Tool ausführen, Ergebnis prüfen, wiederholen."},
+    {"sentenceId":"s10","sceneId":"scene5","startFrame":1485,"endFrame":1650,"text":"Der entscheidende Unterschied zum normalen Chat ist also nicht das Schreiben, sondern das Handeln."},
+    {"sentenceId":"s11","sceneId":"scene6","startFrame":1650,"endFrame":1795,"text":"Am Ende bekommst du nicht nur eine Antwort, sondern ein fertiges Arbeitsergebnis."},
+    {"sentenceId":"s12","sceneId":"scene6","startFrame":1795,"endFrame":1915,"text":"Genau deshalb sind Agenten spannend: Sie verbinden KI mit echten Aktionen."},
+    {"sentenceId":"s13","sceneId":"scene6","startFrame":1915,"endFrame":2040,"text":"Aber je mehr sie selbstständig tun dürfen, desto wichtiger werden Kontrolle, Protokolle und Freigaben."}
+  ]
+}

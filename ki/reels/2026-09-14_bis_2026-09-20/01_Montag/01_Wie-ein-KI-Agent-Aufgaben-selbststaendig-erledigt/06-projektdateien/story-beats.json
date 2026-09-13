@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "storyArc": ["HOOK", "PROBLEM", "PROOF", "CHANGE", "CONSEQUENCE", "PAYOFF"],
+  "rules": {
+    "minVisualBeats": 20,
+    "maxStaticSeconds": 4.0,
+    "everySpokenCoreClaimNeedsVisualReaction": true,
+    "transitionMustHaveMeaning": true,
+    "cameraMotionMustHaveMeaning": true,
+    "sfxMustMatchVisibleEvent": true,
+    "externalVisualTarget": "ILLUSTRATIVE_MEDIA_ONLY_NO_EVIDENCE",
+    "nativeMotionTargetPercent": "NATIVE_FIRST"
+  },
+  "beats": [
+    {"id":"b01","sceneId":"scene1","role":"HOOK","atRatio":0.02,"visualAction":"Cover headline KI-AGENT: SO HANDELT ER appears with one clean target card.","motion":"spring punch"},
+    {"id":"b02","sceneId":"scene1","role":"HOOK","atRatio":0.22,"visualAction":"Three tiny step-by-step instruction chips collapse into one larger goal card.","motion":"card collapse"},
+    {"id":"b03","sceneId":"scene1","role":"CHANGE","atRatio":0.55,"visualAction":"Goal card emits a branching pulse that reveals the agent symbol.","motion":"connector draw"},
+    {"id":"b04","sceneId":"scene1","role":"PROOF","atRatio":0.78,"visualAction":"Label Ziel statt Einzelschritte locks under the agent symbol.","motion":"snap lock"},
+
+    {"id":"b05","sceneId":"scene2","role":"PROOF","atRatio":0.04,"visualAction":"Central goal splits into three task lanes for search, documents and notes.","motion":"branch reveal"},
+    {"id":"b06","sceneId":"scene2","role":"PROOF","atRatio":0.28,"visualAction":"Search lane activates with functional search icon and moving status dot.","motion":"status pulse"},
+    {"id":"b07","sceneId":"scene2","role":"PROOF","atRatio":0.52,"visualAction":"Document lane activates and transfers a result chip into working memory.","motion":"chip transfer"},
+    {"id":"b08","sceneId":"scene2","role":"CHANGE","atRatio":0.76,"visualAction":"Structured notes lane completes while optional generated workspace media pushes in behind it.","motion":"camera push"},
+
+    {"id":"b09","sceneId":"scene3","role":"PROBLEM","atRatio":0.04,"visualAction":"Question Reicht das Ergebnis? appears above a circular agent loop.","motion":"scale reveal"},
+    {"id":"b10","sceneId":"scene3","role":"CHANGE","atRatio":0.30,"visualAction":"Loop travels from Execute to Check and stops on a red NO branch.","motion":"orbit progress"},
+    {"id":"b11","sceneId":"scene3","role":"PROOF","atRatio":0.56,"visualAction":"NO branch routes back to Plan while the second attempt lights up.","motion":"retry path draw"},
+    {"id":"b12","sceneId":"scene3","role":"PAYOFF","atRatio":0.82,"visualAction":"YES state turns green and closes the loop with Ergebnis reicht.","motion":"success pulse"},
+
+    {"id":"b13","sceneId":"scene4","role":"CONSEQUENCE","atRatio":0.04,"visualAction":"Large statement Kein Mensch im Kopf separates the agent from human thinking.","motion":"world break"},
+    {"id":"b14","sceneId":"scene4","role":"PROOF","atRatio":0.28,"visualAction":"Model, Rules and Allowed Tools appear as three separate permission gates.","motion":"gate stack"},
+    {"id":"b15","sceneId":"scene4","role":"CONSEQUENCE","atRatio":0.56,"visualAction":"A blocked tool call hits a lock icon and stops before execution.","motion":"collision stop"},
+    {"id":"b16","sceneId":"scene4","role":"CHANGE","atRatio":0.78,"visualAction":"Human approval switch opens one guarded path and keeps the others closed.","motion":"toggle morph"},
+
+    {"id":"b17","sceneId":"scene5","role":"PROOF","atRatio":0.04,"visualAction":"Five-step workflow rail appears: Ziel, Plan, Tool, Check, Wiederholen.","motion":"rail draw"},
+    {"id":"b18","sceneId":"scene5","role":"PROOF","atRatio":0.26,"visualAction":"Progress fills through Ziel and Plan while the active node enlarges.","motion":"progress fill"},
+    {"id":"b19","sceneId":"scene5","role":"CHANGE","atRatio":0.52,"visualAction":"Tool and Check nodes complete, then Repeat flashes as the loop decision.","motion":"node handoff"},
+    {"id":"b20","sceneId":"scene5","role":"PAYOFF","atRatio":0.78,"visualAction":"Chat bubble shrinks while an action arrow grows toward a finished output card.","motion":"semantic morph"},
+
+    {"id":"b21","sceneId":"scene6","role":"PAYOFF","atRatio":0.04,"visualAction":"Finished supplier comparison document lands as the primary full-frame result.","motion":"document land"},
+    {"id":"b22","sceneId":"scene6","role":"PAYOFF","atRatio":0.28,"visualAction":"Three completed checklist rows reveal one after another on the result document.","motion":"stagger reveal"},
+    {"id":"b23","sceneId":"scene6","role":"CONSEQUENCE","atRatio":0.58,"visualAction":"Control, Protokoll and Freigabe guardrail chips surround the finished result.","motion":"guardrail orbit"},
+    {"id":"b24","sceneId":"scene6","role":"PAYOFF","atRatio":0.82,"visualAction":"Final line KI + Aktionen locks in while the camera settles for the outro hold.","motion":"camera settle"}
+  ]
+}

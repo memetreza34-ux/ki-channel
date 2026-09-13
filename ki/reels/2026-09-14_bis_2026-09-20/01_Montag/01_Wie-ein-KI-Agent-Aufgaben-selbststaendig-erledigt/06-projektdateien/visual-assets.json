@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "assets": [
+    {"id":"agent-workspace-image","sceneId":"scene2","kind":"GENERATED_IMAGE","role":"ILLUSTRATION","proofAllowed":false,"requestFile":"06-projektdateien/GENERATED-MEDIA-REQUESTS.json"},
+    {"id":"agent-loop-broll","sceneId":"scene3","kind":"GENERATED_BROLL","role":"ATMOSPHERE","proofAllowed":false,"requestFile":"06-projektdateien/GENERATED-MEDIA-REQUESTS.json"}
+  ]
+}
