@@ -18,8 +18,9 @@ const run = (label, script, args) => {
   }
 };
 
+run('master timeline gate', path.resolve('scripts/validate-reel-master-timeline.mjs'), [reelDir]);
 run('timing sync gate', path.resolve('scripts/validate-reel-timing-sync.mjs'), [reelDir]);
 run('standard production render preparation', path.resolve('ki/scripts/prepare-reel-render.mjs'), [reelDir]);
 
 console.log('\nSYNCED RENDER PREP PASSED');
-console.log('The production render lock was created only after audio/caption/scene/animation/SFX timing validation.');
+console.log('Render lock created only after exact word -> caption -> scene -> animation -> SFX master-timeline validation.');

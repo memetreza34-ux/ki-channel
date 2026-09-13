@@ -46,6 +46,12 @@ export const createVoiceTiming = (cues: readonly VoiceTimingCue[], scenes: reado
       .filter((cue) => cue.sceneId === sceneId && cue.sentenceId === sentenceId)
       .sort((a, b) => a.startFrame - b.startFrame);
 
+  const alignedWordsForSentence = (sceneId: string, sentenceId: string) =>
+    sentenceCues(sceneId, sentenceId)
+      .flatMap((cue) => cue.words ?? [])
+      .filter((word) => Number.isFinite(word.startFrame) && Number.isFinite(word.endFrame))
+      .sort((a, b) => a.startFrame - b.startFrame);
+
   const sentenceWindow = (
     sceneId: string,
     sentenceId: string,
@@ -77,13 +83,10 @@ export const createVoiceTiming = (cues: readonly VoiceTimingCue[], scenes: reado
   ): number => {
     const currentScene = scene(sceneId);
     const duration = Math.max(1, currentScene.endFrame - currentScene.startFrame);
-    const matches = sentenceCues(sceneId, sentenceId);
     const wanted = phraseTokens(phrase);
+    const alignedWords = alignedWordsForSentence(sceneId, sentenceId);
 
-    if (wanted.length > 0) {
-      const alignedWords = matches
-        .flatMap((cue) => cue.words ?? [])
-        .filter((word) => Number.isFinite(word.startFrame) && Number.isFinite(word.endFrame));
+    if (wanted.length > 0 && alignedWords.length > 0) {
       const normalized = alignedWords.map((word) => normalizeToken(word.text));
       for (let index = 0; index <= normalized.length - wanted.length; index++) {
         let matchesPhrase = true;
@@ -97,6 +100,10 @@ export const createVoiceTiming = (cues: readonly VoiceTimingCue[], scenes: reado
           return clampFrame(alignedWords[index].startFrame - currentScene.startFrame, 0, duration - 1);
         }
       }
+      throw new Error(
+        `Voice timing phrase "${phrase}" not found in aligned words for ${sceneId}/${sentenceId}. ` +
+        'Aligned production timing may not fall back to approximate ratios.',
+      );
     }
 
     return clampFrame(duration * fallbackRatio, 0, duration - 1);

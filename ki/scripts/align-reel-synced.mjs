@@ -18,10 +18,16 @@ const run = (label, script, args) => {
   }
 };
 
-run('forced alignment + caption/scene/SFX lock', path.resolve('ki/scripts/align-reel-local.mjs'), [reelDir, ...rest]);
+run('scene/voice schema normalization', path.resolve('ki/scripts/normalize-scene-voice-map.mjs'), [reelDir]);
+run('forced alignment + first caption/scene/SFX lock', path.resolve('ki/scripts/align-reel-local.mjs'), [reelDir, ...rest]);
+run('master timeline build', path.resolve('ki/scripts/build-reel-master-timeline.mjs'), [reelDir]);
+run('SFX re-resolution on exact master events', path.resolve('ki/scripts/resolve-reel-sfx.mjs'), [reelDir]);
+run('master timeline validation', path.resolve('scripts/validate-reel-master-timeline.mjs'), [reelDir]);
 run('timing sync finalization', path.resolve('ki/scripts/finalize-reel-timing-sync.mjs'), [reelDir]);
 run('timing sync validation', path.resolve('scripts/validate-reel-timing-sync.mjs'), [reelDir]);
+run('master timeline final validation', path.resolve('scripts/validate-reel-master-timeline.mjs'), [reelDir]);
 
-console.log('\nAUDIO-FIRST REEL SYNC COMPLETE');
-console.log('Audio is now the master clock for captions, scenes, semantic animation anchors, SFX and final duration.');
+console.log('\nAUDIO-FIRST MASTER TIMELINE COMPLETE');
+console.log('One clock now controls words, caption groups, scene boundaries, semantic animation anchors, SFX and final duration.');
+console.log('No aligned animation anchor may silently fall back to a ratio.');
 console.log('Commit the generated timing files before production render.');

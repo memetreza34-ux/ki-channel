@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "status": "PLANNED_REQUIRES_FORCED_ALIGNMENT",
+  "authority": "VOICEOVER_WORD_TIMINGS",
+  "rules": {
+    "captions": {
+      "minWordsPerCue": 2,
+      "maxWordsPerCue": 4,
+      "maxGapSeconds": 0.24,
+      "tailFrames": 2,
+      "maxLines": 2
+    },
+    "scenes": {
+      "scene1StartsAtFrame0": true,
+      "nextScenesStartAtFirstMappedWord": true,
+      "sceneEndsAtNextSceneStart": true,
+      "finalSceneEndsAtAudioDuration": true
+    },
+    "animations": {
+      "exactPhraseRequiredAfterAlignment": true,
+      "fallbackForbiddenAfterAlignment": true,
+      "defaultLeadFrames": -2
+    },
+    "sfx": {
+      "mustAnchorToPlannedEvent": true,
+      "resolveAgainAfterMasterTimeline": true
+    }
+  },
+  "events": [
+    {"id":"s1-headline","sceneId":"scene1","sentenceId":"s01","anchorType":"SENTENCE_START","offsetFrames":0,"kind":"ANIMATION","target":"headline"},
+    {"id":"s1-goal","sceneId":"scene1","sentenceId":"s01","anchorType":"PHRASE_START","anchorPhrase":"nur das Ziel","offsetFrames":-4,"kind":"ANIMATION","target":"goal-card","sfxId":"sfx01"},
+    {"id":"s1-search","sceneId":"scene1","sentenceId":"s01","anchorType":"PHRASE_START","anchorPhrase":"Finde drei passende Lieferanten","offsetFrames":-2,"kind":"ANIMATION","target":"search-step"},
+    {"id":"s1-compare","sceneId":"scene1","sentenceId":"s01","anchorType":"PHRASE_START","anchorPhrase":"Angebote zusammen","offsetFrames":-2,"kind":"ANIMATION","target":"compare-step"},
+    {"id":"s1-agent","sceneId":"scene1","sentenceId":"s02","anchorType":"PHRASE_START","anchorPhrase":"KI-Agent","offsetFrames":-4,"kind":"ANIMATION","target":"agent-card"},
+    {"id":"s2-headline","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"zerlegt das Ziel","offsetFrames":-4,"kind":"ANIMATION","target":"headline"},
+    {"id":"s2-parts","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"Teilaufgaben","offsetFrames":-2,"kind":"ANIMATION","target":"task-list"},
+    {"id":"s2-tool","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"welches Werkzeug","offsetFrames":-3,"kind":"ANIMATION","target":"tool-action","sfxId":"sfx02"},
+    {"id":"s2-web","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"Webseiten","offsetFrames":-2,"kind":"ANIMATION","target":"web-row"},
+    {"id":"s2-files","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"Dateien","offsetFrames":-2,"kind":"ANIMATION","target":"files-row"},
+    {"id":"s2-save","sceneId":"scene2","sentenceId":"s03","anchorType":"PHRASE_START","anchorPhrase":"Zwischenergebnisse","offsetFrames":-2,"kind":"ANIMATION","target":"memory-row"},
+    {"id":"s3-headline","sceneId":"scene3","sentenceId":"s04","anchorType":"PHRASE_START","anchorPhrase":"Reicht das Ergebnis schon","offsetFrames":-3,"kind":"ANIMATION","target":"headline"},
+    {"id":"s3-retry","sceneId":"scene3","sentenceId":"s05","anchorType":"PHRASE_START","anchorPhrase":"Wenn nicht","offsetFrames":-2,"kind":"ANIMATION","target":"retry-branch","sfxId":"sfx03"},
+    {"id":"s3-next","sceneId":"scene3","sentenceId":"s05","anchorType":"PHRASE_START","anchorPhrase":"nächsten Schritt","offsetFrames":-2,"kind":"ANIMATION","target":"next-step"},
+    {"id":"s3-other","sceneId":"scene3","sentenceId":"s05","anchorType":"PHRASE_START","anchorPhrase":"anderen Weg","offsetFrames":-2,"kind":"ANIMATION","target":"alternate-route"},
+    {"id":"s4-headline","sceneId":"scene4","sentenceId":"s06","anchorType":"PHRASE_START","anchorPhrase":"Agent denkt nicht wie ein Mensch","offsetFrames":-4,"kind":"ANIMATION","target":"headline"},
+    {"id":"s4-model","sceneId":"scene4","sentenceId":"s07","anchorType":"PHRASE_START","anchorPhrase":"Modell","offsetFrames":-2,"kind":"ANIMATION","target":"model-gate"},
+    {"id":"s4-rules","sceneId":"scene4","sentenceId":"s07","anchorType":"PHRASE_START","anchorPhrase":"Regeln","offsetFrames":-2,"kind":"ANIMATION","target":"rules-gate"},
+    {"id":"s4-tools","sceneId":"scene4","sentenceId":"s07","anchorType":"PHRASE_START","anchorPhrase":"Tools","offsetFrames":-2,"kind":"ANIMATION","target":"tools-gate"},
+    {"id":"s4-permission","sceneId":"scene4","sentenceId":"s08","anchorType":"PHRASE_START","anchorPhrase":"Berechtigungen","offsetFrames":-2,"kind":"ANIMATION","target":"permission-stop","sfxId":"sfx04"},
+    {"id":"s4-limits","sceneId":"scene4","sentenceId":"s08","anchorType":"PHRASE_START","anchorPhrase":"Grenzen","offsetFrames":-2,"kind":"ANIMATION","target":"human-approval"},
+    {"id":"s5-headline","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"guten Workflow","offsetFrames":-4,"kind":"ANIMATION","target":"headline"},
+    {"id":"s5-goal","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"Ziel verstehen","offsetFrames":-2,"kind":"ANIMATION","target":"step-goal"},
+    {"id":"s5-plan","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"planen","offsetFrames":-2,"kind":"ANIMATION","target":"step-plan"},
+    {"id":"s5-tool","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"Tool ausführen","offsetFrames":-2,"kind":"ANIMATION","target":"step-tool"},
+    {"id":"s5-check","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"Ergebnis prüfen","offsetFrames":-2,"kind":"ANIMATION","target":"step-check"},
+    {"id":"s5-loop","sceneId":"scene5","sentenceId":"s09","anchorType":"PHRASE_START","anchorPhrase":"wiederholen","offsetFrames":-2,"kind":"ANIMATION","target":"step-loop","sfxId":"sfx05"},
+    {"id":"s5-action","sceneId":"scene5","sentenceId":"s10","anchorType":"PHRASE_START","anchorPhrase":"Handeln","offsetFrames":-2,"kind":"ANIMATION","target":"chat-to-action"},
+    {"id":"s6-headline","sceneId":"scene6","sentenceId":"s11","anchorType":"SENTENCE_START","offsetFrames":0,"kind":"ANIMATION","target":"headline"},
+    {"id":"s6-result","sceneId":"scene6","sentenceId":"s11","anchorType":"PHRASE_START","anchorPhrase":"fertiges Arbeitsergebnis","offsetFrames":-3,"kind":"ANIMATION","target":"result-card","sfxId":"sfx06"},
+    {"id":"s6-actions","sceneId":"scene6","sentenceId":"s12","anchorType":"PHRASE_START","anchorPhrase":"echten Aktionen","offsetFrames":-2,"kind":"ANIMATION","target":"ki-action-payoff"},
+    {"id":"s6-control","sceneId":"scene6","sentenceId":"s13","anchorType":"PHRASE_START","anchorPhrase":"Kontrolle","offsetFrames":-2,"kind":"ANIMATION","target":"control-card"},
+    {"id":"s6-protocol","sceneId":"scene6","sentenceId":"s13","anchorType":"PHRASE_START","anchorPhrase":"Protokolle","offsetFrames":-2,"kind":"ANIMATION","target":"protocol-card"},
+    {"id":"s6-approval","sceneId":"scene6","sentenceId":"s13","anchorType":"PHRASE_START","anchorPhrase":"Freigaben","offsetFrames":-2,"kind":"ANIMATION","target":"approval-card"}
+  ]
+}

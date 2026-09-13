@@ -1,4 +1,4 @@
-export {ReelKIAgentWorkflow} from './ReelKIAgentWorkflowSynced';
+export {ReelKIAgentWorkflow} from './ReelKIAgentWorkflowFinal';
 export {
   KI_AGENT_WORKFLOW_COMPOSITION_ID,
   KI_AGENT_WORKFLOW_DURATION_IN_FRAMES,
