@@ -1,1 +1,0 @@
-Audio is the master clock. Captions, scenes, animation reveals and SFX are derived after forced alignment.
