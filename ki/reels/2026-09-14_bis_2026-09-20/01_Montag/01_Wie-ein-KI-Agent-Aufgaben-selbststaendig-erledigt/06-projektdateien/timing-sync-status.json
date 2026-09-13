@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "status": "TIMING_SYNC_NOT_READY",
+  "authority": "01-script-audio/WORD-TIMINGS.json",
+  "audioAligned": false,
+  "wordTimingsPresent": false,
+  "captionsDerivedFromWordTimings": false,
+  "scenesDerivedFromWordTimings": false,
+  "majorRevealsWordLocked": false,
+  "sfxResyncedAfterAlignment": false,
+  "durationFromAlignedAudio": false,
+  "tolerances": {
+    "captionStartTargetFrames": 2,
+    "captionStartMaxFrames": 4,
+    "majorRevealTargetFrames": 3,
+    "majorRevealMaxFrames": 5,
+    "sfxVisibleEventMaxFrames": 3
+  }
+}
