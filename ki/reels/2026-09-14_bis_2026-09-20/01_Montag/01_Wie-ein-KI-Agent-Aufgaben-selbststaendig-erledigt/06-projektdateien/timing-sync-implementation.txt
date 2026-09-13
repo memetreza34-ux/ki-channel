@@ -1,1 +1,0 @@
-Implementation must fail closed if WORD-TIMINGS.json is missing or if preview timings remain active.
