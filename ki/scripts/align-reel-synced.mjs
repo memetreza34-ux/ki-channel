@@ -23,8 +23,8 @@ const run = (label, script, args) => {
 };
 
 run('1/13 normalize scene/voice schema', path.resolve('ki/scripts/normalize-scene-voice-map.mjs'), [reelDir]);
-run('2/13 primary forced alignment', path.resolve('ki/scripts/align-reel-local.mjs'), [reelDir, ...rest]);
-run('3/13 independent CTC alignment consensus', path.resolve('ki/scripts/verify-reel-alignment-consensus.mjs'), [reelDir]);
+run('2/13 primary forced alignment (cached when unchanged)', path.resolve('ki/scripts/align-reel-local.mjs'), [reelDir, ...rest, '--skip-sfx']);
+run('3/13 independent CTC alignment consensus (cached when unchanged)', path.resolve('ki/scripts/verify-reel-alignment-consensus.mjs'), [reelDir]);
 run('4/13 build pause-aware speech/caption/scene master timeline', path.resolve('ki/scripts/build-reel-master-timeline-v2.mjs'), [reelDir]);
 run('5/13 compile explicit speech-to-animation choreography intervals', path.resolve('ki/scripts/compile-reel-choreography.mjs'), [reelDir]);
 run('6/13 resolve SFX from choreography beat frames', path.resolve('ki/scripts/resolve-reel-sfx.mjs'), [reelDir]);
@@ -40,6 +40,7 @@ run('final lower-level master timeline gate', path.resolve('scripts/validate-ree
 
 console.log('\nEXPLICIT REEL CHOREOGRAPHY COMPLETE');
 console.log('Audio -> exact words -> captions/scenes -> explicit speech windows -> ENTER/HOLD/EXIT animation windows -> SFX.');
+console.log('Unchanged audio/script timing reuses cached primary + verifier alignments instead of loading both models again.');
 console.log('TIMELINE-AUDIT.md contains the exact from/to times for scenes, captions, animation phases and SFX.');
 console.log('No production animation may be driven by an approximate percentage or a single unbounded trigger frame.');
 console.log('Commit generated timing files before production render.');
