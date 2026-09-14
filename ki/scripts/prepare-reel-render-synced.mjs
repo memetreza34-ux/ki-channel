@@ -18,9 +18,11 @@ const run = (label, script, args) => {
 };
 
 run('alignment consensus gate', path.resolve('scripts/validate-reel-alignment-quality.mjs'), [reelDir]);
-run('master timeline gate', path.resolve('scripts/validate-reel-master-timeline.mjs'), [reelDir]);
+run('lower-level master timeline gate', path.resolve('scripts/validate-reel-master-timeline.mjs'), [reelDir]);
+run('explicit choreography gate', path.resolve('scripts/validate-reel-choreography.mjs'), [reelDir]);
 run('timing sync gate', path.resolve('scripts/validate-reel-timing-sync.mjs'), [reelDir]);
 run('standard production render preparation', path.resolve('ki/scripts/prepare-reel-render.mjs'), [reelDir]);
 
-console.log('\nSTRICT SYNCED RENDER PREP PASSED');
-console.log('Render lock created only after independent alignment consensus + master timeline + timing validation.');
+console.log('\nCHOREOGRAPHED RENDER PREP PASSED');
+console.log('Render lock created only after alignment consensus + exact captions/scenes + explicit ENTER/HOLD/EXIT choreography + SFX validation.');
+console.log('Review 06-projektdateien/TIMELINE-AUDIT.md for the exact from/to schedule.');
