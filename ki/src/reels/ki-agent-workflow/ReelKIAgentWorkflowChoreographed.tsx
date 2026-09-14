@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Easing,
   Html5Audio,
   Img,
   OffthreadVideo,
@@ -31,10 +32,7 @@ import choreographyPlanJson from '../../../reels/2026-09-14_bis_2026-09-20/01_Mo
 import {REEL_CAPTION_GLASS_STYLE, REEL_CAPTION_WRAPPER_STYLE} from '../captionSafe';
 import {createChoreographyTiming, type ChoreographyPlan, type ResolvedChoreographyBeat} from '../choreographyTiming';
 import {StoryProgressRail, StoryTexture} from '../StoryMotion';
-import {
-  KI_AGENT_WORKFLOW_CUES,
-  KI_AGENT_WORKFLOW_SCENES,
-} from './contract';
+import {KI_AGENT_WORKFLOW_CUES, KI_AGENT_WORKFLOW_SCENES} from './contract';
 
 type Props = {
   voiceoverSrc: string;
@@ -71,7 +69,7 @@ const Shell: React.FC<React.PropsWithChildren<{accent: string; eyebrow: string; 
 );
 
 const Card: React.FC<React.PropsWithChildren<{style?: React.CSSProperties}>> = ({children, style}) => (
-  <div style={{background: 'rgba(255,255,255,.94)', border: '1px solid rgba(26,26,46,.08)', boxShadow: '0 24px 70px rgba(65,45,105,.12)', borderRadius: 32, ...style}}>{children}</div>
+  <div style={{background: 'rgba(255,255,255,.95)', border: '1px solid rgba(26,26,46,.075)', boxShadow: '0 22px 58px rgba(65,45,105,.10)', borderRadius: 30, ...style}}>{children}</div>
 );
 
 const Headline: React.FC<React.PropsWithChildren<{size?: number}>> = ({children, size = 72}) => (
@@ -85,37 +83,73 @@ const TimedBeat: React.FC<React.PropsWithChildren<{
 }>> = ({window, direction = 'up', style, children}) => {
   const frame = useCurrentFrame();
   if (frame < window.visualStartFrame || frame >= window.visualEndFrame) return null;
-  const enter = interpolate(frame, [window.visualStartFrame, Math.max(window.visualStartFrame + 1, window.enterEndFrame)], [0, 1], clamp);
-  const exit = interpolate(frame, [window.exitStartFrame, Math.max(window.exitStartFrame + 1, window.visualEndFrame)], [1, 0], clamp);
-  const visibility = Math.max(0, Math.min(1, Math.min(enter, exit)));
-  const distance = 28 * (1 - enter) + 14 * (1 - exit);
-  const transform = direction === 'left'
-    ? `translateX(${-distance}px)`
-    : direction === 'right'
-      ? `translateX(${distance}px)`
-      : direction === 'up'
-        ? `translateY(${distance}px)`
-        : 'none';
-  return <div style={{...style, opacity: visibility, transform, willChange: 'transform, opacity'}}>{children}</div>;
+  const enterRaw = interpolate(frame, [window.visualStartFrame, Math.max(window.visualStartFrame + 1, window.enterEndFrame)], [0, 1], clamp);
+  const exitRaw = interpolate(frame, [window.exitStartFrame, Math.max(window.exitStartFrame + 1, window.visualEndFrame)], [1, 0], clamp);
+  const enter = Easing.out(Easing.cubic)(enterRaw);
+  const exit = Easing.inOut(Easing.cubic)(exitRaw);
+  const opacity = Math.max(0, Math.min(1, Math.min(enter, exit)));
+  const enterTravel = 18 * (1 - enter);
+  const exitTravel = 8 * (1 - exit);
+  const x = direction === 'left' ? -enterTravel + exitTravel : direction === 'right' ? enterTravel - exitTravel : 0;
+  const y = direction === 'up' ? enterTravel - exitTravel : 0;
+  const scale = 0.985 + 0.015 * enter - 0.008 * (1 - exit);
+  return <div style={{...style, opacity, transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`, transformOrigin: 'center', willChange: 'transform, opacity'}}>{children}</div>;
+};
+
+const EnterOnly: React.FC<React.PropsWithChildren<{
+  startFrame: number;
+  direction?: 'up' | 'left' | 'right' | 'none';
+  style?: React.CSSProperties;
+}>> = ({startFrame, direction = 'up', style, children}) => {
+  const frame = useCurrentFrame();
+  if (frame < startFrame) return null;
+  const raw = interpolate(frame, [startFrame, startFrame + 9], [0, 1], clamp);
+  const eased = Easing.out(Easing.cubic)(raw);
+  const travel = 20 * (1 - eased);
+  const x = direction === 'left' ? -travel : direction === 'right' ? travel : 0;
+  const y = direction === 'up' ? travel : 0;
+  return <div style={{...style, opacity: eased, transform: `translate3d(${x}px, ${y}px, 0) scale(${0.985 + 0.015 * eased})`, transformOrigin: 'center', willChange: 'transform, opacity'}}>{children}</div>;
+};
+
+const IconStep: React.FC<{
+  window: ResolvedChoreographyBeat;
+  icon: React.ReactNode;
+  label: string;
+  color: string;
+  compact?: boolean;
+}> = ({window, icon, label, color, compact = false}) => {
+  const frame = useCurrentFrame();
+  const pending = frame < window.visualStartFrame;
+  const active = frame >= window.visualStartFrame && frame < window.visualEndFrame;
+  const done = frame >= window.visualEndFrame;
+  const appear = interpolate(frame, [Math.max(0, window.visualStartFrame - 5), window.visualStartFrame + 5], [0.45, 1], clamp);
+  const scale = active ? interpolate(frame, [window.visualStartFrame, window.visualStartFrame + 8], [0.985, 1.02], clamp) : 1;
+  return (
+    <div style={{display: 'grid', gridTemplateColumns: compact ? '54px 1fr 28px' : '64px 1fr 32px', gap: compact ? 12 : 18, alignItems: 'center', padding: compact ? '14px 16px' : '18px 20px', borderRadius: 22, background: active ? `${color}12` : 'rgba(255,255,255,.78)', border: `1px solid ${active ? `${color}42` : 'rgba(26,26,46,.07)'}`, opacity: pending ? 0.52 : done ? 0.80 : appear, transform: `scale(${scale})`, boxShadow: active ? `0 12px 28px ${color}18` : 'none'}}>
+      <div style={{width: compact ? 48 : 56, height: compact ? 48 : 56, borderRadius: 18, display: 'grid', placeItems: 'center', color: pending ? '#98A2B3' : color, background: pending ? '#F2F4F7' : `${color}12`}}>{icon}</div>
+      <div style={{fontSize: compact ? 22 : 25, fontWeight: 930, letterSpacing: '-.02em'}}>{label}</div>
+      {done ? <CheckCircle2 size={compact ? 25 : 29} color="#12B76A"/> : active ? <div style={{width: 12, height: 12, borderRadius: 99, background: color, boxShadow: `0 0 0 7px ${color}18`}}/> : <div style={{width: 10, height: 10, borderRadius: 99, background: '#D0D5DD'}}/>}
+    </div>
+  );
 };
 
 const MediaImage: React.FC<{src?: string; duration: number}> = ({src, duration}) => {
   const frame = useCurrentFrame();
   if (!src) return null;
-  const scale = interpolate(frame, [0, Math.max(1, duration)], [1.02, 1.10], clamp);
-  const y = interpolate(frame, [0, Math.max(1, duration)], [0, -16], clamp);
+  const scale = interpolate(frame, [0, Math.max(1, duration)], [1.02, 1.08], clamp);
+  const y = interpolate(frame, [0, Math.max(1, duration)], [0, -12], clamp);
   return (
-    <div style={{position: 'absolute', inset: 0, borderRadius: 32, overflow: 'hidden'}}>
+    <div style={{position: 'absolute', inset: 0, borderRadius: 30, overflow: 'hidden'}}>
       <Img src={staticFile(src)} style={{width: '100%', height: '100%', objectFit: 'cover', transform: `translateY(${y}px) scale(${scale})`}}/>
-      <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,.04), rgba(243,240,250,.78))'}}/>
+      <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,.04), rgba(243,240,250,.80))'}}/>
     </div>
   );
 };
 
 const MediaVideo: React.FC<{src?: string}> = ({src}) => src ? (
-  <div style={{position: 'absolute', inset: 0, borderRadius: 34, overflow: 'hidden'}}>
+  <div style={{position: 'absolute', inset: 0, borderRadius: 30, overflow: 'hidden'}}>
     <OffthreadVideo src={staticFile(src)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
-    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(26,26,46,.08), rgba(26,26,46,.56))'}}/>
+    <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(26,26,46,.08), rgba(26,26,46,.52))'}}/>
   </div>
 ) : null;
 
@@ -126,20 +160,26 @@ const Scene1: React.FC<SceneProps> = ({sceneId, accent}) => {
   const search = choreography.local(sceneId, 's1-search');
   const compare = choreography.local(sceneId, 's1-compare');
   const agent = choreography.local(sceneId, 's1-agent');
-  const branch = interpolate(frame, [search.visualStartFrame, Math.max(search.visualStartFrame + 1, compare.visualStartFrame)], [0, 1], clamp);
+  const progress = interpolate(frame, [search.visualStartFrame, Math.max(search.visualStartFrame + 1, agent.visualStartFrame)], [0, 1], clamp);
   return (
     <Shell accent={accent} eyebrow="01 • DAS ZIEL" seed={7}>
       <TimedBeat window={headline}><Headline>Du gibst nicht jeden Schritt vor.</Headline></TimedBeat>
       <div style={{position: 'relative', height: 1120, marginTop: 34}}>
-        <TimedBeat window={goal} style={{position: 'absolute', left: 70, right: 70, top: 80}}>
-          <Card style={{padding: 34}}><div style={{display: 'flex', alignItems: 'center', gap: 16, color: accent, fontSize: 22, fontWeight: 900}}><Target size={34}/> ZIEL</div><div style={{fontSize: 43, lineHeight: 1.08, fontWeight: 950, marginTop: 18}}>3 Lieferanten finden.<br/>Angebote vergleichen.</div></Card>
-        </TimedBeat>
-        <TimedBeat window={search} direction="left" style={{position: 'absolute', left: 90, top: 410}}><Card style={{padding: '20px 26px', fontSize: 24, fontWeight: 900}}>FINDEN</Card></TimedBeat>
-        <TimedBeat window={compare} direction="right" style={{position: 'absolute', right: 90, top: 410}}><Card style={{padding: '20px 26px', fontSize: 24, fontWeight: 900}}>ZUSAMMENFASSEN</Card></TimedBeat>
-        <div style={{position: 'absolute', left: 230, right: 230, top: 560, height: 8, borderRadius: 99, background: '#E8E3F2', overflow: 'hidden'}}><div style={{height: '100%', width: `${branch * 100}%`, background: accent, borderRadius: 99}}/></div>
-        <TimedBeat window={agent} style={{position: 'absolute', left: 210, right: 210, top: 640}}>
-          <Card style={{padding: 34, textAlign: 'center', border: `2px solid ${accent}30`}}><Bot size={70} color={accent}/><div style={{fontSize: 36, fontWeight: 950, marginTop: 12}}>KI-AGENT</div><div style={{fontSize: 23, opacity: .62, marginTop: 8}}>Ziel statt Einzelschritte</div></Card>
-        </TimedBeat>
+        <EnterOnly startFrame={goal.visualStartFrame} style={{position: 'absolute', left: 54, right: 54, top: 70}}>
+          <Card style={{padding: 30}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 14, color: accent, fontSize: 22, fontWeight: 900}}><Target size={34}/> EIN ZIEL</div>
+            <div style={{fontSize: 41, lineHeight: 1.08, fontWeight: 950, marginTop: 16}}>3 Lieferanten finden.<br/>Angebote vergleichen.</div>
+            <div style={{marginTop: 28, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14}}>
+              <IconStep window={search} label="Finden" icon={<Search size={28}/>} color="#2E90FA" compact/>
+              <IconStep window={compare} label="Vergleichen" icon={<FileText size={28}/>} color="#F79009" compact/>
+              <IconStep window={agent} label="Agent" icon={<Bot size={28}/>} color={accent} compact/>
+            </div>
+            <div style={{marginTop: 24}}><StoryProgressRail progress={progress} accent={accent} height={10}/></div>
+          </Card>
+        </EnterOnly>
+        <EnterOnly startFrame={agent.visualStartFrame} style={{position: 'absolute', left: 210, right: 210, top: 720}}>
+          <Card style={{padding: 30, textAlign: 'center', border: `2px solid ${accent}26`}}><Bot size={62} color={accent}/><div style={{fontSize: 34, fontWeight: 950, marginTop: 10}}>KI-AGENT</div><div style={{fontSize: 22, opacity: .62, marginTop: 6}}>Ziel statt Einzelschritte</div></Card>
+        </EnterOnly>
       </div>
     </Shell>
   );
@@ -153,33 +193,26 @@ const Scene2: React.FC<SceneProps> = ({sceneId, duration, accent, generatedImage
   const web = choreography.local(sceneId, 's2-web');
   const files = choreography.local(sceneId, 's2-files');
   const save = choreography.local(sceneId, 's2-save');
-  const rows = [
-    {window: web, label: 'Web', icon: <Globe2 size={30}/>, color: '#2E90FA'},
-    {window: files, label: 'Dateien', icon: <FileText size={30}/>, color: '#F79009'},
-    {window: save, label: 'Zwischenergebnisse', icon: <Database size={30}/>, color: '#12B76A'},
-  ];
   const progress = interpolate(frame, [parts.visualStartFrame, Math.max(parts.visualStartFrame + 1, save.speechEndFrame)], [0, 1], clamp);
   return (
     <Shell accent={accent} eyebrow="02 • PLAN + TOOLS" seed={10}>
       <TimedBeat window={headline}><Headline size={66}>Der Agent zerlegt das Ziel.</Headline></TimedBeat>
       <div style={{position: 'relative', height: 1120, marginTop: 30}}>
-        <TimedBeat window={parts} style={{position: 'absolute', inset: '40px 18px 210px'}}>
+        <EnterOnly startFrame={parts.visualStartFrame} style={{position: 'absolute', inset: '40px 18px 210px'}}>
           <Card style={{position: 'absolute', inset: 0, padding: 28, overflow: 'hidden'}}>
             <MediaImage src={generatedImageSrc} duration={duration}/>
             <div style={{position: 'relative', zIndex: 2}}>
-              <div style={{display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, fontWeight: 950}}><ListChecks size={34} color={accent}/> TEILAUFGABEN</div>
-              <div style={{marginTop: 28, display: 'grid', gap: 18}}>{rows.map((row) => (
-                <TimedBeat key={row.label} window={row.window} direction="right">
-                  <div style={{display: 'grid', gridTemplateColumns: '64px 1fr auto', gap: 18, alignItems: 'center', padding: 22, borderRadius: 24, background: 'rgba(255,255,255,.90)', border: '1px solid rgba(26,26,46,.08)'}}>
-                    <div style={{width: 58, height: 58, borderRadius: 20, display: 'grid', placeItems: 'center', color: row.color, background: `${row.color}14`}}>{row.icon}</div><div style={{fontSize: 25, fontWeight: 950}}>{row.label}</div><CheckCircle2 size={30} color={row.color}/>
-                  </div>
-                </TimedBeat>
-              ))}</div>
-              <div style={{marginTop: 30}}><StoryProgressRail progress={progress} accent={accent} height={12}/></div>
+              <div style={{display: 'flex', alignItems: 'center', gap: 12, fontSize: 24, fontWeight: 950}}><ListChecks size={34} color={accent}/> ÜBERSICHT</div>
+              <div style={{marginTop: 26, display: 'grid', gap: 16}}>
+                <IconStep window={web} label="Webseiten" icon={<Globe2 size={30}/>} color="#2E90FA"/>
+                <IconStep window={files} label="Dateien" icon={<FileText size={30}/>} color="#F79009"/>
+                <IconStep window={save} label="Zwischenergebnisse" icon={<Database size={30}/>} color="#12B76A"/>
+              </div>
+              <div style={{marginTop: 28}}><StoryProgressRail progress={progress} accent={accent} height={12}/></div>
             </div>
           </Card>
-        </TimedBeat>
-        <TimedBeat window={tool} style={{position: 'absolute', left: 90, right: 90, bottom: 70}}><Card style={{padding: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, fontSize: 27, fontWeight: 950}}><Wrench color={accent}/> TOOL WÄHLEN → AUSFÜHREN</Card></TimedBeat>
+        </EnterOnly>
+        <TimedBeat window={tool} style={{position: 'absolute', left: 250, right: 250, bottom: 72}}><Card style={{padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, fontSize: 23, fontWeight: 950}}><Wrench color={accent} size={28}/> Tool wählen</Card></TimedBeat>
       </div>
     </Shell>
   );
@@ -206,9 +239,13 @@ const Scene3: React.FC<SceneProps> = ({sceneId, accent, generatedBrollSrc}) => {
             <div style={{position: 'absolute', left: 55, top: 220, textAlign: 'center', color: generatedBrollSrc ? 'white' : BRAND.ink}}><CheckCircle2 size={42} color={frame < retry.visualStartFrame ? '#12B76A' : '#98A2B3'}/><div style={{fontSize: 20, fontWeight: 950, marginTop: 6}}>FERTIG?</div></div>
           </div></div>
         </Card>
-        <TimedBeat window={retry} direction="left" style={{position: 'absolute', left: 80, top: 730}}><Card style={{padding: '18px 28px', fontSize: 25, fontWeight: 950, color: '#F04438'}}>NEIN → neuer Versuch</Card></TimedBeat>
-        <TimedBeat window={next} style={{position: 'absolute', left: 350, top: 875}}><RefreshCcw size={62} color={accent}/></TimedBeat>
-        <TimedBeat window={other} direction="right" style={{position: 'absolute', right: 80, top: 930}}><Card style={{padding: '18px 28px', fontSize: 25, fontWeight: 950, color: '#F79009'}}>ODER → anderer Weg</Card></TimedBeat>
+        <EnterOnly startFrame={retry.visualStartFrame} style={{position: 'absolute', left: 70, right: 70, top: 735}}>
+          <Card style={{padding: 18}}><div style={{display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12}}>
+            <IconStep window={retry} label="Retry" icon={<RefreshCcw size={27}/>} color="#F04438" compact/>
+            <IconStep window={next} label="Nächster" icon={<ArrowRight size={27}/>} color={accent} compact/>
+            <IconStep window={other} label="Anderer Weg" icon={<ListChecks size={27}/>} color="#F79009" compact/>
+          </div></Card>
+        </EnterOnly>
       </div>
     </Shell>
   );
@@ -221,20 +258,27 @@ const Scene4: React.FC<SceneProps> = ({sceneId, accent}) => {
   const tools = choreography.local(sceneId, 's4-tools');
   const permission = choreography.local(sceneId, 's4-permission');
   const limits = choreography.local(sceneId, 's4-limits');
-  const gates = [
-    {window: model, label: 'MODELL', icon: <Bot size={34}/>, color: BRAND.accentDk},
-    {window: rules, label: 'REGELN', icon: <ListChecks size={34}/>, color: '#F79009'},
-    {window: tools, label: 'ERLAUBTE TOOLS', icon: <Wrench size={34}/>, color: '#2E90FA'},
-  ];
+  const overviewStart = Math.max(0, headline.enterEndFrame - 2);
   return (
     <Shell accent={accent} eyebrow="04 • GUARDRAILS" seed={18}>
       <TimedBeat window={headline}><Headline size={64}>Ein Agent denkt nicht wie ein Mensch.</Headline></TimedBeat>
       <div style={{position: 'relative', height: 1120, marginTop: 24}}>
-        <Card style={{position: 'absolute', left: 35, right: 35, top: 45, padding: 28}}><div style={{display: 'grid', gap: 18}}>{gates.map((gate) => (
-          <TimedBeat key={gate.label} window={gate.window} direction="left"><div style={{display: 'grid', gridTemplateColumns: '70px 1fr auto', alignItems: 'center', gap: 18, padding: 20, borderRadius: 22, background: `${gate.color}0D`}}><div style={{width: 60, height: 60, borderRadius: 20, display: 'grid', placeItems: 'center', color: gate.color, background: 'white'}}>{gate.icon}</div><div style={{fontSize: 27, fontWeight: 950}}>{gate.label}</div><CheckCircle2 color={gate.color} size={30}/></div></TimedBeat>
-        ))}</div></Card>
-        <TimedBeat window={permission} style={{position: 'absolute', left: 100, right: 100, top: 610}}><Card style={{padding: 30, textAlign: 'center', border: '2px solid rgba(240,68,56,.18)'}}><LockKeyhole size={58} color="#F04438"/><div style={{fontSize: 31, fontWeight: 950, marginTop: 12}}>Berechtigungen begrenzen Aktionen.</div></Card></TimedBeat>
-        <TimedBeat window={limits} style={{position: 'absolute', left: 120, right: 120, top: 840}}><Card style={{padding: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}><div style={{display: 'flex', gap: 14, alignItems: 'center', fontSize: 26, fontWeight: 950}}><ShieldCheck color={accent}/> Klare Grenzen</div><div style={{width: 100, height: 52, borderRadius: 99, background: '#12B76A', padding: 6, display: 'flex', justifyContent: 'flex-end'}}><div style={{width: 40, height: 40, borderRadius: 99, background: 'white', boxShadow: '0 4px 14px rgba(0,0,0,.12)'}}/></div></Card></TimedBeat>
+        <EnterOnly startFrame={overviewStart} style={{position: 'absolute', left: 35, right: 35, top: 45}}>
+          <Card style={{padding: 26}}>
+            <div style={{fontSize: 22, fontWeight: 950, color: accent, marginBottom: 18}}>WAS IHN STEUERT</div>
+            <div style={{display: 'grid', gap: 14}}>
+              <IconStep window={model} label="Modell" icon={<Bot size={30}/>} color={BRAND.accentDk}/>
+              <IconStep window={rules} label="Regeln" icon={<ListChecks size={30}/>} color="#F79009"/>
+              <IconStep window={tools} label="Erlaubte Tools" icon={<Wrench size={30}/>} color="#2E90FA"/>
+            </div>
+          </Card>
+        </EnterOnly>
+        <EnterOnly startFrame={permission.visualStartFrame} style={{position: 'absolute', left: 110, right: 110, top: 650}}>
+          <Card style={{padding: 24, display: 'grid', gridTemplateColumns: '62px 1fr', gap: 16, alignItems: 'center', border: '1px solid rgba(240,68,56,.18)'}}><div style={{width: 58, height: 58, borderRadius: 18, display: 'grid', placeItems: 'center', background: '#F0443812', color: '#F04438'}}><LockKeyhole size={30}/></div><div><div style={{fontSize: 25, fontWeight: 950}}>Berechtigungen</div><div style={{fontSize: 19, opacity: .58, marginTop: 4}}>begrenzen Aktionen</div></div></Card>
+        </EnterOnly>
+        <EnterOnly startFrame={limits.visualStartFrame} style={{position: 'absolute', left: 160, right: 160, top: 865}}>
+          <Card style={{padding: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, color: accent, fontSize: 24, fontWeight: 950}}><ShieldCheck size={30}/> Klare Grenzen</Card>
+        </EnterOnly>
       </div>
     </Shell>
   );
@@ -249,25 +293,24 @@ const Scene5: React.FC<SceneProps> = ({sceneId, accent}) => {
   const check = choreography.local(sceneId, 's5-check');
   const loop = choreography.local(sceneId, 's5-loop');
   const action = choreography.local(sceneId, 's5-action');
-  const steps = [
-    {window: goal, label: 'ZIEL', icon: <Target size={32}/>},
-    {window: plan, label: 'PLAN', icon: <ListChecks size={32}/>},
-    {window: tool, label: 'TOOL', icon: <Wrench size={32}/>},
-    {window: check, label: 'CHECK', icon: <Search size={32}/>},
-    {window: loop, label: 'LOOP', icon: <RefreshCcw size={32}/>},
-  ];
   const progress = interpolate(frame, [goal.visualStartFrame, Math.max(goal.visualStartFrame + 1, loop.speechEndFrame)], [0, 1], clamp);
   return (
     <Shell accent={accent} eyebrow="05 • WORKFLOW" seed={22}>
       <TimedBeat window={headline}><Headline size={66}>So sieht der Ablauf aus.</Headline></TimedBeat>
       <div style={{position: 'relative', height: 1120, marginTop: 30}}>
-        <Card style={{position: 'absolute', left: 20, right: 20, top: 85, padding: 30}}>
-          <div style={{display: 'grid', gap: 20}}>{steps.map((step) => (
-            <TimedBeat key={step.label} window={step.window} direction="right"><div style={{display: 'grid', gridTemplateColumns: '64px 1fr auto', alignItems: 'center', gap: 18, padding: 18, borderRadius: 22, background: `${accent}12`}}><div style={{width: 58, height: 58, borderRadius: 20, display: 'grid', placeItems: 'center', color: accent, background: 'white'}}>{step.icon}</div><div style={{fontSize: 28, fontWeight: 950}}>{step.label}</div><CheckCircle2 color={accent}/></div></TimedBeat>
-          ))}</div>
-          <div style={{marginTop: 30}}><StoryProgressRail progress={progress} accent={accent} height={14}/></div>
-        </Card>
-        <TimedBeat window={action} style={{position: 'absolute', left: 70, right: 70, bottom: 55}}><Card style={{padding: 28, textAlign: 'center'}}><div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, fontSize: 29, fontWeight: 950}}><MousePointer2 color={accent}/> CHAT <ArrowRight/> AKTION</div></Card></TimedBeat>
+        <EnterOnly startFrame={Math.max(0, headline.enterEndFrame - 2)} style={{position: 'absolute', left: 20, right: 20, top: 85}}>
+          <Card style={{padding: 28}}>
+            <div style={{display: 'grid', gap: 13}}>
+              <IconStep window={goal} label="Ziel" icon={<Target size={28}/>} color={accent}/>
+              <IconStep window={plan} label="Plan" icon={<ListChecks size={28}/>} color={accent}/>
+              <IconStep window={tool} label="Tool" icon={<Wrench size={28}/>} color={accent}/>
+              <IconStep window={check} label="Check" icon={<Search size={28}/>} color={accent}/>
+              <IconStep window={loop} label="Loop" icon={<RefreshCcw size={28}/>} color={accent}/>
+            </div>
+            <div style={{marginTop: 24}}><StoryProgressRail progress={progress} accent={accent} height={12}/></div>
+          </Card>
+        </EnterOnly>
+        <EnterOnly startFrame={action.visualStartFrame} style={{position: 'absolute', left: 235, right: 235, bottom: 58}}><Card style={{padding: '18px 22px', textAlign: 'center'}}><div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, fontSize: 24, fontWeight: 950}}><MousePointer2 color={accent} size={28}/> Chat <ArrowRight size={24}/> Aktion</div></Card></EnterOnly>
       </div>
     </Shell>
   );
@@ -280,23 +323,24 @@ const Scene6: React.FC<SceneProps> = ({sceneId, accent}) => {
   const control = choreography.local(sceneId, 's6-control');
   const protocol = choreography.local(sceneId, 's6-protocol');
   const approval = choreography.local(sceneId, 's6-approval');
-  const guards = [
-    {window: control, label: 'KONTROLLE', icon: <ShieldCheck/>},
-    {window: protocol, label: 'PROTOKOLL', icon: <Database/>},
-    {window: approval, label: 'FREIGABE', icon: <LockKeyhole/>},
-  ];
   return (
     <Shell accent={accent} eyebrow="06 • ERGEBNIS" seed={27}>
       <TimedBeat window={headline}><Headline size={66}>Nicht nur Antwort. Fertige Arbeit.</Headline></TimedBeat>
       <div style={{position: 'relative', height: 1120, marginTop: 28}}>
-        <TimedBeat window={result} style={{position: 'absolute', left: 70, right: 70, top: 55}}>
-          <Card style={{padding: 34}}><div style={{display: 'flex', alignItems: 'center', gap: 14, fontSize: 23, fontWeight: 900, color: accent}}><FileText/> LIEFERANTENVERGLEICH</div><div style={{fontSize: 44, fontWeight: 950, marginTop: 18}}>Arbeitsergebnis</div><div style={{display: 'grid', gap: 16, marginTop: 30}}>{['3 Anbieter gefunden','Angebote strukturiert','Unterschiede zusammengefasst'].map((label) => <div key={label} style={{display: 'flex', alignItems: 'center', gap: 14, fontSize: 24, fontWeight: 850, padding: 18, borderRadius: 20, background: '#F7F5FB'}}><CheckCircle2 color="#12B76A"/> {label}</div>)}</div></Card>
-        </TimedBeat>
-        <div style={{position: 'absolute', left: 55, right: 55, top: 640, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14}}>{guards.map((guard) => (
-          <TimedBeat key={guard.label} window={guard.window}><Card style={{padding: 22, textAlign: 'center', fontSize: 19, fontWeight: 950, color: accent}}><div style={{display: 'grid', placeItems: 'center', marginBottom: 10}}>{guard.icon}</div>{guard.label}</Card></TimedBeat>
-        ))}</div>
-        <TimedBeat window={actions} style={{position: 'absolute', left: 0, right: 0, top: 900}}><div style={{textAlign: 'center'}}><div style={{fontSize: 86, lineHeight: 1, fontWeight: 950, color: accent}}>KI + AKTION</div><div style={{fontSize: 22, fontWeight: 850, marginTop: 12}}>das macht Agenten spannend</div></div></TimedBeat>
-        <TimedBeat window={approval} style={{position: 'absolute', left: 180, right: 180, top: 1030}}><div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 20, fontWeight: 900, color: accent}}><Sparkles size={24}/> Autonomie braucht Grenzen.</div></TimedBeat>
+        <EnterOnly startFrame={result.visualStartFrame} style={{position: 'absolute', left: 70, right: 70, top: 55}}>
+          <Card style={{padding: 32}}><div style={{display: 'flex', alignItems: 'center', gap: 14, fontSize: 23, fontWeight: 900, color: accent}}><FileText/> ARBEITSERGEBNIS</div><div style={{display: 'grid', gap: 14, marginTop: 24}}>{['3 Anbieter gefunden','Angebote strukturiert','Unterschiede zusammengefasst'].map((label) => <div key={label} style={{display: 'flex', alignItems: 'center', gap: 14, fontSize: 23, fontWeight: 850, padding: 16, borderRadius: 18, background: '#F7F5FB'}}><CheckCircle2 color="#12B76A"/> {label}</div>)}</div></Card>
+        </EnterOnly>
+        <EnterOnly startFrame={Math.max(0, control.visualStartFrame - 8)} style={{position: 'absolute', left: 55, right: 55, top: 610}}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12}}>
+            <IconStep window={control} label="Kontrolle" icon={<ShieldCheck size={26}/>} color={accent} compact/>
+            <IconStep window={protocol} label="Protokoll" icon={<Database size={26}/>} color={accent} compact/>
+            <IconStep window={approval} label="Freigabe" icon={<LockKeyhole size={26}/>} color={accent} compact/>
+          </div>
+        </EnterOnly>
+        <EnterOnly startFrame={actions.visualStartFrame} style={{position: 'absolute', left: 250, right: 250, top: 885}}>
+          <Card style={{padding: 22, textAlign: 'center', color: accent}}><MousePointer2 size={34}/><div style={{fontSize: 29, fontWeight: 950, marginTop: 8}}>KI + AKTION</div></Card>
+        </EnterOnly>
+        <EnterOnly startFrame={approval.visualStartFrame} style={{position: 'absolute', left: 180, right: 180, top: 1030}}><div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 20, fontWeight: 900, color: accent}}><Sparkles size={24}/> Autonomie braucht Grenzen.</div></EnterOnly>
       </div>
     </Shell>
   );
