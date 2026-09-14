@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {createHash} from 'node:crypto';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
@@ -8,12 +9,14 @@ import {runtimeAudioPath, safeCompositionId} from './lib/render-provenance.mjs';
 
 const rawReelDir = process.argv[2];
 if (!rawReelDir) {
-  console.error('Usage: node ki/scripts/align-reel-local.mjs <reel-package-dir> [--backend=auto|mlx-qwen3|ctc-german]');
+  console.error('Usage: node ki/scripts/align-reel-local.mjs <reel-package-dir> [--backend=auto|mlx-qwen3|ctc-german] [--skip-sfx]');
   process.exit(1);
 }
 const requestedBackend = process.argv.find((arg) => arg.startsWith('--backend='))?.split('=')[1] || 'auto';
+const skipSfx = process.argv.includes('--skip-sfx');
 const reelDir = path.resolve(rawReelDir);
 const fail = (message) => { console.error(`LOCAL REEL ALIGNMENT FAILED: ${message}`); process.exit(1); };
+const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 
 const reelPath = path.join(reelDir,'06-projektdateien','reel.json');
 const scriptPath = path.join(reelDir,'01-script-audio','VOICEOVER-ZUM-KOPIEREN.txt');
@@ -77,13 +80,56 @@ if (!existsSync(venvPython)) fail(`local aligner python missing: ${venvPython}. 
 const workDir = path.resolve('.cache','reel-alignment',compositionId);
 await mkdir(workDir,{recursive:true});
 const rawAlignmentPath = path.join(workDir,'alignment.raw.json');
-run('forced alignment', venvPython, [
-  path.resolve('ki/scripts/python/align_words.py'),
-  '--audio', runtimeAudio,
-  '--text-file', scriptPath,
-  '--output', rawAlignmentPath,
-  '--backend', backend,
-], {stdio:'inherit'});
+const cacheMetaPath = path.join(workDir,'alignment.primary.cache.json');
+
+// Expensive model inference is reused only when every timing-relevant input is byte-identical.
+const [audioBytes, scriptBytes, mapBytes] = await Promise.all([
+  readFile(runtimeAudio),
+  readFile(scriptPath),
+  readFile(mapPath),
+]);
+const sourceFingerprint = sha256(JSON.stringify({
+  version:2,
+  audioSha256:sha256(audioBytes),
+  scriptSha256:sha256(scriptBytes),
+  sceneMapSha256:sha256(mapBytes),
+  backend,
+  model:String(marker?.model || ''),
+  fps,
+}));
+let cacheHit = false;
+if (existsSync(rawAlignmentPath) && existsSync(cacheMetaPath)) {
+  try {
+    const cacheMeta = JSON.parse(await readFile(cacheMetaPath,'utf8'));
+    cacheHit = cacheMeta?.sourceFingerprint === sourceFingerprint && cacheMeta?.backend === backend;
+  } catch {
+    cacheHit = false;
+  }
+}
+
+if (cacheHit) {
+  console.log('FORCED ALIGNMENT CACHE HIT — audio/script/map unchanged; skipping model inference.');
+} else {
+  console.log('FORCED ALIGNMENT CACHE MISS — running model once for this exact audio/script/map.');
+  run('forced alignment', venvPython, [
+    path.resolve('ki/scripts/python/align_words.py'),
+    '--audio', runtimeAudio,
+    '--text-file', scriptPath,
+    '--output', rawAlignmentPath,
+    '--backend', backend,
+  ], {stdio:'inherit'});
+  await writeFile(cacheMetaPath, `${JSON.stringify({
+    version:2,
+    status:'PRIMARY_ALIGNMENT_CACHED',
+    sourceFingerprint,
+    backend,
+    model:String(marker?.model || ''),
+    audioSha256:sha256(audioBytes),
+    scriptSha256:sha256(scriptBytes),
+    sceneMapSha256:sha256(mapBytes),
+    fps,
+  },null,2)}\n`, 'utf8');
+}
 
 let raw;
 try { raw = JSON.parse(await readFile(rawAlignmentPath,'utf8')); }
@@ -122,7 +168,7 @@ for (let i=1;i<words.length;i++) if (words[i].startFrame < words[i-1].startFrame
 
 const wordTimingsPath = path.join(reelDir,'01-script-audio','WORD-TIMINGS.json');
 const timingPayload = {
-  version:1,
+  version:2,
   status:'LOCAL_FORCED_ALIGNMENT_ACCEPTED',
   alignmentType:'KNOWN_TRANSCRIPT_FORCED_ALIGNMENT',
   backend:raw.backend,
@@ -131,6 +177,8 @@ const timingPayload = {
   runtime:raw.runtime,
   fps,
   runtimeAudio:`public/runtime-audio/${compositionId}.wav`,
+  sourceFingerprint,
+  cacheHit,
   generatedAt:new Date().toISOString(),
   rules:{fuzzyWordMatching:false,canonicalTextAuthority:'VOICEOVER-ZUM-KOPIEREN.txt',sceneAuthority:'SCENE-VOICE-MAP.json'},
   words,
@@ -177,14 +225,16 @@ await writeFile(captionsPath,`${JSON.stringify(captions,null,2)}\n`,'utf8');
 run('scene timing lock', process.execPath, [path.resolve('ki/scripts/lock-scene-timing-from-captions.mjs'),reelDir]);
 run('scene/voice gate', process.execPath, [path.resolve('ki/scripts/validate-scene-voice-map.mjs'),reelDir]);
 run('voice-lock gate', process.execPath, [path.resolve('ki/scripts/validate-voice-locked-captions.mjs'),reelDir]);
-run('SFX auto-resolution', process.execPath, [path.resolve('ki/scripts/resolve-reel-sfx.mjs'),reelDir]);
-run('SFX plan gate', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'),reelDir]);
+if (!skipSfx) {
+  run('SFX auto-resolution', process.execPath, [path.resolve('ki/scripts/resolve-reel-sfx.mjs'),reelDir]);
+  run('SFX plan gate', process.execPath, [path.resolve('ki/scripts/validate-reel-sfx-plan.mjs'),reelDir]);
+}
 
 console.log('\nLOCAL REEL ALIGNMENT COMPLETE');
 console.log(`backend: ${raw.backend}`);
 console.log(`model: ${raw.model} (${raw.modelLicense})`);
+console.log(`cache: ${cacheHit ? 'HIT' : 'MISS'}`);
 console.log(`word timings: ${wordTimingsPath}`);
 console.log(`captions: ${captionsPath}`);
 console.log('scene timing: VOICE_LOCKED');
-console.log(`sfx: ${reel?.sfx?.enabled === true ? 'AUTO-RESOLVED + VALIDATED' : 'DISABLED'}`);
-console.log('Next: review/commit the generated JSON, then run prepare-reel-render.mjs.');
+console.log(`sfx: ${skipSfx ? 'DEFERRED TO OUTER PIPELINE' : reel?.sfx?.enabled === true ? 'AUTO-RESOLVED + VALIDATED' : 'DISABLED'}`);
