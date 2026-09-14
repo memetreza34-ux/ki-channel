@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "status": "PLANNED_REQUIRES_AUDIO_ALIGNMENT",
+  "authority": "WORD_TIMINGS_PLUS_EXPLICIT_INTERVAL_PLAN",
+  "rules": {
+    "fps": 30,
+    "visualLeadFrames": 3,
+    "defaultEnterFrames": 8,
+    "defaultExitFrames": 6,
+    "minimumHoldFrames": 3,
+    "captionTailFrames": 1,
+    "failOnMissingPhrase": true,
+    "failOnWindowCollision": true,
+    "failOnSceneOverflow": true
+  },
+  "scenes": [
+    {"sceneId":"scene1","enterFrames":8,"exitFrames":6},
+    {"sceneId":"scene2","enterFrames":8,"exitFrames":6},
+    {"sceneId":"scene3","enterFrames":8,"exitFrames":6},
+    {"sceneId":"scene4","enterFrames":8,"exitFrames":6},
+    {"sceneId":"scene5","enterFrames":8,"exitFrames":6},
+    {"sceneId":"scene6","enterFrames":8,"exitFrames":8}
+  ],
+  "beats": [
+    {"id":"s1-headline","sceneId":"scene1","sentenceId":"s01","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"PHRASE_END","phrase":"jeden einzelnen Schritt"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"beatStart","beatId":"s1-goal","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s1-goal","sceneId":"scene1","sentenceId":"s01","speech":{"start":{"type":"PHRASE_START","phrase":"nur das Ziel"},"end":{"type":"PHRASE_END","phrase":"nur das Ziel"}},"visual":{"target":"goal-card","start":{"ref":"speechStart","offsetFrames":-3},"end":{"ref":"beatStart","beatId":"s1-agent","offsetFrames":-3},"enterFrames":8,"exitFrames":6},"sfx":{"id":"sfx01","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s1-search","sceneId":"scene1","sentenceId":"s01","speech":{"start":{"type":"PHRASE_START","phrase":"Finde drei passende Lieferanten"},"end":{"type":"PHRASE_END","phrase":"passende Lieferanten"}},"visual":{"target":"search-step","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s1-compare","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s1-compare","sceneId":"scene1","sentenceId":"s01","speech":{"start":{"type":"PHRASE_START","phrase":"Angebote zusammen"},"end":{"type":"PHRASE_END","phrase":"Angebote zusammen"}},"visual":{"target":"compare-step","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s1-agent","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s1-agent","sceneId":"scene1","sentenceId":"s02","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"SENTENCE_END"}},"visual":{"target":"agent-card","start":{"ref":"speechStart","offsetFrames":-3},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+
+    {"id":"s2-headline","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"PHRASE_END","phrase":"zerlegt das Ziel"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s2-parts","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"PHRASE_START","phrase":"Teilaufgaben"},"end":{"type":"PHRASE_END","phrase":"Teilaufgaben"}},"visual":{"target":"task-list","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s2-tool","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"PHRASE_START","phrase":"welches Werkzeug"},"end":{"type":"PHRASE_END","phrase":"welches Werkzeug"}},"visual":{"target":"tool-action","start":{"ref":"speechStart","offsetFrames":-3},"end":{"ref":"beatStart","beatId":"s2-web","offsetFrames":-2},"enterFrames":7,"exitFrames":5},"sfx":{"id":"sfx02","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s2-web","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"PHRASE_START","phrase":"Webseiten"},"end":{"type":"PHRASE_END","phrase":"Webseiten"}},"visual":{"target":"web-row","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s2-files","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s2-files","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"PHRASE_START","phrase":"Dateien"},"end":{"type":"PHRASE_END","phrase":"Dateien"}},"visual":{"target":"files-row","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s2-save","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s2-save","sceneId":"scene2","sentenceId":"s03","speech":{"start":{"type":"PHRASE_START","phrase":"Zwischenergebnisse"},"end":{"type":"PHRASE_END","phrase":"Zwischenergebnisse"}},"visual":{"target":"memory-row","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6}},
+
+    {"id":"s3-headline","sceneId":"scene3","sentenceId":"s04","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"SENTENCE_END"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s3-retry","sceneId":"scene3","sentenceId":"s05","speech":{"start":{"type":"PHRASE_START","phrase":"Wenn nicht"},"end":{"type":"PHRASE_END","phrase":"Wenn nicht"}},"visual":{"target":"retry-branch","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6},"sfx":{"id":"sfx03","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s3-next","sceneId":"scene3","sentenceId":"s05","speech":{"start":{"type":"PHRASE_START","phrase":"nächsten Schritt"},"end":{"type":"PHRASE_END","phrase":"nächsten Schritt"}},"visual":{"target":"next-step","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s3-other","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s3-other","sceneId":"scene3","sentenceId":"s05","speech":{"start":{"type":"PHRASE_START","phrase":"anderen Weg"},"end":{"type":"PHRASE_END","phrase":"anderen Weg"}},"visual":{"target":"alternate-route","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6}},
+
+    {"id":"s4-headline","sceneId":"scene4","sentenceId":"s06","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"SENTENCE_END"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s4-model","sceneId":"scene4","sentenceId":"s07","speech":{"start":{"type":"PHRASE_START","phrase":"Modell"},"end":{"type":"PHRASE_END","phrase":"Modell"}},"visual":{"target":"model-gate","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6}},
+    {"id":"s4-rules","sceneId":"scene4","sentenceId":"s07","speech":{"start":{"type":"PHRASE_START","phrase":"Regeln"},"end":{"type":"PHRASE_END","phrase":"Regeln"}},"visual":{"target":"rules-gate","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6}},
+    {"id":"s4-tools","sceneId":"scene4","sentenceId":"s07","speech":{"start":{"type":"PHRASE_START","phrase":"Tools"},"end":{"type":"PHRASE_END","phrase":"Tools"}},"visual":{"target":"tools-gate","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"beatStart","beatId":"s4-permission","offsetFrames":-2},"enterFrames":7,"exitFrames":5}},
+    {"id":"s4-permission","sceneId":"scene4","sentenceId":"s08","speech":{"start":{"type":"PHRASE_START","phrase":"Berechtigungen"},"end":{"type":"PHRASE_END","phrase":"Berechtigungen"}},"visual":{"target":"permission-stop","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6},"sfx":{"id":"sfx04","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s4-limits","sceneId":"scene4","sentenceId":"s08","speech":{"start":{"type":"PHRASE_START","phrase":"Grenzen"},"end":{"type":"PHRASE_END","phrase":"Grenzen"}},"visual":{"target":"human-approval","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":6}},
+
+    {"id":"s5-headline","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"PHRASE_END","phrase":"sieht das so aus"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+    {"id":"s5-goal","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"PHRASE_START","phrase":"Ziel verstehen"},"end":{"type":"PHRASE_END","phrase":"Ziel verstehen"}},"visual":{"target":"step-goal","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":6,"exitFrames":6}},
+    {"id":"s5-plan","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"PHRASE_START","phrase":"planen"},"end":{"type":"PHRASE_END","phrase":"planen"}},"visual":{"target":"step-plan","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":6,"exitFrames":6}},
+    {"id":"s5-tool","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"PHRASE_START","phrase":"Tool ausführen"},"end":{"type":"PHRASE_END","phrase":"Tool ausführen"}},"visual":{"target":"step-tool","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":6,"exitFrames":6}},
+    {"id":"s5-check","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"PHRASE_START","phrase":"Ergebnis prüfen"},"end":{"type":"PHRASE_END","phrase":"Ergebnis prüfen"}},"visual":{"target":"step-check","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":6,"exitFrames":6}},
+    {"id":"s5-loop","sceneId":"scene5","sentenceId":"s09","speech":{"start":{"type":"PHRASE_START","phrase":"wiederholen"},"end":{"type":"PHRASE_END","phrase":"wiederholen"}},"visual":{"target":"step-loop","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":6,"exitFrames":6},"sfx":{"id":"sfx05","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s5-action","sceneId":"scene5","sentenceId":"s10","speech":{"start":{"type":"PHRASE_START","phrase":"Handeln"},"end":{"type":"PHRASE_END","phrase":"Handeln"}},"visual":{"target":"chat-to-action","start":{"ref":"speechStart","offsetFrames":-3},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":6}},
+
+    {"id":"s6-headline","sceneId":"scene6","sentenceId":"s11","speech":{"start":{"type":"SENTENCE_START"},"end":{"type":"SENTENCE_END"}},"visual":{"target":"headline","start":{"ref":"speechStart","offsetFrames":0},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":8}},
+    {"id":"s6-result","sceneId":"scene6","sentenceId":"s11","speech":{"start":{"type":"PHRASE_START","phrase":"fertiges Arbeitsergebnis"},"end":{"type":"PHRASE_END","phrase":"fertiges Arbeitsergebnis"}},"visual":{"target":"result-card","start":{"ref":"speechStart","offsetFrames":-3},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":9,"exitFrames":8},"sfx":{"id":"sfx06","at":{"ref":"visualStart","offsetFrames":2}}},
+    {"id":"s6-actions","sceneId":"scene6","sentenceId":"s12","speech":{"start":{"type":"PHRASE_START","phrase":"echten Aktionen"},"end":{"type":"PHRASE_END","phrase":"echten Aktionen"}},"visual":{"target":"ki-action-payoff","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":8,"exitFrames":8}},
+    {"id":"s6-control","sceneId":"scene6","sentenceId":"s13","speech":{"start":{"type":"PHRASE_START","phrase":"Kontrolle"},"end":{"type":"PHRASE_END","phrase":"Kontrolle"}},"visual":{"target":"control-card","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":7}},
+    {"id":"s6-protocol","sceneId":"scene6","sentenceId":"s13","speech":{"start":{"type":"PHRASE_START","phrase":"Protokolle"},"end":{"type":"PHRASE_END","phrase":"Protokolle"}},"visual":{"target":"protocol-card","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-2},"enterFrames":7,"exitFrames":7}},
+    {"id":"s6-approval","sceneId":"scene6","sentenceId":"s13","speech":{"start":{"type":"PHRASE_START","phrase":"Freigaben"},"end":{"type":"PHRASE_END","phrase":"Freigaben"}},"visual":{"target":"approval-card","start":{"ref":"speechStart","offsetFrames":-2},"end":{"ref":"sceneEnd","offsetFrames":-1},"enterFrames":7,"exitFrames":7}}
+  ]
+}
