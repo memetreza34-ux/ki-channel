@@ -1,28 +1,44 @@
 {
-  "version": 1,
-  "status": "PLANNED_REQUIRES_FORCED_ALIGNMENT",
+  "version": 2,
+  "status": "PLANNED_REQUIRES_FORCED_ALIGNMENT_AND_CONSENSUS",
   "authority": "VOICEOVER_WORD_TIMINGS",
   "rules": {
+    "alignmentConsensus": {
+      "required": true,
+      "primaryPreferredOnAppleSilicon": "mlx-qwen3",
+      "verifier": "ctc-german",
+      "medianStartDeltaMs": 100,
+      "p95StartDeltaMs": 220,
+      "maxAnchorDeltaMs": 220,
+      "maxAnyWordDeltaMs": 450
+    },
     "captions": {
       "minWordsPerCue": 2,
+      "targetWordsPerCue": 3,
       "maxWordsPerCue": 4,
-      "maxGapSeconds": 0.24,
-      "tailFrames": 2,
-      "maxLines": 2
+      "softGapSeconds": 0.14,
+      "maxGapSeconds": 0.22,
+      "tailFrames": 1,
+      "maxLines": 2,
+      "avoidSingleWordOrphans": true
     },
     "scenes": {
       "scene1StartsAtFrame0": true,
-      "nextScenesStartAtFirstMappedWord": true,
+      "leadFramesBeforeFirstWord": 4,
+      "minGapAfterPreviousWord": 1,
+      "cutPolicy": "PAUSE_AWARE_PRE_ROLL",
       "sceneEndsAtNextSceneStart": true,
       "finalSceneEndsAtAudioDuration": true
     },
     "animations": {
+      "authority": "EVENT_ID_TO_EXACT_WORD_OR_SENTENCE_ANCHOR",
       "exactPhraseRequiredAfterAlignment": true,
       "fallbackForbiddenAfterAlignment": true,
-      "defaultLeadFrames": -2
+      "sourceMustReferenceEveryAnimationEventId": true
     },
     "sfx": {
       "mustAnchorToPlannedEvent": true,
+      "sameEventIdAsVisibleAction": true,
       "resolveAgainAfterMasterTimeline": true
     }
   },
