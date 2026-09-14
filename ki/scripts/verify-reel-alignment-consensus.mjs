@@ -49,7 +49,33 @@ if (!compositionId) await fail('compositionId missing.');
 const runtimeAudio = runtimeAudioPath(compositionId);
 if (!existsSync(runtimeAudio)) await fail(`runtime audio missing: ${runtimeAudio}`);
 
-const markerPath = path.resolve('.cache', 'reel-aligner-verifier-ctc.json');
+const workDir = path.resolve('.cache', 'reel-alignment', compositionId);
+await mkdir(workDir, {recursive: true});
+const verifierRawPath = path.join(workDir, 'alignment.verifier-ctc.raw.json');
+const verifierCachePath = path.join(workDir, 'alignment.verifier-ctc.cache.json');
+const [audioBytes, scriptBytes, wordTimingBytes] = await Promise.all([
+  readFile(runtimeAudio),
+  readFile(scriptPath),
+  readFile(wordsPath),
+]);
+const verifierFingerprint = sha256(JSON.stringify({
+  version:2,
+  audioSha256:sha256(audioBytes),
+  scriptSha256:sha256(scriptBytes),
+  primaryWordTimingsSha256:sha256(wordTimingBytes),
+  primaryBackend,
+  verifierBackend:'ctc-german',
+}));
+let verifierCacheHit = false;
+if (existsSync(verifierRawPath) && existsSync(verifierCachePath)) {
+  try {
+    const meta = await readJson(verifierCachePath);
+    verifierCacheHit = meta?.verifierFingerprint === verifierFingerprint;
+  } catch {
+    verifierCacheHit = false;
+  }
+}
+
 const run = (label, command, args, options = {}) => {
   const result = spawnSync(command, args, {encoding: 'utf8', ...options});
   if (result.stdout) process.stdout.write(result.stdout);
@@ -57,25 +83,39 @@ const run = (label, command, args, options = {}) => {
   if (result.error || result.status !== 0) throw new Error(`${label} failed${result.error ? `: ${result.error.message}` : ''}`);
   return result;
 };
-if (!existsSync(markerPath)) run('CTC verifier setup', process.execPath, [path.resolve('ki/scripts/setup-ctc-alignment-verifier.mjs')], {stdio: 'inherit'});
-const marker = await readJson(markerPath);
-const verifierPython = path.resolve(String(marker?.python || ''));
-if (!existsSync(verifierPython)) await fail(`verifier python missing: ${verifierPython}`);
 
-const workDir = path.resolve('.cache', 'reel-alignment', compositionId);
-await mkdir(workDir, {recursive: true});
-const verifierRawPath = path.join(workDir, 'alignment.verifier-ctc.raw.json');
-try {
-  run('CTC independent forced alignment', verifierPython, [
-    path.resolve('ki/scripts/python/align_words.py'),
-    '--audio', runtimeAudio,
-    '--text-file', scriptPath,
-    '--output', verifierRawPath,
-    '--backend', 'ctc-german',
-  ], {stdio: 'inherit'});
-} catch (error) {
-  await fail(error.message);
+if (verifierCacheHit) {
+  console.log('CTC CONSENSUS CACHE HIT — unchanged audio/script/primary timings; skipping second model inference.');
+} else {
+  console.log('CTC CONSENSUS CACHE MISS — verifier runs once for this exact alignment.');
+  const markerPath = path.resolve('.cache', 'reel-aligner-verifier-ctc.json');
+  if (!existsSync(markerPath)) run('CTC verifier setup', process.execPath, [path.resolve('ki/scripts/setup-ctc-alignment-verifier.mjs')], {stdio: 'inherit'});
+  const marker = await readJson(markerPath);
+  const verifierPython = path.resolve(String(marker?.python || ''));
+  if (!existsSync(verifierPython)) await fail(`verifier python missing: ${verifierPython}`);
+  try {
+    run('CTC independent forced alignment', verifierPython, [
+      path.resolve('ki/scripts/python/align_words.py'),
+      '--audio', runtimeAudio,
+      '--text-file', scriptPath,
+      '--output', verifierRawPath,
+      '--backend', 'ctc-german',
+    ], {stdio: 'inherit'});
+  } catch (error) {
+    await fail(error.message);
+  }
+  await writeFile(verifierCachePath, `${JSON.stringify({
+    version:2,
+    status:'CTC_VERIFIER_ALIGNMENT_CACHED',
+    verifierFingerprint,
+    audioSha256:sha256(audioBytes),
+    scriptSha256:sha256(scriptBytes),
+    primaryWordTimingsSha256:sha256(wordTimingBytes),
+    primaryBackend,
+    verifierBackend:'ctc-german',
+  },null,2)}\n`, 'utf8');
 }
+
 const verifierDoc = await readJson(verifierRawPath);
 const verifier = Array.isArray(verifierDoc?.words) ? verifierDoc.words : [];
 if (verifier.length !== primary.length) await fail(`word count mismatch primary=${primary.length}, verifier=${verifier.length}`);
@@ -165,13 +205,14 @@ if (metrics.p95StartDeltaMs > thresholds.p95StartDeltaMs) violations.push(`p95 s
 if (metrics.maxAnchorDeltaMs > thresholds.maxAnchorDeltaMs) violations.push(`max planned-anchor delta ${metrics.maxAnchorDeltaMs}ms > ${thresholds.maxAnchorDeltaMs}ms`);
 if (metrics.maxAnyWordDeltaMs > thresholds.maxAnyWordDeltaMs) violations.push(`max word-edge delta ${metrics.maxAnyWordDeltaMs}ms > ${thresholds.maxAnyWordDeltaMs}ms`);
 
-const wordTimingsBytes = await readFile(wordsPath);
 const payload = {
-  version: 1,
+  version:2,
   status: violations.length ? 'ALIGNMENT_CONSENSUS_FAILED' : 'ALIGNMENT_CONSENSUS_PASSED',
   generatedAt: new Date().toISOString(),
   authority: '01-script-audio/WORD-TIMINGS.json',
-  wordTimingsSha256: sha256(wordTimingsBytes),
+  wordTimingsSha256: sha256(wordTimingBytes),
+  verifierFingerprint,
+  cacheHit: verifierCacheHit,
   primary: {backend: primaryBackend, model: primaryDoc?.model || null},
   verifier: {backend: 'ctc-german', model: verifierDoc?.model || null},
   wordCount: primary.length,
@@ -187,6 +228,7 @@ if (violations.length) await fail(violations.join('; '), payload);
 console.log('ALIGNMENT CONSENSUS PASSED');
 console.log(`primary: ${payload.primary.backend}`);
 console.log(`verifier: ${payload.verifier.backend}`);
+console.log(`cache: ${verifierCacheHit ? 'HIT' : 'MISS'}`);
 console.log(`median start delta: ${metrics.medianStartDeltaMs} ms`);
 console.log(`p95 start delta: ${metrics.p95StartDeltaMs} ms`);
 console.log(`max planned-anchor delta: ${metrics.maxAnchorDeltaMs} ms`);
