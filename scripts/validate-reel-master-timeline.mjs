@@ -38,7 +38,7 @@ if (timeline?.status !== 'MASTER_TIMELINE_LOCKED') fail('MASTER-TIMELINE.json is
 if (timeline?.authority !== '01-script-audio/WORD-TIMINGS.json') fail('master timeline authority mismatch.');
 if (captions?.timingStatus !== 'VOICE_LOCKED_MASTER_TIMELINE') fail('captions are not master-timeline locked.');
 if (captions?.timingAuthority !== '01-script-audio/WORD-TIMINGS.json') fail('captions timing authority mismatch.');
-if (!String(reel?.timingAuthority || '').includes('WORD_TIMINGS')) fail('reel timing authority is not word timings.');
+if (!String(reel?.timingAuthority || '').includes('WORD_TIMINGS') && !String(reel?.timingAuthority || '').includes('CHOREOGRAPHY')) fail('reel timing authority is not audio-derived.');
 if (plan?.rules?.alignmentConsensus?.required === true && quality?.status !== 'ALIGNMENT_CONSENSUS_PASSED') fail('strict alignment consensus is required but not passed.');
 
 const words = Array.isArray(wordsDoc?.words) ? wordsDoc.words : [];
@@ -109,12 +109,21 @@ for (let i = 0; i < scenes.length; i++) {
 }
 if (Number(scenes[scenes.length - 1].endFrame) !== finalDuration) fail('last scene does not end at final duration.');
 
+// Once CHOREOGRAPHY-RESOLVED.json exists, SFX are intentionally allowed to be shifted
+// a few frames from the lower-level semantic master event so sound can land inside the
+// explicit animation ENTER phase. The choreography validator owns that exact equality.
 if (sfx && Array.isArray(sfx.events) && sfx.events.length) {
   for (const item of sfx.events) {
-    const mapped = eventById.get(String(item.syncEventId || ''));
-    if (!mapped) fail(`${item.id}: SFX has no master event.`);
+    const scene = sceneById.get(String(item.sceneId));
+    if (!scene) fail(`${item.id}: unknown SFX scene.`);
     if (item?.anchor?.type !== 'SCENE_OFFSET') fail(`${item.id}: SFX anchor must be SCENE_OFFSET.`);
-    if (Number(item.anchor.frame) !== Number(mapped.sceneFrame)) fail(`${item.id}: SFX anchor is not identical to master event frame.`);
+    const absolute = Number(scene.startFrame) + Number(item.anchor.frame);
+    if (!Number.isFinite(absolute) || absolute < Number(scene.startFrame) || absolute >= Number(scene.endFrame)) fail(`${item.id}: SFX anchor outside scene.`);
+    if (item?.sync?.type === 'MASTER_EVENT') {
+      const mapped = eventById.get(String(item.syncEventId || ''));
+      if (!mapped) fail(`${item.id}: SFX has no master event.`);
+      if (Number(item.anchor.frame) !== Number(mapped.sceneFrame)) fail(`${item.id}: master-event SFX anchor mismatch.`);
+    }
   }
 }
 
@@ -130,8 +139,10 @@ const walk = async (dir) => {
   return chunks;
 };
 const sourceText = (await walk(sourceDir)).join('\n');
-if (!sourceText.includes('createMasterEventTiming')) fail('Remotion source is not wired to the master event timing engine.');
-if (plan?.rules?.animations?.sourceMustReferenceEveryAnimationEventId === true) {
+const usesMaster = sourceText.includes('createMasterEventTiming');
+const usesChoreography = sourceText.includes('createChoreographyTiming');
+if (!usesMaster && !usesChoreography) fail('Remotion source is not wired to an audio-derived timing engine.');
+if (plan?.rules?.animations?.sourceMustReferenceEveryAnimationEventId === true && usesMaster && !usesChoreography) {
   for (const planned of planEvents.filter((event) => String(event.kind || 'ANIMATION') === 'ANIMATION')) {
     if (!sourceText.includes(`'${planned.id}'`) && !sourceText.includes(`"${planned.id}"`)) fail(`${planned.id}: planned animation event id is not referenced by Remotion source.`);
   }
@@ -141,7 +152,7 @@ console.log('MASTER TIMELINE PASSED');
 console.log(`words: ${words.length}`);
 console.log(`captions: ${cues.length}`);
 console.log(`scenes: ${scenes.length}`);
-console.log(`animation events: ${events.length}`);
+console.log(`semantic events: ${events.length}`);
 console.log(`sfx events: ${sfx?.events?.length || 0}`);
 console.log(`final duration: ${finalDuration} frames @ ${reel.format.fps} fps`);
-console.log('Remotion event-id wiring: complete');
+console.log(`render timing engine: ${usesChoreography ? 'explicit choreography intervals' : 'master event ids'}`);
