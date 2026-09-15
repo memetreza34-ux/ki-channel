@@ -102,6 +102,7 @@ const requestedSteps = [
 
 const writeSummary = async ({status, error = null}) => {
   const trackedWorktreeStatus = readTrackedWorktreeStatus();
+  const observedGitHead = readGitValue(['rev-parse', 'HEAD']);
   await writeFile(
     summaryPath,
     `${JSON.stringify(
@@ -110,6 +111,8 @@ const writeSummary = async ({status, error = null}) => {
         mode: requestedMode,
         status,
         gitHead: currentGitHead,
+        observedGitHead,
+        headStable: Boolean(currentGitHead && observedGitHead === currentGitHead),
         trackedWorktreeClean: trackedWorktreeStatus === '',
         expectedStepCount: requestedSteps.length,
         startedAt,
@@ -178,6 +181,12 @@ try {
 
   for (const step of requestedSteps) {
     await run(step.command, step.args, step.label);
+    const observedGitHead = readGitValue(['rev-parse', 'HEAD']);
+    if (observedGitHead !== currentGitHead) {
+      throw new Error(
+        `HEAD hat sich während des Content-Release geändert: ${currentGitHead} -> ${observedGitHead ?? 'unbekannt'}.`,
+      );
+    }
     await writeSummary({status: 'running'});
   }
   if (
@@ -193,6 +202,13 @@ try {
   if (finalTrackedWorktreeStatus !== '') {
     throw new Error(
       `Content-Release hat den tracked Worktree während des Laufs verändert oder dirty hinterlassen:\n${finalTrackedWorktreeStatus ?? 'Git-Status nicht lesbar'}`,
+    );
+  }
+
+  const finalGitHead = readGitValue(['rev-parse', 'HEAD']);
+  if (finalGitHead !== currentGitHead) {
+    throw new Error(
+      `HEAD stimmt am Ende nicht mehr mit dem Start-Commit überein: ${currentGitHead} -> ${finalGitHead ?? 'unbekannt'}.`,
     );
   }
 
