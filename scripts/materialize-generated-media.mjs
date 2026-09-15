@@ -14,6 +14,7 @@ const reelDir = resolve(projectRoot, reelArg);
 const requestPath = resolve(reelDir, '06-projektdateien', 'GENERATED-MEDIA-REQUESTS.json');
 const manifestPath = resolve(reelDir, '06-projektdateien', 'GENERATED-MEDIA.json');
 const publicRoot = resolve(projectRoot, 'public', 'reel-assets', 'generated');
+const visualWorldPath = resolve(projectRoot, 'ki', 'brand', 'visual-world.json');
 
 const IMAGE_MODEL = process.env.KI_IMAGE_MODEL || 'gemini-3.1-flash-image';
 const VIDEO_MODEL = process.env.KI_VIDEO_MODEL || 'veo-3.1-generate-preview';
@@ -55,6 +56,10 @@ const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 const fileSha256 = async (path) => sha256(await readFile(path));
 const sanitizeId = (id) => id.replace(/[^a-zA-Z0-9._-]/g, '-');
 
+const visualWorld = await readJson(visualWorldPath);
+if (!visualWorld?.id || !visualWorld?.promptPrefix) fail('ki/brand/visual-world.json ist unvollständig.');
+const visualWorldFingerprint = sha256(JSON.stringify(visualWorld));
+
 const assertInside = (parent, child, label) => {
   const normalizedParent = parent.endsWith(sep) ? parent : `${parent}${sep}`;
   if (!(child === parent || child.startsWith(normalizedParent))) {
@@ -69,6 +74,7 @@ const validateRequest = (raw) => {
   if (raw.items.length > MAX_ITEMS) fail(`Maximal ${MAX_ITEMS} generierte Medien pro Lauf erlaubt. KI_MEDIA_MAX_ITEMS kann bewusst bis 20 erhöht werden.`);
 
   const ids = new Set();
+  const forbiddenStylePhrases = Array.isArray(visualWorld?.forbiddenPromptPhrases) ? visualWorld.forbiddenPromptPhrases : [];
   const items = raw.items.map((item, index) => {
     const label = `items[${index}]`;
     if (!item || typeof item !== 'object' || Array.isArray(item)) fail(`${label} muss ein Objekt sein.`);
@@ -80,6 +86,13 @@ const validateRequest = (raw) => {
     if (!ALLOWED_KINDS.has(kind)) fail(`${item.id}: kind muss IMAGE oder BROLL sein.`);
     if (typeof item.prompt !== 'string' || item.prompt.trim().length < 20) fail(`${item.id}: prompt muss mindestens 20 Zeichen enthalten.`);
     if (typeof item.purpose !== 'string' || item.purpose.trim().length < 8) fail(`${item.id}: purpose muss die visuelle Aufgabe erklären.`);
+
+    const positivePromptLower = item.prompt.toLocaleLowerCase('en-US');
+    for (const phrase of forbiddenStylePhrases) {
+      if (positivePromptLower.includes(String(phrase).toLocaleLowerCase('en-US'))) {
+        fail(`${item.id}: positiver Prompt widerspricht der KI-Kanal-Bildwelt durch "${phrase}". Nutze ki/brand/visual-world.json.`);
+      }
+    }
 
     const evidenceRole = String(item.evidenceRole || '').toUpperCase();
     if (FORBIDDEN_EVIDENCE_ROLES.has(evidenceRole)) fail(`${item.id}: KI-generierte Medien dürfen nicht als ${evidenceRole} ausgegeben werden.`);
@@ -116,15 +129,38 @@ const validateRequest = (raw) => {
   return {schemaVersion: 1, provider: 'GOOGLE_GEMINI', items};
 };
 
-const requestFingerprint = (item, model) => sha256(JSON.stringify({schemaVersion: 1, provider: 'GOOGLE_GEMINI', model, ...item}));
+const requestFingerprint = (item, model) => sha256(JSON.stringify({
+  schemaVersion: 1,
+  provider: 'GOOGLE_GEMINI',
+  model,
+  visualWorldFingerprint,
+  ...item,
+}));
+
 const buildPrompt = (item) => {
+  const palette = visualWorld?.palette || {};
+  const paletteText = [
+    ...(Array.isArray(palette.anchor) ? palette.anchor : []),
+    ...(Array.isArray(palette.semantic) ? palette.semantic : []),
+    ...(Array.isArray(palette.neutral) ? palette.neutral : []),
+  ].join(', ');
+  const canonicalAvoid = Array.isArray(visualWorld?.defaultAvoid) ? visualWorld.defaultAvoid.join(', ') : '';
   const parts = [
-    'Create an original AI-generated illustrative visual for a faceless explainer.',
+    'Create an original AI-generated illustrative visual for a faceless KI-channel explainer.',
+    `Canonical visual-world profile: ${visualWorld.id}.`,
+    visualWorld.promptPrefix,
+    paletteText ? `Canonical palette reference: ${paletteText}.` : '',
+    visualWorld.lighting ? `Lighting: ${visualWorld.lighting}` : '',
+    visualWorld.composition ? `Composition: ${visualWorld.composition}` : '',
+    visualWorld.materials ? `Materials: ${visualWorld.materials}` : '',
+    item.kind === 'BROLL' && visualWorld.motion ? `Motion: ${visualWorld.motion}` : '',
+    'The result must look like it belongs inside the same bright white-lavender Remotion reel, not like a separate film, documentary, advertisement or dark cinematic still.',
     'Do not imitate a news photograph, documentary evidence, official product screenshot, official UI, or authentic brand asset.',
     'Do not add logos, watermarks, captions, subtitles, interface text, or factual labels unless the prompt explicitly asks for generic non-brand text.',
     `The visual purpose is: ${item.purpose}.`,
-  ];
-  if (item.negativePrompt) parts.push(`Avoid: ${item.negativePrompt}.`);
+  ].filter(Boolean);
+  const avoid = [canonicalAvoid, item.negativePrompt].filter(Boolean).join(', ');
+  if (avoid) parts.push(`Avoid: ${avoid}.`);
   parts.push(item.prompt);
   return parts.join(' ');
 };
@@ -232,8 +268,9 @@ const atomicWriteJson = async (path, value) => {
 assertInside(projectRoot, reelDir, 'Reel package');
 const request = validateRequest(await readJson(requestPath));
 console.log(`Generated-media ${mode}: ${request.items.length} request(s) in ${reelArg}`);
+console.log(`Visual world: ${visualWorld.id} v${visualWorld.version} (${visualWorldFingerprint.slice(0, 12)})`);
 if (mode === 'verify') {
-  console.log('GENERATED MEDIA VERIFIED: schema, truth roles, limits and generation parameters are valid. No API call was made.');
+  console.log('GENERATED MEDIA VERIFIED: schema, truth roles, limits, generation parameters and canonical reel visual world are valid. No API call was made.');
   process.exit(0);
 }
 if (request.items.length === 0) {
@@ -257,6 +294,12 @@ const manifest = {
   provider: 'GOOGLE_GEMINI',
   generatedMediaIsEvidence: false,
   audioPolicy: 'GENERATED_BROLL_AUDIO_MUTED_IN_PRODUCTION',
+  visualWorld: {
+    id: visualWorld.id,
+    version: visualWorld.version,
+    fingerprint: visualWorldFingerprint,
+    source: 'ki/brand/visual-world.json',
+  },
   reelPackage: reelArg.replaceAll('\\', '/'),
   outputRoot: `reel-assets/generated/${reelSlug}`,
   updatedAt: new Date().toISOString(),
@@ -302,6 +345,9 @@ for (const item of request.items) {
     model: result.model,
     apiVersion: result.apiVersion,
     requestFingerprint: fingerprint,
+    visualWorldId: visualWorld.id,
+    visualWorldVersion: visualWorld.version,
+    visualWorldFingerprint,
     generatedAt: new Date().toISOString(),
     generated: true,
     syntheticMedia: true,
