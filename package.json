@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "description": "Produktionssystem für den deutschen faceless KI-Kanal mit Remotion",
+  "packageManager": "npm@11.19.0",
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
   },
   "workspaces": [
     "core",
     "ki"
   ],
   "scripts": {
+    "runtime:bootstrap": "node scripts/bootstrap-pre-youtube-runtime.mjs",
+    "runtime:verify": "node scripts/verify-pre-youtube-runtime.mjs",
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
     "production:contracts": "node ki/scripts/validate-production-contracts.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
