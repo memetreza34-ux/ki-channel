@@ -110,10 +110,11 @@ test('Longform-v1 release gate rejects media paths escaping the package', async 
   }
 });
 
-test('Longform-v1 release contract keeps render-lock and Git-HEAD integrity checks', async () => {
+test('Longform-v1 release contract keeps render-lock and Git-history integrity checks', async () => {
   const source = await readFile(releaseCheck, 'utf8');
   assert.match(source, /renderLock\.gitHead/);
-  assert.match(source, /Git-HEAD weicht vom Render-Lock ab/);
+  assert.match(source, /merge-base/);
+  assert.match(source, /Aktueller Git-HEAD enthält den Render-Lock-Commit nicht/);
   assert.match(source, /RENDER-LOCK-SHA stimmt nicht mehr/);
   assert.match(source, /Export-Pfad verlässt 05-export/);
   assert.match(source, /Review-Master liegt außerhalb des Longform-Pakets/);
