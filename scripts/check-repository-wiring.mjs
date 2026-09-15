@@ -64,8 +64,10 @@ const rootReadme = await readText('README.md');
 const agents = await readText('AGENTS.md');
 const master = await readText('ki/gehirn/MASTER.md');
 const platforms = await readText('ki/gehirn/PLATTFORMEN.md');
+const audioPipeline = await readText('ki/gehirn/AUDIO_PIPELINE.md');
 const captionDoc = await readText('ki/gehirn/CAPTION_SAFE_POSITION.md');
 const captionSource = await readText('ki/src/reels/captionSafe.ts');
+const reelAgents = await readText('ki/src/reels/AGENTS.md');
 const generator = await readText('scripts/new-ki-reel.mjs');
 
 if (root) {
@@ -89,6 +91,8 @@ if (root) {
     'release:smoke': 'node scripts/run-content-release.mjs smoke',
     'release:full': 'node scripts/run-content-release.mjs full',
     'new-video': 'node scripts/new-ki-reel.mjs',
+    'reel:sync': 'node ki/scripts/align-reel-synced.mjs',
+    'reel:prepare-render': 'node ki/scripts/prepare-reel-render.mjs',
   };
 
   for (const [name, command] of Object.entries(requiredScripts)) {
@@ -131,25 +135,29 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
 }
 
 // Current repository truth. Keep this focused on stable operational invariants.
-// Branch names are documented in REPO-STATE.md for humans/agents, but the wiring
-// gate must never make an obsolete branch name look authoritative again.
+// The branch name remains human-readable state, while executable contracts stay
+// in source files and package scripts instead of being copied into prose.
 requireMarkers('REPO-STATE.md', repoState, [
   'Aktueller Testbranch:',
   'Arbeitsbranch nie still wechseln.',
   'Keine neuen Features vor bestandenem Showcase-Test.',
+  'npm run reel:sync -- <reel-package-dir>',
+  'npm run reel:prepare-render -- <reel-package-dir>',
   'npm run test:readiness',
   'Woche → Wochentag → Thema/Reel → 01–06',
   'BRAND-MOTION-PLAN.json',
   'WORD-TIMINGS.json',
-  'bottom 330 px',
-  'horizontal inset 76 px',
-  'max width 928 px',
+  'ki/src/reels/captionSafe.ts',
 ]);
 
 forbidMarkers('REPO-STATE.md', repoState, [
   'fix/repo-stabilisierung-2026-08-24',
+  'feat/remotion-showcase-test-2026-09-12',
   'Draft-PR **#28**',
   '**Status:** 2026-09-04',
+  'bottom 330 px',
+  'horizontal inset 76 px',
+  'max width 928 px',
 ]);
 
 requireMarkers('README.md', rootReadme, [
@@ -184,6 +192,32 @@ requireMarkers('ki/gehirn/PLATTFORMEN.md', platforms, [
   'technisches Exportprofil',
 ]);
 
+requireMarkers('ki/src/reels/AGENTS.md', reelAgents, [
+  'ki/src/reels/captionSafe.ts',
+  'REEL_CAPTION_SAFE',
+  'REEL_CAPTION_WRAPPER_STYLE',
+  'REEL_CAPTION_GLASS_STYLE',
+  'npm run reel:sync -- <reel-package-dir>',
+]);
+
+forbidMarkers('ki/src/reels/AGENTS.md', reelAgents, [
+  'bottom: 250px',
+  'horizontal `104px`',
+  'max. `860px`',
+]);
+
+requireMarkers('ki/gehirn/AUDIO_PIPELINE.md', audioPipeline, [
+  'npm run reel:sync -- <reel-package-dir>',
+  'npm run reel:prepare-render -- <reel-package-dir>',
+  'align-reel-synced.mjs',
+  'align-reel-local.mjs',
+  'interner Unterbaustein',
+]);
+
+forbidMarkers('ki/gehirn/AUDIO_PIPELINE.md', audioPipeline, [
+  'node ki/scripts/align-reel-local.mjs <reel-package-dir>',
+]);
+
 forbidMarkers('README.md', rootReadme, [
   'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/',
   '`main` ist der kanonische Produktionsstand.',
@@ -192,7 +226,8 @@ forbidMarkers('PLATTFORMEN.md', platforms, [
   'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/',
 ]);
 
-// Caption geometry must never drift between executable source and documentation.
+// Caption geometry has exactly one executable numeric source. The dedicated
+// explanation doc is checked against it; general agent/repo docs must not copy it.
 const captionBottom = extractNumericProperty('captionSafe.ts', captionSource, 'bottom');
 const captionInset = extractNumericProperty('captionSafe.ts', captionSource, 'horizontalInset');
 const captionMaxWidth = extractNumericProperty('captionSafe.ts', captionSource, 'maxWidth');
@@ -264,6 +299,8 @@ for (const path of [
   'scripts/verify-content-matched-runtime.mjs',
   'scripts/run-content-release.mjs',
   'scripts/run-test-readiness.mjs',
+  'ki/scripts/align-reel-synced.mjs',
+  'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-production-contracts.mjs',
   'ki/scripts/validate-storytelling-motion.mjs',
   'ki/scripts/validate-reel-level-up.mjs',
@@ -289,4 +326,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring konsistent: Workspaces, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
+console.log('Repository-Wiring konsistent: Workspaces, Reel-Sync-Einstiege, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
