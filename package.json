@@ -32,6 +32,8 @@
     "release:smoke": "node scripts/run-content-release.mjs smoke",
     "release:full": "node scripts/run-content-release.mjs full",
     "new-video": "node scripts/new-ki-reel.mjs",
+    "reel:sync": "node ki/scripts/align-reel-synced.mjs",
+    "reel:prepare-render": "node ki/scripts/prepare-reel-render.mjs",
     "motion:script-check": "node --check scripts/motion-render-config.mjs && node --check scripts/motion-source-fingerprint.mjs && node --check scripts/motion-artifact-validation.mjs && node --check scripts/motion-release-summary.mjs && node --check scripts/render-motion-system.mjs && node --check scripts/check-motion-renders.mjs && node --check scripts/combine-motion-release-reports.mjs && node --check scripts/why-ai-reel-config.mjs && node --check scripts/render-why-ai-reel.mjs && node --check scripts/check-why-ai-reel.mjs && node --check scripts/__tests__/motion-source-fingerprint.test.mjs && node --check scripts/__tests__/motion-artifact-validation.test.mjs && node --check scripts/__tests__/motion-release-summary.test.mjs && node --check scripts/__tests__/why-ai-reel-config.test.mjs",
     "motion:node-test": "node --test scripts/__tests__/motion-source-fingerprint.test.mjs scripts/__tests__/motion-artifact-validation.test.mjs scripts/__tests__/motion-release-summary.test.mjs scripts/__tests__/why-ai-reel-config.test.mjs",
     "motion:test": "vitest run ki/src/motion-system/__tests__ ki/src/reels/why-ai-reads-differently/__tests__ && npm run motion:node-test",
