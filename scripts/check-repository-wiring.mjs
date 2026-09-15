@@ -67,6 +67,10 @@ const platforms = await readText('ki/gehirn/PLATTFORMEN.md');
 const captionDoc = await readText('ki/gehirn/CAPTION_SAFE_POSITION.md');
 const captionSource = await readText('ki/src/reels/captionSafe.ts');
 const generator = await readText('scripts/new-ki-reel.mjs');
+const motionTsconfig = await readText('ki/tsconfig.motion.json');
+const longformTsconfig = await readText('ki/tsconfig.longform.json');
+const youtubeReadiness = await readText('scripts/run-youtube-readiness.mjs');
+const youtubeReadinessDoc = await readText('ki/youtube-longform/YOUTUBE-READINESS.md');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -134,10 +138,11 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
 // Branch names are documented in REPO-STATE.md for humans/agents, but the wiring
 // gate must never make an obsolete branch name look authoritative again.
 requireMarkers('REPO-STATE.md', repoState, [
-  'Aktueller Testbranch:',
+  'Aktueller Stabilisierungsbranch:',
   'Arbeitsbranch nie still wechseln.',
-  'Keine neuen Features vor bestandenem Showcase-Test.',
+  'Keine neuen Motion-Libraries, Agenten oder zusätzlichen Capability-Schichten',
   'npm run test:readiness',
+  'node scripts/run-youtube-readiness.mjs',
   'Woche → Wochentag → Thema/Reel → 01–06',
   'BRAND-MOTION-PLAN.json',
   'WORD-TIMINGS.json',
@@ -147,6 +152,7 @@ requireMarkers('REPO-STATE.md', repoState, [
 ]);
 
 forbidMarkers('REPO-STATE.md', repoState, [
+  'Aktueller Testbranch: `feat/remotion-showcase-test-2026-09-12`',
   'fix/repo-stabilisierung-2026-08-24',
   'Draft-PR **#28**',
   '**Status:** 2026-09-04',
@@ -182,6 +188,32 @@ requireMarkers('ki/gehirn/PLATTFORMEN.md', platforms, [
   'NN_Reel-Titel',
   '03-caption/platform-copy.md',
   'technisches Exportprofil',
+]);
+
+requireMarkers('ki/tsconfig.motion.json', motionTsconfig, [
+  'src/longform/**/*.ts',
+  'src/longform/**/*.tsx',
+  'youtube-longform/**/*.json',
+]);
+requireMarkers('ki/tsconfig.longform.json', longformTsconfig, [
+  'src/longform/**/*.ts',
+  'src/longform/**/*.tsx',
+  'youtube-longform/**/*.json',
+]);
+requireMarkers('scripts/run-youtube-readiness.mjs', youtubeReadiness, [
+  'YOUTUBE_LONGFORM_V1_PREPRODUCTION_READINESS',
+  'longform-typecheck',
+  'longform-contract-tests',
+  'repository-wiring',
+  'production-contracts',
+  'HEAD hat sich während des YouTube-Readiness-Laufs geändert',
+]);
+requireMarkers('ki/youtube-longform/YOUTUBE-READINESS.md', youtubeReadinessDoc, [
+  'node scripts/run-youtube-readiness.mjs',
+  'out/youtube-readiness/summary.json',
+  'node scripts/check-ki-longform-render-readiness.mjs',
+  'node scripts/render-ki-longform-master.mjs',
+  'node scripts/check-ki-longform-release.mjs',
 ]);
 
 forbidMarkers('README.md', rootReadme, [
@@ -232,6 +264,9 @@ for (const path of [
   'ki/README.md',
   'ki/AGENTS.md',
   'ki/reels/AGENTS.md',
+  'ki/youtube-longform/AGENTS.md',
+  'ki/youtube-longform/LONGFORM-V1.md',
+  'ki/youtube-longform/YOUTUBE-READINESS.md',
   'ki/gehirn/MASTER.md',
   'ki/gehirn/KANAL.md',
   'ki/gehirn/REELS.md',
@@ -256,10 +291,17 @@ for (const path of [
   'ki/plattformen/snapchat/README.md',
   'ki/src/reels/captionSafe.ts',
   'ki/tsconfig.motion.json',
+  'ki/tsconfig.longform.json',
   'ki/tsconfig.animation-library.json',
   'scripts/new-ki-reel.mjs',
   'scripts/new-ki-reel-core.mjs',
+  'scripts/new-ki-longform.mjs',
   'scripts/check-ki-reel-folder-structure.mjs',
+  'scripts/check-ki-longform-structure.mjs',
+  'scripts/check-ki-longform-render-readiness.mjs',
+  'scripts/check-ki-longform-release.mjs',
+  'scripts/render-ki-longform-master.mjs',
+  'scripts/run-youtube-readiness.mjs',
   'scripts/check-antigravity-integration.mjs',
   'scripts/verify-content-matched-runtime.mjs',
   'scripts/run-content-release.mjs',
@@ -289,4 +331,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring konsistent: Workspaces, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
+console.log('Repository-Wiring konsistent: Workspaces, aktive Pre-YouTube-Wahrheit, Reel-/Longform-Hierarchie, Readiness-Gates, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
