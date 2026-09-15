@@ -19,7 +19,7 @@ const captionPath = path.join(reelDir, '03-caption', 'subtitle-cues.json');
 const wordTimingsPath = path.join(reelDir, '01-script-audio', 'WORD-TIMINGS.json');
 if (!existsSync(reelPath)) fail(`reel.json missing: ${reelPath}`);
 if (!existsSync(captionPath)) fail(`subtitle-cues.json missing: ${captionPath}`);
-if (!existsSync(wordTimingsPath)) fail(`WORD-TIMINGS.json missing: ${wordTimingsPath}. Run align-reel-local.mjs first.`);
+if (!existsSync(wordTimingsPath)) fail(`WORD-TIMINGS.json missing: ${wordTimingsPath}. Run npm run reel:sync -- <reel-package-dir> first.`);
 
 let reel;
 try { reel = JSON.parse(await readFile(reelPath, 'utf8')); }
@@ -44,7 +44,7 @@ const sfxEnabled = reel?.sfx?.enabled === true;
 const sfxResolvedPath = sfxEnabled
   ? path.resolve(reelDir, reel?.sfx?.resolvedFile || '06-projektdateien/sfx-resolved.json')
   : null;
-if (sfxEnabled && !existsSync(sfxResolvedPath)) fail(`resolved SFX plan missing: ${sfxResolvedPath}. Run align-reel-local.mjs first.`);
+if (sfxEnabled && !existsSync(sfxResolvedPath)) fail(`resolved SFX plan missing: ${sfxResolvedPath}. Run npm run reel:sync -- <reel-package-dir> first.`);
 
 const visualsEnabled = reel?.visuals?.enabled === true;
 const visualManifestPath = visualsEnabled
@@ -53,8 +53,65 @@ const visualManifestPath = visualsEnabled
 const visualResolvedPath = visualsEnabled
   ? path.resolve(reelDir, reel?.visuals?.resolvedFile || '06-projektdateien/visual-assets-resolved.json')
   : null;
+const generatedMediaRequestsRelative = visualsEnabled ? String(reel?.visuals?.generatedMediaRequests || '').trim() : '';
+const generatedMediaManifestRelative = visualsEnabled ? String(reel?.visuals?.generatedMediaManifest || '').trim() : '';
+const generatedMediaRequestsPath = generatedMediaRequestsRelative ? path.resolve(reelDir, generatedMediaRequestsRelative) : null;
+const generatedMediaManifestPath = generatedMediaManifestRelative ? path.resolve(reelDir, generatedMediaManifestRelative) : null;
 if (visualsEnabled && !existsSync(visualManifestPath)) fail(`visual asset manifest missing: ${visualManifestPath}`);
 if (visualsEnabled && !existsSync(visualResolvedPath)) fail(`resolved visual asset manifest missing: ${visualResolvedPath}. Run resolve-reel-visual-assets.mjs first.`);
+
+const verifyGeneratedMedia = async () => {
+  if (!generatedMediaManifestPath || !existsSync(generatedMediaManifestPath)) return null;
+
+  let manifest;
+  try { manifest = JSON.parse(await readFile(generatedMediaManifestPath, 'utf8')); }
+  catch (error) { fail(`invalid generated media manifest ${generatedMediaManifestPath}: ${error.message}`); }
+
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) fail('generated media manifest must be a JSON object.');
+  if (!Array.isArray(manifest.assets)) fail('generated media manifest assets must be an array.');
+  if (reel?.reelId && manifest.reelId && String(manifest.reelId) !== String(reel.reelId)) {
+    fail(`generated media manifest reelId ${manifest.reelId} does not match reel.json reelId ${reel.reelId}.`);
+  }
+
+  const publicRoot = path.resolve('public');
+  const seenIds = new Set();
+  const assets = [];
+
+  for (const [index, asset] of manifest.assets.entries()) {
+    const id = String(asset?.id || '').trim();
+    const kind = String(asset?.kind || '').trim().toUpperCase();
+    const expectedSha256 = String(asset?.sha256 || '').trim().toLowerCase();
+    const rawPublicPath = String(asset?.publicPath || '').trim().replace(/\\/g, '/');
+
+    if (!id) fail(`generated media asset ${index + 1} has no id.`);
+    if (seenIds.has(id)) fail(`generated media asset id is duplicated: ${id}`);
+    seenIds.add(id);
+    if (!['IMAGE', 'BROLL'].includes(kind)) fail(`generated media asset ${id} has unsupported kind ${kind || '(empty)'}.`);
+    if (!/^[a-f0-9]{64}$/.test(expectedSha256)) fail(`generated media asset ${id} has invalid sha256.`);
+    if (!rawPublicPath || path.posix.isAbsolute(rawPublicPath)) fail(`generated media asset ${id} has invalid publicPath.`);
+
+    const normalizedPublicPath = path.posix.normalize(rawPublicPath);
+    if (normalizedPublicPath === '..' || normalizedPublicPath.startsWith('../') || !normalizedPublicPath.startsWith('reel-assets/generated/')) {
+      fail(`generated media asset ${id} publicPath must stay under public/reel-assets/generated/.`);
+    }
+
+    const absolutePath = path.resolve(publicRoot, ...normalizedPublicPath.split('/'));
+    const relativeToPublic = path.relative(publicRoot, absolutePath);
+    if (!relativeToPublic || relativeToPublic.startsWith('..') || path.isAbsolute(relativeToPublic)) {
+      fail(`generated media asset ${id} resolves outside the allowed generated-media root.`);
+    }
+    if (!existsSync(absolutePath)) fail(`generated media asset ${id} is missing locally: ${absolutePath}`);
+
+    const actualSha256 = await sha256File(absolutePath);
+    if (actualSha256 !== expectedSha256) {
+      fail(`generated media asset ${id} sha256 mismatch. Re-materialize media before rendering.`);
+    }
+
+    assets.push({id, kind, publicPath: normalizedPublicPath, sha256: actualSha256});
+  }
+
+  return {manifest, assets};
+};
 
 const fps = Number(reel?.format?.fps);
 const finalDuration = Number(reel?.format?.finalDurationInFrames);
@@ -129,6 +186,11 @@ if (!sourceDir) fail('sourceDir missing. Add reel.json.sourceDir or source-isola
 const absoluteSourceDir = path.resolve(sourceDir);
 if (!existsSync(absoluteSourceDir)) fail(`sourceDir does not exist: ${sourceDir}`);
 
+const generatedMedia = await verifyGeneratedMedia();
+const generatedMediaRequestsSha256 = generatedMediaRequestsPath && existsSync(generatedMediaRequestsPath)
+  ? await sha256File(generatedMediaRequestsPath)
+  : null;
+
 const createdAtMs = Date.now();
 const lock = {
   status: 'RENDER_LOCKED',
@@ -140,6 +202,7 @@ const lock = {
   sourceDir,
   levelUpEnabled,
   levelUpV4Enabled,
+  generatedMediaAssets: generatedMedia?.assets ?? [],
   hashes: {
     sourceTreeSha256: await sha256Directory(absoluteSourceDir),
     renderContractSha256: renderContractSha256(reel),
@@ -152,6 +215,8 @@ const lock = {
     sfxResolvedSha256: sfxEnabled ? await sha256File(sfxResolvedPath) : null,
     visualManifestSha256: visualsEnabled ? await sha256File(visualManifestPath) : null,
     visualResolvedSha256: visualsEnabled ? await sha256File(visualResolvedPath) : null,
+    generatedMediaRequestsSha256,
+    generatedMediaManifestSha256: generatedMedia ? await sha256File(generatedMediaManifestPath) : null,
     canonicalAudioSha256: await sha256File(canonicalAudio),
     runtimeAudioSha256: await sha256File(runtimeAudio),
   },
@@ -173,6 +238,11 @@ if (visualsEnabled) {
   console.log(`visual manifest sha256: ${lock.hashes.visualManifestSha256}`);
   console.log(`visual resolved sha256: ${lock.hashes.visualResolvedSha256}`);
 }
+if (lock.hashes.generatedMediaRequestsSha256) console.log(`generated media requests sha256: ${lock.hashes.generatedMediaRequestsSha256}`);
+if (lock.hashes.generatedMediaManifestSha256) {
+  console.log(`generated media manifest sha256: ${lock.hashes.generatedMediaManifestSha256}`);
+  console.log(`generated media assets locked: ${lock.generatedMediaAssets.length}`);
+}
 console.log(`render contract sha256: ${lock.hashes.renderContractSha256}`);
 console.log(`render lock: ${lockPath}`);
-console.log('Production render may now use the registered composition and all locked audio/SFX/visual/Level-Up inputs.');
+console.log('Production render may now use the registered composition and all locked audio/SFX/visual/generated-media/Level-Up inputs.');
