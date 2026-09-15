@@ -12,7 +12,7 @@
   "timingSync": {
     "statusFile": "06-projektdateien/timing-sync-status.json",
     "contractFile": "06-projektdateien/TIMING-SYNC-SYSTEM.md",
-    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>",
+    "alignmentCommand": "npm run reel:sync -- <reel-package-dir>",
     "finalGate": "node scripts/validate-reel-timing-sync.mjs <reel-package-dir>",
     "productionPolicy": "AUDIO_MASTER_WORD_LOCKED_CAPTIONS_SCENES_REVEALS_SFX_DURATION"
   },
@@ -37,7 +37,7 @@
     "fps": 30,
     "planningDurationInFrames": 2040,
     "finalDurationInFrames": null,
-    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_SYNCED_ALIGNMENT_AND_CHOREOGRAPHY"
   },
   "audio": {
     "sourceMetadata": "01-script-audio/audio-source.json",
@@ -47,7 +47,7 @@
     "agentGenerationAllowed": false,
     "agentDownloadAllowed": false,
     "timingAuthority": false,
-    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>"
+    "alignmentCommand": "npm run reel:sync -- <reel-package-dir>"
   },
   "sceneVoiceMap": {
     "file": "01-script-audio/SCENE-VOICE-MAP.json",
@@ -76,6 +76,10 @@
     "resolvedFile": "06-projektdateien/visual-assets-resolved.json",
     "generatedMediaRequests": "06-projektdateien/GENERATED-MEDIA-REQUESTS.json",
     "generatedMediaManifest": "06-projektdateien/GENERATED-MEDIA.json",
+    "generatedMediaBindings": {
+      "generatedImageSrc": "agent-workspace-illustration",
+      "generatedBrollSrc": "agent-loop-broll"
+    },
     "status": "NATIVE_MOTION_READY_GENERATED_MEDIA_PENDING",
     "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
     "remoteRenderUrlsAllowed": false,
