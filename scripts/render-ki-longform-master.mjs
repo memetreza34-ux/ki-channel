@@ -17,7 +17,9 @@ const run=(cmd,args,{inherit=false,allowFailure=false}={})=>{
   return r;
 };
 const node=(script,args=[])=>run(process.execPath,[path.resolve(script),...args],{inherit:true});
-node('scripts/check-ki-longform-render-readiness.mjs',[root]);
+
+// Canonical production render is fail-closed on exact voice/alignment/choreography authority.
+node('scripts/check-ki-longform-sync-readiness.mjs',[root]);
 node('scripts/create-ki-longform-render-lock.mjs',[root]);
 const version=JSON.parse(await readFile(path.join(root,'06-projektdateien','LONGFORM-VERSION.json'),'utf8'));
 const compositionId=version.compositionId;
@@ -63,6 +65,7 @@ const payload={
   runtime:{node:process.versions.node,execPath:process.execPath,wrapper:process.env.KI_LONGFORM_RUNTIME_WRAPPER==='1'},
   render:{codec:'h264',crf:18,pixelFormat:'yuv420p',chromiumGl:'angle'},
   audioTarget:{integratedLufs:-16,truePeakDbtp:-1.5},
+  timingAuthority:'06-projektdateien/CHOREOGRAPHY-RESOLVED.json',
   qaReport:path.relative(process.cwd(),qaReport).split(path.sep).join('/'),
   contactSheets:path.relative(process.cwd(),path.join(reviewDir,'CONTACT-SHEET-*.jpg')).split(path.sep).join('/'),
   humanReviewRequired:true,
@@ -73,6 +76,7 @@ await writeFile(path.join(reviewDir,'RENDER-RESULT.json'),`${JSON.stringify(payl
 await rm(raw,{force:true});
 console.log('LONGFORM REVIEW CANDIDATE READY — NOT RELEASED');
 console.log(`runtime: Node ${process.versions.node}`);
+console.log(`timing authority: ${payload.timingAuthority}`);
 console.log(`master: ${master}`);
 console.log(`qa: ${qaReport}`);
 console.log(`contact sheets: ${sheetsPattern}`);
