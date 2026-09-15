@@ -1,17 +1,18 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-12 — Pre-Test-Stabilisierung + Generated-Media-Capability
+**Status:** 2026-09-15 — Strict Reel Master Sync + Generated-Media-Provenance
 
-Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Detailregeln bleiben in den jeweils zuständigen Dateien; hier stehen nur der aktuelle Arbeitszustand, die verbindlichen Gates und die unveränderlichen Produktionsregeln.
+Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Sie beschreibt nur den aktuellen Arbeitszustand und die öffentlichen Produktions-Einstiege. Detailregeln und numerische Konstanten bleiben in ihren ausführbaren Source-of-Truth-Dateien.
 
 ## 1. Aktueller Arbeitsstand
 
-- Aktueller Testbranch: `feat/remotion-showcase-test-2026-09-12`
+- Aktueller Testbranch: `fix/strict-reel-master-sync-2026-09-14`
 - Arbeitsbranch nie still wechseln.
-- Der bisher fehlende Pre-Test-Blocker „Agent kann Bilder/B-Roll nur planen, aber nicht materialisieren“ wird mit `scripts/materialize-generated-media.mjs` geschlossen.
-- Nach dieser Capability keine weiteren Features vor bestandenem Showcase-Test.
 - `main` ist aktuell nicht automatisch der freigegebene Produktionsstand.
-- Bei Widerspruch zwischen dieser Datei, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
+- Generated Media kann über `scripts/materialize-generated-media.mjs` als lokale Bild-/B-Roll-Dateien materialisiert werden.
+- Das aktuelle Timing-System nutzt `align-reel-synced.mjs` als Orchestrator für Alignment, Master-Timeline, Choreografie, SFX und finale Timing-Gates.
+- Keine neuen Features vor bestandenem Showcase-Test.
+- Bei Widerspruch zwischen Dokumentation, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
 - Ein Status darf nur als bestanden gemeldet werden, wenn der zugehörige Befehl auf genau dem genannten Commit real ausgeführt wurde.
 
 ## 2. Verbindliche Lesereihenfolge
@@ -26,8 +27,9 @@ Bei KI-Kanal-Arbeit:
 6. `ki/gehirn/STORYTELLING_MOTION.md`
 7. `ki/gehirn/LEVEL_UP_STANDARD.md`
 8. `ki/gehirn/VISUAL_ASSETS.md`
-9. `ki/reels/AGENTS.md`
-10. Ziel-Reel und seine Projektdateien
+9. `ki/gehirn/AUDIO_PIPELINE.md`
+10. `ki/src/reels/AGENTS.md`
+11. Ziel-Reel und seine Projektdateien
 
 ## 3. Kanonische Reel-Struktur
 
@@ -66,7 +68,25 @@ npm run new-video -- "Reel Titel" YYYY-MM-DD
 
 Ausführbarer Remotion-Code liegt separat unter `ki/src/reels/<slug>/`.
 
-## 4. Nicht verhandelbare Produktionsverträge
+## 4. Öffentliche Produktions-Einstiege
+
+Nach dem vom Nutzer bereitgestellten vollständigen Voiceover ist der kanonische Sync-Befehl:
+
+```bash
+npm run reel:sync -- <reel-package-dir>
+```
+
+Er orchestriert intern Runtime-Audio, Forced Alignment, unabhängigen Alignment-Gegencheck, Master-Timeline, explizite Speech-to-Animation-Choreografie, SFX-Auflösung, Timeline-Audit und finale Timing-Gates. `align-reel-local.mjs` ist ein interner Unterbaustein und nicht mehr der öffentliche Produktions-Einstieg.
+
+Nach erfolgreichem Sync und Commit der erzeugten Timing-/Contract-Dateien:
+
+```bash
+npm run reel:prepare-render -- <reel-package-dir>
+```
+
+Dieser Schritt validiert den finalen Produktionsvertrag und erzeugt den Render-Lock mit Provenance.
+
+## 5. Nicht verhandelbare Produktionsverträge
 
 - Produktions-Voiceover kommt ausschließlich vom Nutzer.
 - `WORD-TIMINGS.json` ist nach Voice-Lock die Timing-Autorität für Captions, Szenen, Reveals und SFX.
@@ -74,21 +94,17 @@ Ausführbarer Remotion-Code liegt separat unter `ki/src/reels/<slug>/`.
 - Native Remotion-Visuals bleiben die Produktionsbasis; Remote-Medien werden nicht zur Renderzeit geladen.
 - Offizielle/lokale Assets brauchen nachvollziehbare Herkunft und bleiben reviewpflichtig.
 - Source-Code allein beweist niemals einen visuellen PASS.
+- Caption-Geometrie wird **nicht** in Markdown dupliziert. Numerische Autorität ist ausschließlich `ki/src/reels/captionSafe.ts`; Sources verwenden `REEL_CAPTION_SAFE`, `REEL_CAPTION_WRAPPER_STYLE` und `REEL_CAPTION_GLASS_STYLE`.
 
-Caption-Safe-Zone bleibt zentral synchronisiert mit `ki/src/reels/captionSafe.ts`:
-
-- bottom 330 px
-- horizontal inset 76 px
-- max width 928 px
-- maximal 2 Zeilen
-
-## 5. Generated Media — Bilder und B-Roll
-
-Der vorhandene Orchestrator besitzt jetzt eine Materialisierungsstufe statt nur Asset-Planung.
+## 6. Generated Media — Bilder und B-Roll
 
 Request-Datei pro Reel:
 
 `06-projektdateien/GENERATED-MEDIA-REQUESTS.json`
+
+Manifest nach erfolgreicher Materialisierung:
+
+`06-projektdateien/GENERATED-MEDIA.json`
 
 Erlaubte Typen:
 
@@ -121,15 +137,9 @@ Standardprovider:
 - Bild: `gemini-3.1-flash-image`
 - B-Roll: `veo-3.1-generate-preview`
 
-Modelle bleiben über `KI_IMAGE_MODEL` und `KI_VIDEO_MODEL` austauschbar, damit ein Modellwechsel keine Architekturänderung benötigt.
+Modelle bleiben über `KI_IMAGE_MODEL` und `KI_VIDEO_MODEL` austauschbar. Binärdateien landen git-ignored unter `public/reel-assets/generated/<reel>/`; das Manifest hält Provider, Modell, Prompt/Fingerprint, SHA256, MIME, Größe und lokalen Remotion-Pfad fest. B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-Voiceover bleibt Narrationsautorität.
 
-Binärdateien landen git-ignored unter `public/reel-assets/generated/<reel>/`. Die prüfbare Wahrheit landet in `06-projektdateien/GENERATED-MEDIA.json`: Provider, Modell, Prompt/Fingerprint, SHA256, MIME, Größe, lokaler Remotion-Pfad und Synthetic/Evidence-Flags.
-
-B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-Voiceover bleibt Narrationsautorität.
-
-Standardmäßig maximal 8 neue Generierungen pro Lauf; gleiche Request-/Model-Fingerprints mit passender lokaler SHA werden wiederverwendet statt erneut generiert.
-
-## 6. Ein kanonischer Pre-Test
+## 7. Ein kanonischer Pre-Test
 
 Vor dem nächsten echten Showcase-/Produktions-Test wird genau dieser Gate-Einstieg verwendet:
 
@@ -145,23 +155,24 @@ npm run test:readiness
 4. `npm run motion:verify`
 5. `npm run release:verify`
 
-Der Pre-Test erzeugt **keine** kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `materialize`-Befehl gestartet.
+Der Pre-Test erzeugt keine kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `materialize`-Befehl gestartet.
 
 Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` geschrieben und enthält mindestens Commit, Branch, Node-Version, Einzelschritte, Laufzeiten und Gesamtstatus.
 
 Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben → neuer Commit → `npm run test:readiness` erneut ausführen.
 
-## 7. Bedeutung der Gates
+## 8. Gate-Stufen
 
-- `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Dokumentationsmarker und Kernpfade.
-- `npm run production:contracts`: prüft Produktionsverträge.
-- `npm test`: prüft Wiring, Reel-Struktur und Vitest-Suite.
-- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation.
-- `npm run motion:verify`: prüft Motion-Skripte, Motion-Tests, Typecheck und Render-Plan.
-- `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender.
-- `npm run test:readiness`: ist der verbindliche Pre-Test-Einstieg und protokolliert den konkreten Commit.
+Für die tägliche Arbeit gilt diese Hierarchie:
 
-## 8. Showcase-Freigabe
+- **FAST:** `npm run repo:wiring-check` plus zielbezogene Syntax-/Typechecks; für kleine Source-/Dokumentationsänderungen.
+- **SYNC:** `npm run reel:sync -- <reel-package-dir>`; nur wenn Script, Nutzer-Audio oder Timing-/Choreografie-Autorität geändert wurde.
+- **RENDER:** `npm run reel:prepare-render -- <reel-package-dir>` und der zielbezogene Reel-Render; nur für das aktuelle Reel.
+- **FULL:** `npm run test:readiness` bzw. Release-Gates vor Showcase, Merge oder Freigabe.
+
+Nicht bei jeder kleinen Reel-Änderung automatisch die gesamte Animation-Library rendern.
+
+## 9. Showcase-Freigabe
 
 Der echte Showcase-Test darf erst starten, wenn:
 
@@ -172,13 +183,13 @@ Der echte Showcase-Test darf erst starten, wenn:
 
 Danach wird erst der eigentliche Render-/Showcase-Test ausgeführt. Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis dahin nachrangig.
 
-## 9. Externe Einschränkungen
+## 10. Externe Einschränkungen
 
 GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, ist der lokale `test:readiness`-Report der verbindliche technische Nachweis für den getesteten Commit.
 
 Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
 
-## 10. Statusbegriffe niemals vermischen
+## 11. Statusbegriffe niemals vermischen
 
 ```text
 geplant
