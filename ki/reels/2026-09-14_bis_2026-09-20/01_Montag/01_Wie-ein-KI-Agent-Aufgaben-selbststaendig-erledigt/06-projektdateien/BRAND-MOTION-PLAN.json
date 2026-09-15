@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "PHASE1_PLANNED",
   "standard": "LEVEL_UP_V4",
   "brandIdentity": {
@@ -11,6 +11,19 @@
     "functionalIconsMayImpersonateBrand": false,
     "plannedOfficialAssets": [],
     "assetExceptionReason": "No external product brand. Channel identity uses the canonical ki/brand/brand.ts source."
+  },
+  "visualWorld": {
+    "profile": "ki/brand/visual-world.json",
+    "id": "KI_CHANNEL_CLEAN_EDITORIAL_V1",
+    "generatedMediaMustMatchRemotionWorld": true,
+    "highKeyBright": true,
+    "whiteLavenderBase": true,
+    "iconLedProductDesign": true,
+    "darkCinematicLookForbidden": true,
+    "brownSepiaLookForbidden": true,
+    "grittyWorkshopLookForbidden": true,
+    "negativeSpaceForOverlaysRequired": true,
+    "note": "Generated images and B-roll must read as extensions of the same clean white/lavender Remotion card-and-icon world, never as unrelated movie stills."
   },
   "brandPalette": {
     "referenceUrl": "ki/brand/brand.ts",
@@ -47,5 +60,5 @@
     "preferOfficialFreeLocalFirst": true,
     "consideredNewCapabilities": []
   },
-  "requiredFinalReviewGates": ["BRAND_ASSET_VISIBLE_OR_JUSTIFIED","BRAND_COLOR_COHERENCE","FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS","BRAND_RECOGNIZABLE_WITHOUT_CAPTION","MOTION_NOT_TEMPLATE_LOCKED","ANIMATION_TECHNIQUE_FITS_STORY","NO_ACCIDENTAL_COLOR_DRIFT","REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED"]
+  "requiredFinalReviewGates": ["BRAND_ASSET_VISIBLE_OR_JUSTIFIED", "BRAND_COLOR_COHERENCE", "FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS", "BRAND_RECOGNIZABLE_WITHOUT_CAPTION", "MOTION_NOT_TEMPLATE_LOCKED", "ANIMATION_TECHNIQUE_FITS_STORY", "NO_ACCIDENTAL_COLOR_DRIFT", "GENERATED_MEDIA_MATCHES_CANONICAL_VISUAL_WORLD", "REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED"]
 }
