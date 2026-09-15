@@ -5,36 +5,39 @@ import {join, resolve, sep} from 'node:path';
 import process from 'node:process';
 
 const ROOT = resolve('ki', 'youtube-longform');
+const SOURCE_ROOT = resolve('ki', 'src', 'longform');
 const V1_START = '2026-09-05';
+const COMPLETE_PHASE1_SCAFFOLD_START = '2026-09-15';
 const errors = [];
 const warnings = [];
 
 const error = (message) => errors.push(message);
 const warn = (message) => warnings.push(message);
-const posix = (path) => path.split(sep).join('/');
-const isDir = (path) => existsSync(path) && statSync(path).isDirectory();
-const isFile = (path) => existsSync(path) && statSync(path).isFile();
+const posix = (value) => value.split(sep).join('/');
+const isDir = (value) => existsSync(value) && statSync(value).isDirectory();
+const isFile = (value) => existsSync(value) && statSync(value).isFile();
+const inside = (parent, child) => child === parent || child.startsWith(`${parent}${sep}`);
 
-const readJson = async (path, label) => {
-  if (!isFile(path)) {
-    error(`${label}: fehlt (${posix(path)})`);
+const readJson = async (file, label) => {
+  if (!isFile(file)) {
+    error(`${label}: fehlt (${posix(file)})`);
     return null;
   }
   try {
-    return JSON.parse(await readFile(path, 'utf8'));
+    return JSON.parse(await readFile(file, 'utf8'));
   } catch (cause) {
-    error(`${label}: ungültiges JSON (${posix(path)}): ${cause instanceof Error ? cause.message : cause}`);
+    error(`${label}: ungültiges JSON (${posix(file)}): ${cause instanceof Error ? cause.message : cause}`);
     return null;
   }
 };
 
 const requireDir = (root, relative) => {
-  const path = join(root, relative);
-  if (!isDir(path)) error(`Pflichtordner fehlt: ${posix(path)}`);
+  const file = join(root, relative);
+  if (!isDir(file)) error(`Pflichtordner fehlt: ${posix(file)}`);
 };
 const requireFile = (root, relative) => {
-  const path = join(root, relative);
-  if (!isFile(path)) error(`Pflichtdatei fehlt: ${posix(path)}`);
+  const file = join(root, relative);
+  if (!isFile(file)) error(`Pflichtdatei fehlt: ${posix(file)}`);
 };
 
 if (!isDir(ROOT)) {
@@ -86,11 +89,12 @@ for (const dateEntry of dateEntries) {
       if (version.animationFreedom !== 'OPEN_ENDED_STORY_DRIVEN') {
         error(`${posix(versionPath)}: animationFreedom muss OPEN_ENDED_STORY_DRIVEN sein.`);
       }
-      if (typeof version.sourceSlug !== 'string' || !version.sourceSlug.trim()) {
-        error(`${posix(versionPath)}: sourceSlug fehlt.`);
+      if (typeof version.sourceSlug !== 'string' || !/^[a-z0-9][a-z0-9-]{1,159}$/.test(version.sourceSlug)) {
+        error(`${posix(versionPath)}: sourceSlug muss ein sicherer lowercase Slug mit 2-160 Zeichen sein.`);
       } else {
-        const sourceRoot = resolve('ki', 'src', 'longform', version.sourceSlug);
-        if (!isDir(sourceRoot)) error(`Longform-Source fehlt: ${posix(sourceRoot)}`);
+        const sourceRoot = resolve(SOURCE_ROOT, version.sourceSlug);
+        if (!inside(SOURCE_ROOT, sourceRoot)) error(`${posix(versionPath)}: sourceSlug verlässt ki/src/longform.`);
+        else if (!isDir(sourceRoot)) error(`Longform-Source fehlt: ${posix(sourceRoot)}`);
       }
     }
 
@@ -112,6 +116,12 @@ for (const dateEntry of dateEntries) {
       '06-projektdateien/RELEASE-PLAN.json',
       '06-projektdateien/REVIEW-CHECKLIST.md',
     ];
+    if (date >= COMPLETE_PHASE1_SCAFFOLD_START) {
+      requiredV1Files.push(
+        '01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt',
+        '02-visuals/VISUAL-STORY-PLAN.md',
+      );
+    }
     requiredV1Files.forEach((relative) => requireFile(packageRoot, relative));
 
     const chapters = await readJson(join(packageRoot, '01-script-audio', 'CHAPTERS.json'), 'CHAPTERS');
@@ -203,6 +213,10 @@ for (const dateEntry of dateEntries) {
       if (release.version !== 1 || !Array.isArray(release.requiredDeliverables)) {
         error(`${posix(packageRoot)}: RELEASE-PLAN.json ist unvollständig.`);
       }
+      if (date >= COMPLETE_PHASE1_SCAFFOLD_START) {
+        if (!Object.hasOwn(release, 'oneXReviewCompletedAt')) error(`${posix(packageRoot)}: RELEASE-PLAN.oneXReviewCompletedAt fehlt im neuen Scaffold.`);
+        if (!Object.hasOwn(release, 'reviewedMasterSha256')) error(`${posix(packageRoot)}: RELEASE-PLAN.reviewedMasterSha256 fehlt im neuen Scaffold.`);
+      }
       if (release.status === 'READY') {
         for (const field of ['technicalChecksComplete', 'visualReviewComplete', 'audioReviewComplete', 'sourceReviewComplete']) {
           if (release[field] !== true) error(`${posix(packageRoot)}: READY benötigt ${field}=true.`);
@@ -225,3 +239,4 @@ console.log('LONGFORM STRUCTURE: PASSED');
 console.log(`packages: ${packageCount}`);
 console.log(`v1 packages: ${v1Count}`);
 console.log(`v1 start: ${V1_START}`);
+console.log(`complete phase-1 scaffold start: ${COMPLETE_PHASE1_SCAFFOLD_START}`);

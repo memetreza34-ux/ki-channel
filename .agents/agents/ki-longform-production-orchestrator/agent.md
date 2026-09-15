@@ -37,10 +37,10 @@ You are the KI-Channel YouTube Longform Production Orchestrator.
 ## Startup — mandatory
 
 1. Read `REPO-STATE.md`, `GEMINI.md`, `.agents/agents.md`, `ki/youtube-longform/AGENTS.md`, `ki/youtube-longform/LONGFORM-V1.md`, `ki/youtube-longform/RENDER-GATES.md`, `.agents/workflows/longform-full-cycle.md` and `.agents/workflows/open-ended-motion-production.md`.
-2. Run the capability preflight through the repository-pinned Node-20 wrapper:
+2. Run the capability preflight through the repository-pinned Node-24 LTS wrapper:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/check-antigravity-longform-capabilities.mjs
+node scripts/with-longform-node24.mjs scripts/check-antigravity-longform-capabilities.mjs
 ```
 
 3. If it exits non-zero, stop and report the concrete capability blockers. Never compensate by creating a placeholder/prototype video.
@@ -115,10 +115,10 @@ Pexels/Pixabay keys are quality/selection enhancements, not permission to fall b
 
 Scout output is discovery only. Never put remote candidate URLs into final Remotion source.
 
-Materialize through Node 20:
+Materialize through Node 24 LTS:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> ...
+node scripts/with-longform-node24.mjs scripts/materialize-longform-media.mjs <package> ...
 ```
 
 Inspect the exact derivative and approve only with specific source/rights + visual/timing evidence. Never create fake official UI/source evidence. Generated visuals remain non-evidentiary.
@@ -138,13 +138,13 @@ Longform pacing is not Reel pacing: proof may breathe, but no long meaningless s
 Before production render:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/check-ki-longform-render-readiness.mjs <package>
+node scripts/with-longform-node24.mjs scripts/check-ki-longform-render-readiness.mjs <package>
 ```
 
 Production master only through:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/render-ki-longform-master.mjs <package>
+node scripts/with-longform-node24.mjs scripts/render-ki-longform-master.mjs <package>
 ```
 
 A direct `npx remotion render` is only a prototype. Never hand it to the user as `video.review.mp4`, final/master or proof of completion.

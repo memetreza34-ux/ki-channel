@@ -15,13 +15,13 @@ This is the canonical Antigravity workflow for `ki/youtube-longform/**` packages
 
 ## 0. Runtime + capability preflight
 
-Longform production is pinned to Node 20 by the repository engine. The host machine may use another Node version, but production scripts must run through the portable wrapper:
+Longform production is pinned to Node 24 LTS by the repository engine. The host machine may use another Node version, but production scripts must run through the portable wrapper:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/check-antigravity-longform-capabilities.mjs
+node scripts/with-longform-node24.mjs scripts/check-antigravity-longform-capabilities.mjs
 ```
 
-The wrapper uses the existing Node 20 directly when available; otherwise it may execute the target with `npx node@20` without globally replacing the host Node installation.
+The wrapper uses the existing Node 24 directly when available; otherwise it may execute the target with `npx node@24` without globally replacing the host Node installation.
 
 If the capability check exits non-zero, stop. Do not create a substitute prototype and do not claim that Longform production is available.
 
@@ -81,12 +81,12 @@ A composition duration must derive from the final voice timeline, never from pla
 
 ## 3. Phase 3B — materialize every required external medium
 
-All production Node scripts run through the Node-20 wrapper, which also restores conventional Homebrew/media binary paths for child processes.
+All production Node scripts run through the Node-24 LTS wrapper, which also restores conventional Homebrew/media binary paths for child processes.
 
 For scout-backed media:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> \
+node scripts/with-longform-node24.mjs scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --scout=<out/asset-scout/...json> \
   --candidate-id=<candidate id>
@@ -95,7 +95,7 @@ node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <pa
 For an exact official/browser-captured/local file:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/materialize-longform-media.mjs <package> \
+node scripts/with-longform-node24.mjs scripts/materialize-longform-media.mjs <package> \
   --asset-id=<MEDIA-PLAN assetId> \
   --local-input=<local image/video>
 ```
@@ -107,7 +107,7 @@ Then inspect the exact materialized file. For video, inspect the chosen trim, mo
 After source/rights and visual review, explicitly approve:
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/approve-longform-media.mjs <package> \
+node scripts/with-longform-node24.mjs scripts/approve-longform-media.mjs <package> \
   --asset-id=<assetId> \
   --rights-note="<specific review evidence>" \
   --visual-note="<specific visual/crop/timing review>"
@@ -159,7 +159,7 @@ Required behavior:
 ## 5. Pre-render must pass
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/check-ki-longform-render-readiness.mjs <package>
+node scripts/with-longform-node24.mjs scripts/check-ki-longform-render-readiness.mjs <package>
 ```
 
 If this fails, stop and fix the actual blocker. Never bypass it with direct `npx remotion render`.
@@ -167,7 +167,7 @@ If this fails, stop and fix the actual blocker. Never bypass it with direct `npx
 ## 6. Only canonical production render
 
 ```bash
-node scripts/with-longform-node20.mjs scripts/render-ki-longform-master.mjs <package>
+node scripts/with-longform-node24.mjs scripts/render-ki-longform-master.mjs <package>
 ```
 
 A direct Remotion render is a prototype only and must never be handed to the user as `video.review.mp4`, production master or final video.
