@@ -27,6 +27,12 @@ Bevorzugt:
 
 Nicht gleichzeitig Titel, Erklärung, viele Icons, Pfeile und mehrere konkurrierende Motive verwenden.
 
+## Longform v1
+
+Neue Longform-v1-Pakete planen in `03-thumbnail/THUMBNAIL-PLAN.json` mindestens **drei deutlich unterschiedliche Konzepte A/B/C**.
+
+Die Varianten sollen unterschiedliche visuelle Ideen testen, nicht nur minimale Farb- oder Positionsänderungen. Erst nach Review wird `selectedVariant` gesetzt und die ausgewählte Fassung als `05-export/thumbnail-selected.png` exportiert.
+
 ## Text
 
 Thumbnail-Text ist optional. Wenn Text nötig ist:
@@ -41,6 +47,8 @@ Thumbnail-Text ist optional. Wenn Text nötig ist:
 Bei generierten Thumbnail-Assets gelten die Qualitätsprinzipien aus `ki/BILDSTIL.md`, aber die Komposition wird an das konkrete YouTube-Cover angepasst.
 
 Generierte Bilder enthalten standardmäßig **keinen eingebrannten Text**. Typografie wird kontrolliert separat gesetzt.
+
+Generierte Thumbnail-Visuals dürfen kreativ sein, aber keine falsche Produktfunktion, reale Person, reale Zahl oder realen Vorgang als dokumentarischen Fakt vortäuschen.
 
 ## Verboten
 
@@ -60,8 +68,10 @@ Vor Freigabe prüfen:
 - Idee in sehr kleiner Darstellung erkennbar
 - eindeutiger Fokus
 - Titel und Thumbnail ergänzen sich
+- Varianten sind tatsächlich unterschiedlich
 - kein Text abgeschnitten
 - keine zufällige KI-Schrift
 - keine Wasserzeichen
 - fachlich wahr
 - visuell konsistent mit dem Kanal
+- ausgewählte Variante hält exakt das Video-Versprechen ein

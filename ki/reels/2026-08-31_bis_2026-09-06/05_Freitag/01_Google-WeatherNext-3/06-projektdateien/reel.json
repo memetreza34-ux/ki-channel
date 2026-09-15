@@ -1,0 +1,43 @@
+{
+  "version": 10,
+  "reelId": "google-weathernext-3",
+  "compositionId": "KI-GoogleWeatherNext3",
+  "sourceDir": "ki/src/reels/google-weathernext-3",
+  "title": "Google WeatherNext 3: Wetter-KI mit Live-Satellitendaten",
+  "publishDate": "2026-09-04",
+  "week": "2026-08-31_bis_2026-09-06",
+  "weekdayFolder": "05_Freitag",
+  "productionMode": "LEVEL_UP_V3_NATIVE_PLUS_REAL_MEDIA",
+  "scriptBudget": {"targetMinWords":150,"targetMaxWords":175,"hardMinWords":140,"hardMaxWords":190,"referenceWpm":140,"targetMinSeconds":60,"targetMaxSeconds":75,"allowShorter":false,"shorterReason":"","allowLonger":false,"longerReason":"","allowDurationOutsideTarget":false,"durationExceptionReason":""},
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1950,"finalDurationInFrames":null,"finalDurationAuthority":"PAUSE_COMPRESSED_TEMPO_ADJUSTED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"},
+  "audio": {
+    "sourceMetadata":"01-script-audio/audio-source.json",
+    "targetFile":"01-script-audio/voiceover.mp3",
+    "status":"WAITING_FOR_USER_LOCAL_MASTER",
+    "provider":"USER_PROVIDED",
+    "agentGenerationAllowed":false,
+    "agentDownloadAllowed":false,
+    "timingAuthority":false,
+    "speechTempo":1.10,
+    "tempoPolicy":"PITCH_PRESERVING_FFMPEG_ATEMPO_BEFORE_FORCED_ALIGNMENT",
+    "pauseCompression":{"enabled":true,"thresholdDb":-35,"triggerSeconds":0.30,"keepSeconds":0.10,"startKeepSeconds":0.03,"maxAllowedSilenceSeconds":0.38,"maxReductionRatio":0.25},
+    "alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"
+  },
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxWordsPerGroup":6,"style":"transparent_glass_overlay","suppressUntilFrame":31},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"REAL_OFFICIAL_MEDIA_PLANNED","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":4,"targetRealOfficialMomentsMin":3},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":20,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","SourceProofCard"]},
+  "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":3},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"GOOGLE WETTER-KI · 5× SCHÄRFER","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"WeatherNext 3 startet mit Live-Satellitendaten","startFrame":0,"endFrame":360,"accent":"#4285F4","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"25 Kilometer werden 5 Kilometer","startFrame":360,"endFrame":720,"accent":"#34A853","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Regen und Schnee werden präziser","startFrame":720,"endFrame":1080,"accent":"#00A8E8","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"WeatherNext landet in Google-Produkten und Cloud","startFrame":1080,"endFrame":1500,"accent":"#FBBC05","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Von Wettermodell zu Infrastruktur","startFrame":1500,"endFrame":1950,"accent":"#EA4335","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+  ]
+}

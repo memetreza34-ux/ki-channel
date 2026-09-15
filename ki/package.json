@@ -4,6 +4,24 @@
   "private": true,
   "description": "Kanal: KI — Künstliche Intelligenz erklärt",
   "dependencies": {
-    "@studio/core": "*"
+    "@react-three/fiber": "^8.17.10",
+    "@remotion/captions": "4.0.488",
+    "@remotion/effects": "4.0.488",
+    "@remotion/lottie": "4.0.488",
+    "@remotion/motion-blur": "4.0.488",
+    "@remotion/rive": "4.0.488",
+    "@remotion/shapes": "4.0.488",
+    "@remotion/skia": "4.0.488",
+    "@remotion/sfx": "4.0.488",
+    "@remotion/three": "4.0.488",
+    "@remotion/transitions": "4.0.488",
+    "@rive-app/canvas-advanced": "^2.38.3",
+    "@shopify/react-native-skia": "1.12.4",
+    "@studio/core": "*",
+    "lottie-web": "^5.13.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remotion": "4.0.488",
+    "three": "^0.171.0"
   }
 }

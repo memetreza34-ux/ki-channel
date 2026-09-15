@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": true,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "coverHook": {"enabled":true,"candidateFrame":15,"holdFrames":15,"captionFree":true,"headlineRequired":true,"primarySubjectRequired":true,"coverMatchesStory":true,"brandRecognizable":true},
+  "brandMoments": [
+    {"brand":"Anthropic / Claude","sceneId":"scene1","strategy":"OFFICIAL_WORDMARK","genericIconAsBrand":false},
+    {"brand":"Claude Fable 5.1","sceneId":"scene2","strategy":"OFFICIAL_PRODUCT_UI","genericIconAsBrand":false},
+    {"brand":"Claude Mythos 5.1","sceneId":"scene3","strategy":"OFFICIAL_PRODUCT_UI","genericIconAsBrand":false},
+    {"brand":"Claude Fable 5.1","sceneId":"scene5","strategy":"OFFICIAL_PRODUCT_UI","genericIconAsBrand":false}
+  ],
+  "brandFidelity": {
+    "primaryBrands": ["Anthropic","Claude Fable 5.1","Claude Mythos 5.1"],
+    "minimumRecognizableMoments": 2,
+    "minimumDistinctScenes": 2,
+    "coverBrandRecognizable": true,
+    "officialLogoOrWordmarkPreferred": true,
+    "realProductUiPreferred": true,
+    "typographicFallbackAllowed": true,
+    "genericSymbolFallbackForbidden": true,
+    "assetExceptionReason": ""
+  },
+  "realProofMoments": [
+    {"sceneId":"scene1","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://www.anthropic.com/news","remoteRenderAllowed":false},
+    {"sceneId":"scene2","type":"OFFICIAL_PRODUCT_UI","sourceUrl":"https://www.anthropic.com/claude/fable","remoteRenderAllowed":false},
+    {"sceneId":"scene3","type":"OFFICIAL_PRODUCT_UI","sourceUrl":"https://www.anthropic.com/claude/mythos","remoteRenderAllowed":false},
+    {"sceneId":"scene5","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://www.anthropic.com/claude/fable","remoteRenderAllowed":false}
+  ],
+  "realMediaMix": {
+    "minimumMoments": 3,
+    "moments": [
+      {"sceneId":"scene1","type":"OFFICIAL_WORDMARK","purpose":"Anthropic/Claude im Cover und Launch visuell eindeutig erkennbar machen","remoteRenderAllowed":false},
+      {"sceneId":"scene2","type":"OFFICIAL_PRODUCT_UI","purpose":"Fable-5.1-Verfügbarkeit und Plattformen mit echtem Anthropic-Produkt-Crop beweisen","remoteRenderAllowed":false},
+      {"sceneId":"scene3","type":"OFFICIAL_PRODUCT_UI","purpose":"Mythos-5.1-Trusted-Access und Safeguard-Kontext mit echtem Anthropic-Produkt-Crop zeigen","remoteRenderAllowed":false},
+      {"sceneId":"scene5","type":"OFFICIAL_SOURCE_CROP","purpose":"Preis und Cache-Read-Angaben direkt aus der offiziellen Fable-Seite hervorheben","remoteRenderAllowed":false}
+    ],
+    "exceptionReason": "",
+    "videoPreferredWhenMotionIsClaim": true,
+    "motionIsClaim": false,
+    "videoExceptionReason": ""
+  },
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"Fable 5.1 und Mythos 5.1","fallbackProgress":0.18},
+    {"sceneId":"scene1","sentenceId":"s02","anchorPhrase":"demselben zugrunde liegenden Modell","fallbackProgress":0.62},
+    {"sceneId":"scene2","sentenceId":"s04","anchorPhrase":"Pro, Max, Team und Enterprise","fallbackProgress":0.24},
+    {"sceneId":"scene2","sentenceId":"s04","anchorPhrase":"AWS, Google Cloud und Microsoft Foundry","fallbackProgress":0.72},
+    {"sceneId":"scene3","sentenceId":"s05","anchorPhrase":"Trusted-Access-Programmen","fallbackProgress":0.42},
+    {"sceneId":"scene3","sentenceId":"s06","anchorPhrase":"Cybersecurity und Biologie","fallbackProgress":0.68},
+    {"sceneId":"scene4","sentenceId":"s07","anchorPhrase":"stärkere Grenzen","fallbackProgress":0.30},
+    {"sceneId":"scene4","sentenceId":"s08","anchorPhrase":"zehn Dollar pro Million Input-Tokens","fallbackProgress":0.66},
+    {"sceneId":"scene5","sentenceId":"s09","anchorPhrase":"25 Cent pro Million Tokens","fallbackProgress":0.18},
+    {"sceneId":"scene5","sentenceId":"s10","anchorPhrase":"25 Prozent günstiger","fallbackProgress":0.56}
+  ],
+  "motionFamilies": ["BRAND_COVER_LOCK","TWIN_MODEL_ORBIT","CORE_SPLIT","PRODUCT_PAGE_ZOOM","ACCESS_MATRIX","CLOUD_ROUTE_DRAW","TRUSTED_ACCESS_GATE","CYBER_BIO_SCAN","SAFEGUARD_SHUTTER","DUAL_LANE_COMPARE","PRICE_TERMINAL","CACHE_COUNTER","COST_REDUCTION_METER","SOURCE_HIGHLIGHT"],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "sceneDensity": {"targetMeaningfulChangeSecondsMin":1.5,"targetMeaningfulChangeSecondsMax":3.0,"maxPracticallyUnchangedSeconds":4.0,"hardCutRequiredEveryChange":false},
+  "overlapPolicy": {"onePrimaryFocusAtATime":true,"maxSupportingDetails":2,"captionMayCoverCriticalVisual":false,"progressiveRevealRequired":true},
+  "fullFrameSceneIds": ["scene1","scene3","scene4"],
+  "visualWorlds": [
+    {"id":"brand_launch_cover","purpose":"Claude-5.1-Launch als sofort cover-taugliche Brandwelt"},
+    {"id":"shared_core_split","purpose":"Ein gemeinsamer Modellkern teilt sich sichtbar in Fable und Mythos"},
+    {"id":"availability_product_world","purpose":"Echte Produkt-/Plattformwelt für Fable-Verfügbarkeit"},
+    {"id":"safeguard_gate_lab","purpose":"Trusted Access sowie Cyber/Bio-Sicherheitsgrenzen als räumliches Gate zeigen"},
+    {"id":"pricing_terminal_payoff","purpose":"Preise, Cache-Reads und 25-Prozent-Payoff als klare Zahlenwelt abschließen"}
+  ],
+  "midReelReframes": [
+    {"sceneId":"scene3","anchorPhrase":"Warum?","toWorld":"safeguard_gate_lab","purpose":"Von Produktverfügbarkeit abrupt in die Sicherheitsfrage wechseln"},
+    {"sceneId":"scene4","anchorPhrase":"Preislich liegt Fable 5.1","toWorld":"pricing_terminal_payoff","purpose":"Nach dem Sicherheitsvergleich die visuelle Grammatik vollständig auf Preis/Nutzen umstellen"}
+  ],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}
+}

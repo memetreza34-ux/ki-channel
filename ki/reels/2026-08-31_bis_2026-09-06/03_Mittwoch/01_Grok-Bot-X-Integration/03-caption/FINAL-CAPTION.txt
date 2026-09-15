@@ -1,0 +1,7 @@
+Grok Bot kann jetzt direkt mit X arbeiten.
+
+Der neue X-Connector soll Bots Posts durchsuchen, Timelines lesen, Mentions prüfen sowie Trends und Bookmarks auswerten lassen. Für bezahlte Grok-Bot-Nutzer gibt es laut offizieller Ankündigung außerdem X-API-Credits zum Start. Besonders spannend: Grok Bot arbeitet auf einem persistenten Cloud-Computer und kann damit Aufgaben in echten Tools ausführen.
+
+Würdest du so einen Bot deine täglichen X-Recherchen übernehmen lassen?
+
+#Grok #KünstlicheIntelligenz #X #AIAgents #TechNews

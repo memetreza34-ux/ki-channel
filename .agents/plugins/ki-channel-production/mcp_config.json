@@ -1,0 +1,58 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browser-url=http://127.0.0.1:9222"
+      ]
+    },
+    "remotion-bits": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "remotion-bits",
+        "mcp"
+      ]
+    },
+    "lottiefiles-creator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@lottiefiles/creator-mcp@0.2.1"
+      ],
+      "disabled": true
+    },
+    "figma": {
+      "serverUrl": "https://mcp.figma.com/mcp",
+      "disabled": true,
+      "disabledTools": [
+        "add_code_connect_map",
+        "create_new_file",
+        "download_assets",
+        "generate_diagram",
+        "generate_figma_design"
+      ]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-p",
+        "127.0.0.1:8085:8085",
+        "-e",
+        "GITHUB_OAUTH_CALLBACK_PORT",
+        "-e",
+        "GITHUB_TOOLSETS",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_OAUTH_CALLBACK_PORT": "8085",
+        "GITHUB_TOOLSETS": "repos,pull_requests,issues"
+      }
+    }
+  }
+}

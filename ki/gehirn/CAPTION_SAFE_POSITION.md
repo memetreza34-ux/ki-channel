@@ -1,74 +1,79 @@
 # Cross-Platform Caption Safe Position — Short-Form
 
-Diese Datei definiert die kanonische Untertitelposition für vertikale Production-Reels (1080×1920).
+Diese Datei dokumentiert die **kanonische Untertitelgeometrie** für vertikale Production-Reels (1080×1920).
 
-## Warum die alte Position geändert wird
+## Single Source of Truth
 
-Die bisherige Standardposition um `bottom: 264–270px` liegt im echten Feed deutlich zu tief. Ein veröffentlichter Instagram-Reel-Screenshot aus dem Kanal zeigte, dass der Untertitel optisch direkt über Accountname/Beschreibung sitzt und dadurch mit der Plattform-UI konkurriert.
+Die technische Wahrheit liegt ausschließlich in:
 
-Die erste Korrektur auf `bottom: 460px` war besser, wird nach diesem echten Feed-Beispiel aber noch konservativer kalibriert.
+`ki/src/reels/captionSafe.ts`
 
-## Kanonischer KIwerkraum-Standard
+Diese Markdown-Datei erklärt dieselben Werte menschenlesbar. Wenn Source und Dokumentation jemals voneinander abweichen, gilt **der Source als autoritativ** und die Dokumentation muss korrigiert werden. Neue Reels dürfen keine eigene Caption-Geometrie hart codieren, sofern der Nutzer keine ausdrückliche Ausnahme verlangt.
 
-Für 1080×1920 gilt ab jetzt:
+## Kanonischer Standard
 
-- **Standard Caption Bottom Offset: `520px`**
-- horizontaler Sicherheitsabstand: **`104px` links und rechts**
-- bevorzugte maximale Textbreite: **`820px`**
-- sichtbarer Untertitelblock typischerweise ungefähr **y=1260–1400**, abhängig von Schriftgröße und 1–2 Zeilen
-- normalerweise **4–6 Wörter pro sichtbarem Sinnblock**
+Aktueller Source-Stand:
+
+- Caption Bottom Offset: **`330px`**
+- horizontaler Sicherheitsabstand: **`76px` links/rechts**
+- bevorzugte maximale Caption-Breite: **`928px`**
+- Fontgröße ungefähr **`40px`**
+- normalerweise **4–6 Wörter pro Sinnblock**
 - maximal **2 Zeilen gleichzeitig**
-- kein Hintergrundkasten; Lesbarkeit über kontrollierten Halo/Schatten
-- aktiver Sprecherfokus weiterhin Marken-Lila
-
-Die Werte werden im Source zentral aus `ki/src/reels/captionSafe.ts` bezogen. Neue Reels dürfen keine eigenen tieferen Caption-Werte erfinden.
+- Caption als **halbtransparente Glass-/Blur-Overlay-Fläche** auf demselben Fullscreen-Hintergrund
+- aktive Sprecherposition in der Szenen-Akzentfarbe
+- kein separater Footer und kein zweiter Hintergrund nur für Untertitel
 
 ## Unterer UI-/Dead-Bereich
 
-Der untere Bereich wird konservativ behandelt:
+Die technischen Grenzwerte werden ebenfalls aus `REEL_CAPTION_SAFE` abgeleitet:
 
-- die letzten ungefähr **420px** niemals für Untertitel oder andere kritische Informationen verwenden
-- ungefähr **420–500px vom unteren Rand** nur als Puffer behandeln
-- Untertitel standardmäßig mit `bottom: 520px` oberhalb dieses Puffers halten
-- rechts zusätzlichen Abstand zur Interaktionsleiste berücksichtigen; kritischer Caption-Text soll nicht bis an die rechte Videokante laufen
+- `lowerCriticalDeadZone: 220`
+- `lowerBufferEnd: 300`
+- wichtige Visuals bevorzugt bis ungefähr `y=1435`
+- obere Toleranz für den bevorzugten Visual-Endbereich: ungefähr `y=1485`
 
-Diese Werte sind ein kanalinterner Cross-Platform-Sicherheitsstandard auf Basis des realen Kanal-Feed-Eindrucks. Plattform-UI kann je nach App, Gerät und Oberfläche variieren.
+Praktische Regel:
+
+- die untere Plattform-UI-Zone niemals für kritische Informationen verwenden
+- rechts Like-/Kommentar-/Share-UI mitprüfen
+- Hauptvisual und Caption dürfen sich nicht optisch bekämpfen
+- der Fullscreen-Hintergrund läuft weiter; nur bedeutungstragende Objekte brauchen Abstand zur Caption
 
 ## Beziehung zur Animation
 
-Die Caption darf nicht dadurch gerettet werden, dass sie wieder nach unten geschoben wird.
+Für neue Reels:
 
-Wenn ein Hauptvisual mit der Caption konkurriert:
+- wichtige Hauptvisuals nach Möglichkeit bis ungefähr **y=1435–1485** abschließen
+- Caption liegt als Overlay darüber, nicht in einer eigenen Footer-Zone
+- wenn Visual und Caption kollidieren: Visual höher/kompakter bauen oder Labels kürzen
+- Caption-Geometrie nicht reel-spezifisch verändern, um ein Layoutproblem zu kaschieren
+- bewusste Ausnahmen müssen dokumentiert und erneut im echten Smartphone-/Feed-Kontext geprüft werden
 
-1. Visual höher platzieren
-2. Visual kompakter komponieren
-3. interne Labels kürzen
-4. Visual neu bauen, wenn nötig
+## Cover-Fenster
 
-**Nicht:** Caption wieder in den unteren Feed-/UI-Bereich verschieben.
+Der Cover-Hook wird ebenfalls zentral in `captionSafe.ts` definiert. Captions bleiben im vorgesehenen Cover-Fenster unterdrückt, damit ein sauberer cover-tauglicher Frame innerhalb der ersten Sekunde möglich ist.
 
-Für neue Reels soll der bedeutungstragende Hauptinhalt nach Möglichkeit bis ungefähr `y=1240–1280` abgeschlossen sein. So bleiben etwa 80–120px sichtbare Luft zum Caption-Bereich. Der technische Clip-Guard ist nur die letzte Sicherung und ersetzt keinen realen Kollisionscheck.
-
-## Source-Gate für zukünftige Reels
+## Source-Gate
 
 Neue Production-Reels müssen:
 
-- `REEL_CAPTION_SAFE.bottom` aus `ki/src/reels/captionSafe.ts` verwenden oder exakt daraus abgeleitete Shared-Komponenten nutzen
-- `REEL_CAPTION_SAFE.horizontalInset` respektieren
-- keine Altwerte wie `bottom: 264`, `270`, `360`, `440` oder `460` als eigene Caption-Position einführen
-- bei 1080×1920 nicht unter `bottom: 500px` gehen, außer der Nutzer verlangt ausdrücklich ein anderes Layout und der Feed-Review bestätigt es
-- bei Änderungen an der Safe-Geometrie neu rendern und auf Smartphone-/Feed-Größe prüfen
+- `REEL_CAPTION_SAFE` / `REEL_CAPTION_WRAPPER_STYLE` aus `ki/src/reels/captionSafe.ts` verwenden
+- `REEL_CAPTION_GLASS_STYLE` oder eine daraus abgeleitete gemeinsame Glass-Variante nutzen
+- keine eigene alternative Standardgeometrie hart codieren
+- Fullscreen-Hintergründe beibehalten; kein weißer Untertitel-Footer
+- nach jeder bewussten Caption-Geometrieänderung neu rendern und in Smartphone-/Feed-Größe prüfen
 
 ## Review-Gate
 
 Ein Reel ist nicht visuell freigegeben, wenn:
 
-- Untertitel sichtbar im unteren Plattform-UI-Bereich hängen
-- Untertitel zu nah an Accountname/Beschreibung/CTA liegen
-- Caption rechts mit Like/Kommentar/Share-UI konkurriert
-- Caption und Hauptvisual konkurrieren
-- mehr als 2 Caption-Zeilen gleichzeitig sichtbar sind
-- die Caption für Platzgewinn unter `bottom: 500px` geschoben wurde
+- Untertitel mit Accountname/Beschreibung/CTA kollidieren
+- Caption rechts mit Feed-Interaktions-UI konkurriert
+- Caption und Hauptvisual sich unlesbar überlagern
+- mehr als 2 Caption-Zeilen sichtbar sind
+- ein zweiter Hintergrund/weißer Footer nur für die Caption entsteht
+- reel-spezifische Geometrie ohne dokumentierte Ausnahme die zentrale Source umgeht
 - ein alter Render nach einer Caption-Positionsänderung weiter als freigegeben gilt
 
-Nach Änderung der Caption-Position ist immer ein neuer Render plus Smartphone-/Feed-Sichttest erforderlich.
+Nach jeder Änderung der Caption-Position ist ein neuer Render plus Smartphone-/Feed-Sichttest Pflicht.

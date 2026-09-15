@@ -1,0 +1,77 @@
+{
+  "version": 3,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": true,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "coverHook": {"enabled":true,"candidateFrame":15,"holdFrames":15,"captionFree":true,"headlineRequired":true,"primarySubjectRequired":true,"coverMatchesStory":true,"brandRecognizable":true},
+  "brandMoments": [
+    {"brand":"Google DeepMind","sceneId":"scene1","strategy":"OFFICIAL_WORDMARK","genericIconAsBrand":false},
+    {"brand":"WeatherNext 3","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false},
+    {"brand":"Google Search / Gemini / Maps","sceneId":"scene4","strategy":"OFFICIAL_PRODUCT_UI","genericIconAsBrand":false},
+    {"brand":"Google Cloud","sceneId":"scene5","strategy":"OFFICIAL_PRODUCT_UI","genericIconAsBrand":false}
+  ],
+  "brandFidelity": {
+    "primaryBrands": ["Google DeepMind","WeatherNext 3","Google"],
+    "minimumRecognizableMoments": 2,
+    "minimumDistinctScenes": 2,
+    "coverBrandRecognizable": true,
+    "officialLogoOrWordmarkPreferred": true,
+    "realProductUiPreferred": true,
+    "typographicFallbackAllowed": true,
+    "genericSymbolFallbackForbidden": true,
+    "assetExceptionReason": ""
+  },
+  "realProofMoments": [
+    {"sceneId":"scene1","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/","remoteRenderAllowed":false},
+    {"sceneId":"scene2","type":"OFFICIAL_DOCUMENT","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/","remoteRenderAllowed":false},
+    {"sceneId":"scene3","type":"OFFICIAL_DOCUMENT","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/","remoteRenderAllowed":false},
+    {"sceneId":"scene4","type":"OFFICIAL_PRODUCT_UI","sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/","remoteRenderAllowed":false}
+  ],
+  "realMediaMix": {
+    "minimumMoments": 4,
+    "moments": [
+      {"sceneId":"scene1","type":"OFFICIAL_WORDMARK","purpose":"Google DeepMind / WeatherNext 3 sofort als echte Marke erkennbar machen","remoteRenderAllowed":false},
+      {"sceneId":"scene1","type":"REAL_IMAGE","purpose":"Offizielles WeatherNext-3-Hero-/Satellitenmotiv als realen Einstieg nutzen","remoteRenderAllowed":false},
+      {"sceneId":"scene2","type":"OFFICIAL_DOCUMENT","purpose":"Offiziellen WeatherNext-2-vs-3-Temperaturvergleich für 25 km versus 5 km zeigen","remoteRenderAllowed":false},
+      {"sceneId":"scene3","type":"OFFICIAL_DOCUMENT","purpose":"Offiziellen Niederschlagsvergleich WeatherNext 2 / WeatherNext 3 / Ground Truth zeigen","remoteRenderAllowed":false},
+      {"sceneId":"scene4","type":"OFFICIAL_PRODUCT_UI","purpose":"Search/Gemini/Maps-Integration mit echter offizieller Produktdarstellung belegen","remoteRenderAllowed":false}
+    ],
+    "exceptionReason": "",
+    "videoPreferredWhenMotionIsClaim": true,
+    "motionIsClaim": false,
+    "videoExceptionReason": ""
+  },
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"WeatherNext 3","fallbackProgress":0.12},
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"jede Stunde","fallbackProgress":0.48},
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"Satellitendaten","fallbackProgress":0.78},
+    {"sceneId":"scene1","sentenceId":"s02","anchorPhrase":"fünf Kilometer","fallbackProgress":0.62},
+    {"sceneId":"scene2","sentenceId":"s03","anchorPhrase":"25-Kilometer-Raster","fallbackProgress":0.34},
+    {"sceneId":"scene2","sentenceId":"s04","anchorPhrase":"fünfmal schärfer","fallbackProgress":0.58},
+    {"sceneId":"scene3","sentenceId":"s07","anchorPhrase":"50 Prozent genauer","fallbackProgress":0.66},
+    {"sceneId":"scene4","sentenceId":"s08","anchorPhrase":"Google Search","fallbackProgress":0.32},
+    {"sceneId":"scene4","sentenceId":"s09","anchorPhrase":"BigQuery","fallbackProgress":0.36},
+    {"sceneId":"scene5","sentenceId":"s10","anchorPhrase":"Infrastruktur","fallbackProgress":0.52},
+    {"sceneId":"scene5","sentenceId":"s11","anchorPhrase":"lokaler Wetterdienst","fallbackProgress":0.68}
+  ],
+  "motionFamilies": ["BRAND_COVER_LOCK","SATELLITE_ORBIT","HOURLY_CLOCK_SWEEP","GRID_DENSITY_MORPH","TOPOGRAPHY_ZOOM","RESOLUTION_IMPACT","WEATHER_RADAR_FLOW","PRECIPITATION_BANDS","PROOF_COMPARE_SPLIT","PRODUCT_ECOSYSTEM_ORBIT","API_ROUTE_DRAW","DATA_PIPELINE","USE_CASE_WORLD","SAFETY_WARNING_LOCK"],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "sceneDensity": {"targetMeaningfulChangeSecondsMin":1.5,"targetMeaningfulChangeSecondsMax":3.0,"maxPracticallyUnchangedSeconds":4.0,"hardCutRequiredEveryChange":false},
+  "overlapPolicy": {"onePrimaryFocusAtATime":true,"maxSupportingDetails":2,"captionMayCoverCriticalVisual":false,"progressiveRevealRequired":true},
+  "fullFrameSceneIds": ["scene1","scene2","scene3","scene5"],
+  "visualWorlds": [
+    {"id":"satellite_launch","purpose":"WeatherNext 3 als Google-DeepMind-Launch mit Satellitenwelt etablieren"},
+    {"id":"resolution_map","purpose":"25-km-Grid in 5-km-Topografie verwandeln"},
+    {"id":"precipitation_radar","purpose":"Regen und Schnee als bewegte Vorhersagebänder zeigen"},
+    {"id":"google_ecosystem","purpose":"Search, Gemini, Maps, Weather API und Earth Engine als Produktnetz zeigen"},
+    {"id":"weather_infrastructure","purpose":"BigQuery/Cloud-Datenfluss in echte Anwendungswelten übersetzen"}
+  ],
+  "midReelReframes": [
+    {"sceneId":"scene3","anchorPhrase":"Regen und Schnee","toWorld":"precipitation_radar","purpose":"Vom abstrakten Auflösungsraster in eine lebendige Wetterkarte wechseln"},
+    {"sceneId":"scene4","anchorPhrase":"bleibt nicht im Forschungslabor","toWorld":"google_ecosystem","purpose":"Vom Modell selbst zu den realen Google-Produkten wechseln"}
+  ],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "functionalIconPolicy": {"enabled":true,"brandIconsForbidden":true,"recommendedFunctions":["satellite","clock","rain","snow","map","search","api","database","cloud","warning"]},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}
+}

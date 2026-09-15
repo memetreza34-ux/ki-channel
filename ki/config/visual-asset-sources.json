@@ -1,0 +1,70 @@
+{
+  "version": 5,
+  "status": "CURATED_VISUAL_SOURCE_POLICY",
+  "policy": {
+    "remoteMediaDuringRender": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "productionNeedsResolvedLocalFile": true,
+    "preferRightsWithoutRequiredOnScreenCredit": true,
+    "preferredOrder": [
+      "NATIVE_UI",
+      "LOCAL_OFFICIAL_MEDIA",
+      "OFFICIAL_SOURCE_CARD",
+      "WIKIMEDIA_COMMONS",
+      "GITHUB_RAW"
+    ],
+    "externalRealVisualGuideline": {
+      "idealMin": 1,
+      "idealMax": 3,
+      "defaultHardMax": 3,
+      "zeroAllowedWhenNoExplanatoryValue": true,
+      "overrideField": "reel.visuals.maxExternalBinaries",
+      "principle": "Use a small number of purposeful real/official visuals. For branded stories, a real local official logo/wordmark/UI asset is preferred over a generic substitute when it is available and reviewed."
+    }
+  },
+  "providers": {
+    "LOCAL_OFFICIAL_MEDIA": {
+      "enabled": true,
+      "requiresApiKey": false,
+      "autoDownload": false,
+      "requiredRootInsideReel": "02-bilder",
+      "acceptedMimes": ["image/jpeg", "image/png", "image/webp"],
+      "acceptedRights": ["OFFICIAL_SOURCE_REFERENCE"],
+      "acceptedSourceKinds": ["PRESS_KIT", "OFFICIAL_WEBSITE", "OFFICIAL_PRODUCT_UI", "USER_PROVIDED_OFFICIAL_EXPORT"],
+      "acceptedAssetRoles": ["LOGO", "WORDMARK", "PRODUCT_UI", "SCREENSHOT", "PRODUCT_IMAGE"],
+      "manualRightsReviewRequired": true,
+      "notes": "This provider never downloads a brand asset. A human/authorized local workflow first places the exact official file under the reel's 02-bilder folder and records the official source URL plus usage review note. Resolution only validates/copies the local file into public/reel-assets/<compositionId>/ and binds SHA256. OFFICIAL_SOURCE_REFERENCE is provenance metadata, not a blanket legal permission."
+    },
+    "WIKIMEDIA_COMMONS": {
+      "enabled": true,
+      "api": "https://commons.wikimedia.org/w/api.php",
+      "requiresApiKey": false,
+      "discoveryScout": "scripts/scout-wikimedia-commons-assets.mjs",
+      "discoveryMustNotDownload": true,
+      "manualReviewForNonCopyrightRestrictions": true,
+      "acceptedRights": ["CC0-1.0", "PUBLIC_DOMAIN", "CC-BY-4.0"],
+      "requiresAttributionFor": ["CC-BY-4.0"],
+      "defaultSelection": {
+        "minimumLongEdge": 1200,
+        "minimumShortEdge": 700,
+        "preferredOrientation": "AUTO",
+        "mediaIntent": "PHOTO_OR_REAL_VISUAL",
+        "preferPublicDomainOrCC0": true,
+        "candidateLimit": 20
+      },
+      "notes": "Use the discovery scout first for documentary/proof candidates. Search and file metadata come from Wikimedia Commons. Production candidates are license-filtered and deterministically ranked by relevance, resolution, crop suitability and rights status before local download. The exact file page must still be reviewed for attribution and non-copyright restrictions such as personality/privacy/trademark concerns where relevant."
+    },
+    "GITHUB_RAW": {
+      "enabled": true,
+      "requiresApiKey": false,
+      "acceptedRights": ["CC0-1.0", "PUBLIC_DOMAIN", "CC-BY-4.0", "MIT", "Apache-2.0"],
+      "requirements": [
+        "exact raw/blob URL",
+        "pinned repository commit SHA",
+        "declared license",
+        "license source URL"
+      ],
+      "notes": "No repository-wide license guessing. The manifest must explicitly pin the commit and license evidence."
+    }
+  }
+}

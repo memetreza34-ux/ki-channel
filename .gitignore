@@ -13,19 +13,30 @@ frames/
 *.mov
 *.mkv
 
-# ---- Audio (kommt pro Video von Arman) ----
+# ---- Audio (lokal / regenerierbar; Provenance + Timing bleiben in Git) ----
 *.wav
 *.mp3
 *.m4a
 *.aiff
+public/runtime-audio/
+public/reel-sfx/
+
+# ---- Visual Assets (lokal / regenerierbar; Auswahl + Rechte + SHA bleiben im Manifest) ----
+public/reel-assets/
 
 # ---- Reel-Bilder (groß, viel pro Reel, sprengt GitHub-Storage) ----
-# nur lokal — auf GitHub landet nur Code/Doku/Timing-JSON
+# nur lokal — auf GitHub landet Code/Doku/Timing/Manifest
 public/reels/**/images/
 public/reels/**/*.jpeg
 public/reels/**/*.jpg
 public/reels/**/*.png
 public/reels/**/*.webp
+
+# ---- Remotion showcase derivatives (materialized before render) ----
+# The committed user screenshot stays tracked; only reproducible external derivatives are ignored.
+ki/public/showcase/laptop-on-desk.jpg
+ki/public/showcase/speed-typing-poster.jpg
+ki/public/showcase/PROVENANCE.generated.json
 
 # ---- Secrets / Keys (NIE auf GitHub) ----
 .env

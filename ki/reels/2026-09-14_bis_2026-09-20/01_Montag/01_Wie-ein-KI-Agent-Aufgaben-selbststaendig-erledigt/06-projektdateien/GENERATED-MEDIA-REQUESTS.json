@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "provider": "GOOGLE_GEMINI",
+  "items": [
+    {
+      "id": "agent-workspace-image",
+      "kind": "IMAGE",
+      "prompt": "Vertical 9:16 premium editorial 3D-inspired workspace for a faceless AI explainer. A clean abstract AI agent workspace with one central goal card branching into three task lanes: web research, document reading, and structured notes. White and soft lavender environment, subtle depth, modern product-design aesthetic, no logos, no readable UI text, no watermark, no human face, no photorealistic news look. Leave clean negative space for Remotion overlays.",
+      "negativePrompt": "logos, brand marks, watermarks, subtitles, readable product UI, human faces, news photography, fake evidence",
+      "purpose": "Illustrative workspace behind the native planning/tool-selection overlays.",
+      "sceneId": "scene2",
+      "claimId": "agent-decomposes-and-uses-tools",
+      "evidenceRole": "ILLUSTRATION",
+      "aspectRatio": "9:16",
+      "imageSize": "1K"
+    },
+    {
+      "id": "agent-loop-broll",
+      "kind": "BROLL",
+      "prompt": "Vertical 9:16 cinematic but non-photorealistic faceless technology B-roll. A modern generic desk and abstract task nodes lighting up one after another, a cursor-like light traveling between search, file and check symbols, subtle camera push-in, premium white-lavender lighting, no logos, no readable screen text, no subtitles, no watermark. Motion clearly communicates an iterative work loop without pretending to be real documentary footage.",
+      "negativePrompt": "logos, brand marks, readable UI, watermark, subtitles, human faces, documentary evidence, official product interface",
+      "purpose": "Atmospheric motion layer behind the execute-check-retry loop.",
+      "sceneId": "scene3",
+      "claimId": "agent-checks-and-retries",
+      "evidenceRole": "ATMOSPHERE",
+      "aspectRatio": "9:16",
+      "durationSeconds": 4,
+      "resolution": "720p"
+    }
+  ]
+}

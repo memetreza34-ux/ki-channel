@@ -1,0 +1,58 @@
+{
+  "version": 4,
+  "status": "CONTENT_LOCKED_REAL_MEDIA_SELECTION_PENDING",
+  "rules": {
+    "nativeFirst": true,
+    "remoteRenderMediaAllowed": false,
+    "googleImageSearchAsLicenseAuthority": false,
+    "externalBinariesMustResolveLocally": true,
+    "genericIconMayImpersonateBrand": false,
+    "realMediaMustHaveStoryPurpose": true
+  },
+  "assets": [
+    {
+      "id":"scene1-google-weathernext-brand",
+      "sceneId":"scene1",
+      "provider":"NATIVE_UI",
+      "renderMode":"REMOTION_NATIVE",
+      "purpose":"Typografischer Google DeepMind / WeatherNext 3 Brand-Lockup als sicherer Fallback; kein Fake-Logo.",
+      "rightsStatus":"NATIVE_ORIGINAL"
+    },
+    {
+      "id":"scene1-weathernext-launch-proof",
+      "sceneId":"scene1",
+      "provider":"OFFICIAL_SOURCE_CARD",
+      "renderMode":"NATIVE_SOURCE_PROOF",
+      "purpose":"Offizieller Google-Launch-Proof für WeatherNext 3, Live-Satellitendaten und stündliche Forecasts.",
+      "rightsStatus":"OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+    },
+    {
+      "id":"scene2-resolution-proof",
+      "sceneId":"scene2",
+      "provider":"OFFICIAL_SOURCE_CARD",
+      "renderMode":"NATIVE_SOURCE_PROOF",
+      "purpose":"Offizieller Proof für 25-km WeatherNext 2 versus bis 5-km WeatherNext 3 und ungefähr fünfmal schärferes Wetterbild.",
+      "rightsStatus":"OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+    },
+    {
+      "id":"scene3-precipitation-proof",
+      "sceneId":"scene3",
+      "provider":"OFFICIAL_SOURCE_CARD",
+      "renderMode":"NATIVE_SOURCE_PROOF",
+      "purpose":"Offizieller Proof für Niederschlagsverbesserungen und bis zu 50 Prozent genauere längerfristige Forecasts in Google-Produkten.",
+      "rightsStatus":"OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+    },
+    {
+      "id":"scene4-google-products-proof",
+      "sceneId":"scene4",
+      "provider":"OFFICIAL_SOURCE_CARD",
+      "renderMode":"NATIVE_SOURCE_PROOF",
+      "purpose":"Offizieller Proof für Search, Gemini, Maps, Maps Platform Weather API, Earth Engine und Cloud-Integration.",
+      "rightsStatus":"OFFICIAL_SOURCE_REFERENCE",
+      "sourceUrl":"https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/"
+    }
+  ]
+}

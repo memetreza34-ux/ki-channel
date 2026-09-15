@@ -1,0 +1,11 @@
+{
+  "provider": "AI Voice Generator",
+  "contextId": "7095e36cf1e94b5296daf20fcba822f2",
+  "voiceId": "clear",
+  "language": "de",
+  "status": "GENERATED_REMOTE_NOT_YET_COMMITTED",
+  "audioUrl": "https://www.aidocmaker.com/g0/audio?name=7095e36cf1e94b5296daf20fcba822f2",
+  "targetFile": "voiceover.mp3",
+  "requiredCommand": "node ki/scripts/fetch-generated-voiceover.mjs <this-file> <same-dir>/voiceover.mp3",
+  "finalTimingRule": "After download, measure the exact file and run Whisper/Voice-Lock. Estimated subtitle frames are never final."
+}

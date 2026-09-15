@@ -2,10 +2,26 @@
 
 ## Kanonische Struktur
 
-Jedes echte Short-Form-Produktionsreel liegt ausschließlich unter:
+Für die aktive Woche und alle neuen Reels gilt:
 
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+│   └── 01_Reel-Titel/
+├── 02_Dienstag/
+│   └── 01_Reel-Titel/
+├── 03_Mittwoch/
+│   └── 01_Reel-Titel/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
+```
+
+Im Themen-/Reel-Ordner bleibt der Produktionsvertrag unverändert:
+
+```text
+NN_Reel-Titel/
 ├── README.md
 ├── 01-script-audio/
 ├── 02-bilder/
@@ -15,17 +31,34 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
-Neue Pakete nur mit:
+Die Hierarchie ist damit immer:
 
-```bash
-node scripts/new-ki-reel.mjs "Reel Titel"
+```text
+Woche → Wochentag → Thema/Reel → 01–06 Produktionsordner
 ```
 
-Danach:
+Wenn an einem Tag mehrere Reels entstehen, werden sie innerhalb des Tages nummeriert:
+
+```text
+04_Donnerstag/
+├── 01_Thema-A/
+├── 02_Thema-B/
+└── 03_Thema-C/
+```
+
+Neue Pakete ausschließlich mit:
+
+```bash
+node scripts/new-ki-reel.mjs "Reel Titel" YYYY-MM-DD
+```
+
+Der Generator bestimmt aus dem Datum automatisch den richtigen Wochentagsordner. Danach:
 
 ```bash
 node scripts/check-ki-reel-folder-structure.mjs
 ```
+
+Seit der Woche `2026-08-31_bis_2026-09-06` ist die Tagesebene Pflicht. Ältere abgeschlossene Wochen bleiben Legacy-kompatibel, solange sie nicht aktiv migriert werden.
 
 ## Produktionsphasen
 
@@ -49,11 +82,14 @@ Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
 
 ## Kein Template-Ordner
 
-Es gibt bewusst **keinen** flachen `_codex-hybrid-template` mehr. Der Generator und die kanonischen Agent-/Gehirn-Dateien sind die einzige Vorlage. Dadurch können neue Chats keinen veralteten Flat-Layout-Workflow kopieren.
+Es gibt bewusst **keinen** flachen `_codex-hybrid-template` mehr. Generator, Core-Generator und die kanonischen Agent-/Gehirn-Dateien sind die einzige Vorlage.
+
+- `scripts/new-ki-reel.mjs` = Wochentag-/Thema-Routing
+- `scripts/new-ki-reel-core.mjs` = vollständiger 01–06-/Story-/Level-Up-Scaffold
 
 ## Legacy-Pakete
 
-Ältere Reels können historische Dokumentnamen oder frühere Phasenbegriffe enthalten und noch keine `platform-copy.md` besitzen. Wenn ein solches Paket weiterbearbeitet oder erneut veröffentlicht werden soll, wird es zuerst auf den aktuellen Vertrag migriert. Historische Begriffe überschreiben niemals das aktuelle 3-Phasen-Modell.
+Ältere Reels können historische Dokumentnamen, frühere Phasenbegriffe oder die frühere flache Wochenstruktur enthalten. Sobald ein solches Paket aktiv weiterentwickelt wird, soll es in die aktuelle Struktur `Woche → Wochentag → Thema` migriert und seine Pfadreferenzen mitgezogen werden.
 
 ## Source
 
@@ -63,4 +99,4 @@ Ausführbarer Remotion-Code bleibt separat:
 ki/src/reels/<slug>/
 ```
 
-Planungsdateien werden nicht dorthin kopiert.
+Planungsdateien werden nicht dorthin kopiert. Source-Dateien, die JSON/Captions/SFX aus einem Produktionspaket importieren, müssen auf den vollständigen Tagespfad zeigen.

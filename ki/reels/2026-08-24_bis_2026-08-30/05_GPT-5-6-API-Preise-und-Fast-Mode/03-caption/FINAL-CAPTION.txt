@@ -1,0 +1,1 @@
+GPT-5.6 API wird günstiger: Luna 80 % weniger, Terra 20 % weniger. Für Sol nennt OpenAI einen Fast Mode mit bis zu 2,5x Geschwindigkeit – zum doppelten Preis. Bestehende priority-Anfragen wechseln automatisch auf den Fast Mode.

@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+  "cues": [
+    {"id":"c01","sceneId":"scene1","sentenceId":"s01","startFrame":31,"endFrame":90,"text":"Google hat WeatherNext 3 vorgestellt"},
+    {"id":"c02","sceneId":"scene1","sentenceId":"s01","startFrame":90,"endFrame":145,"text":"– eine Wetter-KI, die jede"},
+    {"id":"c03","sceneId":"scene1","sentenceId":"s01","startFrame":145,"endFrame":205,"text":"Stunde neue Prognosen aus aktuellen"},
+    {"id":"c04","sceneId":"scene1","sentenceId":"s01","startFrame":205,"endFrame":255,"text":"Satellitendaten erzeugt."},
+    {"id":"c05","sceneId":"scene1","sentenceId":"s02","startFrame":255,"endFrame":305,"text":"Der größte Sprung ist die"},
+    {"id":"c06","sceneId":"scene1","sentenceId":"s02","startFrame":305,"endFrame":360,"text":"Auflösung: Temperatur und Feuchtigkeit können"},
+
+    {"id":"c07","sceneId":"scene2","sentenceId":"s02","startFrame":360,"endFrame":405,"text":"bis auf fünf Kilometer dargestellt"},
+    {"id":"c08","sceneId":"scene2","sentenceId":"s02","startFrame":405,"endFrame":430,"text":"werden."},
+    {"id":"c09","sceneId":"scene2","sentenceId":"s03","startFrame":430,"endFrame":490,"text":"WeatherNext 2 arbeitete noch auf"},
+    {"id":"c10","sceneId":"scene2","sentenceId":"s03","startFrame":490,"endFrame":555,"text":"einem 25-Kilometer-Raster und in Sechs-Stunden-Schritten."},
+    {"id":"c11","sceneId":"scene2","sentenceId":"s04","startFrame":555,"endFrame":610,"text":"Google spricht deshalb von einem"},
+    {"id":"c12","sceneId":"scene2","sentenceId":"s04","startFrame":610,"endFrame":665,"text":"globalen Wetterbild, das ungefähr fünfmal"},
+    {"id":"c13","sceneId":"scene2","sentenceId":"s04","startFrame":665,"endFrame":700,"text":"schärfer ist."},
+    {"id":"c14","sceneId":"scene2","sentenceId":"s05","startFrame":700,"endFrame":720,"text":"Auch lokale Topografie"},
+
+    {"id":"c15","sceneId":"scene3","sentenceId":"s05","startFrame":720,"endFrame":785,"text":"und schnell wechselnde Wetterlagen sollen"},
+    {"id":"c16","sceneId":"scene3","sentenceId":"s05","startFrame":785,"endFrame":830,"text":"dadurch besser sichtbar werden."},
+    {"id":"c17","sceneId":"scene3","sentenceId":"s06","startFrame":830,"endFrame":875,"text":"Besonders wichtig ist Regen und"},
+    {"id":"c18","sceneId":"scene3","sentenceId":"s06","startFrame":875,"endFrame":900,"text":"Schnee."},
+    {"id":"c19","sceneId":"scene3","sentenceId":"s07","startFrame":900,"endFrame":965,"text":"In Google-Produkten sollen längerfristige Niederschlagsprognosen"},
+    {"id":"c20","sceneId":"scene3","sentenceId":"s07","startFrame":965,"endFrame":1030,"text":"bis zu 50 Prozent genauer"},
+    {"id":"c21","sceneId":"scene3","sentenceId":"s07","startFrame":1030,"endFrame":1080,"text":"werden."},
+
+    {"id":"c22","sceneId":"scene4","sentenceId":"s08","startFrame":1080,"endFrame":1140,"text":"Und WeatherNext 3 bleibt nicht"},
+    {"id":"c23","sceneId":"scene4","sentenceId":"s08","startFrame":1140,"endFrame":1205,"text":"im Forschungslabor: Das Modell startet"},
+    {"id":"c24","sceneId":"scene4","sentenceId":"s08","startFrame":1205,"endFrame":1270,"text":"in Google Search, der Gemini-App,"},
+    {"id":"c25","sceneId":"scene4","sentenceId":"s08","startFrame":1270,"endFrame":1335,"text":"Google Maps, der Maps Platform"},
+    {"id":"c26","sceneId":"scene4","sentenceId":"s08","startFrame":1335,"endFrame":1375,"text":"Weather API und Earth Engine."},
+    {"id":"c27","sceneId":"scene4","sentenceId":"s09","startFrame":1375,"endFrame":1430,"text":"Entwickler und Unternehmen können stündlich"},
+    {"id":"c28","sceneId":"scene4","sentenceId":"s09","startFrame":1430,"endFrame":1500,"text":"aktualisierte globale Daten außerdem über"},
+
+    {"id":"c29","sceneId":"scene5","sentenceId":"s09","startFrame":1500,"endFrame":1565,"text":"BigQuery, Earth Engine und Cloud"},
+    {"id":"c30","sceneId":"scene5","sentenceId":"s09","startFrame":1565,"endFrame":1625,"text":"Storage nutzen, ohne selbst ein"},
+    {"id":"c31","sceneId":"scene5","sentenceId":"s09","startFrame":1625,"endFrame":1665,"text":"Wettermodell aufzusetzen."},
+    {"id":"c32","sceneId":"scene5","sentenceId":"s10","startFrame":1665,"endFrame":1725,"text":"Praktisch heißt das: Google macht"},
+    {"id":"c33","sceneId":"scene5","sentenceId":"s10","startFrame":1725,"endFrame":1790,"text":"aus Wetter-KI eine Infrastruktur, die"},
+    {"id":"c34","sceneId":"scene5","sentenceId":"s10","startFrame":1790,"endFrame":1850,"text":"direkt in Apps, Reisen, Landwirtschaft"},
+    {"id":"c35","sceneId":"scene5","sentenceId":"s10","startFrame":1850,"endFrame":1885,"text":"und Energieplanung landet."},
+    {"id":"c36","sceneId":"scene5","sentenceId":"s11","startFrame":1885,"endFrame":1915,"text":"Bei amtlichen Unwetterwarnungen bleibt trotzdem"},
+    {"id":"c37","sceneId":"scene5","sentenceId":"s11","startFrame":1915,"endFrame":1950,"text":"dein lokaler Wetterdienst die richtige Quelle."}
+  ]
+}

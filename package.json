@@ -3,23 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "description": "Produktionssystem für den deutschen faceless KI-Kanal mit Remotion",
+  "packageManager": "npm@11.19.0",
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
   },
   "workspaces": [
     "core",
     "ki"
   ],
   "scripts": {
+    "runtime:bootstrap": "node scripts/bootstrap-pre-youtube-runtime.mjs",
+    "runtime:verify": "node scripts/verify-pre-youtube-runtime.mjs",
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
+    "production:contracts": "node ki/scripts/validate-production-contracts.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
+    "antigravity:verify": "node scripts/check-antigravity-integration.mjs",
+    "antigravity:capabilities": "node scripts/list-antigravity-capabilities.mjs",
+    "antigravity:skills": "node scripts/sync-remotion-agent-skills.mjs add",
+    "antigravity:skills:update": "node scripts/sync-remotion-agent-skills.mjs update",
+    "antigravity:story-stills": "node scripts/render-story-beat-stills.mjs",
+    "antigravity:audit": "node scripts/run-antigravity-headless-audit.mjs",
     "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run",
     "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
     "typecheck:animation-library": "tsc --noEmit -p ki/tsconfig.animation-library.json",
     "typecheck": "npm run typecheck:motion && npm run typecheck:animation-library",
     "typecheck:all": "npm run typecheck",
     "content:runtime:verify": "node scripts/verify-content-matched-runtime.mjs",
-    "repo:verify": "npm run repo:wiring-check && npm run typecheck && npm test && npm run content:runtime:verify",
+    "repo:verify": "npm run production:contracts && npm run typecheck && npm test && npm run content:runtime:verify",
+    "test:readiness": "node scripts/run-test-readiness.mjs",
     "release:verify": "node scripts/run-content-release.mjs verify",
     "release:smoke": "node scripts/run-content-release.mjs smoke",
     "release:full": "node scripts/run-content-release.mjs full",

@@ -1,0 +1,21 @@
+# Review Checklist — ChatGPT Study Mode
+
+- [ ] `KI-ChatGPTStudyMode` löst als eigene Composition auf
+- [ ] kein Alt-/Werbeclip-Visual im Source
+- [ ] Header sichtbar tiefer, nicht am oberen Rand
+- [ ] Captions ungefähr `bottom:250`, max. 2 Zeilen
+- [ ] kein separater weißer Footer / kein zweiter Hintergrund
+- [ ] alle fünf Hintergründe fullscreen bis ganz unten
+- [ ] Hauptvisuals groß genug auf Smartphone
+- [ ] Szene 1 Hook ohne Ton verständlich
+- [ ] Szene 2 zeigt klar Speed hoch / Verständnis niedrig
+- [ ] Szene 3 zeigt echte Transformation zur Lernstruktur
+- [ ] Szene 4 unterscheidet Copy vs. Verstehen eindeutig
+- [ ] Szene 5 bleibt bis zur letzten Phrase visuell aktiv
+- [ ] echtes `voiceover.mp3` lokal vorhanden
+- [ ] Whisper-Worttimings aus genau diesem Audio
+- [ ] Caption-/Szenen-Timing gegen Stimme geprüft
+- [ ] finaler MP4 enthält hörbares Audio
+- [ ] finaler MP4 vollständig angesehen und angehört
+- [ ] `05-export/` enthält MP4 + Cover + Caption + Manifest
+- [ ] Export-Package-Validator bestanden

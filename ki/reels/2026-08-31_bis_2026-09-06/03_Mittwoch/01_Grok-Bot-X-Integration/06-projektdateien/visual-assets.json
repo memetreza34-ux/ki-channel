@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "status": "CONTENT_LOCKED_REAL_MEDIA_SELECTION_PENDING",
+  "rules": {"nativeFirst":true,"remoteRenderMediaAllowed":false,"externalBinariesMustResolveLocally":true,"genericIconMayImpersonateBrand":false,"realMediaMustHaveStoryPurpose":true},
+  "assets": [
+    {"id":"scene1-grok-x-announcement","sceneId":"scene1","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizielle Ankündigung der direkten Grok-Bot-X-Integration inklusive Datum und Start-Credits","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://x.ai/news/grok-bot-and-x"},
+    {"id":"scene3-x-connector-proof","sceneId":"scene3","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizieller Produkt-/Source-Crop für Posts, Timeline, Mentions, Trends und Bookmarks","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://x.ai/news/grok-bot-and-x"},
+    {"id":"scene4-grok-bot-video-candidate","sceneId":"scene4","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizielles Grok-Bot-Produktvideo als REAL_VIDEO-Kandidat; nur nach lokaler, provenance-backed Vorbereitung verwenden","rightsStatus":"SOURCE_REFERENCE_ONLY_MANUAL_VIDEO_PREP_REQUIRED","sourceUrl":"https://x.ai/news/introducing-grok-bot"},
+    {"id":"scene4-grok-bot-docs","sceneId":"scene4","provider":"OFFICIAL_SOURCE_CARD","purpose":"Offizielle Dokumentation für persistenten Cloud-Computer, Browser, Filesystem und Terminal","rightsStatus":"SOURCE_REFERENCE_ONLY","sourceUrl":"https://docs.x.ai/grok-bot/overview"}
+  ]
+}

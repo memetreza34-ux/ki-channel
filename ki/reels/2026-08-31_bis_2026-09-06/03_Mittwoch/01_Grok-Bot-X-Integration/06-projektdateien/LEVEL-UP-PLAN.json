@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "status": "PHASE1_PLANNED",
+  "currentNewsBrandStory": true,
+  "timingAuthority": "WORD_TIMINGS_AFTER_FORCED_ALIGNMENT",
+  "coverHook": {"enabled":true,"candidateFrame":15,"holdFrames":15,"captionFree":true,"headlineRequired":true,"primarySubjectRequired":true,"coverMatchesStory":true},
+  "brandMoments": [
+    {"brand":"Grok Bot","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false},
+    {"brand":"X","sceneId":"scene1","strategy":"TYPOGRAPHIC_NAME","genericIconAsBrand":false}
+  ],
+  "realProofMoments": [
+    {"sceneId":"scene1","type":"OFFICIAL_SOURCE_CROP","sourceUrl":"https://x.ai/news/grok-bot-and-x","remoteRenderAllowed":false},
+    {"sceneId":"scene4","type":"OFFICIAL_DOCUMENT","sourceUrl":"https://docs.x.ai/grok-bot/overview","remoteRenderAllowed":false}
+  ],
+  "realMediaMix": {
+    "minimumMoments": 2,
+    "moments": [
+      {"sceneId":"scene1","type":"OFFICIAL_SOURCE_CROP","purpose":"Offizielle X-Integration mit Datum und Kernclaim visuell beweisen","remoteRenderAllowed":false},
+      {"sceneId":"scene3","type":"OFFICIAL_PRODUCT_UI","purpose":"X-Connector/Plugin-Funktionen in echter Produkt- oder Source-UI zeigen","remoteRenderAllowed":false},
+      {"sceneId":"scene4","type":"REAL_VIDEO","purpose":"Offiziellen Grok-Bot-Produktvideo-Moment für Cloud-Computer und echte Tool-Nutzung einsetzen","remoteRenderAllowed":false}
+    ],
+    "exceptionReason": "",
+    "videoPreferredWhenMotionIsClaim": true
+  },
+  "majorReveals": [
+    {"sceneId":"scene1","sentenceId":"s01","anchorPhrase":"Grok Bot kann jetzt direkt mit X arbeiten","fallbackProgress":0.08},
+    {"sceneId":"scene1","sentenceId":"s02","anchorPhrase":"X-Konto","fallbackProgress":0.52},
+    {"sceneId":"scene2","sentenceId":"s03","anchorPhrase":"Developer-Account","fallbackProgress":0.35},
+    {"sceneId":"scene2","sentenceId":"s04","anchorPhrase":"X-API-Credits","fallbackProgress":0.56},
+    {"sceneId":"scene3","sentenceId":"s05","anchorPhrase":"Posts suchen","fallbackProgress":0.18},
+    {"sceneId":"scene3","sentenceId":"s05","anchorPhrase":"Erwähnungen prüfen","fallbackProgress":0.62},
+    {"sceneId":"scene4","sentenceId":"s08","anchorPhrase":"persistenten Cloud-Computer","fallbackProgress":0.30},
+    {"sceneId":"scene5","sentenceId":"s11","anchorPhrase":"erste Version der Integration","fallbackProgress":0.48}
+  ],
+  "motionFamilies": ["BRAND_TYPE_LOCKUP","CONNECTOR_DRAW","ACCOUNT_CREATION","CREDIT_COUNTER","FEED_SCAN","TIMELINE_SWEEP","MENTION_PING","TREND_GRAPH","BOOKMARK_LOCK","CLOUD_COMPUTER_BUILD","TOOL_HANDOFF","AUTOMATION_LOOP","SOURCE_CROP_HIGHLIGHT"],
+  "maxConsecutiveSameMajorGrammar": 2,
+  "sceneDensity": {"targetMeaningfulChangeSecondsMin":1.5,"targetMeaningfulChangeSecondsMax":3.0,"maxPracticallyUnchangedSeconds":4.0,"hardCutRequiredEveryChange":false},
+  "overlapPolicy": {"onePrimaryFocusAtATime":true,"maxSupportingDetails":2,"captionMayCoverCriticalVisual":false,"progressiveRevealRequired":true},
+  "fullFrameSceneIds": ["scene3","scene4"],
+  "captionTarget": {"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxLines":2,"maxWordsPerGroup":6},
+  "microdetails": {"minimumImportantFontPx":22,"progressiveReveal":true},
+  "sfxDesign": {"semanticVisibleTriggerRequired":true,"voicePriorityRequired":true}
+}

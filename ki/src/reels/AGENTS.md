@@ -1,123 +1,198 @@
-# KI Production Reels — Remotion-native Visual Contract
+# KI Production Reels — Remotion-native Source Contract
 
-Gilt für **alle** ausführbaren Reel-Sources unter `ki/src/reels/`.
+Gilt für alle ausführbaren Reel-Sources unter `ki/src/reels/`.
 
-## Grundregel — maximal Code vor Bild
+Zusätzlich verbindlich: `ki/gehirn/STORYTELLING_MOTION.md` und bei Story-Arbeit `.agents/skills/remotion-storytelling/SKILL.md`.
 
-Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
+## Code vor Bild
 
-Das gilt nicht nur für UI und technische Grafiken. Ziel ist, **so viel wie möglich vom gesamten sichtbaren Reel Remotion-native zu bauen**, inklusive stilisierter Illustrationen, Hero-Motive, Cover-Kompositionen, Mockups und pseudo-3D-Szenen.
+Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er direkt in Code gebaut.
 
-Das betrifft insbesondere:
+Default `REMOTION_NATIVE`:
 
-- Icons und Symbole
-- App-, Browser-, Smartphone- und Desktop-UI
-- Buttons, Inputs, Cards, Tabs, Menüs und Dialoge
-- Codefenster, Terminalfenster und Dateibäume
-- Diagramme, Charts, Balken, Kreise und Fortschrittsanzeigen
-- Nodes, Verbindungen, Pfeile, Linien und Prozessgrafiken
-- Timelines, Branches, Commits und Versionsverläufe
-- Tabellen, Badges, Statusanzeigen und Labels
-- abstrakte technische Objekte und einfache 2D-/2.5D-Formen
-- Zustandswechsel, Before/After-Mechaniken und interaktive Abläufe
-- illustrative Hero-Motive und Cover-Kompositionen
-- Geräte, Ordner, Dokumente, Clouds, Server, Datenpakete und ähnliche Erklärobjekte
-- stilisierte Produktdarstellungen, wenn echte Fotorealistik nicht notwendig ist
-- pseudo-3D mit Layering, CSS-Transforms, SVG, Schatten, Gradients und Perspektive
-- visuelle Metaphern wie Wege, Türen, Trichter, Schichten, Container, Netzwerke und Waagen
-- einfache stilisierte Räume, Schreibtische, Bühnen und technische Umgebungen
-- Licht-, Glas-, Material- und Tiefenillusionen, soweit sauber kontrollierbar
+- App-/Browser-/Smartphone-/Desktop-UI
+- Icons/Symbole
+- Buttons/Cards/Tabs/Dialoge
+- Charts/Diagramme/Prozesse
+- Nodes/Pfeile/Connectoren
+- Zustandswechsel/Before-After
+- Hero-Motive und 3D-Kompositionen
+- Story-Beats, Kamera-Reframes, TransitionSeries und prozedurale Hintergründe
 
-**Für diese Kategorien sind statische KI-Bilder als Ersatz grundsätzlich nicht erlaubt, wenn der Code-Nachbau technisch und gestalterisch vernünftig möglich ist.**
+Externe Bilder nur, wenn Fotorealistik, reales Produkt/Markenasset oder komplexes organisches Motiv klar besser ist. Bei `HYBRID` bleiben Text/UI/Labels/Diagramme Remotion-native.
 
-## Bevorzugte Technik
+## Narrative Source-Pflicht
 
-Reihenfolge:
+Neue Reels sind keine Folge langer statischer Karten. Standard bei 60–75 Sekunden:
 
-1. React-Komponenten für semantische Struktur
-2. SVG für Icons, Illustrationen, Linien, Diagramme, Masken und frei skalierbare Formen
-3. CSS für Layout, Flächen, Schatten, Karten, Geräte-/Fensterrahmen, Perspektive und pseudo-3D
-4. Remotion für Timing, Interpolation, Sequenzen, Zustände, Kamera und Sprecher-Synchronität
-5. Canvas für komplexere 2D-Zeichenlogik
-6. WebGL / Three.js, wenn echte räumliche Tiefe die Aussage verbessert
-7. externes Bild erst als letzte Option
+- mindestens 15 konkrete Visual Beats
+- jede Szene mindestens zwei sichtbare Zustandsänderungen
+- Story-Arc enthält mindestens `HOOK`, `PROOF`, `CONSEQUENCE`, `PAYOFF`
+- jede zentrale Sprecher-Aussage erhält eine sichtbare Reaktion
+- kein praktisch unveränderter Visual State länger als 4,5 Sekunden bei aktivem Voiceover, außer bewusst benötigte Lesepause
+- Kamera/Zoom/Transition/SFX haben eine erkennbare Erklär-, Fokus-, Verbindungs- oder Payoff-Funktion
 
-Alle wichtigen visuellen Bestandteile sollen skalierbar, deterministisch und framegenau steuerbar bleiben.
+Bevor ein neues Reel als Phase-1-fertig gilt:
 
-## Wann ein Bild trotzdem sinnvoll ist
+`node ki/scripts/validate-storytelling-motion.mjs <reel-package-dir>`
 
-Externe oder generierte Bilder sind nur zulässig, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
+## Kanonische Story-Bausteine
 
-- echte Fotorealistik
-- komplexe organische Motive
-- reale Menschen/Hände, wenn inhaltlich unvermeidbar
-- ein konkretes reales Produkt, das exakt erkennbar sein muss
-- komplexe physische Materialien/Naturdetails
-- komplexe räumliche 3D-Umgebungen
-- bewusst fotografischer / cinematic Look
+Vor one-off Code zuerst wiederverwenden:
 
-Vorher muss geprüft werden, ob eine **stilisierte Remotion-Illustration** die Aussage nicht genauso gut oder besser erklärt.
+### `StoryMotion.tsx`
 
-Auch bei externem Bild gilt: **Text, UI, Pfeile, Zahlen, Diagramme, Labels, Geräte-/Browserrahmen und präzise Zustände nicht in das Bild backen.** Diese Ebenen bleiben Remotion-native.
+- `StoryBeat`
+- `StoryCamera`
+- `ImpactNumber`
+- `StoryProgressRail`
+- `StoryCutFlash`
+- `StoryChapterLabel`
+- `StoryTexture`
 
-## Cover-Regel
+### `StoryMediaLayers.tsx`
 
-Cover werden standardmäßig ebenfalls in Remotion gebaut, wenn der Hook als kontrollierte Hero-Komposition mit Typografie, SVG, Devices, UI, Before/After, pseudo-3D und Schatten umsetzbar ist.
+- `StoryThreeHero` über `@remotion/three`
+- `StoryLottieLayer` über `@remotion/lottie`
+- `StoryRiveLayer` über `@remotion/rive`, ausschließlich lokal
+- `StorySkiaBackdrop` über `@remotion/skia`
 
-Ein externes Cover-Bild ist nur dann gerechtfertigt, wenn echte Fotografie, ein reales Produkt oder eine komplexe organische Szene notwendig ist.
+### Story-Transitions
 
-## Medium-Entscheidung pro Visual Beat
+`@remotion/transitions` und `TransitionSeries` nutzen, wenn wirklich ein Szenen-/Zustandswechsel stattfindet. `slide`, `wipe`, `bookFlip` und andere Presentations nicht wahllos mischen.
 
-Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden werden:
+`@remotion/effects` nur subtil/semantisch: z. B. Paper/Noise/Light/Distortion als erzählerische Schicht, nicht als Dauerfilter-Spam.
 
-- `REMOTION_NATIVE` — vollständig React/SVG/CSS/Canvas/WebGL/Remotion
-- `IMAGE_REQUIRED` — externes Bild ist inhaltlich wirklich erforderlich
-- `HYBRID` — Bild nur für komplexen unvermeidbaren Motivteil; alle steuerbaren Informationsschichten in Remotion
+`@remotion/sfx` ist als Remotion-Capability verfügbar, aber der Produktionspfad bleibt beim bestehenden lokalen deterministischen CC0-SFX-System.
 
-`REMOTION_NATIVE` ist der Default und soll maximal ausgereizt werden.
+## Product/UI-first
 
-Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
+Bei Apps, Websites, Plattformen und Features zuerst eine konkrete Produkt-/UI-Szene prüfen. Generische Kreise/Nodes sind kein Default, wenn UI die Aussage klarer erklärt.
 
-## Caption-Position ist Source-Vertrag
+## Phase-1 Script- und Laufzeit-Budget
 
-Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
+Für neue Reels gilt als Standard:
 
-- neue Reel-Sources müssen `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE` aus `../captionSafe` verwenden
-- Standard: **`bottom: 520px`**
-- horizontaler Sicherheitsabstand: **`104px` links/rechts**
-- bevorzugte maximale Caption-Breite: **`820px`**
-- sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
-- die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
-- Bereich 420–500px vom unteren Rand nur als Puffer behandeln
-- Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
-- keine Altwerte wie 264/270/360/440/460px als neue Caption-Position hart codieren
-- wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
+- **60–75 Sekunden** tatsächliche Voice-Locked-Laufzeit
+- bevorzugt **150–175 gesprochene Wörter**
+- bis **190 Wörter** ohne Sonderfreigabe
+- `reel.json.scriptBudget.targetMinSeconds = 60`
+- `reel.json.scriptBudget.targetMaxSeconds = 75`
+- kürzer/länger nur mit bewusster dokumentierter Ausnahme
+- Laufzeit darf nicht durch unnötige Erklärsätze oder künstlich langsames Sprechen erzeugt werden
 
-Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
+Das Wortbudget ist nur Phase-1-Planung. Die echte Autorität ist das lokale Nutzer-Voiceover nach Pause-Kompression und Forced Alignment. `prepare-reel-render.mjs` muss die finale Voice-Locked-Dauer gegen 60–75 Sekunden prüfen.
 
-## Qualitätsregeln
+Vor Production-Render prüft:
 
-- keine Screenshot-Optik, wenn dieselbe UI sauber nativ nachgebaut werden kann
-- keine zufälligen AI-generierten Symbole oder UI-Texte
-- keine Bitmap-Icons, wenn SVG möglich ist
-- keine KI-generierten Illustrationen aus Bequemlichkeit, wenn eine gute Code-Illustration möglich ist
-- keine unnötigen Asset-Abhängigkeiten
-- keine visuelle Deko ohne erklärende Funktion
-- Smartphone-Lesbarkeit vor Detailreichtum
-- kritische Labels kurz und groß genug
-- Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
-- Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
-- Caption-Safe-Position und alle übergeordneten Reel-Verträge bleiben vollständig gültig
+`node ki/scripts/validate-reel-script-budget.mjs <reel-package-dir>`
 
-## Entscheidungsfrage
+## Echte Visual-Momente
 
-Vor jedem Bildasset zuerst fragen:
+Bewährter Standard:
 
-> **Kann ich das als hochwertige stilisierte Illustration, pseudo-3D-Szene, SVG, UI, Objektkomposition oder Motion-Graphic direkt in Remotion bauen?**
+- ungefähr **70–80 % native UI / Text / Diagramm / Motion**
+- ungefähr **20–30 % echte Bilder/Screens**
+- typischerweise **1–2 starke externe Visual-Momente pro Reel**
+- kein Stockbild nur zum Füllen
 
-Wenn **ja** → in Remotion bauen.
+Echte Bilder sind besonders sinnvoll für reale Geräte, Server, Chips, Rechenzentren, Orte, Produkte oder offizielle Proof-Momente, bei denen ein reales Visual die Aussage schneller glaubwürdig macht als eine künstliche UI-Karte.
 
-Wenn **teilweise** → Hybrid, aber nur den unvermeidbaren externen Motivteil als Bild nutzen.
+## Motion
 
-Wenn **nein** → Bild konkret begründen.
+High Energy ≠ High Speed.
+
+Wichtige Zustände:
+
+`REVEAL → SETTLE → READABLE HOLD`
+
+- 1–2 neue unabhängige Informationen gleichzeitig
+- wichtige Zustände nicht nur wenige Frames zeigen
+- Hero-Moment lesbar halten
+- Motion muss erklären, fokussieren, verbinden, transformieren oder abschließen
+- 1x-Post-Render-Test ist Pflicht
+
+## Light-First
+
+- Fullscreen-Hintergründe standardmäßig hell
+- kräftige Akzente erlaubt
+- dunkle Fullscreen-Szene nur dokumentierte Ausnahme
+- kein einzelner dunkler Stilbruch zwischen hellen Szenen
+
+## Caption ist Shared Source Contract
+
+Für 1080×1920 gelten ausschließlich:
+
+- `ki/gehirn/CAPTION_SAFE_POSITION.md`
+- `ki/src/reels/captionSafe.ts`
+
+Kanonisch:
+
+- `bottom: 250px`
+- horizontal `104px`
+- max. `860px`
+- max. 2 Zeilen
+- halbtransparente Glass-/Blur-Overlay-Caption
+- aktiver Sprecherfokus in Szenen-Akzentfarbe
+- **kein separater Footer / kein zweiter Hintergrund**
+
+Neue Sources verwenden:
+
+- `REEL_CAPTION_SAFE`
+- `REEL_CAPTION_WRAPPER_STYLE`
+- `REEL_CAPTION_GLASS_STYLE`
+
+Keine eigenen alten Caption-Werte neu hart codieren.
+
+## Audio ist lokales Runtime-Asset
+
+Verbindlich: `ki/gehirn/AUDIO_PIPELINE.md`.
+
+Das Produktions-Voiceover wird ausschließlich vom Nutzer erstellt. Source darf keine TTS-/CDN-/Remote-URL als finalen Audio-Default enthalten.
+
+Vor Render:
+
+```bash
+node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+```
+
+`Root.tsx` verwendet danach lokale Runtime-Audio-Dateien unter `public/runtime-audio/`.
+
+Neue aktive Reel-Komponenten sollen bei leerem `voiceoverSrc` fehlschlagen statt still zu rendern.
+
+## Medien lokal vor Render
+
+- keine Render-Time-Netzwerkdownloads
+- Lottie JSON lokal
+- Rive `.riv` lokal
+- Bilder/Screens lokal und Rechte/SHA-gebunden
+- 3D-Assets lokal, wenn externe Dateien benötigt werden
+- `StoryRiveLayer` lehnt HTTP(S)-Quellen bewusst ab
+
+## Markenassets
+
+- keine Logos aus Erinnerung nachzeichnen
+- echte zulässige lokale Markenassets unverändert verwenden
+- bei strengen Regeln Umgebung/Kamera/Container animieren statt Logo zu verfälschen
+
+## Qualitäts-Gate
+
+Vor Freigabe:
+
+- Script-Budget bewusst eingehalten oder Ausnahme dokumentiert
+- finale Voice-Locked-Dauer 60–75 Sekunden oder Ausnahme dokumentiert
+- Storytelling-Gate bestanden
+- mindestens 15 echte Visual Beats für Standard-Reel
+- Storyfluss bei 1x nachvollziehbar
+- keine statischen Präsentationsstrecken über Story-Limit
+- Visual passt exakt zur Sprecherbedeutung
+- Smartphone-lesbar
+- Hauptmechanik groß genug
+- Caption nach Shared-Geometrie
+- Fullscreen-Hintergrund durchgehend
+- keine Fremd-/Alt-Visuals
+- echte Bilder nur mit sauberem Rechte-/Local-File-/SHA256-Vertrag
+- Motion bei 1x verständlich
+- Audio lokal + Voice-Locked
+- SFX bei 1x tatsächlich angehört und sichtbar motiviert
+- aktueller Render gehört zum aktuellen Source-Stand

@@ -1,0 +1,33 @@
+{
+  "version": 7,
+  "reelId": "grok-bot-x-integration",
+  "compositionId": "KI-GrokBotXIntegration",
+  "sourceDir": "ki/src/reels/grok-bot-x-integration",
+  "title": "Grok Bot kann jetzt direkt mit X arbeiten",
+  "publishDate": "2026-09-02",
+  "week": "2026-08-31_bis_2026-09-06",
+  "productionMode": "LEVEL_UP_V2_NATIVE_PLUS_REAL_MEDIA",
+  "scriptBudget": {"targetMinWords":150,"targetMaxWords":175,"hardMinWords":140,"hardMaxWords":190,"referenceWpm":140,"targetMinSeconds":60,"targetMaxSeconds":75,"allowShorter":false,"shorterReason":"","allowLonger":false,"longerReason":"","allowDurationOutsideTarget":false,"durationExceptionReason":""},
+  "format": {"width":1080,"height":1920,"fps":30,"planningDurationInFrames":1950,"finalDurationInFrames":null,"finalDurationAuthority":"PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"},
+  "audio": {"sourceMetadata":"01-script-audio/audio-source.json","targetFile":"01-script-audio/voiceover.mp3","status":"WAITING_FOR_USER_LOCAL_MASTER","provider":"USER_PROVIDED","agentGenerationAllowed":false,"agentDownloadAllowed":false,"timingAuthority":false,"alignmentCommand":"node ki/scripts/align-reel-local.mjs <reel-package-dir>"},
+  "sceneVoiceMap": {"file":"01-script-audio/SCENE-VOICE-MAP.json","status":"CONTENT_LOCKED_TIMING_PENDING"},
+  "captions": {"file":"03-caption/subtitle-cues.json","status":"PREVIEW_ONLY_ALIGNMENT_REQUIRED","maxLines":2,"bottom":330,"horizontalInset":76,"maxWidth":928,"fontSize":40,"maxWordsPerGroup":6,"style":"transparent_glass_overlay","suppressUntilFrame":31},
+  "sfx": {"enabled":true,"eventsFile":"06-projektdateien/sfx-events.json","resolvedFile":"06-projektdateien/sfx-resolved.json","libraryIndex":"public/reel-sfx/sfx-index.json","selectionMode":"AUTO_CC0_DETERMINISTIC","status":"PENDING_LOCAL_CC0_RESOLUTION"},
+  "visuals": {"enabled":true,"manifestFile":"06-projektdateien/visual-assets.json","resolvedFile":"06-projektdateien/visual-assets-resolved.json","status":"REAL_OFFICIAL_MEDIA_PLANNED","renderPolicy":"NATIVE_FIRST_LOCAL_ONLY","remoteRenderUrlsAllowed":false,"maxExternalBinaries":3,"targetRealOfficialMomentsMin":2},
+  "storytelling": {"enabled":true,"file":"06-projektdateien/story-beats.json","style":"NARRATIVE_SOCIAL_EXPLAINER","minVisualBeats":15,"maxStaticSeconds":4.0,"requiredArc":["HOOK","PROOF","CONSEQUENCE","PAYOFF"],"sourceRequiredTokens":["StoryBeat","StoryTexture","StoryCamera","SourceProofCard"]},
+  "levelUp": {"enabled":true,"file":"06-projektdateien/LEVEL-UP-PLAN.json","standardVersion":2},
+  "export": {"coverTimeSeconds":0.5,"coverCandidateFrame":15,"coverText":"GROK BOT × X","coverMustBeCaptionFree":true,"requiredPackage":["video","cover","caption","manifest"],"finalCaptionFile":"03-caption/FINAL-CAPTION.txt","socialAudioMaster":{"integratedLufs":-16,"truePeakDbtp":-1.5}},
+  "scenes": [
+    {"sceneId":"scene1","title":"Grok Bot verbindet sich mit X","startFrame":0,"endFrame":330,"accent":"#111111","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Developer-Account und API-Credits","startFrame":330,"endFrame":690,"accent":"#5B5BD6","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Posts, Timeline, Mentions und Trends","startFrame":690,"endFrame":1110,"accent":"#1570EF","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Der Bot hat einen Cloud-Computer","startFrame":1110,"endFrame":1590,"accent":"#7F56D9","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"X wird zur Arbeitsquelle","startFrame":1590,"endFrame":1950,"accent":"#039855","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://x.ai/news/grok-bot-and-x",
+    "https://x.ai/news/introducing-grok-bot",
+    "https://docs.x.ai/grok-bot/overview",
+    "https://docs.x.ai/grok/connectors"
+  ]
+}

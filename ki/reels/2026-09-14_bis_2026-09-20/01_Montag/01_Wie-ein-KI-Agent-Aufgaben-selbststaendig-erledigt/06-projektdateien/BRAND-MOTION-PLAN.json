@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "status": "PHASE1_PLANNED",
+  "standard": "LEVEL_UP_V4",
+  "brandIdentity": {
+    "primaryBrands": [],
+    "officialAssetPreferred": true,
+    "realAssetRequiredOrException": true,
+    "fakeLogoForbidden": true,
+    "typographicFallbackAllowed": true,
+    "functionalIconsMayImpersonateBrand": false,
+    "plannedOfficialAssets": [],
+    "assetExceptionReason": "No external product brand. Channel identity uses the canonical ki/brand/brand.ts source."
+  },
+  "brandPalette": {
+    "referenceUrl": "ki/brand/brand.ts",
+    "primary": ["#B98CFF", "#6E45C9"],
+    "secondary": ["#2E90FA", "#12B76A", "#F79009"],
+    "neutral": ["#FFFFFF", "#F3F0FA", "#1A1A2E"],
+    "semanticColorExceptionsAllowed": true,
+    "scenePaletteConsistencyRequired": true,
+    "brandColorAccuracyReviewRequired": true,
+    "sceneNotes": ["Purple remains the channel anchor; blue/green/orange are semantic state colors only."]
+  },
+  "functionalIconPolicy": {
+    "enabled": true,
+    "brandIconsForbidden": true,
+    "functionalIconsEncouraged": true,
+    "brandAndFunctionMustStayVisuallyDistinct": true,
+    "plannedFunctions": ["goal", "plan", "search", "document", "tool", "check", "retry", "guardrail", "approval"]
+  },
+  "animationFreedom": {
+    "policy": "OPEN_ENDED_STORY_DRIVEN",
+    "noFixedTechniqueAllowlist": true,
+    "anyTechniqueAllowedIfStoryUseful": true,
+    "experimentalTechniquesAllowed": true,
+    "readabilitySafetyPerformanceGatesRequired": true,
+    "fallbackRequiredForFragileTechnique": true,
+    "effectSpamForbidden": true,
+    "plannedFamilies": ["spring", "connector draw", "orbit", "camera push", "progress rail", "semantic morph"],
+    "experimentalIdeas": ["goal-card collapse into agent core", "retry orbit that visibly reroutes on NO"]
+  },
+  "capabilityEvolution": {
+    "scanAvailableSkillsBeforeBuild": true,
+    "addCapabilityOnlyWhenMaterialGain": true,
+    "doNotAddRedundantTools": true,
+    "preferOfficialFreeLocalFirst": true,
+    "consideredNewCapabilities": []
+  },
+  "requiredFinalReviewGates": ["BRAND_ASSET_VISIBLE_OR_JUSTIFIED","BRAND_COLOR_COHERENCE","FUNCTIONAL_ICONS_ARE_NOT_FAKE_LOGOS","BRAND_RECOGNIZABLE_WITHOUT_CAPTION","MOTION_NOT_TEMPLATE_LOCKED","ANIMATION_TECHNIQUE_FITS_STORY","NO_ACCIDENTAL_COLOR_DRIFT","REAL_MEDIA_MATERIALIZED_OR_JUSTIFIED"]
+}

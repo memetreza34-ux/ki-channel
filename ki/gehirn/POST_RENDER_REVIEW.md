@@ -1,125 +1,70 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
+Nach jedem echten Reel-Render wird bei **1x-Geschwindigkeit** geprüft. Ein technisch gültiges MP4 ist noch keine visuelle Freigabe.
 
-Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
+## Pflichtprüfung
 
-## 1. Kein leerer Einstieg
+- Hook/erster Zustand sofort verständlich
+- Überschrift lesbar und nicht zu hoch
+- Caption tief genug, aber ohne Plattform-UI-Kollision
+- Caption maximal 2 Zeilen
+- kein separater Footer-/zweiter Hintergrund
+- Fullscreen-Szenenhintergrund bleibt konsistent
+- wichtige Zustände: `REVEAL → SETTLE → READABLE HOLD`
+- unabhängige Informationen gestaffelt statt gleichzeitig gestapelt
+- keine dunkle Fullscreen-Szene ohne genehmigte Ausnahme
+- Voiceover hörbar und passend
+- Caption/aktive Wörter folgen dem tatsächlich verwendeten Audio
+- finale Szene endet nicht hektisch
 
-Der Zuschauer soll ab dem ersten Moment erkennen, dass etwas passiert.
+## Motion Readability
 
-- Frame 0 darf ruhig sein, aber nicht wie eine versehentlich leere weiße Fläche wirken.
-- Das erste Hauptvisual soll sofort schwach sichtbar sein oder innerhalb der ersten ungefähr `0.2–0.4 s` eindeutig erscheinen.
-- Keine lange Intro-Fade, kein Logo-Pre-Roll, kein dekoratives Warten vor dem Inhalt.
-- Hook-Audio und erster visueller Zustand beginnen als ein gemeinsamer Moment.
+Wichtige Zustände müssen bei normaler Wiedergabe beim ersten Anschauen verständlich sein. Muss man pausieren oder zurückspulen, ist der Beat zu schnell.
 
-## 2. Smartphone zuerst — Hauptvisual groß genug
+Bei 30 fps gelten als Startwerte:
 
-Die Animation soll die verfügbare Fläche **nutzen**, statt wie ein kleines Desktop-Widget in viel leerem Weiß zu stehen.
+- wichtige neue Zustände normalerweise etwa 12–24 Frames lesbarer Hold
+- Hero-/Payoff-Zustände meist etwa 18–30 Frames
+- unabhängige neue Informationen meist 6–12 Frames versetzt
 
-- Hauptmechanik so groß bauen, dass sie auf einem echten Smartphone ohne Zoomen sofort lesbar ist.
-- Interne Labels nur behalten, wenn sie für die Erklärung nötig sind.
-- Kurze Labels bevorzugen; lange Satztexte gehören in Voiceover/Caption, nicht in die Animation.
-- Kritische Labels bei 1080 × 1920 in der Regel nicht kleiner als ungefähr `28–32 px`; wichtige Zustandsbegriffe eher größer.
-- Wenn ein Zuschauer Kleinsttext nicht liest, muss die Kernmechanik trotzdem verständlich bleiben.
-- Leere Fläche nicht mit Deko füllen: lieber die vorhandene sinnvolle Mechanik größer und klarer komponieren.
+Diese Zahlen sind Mindest-/Planungsrichtwerte; die echte Lesbarkeit des Renders entscheidet.
 
-## 3. Caption- und Feed-Sicherheit
+## Light-First
 
-Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wurde anhand eines echten veröffentlichten Instagram-Feed-Screenshots des Kanals nach oben korrigiert.
+Standard sind helle Fullscreen-Szenen. Dunkle Cards/Objekte auf hellem Grund sind erlaubt. Dunkle Fullscreen-Szenen brauchen explizite/dokumentierte Ausnahme.
 
-- Caption standardmäßig mit **`bottom: 520px`** platzieren.
-- Horizontal ungefähr **104px** Abstand links/rechts und bevorzugt maximal **820px** Caption-Breite.
-- Der sichtbare Caption-Block liegt dadurch typischerweise ungefähr bei **y≈1260–1400**.
-- Die letzten ungefähr **420 px** unten sind für Untertitel und andere kritische Informationen tabu.
-- Der Bereich ungefähr **420–500 px vom unteren Rand** ist nur Puffer, keine bevorzugte Caption-Fläche.
-- Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
-- Neue bedeutungstragende Visuals sollen möglichst bis ungefähr **y≈1240–1280** abgeschlossen sein.
-- Zwischen Hauptvisual und Caption ungefähr `80–120 px` Luft anstreben.
-- Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen; kritischer Caption-Text darf nicht an die rechte Kante gedrängt sein.
-- Wenn viel ungenutzter Weißraum entsteht, Hauptvisual vergrößern/neu komponieren — **niemals Caption nach unten verschieben**.
-- Der technische Clip-Guard um y≈1440 ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
+## Exakter Renderbezug
 
-## 4. Kein langer statischer Sprecherabschnitt
+`MOTION-READABILITY-REVIEW.md` darf nur den tatsächlich angesehenen MP4 freigeben. Der Review wird deshalb an dessen SHA256/Dauer gebunden. Ein alter Review darf einen neuen Render nicht freigeben.
 
-Wenn sich die Bedeutung ändert, muss sich auch der sichtbare Zustand ändern.
+Zusätzlich muss der Production-Render vor dem Rendern mit
 
-- Ein bedeutungstragender neuer Satz/Halbsatz darf nicht mehrere Sekunden über einem praktisch unveränderten Bild laufen.
-- Als Review-Warnsignal gilt ungefähr `>2.5 s` neuer Sprecherbedeutung ohne sichtbare Reaktion, sofern es kein bewusstes End-Hold ist.
-- Mögliche Reaktion: Fokuswechsel, Zustandswechsel, Gate, Progression, Verbindung, Auswahl, Bestätigung, Ergebnis oder neue Micro-Animation.
-- Nicht künstlich ständig wackeln lassen. Bewegung muss Bedeutung erklären.
-- End-Hold ist erlaubt, aber erst wenn die inhaltliche Aussage wirklich abgeschlossen ist.
-
-## 5. Schluss muss bis zur letzten Aussage tragen
-
-Die letzte Szene darf nicht früh „fertig aussehen“, während noch mehrere Sätze gesprochen werden.
-
-Vor dem Render prüfen:
-
-```text
-letzte Sprecherphrase 1 → sichtbarer Beat
-letzte Sprecherphrase 2 → sichtbarer Beat
-letzte Sprecherphrase 3 → sichtbarer Beat
-finale Aussage → klarer Endzustand + kurzer Hold
+```bash
+node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
 ```
 
-Falls die Schlussanimation bereits lange vor dem Voiceover-Ende im Endzustand steht, zusätzliche **semantische** Micro-Beats bauen oder die Progression neu verteilen.
+an einen **sauberen Git-Commit sowie Source-, Reel-, Caption- und Audio-Hashes** gebunden worden sein. Der daraus erzeugte lokale `RENDER_LOCKED`-Datensatz ist Teil der finalen Provenance-Prüfung. Ein MP4, das älter als dieser Render-Lock ist oder dessen Inputs danach geändert wurden, darf nicht finalisiert werden.
 
-## 6. Pflicht-Review nach jedem neuen Render
+Nach dem Review:
 
-Mindestens prüfen:
-
-- Opening
-- Mitte jeder Szene
-- Ende jeder Szene
-- alle relevanten Visual-Beat-Wechsel
-- letzte `8–12 s` besonders dicht
-- normale Wiedergabegeschwindigkeit
-- Smartphone-Größe / kleine Vorschau
-- Feed-Eindruck mit gedanklich reservierter Plattform-UI unten/rechts
-- Caption-Lesbarkeit und Caption-Höhe
-- Caption ungefähr bei `bottom: 520px`, nicht wieder im alten unteren Bereich
-- horizontaler Abstand zur rechten Interaktionsleiste
-- maximal 2 Caption-Zeilen
-- interne Label-Lesbarkeit
-- Animation/Caption-Abstand
-- leere Flächen
-- statische Phasen
-- finalen End-Hold
-
-## 7. Post-Render-Korrekturschleife
-
-Wenn der Render einen echten visuellen Fehler zeigt:
-
-```text
-Render ansehen
-→ konkrete Ursache in Source bestimmen
-→ Source ändern
-→ Status auf "Revision implementiert, Rerender erforderlich" setzen
-→ neu rendern
-→ neuen Render erneut prüfen
+```bash
+node ki/scripts/validate-motion-readability-review.mjs <reel-package-dir> <rendered-video.mp4>
 ```
 
-Ein alter Render darf **nicht** als visuelle Freigabe für eine danach geänderte Source verwendet werden.
+Vor finalem Export laufen zusätzlich Voice-Lock, Entertainment, Source-Isolation (wenn vorhanden), Render-Provenance und Audio-/Video-Gate.
 
-Das gilt ausdrücklich auch für reine Caption-Positionsänderungen. Nach einer Änderung von `bottom`, horizontalem Inset, Caption-Größe, Zeilenlogik oder Safe-Zone sind frühere Render-/Review-Häkchen nicht mehr gültig.
+## Fail-Bedingungen
 
-## 8. Freigabe-Gate
+Kein `PASS`, wenn:
 
-Nicht `approved`, wenn mindestens eines davon zutrifft:
+- `TOO_FAST_BEATS > 0`
+- `SIMULTANEOUS_INFO_OVERLOADS > 0`
+- ungenehmigte dunkle Fullscreen-Szene vorhanden
+- Caption/Header kollidieren oder unlesbar sind
+- Audio fehlt/stumm ist
+- Caption merkbar vor/hinter der Stimme läuft
+- der Review zu einem anderen MP4 gehört
+- Source/Caption/Reel/Audio nach dem Render-Lock verändert wurden
+- der finale MP4 nicht aus dem gelockten Produktionsstand stammen kann
 
-- erster Moment wirkt leer/unbeabsichtigt
-- Hauptvisual zu klein für Smartphone
-- wichtige interne Labels zu klein
-- große ungenutzte Fläche trotz kleiner Kernanimation
-- mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
-- Schluss steht sichtbar zu früh still
-- Caption liegt sichtbar zu tief im Plattform-/Feed-UI-Bereich
-- Caption wurde unter `bottom: 500px` geschoben, um Platz für Visuals zu gewinnen
-- Caption oder kritischer Text liegt zu nah an der rechten Feed-Interaktionsleiste
-- Caption und Animation konkurrieren
-- mehr als 2 Caption-Zeilen stehen gleichzeitig sichtbar
-- wichtiger Inhalt wird vom Clip-Guard abgeschnitten
-- neuer Source-Stand wurde nach letzter visueller Prüfung verändert
-
-Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung bei sicher lesbarer Caption**.
+Nach jeder Source-, Caption-, Audio- oder Timingänderung: neuer Render, neuer 1x-Review, neuer Provenance-Gate.

@@ -1,171 +1,275 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-08-16
+**Status:** 2026-09-15 — Pre-YouTube-Stabilisierung auf dem aktuellen Showcase-/Longform-Stand
 
-Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
+Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Detailregeln bleiben in den jeweils zuständigen Dateien; hier stehen nur der aktuelle Arbeitszustand, die verbindlichen Gates und die unveränderlichen Produktionsregeln.
 
-## 1. Kanonischer Branch
+## 1. Aktueller Arbeitsstand
 
-`main` ist der einzige kanonische Produktionsstand.
-
-Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
-
-Neue normale Änderungen starten von `main` auf einem neuen Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich eine Repository-Stabilisierung oder Kanonisierung.
+- Aktueller Stabilisierungsbranch: `fix/pre-youtube-stabilization-2026-09-15`
+- Direkte Basis: `feat/remotion-showcase-test-2026-09-12`
+- Arbeitsbranch nie still wechseln.
+- Ziel dieser Stabilisierung: Longform-/YouTube-Pipeline technisch konsolidieren, bevor ein neues YouTube-Video produziert wird.
+- Keine neuen Motion-Libraries, Agenten oder zusätzlichen Capability-Schichten vor bestandenem Readiness-Lauf.
+- `main` ist aktuell nicht automatisch der freigegebene Produktionsstand.
+- Bei Widerspruch zwischen dieser Datei, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
+- Ein Status darf nur als bestanden gemeldet werden, wenn der zugehörige Befehl auf genau dem genannten Commit real ausgeführt wurde.
+- GitHub-Source-Änderungen allein sind kein Runtime-, Render- oder Review-PASS.
 
 ## 2. Verbindliche Lesereihenfolge
 
-Bei KI-Kanal-Arbeit gilt:
+Bei KI-Kanal-Arbeit:
 
 1. `REPO-STATE.md`
 2. `AGENTS.md`
-3. `ki/AGENTS.md`
-4. `ki/gehirn/MASTER.md`
-5. danach die passende Domäne:
-   - Reel-Arbeit → `ki/reels/AGENTS.md`
-   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
-   - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
-6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
-7. erst danach konkrete Pläne, Source- oder Plattformdateien
+3. bei Antigravity zusätzlich `GEMINI.md`, `.agents/agents.md`, `.agents/ANTIGRAVITY-LOCAL-SETUP.md`
+4. `ki/AGENTS.md`
+5. `ki/gehirn/MASTER.md`
+6. `ki/gehirn/STORYTELLING_MOTION.md`
+7. `ki/gehirn/LEVEL_UP_STANDARD.md`
+8. `ki/gehirn/VISUAL_ASSETS.md`
+9. bei Reels: `ki/reels/AGENTS.md`
+10. bei YouTube Longform: `ki/youtube-longform/AGENTS.md`, `ki/youtube-longform/LONGFORM-V1.md`, `ki/youtube-longform/YOUTUBE-READINESS.md`
+11. Ziel-Paket und seine Projektdateien
 
-Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträge:
-
-- Reels → `ki/src/reels/AGENTS.md`
-- Longform → `ki/src/longform/AGENTS.md`
-
-Ältere Dokumente, alte PR-Beschreibungen und historische Branches dürfen diese Reihenfolge nicht überschreiben.
-
-## 3. Kanonische Short-Form-Produktionsstruktur
-
-Planung, Audio, Assets und Export eines Reels liegen ausschließlich hier:
+## 3. Kanonische Reel-Struktur
 
 ```text
-ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-bilder/
-├── 03-caption/
-├── 04-pdf/
-├── 05-export/
-└── 06-projektdateien/
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/
+├── 01_Montag/
+├── 02_Dienstag/
+├── 03_Mittwoch/
+├── 04_Donnerstag/
+├── 05_Freitag/
+├── 06_Samstag/
+└── 07_Sonntag/
 ```
 
-Ausführbarer Remotion-Code liegt getrennt hier:
+Pro Thema:
 
 ```text
-ki/src/reels/<slug>/
+NN_Wochentag/
+└── 01_Thema/
+    ├── README.md
+    ├── 01-script-audio/
+    ├── 02-bilder/
+    ├── 03-caption/
+    ├── 04-pdf/
+    ├── 05-export/
+    └── 06-projektdateien/
 ```
 
-Planungsdateien werden niemals in `ki/src/reels/` verschoben. Ein Produktionspaket wird niemals direkt unter `ki/` oder flach unter `ki/reels/<slug>/` angelegt.
+Kurzform: `Woche → Wochentag → Thema/Reel → 01–06`
 
-## 4. Kanonische YouTube-Longform-Struktur
+Neues Reel:
 
-YouTube Longform ist seit 2026-08-16 als eigenes Produktionsformat aktiv.
+```bash
+npm run new-video -- "Reel Titel" YYYY-MM-DD
+```
 
-Produktionspakete liegen hier:
+Ausführbarer Remotion-Code liegt separat unter `ki/src/reels/<slug>/`.
+
+## 4. Nicht verhandelbare Produktionsverträge
+
+- Produktions-Voiceover kommt ausschließlich vom Nutzer.
+- `WORD-TIMINGS.json` ist nach Voice-Lock die Timing-Autorität für Captions, Szenen, Reveals und SFX.
+- Für aktuelle Level-Up-v4-Reels ist `BRAND-MOTION-PLAN.json` Bestandteil des Produktionsvertrags.
+- Native Remotion-Visuals bleiben die Produktionsbasis; Remote-Medien werden nicht zur Renderzeit geladen.
+- Offizielle/lokale Assets brauchen nachvollziehbare Herkunft und bleiben reviewpflichtig.
+- Source-Code allein beweist niemals einen visuellen PASS.
+- Longform-Produktionsrender müssen über den kanonischen Readiness-/Render-Lock-/Master-QA-Pfad laufen.
+
+Caption-Safe-Zone bleibt zentral synchronisiert mit `ki/src/reels/captionSafe.ts`:
+
+- bottom 330 px
+- horizontal inset 76 px
+- max width 928 px
+- maximal 2 Zeilen
+
+## 5. Generated Media — Bilder und B-Roll
+
+Der vorhandene Orchestrator besitzt eine Materialisierungsstufe statt nur Asset-Planung.
+
+Request-Datei pro Reel:
+
+`06-projektdateien/GENERATED-MEDIA-REQUESTS.json`
+
+Erlaubte Typen:
+
+- `IMAGE`
+- `BROLL`
+
+Erlaubte Rollen:
+
+- `ILLUSTRATION`
+- `ATMOSPHERE`
+- `TRANSITION`
+
+KI-generierte Medien dürfen niemals als Proof, Source, offizielle UI, echte Brand Identity, reales Ereignis oder echtes Footage ausgegeben werden. Dafür bleibt echte/offizielle/provenance-backed Media Pflicht.
+
+Vor Generierung ohne API-Kosten prüfen:
+
+```bash
+node --check scripts/materialize-generated-media.mjs
+node scripts/materialize-generated-media.mjs verify <reel-package-dir>
+```
+
+Echte Materialisierung:
+
+```bash
+GEMINI_API_KEY=... node scripts/materialize-generated-media.mjs materialize <reel-package-dir>
+```
+
+Standardprovider:
+
+- Bild: `gemini-3.1-flash-image`
+- B-Roll: `veo-3.1-generate-preview`
+
+Modelle bleiben über `KI_IMAGE_MODEL` und `KI_VIDEO_MODEL` austauschbar, damit ein Modellwechsel keine Architekturänderung benötigt.
+
+Binärdateien landen git-ignored unter `public/reel-assets/generated/<reel>/`. Die prüfbare Wahrheit landet in `06-projektdateien/GENERATED-MEDIA.json`: Provider, Modell, Prompt/Fingerprint, SHA256, MIME, Größe, lokaler Remotion-Pfad und Synthetic/Evidence-Flags.
+
+B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-Voiceover bleibt Narrationsautorität.
+
+Standardmäßig maximal 8 neue Generierungen pro Lauf; gleiche Request-/Model-Fingerprints mit passender lokaler SHA werden wiederverwendet statt erneut generiert.
+
+## 6. Kanonische Produktionsruntime
+
+Der Produktionsstandard ist:
 
 ```text
-ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
-├── README.md
-├── 01-script-audio/
-├── 02-visuals/
-├── 03-thumbnail/
-├── 04-metadata/
-├── 05-export/
-└── 06-projektdateien/
+Node 24 LTS
+npm 11
+NODE-VERSION = 24.21.0
+packageManager = npm@11.19.0
 ```
 
-Ausführbarer Source:
+Node 20 ist EOL und nicht mehr Produktionsstandard.
+
+Auf einer neuen oder noch nicht reproduzierbar eingerichteten Maschine zuerst:
+
+```bash
+npm run runtime:bootstrap
+```
+
+Der Bootstrap führt den echten Workspace-Install aus und erzeugt `package-lock.json`. Wenn der Lockfile neu oder verändert ist, muss er committed werden. Danach:
+
+```bash
+npm run runtime:verify
+```
+
+`runtime:verify` verlangt den committed Lockfile, installiert mit `npm ci`, führt YouTube-Readiness und `test:readiness` aus und schreibt:
 
 ```text
-ki/src/longform/<slug>/
+out/pre-youtube-runtime/summary.json
 ```
 
-Aktive Startvorgabe:
+Nur `status: "passed"` auf dem getesteten HEAD zählt.
 
-- 1920 × 1080
-- 30 FPS
-- 16:9
-- finale Laufzeit nach echtem Voiceover: 5:00–6:00 Minuten
-- `REMOTION_NATIVE_MAXIMUM`
-- Thumbnail als eigene Composition
+## 7. Kanonischer Repository-Pre-Test
 
-Aktives erstes Video:
+Vor einem echten Showcase-/Produktions-Test:
+
+```bash
+npm run test:readiness
+```
+
+`test:readiness` muss auf einem sauberen tracked Worktree unter Node 24 laufen und bindet den Lauf an den aktuellen Git-Commit. Es führt nacheinander aus:
+
+1. Syntaxcheck der Generated-Media-Materialisierung
+2. `npm run antigravity:verify`
+3. `npm run repo:verify`
+4. `npm run motion:verify`
+5. `npm run release:verify`
+
+Der Pre-Test erzeugt **keine** kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `materialize`-Befehl gestartet.
+
+Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` geschrieben und enthält mindestens Commit, Branch, Node-Version, Einzelschritte, Laufzeiten und Gesamtstatus.
+
+Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben → neuer Commit → `npm run test:readiness` erneut ausführen.
+
+## 8. Kanonischer YouTube-/Longform-Readiness-Gate
+
+Vor dem ersten neuen YouTube-Longform-Paket auf diesem Stand:
+
+```bash
+node scripts/run-youtube-readiness.mjs
+```
+
+Der Gate erzeugt weder kostenpflichtige Medien noch einen Produktionsrender. Er prüft fail-closed:
+
+- Node 24 LTS
+- sauberen tracked Worktree
+- stabilen Git-HEAD über den gesamten Lauf
+- Longform-Skript-Syntax
+- Antigravity-Longform-Capabilities
+- Longform-v1-Struktur
+- Longform-v1-/Master-/Capability-Contract-Tests
+- expliziten TypeScript-Scope für `ki/src/longform/**`
+- Repository-Wiring
+- Produktionsverträge
+
+Report:
 
 ```text
-ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/
+out/youtube-readiness/summary.json
 ```
 
-Video-Composition: `KI-Longform-AIAppWorkflow`
-Thumbnail-Composition: `KI-Longform-AIAppWorkflow-Thumbnail`
+Nur `status: "passed"` auf dem tatsächlich verwendeten Commit zählt als technischer YouTube-Preproduction-PASS.
 
-## 5. Plattform-/Publishing-Struktur
+Danach neues Paket:
 
-Plattformlogik liegt hier:
-
-```text
-ki/plattformen/
-├── youtube/
-├── instagram/
-├── tiktok/
-├── facebook/
-└── snapchat/
+```bash
+node scripts/new-ki-longform.mjs "Video Titel" YYYY-MM-DD
 ```
 
-Diese Ordner enthalten **Publishing-Regeln und Templates, keine zweite Produktionswahrheit**.
+Neue Pakete ab 2026-09-15 enthalten zusätzlich den vollständigen Phase-1-Handoff mit `VOICEOVER-ZUM-KOPIEREN.txt`, `VISUAL-STORY-PLAN.md` und expliziten Review-Hash-Feldern.
 
-Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat dürfen denselben freigegebenen Master verwenden. Plattform-spezifische Copy eines Reels gehört nach:
+## 9. Bedeutung der Gates
 
-```text
-03-caption/platform-copy.md
-```
+- `npm run runtime:bootstrap`: echter Node-24/npm-11-Workspace-Install und Lockfile-Erzeugung.
+- `npm run runtime:verify`: `npm ci` + beide Readiness-Gates + gemeinsamer Runtime-Report.
+- `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Node-24-Runtime, CI-Installationsvertrag, Dokumentationsmarker und Kernpfade.
+- `npm run production:contracts`: prüft Produktionsverträge.
+- `npm test`: prüft Wiring, Reel-Struktur und Vitest-Suite.
+- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation; der kanonische Motion-Typecheck umfasst auch Longform-Source.
+- `npm run motion:verify`: prüft Motion-Skripte, Motion-Tests, Typecheck und Render-Plan.
+- `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender und bindet den Lauf an einen stabilen Git-HEAD.
+- `npm run test:readiness`: ist der verbindliche Repo-Pre-Test-Einstieg und protokolliert den konkreten Commit.
+- `node scripts/run-youtube-readiness.mjs`: ist der verbindliche Longform-Preproduction-Einstieg.
+- `node scripts/with-longform-node24.mjs scripts/check-ki-longform-render-readiness.mjs <package>`: blockiert Produktionsrender ohne Voice-Lock, lokale freigegebene Medien, sichere Source-Pfade und registrierte Composition.
+- `node scripts/with-longform-node24.mjs scripts/render-ki-longform-master.mjs <package>`: erzeugt den kanonischen Review-Kandidaten mit Render-Lock, Audio-Mastering, QA und Kontaktbögen.
+- `node scripts/with-longform-node24.mjs scripts/check-ki-longform-release.mjs <package>`: prüft finalen Master, menschlichen Review, Render-Lock-Historie und SHA-Integrität aller gelockten Inputs erneut.
 
-YouTube Longform ist ein separates Format unter `ki/youtube-longform/` und wird nicht automatisch aus Reels erzeugt.
+## 10. Produktionsfreigabe
 
-Details: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
+Ein echter Produktions-/Showcase-Test darf erst als bestanden gelten, wenn:
 
-## 6. Verbindliches 3-Phasen-Modell
+- der passende Readiness-Gate mit `status: "passed"` endet,
+- der im Report gespeicherte Commit dem getesteten HEAD entspricht,
+- der tracked Worktree während des Laufs sauber geblieben ist,
+- keine offenen Drift-/Wiring-Fehler bestehen.
 
-Für Short-Form und Longform gilt derselbe Verantwortungsrahmen:
+Für YouTube Longform reicht der Preproduction-PASS allein nicht für Release. Danach gelten weiterhin:
 
-```text
-PHASE 1 — ChatGPT
-Idee + Fakten + Skript + Copy-Text + Szenen/Kapitel + Visual Beats + Visual-/Asset-Entscheidungen + Packaging + Remotion-Code-Grundlage + Checks
+`Phase 1 → Nutzer-Voiceover → Voice-Lock/Alignment → Media Approval/SHA → Render Readiness → kanonischer Master → vollständiger 1x Review → Release-Gate`.
 
-PHASE 2 — Mensch
-nur das echte Voiceover erzeugen und in 01-script-audio ablegen
+Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis zum ersten erfolgreich durchlaufenen neuen Longform-Video nachrangig.
 
-PHASE 3 — Codex / Antigravity
-Audio integrieren + echte Timeline synchronisieren + Tests + Smoke-Review + Final-Render + Export
-```
+## 11. Externe Einschränkungen
 
-Codex oder Antigravity bauen in Phase 3 ein bereits Phase-1-fertiges Format nicht neu von Null.
+GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, sind die lokalen maschinenlesbaren Readiness-Reports der verbindliche technische Nachweis für den getesteten Commit.
 
-Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
+Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
 
-## 7. Verbindliche visuelle Identität
+Ein vertrauenswürdig erzeugter `package-lock.json` fehlt weiterhin. Er darf nicht erfunden werden. Er muss durch `npm run runtime:bootstrap` unter Node 24/npm 11 erzeugt und committed werden. CI verwendet bereits strikt `npm ci` und bleibt bis dahin bewusst blockiert.
 
-- Short-Form standardmäßig 1080 × 1920 / 30 FPS
-- Longform aktuell 1920 × 1080 / 30 FPS
-- heller editorialer Look
-- dunkle Schrift
-- Marken-Lila `#B98CFF` als primärer Akzent
-- dunkles Lila `#6E45C9` für Tiefe/Kontrast
-- faceless, keine erkennbaren Gesichter
-- keine Cyberpunk-/Neon-Standardästhetik
-- `REMOTION_NATIVE_MAXIMUM`: sichtbare Inhalte so weit wie technisch und gestalterisch sinnvoll in React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- externe Bilder nur als begründete Ausnahme; keine erfundenen Assets
-- Sprechertext, Caption/Untertitel, Überschrift und Animation haben unterschiedliche Aufgaben und dürfen sich nicht unnötig wiederholen
-- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
-
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`, `ki/BILDSTIL.md`, `ki/reels/REMOTION_NATIVE_VISUALS_MAXIMUM.md`.
-
-## 8. Statusbegriffe niemals vermischen
-
-Diese Zustände sind getrennt:
+## 12. Statusbegriffe niemals vermischen
 
 ```text
 geplant
 implementiert
+materialisiert
 technisch getestet
 gerendert
 visuell geprüft
@@ -173,11 +277,4 @@ freigegeben
 veröffentlicht
 ```
 
-Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden. `veröffentlicht` bedeutet nicht automatisch `fachlich freigegeben`, wenn der Freigabeprozess übersprungen wurde.
-
-## 9. Bekannte externe Einschränkungen
-
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene blockiert und deshalb kein aktueller Beweis für Codequalität.
-- Ein `package-lock.json` ist noch nicht kanonisch erzeugt. Bis ein echter npm-Installationslauf möglich ist, darf kein erfundener Lockfile-Inhalt committed werden.
-
-Diese beiden Punkte sind technische Betriebsgrenzen, keine Erlaubnis, Struktur-, Test- oder Qualitätsregeln zu umgehen.
+Nur tatsächlich ausgeführte Prüfungen dürfen als bestanden gemeldet werden.

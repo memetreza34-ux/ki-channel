@@ -12,6 +12,9 @@
     "src/motion-system/**/*.json",
     "src/reels/**/*.ts",
     "src/reels/**/*.tsx",
-    "reels/**/*.json"
+    "src/longform/**/*.ts",
+    "src/longform/**/*.tsx",
+    "reels/**/*.json",
+    "youtube-longform/**/*.json"
   ]
 }

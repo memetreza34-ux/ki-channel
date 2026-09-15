@@ -1,0 +1,123 @@
+{
+  "version": 8,
+  "reelId": "ki-agent-workflow",
+  "slug": "ki-agent-workflow",
+  "compositionId": "KI-AgentWorkflow",
+  "sourceDir": "ki/src/reels/ki-agent-workflow",
+  "title": "Wie ein KI-Agent Aufgaben selbstständig erledigt",
+  "publishDate": "2026-09-14",
+  "week": "2026-09-14_bis_2026-09-20",
+  "productionMode": "LEVEL_UP_V4_BRAND_FIDELITY_OPEN_MOTION",
+  "timingAuthority": "PREVIEW_UNTIL_FORCED_ALIGNMENT",
+  "timingSync": {
+    "statusFile": "06-projektdateien/timing-sync-status.json",
+    "contractFile": "06-projektdateien/TIMING-SYNC-SYSTEM.md",
+    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>",
+    "finalGate": "node scripts/validate-reel-timing-sync.mjs <reel-package-dir>",
+    "productionPolicy": "AUDIO_MASTER_WORD_LOCKED_CAPTIONS_SCENES_REVEALS_SFX_DURATION"
+  },
+  "scriptBudget": {
+    "targetMinWords": 150,
+    "targetMaxWords": 175,
+    "hardMinWords": 140,
+    "hardMaxWords": 190,
+    "referenceWpm": 145,
+    "targetMinSeconds": 60,
+    "targetMaxSeconds": 75,
+    "allowShorter": false,
+    "shorterReason": "",
+    "allowLonger": false,
+    "longerReason": "",
+    "allowDurationOutsideTarget": false,
+    "durationExceptionReason": ""
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "planningDurationInFrames": 2040,
+    "finalDurationInFrames": null,
+    "finalDurationAuthority": "PAUSE_COMPRESSED_RUNTIME_PCM_WAV_AFTER_LOCAL_FORCED_ALIGNMENT"
+  },
+  "audio": {
+    "sourceMetadata": "01-script-audio/audio-source.json",
+    "targetFile": "01-script-audio/voiceover.mp3",
+    "status": "WAITING_FOR_USER_LOCAL_MASTER",
+    "provider": "USER_PROVIDED",
+    "agentGenerationAllowed": false,
+    "agentDownloadAllowed": false,
+    "timingAuthority": false,
+    "alignmentCommand": "node ki/scripts/align-reel-synced.mjs <reel-package-dir>"
+  },
+  "sceneVoiceMap": {
+    "file": "01-script-audio/SCENE-VOICE-MAP.json",
+    "status": "CONTENT_LOCKED_TIMING_PENDING"
+  },
+  "captions": {
+    "file": "03-caption/subtitle-cues.json",
+    "status": "PREVIEW_ONLY_ALIGNMENT_REQUIRED",
+    "maxLines": 2,
+    "bottom": 330,
+    "horizontalInset": 76,
+    "maxWidth": 928,
+    "fontSize": 40,
+    "maxWordsPerGroup": 6,
+    "style": "raised_readable_glass_overlay"
+  },
+  "sfx": {
+    "enabled": true,
+    "eventsFile": "06-projektdateien/sfx-events.json",
+    "resolvedFile": "06-projektdateien/sfx-resolved.json",
+    "status": "PENDING_LOCAL_CC0_RESOLUTION"
+  },
+  "visuals": {
+    "enabled": true,
+    "manifestFile": "06-projektdateien/visual-assets.json",
+    "resolvedFile": "06-projektdateien/visual-assets-resolved.json",
+    "generatedMediaRequests": "06-projektdateien/GENERATED-MEDIA-REQUESTS.json",
+    "generatedMediaManifest": "06-projektdateien/GENERATED-MEDIA.json",
+    "status": "NATIVE_MOTION_READY_GENERATED_MEDIA_PENDING",
+    "renderPolicy": "NATIVE_FIRST_LOCAL_ONLY",
+    "remoteRenderUrlsAllowed": false,
+    "cameraMotion": "STORY_DRIVEN_PUSH_PAN_ORBIT"
+  },
+  "storytelling": {
+    "enabled": true,
+    "file": "06-projektdateien/story-beats.json",
+    "style": "VOICE_SYNCHRONIZED_NARRATIVE_SOCIAL_EXPLAINER",
+    "minVisualBeats": 20,
+    "plannedVisualBeats": 24,
+    "maxStaticSeconds": 4.0,
+    "voiceSyncMode": "PREVIEW_FALLBACK_THEN_WORD_TIMINGS_SEMANTIC_ANCHORS",
+    "verticalStage": "HEADLINE_TO_RAISED_CAPTION_ZONE",
+    "microDetailPolicy": "MEANINGFUL_ONLY",
+    "motionVarietyPolicy": "NO_REPEATED_MAJOR_GRAMMAR_MORE_THAN_TWICE",
+    "requiredArc": ["HOOK", "PROOF", "CONSEQUENCE", "PAYOFF"],
+    "sourceRequiredTokens": ["StoryBeat", "StoryTexture", "StoryCamera", "ImpactNumber"]
+  },
+  "levelUp": {
+    "enabled": true,
+    "file": "06-projektdateien/LEVEL-UP-PLAN.json",
+    "standardVersion": 4,
+    "brandMotionPlanFile": "06-projektdateien/BRAND-MOTION-PLAN.json"
+  },
+  "export": {
+    "coverTimeSeconds": 0.5,
+    "coverText": "KI-AGENT: SO HANDELT ER",
+    "finalCaptionFile": "03-caption/FINAL-CAPTION.txt",
+    "requiredPackage": ["video", "cover", "caption", "manifest"],
+    "socialAudioMaster": {"integratedLufs": -16, "truePeakDbtp": -1.5}
+  },
+  "scenes": [
+    {"sceneId":"scene1","title":"Nur das Ziel","startFrame":0,"endFrame":330,"accent":"#6E45C9","heroMoment":"Cover-first goal card transforms a normal prompt into an autonomous target","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene2","title":"Zerlegen und Tools wählen","startFrame":330,"endFrame":650,"accent":"#B98CFF","heroMoment":"Goal branches into concrete tasks and tool lanes; generated workspace image can sit behind the native overlay","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene3","title":"Prüfen und wiederholen","startFrame":650,"endFrame":930,"accent":"#2E90FA","heroMoment":"Animated agent loop with optional generated B-roll and a visible retry path","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene4","title":"Regeln und Grenzen","startFrame":930,"endFrame":1290,"accent":"#F79009","heroMoment":"Permission gates distinguish model, rules, allowed tools and human approval","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene5","title":"Der echte Workflow","startFrame":1290,"endFrame":1650,"accent":"#12B76A","heroMoment":"Five-step workflow fills left-to-right with state transitions","timingStatus":"PLANNING_ONLY"},
+    {"sceneId":"scene6","title":"Vom Chat zum Ergebnis","startFrame":1650,"endFrame":2040,"accent":"#6E45C9","heroMoment":"A finished deliverable replaces the chat bubble; final control/protocol/approval guardrails land","timingStatus":"PLANNING_ONLY"}
+  ],
+  "sources": [
+    "https://www.anthropic.com/engineering/building-effective-agents",
+    "https://openai.com/de-DE/index/new-tools-for-building-agents/"
+  ]
+}
