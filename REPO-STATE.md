@@ -1,18 +1,20 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-12 — Pre-Test-Stabilisierung + Generated-Media-Capability
+**Status:** 2026-09-15 — Pre-YouTube-Stabilisierung auf dem aktuellen Showcase-/Longform-Stand
 
 Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Detailregeln bleiben in den jeweils zuständigen Dateien; hier stehen nur der aktuelle Arbeitszustand, die verbindlichen Gates und die unveränderlichen Produktionsregeln.
 
 ## 1. Aktueller Arbeitsstand
 
-- Aktueller Testbranch: `feat/remotion-showcase-test-2026-09-12`
+- Aktueller Stabilisierungsbranch: `fix/pre-youtube-stabilization-2026-09-15`
+- Direkte Basis: `feat/remotion-showcase-test-2026-09-12`
 - Arbeitsbranch nie still wechseln.
-- Der bisher fehlende Pre-Test-Blocker „Agent kann Bilder/B-Roll nur planen, aber nicht materialisieren“ wird mit `scripts/materialize-generated-media.mjs` geschlossen.
-- Nach dieser Capability keine weiteren Features vor bestandenem Showcase-Test.
+- Ziel dieser Stabilisierung: Longform-/YouTube-Pipeline technisch konsolidieren, bevor ein neues YouTube-Video produziert wird.
+- Keine neuen Motion-Libraries, Agenten oder zusätzlichen Capability-Schichten vor bestandenem Readiness-Lauf.
 - `main` ist aktuell nicht automatisch der freigegebene Produktionsstand.
 - Bei Widerspruch zwischen dieser Datei, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
 - Ein Status darf nur als bestanden gemeldet werden, wenn der zugehörige Befehl auf genau dem genannten Commit real ausgeführt wurde.
+- GitHub-Source-Änderungen allein sind kein Runtime-, Render- oder Review-PASS.
 
 ## 2. Verbindliche Lesereihenfolge
 
@@ -26,8 +28,9 @@ Bei KI-Kanal-Arbeit:
 6. `ki/gehirn/STORYTELLING_MOTION.md`
 7. `ki/gehirn/LEVEL_UP_STANDARD.md`
 8. `ki/gehirn/VISUAL_ASSETS.md`
-9. `ki/reels/AGENTS.md`
-10. Ziel-Reel und seine Projektdateien
+9. bei Reels: `ki/reels/AGENTS.md`
+10. bei YouTube Longform: `ki/youtube-longform/AGENTS.md`, `ki/youtube-longform/LONGFORM-V1.md`, `ki/youtube-longform/YOUTUBE-READINESS.md`
+11. Ziel-Paket und seine Projektdateien
 
 ## 3. Kanonische Reel-Struktur
 
@@ -74,6 +77,7 @@ Ausführbarer Remotion-Code liegt separat unter `ki/src/reels/<slug>/`.
 - Native Remotion-Visuals bleiben die Produktionsbasis; Remote-Medien werden nicht zur Renderzeit geladen.
 - Offizielle/lokale Assets brauchen nachvollziehbare Herkunft und bleiben reviewpflichtig.
 - Source-Code allein beweist niemals einen visuellen PASS.
+- Longform-Produktionsrender müssen über den kanonischen Readiness-/Render-Lock-/Master-QA-Pfad laufen.
 
 Caption-Safe-Zone bleibt zentral synchronisiert mit `ki/src/reels/captionSafe.ts`:
 
@@ -84,7 +88,7 @@ Caption-Safe-Zone bleibt zentral synchronisiert mit `ki/src/reels/captionSafe.ts
 
 ## 5. Generated Media — Bilder und B-Roll
 
-Der vorhandene Orchestrator besitzt jetzt eine Materialisierungsstufe statt nur Asset-Planung.
+Der vorhandene Orchestrator besitzt eine Materialisierungsstufe statt nur Asset-Planung.
 
 Request-Datei pro Reel:
 
@@ -129,9 +133,9 @@ B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-
 
 Standardmäßig maximal 8 neue Generierungen pro Lauf; gleiche Request-/Model-Fingerprints mit passender lokaler SHA werden wiederverwendet statt erneut generiert.
 
-## 6. Ein kanonischer Pre-Test
+## 6. Kanonischer Repository-Pre-Test
 
-Vor dem nächsten echten Showcase-/Produktions-Test wird genau dieser Gate-Einstieg verwendet:
+Vor einem echten Showcase-/Produktions-Test:
 
 ```bash
 npm run test:readiness
@@ -151,34 +155,81 @@ Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` gesch
 
 Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben → neuer Commit → `npm run test:readiness` erneut ausführen.
 
-## 7. Bedeutung der Gates
+## 7. Kanonischer YouTube-/Longform-Readiness-Gate
+
+Vor dem ersten neuen YouTube-Longform-Paket auf diesem Stand:
+
+```bash
+node scripts/run-youtube-readiness.mjs
+```
+
+Der Gate erzeugt weder kostenpflichtige Medien noch einen Produktionsrender. Er prüft fail-closed:
+
+- Node 20
+- sauberen tracked Worktree
+- stabilen Git-HEAD über den gesamten Lauf
+- Longform-Skript-Syntax
+- Antigravity-Longform-Capabilities
+- Longform-v1-Struktur
+- Longform-v1-/Master-/Capability-Contract-Tests
+- expliziten TypeScript-Scope für `ki/src/longform/**`
+- Repository-Wiring
+- Produktionsverträge
+
+Report:
+
+```text
+out/youtube-readiness/summary.json
+```
+
+Nur `status: "passed"` auf dem tatsächlich verwendeten Commit zählt als technischer YouTube-Preproduction-PASS.
+
+Danach neues Paket:
+
+```bash
+node scripts/new-ki-longform.mjs "Video Titel" YYYY-MM-DD
+```
+
+Neue Pakete ab 2026-09-15 enthalten zusätzlich den vollständigen Phase-1-Handoff mit `VOICEOVER-ZUM-KOPIEREN.txt`, `VISUAL-STORY-PLAN.md` und expliziten Review-Hash-Feldern.
+
+## 8. Bedeutung der Gates
 
 - `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Dokumentationsmarker und Kernpfade.
 - `npm run production:contracts`: prüft Produktionsverträge.
 - `npm test`: prüft Wiring, Reel-Struktur und Vitest-Suite.
-- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation.
+- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation; der kanonische Motion-Typecheck umfasst jetzt auch Longform-Source.
 - `npm run motion:verify`: prüft Motion-Skripte, Motion-Tests, Typecheck und Render-Plan.
-- `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender.
-- `npm run test:readiness`: ist der verbindliche Pre-Test-Einstieg und protokolliert den konkreten Commit.
+- `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender und bindet den Lauf an einen stabilen Git-HEAD.
+- `npm run test:readiness`: ist der verbindliche Repo-Pre-Test-Einstieg und protokolliert den konkreten Commit.
+- `node scripts/run-youtube-readiness.mjs`: ist der verbindliche Longform-Preproduction-Einstieg.
+- `node scripts/check-ki-longform-render-readiness.mjs <package>`: blockiert Produktionsrender ohne Voice-Lock, lokale freigegebene Medien, sichere Source-Pfade und registrierte Composition.
+- `node scripts/render-ki-longform-master.mjs <package>`: erzeugt den kanonischen Review-Kandidaten mit Render-Lock, Audio-Mastering, QA und Kontaktbögen.
+- `node scripts/check-ki-longform-release.mjs <package>`: prüft finalen Master, menschlichen Review, Render-Lock-Historie und SHA-Integrität aller gelockten Inputs erneut.
 
-## 8. Showcase-Freigabe
+## 9. Produktionsfreigabe
 
-Der echte Showcase-Test darf erst starten, wenn:
+Ein echter Produktions-/Showcase-Test darf erst als bestanden gelten, wenn:
 
-- `npm run test:readiness` mit `status: "passed"` endet,
+- der passende Readiness-Gate mit `status: "passed"` endet,
 - der im Report gespeicherte Commit dem getesteten HEAD entspricht,
 - der tracked Worktree während des Laufs sauber geblieben ist,
 - keine offenen Drift-/Wiring-Fehler bestehen.
 
-Danach wird erst der eigentliche Render-/Showcase-Test ausgeführt. Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis dahin nachrangig.
+Für YouTube Longform reicht der Preproduction-PASS allein nicht für Release. Danach gelten weiterhin:
 
-## 9. Externe Einschränkungen
+`Phase 1 → Nutzer-Voiceover → Voice-Lock/Alignment → Media Approval/SHA → Render Readiness → kanonischer Master → vollständiger 1x Review → Release-Gate`.
 
-GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, ist der lokale `test:readiness`-Report der verbindliche technische Nachweis für den getesteten Commit.
+Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis zum ersten erfolgreich durchlaufenen neuen Longform-Video nachrangig.
+
+## 10. Externe Einschränkungen
+
+GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, sind die lokalen maschinenlesbaren Readiness-Reports der verbindliche technische Nachweis für den getesteten Commit.
 
 Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
 
-## 10. Statusbegriffe niemals vermischen
+Ein vertrauenswürdig erzeugter `package-lock.json` fehlt weiterhin. Er darf nicht erfunden werden. Nach einem echten Node-20-Installationslauf muss das Lockfile committed und der Installationspfad anschließend auf `npm ci` umgestellt werden.
+
+## 11. Statusbegriffe niemals vermischen
 
 ```text
 geplant
