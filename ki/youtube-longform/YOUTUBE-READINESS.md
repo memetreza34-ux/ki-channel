@@ -2,9 +2,33 @@
 
 Dieses Dokument ist der kurze operative Einstieg, bevor ein neues YouTube-Longform-Video produziert wird.
 
-## 1. Repository zuerst prüfen
+## 1. Runtime einmal sauber herstellen
 
-Auf dem aktuellen Arbeitsbranch mit Node 20 und installiertem Workspace ausführen:
+Der kanonische Produktionsstand verwendet **Node 24 LTS** und **npm 11**.
+
+Vor dem ersten Produktionslauf auf einer neuen Maschine:
+
+```bash
+npm run runtime:bootstrap
+```
+
+Der Bootstrap führt einen echten Workspace-Install aus und erzeugt `package-lock.json`. Wenn der Lockfile neu oder verändert ist, wird der Lauf absichtlich beendet: Lockfile committen und danach ausführen:
+
+```bash
+npm run runtime:verify
+```
+
+`runtime:verify` verlangt einen committed Lockfile, installiert reproduzierbar mit `npm ci`, führt den YouTube-Readiness-Gate und `test:readiness` aus und erzeugt:
+
+```text
+out/pre-youtube-runtime/summary.json
+```
+
+Nur `status: "passed"` auf dem tatsächlich verwendeten Commit zählt als Runtime-/Preproduction-PASS.
+
+## 2. Repository-Readiness
+
+Der direkte Gate kann auf einem bereits installierten, sauberen Workspace separat ausgeführt werden:
 
 ```bash
 node scripts/run-youtube-readiness.mjs
@@ -12,7 +36,7 @@ node scripts/run-youtube-readiness.mjs
 
 Der Gate erzeugt **keinen kostenpflichtigen Media-Call und keinen Produktionsrender**. Er prüft fail-closed:
 
-1. Node 20
+1. Node 24 LTS
 2. sauberen tracked Worktree
 3. stabilen Git-HEAD während des gesamten Laufs
 4. Syntax der Longform-Generator-/Readiness-/Render-/Release-Skripte
@@ -29,11 +53,9 @@ Maschinenlesbarer Report:
 out/youtube-readiness/summary.json
 ```
 
-Nur `status: "passed"` auf dem tatsächlich verwendeten Commit zählt als technischer Preproduction-PASS.
+## 3. Neues Video anlegen
 
-## 2. Neues Video anlegen
-
-Nach bestandenem Readiness-Gate:
+Nach bestandenem Runtime-/Readiness-Gate:
 
 ```bash
 node scripts/new-ki-longform.mjs "Video Titel" YYYY-MM-DD
@@ -51,7 +73,7 @@ Ausführbarer Source gehört getrennt nach:
 ki/src/longform/<sourceSlug>/
 ```
 
-## 3. Phase 1
+## 4. Phase 1
 
 Vor dem Nutzer-Voiceover müssen mindestens fertig sein:
 
@@ -59,7 +81,7 @@ Vor dem Nutzer-Voiceover müssen mindestens fertig sein:
 - `CHAPTERS.json`
 - `CLAIMS.json` mit geprüften Claims/Quellen
 - `MEDIA-PLAN.json`
-- Visual-Story-Plan
+- `VISUAL-STORY-PLAN.md`
 - mindestens drei Thumbnail-Konzepte
 - Metadaten-Draft
 - `LONGFORM-VERSION.json`
@@ -67,18 +89,18 @@ Vor dem Nutzer-Voiceover müssen mindestens fertig sein:
 
 Keine erfundenen Belege, Fake-Screenshots oder Remote-Medien zur Renderzeit.
 
-## 4. Phase 2
+## 5. Phase 2
 
 Der Nutzer liefert ausschließlich das finale Produktions-Voiceover als `voiceover.wav` oder `voiceover.mp3`.
 
 Danach werden echte Kapitel-/Wort-Timings erzeugt und die Timeline voice-locked. Keine künstlichen Fix-Dauern als Ersatz für Alignment.
 
-## 5. Phase 3 — Render Readiness
+## 6. Phase 3 — Render Readiness
 
-Vor einem Produktionsrender:
+Produktionsbefehle laufen über die Node-24-LTS-Runtime. Vor einem Produktionsrender:
 
 ```bash
-node scripts/check-ki-longform-render-readiness.mjs <longform-package>
+node scripts/with-longform-node24.mjs scripts/check-ki-longform-render-readiness.mjs <longform-package>
 ```
 
 Dieser Gate blockiert unter anderem bei:
@@ -94,28 +116,28 @@ Dieser Gate blockiert unter anderem bei:
 - nicht registrierter Composition
 - uncommitted Longform-Source
 
-## 6. Kanonischer Master
+## 7. Kanonischer Master
 
 Nur dieser Weg erzeugt einen Produktions-Review-Kandidaten:
 
 ```bash
-node scripts/render-ki-longform-master.mjs <longform-package>
+node scripts/with-longform-node24.mjs scripts/render-ki-longform-master.mjs <longform-package>
 ```
 
 Er erzwingt Readiness, Render-Lock, H.264/CRF18, Audio-Mastering, Master-QA und Kontaktbögen.
 
 Ein direkter `remotion render` ist nur Prototype und kein freigegebener Master.
 
-## 7. Menschlicher Review + Release
+## 8. Menschlicher Review + Release
 
 Den exakt gemasterten Review-MP4 vollständig bei 1x ansehen und die Kontaktbögen prüfen. Danach Release-Plan aktualisieren und ausführen:
 
 ```bash
-node scripts/check-ki-longform-release.mjs <longform-package>
+node scripts/with-longform-node24.mjs scripts/check-ki-longform-release.mjs <longform-package>
 ```
 
 Erst danach darf der Status `freigegeben` verwendet werden.
 
-## Noch offener Repository-Punkt
+## Aktuell noch offener externer Schritt
 
-Ein vertrauenswürdig erzeugter `package-lock.json` fehlt derzeit noch. Er darf nicht erfunden werden. Sobald ein echter Node-20-Installationslauf auf der Produktionsmaschine erfolgreich war, Lockfile committen und die Installation anschließend auf `npm ci` umstellen. Bis dahin bleibt dies eine Reproduzierbarkeitsgrenze, kein Grund für einen falschen PASS.
+`package-lock.json` muss einmal durch `npm run runtime:bootstrap` in einer echten Node-24/npm-11-Umgebung erzeugt und committed werden. CI ist bereits auf `npm ci` umgestellt und soll bis dahin bewusst nicht grün werden. Ein fehlender Lockfile ist damit ein sichtbarer Blocker und kein stiller Fallback auf eine unreproduzierbare Installation.
