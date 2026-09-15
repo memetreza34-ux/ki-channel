@@ -16,21 +16,40 @@ Never silently return to `main` while stabilization work is active.
 
 Required for the current repository:
 
-- Node 20 (`>=20 <21`)
-- npm
+- Node 24 LTS (`>=24 <25`), canonical version `24.21.0`
+- npm 11 (`>=11 <12`), canonical package manager `npm@11.19.0`
 - Git
 - FFmpeg / ffprobe
 - Chrome/Chromium for browser QA
 - Docker only if the GitHub MCP is used through the configured container
 
-Then:
+On a machine without the committed dependency state yet:
 
 ```bash
-npm install --package-lock=false --no-audit --no-fund
+npm run runtime:bootstrap
+```
+
+If this creates or changes `package-lock.json`, commit that lockfile first. Then run the canonical local proof:
+
+```bash
+npm run runtime:verify
+```
+
+After a committed lockfile exists, normal installs use:
+
+```bash
+npm ci --no-audit --no-fund
+```
+
+Then, when needed independently:
+
+```bash
 npm run antigravity:skills
 npm run antigravity:capabilities
 npm run antigravity:verify
 ```
+
+Do not use Node 20 or `npm install --package-lock=false` as a production fallback.
 
 ## 3. Antigravity UI checks
 
