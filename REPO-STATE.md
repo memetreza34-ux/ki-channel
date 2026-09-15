@@ -133,7 +133,40 @@ B-Roll-Provider-Audio wird im Produktionsrender standardmäßig gemutet. Nutzer-
 
 Standardmäßig maximal 8 neue Generierungen pro Lauf; gleiche Request-/Model-Fingerprints mit passender lokaler SHA werden wiederverwendet statt erneut generiert.
 
-## 6. Kanonischer Repository-Pre-Test
+## 6. Kanonische Produktionsruntime
+
+Der Produktionsstandard ist:
+
+```text
+Node 24 LTS
+npm 11
+NODE-VERSION = 24.21.0
+packageManager = npm@11.19.0
+```
+
+Node 20 ist EOL und nicht mehr Produktionsstandard.
+
+Auf einer neuen oder noch nicht reproduzierbar eingerichteten Maschine zuerst:
+
+```bash
+npm run runtime:bootstrap
+```
+
+Der Bootstrap führt den echten Workspace-Install aus und erzeugt `package-lock.json`. Wenn der Lockfile neu oder verändert ist, muss er committed werden. Danach:
+
+```bash
+npm run runtime:verify
+```
+
+`runtime:verify` verlangt den committed Lockfile, installiert mit `npm ci`, führt YouTube-Readiness und `test:readiness` aus und schreibt:
+
+```text
+out/pre-youtube-runtime/summary.json
+```
+
+Nur `status: "passed"` auf dem getesteten HEAD zählt.
+
+## 7. Kanonischer Repository-Pre-Test
 
 Vor einem echten Showcase-/Produktions-Test:
 
@@ -141,7 +174,7 @@ Vor einem echten Showcase-/Produktions-Test:
 npm run test:readiness
 ```
 
-`test:readiness` muss auf einem sauberen tracked Worktree laufen und bindet den Lauf an den aktuellen Git-Commit. Es führt nacheinander aus:
+`test:readiness` muss auf einem sauberen tracked Worktree unter Node 24 laufen und bindet den Lauf an den aktuellen Git-Commit. Es führt nacheinander aus:
 
 1. Syntaxcheck der Generated-Media-Materialisierung
 2. `npm run antigravity:verify`
@@ -155,7 +188,7 @@ Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` gesch
 
 Ein fehlgeschlagener Schritt beendet den Pre-Test. Danach gilt: Fehler beheben → neuer Commit → `npm run test:readiness` erneut ausführen.
 
-## 7. Kanonischer YouTube-/Longform-Readiness-Gate
+## 8. Kanonischer YouTube-/Longform-Readiness-Gate
 
 Vor dem ersten neuen YouTube-Longform-Paket auf diesem Stand:
 
@@ -165,7 +198,7 @@ node scripts/run-youtube-readiness.mjs
 
 Der Gate erzeugt weder kostenpflichtige Medien noch einen Produktionsrender. Er prüft fail-closed:
 
-- Node 20
+- Node 24 LTS
 - sauberen tracked Worktree
 - stabilen Git-HEAD über den gesamten Lauf
 - Longform-Skript-Syntax
@@ -192,21 +225,23 @@ node scripts/new-ki-longform.mjs "Video Titel" YYYY-MM-DD
 
 Neue Pakete ab 2026-09-15 enthalten zusätzlich den vollständigen Phase-1-Handoff mit `VOICEOVER-ZUM-KOPIEREN.txt`, `VISUAL-STORY-PLAN.md` und expliziten Review-Hash-Feldern.
 
-## 8. Bedeutung der Gates
+## 9. Bedeutung der Gates
 
-- `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Dokumentationsmarker und Kernpfade.
+- `npm run runtime:bootstrap`: echter Node-24/npm-11-Workspace-Install und Lockfile-Erzeugung.
+- `npm run runtime:verify`: `npm ci` + beide Readiness-Gates + gemeinsamer Runtime-Report.
+- `npm run repo:wiring-check`: prüft kanonische Repo-Verdrahtung, Node-24-Runtime, CI-Installationsvertrag, Dokumentationsmarker und Kernpfade.
 - `npm run production:contracts`: prüft Produktionsverträge.
 - `npm test`: prüft Wiring, Reel-Struktur und Vitest-Suite.
-- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation; der kanonische Motion-Typecheck umfasst jetzt auch Longform-Source.
+- `npm run repo:verify`: bündelt Contracts, Typecheck, Tests und Content-Runtime-Verifikation; der kanonische Motion-Typecheck umfasst auch Longform-Source.
 - `npm run motion:verify`: prüft Motion-Skripte, Motion-Tests, Typecheck und Render-Plan.
 - `npm run release:verify`: prüft den statischen Release-Pfad ohne teuren Vollrender und bindet den Lauf an einen stabilen Git-HEAD.
 - `npm run test:readiness`: ist der verbindliche Repo-Pre-Test-Einstieg und protokolliert den konkreten Commit.
 - `node scripts/run-youtube-readiness.mjs`: ist der verbindliche Longform-Preproduction-Einstieg.
-- `node scripts/check-ki-longform-render-readiness.mjs <package>`: blockiert Produktionsrender ohne Voice-Lock, lokale freigegebene Medien, sichere Source-Pfade und registrierte Composition.
-- `node scripts/render-ki-longform-master.mjs <package>`: erzeugt den kanonischen Review-Kandidaten mit Render-Lock, Audio-Mastering, QA und Kontaktbögen.
-- `node scripts/check-ki-longform-release.mjs <package>`: prüft finalen Master, menschlichen Review, Render-Lock-Historie und SHA-Integrität aller gelockten Inputs erneut.
+- `node scripts/with-longform-node24.mjs scripts/check-ki-longform-render-readiness.mjs <package>`: blockiert Produktionsrender ohne Voice-Lock, lokale freigegebene Medien, sichere Source-Pfade und registrierte Composition.
+- `node scripts/with-longform-node24.mjs scripts/render-ki-longform-master.mjs <package>`: erzeugt den kanonischen Review-Kandidaten mit Render-Lock, Audio-Mastering, QA und Kontaktbögen.
+- `node scripts/with-longform-node24.mjs scripts/check-ki-longform-release.mjs <package>`: prüft finalen Master, menschlichen Review, Render-Lock-Historie und SHA-Integrität aller gelockten Inputs erneut.
 
-## 9. Produktionsfreigabe
+## 10. Produktionsfreigabe
 
 Ein echter Produktions-/Showcase-Test darf erst als bestanden gelten, wenn:
 
@@ -221,15 +256,15 @@ Für YouTube Longform reicht der Preproduction-PASS allein nicht für Release. D
 
 Neue Libraries, Agenten, Effekte oder zusätzliche Architektur sind bis zum ersten erfolgreich durchlaufenen neuen Longform-Video nachrangig.
 
-## 10. Externe Einschränkungen
+## 11. Externe Einschränkungen
 
 GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, sind die lokalen maschinenlesbaren Readiness-Reports der verbindliche technische Nachweis für den getesteten Commit.
 
 Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
 
-Ein vertrauenswürdig erzeugter `package-lock.json` fehlt weiterhin. Er darf nicht erfunden werden. Nach einem echten Node-20-Installationslauf muss das Lockfile committed und der Installationspfad anschließend auf `npm ci` umgestellt werden.
+Ein vertrauenswürdig erzeugter `package-lock.json` fehlt weiterhin. Er darf nicht erfunden werden. Er muss durch `npm run runtime:bootstrap` unter Node 24/npm 11 erzeugt und committed werden. CI verwendet bereits strikt `npm ci` und bleibt bis dahin bewusst blockiert.
 
-## 11. Statusbegriffe niemals vermischen
+## 12. Statusbegriffe niemals vermischen
 
 ```text
 geplant
