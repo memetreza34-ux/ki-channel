@@ -40,14 +40,42 @@ Der Nutzer legt die vollständige Datei unter `reel.json -> audio.targetFile` ab
 
 Erst wenn diese Datei existiert, darf die Pipeline fortfahren.
 
-Danach:
+## Ein öffentlicher Sync-Einstieg
 
-1. lokale Datei mit `ffprobe` prüfen
-2. Runtime-Audio inklusive Pacing erzeugen
+Für aktuelle Produktions-Reels gibt es nach dem Einlegen des Nutzer-Voiceovers genau einen öffentlichen Timing-/Choreografie-Einstieg:
+
+```bash
+npm run reel:sync -- <reel-package-dir>
+```
+
+Dieser Befehl ruft `ki/scripts/align-reel-synced.mjs` auf und orchestriert die komplette lokale Synchronisierung. `align-reel-local.mjs` bleibt ein interner Unterbaustein für das primäre Forced Alignment und ist **nicht** mehr der öffentliche Produktions-Einstieg.
+
+Der Sync-Orchestrator führt in fester Reihenfolge aus:
+
+1. Scene-/Voice-Schema normalisieren
+2. Runtime-Audio vorbereiten und primäres Forced Alignment ausführen bzw. Cache wiederverwenden
+3. unabhängigen CTC-Alignment-Gegencheck ausführen bzw. Cache wiederverwenden
+4. pause-aware Master-Timeline erzeugen
+5. explizite Speech-to-Animation-Choreografieintervalle kompilieren
+6. SFX aus den Choreografie-Beats auflösen
+7. menschenlesbares Timeline-Audit schreiben
+8. Alignment-, Master-Timeline- und Choreografie-Gates ausführen
+9. Timing-Sync finalisieren
+10. finale Timing-/Choreografie-Gates erneut prüfen
+
+Unverändertes Audio/Skript soll gecachte Alignment-Artefakte wiederverwenden statt beide Modelle erneut zu laden.
+
+## Runtime-Audio
+
+Die lokale Nutzerdatei wird vor finaler Timing-Ableitung mit `ffprobe` geprüft und als Runtime-Audio inklusive Pacing vorbereitet.
+
+Der interne Baustein dafür ist:
 
 ```bash
 node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
 ```
+
+Im normalen Produktionsablauf wird er über `npm run reel:sync -- <reel-package-dir>` orchestriert und muss nicht separat gestartet werden.
 
 Das Ergebnis ist:
 
@@ -78,7 +106,7 @@ Nutzer-Voiceover
 → Runtime-WAV
 → erst danach Forced Alignment
 → neue Word-Timings
-→ Captions / Szenen / Reveals / SFX folgen dem schnelleren Audio
+→ Captions / Szenen / Choreografie / SFX folgen demselben schnelleren Audio
 ```
 
 **Nicht erlaubt:** fertiges MP4 nachträglich pauschal auf 1,10× beschleunigen. Das würde Animation, Caption- und SFX-Synchronität umgehen. Die 1,10×-Änderung gehört in die Runtime-Audio-Stufe vor dem Alignment.
@@ -115,7 +143,7 @@ Der v3-Startwert wurde am echten Donnerstag-MP4 getestet: Die Audio-Kette `silen
 
 Das Script validiert nach der Runtime-Erstellung erneut, dass keine unerwartet langen Silence-Gaps übrig bleiben und dass nicht zu viel Audiomaterial entfernt wurde.
 
-**Forced Alignment läuft immer erst nach Pause-Kompression und Tempoanpassung.** Dadurch verwenden Stimme, Wortzeiten, Captions, Szenengrenzen, Reveals, SFX und Composition-Dauer dieselbe Runtime-WAV.
+**Forced Alignment läuft immer erst nach Pause-Kompression und Tempoanpassung.** Dadurch verwenden Stimme, Wortzeiten, Captions, Szenengrenzen, Choreografie, SFX und Composition-Dauer dieselbe Runtime-WAV.
 
 ## Finale Timing-Autorität
 
@@ -126,51 +154,49 @@ SCENE-VOICE-MAP.json
 +
 NUTZER-VOICEOVER
         ↓
-Pause-Kompression
-        ↓
-1,10× Pitch-preserving Tempo (v3 Default)
+Pause-Kompression + Pitch-preserving Tempo
         ↓
 Runtime-PCM-WAV
         ↓
-LOCAL FORCED ALIGNMENT
+reel:sync
+        ↓
+primäres Forced Alignment + unabhängiger Alignment-Gegencheck
         ↓
 WORD-TIMINGS.json
         ↓
-Captions + Szenen + Reveals + SFX + finale Duration
+Master-Timeline
+        ↓
+Captions + Szenen + explizite ENTER/HOLD/EXIT-Choreografie + SFX + finale Duration
+        ↓
+Timing-/Choreografie-Gates
 ```
-
-Ein-Kommando-Alignment:
-
-```bash
-node ki/scripts/align-reel-local.mjs <reel-package-dir>
-```
-
-Der Befehl richtet den bekannten Sprechertext lokal auf die Runtime-WAV aus, schreibt Wortzeiten, baut Caption-Cues und leitet Szenengrenzen aus dem Satz→Szene-Mapping ab.
 
 Whisper bleibt für unbekanntes Audio oder Diagnose zulässig, ist aber nicht die primäre finale Timing-Autorität, wenn der exakte Sprechertext bereits vorliegt.
 
-## Voice-/Scene-Lock
+## Voice-/Scene-/Choreography-Lock
 
-Nach lokalem Alignment müssen gelten:
+Nach `npm run reel:sync -- <reel-package-dir>` müssen gelten:
 
 - `WORD-TIMINGS.json` stammt aus der exakten Runtime-WAV
-- kein fuzzy word matching
+- kein fuzzy word matching als finale Timing-Autorität
 - Wortreihenfolge entspricht exakt `VOICEOVER-ZUM-KOPIEREN.txt`
 - jeder Satz ist über `SCENE-VOICE-MAP.json` genau einer Szene zugeordnet
 - `subtitle-cues.json` enthält echte Wortframes
-- Szenenstarts werden aus dem ersten tatsächlich gesprochenen Wort ihrer gemappten Szene abgeleitet
+- Szenenstarts werden aus dem tatsächlich gesprochenen Inhalt abgeleitet
+- Animationen besitzen explizite begrenzte Sprach-/Choreografieintervalle statt ungebundener Prozent-Timings
+- SFX werden auf definierte Choreografie-Beats gebunden
 - `reel.json.format.finalDurationInFrames` folgt der Runtime-WAV
-- Scene-Voice- und Voice-Lock-Gates bestehen
+- Alignment-, Scene-Voice-, Timing- und Choreografie-Gates bestehen
 
-Danach erst committen und:
+Die erzeugten Timing-/Contract-Dateien werden danach committen. Erst dann:
 
 ```bash
-node ki/scripts/prepare-reel-render.mjs <reel-package-dir>
+npm run reel:prepare-render -- <reel-package-dir>
 ```
 
 ## Render-Provenance
 
-`prepare-reel-render.mjs` bindet Git-Commit, Source, Timing, Captions, SFX, Visuals, kanonisches Nutzer-Audio, Runtime-WAV und finale Dauer per SHA256.
+`prepare-reel-render.mjs` bindet Git-Commit, Source, Timing, Captions, SFX, Visuals, vorhandene Generated-Media-Manifeste und deren lokale Asset-SHAs, kanonisches Nutzer-Audio, Runtime-WAV und finale Dauer per SHA256.
 
 `public/runtime-audio/<compositionId>.pacing.json` protokolliert zusätzlich:
 
