@@ -79,9 +79,10 @@ await mkdir(sourceRoot, {recursive: true});
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const write = (relativePath, content) => writeFile(join(packageRoot, relativePath), content, 'utf8');
 
-await write('README.md', `# ${title}\n\n**Format:** YouTube Longform v1  \n**Datum:** ${publishDate}  \n**Status:** DRAFT  \n**Source:** \`ki/src/longform/${sourceSlug}/\`\n\n## Produktionslogik\n\n1. Research, Kapitel und Claims schließen.\n2. Echtes Voiceover in \`01-script-audio/\` hinterlegen.\n3. Forced Alignment / reale Timings ableiten.\n4. Visuals und B-Roll claim- und storygebunden planen.\n5. Medienrechte/Provenance prüfen und Medien lokal materialisieren.\n6. Remotion-Source bauen; Animation ist story-driven und nicht auf eine Technik-Whitelist begrenzt.\n7. SRT/VTT, Thumbnail-Varianten, Master und Upload-Paket erzeugen.\n8. Technische Gates plus vollständigen visuellen/akustischen Review durchführen.\n\nVertrag: \`ki/youtube-longform/LONGFORM-V1.md\`.\n`);
+await write('README.md', `# ${title}\n\n**Format:** YouTube Longform v1  \n**Datum:** ${publishDate}  \n**Status:** DRAFT  \n**Source:** \`ki/src/longform/${sourceSlug}/\`\n\n## Produktionslogik\n\n1. Research, Kapitel und Claims schließen.\n2. Finalen Sprechertext in \`SCRIPT.md\` und als reinen Fließtext in \`VOICEOVER-ZUM-KOPIEREN.txt\` finalisieren.\n3. Echtes Voiceover in \`01-script-audio/\` hinterlegen.\n4. Forced Alignment / reale Timings ableiten.\n5. Visuals und B-Roll claim- und storygebunden planen.\n6. Medienrechte/Provenance prüfen und Medien lokal materialisieren.\n7. Remotion-Source bauen; Animation ist story-driven und nicht auf eine Technik-Whitelist begrenzt.\n8. SRT/VTT, Thumbnail-Varianten, Master und Upload-Paket erzeugen.\n9. Technische Gates plus vollständigen visuellen/akustischen Review durchführen.\n\nVertrag: \`ki/youtube-longform/LONGFORM-V1.md\`.\n`);
 
 await write('01-script-audio/SCRIPT.md', `# Sprechertext — ${title}\n\nStatus: DRAFT\n\n> Finalen deutschen Sprechertext hier eintragen. Das Produktions-Voiceover kommt ausschließlich vom Nutzer.\n`);
+await write('01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt', 'DRAFT — NOCH NICHT FUER VOICEOVER VERWENDEN\n');
 await write('01-script-audio/CHAPTERS.json', json({
   version: 1,
   status: 'DRAFT',
@@ -112,6 +113,7 @@ await write('02-visuals/MEDIA-PLAN.json', json({
   },
   assets: [],
 }));
+await write('02-visuals/VISUAL-STORY-PLAN.md', `# Visual Story Plan — ${title}\n\nStatus: DRAFT\n\nFür jedes Kapitel festhalten:\n\n- Story-Zweck\n- Sprecher-Beat / Claim-Bezug\n- Startzustand\n- sichtbare Veränderung\n- Endzustand / Payoff\n- geplante Visual-Welt\n- reale/official Medien oder native Remotion-Umsetzung\n- notwendige Quellen-/Rechteprüfung\n- geplante SFX nur bei echtem Bedeutungsnutzen\n\nKeine Placeholder-Visuals als Produktionslösung.\n`);
 for (const directory of ['images', 'broll', 'official', 'generated']) {
   await write(`02-visuals/${directory}/.gitkeep`, '');
 }
@@ -137,6 +139,7 @@ await write('06-projektdateien/LONGFORM-VERSION.json', json({
   publishDate,
   title,
   sourceSlug,
+  compositionId: null,
   format: {width: 1920, height: 1080, fps: 30, aspectRatio: '16:9'},
   animationFreedom: 'OPEN_ENDED_STORY_DRIVEN',
   status: 'DRAFT',
@@ -160,12 +163,14 @@ await write('06-projektdateien/RELEASE-PLAN.json', json({
   visualReviewComplete: false,
   audioReviewComplete: false,
   sourceReviewComplete: false,
+  oneXReviewCompletedAt: null,
+  reviewedMasterSha256: null,
 }));
-await write('06-projektdateien/REVIEW-CHECKLIST.md', `# Longform Final Review\n\n- [ ] finales Voiceover vorhanden und real gemessen\n- [ ] Kapitel folgen dem realen Voiceover\n- [ ] alle faktischen Claims in CLAIMS.json geprüft\n- [ ] alle externen Medien in MEDIA-PLAN.json mit Herkunft/Rechten dokumentiert\n- [ ] keine Remote-Medien werden zur Renderzeit geladen\n- [ ] reale Claims werden nicht durch KI-generierte Fake-Belege dargestellt\n- [ ] Motion-Dichte folgt der Story; keine Dauerbewegung als Selbstzweck\n- [ ] B-Roll/Bilder/3D/UI/Charts sind sinnvoll lesbar auf Laptop und TV\n- [ ] SFX unterstützen Bedeutung und erzeugen keine Fatigue\n- [ ] SRT und VTT geprüft\n- [ ] Thumbnail-Varianten geprüft; gewählte Variante hält das Video-Versprechen ein\n- [ ] Smoke/TypeScript/Test/Render nur als bestanden markiert, wenn tatsächlich ausgeführt\n- [ ] kompletter Master einmal visuell und akustisch geprüft\n`);
+await write('06-projektdateien/REVIEW-CHECKLIST.md', `# Longform Final Review\n\n- [ ] finales Skript und reine Voiceover-Copy stimmen in Wortlaut/Reihenfolge überein\n- [ ] finales Voiceover vorhanden und real gemessen\n- [ ] Kapitel folgen dem realen Voiceover\n- [ ] alle faktischen Claims in CLAIMS.json geprüft\n- [ ] alle externen Medien in MEDIA-PLAN.json mit Herkunft/Rechten dokumentiert\n- [ ] keine Remote-Medien werden zur Renderzeit geladen\n- [ ] reale Claims werden nicht durch KI-generierte Fake-Belege dargestellt\n- [ ] Motion-Dichte folgt der Story; keine Dauerbewegung als Selbstzweck\n- [ ] B-Roll/Bilder/3D/UI/Charts sind sinnvoll lesbar auf Laptop und TV\n- [ ] SFX unterstützen Bedeutung und erzeugen keine Fatigue\n- [ ] SRT und VTT geprüft\n- [ ] Thumbnail-Varianten geprüft; gewählte Variante hält das Video-Versprechen ein\n- [ ] Smoke/TypeScript/Test/Render nur als bestanden markiert, wenn tatsächlich ausgeführt\n- [ ] kompletter Master einmal bei 1x visuell und akustisch geprüft\n- [ ] reviewedMasterSha256 gehört exakt zum angesehenen Master\n`);
 
 await writeFile(join(sourceRoot, 'README.md'), `# ${title} — Remotion Source\n\nProduktionspaket: \`ki/youtube-longform/${publishDate}/${packageName}/\`\n\nDieser Ordner ist für den ausführbaren Longform-Source vorgesehen. Vor Implementierung \`ki/src/longform/AGENTS.md\` und \`ki/youtube-longform/LONGFORM-V1.md\` lesen.\n`, 'utf8');
 
 console.log('LONGFORM V1 PACKAGE CREATED');
 console.log(`package: ${packageRoot}`);
 console.log(`source: ${sourceRoot}`);
-console.log('next: research → chapters/claims → voiceover → timing → media/motion → render/review/export');
+console.log('next: research → chapters/claims → final script/copy → user voiceover → timing → media/motion → render/review/export');
