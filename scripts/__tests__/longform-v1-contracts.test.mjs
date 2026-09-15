@@ -8,6 +8,7 @@ import {spawnSync} from 'node:child_process';
 const repoRoot = resolve(process.cwd());
 const generator = join(repoRoot, 'scripts', 'new-ki-longform.mjs');
 const structureCheck = join(repoRoot, 'scripts', 'check-ki-longform-structure.mjs');
+const renderReadiness = join(repoRoot, 'scripts', 'check-ki-longform-render-readiness.mjs');
 const releaseCheck = join(repoRoot, 'scripts', 'check-ki-longform-release.mjs');
 
 const run = (script, args, cwd) => spawnSync(process.execPath, [script, ...args], {
@@ -62,6 +63,23 @@ test('Longform-v1 structural gate rejects remote URLs disguised as local media',
     const result = run(structureCheck, [], root);
     assert.notEqual(result.status, 0);
     assert.match(`${result.stdout}\n${result.stderr}`, /localFile darf keine Remote-URL sein/);
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
+test('Longform-v1 render readiness rejects unsafe sourceSlug traversal', async () => {
+  const {root, packageRoot} = await createFixture();
+  try {
+    const versionPath = join(packageRoot, '06-projektdateien', 'LONGFORM-VERSION.json');
+    const version = JSON.parse(await readFile(versionPath, 'utf8'));
+    version.sourceSlug = '../../scripts';
+    version.compositionId = 'TraversalRegression';
+    await writeFile(versionPath, `${JSON.stringify(version, null, 2)}\n`, 'utf8');
+
+    const result = run(renderReadiness, [packageRoot], root);
+    assert.notEqual(result.status, 0);
+    assert.match(`${result.stdout}\n${result.stderr}`, /sourceSlug must be a safe lowercase slug/);
   } finally {
     await rm(root, {recursive: true, force: true});
   }
