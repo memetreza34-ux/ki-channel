@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-15 — Strict Reel Master Sync + Generated-Media-Provenance
+**Status:** 2026-09-15 — Strict Reel Master Sync + Generated-Media Auto-Wiring + Render-Provenance
 
 Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravity- und andere Coding-Agenten. Sie beschreibt nur den aktuellen Arbeitszustand und die öffentlichen Produktions-Einstiege. Detailregeln und numerische Konstanten bleiben in ihren ausführbaren Source-of-Truth-Dateien.
 
@@ -10,6 +10,8 @@ Diese Datei ist der operative Einstiegspunkt für neue Chats, Codex-, Antigravit
 - Arbeitsbranch nie still wechseln.
 - `main` ist aktuell nicht automatisch der freigegebene Produktionsstand.
 - Generated Media kann über `scripts/materialize-generated-media.mjs` als lokale Bild-/B-Roll-Dateien materialisiert werden.
+- `reel.visuals.generatedMediaBindings` verbindet Generated-Media-Asset-IDs deterministisch mit Remotion-Props; der Produktionsrenderer löst daraus automatisch die lokalen `publicPath`-Werte auf.
+- Der Render-Lock bindet vorhandene Generated-Media-Manifeste und die SHA256-Werte der lokalen Assets.
 - Das aktuelle Timing-System nutzt `align-reel-synced.mjs` als Orchestrator für Alignment, Master-Timeline, Choreografie, SFX und finale Timing-Gates.
 - Keine neuen Features vor bestandenem Showcase-Test.
 - Bei Widerspruch zwischen Dokumentation, Code, Contracts oder ausführbaren Gates: **Test stoppen, Drift reparieren und erst danach weiterarbeiten.**
@@ -70,6 +72,18 @@ Ausführbarer Remotion-Code liegt separat unter `ki/src/reels/<slug>/`.
 
 ## 4. Öffentliche Produktions-Einstiege
 
+Generated-Media-Requests können ohne API-Kosten vorab geprüft werden:
+
+```bash
+npm run reel:media:verify -- <reel-package-dir>
+```
+
+Echte Materialisierung wird bewusst explizit gestartet, weil sie externe API-Kosten auslösen kann:
+
+```bash
+GEMINI_API_KEY=... npm run reel:media:materialize -- <reel-package-dir>
+```
+
 Nach dem vom Nutzer bereitgestellten vollständigen Voiceover ist der kanonische Sync-Befehl:
 
 ```bash
@@ -84,7 +98,13 @@ Nach erfolgreichem Sync und Commit der erzeugten Timing-/Contract-Dateien:
 npm run reel:prepare-render -- <reel-package-dir>
 ```
 
-Dieser Schritt validiert den finalen Produktionsvertrag und erzeugt den Render-Lock mit Provenance.
+Dieser Schritt validiert den finalen Produktionsvertrag und erzeugt den Render-Lock mit Provenance. Danach rendert genau der gelockte Zustand mit:
+
+```bash
+npm run reel:render -- <reel-package-dir>
+```
+
+Der Produktionsrenderer verlangt Node 20, einen sauberen Worktree und einen Render-Lock vom aktuellen Commit. Er prüft Source-/Contract-Lock, löst `generatedMediaBindings` gegen `GENERATED-MEDIA.json` auf, verifiziert lokale Asset-SHAs, übergibt die resultierenden Pfade automatisch als Remotion-Props, rendert H.264/AAC und prüft anschließend mit `ffprobe` Bildgröße, Laufzeit sowie Audio-/Video-Streams. Der technische Render ist noch kein visueller PASS.
 
 ## 5. Nicht verhandelbare Produktionsverträge
 
@@ -106,6 +126,21 @@ Manifest nach erfolgreicher Materialisierung:
 
 `06-projektdateien/GENERATED-MEDIA.json`
 
+Optionale deterministische Render-Bindings in `reel.json`:
+
+```json
+{
+  "visuals": {
+    "generatedMediaBindings": {
+      "generatedImageSrc": "asset-request-id",
+      "generatedBrollSrc": "another-asset-request-id"
+    }
+  }
+}
+```
+
+Die linke Seite ist der Remotion-Prop-Name, die rechte Seite die `id` des materialisierten Assets. Bei vorhandenen Bindings rendert die Produktionspipeline nicht still mit einem Fallback weiter, wenn Manifest, Datei oder SHA nicht stimmen.
+
 Erlaubte Typen:
 
 - `IMAGE`
@@ -118,19 +153,6 @@ Erlaubte Rollen:
 - `TRANSITION`
 
 KI-generierte Medien dürfen niemals als Proof, Source, offizielle UI, echte Brand Identity, reales Ereignis oder echtes Footage ausgegeben werden. Dafür bleibt echte/offizielle/provenance-backed Media Pflicht.
-
-Vor Generierung ohne API-Kosten prüfen:
-
-```bash
-node --check scripts/materialize-generated-media.mjs
-node scripts/materialize-generated-media.mjs verify <reel-package-dir>
-```
-
-Echte Materialisierung:
-
-```bash
-GEMINI_API_KEY=... node scripts/materialize-generated-media.mjs materialize <reel-package-dir>
-```
 
 Standardprovider:
 
@@ -155,7 +177,7 @@ npm run test:readiness
 4. `npm run motion:verify`
 5. `npm run release:verify`
 
-Der Pre-Test erzeugt keine kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `materialize`-Befehl gestartet.
+Der Pre-Test erzeugt keine kostenpflichtigen Bilder oder Videos. Reale Generierung wird nur über den expliziten `reel:media:materialize`-Befehl gestartet.
 
 Der maschinenlesbare Nachweis wird unter `out/test-readiness/summary.json` geschrieben und enthält mindestens Commit, Branch, Node-Version, Einzelschritte, Laufzeiten und Gesamtstatus.
 
@@ -167,7 +189,7 @@ Für die tägliche Arbeit gilt diese Hierarchie:
 
 - **FAST:** `npm run repo:wiring-check` plus zielbezogene Syntax-/Typechecks; für kleine Source-/Dokumentationsänderungen.
 - **SYNC:** `npm run reel:sync -- <reel-package-dir>`; nur wenn Script, Nutzer-Audio oder Timing-/Choreografie-Autorität geändert wurde.
-- **RENDER:** `npm run reel:prepare-render -- <reel-package-dir>` und der zielbezogene Reel-Render; nur für das aktuelle Reel.
+- **RENDER:** `npm run reel:prepare-render -- <reel-package-dir>` → `npm run reel:render -- <reel-package-dir>`; nur für das aktuelle Reel.
 - **FULL:** `npm run test:readiness` bzw. Release-Gates vor Showcase, Merge oder Freigabe.
 
 Nicht bei jeder kleinen Reel-Änderung automatisch die gesamte Animation-Library rendern.
@@ -187,7 +209,7 @@ Danach wird erst der eigentliche Render-/Showcase-Test ausgeführt. Neue Librari
 
 GitHub Actions ist für dieses private Repository derzeit wegen des Account-/Billing-/Spending-Zustands kein verlässlicher automatischer Runtime-Beweis. Solange das so ist, ist der lokale `test:readiness`-Report der verbindliche technische Nachweis für den getesteten Commit.
 
-Die Generated-Media-Capability ist technisch implementiert, aber eine reale Gemini/Veo-API-Generierung ist erst bewiesen, wenn sie lokal mit einem gültigen `GEMINI_API_KEY` tatsächlich ausgeführt wurde.
+Die Generated-Media-Capability und automatische Render-Verdrahtung sind im Source implementiert. Eine reale Gemini/Veo-API-Generierung sowie ein echter Produktionsrender sind erst bewiesen, wenn die entsprechenden Befehle lokal auf dem genannten Commit tatsächlich erfolgreich ausgeführt wurden.
 
 ## 11. Statusbegriffe niemals vermischen
 
