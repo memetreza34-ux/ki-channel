@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
+import {mkdtemp, readFile, rm, writeFile, mkdir} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join, resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -76,4 +76,45 @@ test('Longform-v1 release gate refuses a freshly generated DRAFT package', async
   } finally {
     await rm(root, {recursive: true, force: true});
   }
+});
+
+test('Longform-v1 release gate rejects media paths escaping the package', async () => {
+  const {root, packageRoot} = await createFixture();
+  try {
+    const outsideDir = join(root, 'outside');
+    await mkdir(outsideDir, {recursive: true});
+    await writeFile(join(outsideDir, 'outside.mp4'), 'not-a-real-video-but-non-empty', 'utf8');
+
+    const mediaPath = join(packageRoot, '02-visuals', 'MEDIA-PLAN.json');
+    const media = JSON.parse(await readFile(mediaPath, 'utf8'));
+    media.status = 'READY';
+    media.assets = [{
+      assetId: 'escape-001',
+      chapterId: 'chapter-01',
+      purpose: 'Path containment regression test',
+      mediaType: 'VIDEO',
+      sourceType: 'USER_PROVIDED',
+      localFile: '../../../../../../outside/outside.mp4',
+      sha256: 'a'.repeat(64),
+      rightsVerified: true,
+      status: 'APPROVED',
+      requiredForRender: true,
+    }];
+    await writeFile(mediaPath, `${JSON.stringify(media, null, 2)}\n`, 'utf8');
+
+    const result = run(releaseCheck, [packageRoot], root);
+    assert.notEqual(result.status, 0);
+    assert.match(`${result.stdout}\n${result.stderr}`, /localFile verlässt das Longform-Paket/);
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
+test('Longform-v1 release contract keeps render-lock and Git-HEAD integrity checks', async () => {
+  const source = await readFile(releaseCheck, 'utf8');
+  assert.match(source, /renderLock\.gitHead/);
+  assert.match(source, /Git-HEAD weicht vom Render-Lock ab/);
+  assert.match(source, /RENDER-LOCK-SHA stimmt nicht mehr/);
+  assert.match(source, /Export-Pfad verlässt 05-export/);
+  assert.match(source, /Review-Master liegt außerhalb des Longform-Pakets/);
 });
