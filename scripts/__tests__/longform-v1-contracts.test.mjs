@@ -36,6 +36,16 @@ test('Longform-v1 generator creates a package accepted by the structural gate', 
     assert.equal(version.format.height, 1080);
     assert.equal(version.format.fps, 30);
     assert.equal(version.animationFreedom, 'OPEN_ENDED_STORY_DRIVEN');
+    assert.equal(version.compositionId, null);
+
+    const voiceCopy = await readFile(join(packageRoot, '01-script-audio', 'VOICEOVER-ZUM-KOPIEREN.txt'), 'utf8');
+    assert.match(voiceCopy, /DRAFT/);
+    const visualPlan = await readFile(join(packageRoot, '02-visuals', 'VISUAL-STORY-PLAN.md'), 'utf8');
+    assert.match(visualPlan, /Visual Story Plan/);
+
+    const release = JSON.parse(await readFile(join(packageRoot, '06-projektdateien', 'RELEASE-PLAN.json'), 'utf8'));
+    assert.equal(release.oneXReviewCompletedAt, null);
+    assert.equal(release.reviewedMasterSha256, null);
   } finally {
     await rm(root, {recursive: true, force: true});
   }
