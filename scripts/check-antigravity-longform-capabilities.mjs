@@ -47,7 +47,7 @@ const requiredFiles = [
   '.agents/agents/ki-longform-remotion-engineer/agent.md',
   '.agents/plugins/ki-channel-production/mcp_config.json',
   'scripts/with-media-path.mjs',
-  'scripts/with-longform-node20.mjs',
+  'scripts/with-longform-node24.mjs',
   'scripts/ensure-chrome-devtools.mjs',
   'scripts/scout-pexels-assets.mjs',
   'scripts/scout-pixabay-assets.mjs',
@@ -66,7 +66,7 @@ const requiredFiles = [
 for (const file of requiredFiles) if (!existsSync(file)) fail(`missing required Longform capability: ${file}`);
 
 const workflow = await requireFile('.agents/workflows/longform-full-cycle.md', [
-  'with-longform-node20.mjs',
+  'with-longform-node24.mjs',
   'check-antigravity-longform-capabilities.mjs',
   'materialize-longform-media.mjs',
   'approve-longform-media.mjs',
@@ -82,7 +82,7 @@ const mediaSkill = await requireFile('.agents/skills/longform-media-production/S
   'MATERIALIZED_PENDING_REVIEW','APPROVED','Pexels','Pixabay','Wikimedia Commons','official','SHA-256',
 ]);
 const orchestrator = await requireFile('.agents/agents/ki-longform-production-orchestrator/agent.md', [
-  'skills/longform-media-production','longform-full-cycle','with-longform-node20.mjs','ki-longform-remotion-engineer',
+  'skills/longform-media-production','longform-full-cycle','with-longform-node24.mjs','ki-longform-remotion-engineer',
 ]);
 const storyEngineer = await requireFile('.agents/agents/ki-longform-remotion-engineer/agent.md', [
   'skills/longform-media-production','LONGFORM_V1','OPEN_ENDED_STORY_DRIVEN','1000 frames',
@@ -123,23 +123,23 @@ else fact('ffprobe available and executable');
 if (!available('git',['--version'])) fail('git is not available in PATH; source-lock checks cannot run.');
 else fact('git available');
 const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-if (!available(npx,['--version'])) fail('npx is not available; Remotion/MCP/portable Node 20 cannot run.');
+if (!available(npx,['--version'])) fail('npx is not available; Remotion/MCP/portable Node 24 cannot run.');
 else fact('npx available');
 
 const currentMajor = Number(process.versions.node.split('.')[0]);
-let node20RuntimeReady = currentMajor === 20;
-let node20Version = currentMajor === 20 ? process.versions.node : null;
-if (!node20RuntimeReady && available(npx,['--version'])) {
-  const node20 = run(npx,['-y','node@20','-v']);
-  const versionText = String(node20.stdout || '').trim();
-  if (!node20.error && node20.status === 0 && /^v20\./.test(versionText)) {
-    node20RuntimeReady = true;
-    node20Version = versionText.replace(/^v/,'');
-    fact(`portable Node 20 runtime available via npx node@20 (${versionText})`);
+let node24RuntimeReady = currentMajor === 24;
+let node24Version = currentMajor === 24 ? process.versions.node : null;
+if (!node24RuntimeReady && available(npx,['--version'])) {
+  const node24 = run(npx,['-y','node@24','-v']);
+  const versionText = String(node24.stdout || '').trim();
+  if (!node24.error && node24.status === 0 && /^v24\./.test(versionText)) {
+    node24RuntimeReady = true;
+    node24Version = versionText.replace(/^v/,'');
+    fact(`portable Node 24 runtime available via npx node@24 (${versionText})`);
   }
 }
-if (!node20RuntimeReady) fail(`Node 20 production runtime unavailable. Current Node is ${process.versions.node} and npx node@20 probe failed.`);
-else if (currentMajor !== 20) warn(`system Node is ${process.versions.node}; production commands must run through scripts/with-longform-node20.mjs (${node20Version}).`);
+if (!node24RuntimeReady) fail(`Node 24 production runtime unavailable. Current Node is ${process.versions.node} and npx node@24 probe failed.`);
+else if (currentMajor !== 24) warn(`system Node is ${process.versions.node}; production commands must run through scripts/with-longform-node24.mjs (${node24Version}).`);
 else fact(`system Node ${process.versions.node} matches repository engine`);
 
 const pexelsReady = Boolean(process.env.PEXELS_API_KEY);
@@ -154,7 +154,7 @@ fact('Key-free real-video fallback is configured through Wikimedia Commons video
 fact('No repo-native text-to-image model is declared; generated visuals are separate and non-evidentiary only.');
 
 const report = {
-  version:4,
+  version:5,
   status:errors.length ? 'BLOCKED' : warnings.length ? 'READY_WITH_WARNINGS' : 'READY',
   checkedAt:new Date().toISOString(),
   capabilities:{
@@ -163,7 +163,7 @@ const report = {
     chromeDevtoolsEndpointReachable:chromeDevtoolsReachable,
     officialBrowserProofPath:Boolean(mcpText?.includes('chrome-devtools') && mediaSkill?.includes('official') && chromeDevtoolsReachable),
     chromeDevtoolsSelfLauncher:existsSync('scripts/ensure-chrome-devtools.mjs'),
-    node20ProductionRuntime:node20RuntimeReady,
+    node24ProductionRuntime:node24RuntimeReady,
     pexelsDiscoveryConfigured:existsSync('scripts/scout-pexels-assets.mjs'),
     pexelsDiscoveryRuntimeReady:pexelsReady,
     pixabayDiscoveryConfigured:existsSync('scripts/scout-pixabay-assets.mjs'),
