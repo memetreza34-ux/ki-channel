@@ -92,7 +92,10 @@ if (root) {
     'release:full': 'node scripts/run-content-release.mjs full',
     'new-video': 'node scripts/new-ki-reel.mjs',
     'reel:sync': 'node ki/scripts/align-reel-synced.mjs',
+    'reel:media:verify': 'node scripts/materialize-generated-media.mjs verify',
+    'reel:media:materialize': 'node scripts/materialize-generated-media.mjs materialize',
     'reel:prepare-render': 'node ki/scripts/prepare-reel-render.mjs',
+    'reel:render': 'node scripts/render-production-reel.mjs',
   };
 
   for (const [name, command] of Object.entries(requiredScripts)) {
@@ -134,15 +137,16 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) {
   failures.push('vitest.config.ts enthält wieder channels/**.');
 }
 
-// Current repository truth. Keep this focused on stable operational invariants.
-// The branch name remains human-readable state, while executable contracts stay
-// in source files and package scripts instead of being copied into prose.
 requireMarkers('REPO-STATE.md', repoState, [
   'Aktueller Testbranch:',
   'Arbeitsbranch nie still wechseln.',
   'Keine neuen Features vor bestandenem Showcase-Test.',
+  'npm run reel:media:verify -- <reel-package-dir>',
+  'npm run reel:media:materialize -- <reel-package-dir>',
   'npm run reel:sync -- <reel-package-dir>',
   'npm run reel:prepare-render -- <reel-package-dir>',
+  'npm run reel:render -- <reel-package-dir>',
+  'generatedMediaBindings',
   'npm run test:readiness',
   'Woche → Wochentag → Thema/Reel → 01–06',
   'BRAND-MOTION-PLAN.json',
@@ -226,8 +230,6 @@ forbidMarkers('PLATTFORMEN.md', platforms, [
   'ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/',
 ]);
 
-// Caption geometry has exactly one executable numeric source. The dedicated
-// explanation doc is checked against it; general agent/repo docs must not copy it.
 const captionBottom = extractNumericProperty('captionSafe.ts', captionSource, 'bottom');
 const captionInset = extractNumericProperty('captionSafe.ts', captionSource, 'horizontalInset');
 const captionMaxWidth = extractNumericProperty('captionSafe.ts', captionSource, 'maxWidth');
@@ -299,6 +301,9 @@ for (const path of [
   'scripts/verify-content-matched-runtime.mjs',
   'scripts/run-content-release.mjs',
   'scripts/run-test-readiness.mjs',
+  'scripts/materialize-generated-media.mjs',
+  'scripts/lib/generated-media-render-props.mjs',
+  'scripts/render-production-reel.mjs',
   'ki/scripts/align-reel-synced.mjs',
   'ki/scripts/prepare-reel-render.mjs',
   'ki/scripts/validate-production-contracts.mjs',
@@ -326,4 +331,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring konsistent: Workspaces, Reel-Sync-Einstiege, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
+console.log('Repository-Wiring konsistent: Workspaces, Reel-Sync-/Generated-Media-/Render-Einstiege, aktuelle Reel-Hierarchie, Pre-Test-Gate, zentrale Caption-Geometrie, Produktionsverträge und Kernpfade stimmen überein.');
