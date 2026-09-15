@@ -121,28 +121,25 @@ Wichtige Zustände:
 
 ## Caption ist Shared Source Contract
 
-Für 1080×1920 gelten ausschließlich:
+Für 1080×1920 gibt es genau **eine numerische Autorität**:
 
-- `ki/gehirn/CAPTION_SAFE_POSITION.md`
 - `ki/src/reels/captionSafe.ts`
 
-Kanonisch:
+Markdown-Dateien und einzelne Reel-Sources dürfen die Caption-Geometrie nicht als zweite Zahlenquelle duplizieren. `ki/gehirn/CAPTION_SAFE_POSITION.md` erklärt die Regel, aber bei einem Widerspruch gewinnt immer der ausführbare Source-Contract und die Drift muss repariert werden.
 
-- `bottom: 250px`
-- horizontal `104px`
-- max. `860px`
-- max. 2 Zeilen
-- halbtransparente Glass-/Blur-Overlay-Caption
-- aktiver Sprecherfokus in Szenen-Akzentfarbe
-- **kein separater Footer / kein zweiter Hintergrund**
-
-Neue Sources verwenden:
+Neue Sources verwenden ausschließlich:
 
 - `REEL_CAPTION_SAFE`
 - `REEL_CAPTION_WRAPPER_STYLE`
 - `REEL_CAPTION_GLASS_STYLE`
 
-Keine eigenen alten Caption-Werte neu hart codieren.
+Zusätzlich gelten:
+
+- maximal zwei sichtbare Caption-Zeilen gemäß Shared Contract
+- halbtransparente Glass-/Blur-Overlay-Caption
+- aktiver Sprecherfokus in Szenen-Akzentfarbe
+- **kein separater Footer / kein zweiter Hintergrund**
+- keine eigenen alten Caption-Werte hart codieren
 
 ## Audio ist lokales Runtime-Asset
 
@@ -150,13 +147,13 @@ Verbindlich: `ki/gehirn/AUDIO_PIPELINE.md`.
 
 Das Produktions-Voiceover wird ausschließlich vom Nutzer erstellt. Source darf keine TTS-/CDN-/Remote-URL als finalen Audio-Default enthalten.
 
-Vor Render:
+Vor Render durchläuft das Reel den kanonischen Sync-Einstieg:
 
 ```bash
-node ki/scripts/prepare-reel-audio.mjs <reel-package-dir>
+npm run reel:sync -- <reel-package-dir>
 ```
 
-`Root.tsx` verwendet danach lokale Runtime-Audio-Dateien unter `public/runtime-audio/`.
+Der Sync-Orchestrator erzeugt bzw. validiert die lokale Runtime-Audio-Datei und die darauf gebundenen Word-/Scene-/Caption-/Choreografie-Daten. `Root.tsx` verwendet danach lokale Runtime-Audio-Dateien unter `public/runtime-audio/`.
 
 Neue aktive Reel-Komponenten sollen bei leerem `voiceoverSrc` fehlschlagen statt still zu rendern.
 
