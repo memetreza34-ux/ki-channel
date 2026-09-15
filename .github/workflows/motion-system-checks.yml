@@ -72,6 +72,7 @@ jobs:
         run: |
           set -o pipefail
           {
+            node --check scripts/run-youtube-readiness.mjs
             node --check scripts/new-ki-longform.mjs
             node --check scripts/check-ki-longform-structure.mjs
             node --check scripts/check-ki-longform-release.mjs
@@ -82,8 +83,9 @@ jobs:
             node --check scripts/render-ki-longform-master.mjs
             node --check scripts/__tests__/longform-v1-contracts.test.mjs
             node --check scripts/__tests__/longform-master-gate.test.mjs
+            node --check scripts/__tests__/longform-antigravity-capabilities.test.mjs
             node scripts/check-ki-longform-structure.mjs
-            node --test scripts/__tests__/longform-v1-contracts.test.mjs scripts/__tests__/longform-master-gate.test.mjs
+            node --test scripts/__tests__/longform-v1-contracts.test.mjs scripts/__tests__/longform-master-gate.test.mjs scripts/__tests__/longform-antigravity-capabilities.test.mjs
           } 2>&1 | tee ci-logs/longform-contracts.log
 
       - name: Install canonical workspaces
