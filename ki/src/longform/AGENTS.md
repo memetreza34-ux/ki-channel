@@ -4,7 +4,7 @@ Gilt für `ki/src/longform/`.
 
 ## Antigravity Writer
 
-Für `LONGFORM_V1` ist `ki-longform-remotion-engineer` der kanonische visuelle Writer. Vor einem neuen Longform-Build muss der Longform-Orchestrator `node scripts/check-antigravity-longform-capabilities.mjs` erfolgreich ausführen und `.agents/workflows/longform-full-cycle.md` befolgen.
+Für `LONGFORM_V1` ist `ki-longform-remotion-engineer` der kanonische visuelle Writer. Vor einem neuen Longform-Build muss der Longform-Orchestrator `node scripts/with-longform-node20.mjs scripts/check-antigravity-longform-capabilities.mjs` erfolgreich ausführen und `.agents/workflows/longform-full-cycle.md` befolgen.
 
 ## Timeline
 
@@ -13,6 +13,36 @@ Für `LONGFORM_V1` ist `ki-longform-remotion-engineer` der kanonische visuelle W
 - Finale Kapitel-/Szenendauern stammen aus echtem Voice-Lock/Forced Alignment.
 - **Keine gleichen Fix-Dauern pro Kapitel** (z. B. 1000 Frames je Kapitel) und keine stillen Restcontainer hinter dem Voiceover.
 - Composition-Ende folgt dem echten Audio plus bewusstem, kurzem End-Hold; niemals einem Placeholder-Zeitbudget.
+
+### Expliziter Sync-Vertrag für neue Pakete
+
+Neue `LONGFORM_V1`-Pakete mit `syncContract: LONGFORM_CHOREOGRAPHY_V1` müssen vor finaler Remotion-Implementierung den Sync aus `ki/youtube-longform/LONGFORM-SYNC.md` durchlaufen.
+
+Finale Timing-Autorität ist:
+
+```text
+06-projektdateien/CHOREOGRAPHY-RESOLVED.json
+```
+
+Der finale TS/TSX-Source muss diese konkrete Datei binden und den gemeinsamen Helper verwenden:
+
+```ts
+createLongformChoreographyTiming(...)
+```
+
+Der Helper liegt unter `ki/src/longform/choreographyTiming.ts`.
+
+Verbindlich:
+
+- semantische Sprachintervalle stammen aus akzeptierten `WORD-TIMINGS.json`;
+- ein unabhängiger zweiter Aligner muss `ALIGNMENT-QUALITY.json = ALIGNMENT_CONSENSUS_PASSED` liefern;
+- jeder geplante Visual-Beat besitzt ein explizites `ENTER → HOLD → EXIT`-Intervall;
+- SFX-Anker stammen aus demselben Choreografie-Beat;
+- lange HOLD-Phasen sind bei Longform erlaubt und oft erwünscht;
+- keine finale Animation aus Prozentwerten der Gesamtdauer, geschätzten Kapiteldauern oder einem einzelnen unbeschränkten Triggerframe ableiten;
+- wenn Phrase/Timing nicht eindeutig auflösbar ist, blockieren statt schätzen.
+
+Vor kanonischem Render muss `scripts/check-ki-longform-sync-readiness.mjs <package>` bestehen. Der kanonische Renderer ruft diesen Gate selbst auf.
 
 ## Motion / Visuals
 
@@ -66,7 +96,7 @@ Scout/Browser/Local Source
 
 - nach Source-Änderung alten Render nicht als aktuelle Freigabe verwenden.
 - direkter `npx remotion render` ist nur Prototype und nie ein Produktionsreview-Master.
-- Produktionsreview nur über `node scripts/render-ki-longform-master.mjs <package>` nach bestandenem Readiness-Gate.
+- Produktionsreview nur über `node scripts/with-longform-node20.mjs scripts/render-ki-longform-master.mjs <package>` nach bestandenem Sync-/Readiness-Gate.
 - TypeScript/Test/Render/Review nur behaupten, wenn tatsächlich ausgeführt.
 
-Für neue Pakete ab 2026-09-05 ist zusätzlich `ki/youtube-longform/LONGFORM-V1.md` verbindlich.
+Für neue Pakete ab 2026-09-05 sind zusätzlich `ki/youtube-longform/LONGFORM-V1.md` und `ki/youtube-longform/LONGFORM-SYNC.md` verbindlich.
