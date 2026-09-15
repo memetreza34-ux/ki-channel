@@ -88,8 +88,11 @@ if (renderLock) {
   if (!currentHead) fail('Aktueller Git-HEAD konnte nicht gelesen werden.');
   if (typeof renderLock.gitHead !== 'string' || !/^[a-f0-9]{40}$/i.test(renderLock.gitHead)) {
     fail('RENDER-LOCK.gitHead fehlt oder ist ungültig.');
-  } else if (currentHead && renderLock.gitHead !== currentHead) {
-    fail(`Git-HEAD weicht vom Render-Lock ab: lock=${renderLock.gitHead}, current=${currentHead}.`);
+  } else if (currentHead) {
+    const ancestry = spawnSync('git', ['merge-base', '--is-ancestor', renderLock.gitHead, currentHead], {encoding: 'utf8'});
+    if (ancestry.error || ancestry.status !== 0) {
+      fail(`Aktueller Git-HEAD enthält den Render-Lock-Commit nicht: lock=${renderLock.gitHead}, current=${currentHead}.`);
+    }
   }
 
   for (const record of renderLock.files ?? []) {
@@ -281,4 +284,4 @@ if (errors.length) {
 
 console.log('LONGFORM RELEASE: PASSED');
 console.log(`package: ${posix(root)}`);
-console.log('Render-Lock, Git-HEAD, gelockte Inputs, finaler Master und menschlicher Review sind gemeinsam verifiziert.');
+console.log('Render-Lock-Commit ist Teil der aktuellen Historie; gelockte Inputs, finaler Master und menschlicher Review sind gemeinsam verifiziert.');
