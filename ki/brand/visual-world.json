@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "id": "KI_CHANNEL_CLEAN_EDITORIAL_V1",
+  "description": "Canonical visual world for KI-channel generated images and B-roll so external/generated media feels native inside the Remotion reel system.",
+  "promptPrefix": "Match the canonical KI-channel reel visual world: bright high-key editorial product-illustration aesthetic, clean premium 3D-inspired forms mixed with minimal realistic materials, white and very light lavender environment, soft purple brand accents, crisp modern tech/product-design language, calm depth, uncluttered composition, generous negative space, and a polished studio look that can sit naturally behind Remotion cards, icons and diagrams.",
+  "palette": {
+    "anchor": ["#B98CFF", "#6E45C9"],
+    "semantic": ["#2E90FA", "#12B76A", "#F79009"],
+    "neutral": ["#FFFFFF", "#F3F0FA", "#1A1A2E"]
+  },
+  "lighting": "High-key soft studio lighting, bright neutral exposure, soft shadows, no crushed blacks, no dramatic low-key spotlighting.",
+  "composition": "One clear subject or visual idea, clean hierarchy, simple background, controlled depth, enough empty space for 9:16 Remotion overlays and captions, no cluttered cinematic set dressing.",
+  "materials": "Clean matte surfaces, glass/acrylic accents, subtle soft-metal details when useful; avoid dirty, rusty, distressed, workshop-grime or vintage textures unless the factual subject itself requires them.",
+  "motion": "For B-roll use smooth deliberate camera motion and readable object/state changes; no handheld documentary look, no chaotic montage, no aggressive cinematic shake.",
+  "forbiddenPromptPhrases": [
+    "dark cinematic",
+    "moody cinematic",
+    "low-key lighting",
+    "noir",
+    "sepia",
+    "gritty",
+    "grunge",
+    "dirty workshop",
+    "dramatic spotlight",
+    "brown-black palette",
+    "documentary evidence look"
+  ],
+  "defaultAvoid": [
+    "dark moody cinematic grading",
+    "brown or sepia color cast",
+    "black-dominated backgrounds",
+    "gritty workshop atmosphere",
+    "dirty distressed textures",
+    "heavy vignette",
+    "dramatic low-key shadows",
+    "film-noir lighting",
+    "cluttered set dressing",
+    "photorealistic documentary evidence style",
+    "fake official UI",
+    "logos",
+    "watermarks",
+    "subtitles",
+    "readable interface text",
+    "human faces unless specifically required"
+  ]
+}
