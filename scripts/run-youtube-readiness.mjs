@@ -50,7 +50,7 @@ const finishFailure = (message, exitCode = 1) => {
 };
 
 const nodeMajor = Number(process.versions.node.split('.')[0]);
-if (nodeMajor !== 20) finishFailure(`Node 20 ist Pflicht, aktiv ist ${process.version}.`);
+if (nodeMajor !== 24) finishFailure(`Node 24 LTS ist Pflicht, aktiv ist ${process.version}.`);
 if (initialTrackedStatus) finishFailure('Tracked Worktree ist nicht sauber. Änderungen zuerst committen oder zurücksetzen.');
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
