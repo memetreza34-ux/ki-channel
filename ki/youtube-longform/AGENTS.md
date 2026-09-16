@@ -30,6 +30,26 @@ Ausführbarer Source:
 ki/src/longform/<slug>/
 ```
 
+Der Brand-Import liegt im Source drei Ebenen höher — `import {BRAND} from '../../../brand/brand';`. Ein falscher relativer Pfad bricht den kompletten Remotion-Bundle.
+
+## Paket anlegen und prüfen
+
+Neues Longform-Paket niemals von Hand anlegen:
+
+```bash
+npm run new-longform -- "Video Titel"
+```
+
+Das erzeugt die vollständige 01–06-Struktur mit allen Pflichtdateien im Status `OFFEN`.
+
+Nach jeder Struktur- oder Source-Änderung verpflichtend:
+
+```bash
+npm run ki:longform:structure-check
+```
+
+Der Check prüft Datumsordner, Paketstruktur, die Trennung von Planung und Source sowie die Auflösbarkeit aller relativen Source-Imports. Er läuft auch als Teil von `npm test`.
+
 ## 3 Phasen
 
 ### Phase 1 — ChatGPT

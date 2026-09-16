@@ -45,6 +45,10 @@ const ALLOWED_REELS_ROOT_FILES = new Set([
   'README.md',
   'AGENTS.md',
   'animation-history.json',
+  // Globale, reelübergreifende Visual-Regeln. REPO-STATE.md verweist auf
+  // REMOTION_NATIVE_VISUALS_MAXIMUM.md ausdrücklich unter diesem Pfad.
+  'REMOTION_NATIVE_VISUALS.md',
+  'REMOTION_NATIVE_VISUALS_MAXIMUM.md',
   '.gitkeep',
 ]);
 
