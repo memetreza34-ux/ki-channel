@@ -148,6 +148,7 @@ Nicht als fertig melden bei:
 - Text-/Caption-Mismatch
 - hörbar künstlichem oder abruptem Voiceover-Speedwechsel
 - Audio-Retiming außerhalb des Qualitätskorridors ohne neue Phase-2-Aufnahme
+- rotem `npm run brand:font-check` — die Markenschrift würde im Export fehlen
 - überlappender oder abgeschnittener Typografie
 - internen Regie-/Goal-Texten im Video
 - unnötiger Caption-/Animations-Textdopplung

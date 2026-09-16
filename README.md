@@ -146,6 +146,7 @@ Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`
 npm run repo:wiring-check
 npm run ki:reel:structure-check
 npm run ki:longform:structure-check
+npm run brand:font-check
 npm run typecheck
 npm test
 npm run content:runtime:verify
