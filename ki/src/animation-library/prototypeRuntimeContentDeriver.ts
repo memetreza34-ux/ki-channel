@@ -49,6 +49,12 @@ const STOPWORDS = new Set([
   'sie', 'sind', 'so', 'und', 'von', 'vor', 'während', 'weil', 'wenn', 'wie',
   'wird', 'werden', 'zu', 'zum', 'zur', 'the', 'a', 'and', 'from', 'into',
   'of', 'to', 'with',
+  // Meta-Begriffe: benennen die Messgroesse oder das Konzept selbst und sind
+  // deshalb nie eine konkrete Option. Ohne sie wird aus 'die Wahrscheinlichkeit
+  // fuer Antwort A' ein Kandidat namens 'Wahrscheinlichkeit'.
+  'kontext', 'kontextsignal', 'kontextsignale', 'kontextsignalen',
+  'wahrscheinlichkeit', 'wahrscheinlichkeiten', 'prozent', 'vergleich',
+  'wert', 'werte', 'werten',
 ]);
 
 const contentWords = (spokenText: string): string[] =>
@@ -216,6 +222,29 @@ const pick = (
   index: number,
   fallback: string,
 ): string => compact(values[index] ?? fallback, 36);
+
+// Kandidaten muessen disjunkt sein. Steht "antwort" neben "Antwort A", matchen
+// beide dieselbe Zahl im Sprechertext, und die Anteile summieren sich auf ueber
+// 100 Prozent. Der laengere, spezifischere Begriff gewinnt.
+const withoutOverlaps = (values: readonly string[]): string[] => {
+  const sorted = [...values].sort((left, right) => right.length - left.length);
+  const kept: string[] = [];
+  for (const value of sorted) {
+    const normalized = normalize(value).trim();
+    if (!normalized) continue;
+    if (kept.some((other) => normalize(other).includes(normalized))) continue;
+    kept.push(value);
+  }
+  return values.filter((value) => kept.includes(value));
+};
+
+const withoutMetaTerms = (values: readonly string[]): string[] =>
+  values.filter((value) => {
+    const normalized = normalize(value).trim();
+    if (!normalized) return false;
+    // Auch zusammengesetzte Formen wie "Kontextsignalen" aussortieren.
+    return !normalized.split(/\s+/).every((part) => STOPWORDS.has(part));
+  });
 
 const labelRecord = (
   prefix: string,
@@ -534,7 +563,7 @@ const deriveRelationship: RuntimeDeriver = ({spokenText, meaningContract}) => {
 const deriveProbability: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const entities = capitalizedEntities(spokenText);
   const pool = semanticPool(spokenText, meaningContract);
-  const candidates = unique([...entities, ...meaningContract.resultTerms.map(humanize), ...pool]).slice(0, 3);
+  const candidates = withoutOverlaps(withoutMetaTerms(unique([...entities, ...meaningContract.resultTerms.map(humanize), ...pool]))).slice(0, 3);
   const signals = unique([...meaningContract.subjectTerms.map(humanize), ...meaningContract.actionTerms.map(humanize)]);
   const numbers = extractNumbers(spokenText).filter((number) => number >= 0 && number <= 100);
   const primaryEnd = Math.max(1, Math.min(98, numbers[0] ?? 60));
