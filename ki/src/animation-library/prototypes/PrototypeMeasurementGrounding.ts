@@ -15,7 +15,7 @@ const parseNumber = (value: string): number | null => {
 };
 
 export const parseExplicitPercentages = (spokenText: string): number[] =>
-  [...spokenText.matchAll(/\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/gi)]
+  [...spokenText.matchAll(/\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent\b)/gi)]
     .map((match) => parseNumber(match[1]))
     .filter((value): value is number =>
       value !== null && value >= 0 && value <= 100,
@@ -40,10 +40,10 @@ export const parseExplicitPercentageNear = ({
   const termPattern = `(?:${normalizedTerms.join('|')})`;
   const numberPattern = '(\\d{1,3}(?:[.,]\\d+)?)';
   const termBefore = new RegExp(
-    `\\b${termPattern}\\b[^0-9,.!?;]{0,${maximumGap}}${numberPattern}\\s*(?:%|prozent)\\b`,
+    `\\b${termPattern}\\b[^0-9,.!?;]{0,${maximumGap}}${numberPattern}\\s*(?:%|prozent\\b)`,
   );
   const numberBefore = new RegExp(
-    `${numberPattern}\\s*(?:%|prozent)\\b[^,.!?;]{0,${maximumGap}}\\b${termPattern}\\b`,
+    `${numberPattern}\\s*(?:%|prozent\\b)[^,.!?;]{0,${maximumGap}}\\b${termPattern}\\b`,
   );
   const match = termBefore.exec(normalizedText) ?? numberBefore.exec(normalizedText);
   if (!match) return null;

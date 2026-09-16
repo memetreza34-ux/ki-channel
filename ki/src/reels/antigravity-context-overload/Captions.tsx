@@ -102,7 +102,7 @@ export const ContextOverloadCaptions: React.FC = () => {
           width: '100%',
           maxWidth: 820,
           color: BRAND.ink,
-          fontFamily: BRAND.font,
+          fontFamily: BRAND.font.body,
           fontSize: 48,
           fontWeight: 850,
           lineHeight: 1.18,

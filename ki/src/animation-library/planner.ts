@@ -2,8 +2,7 @@ import type {
   AnimationLibraryEntry,
   CreativeBrainState,
 } from './schema';
-import {enhanceSceneMeaning} from './extendedMeaningContract';
-import {analyzeSceneMeaning} from './meaningContract';
+import {resolveAuthoredMeaningContract} from './extendedMeaningContract';
 import {
   planReelChoreography as planStableChoreography,
 } from './stableContentMatchedPlanner';
@@ -22,23 +21,6 @@ export type {
   ReelChoreographyPlan,
   ReelSceneBrief,
 } from './contentMatchedPlanner';
-
-const resolvePlannerMeaningContract = (
-  scene: ReelSceneBrief,
-): ReelSceneBrief['meaningContract'] => {
-  if (!scene.meaningContract) {
-    return enhanceSceneMeaning(scene.spokenText);
-  }
-
-  const automaticallyGeneratedBase = analyzeSceneMeaning(scene.spokenText);
-  const suppliedLooksAutomatic =
-    JSON.stringify(scene.meaningContract) ===
-    JSON.stringify(automaticallyGeneratedBase);
-
-  return suppliedLooksAutomatic
-    ? enhanceSceneMeaning(scene.spokenText, scene.meaningContract)
-    : scene.meaningContract;
-};
 
 export const planReelChoreography = ({
   reelId,
@@ -62,7 +44,10 @@ export const planReelChoreography = ({
     reelIndex,
     scenes: scenes.map((scene) => ({
       ...scene,
-      meaningContract: resolvePlannerMeaningContract(scene),
+      meaningContract: resolveAuthoredMeaningContract(
+        scene.spokenText,
+        scene.meaningContract,
+      ),
     })),
     entries,
     brain,

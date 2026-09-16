@@ -193,7 +193,7 @@ export const PrototypeShell: React.FC<{
             style={{
               maxWidth: 820,
               color: BRAND.accentDk,
-              fontFamily: BRAND.font,
+              fontFamily: BRAND.font.body,
               fontSize: displayTitle.length > 30 ? 50 : 58,
               lineHeight: 1.02,
               fontWeight: 900,

@@ -233,7 +233,7 @@ const labelRecord = (
 const deriveRetrieval: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const pool = semanticPool(spokenText, meaningContract).slice(0, 6);
   const sources = pool.length >= 2 ? pool : ['Beleg', 'Quelle'];
-  const labels = {
+  const labels: Record<string, string> = {
     query: compact(spokenText, 58),
     ...labelRecord('source', sources, 6, ['Beleg', 'Quelle', 'Dokument', 'Hinweis', 'Archiv', 'Kommentar']),
     resultLabel: compact(meaningContract.endState, 60),
@@ -411,7 +411,7 @@ const deriveRanking: RuntimeDeriver = ({spokenText, meaningContract}) => {
     ...meaningContract.resultTerms.map(humanize),
   ]).filter((term) => !candidates.some((candidate) => normalize(candidate) === normalize(term)));
   const numbers = extractNumbers(spokenText).filter((number) => number >= 0 && number <= 100);
-  const labels = {
+  const labels: Record<string, string> = {
     ...labelRecord('candidate', candidates, 3, ['Option A', 'Option B', 'Option C']),
     ...labelRecord('criterion', criteria, 3, ['Kriterium 1', 'Kriterium 2', 'Kriterium 3']),
     resultLabel: compact(meaningContract.endState, 60),
@@ -489,7 +489,7 @@ const deriveSemanticSpace: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const entities = capitalizedEntities(spokenText);
   const pool = unique([...entities, ...semanticPool(spokenText, meaningContract)]).slice(0, 6);
   const contrastIndex = normalize(spokenText).indexOf(' als ');
-  const labels = {
+  const labels: Record<string, string> = {
     ...labelRecord('concept', pool, 6, ['Begriff 1', 'Begriff 2', 'Begriff 3', 'Begriff 4', 'Begriff 5', 'Begriff 6']),
     cluster1: pick(meaningContract.subjectTerms.map(humanize), 0, 'Cluster 1'),
     cluster2: pick(meaningContract.resultTerms.map(humanize), 0, 'Cluster 2'),
