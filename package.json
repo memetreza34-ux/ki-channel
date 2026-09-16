@@ -14,6 +14,7 @@
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
     "ki:longform:structure-check": "node scripts/check-ki-longform-folder-structure.mjs",
+    "phase3:check": "node scripts/check-phase3-ready.mjs",
     "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && npm run ki:longform:structure-check && vitest run",
     "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
     "typecheck:animation-library": "tsc --noEmit -p ki/tsconfig.animation-library.json",

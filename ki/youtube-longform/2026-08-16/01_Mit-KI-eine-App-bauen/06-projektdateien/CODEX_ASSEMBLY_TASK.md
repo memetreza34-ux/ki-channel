@@ -1,5 +1,6 @@
 # Phase-3-Auftrag
 
+0. **Preflight, vor jeder anderen Handlung:** `npm run phase3:check -- ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen`. Meldet er einen Blocker, ist Phase 3 beendet: Blocker wörtlich zurückgeben, keine Datei anfassen.
 1. `PHASE-STATUS.md`, `longform.json`, Skript, Kapitel- und Visualplan lesen.
 2. echtes Voiceover in `01-script-audio/` suchen. Fehlt es: exakt `PHASE 2 AUDIO FEHLT` und stoppen.
 3. reale Audio-Dauer messen. Liegt die natürliche Aufnahme außerhalb 5:00–6:00, nicht heimlich stark stretchen; Ursache melden und bei deutlicher Abweichung neues Voiceover anfordern.
