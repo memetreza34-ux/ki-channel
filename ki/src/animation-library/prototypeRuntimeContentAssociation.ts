@@ -95,10 +95,10 @@ const scoreForLabel = (
   const gap = safeGap(otherLabels, 24);
   const score = '(-?\\d+(?:[.,]\\d+)?)';
   const labelBefore = new RegExp(
-    `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${score}\\s*(?:punkte?|points?|%|prozent)\\b`,
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${score}\\s*(?:%|(?:punkte?|points?|prozent)\\b)`,
   );
   const scoreBefore = new RegExp(
-    `${score}\\s*(?:punkte?|points?|%|prozent)\\b${safeGap(otherLabels, 18)}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    `${score}\\s*(?:%|(?:punkte?|points?|prozent)\\b)${safeGap(otherLabels, 18)}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
   );
   const match = labelBefore.exec(text) ?? scoreBefore.exec(text);
   if (!match) return null;
@@ -117,10 +117,10 @@ const percentageForLabel = (
   const escapedLabel = normalizedLabelPattern(label);
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
   const labelBefore = new RegExp(
-    `(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap(otherLabels, 28)}${number}\\s*(?:%|prozent)\\b`,
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap(otherLabels, 28)}${number}\\s*(?:%|prozent\\b)`,
   );
   const percentageBefore = new RegExp(
-    `${number}\\s*(?:%|prozent)\\b${safeGap(otherLabels, 20)}\\b(?:fur|bei|auf|entfallen\\s+auf|fallen\\s+auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    `${number}\\s*(?:%|prozent\\b)${safeGap(otherLabels, 20)}\\b(?:fur|bei|auf|entfallen\\s+auf|fallen\\s+auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
   );
   const match = labelBefore.exec(text) ?? percentageBefore.exec(text);
   if (!match) return null;
@@ -324,7 +324,7 @@ const distributeProbabilityRemainder = (
   exactValues: readonly (number | null)[],
   fallbackValues: readonly number[],
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -367,7 +367,7 @@ const alignProbabilityWinner = (
   exactValues: readonly (number | null)[],
   winnerIndex: number,
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );

@@ -8,7 +8,7 @@ import {
   type ReelChoreographyPlan,
   type ReelSceneBrief,
 } from './contentMatchedPlanner';
-import {enhanceSceneMeaning} from './extendedMeaningContract';
+import {resolveAuthoredMeaningContract} from './extendedMeaningContract';
 
 const normalize = (value: string): string =>
   value
@@ -28,7 +28,7 @@ const hasGoalIncompatibleShortcut = ({
   scene: ReelSceneBrief;
   entry: AnimationLibraryEntry;
 }): boolean => {
-  const contract = enhanceSceneMeaning(scene.spokenText, scene.meaningContract);
+  const contract = resolveAuthoredMeaningContract(scene.spokenText, scene.meaningContract);
   const corpus = normalize(
     [
       entry.title,
@@ -129,7 +129,7 @@ export const planReelChoreography = ({
 }): ReelChoreographyPlan => {
   const enrichedScenes = scenes.map((scene) => ({
     ...scene,
-    meaningContract: enhanceSceneMeaning(
+    meaningContract: resolveAuthoredMeaningContract(
       scene.spokenText,
       scene.meaningContract,
     ),

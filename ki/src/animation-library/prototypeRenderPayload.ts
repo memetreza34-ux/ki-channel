@@ -71,9 +71,9 @@ export const createPrototypeRenderProps = ({
   return {content};
 };
 
-export const assertPrototypeRenderProps = (
+export function assertPrototypeRenderProps(
   props: PrototypeRenderProps,
-): asserts props is {content: PrototypeContentInput} => {
+): asserts props is {content: PrototypeContentInput} {
   if (!props.content) {
     throw new Error('content-matched prototype render requires content props');
   }
@@ -84,4 +84,4 @@ export const assertPrototypeRenderProps = (
     throw new Error('content-matched prototype render requires meaningContract');
   }
   validateMeaningContract(props.content.meaningContract);
-};
+}

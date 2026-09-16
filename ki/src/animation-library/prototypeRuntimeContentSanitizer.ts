@@ -106,7 +106,7 @@ const repairEntityLabels = ({
 };
 
 const explicitPercentage = (spokenText: string): number | null => {
-  const numeric = spokenText.match(/\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/i);
+  const numeric = spokenText.match(/\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent\b)/i);
   if (numeric) {
     const parsed = Number(numeric[1].replace(',', '.'));
     if (Number.isFinite(parsed) && parsed >= 0 && parsed <= 100) return parsed;
@@ -196,7 +196,7 @@ const latencyMeasurements = (spokenText: string, unit: string): number[] => {
 
 const explicitPercentages = (spokenText: string): number[] =>
   collectMeasurements(spokenText, [
-    /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent)\b/gi,
+    /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent\b)/gi,
   ]).filter((value) => value >= 0 && value <= 100);
 
 const percentageForLabel = (
@@ -208,8 +208,8 @@ const percentageForLabel = (
   if (normalizedLabel.length < 2) return null;
   const escapedLabel = escapeRegex(normalizedLabel).replace(/\s+/g, '\\s+');
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
-  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,28}${number}\\s*(?:%|prozent)\\b`);
-  const before = new RegExp(`${number}\\s*(?:%|prozent)\\b[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
+  const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,28}${number}\\s*(?:%|prozent\\b)`);
+  const before = new RegExp(`${number}\\s*(?:%|prozent\\b)[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
   const match = after.exec(text) ?? before.exec(text);
   if (!match) return null;
   const parsed = Number(match[1].replace(',', '.'));
@@ -220,7 +220,7 @@ const percentageForLabel = (
 
 const scoreMeasurements = (spokenText: string): number[] =>
   collectMeasurements(spokenText, [
-    /\bscore(?:\s+von)?\s*(-?\d+(?:[.,]\d+)?)(?:\s*(?:punkte?|points?|%|prozent))?|\b(?:mit|erreicht(?:\s+mit)?|hat)\s*(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?|%|prozent)\b|(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?)\b/gi,
+    /\bscore(?:\s+von)?\s*(-?\d+(?:[.,]\d+)?)(?:\s*(?:punkte?|points?|%|prozent))?|\b(?:mit|erreicht(?:\s+mit)?|hat)\s*(-?\d+(?:[.,]\d+)?)\s*(?:%|(?:punkte?|points?|prozent)\b)|(-?\d+(?:[.,]\d+)?)\s*(?:punkte?|points?)\b/gi,
   ]).filter((value) => value >= 0 && value <= 100);
 
 const numericTokenCount = (spokenText: string): number =>
@@ -274,7 +274,7 @@ const distributeProbabilityRemainder = ({
   exactValues: readonly (number | null)[];
   fallbackValues: readonly number[];
 }): number[] => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -326,7 +326,7 @@ const sanitizeProbability = (
   });
   const fallbackPercentage = explicitPercentage(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {...values};
+  const nextValues: Record<string, string | number> = {...values};
 
   for (let index = 0; index < 3; index += 1) {
     const exact = exactValues[index] !== null;
@@ -375,7 +375,7 @@ const sanitizeRanking = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     rankingOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -405,7 +405,7 @@ const sanitizeComparison = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'competitor', count: 2});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     comparisonOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -435,7 +435,7 @@ const sanitizeCost = (
     values.initialCost !== undefined &&
     values.optimizedCost !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {...values, measurementExact: exact ? 1 : 0};
 
   if (boundMeasurements.length >= 2) {
     const initial = Math.max(boundMeasurements[0], boundMeasurements[1]);
@@ -478,7 +478,7 @@ const sanitizeLatency = (
     values.slowLatency !== undefined &&
     values.fastLatency !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {...values, measurementExact: exact ? 1 : 0};
 
   if (boundMeasurements.length >= 2) {
     nextValues.slowLatency = boundMeasurements[0];

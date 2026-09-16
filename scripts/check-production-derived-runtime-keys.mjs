@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {loadSceneMeaningEnhancer} from './load-scene-meaning-enhancer.mjs';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
@@ -72,6 +73,7 @@ if (PROTOTYPE_SOURCES.size !== 22) {
 
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
+const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 const sanitizePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentSanitizer();
 const associatePrototypeRuntimeContent =
@@ -89,8 +91,16 @@ for (const fixture of fixtures) {
     continue;
   }
   const content = fixture.content ?? fixture.props?.content;
-  if (!content?.spokenText || !content?.meaningContract) {
-    failures.push(`${fixture.animationId}: Fixture ohne spokenText/meaningContract`);
+  if (!content?.spokenText) {
+    failures.push(`${fixture.animationId}: Fixture ohne spokenText`);
+    continue;
+  }
+  // Fixtures sind Sprechertext-only; der Meaning-Contract entsteht kanonisch
+  // ueber den Scene-Meaning-Enhancer (meaning -> derive -> sanitize -> associate).
+  const meaningContract =
+    content.meaningContract ?? enhanceSceneMeaning(content.spokenText);
+  if (!meaningContract?.startState || !meaningContract?.visibleChange || !meaningContract?.endState) {
+    failures.push(`${fixture.animationId}: Meaning-Contract unvollstaendig`);
     continue;
   }
 
@@ -102,7 +112,7 @@ for (const fixture of fixtures) {
   const derived = derivePrototypeRuntimeContent({
     animationId: fixture.animationId,
     spokenText: content.spokenText,
-    meaningContract: content.meaningContract,
+    meaningContract,
   });
   const sanitized = sanitizePrototypeRuntimeContent({
     animationId: fixture.animationId,

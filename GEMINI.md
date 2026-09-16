@@ -102,4 +102,4 @@ npm run content:runtime:verify
 npm run repo:verify
 ```
 
-Workspaces nie mit `--workspaces=false` umgehen. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.
+Workspaces nie umgehen: kein `--workspaces`-Opt-out und keine manuelle Installation an `core`/`ki` vorbei. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.
