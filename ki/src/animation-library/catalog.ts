@@ -881,7 +881,6 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'dynamic',
         density: 'minimal',
         complexity: 'medium',
-        status: 'prototype',
       },
       {
         slug: 'transformation-portal',
@@ -916,6 +915,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'measured',
         density: 'dense',
         complexity: 'medium',
+        status: 'prototype',
       },
       {
         slug: 'machine-blueprint-reveal',
