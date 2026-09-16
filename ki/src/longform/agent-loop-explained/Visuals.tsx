@@ -1,22 +1,67 @@
 import React from 'react';
 import {interpolate,spring,useCurrentFrame,useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
+import {Keyword,Pop,Rise} from './Motion';
 
 const ink=BRAND.ink,purple=BRAND.accentDk,accent=BRAND.accent,green='#31875A',red='#B64D58',muted='#8D8197';
 const card:React.CSSProperties={background:'#fff',border:'1px solid rgba(110,69,201,.16)',borderRadius:28,boxShadow:'0 24px 70px rgba(26,26,46,.10)'};
-const label:React.CSSProperties={fontFamily:BRAND.font,fontWeight:850,letterSpacing:-.7,color:ink};
+const label:React.CSSProperties={fontFamily:BRAND.font.body,fontWeight:850,letterSpacing:-.7,color:ink};
 const p=(f:number,a:number,b:number)=>interpolate(f,[a,b],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
 const on=(f:number,at:number)=>p(f,at,at+55);
 const beatCount=(f:number,beats:number[])=>beats.filter(b=>f>=b).length;
 
-const Pill:React.FC<{children:React.ReactNode;tone?:'purple'|'green'|'red'|'neutral';small?:boolean}>=({children,tone='neutral',small})=>{const bg=tone==='purple'?'rgba(185,140,255,.20)':tone==='green'?'#E9F6EE':tone==='red'?'#FBEDEF':'#F5F2F8';const color=tone==='purple'?purple:tone==='green'?green:tone==='red'?red:ink;return <div style={{padding:small?'10px 15px':'13px 20px',borderRadius:999,background:bg,color,fontFamily:BRAND.font,fontWeight:850,fontSize:small?20:24,whiteSpace:'nowrap'}}>{children}</div>};
+const Pill:React.FC<{children:React.ReactNode;tone?:'purple'|'green'|'red'|'neutral';small?:boolean}>=({children,tone='neutral',small})=>{const bg=tone==='purple'?'rgba(185,140,255,.20)':tone==='green'?'#E9F6EE':tone==='red'?'#FBEDEF':'#F5F2F8';const color=tone==='purple'?purple:tone==='green'?green:tone==='red'?red:ink;return <div style={{padding:small?'10px 15px':'13px 20px',borderRadius:999,background:bg,color,fontFamily:BRAND.font.body,fontWeight:850,fontSize:small?20:24,whiteSpace:'nowrap'}}>{children}</div>};
 const AgentCore:React.FC<{status?:string;scale?:number}>=({status='AGENT',scale=1})=><div style={{...card,width:260,height:180,display:'grid',placeItems:'center',transform:`scale(${scale})`,background:'linear-gradient(145deg,#fff,#F5EEFF)',border:'2px solid rgba(110,69,201,.25)'}}><div style={{textAlign:'center'}}><div style={{width:58,height:58,borderRadius:19,margin:'0 auto 16px',background:purple,boxShadow:'0 12px 30px rgba(110,69,201,.28)'}}/><div style={{...label,fontSize:30,color:purple}}>{status}</div></div></div>;
 const ToolCard:React.FC<{name:string;active?:boolean;tone?:'purple'|'red'}>=({name,active,tone='purple'})=><div style={{...card,width:220,height:118,display:'grid',placeItems:'center',opacity:active?1:.4,transform:`scale(${active?1:.94})`,border:active?`2px solid ${tone==='red'?red:purple}`:'1px solid rgba(110,69,201,.12)',background:active?(tone==='red'?'#FFF5F6':'#FAF6FF'):'#fff'}}><div style={{...label,fontSize:25,color:active?(tone==='red'?red:purple):muted}}>{name}</div></div>;
 const Arrow:React.FC<{opacity?:number;color?:string}>=({opacity=1,color=purple})=><div style={{fontSize:42,fontWeight:900,color,opacity}}>→</div>;
 
 export const HookVisual:React.FC<{beats:number[]}>=({beats})=>{const f=useCurrentFrame();const cfg=useVideoConfig();const pulse=spring({frame:f,fps:cfg.fps,config:{damping:18}});const b=beats.map(x=>on(f,x));return <div style={{position:'absolute',inset:0}}><div style={{position:'absolute',left:115,top:310,width:470,...card,padding:34,opacity:b[0],transform:`translateY(${28*(1-b[0])}px)`}}><div style={{...label,fontSize:24,color:purple}}>ZIEL</div><div style={{...label,fontSize:39,lineHeight:1.12,marginTop:16}}>Vergleiche passende Tools und gib mir eine Empfehlung.</div></div><div style={{position:'absolute',left:650,top:270,width:430,...card,padding:30,opacity:b[1]*(1-.7*b[2]),transform:`scale(${.92+.08*pulse})`}}><div style={{...label,fontSize:24,color:muted}}>CHAT-ANTWORT</div><div style={{height:14,width:'92%',borderRadius:10,background:'#D8D0DE',marginTop:28}}/><div style={{height:14,width:'72%',borderRadius:10,background:'#D8D0DE',marginTop:15}}/><div style={{height:14,width:'84%',borderRadius:10,background:'#D8D0DE',marginTop:15}}/></div><div style={{position:'absolute',left:790,top:380,opacity:b[2],transform:`scale(${.86+.14*b[2]})`}}><AgentCore status="AGENT"/></div><div style={{position:'absolute',right:105,top:205,display:'grid',gridTemplateColumns:'repeat(2,220px)',gap:20,opacity:b[3]}}>{['SUCHE','DATEIEN','CODE','BROWSER'].map((x,i)=><ToolCard key={x} name={x} active={b[3]>.15+i*.18}/>)}</div><svg width="1920" height="1080" style={{position:'absolute',inset:0,pointerEvents:'none',opacity:b[4]}}><path d="M1510 695 C1400 860 990 875 920 625" fill="none" stroke={purple} strokeWidth="12" strokeLinecap="round" strokeDasharray="18 18"/><path d="M920 625 l-8 34 30-17" fill={purple}/></svg><div style={{position:'absolute',left:980,top:805,opacity:b[4]}}><Pill tone="purple">ERGEBNIS → FEEDBACK</Pill></div></div>};
 
-export const CompareVisual:React.FC<{beats:number[]}>=({beats})=>{const f=useCurrentFrame();const b=beats.map(x=>on(f,x));return <div style={{position:'absolute',inset:0}}><div style={{position:'absolute',left:940,top:175,bottom:130,width:2,background:'rgba(26,26,46,.10)'}}/><div style={{position:'absolute',left:120,top:210,width:690}}><div style={{...label,fontSize:29,color:muted,marginBottom:34}}>CHATBOT</div><div style={{display:'flex',alignItems:'center',gap:18,opacity:b[0]}}><Pill>FRAGE</Pill><Arrow/><Pill tone="purple">ANTWORT</Pill></div><div style={{...label,fontSize:24,color:muted,marginTop:42,opacity:b[2]}}>Stoppt nach der Antwort</div></div><div style={{position:'absolute',right:95,top:210,width:780}}><div style={{...label,fontSize:29,color:purple,marginBottom:34}}>AGENT</div><div style={{display:'flex',alignItems:'center',gap:12,opacity:b[1]}}>{['ZIEL','SUCHEN','VERGLEICHEN','PRÜFEN'].map((x,i)=><React.Fragment key={x}><Pill tone={i<=Math.floor(b[2]*3)?'purple':'neutral'}>{x}</Pill>{i<3?<Arrow opacity={b[2]}/>:null}</React.Fragment>)}</div><div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginTop:70,opacity:b[3]}}>{['Quelle A','Quelle B','Zwischenstand'].map((x,i)=><div key={x} style={{...card,height:150,display:'grid',placeItems:'center',...label,fontSize:24,color:i===2?purple:ink}}>{x}</div>)}</div></div></div>};
+export const CompareVisual:React.FC<{beats:number[]}>=({beats})=>{const f=useCurrentFrame();const [b0,b1,b2,b3]=beats;
+  // Die Agenten-Kette laeuft Schritt fuer Schritt durch, statt komplett aufzublenden.
+  const chainStep=(i:number)=>b2+i*46;
+  const chain=['ZIEL','SUCHEN','VERGLEICHEN','PRÜFEN'];
+  const stopPulse=1+Math.sin(Math.max(0,f-b0-70)/9)*0.02;
+  return <div style={{position:'absolute',inset:0}}>
+    <div style={{position:'absolute',left:940,top:120,bottom:120,width:2,background:'linear-gradient(rgba(26,26,46,0),rgba(26,26,46,.12),rgba(26,26,46,0))'}}/>
+
+    {/* Chatbot: eine Frage, eine Antwort, dann Stillstand. */}
+    <div style={{position:'absolute',left:120,top:104,width:700}}>
+      <Rise at={b0} from="left"><div style={{...label,fontSize:30,color:muted,letterSpacing:2}}>CHATBOT</div></Rise>
+      <div style={{display:'flex',alignItems:'center',gap:18,marginTop:74}}>
+        <Rise at={b0+10} from="left"><Pill>FRAGE</Pill></Rise>
+        <Rise at={b0+22} from="left"><Arrow/></Rise>
+        <Pop at={b0+34}><Pill tone="purple">ANTWORT</Pill></Pop>
+      </div>
+      <Rise at={b0+70} style={{marginTop:104}}>
+        <div style={{...card,padding:'34px 38px',borderStyle:'dashed',borderColor:'rgba(26,26,46,.18)',transform:`scale(${stopPulse})`}}>
+          <div style={{...label,fontSize:27,color:muted}}>Danach passiert <Keyword at={b0+92} size={23} tone="warn">nichts</Keyword> mehr.</div>
+        </div>
+      </Rise>
+      <Rise at={b3+20} style={{marginTop:76}}>
+        <div style={{...label,fontSize:25,color:muted}}>Ein Schritt. Ein Ergebnis.</div>
+      </Rise>
+    </div>
+
+    {/* Agent: verkettete Schritte mit echtem Zwischenstand. */}
+    <div style={{position:'absolute',right:95,top:104,width:790}}>
+      <Rise at={b1} from="right"><div style={{...label,fontSize:30,color:purple,letterSpacing:2}}>AGENT</div></Rise>
+      <div style={{display:'flex',alignItems:'center',gap:11,marginTop:74,flexWrap:'wrap'}}>
+        {chain.map((x,i)=><React.Fragment key={x}>
+          <Pop at={chainStep(i)}><Pill tone={f>=chainStep(i)+18?'purple':'neutral'} small>{x}</Pill></Pop>
+          {i<chain.length-1?<Rise at={chainStep(i)+22} from="left" distance={12}><Arrow/></Rise>:null}
+        </React.Fragment>)}
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginTop:104}}>
+        {['Quelle A','Quelle B','Zwischenstand'].map((x,i)=><Rise key={x} at={b3+i*18}>
+          <div style={{...card,height:188,display:'grid',placeItems:'center',...label,fontSize:23,color:i===2?purple:ink,borderColor:i===2?'rgba(110,69,201,.35)':'rgba(110,69,201,.16)'}}>{x}</div>
+        </Rise>)}
+      </div>
+      <Rise at={b3+70} style={{marginTop:76}}>
+        <div style={{...label,fontSize:25,color:muted}}>Mehrere Schritte. Ein <Keyword at={b3+96} size={22}>geprüftes</Keyword> Ergebnis.</div>
+      </Rise>
+    </div>
+  </div>};
 
 export const AnatomyVisual:React.FC<{beats:number[]}>=({beats})=>{const f=useCurrentFrame();const b=beats.map(x=>on(f,x));const modules=[{x:160,y:250,t:'ANWEISUNGEN',s:'Ziel & Grenzen',v:b[1]},{x:1320,y:250,t:'WERKZEUGE',s:'Aktionen',v:b[2]},{x:160,y:650,t:'KONTEXT',s:'Was schon passiert ist',v:b[3]}];return <div style={{position:'absolute',inset:0}}><div style={{position:'absolute',left:830,top:410,opacity:b[0],transform:`scale(${.86+.14*b[0]})`}}><AgentCore status="MODELL"/></div>{modules.map(m=><div key={m.t} style={{position:'absolute',left:m.x,top:m.y,width:410,...card,padding:30,opacity:m.v,transform:`translateY(${25*(1-m.v)}px)`}}><div style={{...label,fontSize:28,color:purple}}>{m.t}</div><div style={{...label,fontSize:24,color:muted,marginTop:18}}>{m.s}</div></div>)}<svg width="1920" height="1080" style={{position:'absolute',inset:0,opacity:b[4]}}><path d="M570 340 C760 340 720 470 830 500M1320 340 C1160 340 1190 470 1090 500M570 740 C760 740 720 600 830 575" fill="none" stroke={accent} strokeWidth="10" strokeLinecap="round"/></svg><div style={{position:'absolute',left:846,top:650,opacity:b[4]}}><Pill tone="green">BEREIT</Pill></div></div>};
 
