@@ -148,7 +148,7 @@ const HallucinationCaptions: React.FC = () => {
   const activeIndex = activeWordIndex(frame, cue, words.length);
   return (
     <div style={{position:'absolute',left:104,right:104,bottom:520,zIndex:200,display:'flex',justifyContent:'center',pointerEvents:'none',opacity:edgeFade(frame,cue.startFrame,cue.endFrame)}}>
-      <div style={{width:'100%',maxWidth:820,color:BRAND.ink,fontFamily:BRAND.font,fontSize:48,fontWeight:850,lineHeight:1.18,letterSpacing:-0.9,textAlign:'center',textShadow:'0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)'}}>
+      <div style={{width:'100%',maxWidth:820,color:BRAND.ink,fontFamily:BRAND.font.body,fontSize:48,fontWeight:850,lineHeight:1.18,letterSpacing:-0.9,textAlign:'center',textShadow:'0 2px 0 rgba(255,255,255,0.96), 0 0 14px rgba(255,255,255,0.96), 0 8px 30px rgba(26,26,46,0.10)'}}>
         {words.map((word, index) => (
           <React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${index}-${word}`}>
             <span style={{display:'inline-block',color:index === activeIndex ? BRAND.accentDk : BRAND.ink,transform:`scale(${index === activeIndex ? 1.035 : 1})`,transformOrigin:'50% 70%'}}>{word}</span>
