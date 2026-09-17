@@ -2,10 +2,11 @@ import React,{useMemo} from 'react';
 import {AbsoluteFill,Html5Audio,Sequence,useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 import {ChapterHeader} from './ChapterHeader';
+import {HookScene} from './HookScene';
 import {AGENT_LOOP_CHAPTERS,type AgentLoopChapter,type AgentLoopChapterId} from './contract';
 import {AnatomyVisual,CompareVisual,ExampleVisual,FitVisual,GuardrailsVisual,HookVisual,LoopVisual,RisksVisual,ToolsVisual} from './Visuals';
 
-const visualByChapter:Record<AgentLoopChapterId,React.FC<{beats:number[]}>>={hook:HookVisual,compare:CompareVisual,anatomy:AnatomyVisual,loop:LoopVisual,example:ExampleVisual,tools:ToolsVisual,risks:RisksVisual,guardrails:GuardrailsVisual,fit:FitVisual};
+const visualByChapter:Record<AgentLoopChapterId,React.FC<{beats:number[]}>>={hook:HookScene as unknown as React.FC<{beats:number[]}>,compare:CompareVisual,anatomy:AnatomyVisual,loop:LoopVisual,example:ExampleVisual,tools:ToolsVisual,risks:RisksVisual,guardrails:GuardrailsVisual,fit:FitVisual};
 
 // Der Kapitelkopf belegt die oberen ~170px dauerhaft. Die Szene darunter wird
 // entsprechend eingerueckt und leicht verkleinert, damit nichts kollidiert.
