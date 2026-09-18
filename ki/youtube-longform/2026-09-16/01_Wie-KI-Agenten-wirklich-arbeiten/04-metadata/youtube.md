@@ -20,17 +20,19 @@ Am Ende kennst du ein einfaches mentales Modell: Ziel → Zustand beobachten →
 
 ## Kapitel
 
-Finale Zeitstempel werden in Phase 3 aus dem echten Voiceover erzeugt.
+Aus dem echten Voiceover erzeugt: jede Grenze liegt in der Sprechpause vor dem
+ersten Wort des Absatzes (`scripts/derive-longform-chapters.mjs`).
 
-1. Was einen KI-Agenten anders macht
-2. Chatbot gegen Agent
-3. Die vier Bausteine eines Agenten
-4. So funktioniert der Agenten-Loop
-5. Ein Agent bei einer echten Aufgabe
-6. Warum Agenten Werkzeuge brauchen
-7. Wie Fehler sich fortpflanzen
-8. Rechte, Freigaben und Kontrolle
-9. Wann du überhaupt einen Agenten brauchst
+0:00 Was einen KI-Agenten anders macht
+0:38 Chatbot gegen Agent
+1:14 Die vier Bausteine eines Agenten
+1:50 So funktioniert der Agenten-Loop
+2:19 Ein Agent bei einer echten Aufgabe
+2:53 Warum Agenten Werkzeuge brauchen
+3:26 Wie Fehler sich fortpflanzen
+3:57 Rechte, Freigaben und Kontrolle
+4:24 Wann du überhaupt einen Agenten brauchst
+4:55 Das mentale Modell zum Mitnehmen
 
 ## Keywords
 

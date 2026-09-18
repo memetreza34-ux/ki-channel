@@ -76,6 +76,15 @@ const ICON_PATHS: Record<AgentLoopChapterId, React.ReactNode> = {
       <circle cx="16" cy="16" r="1.6" />
     </>
   ),
+  // Kopf mit Schleife — das mentale Modell zum Mitnehmen
+  model: (
+    <>
+      <path d="M11 27v-4.2A9 9 0 1120.5 7.6" />
+      <path d="M20 27v-3a3 3 0 013-3h3" />
+      <circle cx="16" cy="15" r="3.4" />
+      <path d="M26 9.5a7 7 0 11-2.3-5.2" />
+    </>
+  ),
 };
 
 const ChapterIcon: React.FC<{id: AgentLoopChapterId; progress: number}> = ({id, progress}) => (
