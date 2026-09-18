@@ -24,7 +24,7 @@ export type SpokenWord = {t: string; a: number; b: number};
 export type SpokenSentence = {a: number; b: number; from: number; to: number};
 
 /** Letzter Eintrag, der bei oder vor `frame` beginnt. Binaere Suche. */
-const indexAt = <T extends {a: number}>(list: T[], frame: number): number => {
+export const indexAt = <T extends {a: number}>(list: T[], frame: number): number => {
   let lo = 0;
   let hi = list.length - 1;
   let found = -1;
@@ -124,7 +124,18 @@ export const drift = (frame: number, seed: number, amp = 1): {x: number; y: numb
   y: Math.cos((frame / 287) * Math.PI * 2 + seed * 2.53) * amp * 0.8,
 });
 
-/** Frames, die ein Wort im Kapitel ergibt — fuer Tabellen in Kapitel-Frames. */
-export const wordFrame = (index: number): number => VOICE_WORDS[index]?.a ?? 0;
+/**
+ * Wieviele Woerter zwischen zwei Frames gesprochen wurden.
+ *
+ * Wird je Textbaustein und Frame gebraucht. Als linearer Durchlauf ueber alle
+ * 779 Woerter war das der Grund, warum der Render in den Puppeteer-Timeout
+ * lief — hier zwei binaere Suchen statt zweier voller Durchlaeufe.
+ */
+export const wordsBetween = (fromFrame: number, toFrame: number): number => {
+  if (toFrame < fromFrame) return 0;
+  const before = indexAt(VOICE_WORDS, fromFrame - 1);
+  const until = indexAt(VOICE_WORDS, toFrame);
+  return Math.max(0, until - before);
+};
 
 export {VOICE_SENTENCES, VOICE_WORDS};

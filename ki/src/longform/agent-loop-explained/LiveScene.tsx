@@ -1,7 +1,7 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
-import {breathe, drift, useSpeech, VOICE_WORDS} from './speech';
+import {breathe, drift, useSpeech, wordsBetween} from './speech';
 
 /**
  * Szene, die durchgehend lebt.
@@ -121,13 +121,7 @@ const SpokenText: React.FC<{at: number; offset: number; text: string; style?: Re
   const words = text.split(' ');
 
   // Wieviele Voiceover-Woerter sind seit dem Start dieses Textes gefallen?
-  let spokenSince = 0;
-  for (let i = 0; i < VOICE_WORDS.length; i++) {
-    const a = VOICE_WORDS[i].a;
-    if (a < startFrame) continue;
-    if (a > frame) break;
-    spokenSince++;
-  }
+  const spokenSince = wordsBetween(startFrame, frame);
 
   return (
     <span style={style}>
