@@ -78,7 +78,8 @@ const Badge: React.FC<{
 );
 
 const CharacterMosaic: React.FC<{frame: number}> = ({frame}) => {
-  const collapse = p(frame, 58, 148);
+  // Versatz, kein Abgang: die Kacheln ruecken zusammen und bleiben sichtbar.
+  const collapse = p(frame, 58, 148, 'move');
   const letters = 'NEURONALESNETZWERK'.split('');
   return (
     <Stage label="BUCHSTABEN → LESBARES MUSTER → TOKEN-GRUPPEN">

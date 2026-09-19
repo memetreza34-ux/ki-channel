@@ -36,6 +36,10 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
   const content = usePrototypeContent();
   const core = prototypeProgress(frame, 0, 24);
   const prune = prototypeProgress(frame, 104, 142);
+  // Dieselbe Zeitachse trug bisher zwei Richtungen: die verworfenen Aeste
+  // gehen ab, die Bildunterschrift kommt herein. Ein Abgang braucht die
+  // Austrittskurve, ein Eintritt die Eintrittskurve.
+  const pruneExit = prototypeProgress(frame, 104, 142, 'exit');
   const route = prototypeProgress(frame, 126, 170);
   const contractTerms = content
     ? [...new Set([
@@ -96,7 +100,7 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
           <svg width="916" height="1270" viewBox="0 0 916 1270" style={{position: 'absolute', inset: 0}}>
             {branches.map((branch) => {
               const reveal = prototypeProgress(frame, branch.start, branch.start + 28);
-              const faded = branch.valid ? 1 : 1 - prune;
+              const faded = branch.valid ? 1 : 1 - pruneExit;
               const controlX = 458 + (branch.x - 458) * 0.32;
               const controlY = 350 + (branch.y - 350) * 0.58;
               const dash = 920;
@@ -151,7 +155,7 @@ export const DecisionTreeBurstPrototype: React.FC = () => {
 
           {branches.map((branch, index) => {
             const reveal = prototypeProgress(frame, branch.start + 8, branch.start + 30);
-            const remove = branch.valid ? 0 : prune;
+            const remove = branch.valid ? 0 : pruneExit;
             const validGlow = branch.valid ? route : 0;
             return (
               <div key={`${branch.label}-${index}`} style={{position: 'absolute', left: branch.x, top: branch.y, transform: `translate(-50%, -50%) scale(${0.75 + reveal * 0.25 - remove * 0.25}) rotate(${remove * (index % 2 ? 13 : -13)}deg)`, width: 225, minHeight: 120, borderRadius: 28, background: branch.valid ? 'white' : 'rgba(255,93,108,.08)', border: `3px solid ${branch.valid ? (validGlow > 0.35 ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.accentSoft) : PROTOTYPE_PALETTE.danger}`, boxShadow: branch.valid ? `0 16px ${35 + validGlow * 25}px rgba(53,197,138,.14)` : '0 14px 34px rgba(255,93,108,.13)', opacity: reveal * (1 - remove), display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', fontSize: branch.label.length > 14 ? 20 : 29, fontWeight: 900, color: branch.valid ? PROTOTYPE_PALETTE.foreground : PROTOTYPE_PALETTE.danger, zIndex: 4, padding: 12, boxSizing: 'border-box', overflow: 'hidden'}}>{branch.label}</div>

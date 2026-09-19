@@ -13,7 +13,8 @@ Diese Datei verbindet Identität, Reel-Logik, Longform, Bildstil, Plattformen un
 7. `PLATTFORMEN.md` — Publishing und YouTube/Instagram/TikTok/Facebook/Snapchat
 8. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
 9. `../BILDSTIL.md` — Bild- und Prompt-Qualität
-10. named reel/longform package — konkrete Inhalte
+10. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
+11. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 

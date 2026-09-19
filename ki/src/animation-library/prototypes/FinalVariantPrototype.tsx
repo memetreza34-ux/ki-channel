@@ -192,7 +192,8 @@ const ConceptNeighborhoodElevator: React.FC<{frame: number}> = ({frame}) => {
 
 const ContextThreadBraider: React.FC<{frame: number}> = ({frame}) => {
   const braid = prog(frame, 5, 125);
-  const remove = prog(frame, 120, 168);
+  // Austritt: die verworfene Lesart verschwindet.
+  const remove = prog(frame, 120, 168, 'exit');
   const colors = [C.accent, C.success, C.warning];
   return (
     <Stage label="DREI KONTEXTE BILDEN EINE INTERPRETATION · EIN FEHLENDER STRANG ÄNDERT SIE">
