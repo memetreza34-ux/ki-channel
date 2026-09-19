@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 
 export type ContextWindowStageTimings = {
@@ -32,24 +33,12 @@ export const ContextWindowStage: React.FC<{
   const dimOldFrame = timings?.dimOldFrame ?? startFrame + 52;
   const newFrame = timings?.newFrame ?? startFrame + 74;
 
-  const oldEntry = interpolate(frame, [oldFrame, oldFrame + 18], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const activeOpacity = interpolate(frame, [currentFrame, currentFrame + 18], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const oldDim = interpolate(frame, [dimOldFrame, dimOldFrame + 22], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const oldEntry = easedProgress(frame, oldFrame, oldFrame + 18);
+  const activeOpacity = easedProgress(frame, currentFrame, currentFrame + 18);
+  const oldDim = easedProgress(frame, dimOldFrame, dimOldFrame + 22);
   const oldOpacity = oldEntry * interpolate(oldDim, [0, 1], [1, 0.18]);
   const oldShift = interpolate(oldDim, [0, 1], [0, -130]);
-  const newOpacity = interpolate(frame, [newFrame, newFrame + 18], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const newOpacity = easedProgress(frame, newFrame, newFrame + 18);
   const currentTypography = getLabelTypography(currentLabel, {maxFontSize: 30, minFontSize: 22});
   const oldTypography = getLabelTypography(oldLabel, {maxFontSize: 28, minFontSize: 20});
   const newTypography = getLabelTypography(newLabel, {maxFontSize: 28, minFontSize: 20});

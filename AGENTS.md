@@ -98,6 +98,11 @@ Zeitabhängige Plattformlimits oder Monetarisierungsregeln bei konkreter Veröff
 - direkte Frame-Seeks müssen funktionieren
 - Hard Cut ist Standard; Übergang nur bei echter semantischer Kontinuität
 - eine dominante erklärende Bewegung pro Satz, maximal drei starke Bewegungen gleichzeitig
+- **keine lineare Bewegung**: Zeitachsen laufen über `easedProgress` aus `ki/src/motion/easing.ts`. Rohes `interpolate(frame, [a, b], [0, 1])` ohne Easing-Kurve liest das Auge als mechanisch und ist nur für Endlos-Schleifen (Spinner, Marquee) zulässig.
+- Gruppen nie gleichzeitig einblenden: Stagger über `staggerDelay()`, sonst wirkt eine Liste als ein einziges flaches Ereignis.
+- große Flächen bekommen mehr Zeit als kleine Marken: `durationForDistance()` statt einer Einheitsdauer für alles.
+
+Die Motion-Grundlagen dahinter liegen als Skills unter `.claude/skills/` (siehe `.claude/skills/README.md`).
 - keine Demo-Zahlen als Fakten
 - keine vollständige Library-Animation zweimal im selben Reel
 

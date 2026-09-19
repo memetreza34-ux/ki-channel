@@ -1,5 +1,6 @@
 import React from 'react';
-import {interpolate, useCurrentFrame} from 'remotion';
+import {useCurrentFrame} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 
 export const AnimatedConnector: React.FC<{
   from: {x: number; y: number};
@@ -9,10 +10,7 @@ export const AnimatedConnector: React.FC<{
   color?: string;
 }> = ({from, to, startFrame, durationFrames = 24, color = '#B98CFF'}) => {
   const frame = useCurrentFrame();
-  const progress = interpolate(frame, [startFrame, startFrame + durationFrames], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const progress = easedProgress(frame, startFrame, startFrame + durationFrames);
   const x2 = from.x + (to.x - from.x) * progress;
   const y2 = from.y + (to.y - from.y) * progress;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 
 export type BeforeAfterStageTimings = {
@@ -23,14 +24,8 @@ export const BeforeAfterStage: React.FC<{
 
   const before = spring({fps, frame: frame - beforeFrame, config: {damping: 18, stiffness: 170}});
   const after = spring({fps, frame: frame - afterFrame, config: {damping: 18, stiffness: 170}});
-  const transform = interpolate(frame, [transitionFrame, transitionEndFrame], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const beforeDim = interpolate(frame, [transitionFrame, Math.max(transitionFrame + 1, afterFrame)], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const transform = easedProgress(frame, transitionFrame, transitionEndFrame);
+  const beforeDim = easedProgress(frame, transitionFrame, Math.max(transitionFrame + 1, afterFrame));
 
   const panel = (
     label: string,

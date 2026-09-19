@@ -1,7 +1,8 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 import {usePrototypeContent} from './PrototypeContentContext';
+import {easedProgress, type MotionEasingName} from '../../motion/easing';
 
 export const PROTOTYPE_PALETTE = {
   background: '#F8F7FB',
@@ -20,15 +21,21 @@ const PRODUCTION_CONTENT_LIFT_PX = 96;
 const PRODUCTION_ANIMATION_CUTOFF_Y = 1440;
 const PRODUCTION_ANIMATION_CLIP_BOTTOM_PX = 1920 - PRODUCTION_ANIMATION_CUTOFF_Y;
 
+/**
+ * Zentrale Zeitachse aller Prototypen.
+ *
+ * Bewusst NICHT linear: eine lineare Rampe hat weder Anlauf noch Auslauf und
+ * liest sich als mechanisch. Standard ist eine Ease-out-Kurve - schneller
+ * Einsatz, sanftes Einschwingen.
+ *
+ * Fuer Endlos-Schleifen (Spinner, Marquee) explizit 'loop' uebergeben.
+ */
 export const prototypeProgress = (
   frame: number,
   start: number,
   end: number,
-): number =>
-  interpolate(frame, [start, end], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  easing: MotionEasingName = 'enter',
+): number => easedProgress(frame, start, end, easing);
 
 const readableFamily = (value: string): string =>
   value.replace(/[-_]+/g, ' ').toLocaleUpperCase('de-DE');

@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
@@ -49,24 +50,9 @@ export const ErrorPathStage: React.FC<{
     frame: frame - checkFrame,
     config: {damping: 18, stiffness: 170},
   });
-  const inputPath = interpolate(
-    frame,
-    [inputFrame + 10, Math.max(inputFrame + 11, aiFrame + 8)],
-    [0, 1],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
-  const errorPath = interpolate(
-    frame,
-    [aiFrame + 10, Math.max(aiFrame + 11, errorFrame + 8)],
-    [0, 1],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
-  const checkPath = interpolate(
-    frame,
-    [aiFrame + 10, Math.max(aiFrame + 11, checkFrame + 8)],
-    [0, 1],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
+  const inputPath = easedProgress(frame, inputFrame + 10, Math.max(inputFrame + 11, aiFrame + 8));
+  const errorPath = easedProgress(frame, aiFrame + 10, Math.max(aiFrame + 11, errorFrame + 8));
+  const checkPath = easedProgress(frame, aiFrame + 10, Math.max(aiFrame + 11, checkFrame + 8));
   const shakeAge = Math.max(0, frame - shakeFrame);
   const errorShake = frame >= shakeFrame && frame <= shakeFrame + 18
     ? Math.sin(shakeAge * 1.4) * 8 * (1 - shakeAge / 18)
