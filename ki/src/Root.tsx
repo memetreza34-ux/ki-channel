@@ -111,7 +111,9 @@ import {
   SzeneIcons,
   SzeneInteraktion,
   SzeneLoop,
+  SzeneKontext,
   SzeneMitUntertitel,
+  KONTEXT_DAUER,
   UNTERTITEL_DAUER,
 } from './longform/baukasten-demo';
 
@@ -327,6 +329,17 @@ export const RemotionRoot: React.FC = () => (
         component={SzeneMitUntertitel}
         defaultProps={{}}
         durationInFrames={UNTERTITEL_DAUER}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Anderes Thema, andere Bausteine: Klappanzeige, Ziffernwalze,
+          Balken, gezeichnete Flaeche, Donut — alle vorher ungenutzt. */}
+      <Composition
+        id="KI-Szene-Kontextfenster"
+        component={SzeneKontext}
+        defaultProps={{}}
+        durationInFrames={KONTEXT_DAUER}
         fps={DEMO_FPS}
         width={AGENT_LOOP_WIDTH}
         height={AGENT_LOOP_HEIGHT}

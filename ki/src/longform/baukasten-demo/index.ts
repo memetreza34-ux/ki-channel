@@ -6,3 +6,4 @@ export {SzeneBewegung} from './SzeneBewegung';
 export {SzeneInteraktion} from './SzeneInteraktion';
 export {SzeneMitUntertitel, UNTERTITEL_DAUER} from './SzeneMitUntertitel';
 export {Untertitel, kette, lesedauer, type Beat} from './Untertitel';
+export {SzeneKontext, KONTEXT_DAUER} from './SzeneKontext';
