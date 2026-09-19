@@ -1,24 +1,55 @@
 import {Easing, interpolate} from 'remotion';
 
 /**
+ * Grundtakt der Bewegungssprache in Frames bei 30 fps.
+ *
+ * Alle Dauern sind Vielfache davon - siehe ki/gehirn/BEWEGUNG.md.
+ */
+export const MOTION_BEAT_FRAMES = 12;
+
+/** Dauernskala: Mikro, Standard, Hero. */
+export const MOTION_DURATION = {
+  micro: MOTION_BEAT_FRAMES / 2,
+  standard: MOTION_BEAT_FRAMES,
+  hero: MOTION_BEAT_FRAMES * 2,
+} as const;
+
+/** Mindestruhe zwischen zwei Beats. */
+export const MOTION_HOLD_FRAMES = 9;
+
+/**
  * Zentrale Easing-Kurven fuer das gesamte Motion-System.
  *
  * Grundregel: Lineare Bewegung liest das Auge als mechanisch. `linear` ist
  * ausschliesslich fuer Endlos-Schleifen (Spinner, Marquee) zulaessig, nie fuer
  * ein einzelnes Ereignis.
  *
- * Kurvenwerte nach animation-principles (.claude/skills/animation-principles).
+ * Die Auswahl folgt der Bewegungspersoenlichkeit "Corporate" aus
+ * ki/gehirn/BEWEGUNG.md: sauber, professionell, ohne Ueberschwinger. Ein Kanal,
+ * der Fake-Wunder ablehnt, darf sich nicht wie ein Spielzeug bewegen.
+ *
+ * Kurvenwerte nach animation-principles und motion-art-direction
+ * (.claude/skills/).
  */
 export const MOTION_EASING = {
-  /** Eintritt: schnell los, sanft einschwingen. Sicherer Standard. */
-  enter: Easing.bezier(0.33, 1, 0.68, 1),
+  /**
+   * Signaturkurve. Traegt rund 90 Prozent aller Bewegungen: kurzer Antritt,
+   * langer Auslauf - deliberat statt gehetzt.
+   */
+  enter: Easing.bezier(0.2, 0, 0, 1),
   /** Eintritt mit Nachdruck: Hero-Momente, grosse Flaechen. */
   enterEmphasis: Easing.bezier(0.16, 1, 0.3, 1),
   /** Austritt: sanft los, schnell weg. */
   exit: Easing.bezier(0.5, 0, 0.75, 0),
   /** Bewegung auf der Buehne, Element bleibt sichtbar. */
   move: Easing.bezier(0.65, 0, 0.35, 1),
-  /** Gebrandeter Pop: schiesst ueber das Ziel und schwingt ein. */
+  /**
+   * Gebrandeter Pop mit Ueberschwinger.
+   *
+   * Im Produktionscode dieses Kanals gesperrt - Ueberschwinger liest sich als
+   * Spielzeug und widerspricht dem Versprechen "keine Fake-Wunder". Bleibt
+   * definiert, damit die Sperre pruefbar ist, statt nur behauptet zu sein.
+   */
   pop: Easing.bezier(0.34, 1.56, 0.64, 1),
   /** Anlauf gegen die Bewegungsrichtung vor dem Start. */
   anticipate: Easing.bezier(0.36, 0, 0.66, -0.56),

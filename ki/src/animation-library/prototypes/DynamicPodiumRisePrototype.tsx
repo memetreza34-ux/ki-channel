@@ -12,6 +12,7 @@ import {
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
+import {MOTION_EASING} from '../../motion/easing';
 
 type RankingCandidate = {
   label: string;
@@ -50,6 +51,9 @@ const scoreAt = (frame: number, candidate: RankingCandidate): number =>
     [20, 58, 96, 134],
     [50, candidate.start, candidate.middle, candidate.end],
     {
+      // Jede Etappe setzt aus der Ruhe an und kommt zur Ruhe. Linear liefe der
+      // Wert mit konstantem Tempo und knickte an den Stuetzstellen hart um.
+      easing: MOTION_EASING.move,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     },

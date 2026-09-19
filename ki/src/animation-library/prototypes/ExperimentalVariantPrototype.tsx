@@ -384,6 +384,8 @@ const ConceptConstellation: React.FC<{frame: number}> = ({frame}) => {
 const GraphBloom: React.FC<{frame: number}> = ({frame}) => {
   const grow = phase(frame, 8, 112);
   const prune = phase(frame, 112, 164);
+  // Abgang der schwachen Aeste, getrennt vom Eintritt der Bildunterschrift.
+  const pruneExit = phase(frame, 112, 164, 'exit');
   const branches = [
     {angle: -125, length: 245, strong: false},
     {angle: -72, length: 320, strong: true},
@@ -399,7 +401,7 @@ const GraphBloom: React.FC<{frame: number}> = ({frame}) => {
           const angle = (branch.angle * Math.PI) / 180;
           const x = 466 + Math.cos(angle) * branch.length;
           const y = 560 + Math.sin(angle) * branch.length;
-          const visible = grow * (branch.strong ? 1 : 1 - prune);
+          const visible = grow * (branch.strong ? 1 : 1 - pruneExit);
           return (
             <g key={index} opacity={visible}>
               <path
