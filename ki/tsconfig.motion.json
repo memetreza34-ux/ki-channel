@@ -9,6 +9,7 @@
     "src/Root.tsx",
     "src/ProductionRoot.tsx",
     "src/production-entry.tsx",
+    "src/motion/**/*.ts",
     "src/motion-system/**/*.ts",
     "src/motion-system/**/*.tsx",
     "src/motion-system/**/*.json",

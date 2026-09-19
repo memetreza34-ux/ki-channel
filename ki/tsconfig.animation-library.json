@@ -5,6 +5,7 @@
     "resolveJsonModule": true
   },
   "include": [
+    "src/motion/**/*.ts",
     "src/animation-library/**/*.ts",
     "src/animation-library/**/*.tsx",
     "reels/animation-history.json"

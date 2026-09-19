@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
@@ -39,10 +40,7 @@ export const AgentLoopStage: React.FC<{
   const resultFrame = timings?.resultFrame ?? startFrame + 104;
   const loopStartFrame = Math.min(...stepFrames);
   const loopEndFrame = Math.max(loopStartFrame + 1, resultFrame + 16);
-  const loopProgress = interpolate(frame, [loopStartFrame, loopEndFrame], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const loopProgress = easedProgress(frame, loopStartFrame, loopEndFrame);
   const resultProgress = spring({
     fps,
     frame: frame - resultFrame,

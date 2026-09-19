@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 
 export const PROCESS_CHAIN_LAYOUT = {
@@ -62,10 +63,7 @@ export const ProcessChainStage: React.FC<{
       {normalizedSteps.map((step, index) => {
         const appearAt = stepFrames[index] ?? startFrame + index * 18;
         const nextAppearAt = stepFrames[index + 1] ?? startFrame + (index + 1) * 18;
-        const progress = interpolate(frame, [appearAt, appearAt + 16], [0, 1], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        });
+        const progress = easedProgress(frame, appearAt, appearAt + 16);
         const itemLayout = layout[index];
         const isLast = index === normalizedSteps.length - 1;
         const connectorEnd = Math.max(appearAt + 11, nextAppearAt + 6);
@@ -84,10 +82,7 @@ export const ProcessChainStage: React.FC<{
                   borderRadius: 999,
                   background: '#B98CFF',
                   transformOrigin: 'left center',
-                  transform: `scaleX(${interpolate(frame, [appearAt + 10, connectorEnd], [0, 1], {
-                    extrapolateLeft: 'clamp',
-                    extrapolateRight: 'clamp',
-                  })})`,
+                  transform: `scaleX(${easedProgress(frame, appearAt + 10, connectorEnd)})`,
                   boxShadow: '0 0 18px rgba(185,140,255,0.45)',
                 }}
               />

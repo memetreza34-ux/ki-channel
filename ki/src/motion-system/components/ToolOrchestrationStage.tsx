@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
@@ -107,10 +108,7 @@ export const ToolOrchestrationStage: React.FC<{
 
       <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
         {tools.map((tool, index) => {
-          const p = interpolate(frame, [tool.connectFrame, tool.connectFrame + 26], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          });
+          const p = easedProgress(frame, tool.connectFrame, tool.connectFrame + 26);
           const y2 = tool.y + 71;
           return (
             <line
@@ -129,10 +127,7 @@ export const ToolOrchestrationStage: React.FC<{
           x1="540"
           y1="830"
           x2="540"
-          y2={830 + 290 * interpolate(frame, [resultConnectionStart, resultConnectionEnd], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          })}
+          y2={830 + 290 * easedProgress(frame, resultConnectionStart, resultConnectionEnd)}
           stroke="#6FD19C"
           strokeWidth="10"
           strokeLinecap="round"
