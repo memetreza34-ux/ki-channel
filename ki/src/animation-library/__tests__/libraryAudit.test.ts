@@ -44,8 +44,29 @@ describe('animation library audit', () => {
     });
 
     expect(audit.prototypeFamilyCount).toBe(22);
+    expect(audit.prototypeFamilyCount).toBe(audit.familyCount);
     expect(
       audit.issues.some((issue) => issue.code === 'missing-prototype-family'),
     ).toBe(false);
+  });
+
+  it('still reports a family that lacks a prototype', () => {
+    // The real catalog closed the gap, so the detector itself is what needs
+    // covering - on a family whose entries are all downgraded to 'concept'.
+    const withoutPrototype = ANIMATION_LIBRARY_ENTRIES.map((entry) =>
+      entry.visualFamily === ANIMATION_LIBRARY_ENTRIES[0].visualFamily
+        ? {...entry, status: 'concept' as const}
+        : entry,
+    );
+    const audit = auditAnimationLibrary({
+      entries: withoutPrototype,
+      expectedVariantsPerFamily: 4,
+      requirePrototypePerFamily: true,
+    });
+
+    expect(audit.prototypeFamilyCount).toBe(audit.familyCount - 1);
+    expect(
+      audit.issues.some((issue) => issue.code === 'missing-prototype-family'),
+    ).toBe(true);
   });
 });

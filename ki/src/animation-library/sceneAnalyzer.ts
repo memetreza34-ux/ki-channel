@@ -109,9 +109,24 @@ const complexityForText = (
   text: string,
 ): AnimationLibraryEntry['complexity'] => {
   const wordCount = tokenize(text).length;
-  if (wordCount <= 9) return 'low';
-  if (wordCount <= 20) return 'medium';
-  return 'high';
+  const base: AnimationLibraryEntry['complexity'] =
+    wordCount <= 9 ? 'low' : wordCount <= 20 ? 'medium' : 'high';
+
+  // Laenge allein taugt nicht als Obergrenze: ein kurzer, dichter Satz wie
+  // "Die Latenz sinkt von 780 auf 340 Millisekunden" beschreibt ein aufwendigeres
+  // Bild als ein langer, einfacher Satz. Mehrere Messwerte heben die Decke an,
+  // sonst sperrt der Planer genau die Prototypen aus, die den Satz zeigen koennen.
+  const measurementCount = [...text.matchAll(/-?\d+(?:[.,]\d+)?/g)].length;
+
+  // Ein Satz, der zwei Dinge gegeneinander stellt, braucht ein Bild mit zwei
+  // Spuren - unabhaengig davon, wie kurz er formuliert ist.
+  const contrastCount =
+    normalize(text).match(
+      /\b(wahrend|dagegen|hingegen|stattdessen|schneller|langsamer|mehr|weniger|besser|schlechter|kurzer|langer|parallel\w*|seriell\w*|vorher|nachher|statt)\b/g,
+    )?.length ?? 0;
+
+  if (measurementCount < 2 && contrastCount < 3) return base;
+  return base === 'low' ? 'medium' : 'high';
 };
 
 export const analyzeSceneForAnimation = ({
