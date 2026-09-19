@@ -109,9 +109,24 @@ const complexityForText = (
   text: string,
 ): AnimationLibraryEntry['complexity'] => {
   const wordCount = tokenize(text).length;
-  if (wordCount <= 9) return 'low';
-  if (wordCount <= 20) return 'medium';
-  return 'high';
+  const base: AnimationLibraryEntry['complexity'] =
+    wordCount <= 9 ? 'low' : wordCount <= 20 ? 'medium' : 'high';
+
+  // Laenge allein taugt nicht als Obergrenze: ein kurzer, dichter Satz wie
+  // "Die Latenz sinkt von 780 auf 340 Millisekunden" beschreibt ein aufwendigeres
+  // Bild als ein langer, einfacher Satz. Mehrere Messwerte heben die Decke an,
+  // sonst sperrt der Planer genau die Prototypen aus, die den Satz zeigen koennen.
+  const measurementCount = [...text.matchAll(/-?\d+(?:[.,]\d+)?/g)].length;
+
+  // Ein Satz, der zwei Dinge gegeneinander stellt, braucht ein Bild mit zwei
+  // Spuren - unabhaengig davon, wie kurz er formuliert ist.
+  const contrastCount =
+    normalize(text).match(
+      /\b(wahrend|dagegen|hingegen|stattdessen|schneller|langsamer|mehr|weniger|besser|schlechter|kurzer|langer|parallel\w*|seriell\w*|vorher|nachher|statt)\b/g,
+    )?.length ?? 0;
+
+  if (measurementCount < 2 && contrastCount < 3) return base;
+  return base === 'low' ? 'medium' : 'high';
 };
 
 export const analyzeSceneForAnimation = ({
@@ -164,10 +179,31 @@ export const analyzeSceneForAnimation = ({
   const positive = familyScores.filter((family) => family.score > 0);
   const validFamilies = new Set(FAMILY_RULES.map((rule) => rule.family));
   const fallback: AnimationFamilyName = 'input-output';
+  const familiesWithDirectEvidence = new Set(
+    familyScores
+      .filter(
+        (family) => family.matchedTerms.length > 0 || family.matchedPhrases.length > 0,
+      )
+      .map((family) => family.visualFamily),
+  );
+  const meaningFamilies = meaningContract.preferredVisualFamilies.filter(
+    (family): family is AnimationFamilyName => validFamilies.has(family as AnimationFamilyName),
+  );
+  // Der Meaning-Contract faellt auf 'input-output' zurueck, wenn ihm keine Regel
+  // greift. Dieser Rueckfall darf keine Familie verdraengen, die im Satz
+  // tatsaechlich belegte Begriffe hat - sonst schlaegt eine Vermutung die Evidenz.
+  const groundedMeaningFamilies = meaningFamilies.filter((family) =>
+    familiesWithDirectEvidence.has(family),
+  );
+  const ungroundedMeaningFamilies = meaningFamilies.filter(
+    (family) => !familiesWithDirectEvidence.has(family),
+  );
   const preferredVisualFamilies = unique([
-    ...meaningContract.preferredVisualFamilies.filter(
-      (family): family is AnimationFamilyName => validFamilies.has(family as AnimationFamilyName),
-    ),
+    ...groundedMeaningFamilies,
+    ...positive
+      .filter((family) => familiesWithDirectEvidence.has(family.visualFamily))
+      .map((family) => family.visualFamily),
+    ...ungroundedMeaningFamilies,
     ...positive.map((family) => family.visualFamily),
   ]).slice(0, 3);
   if (preferredVisualFamilies.length === 0) preferredVisualFamilies.push(fallback);

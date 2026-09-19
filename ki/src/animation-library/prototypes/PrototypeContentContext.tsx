@@ -57,6 +57,16 @@ const likelyEnglishState = (value: string): boolean => {
   );
   if (strongMarkerCount > 0) return true;
 
+  // Vetorecht fuer Deutsch: "an" und "a" sind auch deutsche Woerter, deshalb
+  // reichen zwei schwache Marker allein nicht aus. Ein Satz wie
+  // "An der Grenze steigt die Last sichtbar an." enthaelt "an" zweimal und wurde
+  // sonst faelschlich als Englisch verworfen und durch Begriffsketten ersetzt.
+  const germanMarkerCount = matchCount(
+    value,
+    /\b(der|die|das|den|dem|des|ein|eine|einer|einem|eines|und|nicht|noch|auch|sich|wird|werden|bleibt|bleiben|steigt|sinkt|sichtbar|zunaechst|zun\u00e4chst|waehrend|w\u00e4hrend|am|im|beim|zum|zur|vom|als|bis)\b/gi,
+  );
+  if (germanMarkerCount >= 2) return false;
+
   const weakMarkerCount = matchCount(
     value,
     /\b(the|a|an|one|state|result|input|output|and)\b/gi,

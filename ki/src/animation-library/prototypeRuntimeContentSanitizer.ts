@@ -199,10 +199,18 @@ const explicitPercentages = (spokenText: string): number[] =>
     /\b(\d{1,3}(?:[.,]\d+)?)\s*(?:%|prozent\b)/gi,
   ]).filter((value) => value >= 0 && value <= 100);
 
-const percentageForLabel = (
+type PercentageAssociation = {
+  value: number;
+  /** Position der Zahl im normalisierten Text - identifiziert die Fundstelle. */
+  numberIndex: number;
+  /** Laenge der Gesamt-Fundstelle. Je kuerzer, desto enger der Bezug. */
+  span: number;
+};
+
+const percentageAssociationForLabel = (
   spokenText: string,
   label: string,
-): number | null => {
+): PercentageAssociation | null => {
   const text = normalize(spokenText);
   const normalizedLabel = normalize(label);
   if (normalizedLabel.length < 2) return null;
@@ -210,12 +218,49 @@ const percentageForLabel = (
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
   const after = new RegExp(`(?:^|\\b)${escapedLabel}(?:\\b|$)[^0-9,.!?;]{0,28}${number}\\s*(?:%|prozent\\b)`);
   const before = new RegExp(`${number}\\s*(?:%|prozent\\b)[^,.!?;]{0,18}\\b(?:fur|bei|auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`);
-  const match = after.exec(text) ?? before.exec(text);
-  if (!match) return null;
+  const afterMatch = after.exec(text);
+  const match = afterMatch ?? before.exec(text);
+  if (!match || match.index === undefined) return null;
   const parsed = Number(match[1].replace(',', '.'));
-  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 100
-    ? parsed
-    : null;
+  if (!Number.isFinite(parsed) || parsed < 0 || parsed > 100) return null;
+  const offsetInMatch = afterMatch
+    ? match[0].lastIndexOf(match[1])
+    : match[0].indexOf(match[1]);
+  return {
+    value: parsed,
+    numberIndex: match.index + offsetInMatch,
+    span: match[0].length,
+  };
+};
+
+/**
+ * Loest Mehrfachansprueche auf dieselbe Zahl auf.
+ *
+ * "die Wahrscheinlichkeit fuer Antwort A bei 100 Prozent" enthaelt genau eine
+ * Zahl, aber zwei Labels stehen in Reichweite. Ohne Aufloesung bekaemen beide
+ * die 100 und die Summe waere 200 - eine unmoegliche Verteilung. Es gewinnt die
+ * engste Fundstelle.
+ */
+const resolveExclusivePercentages = (
+  associations: readonly (PercentageAssociation | null)[],
+): (number | null)[] => {
+  const bestByNumber = new Map<number, number>();
+  associations.forEach((association, index) => {
+    if (!association) return;
+    const current = bestByNumber.get(association.numberIndex);
+    if (current === undefined) {
+      bestByNumber.set(association.numberIndex, index);
+      return;
+    }
+    const currentAssociation = associations[current]!;
+    if (association.span < currentAssociation.span) {
+      bestByNumber.set(association.numberIndex, index);
+    }
+  });
+  const winners = new Set(bestByNumber.values());
+  return associations.map((association, index) =>
+    association && winners.has(index) ? association.value : null,
+  );
 };
 
 const scoreMeasurements = (spokenText: string): number[] =>
@@ -310,8 +355,10 @@ const sanitizeProbability = (
 ): Record<string, string | number> => {
   const sequentialPercentages = explicitPercentages(spokenText);
   const candidateLabels = [labels.candidate1, labels.candidate2, labels.candidate3];
-  let exactValues = candidateLabels.map((label) =>
-    label ? percentageForLabel(spokenText, label) : null,
+  let exactValues = resolveExclusivePercentages(
+    candidateLabels.map((label) =>
+      label ? percentageAssociationForLabel(spokenText, label) : null,
+    ),
   );
   const associatedCount = exactValues.filter((value) => value !== null).length;
   if (associatedCount === 0 && sequentialPercentages.length > 0) {
@@ -328,16 +375,23 @@ const sanitizeProbability = (
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
   const nextValues: Record<string, string | number> = {...values};
 
+  // Ergeben die zugeordneten Anteile zusammen mehr als 100 Prozent, ist die
+  // Zuordnung in sich widerspruechlich. Dann gilt kein Wert als belegt - eine
+  // unmoegliche Verteilung darf nicht als gesicherte Messung auftreten.
+  const exactSum = exactValues.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+  const contradictory = exactSum > 100;
+
   for (let index = 0; index < 3; index += 1) {
-    const exact = exactValues[index] !== null;
+    const exact = exactValues[index] !== null && !contradictory;
     nextValues[`candidate${index + 1}ProbabilityExact`] = exact ? 1 : 0;
     if (associatedCount > 0 || sequentialPercentages.length > 0) {
       nextValues[`candidate${index + 1}End`] = resolvedEnds[index];
     }
   }
   nextValues.probabilityOutcomeGrounded =
-    associatedCount > 0 || sequentialPercentages.length > 0 ||
-    fallbackPercentage !== null || winnerCue >= 0
+    !contradictory &&
+    (associatedCount > 0 || sequentialPercentages.length > 0 ||
+      fallbackPercentage !== null || winnerCue >= 0)
       ? 1
       : 0;
 

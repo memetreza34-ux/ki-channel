@@ -71,7 +71,10 @@ const winnerCueIndex = (
     if (normalize(label).length < 2) continue;
     const escapedLabel = normalizedLabelPattern(label);
     const peers = labels.filter((_, labelIndex) => labelIndex !== index);
-    const gap = winnerGap(peers, 18);
+    // 18 Zeichen sind fuer deutsche Saetze zu knapp: zwischen Subjekt und
+    // Siegermarker steht oft eine Angabe wie "erreicht 96 Punkte und".
+    // Die Luecke sperrt weiterhin Peer-Labels, Verneinungen und Satzgrenzen.
+    const gap = winnerGap(peers, 32);
     const labelBeforeCue = new RegExp(
       `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}\\b${cue}\\b${notNegatedAfterCue}`,
     );

@@ -1,4 +1,5 @@
 import type {AnimationLibraryEntry} from './schema';
+import {bridgeGermanTerms} from './germanTagBridge';
 
 export type SceneCommunicationGoal =
   | 'explain-process'
@@ -50,6 +51,109 @@ type MeaningRule = {
 };
 
 const MEANING_RULES: readonly MeaningRule[] = [
+  {
+    id: 'scale-performance',
+    terms: ['latenz', 'millisekund', 'durchsatz', 'engpass', 'auslast', 'kapazit', 'skalier', 'schneller', 'langsam', 'tempo'],
+    phrases: ['unter hoher last', 'wird zum engpass', 'sinkt von', 'braucht laenger', 'mehr anfragen'],
+    families: ['scale-performance'],
+    patterns: ['speed-comparison', 'bottleneck', 'capacity'],
+    cues: ['latency-zones', 'request-pulses', 'capacity-limit'],
+    startState: 'a measured path with its current load and timing on screen',
+    visibleChange: 'the measurement moves visibly and the limiting step stands out',
+    endState: 'the faster path and the bottleneck are both readable as numbers',
+  },
+  {
+    id: 'cost-efficiency',
+    // Ohne die blossen Begriffe 'kosten' und 'preis': ein steigender Preis ist
+    // kein Spar-Thema und darf keine Einsparungs-Visuals ausloesen.
+    terms: ['sparen', 'guenstiger', 'verschwend', 'effizien', 'tokenkosten'],
+    phrases: ['kostet weniger', 'spart kosten', 'senkt die kosten'],
+    families: ['cost-efficiency'],
+    patterns: ['usage-cost', 'cost-optimization', 'tradeoff'],
+    cues: ['cost-counter', 'token-tiles', 'waste-marker'],
+    startState: 'a visible budget or price with its current consumption',
+    visibleChange: 'consumption shifts and the saved or wasted share becomes countable',
+    endState: 'the remaining cost is readable next to what caused it',
+  },
+  {
+    id: 'ranking',
+    terms: ['rangliste', 'platz', 'sortier', 'beste', 'bester', 'oberste', 'punktzahl', 'bewertung', 'reihenfolg'],
+    phrases: ['auf platz', 'ganz oben', 'nach punkten', 'die besten drei'],
+    families: ['ranking'],
+    patterns: ['ordered-list', 'ranking-change', 'relative-score'],
+    cues: ['candidate-markers', 'score-counters', 'ordered-positions'],
+    startState: 'several labeled candidates with their current scores',
+    visibleChange: 'the order rearranges according to the stated criterion',
+    endState: 'the final ranking is readable with the winner unambiguous',
+  },
+  {
+    id: 'input-output',
+    terms: ['eingabe', 'ausgabe', 'ergebnis', 'verdicht', 'zusammenfass', 'hineinge', 'herauskomm', 'wirkung', 'ursach'],
+    phrases: ['geht hinein', 'kommt heraus', 'wird zu einem', 'viele werden zu'],
+    families: ['input-output'],
+    patterns: ['input-to-output', 'cause-effect', 'many-to-one'],
+    cues: ['input-object', 'output-object', 'visible-change'],
+    startState: 'labeled input material waiting in front of a processing step',
+    visibleChange: 'the input passes through one visible step and changes form',
+    endState: 'the result stays traceable back to the input that produced it',
+  },
+  {
+    id: 'error-detection',
+    terms: ['fehler', 'panne', 'ausfall', 'anomal', 'stoerung', 'debug', 'ursach', 'behoben', 'kaputt'],
+    phrases: ['geht schief', 'faellt aus', 'der fehler liegt', 'erste fehler'],
+    families: ['error-detection'],
+    patterns: ['hidden-error', 'root-cause', 'error-path'],
+    cues: ['anomaly-marker', 'warning-flags', 'route-line'],
+    startState: 'a running process that looks intact from the outside',
+    visibleChange: 'the faulty step becomes visible and its path is traced back',
+    endState: 'the cause is marked and its downstream effect is readable',
+  },
+  {
+    id: 'decision-logic',
+    // Bewusst ohne 'regel', 'wenn', 'dann': zu allgemein, ein einzelnes
+    // Vorkommen darf die Familie nicht bestimmen.
+    terms: ['entscheid', 'bedingung', 'kriterium', 'kriterien', 'abwaeg'],
+    phrases: ['wenn dann', 'nach welchen kriterien', 'entscheidet sich', 'haengt davon ab'],
+    families: ['decision-logic'],
+    patterns: ['branching-logic', 'rule-evaluation', 'multi-criteria-decision'],
+    cues: ['condition-nodes', 'branch-paths', 'evidence-weighting'],
+    startState: 'one open question with its competing options in view',
+    visibleChange: 'the stated criteria are applied and one branch is taken',
+    endState: 'the chosen path and the reason for it stay readable together',
+  },
+  {
+    id: 'time-change',
+    terms: ['version', 'zeitachse', 'verlauf', 'vorher', 'nachher', 'veraender', 'entwickel', 'veraltet', 'aktualis'],
+    phrases: ['im laufe der zeit', 'vorher und nachher', 'seit version', 'nicht mehr aktuell'],
+    families: ['time-change'],
+    patterns: ['before-after', 'change-over-time', 'version-history'],
+    cues: ['timeline', 'event-markers', 'version-nodes'],
+    startState: 'the earlier state placed on a readable time axis',
+    visibleChange: 'the state moves along time and the difference is marked',
+    endState: 'both states stay comparable side by side at the end',
+  },
+  {
+    id: 'model-processing',
+    terms: ['schicht', 'schichten', 'modell', 'transformer', 'verarbeit', 'inferenz', 'experte', 'routing'],
+    phrases: ['durch die schichten', 'schritt fuer schritt verfeinert', 'im modell'],
+    families: ['model-processing'],
+    patterns: ['layered-processing', 'iterative-refinement', 'progressive-change'],
+    cues: ['layer-stack', 'flow-ribbons', 'visible-change'],
+    startState: 'the input enters a visibly layered processing stack',
+    visibleChange: 'each layer refines the signal in a way the eye can follow',
+    endState: 'the refined result is readable together with the path it took',
+  },
+  {
+    id: 'relationship-network',
+    terms: ['beziehung', 'verbind', 'abhaengig', 'aufmerksam', 'netz', 'knoten', 'bezug', 'gewicht'],
+    phrases: ['bezieht sich auf', 'haengt zusammen mit', 'staerkste verbindung'],
+    families: ['relationship-network'],
+    patterns: ['dependency', 'strong-vs-weak-links', 'attention-weight'],
+    cues: ['nodes', 'weight-pulses', 'connection-strength'],
+    startState: 'labeled elements placed without their links drawn yet',
+    visibleChange: 'the links appear with visibly different strengths',
+    endState: 'the dominant relationship stands out from the weaker ones',
+  },
   {
     id: 'tokenization',
     terms: ['token', 'tokens', 'zerleg', 'wortteil', 'textbaustein', 'split'],
@@ -424,12 +528,16 @@ export const scoreMeaningCompatibility = ({
     contract.preferredExplanationPatterns,
     entry.explanationPatterns.join(' '),
   );
+  // Der Katalog ist englisch getaggt, gesprochen wird deutsch. Ohne Bruecke
+  // bleibt die Termabdeckung bei deutschen Saetzen systematisch null.
   const termCoverage = scoreCoverage(
-    unique([
-      ...contract.subjectTerms.slice(0, 5),
-      ...contract.actionTerms,
-      ...contract.resultTerms.slice(0, 3),
-    ]),
+    unique(
+      bridgeGermanTerms([
+        ...contract.subjectTerms.slice(0, 5),
+        ...contract.actionTerms,
+        ...contract.resultTerms.slice(0, 3),
+      ]),
+    ),
     candidateCorpus,
   );
   const cueCoverage = scoreCoverage(contract.requiredVisualCues, candidateCorpus);
