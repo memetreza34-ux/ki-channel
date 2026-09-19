@@ -6,6 +6,7 @@ import {
 } from '@studio/core';
 import {BRAND} from '../../../brand/brand';
 import {kette, Untertitel} from './Untertitel';
+import {SfxSpur, tippen, type SfxCue} from './sfx';
 
 /**
  * Szene: „Wie groß ist ein Kontextfenster?"
@@ -258,6 +259,46 @@ const WasDrinSteht: React.FC = () => (
 
 const BILDER = [Begriff, Damals, Heute, Wachstum, Aber, Mitte, WasDrinSteht];
 
+/**
+ * Die Tonspur.
+ *
+ * Jeder Einsatz sitzt auf etwas Sichtbarem: Tastenklicks waehrend getippt wird,
+ * ein Klicken je Klappe der Anzeige, ein Einschlag wenn der hoechste Balken
+ * steht, ein Chime wenn der Donut fertig ist. Kein Dauerton.
+ */
+const B = (i: number) => KONTEXT_BEATS[i].ab;
+
+const TON: SfxCue[] = [
+  // Beat 1 — „Kontextfenster" wird getippt, dann faehrt die Erklaerung auf.
+  ...tippen(B(0) + 6, 14, 9 / 30, 3),
+  {name: 'whoosh-soft', at: B(0) + 44},
+
+  // Beat 2 — die Klappanzeige: je Kachel ein Klicken.
+  ...[0, 1, 2, 3, 4].map((k): SfxCue => ({name: 'click-ui', at: B(1) + 8 + k * 5, pegel: 0.24})),
+
+  // Beat 3 — die Zahl rast hoch, haelt kurz, landet.
+  {name: 'riser-tension', at: B(2) + 4, pegel: 0.26},
+  {name: 'impact-soft', at: B(2) + 76},
+
+  // Beat 4 — Balken wachsen, der hoechste landet, dann rollt die Walze.
+  {name: 'whoosh-digital', at: B(3) + 8, pegel: 0.28},
+  {name: 'impact-soft', at: B(3) + 52},
+  {name: 'glitch-blip', at: B(3) + 60},
+  {name: 'pop-soft', at: B(3) + 84},
+
+  // Beat 5 — drei Chips poppen nacheinander auf.
+  ...[0, 1, 2].map((k): SfxCue => ({name: 'pop-soft', at: B(4) + 46 + k * 9, pegel: 0.26})),
+
+  // Beat 6 — die Kurve zeichnet sich, am Tiefpunkt ein Fehlerton.
+  {name: 'reveal-swell', at: B(5) + 6, pegel: 0.22},
+  {name: 'error-buzz', at: B(5) + 38, pegel: 0.22},
+
+  // Beat 7 — der Donut fuellt sich, Legende hakt nach, Abschluss.
+  {name: 'whoosh-soft', at: B(6) + 6},
+  ...[0, 1, 2].map((k): SfxCue => ({name: 'click-ui', at: B(6) + 58 + k * 8, pegel: 0.2})),
+  {name: 'chime-success', at: B(6) + 86},
+];
+
 export const SzeneKontext: React.FC = () => (
   <AbsoluteFill style={{background: '#FFFFFF', fontFamily: BRAND.font.body}}>
     <Ueberschrift text="Wie groß ist ein Kontextfenster?" icon="database" />
@@ -280,5 +321,6 @@ export const SzeneKontext: React.FC = () => (
     ))}
 
     <Untertitel beats={KONTEXT_BEATS} />
+    <SfxSpur cues={TON} />
   </AbsoluteFill>
 );
