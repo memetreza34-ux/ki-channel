@@ -111,6 +111,8 @@ import {
   SzeneIcons,
   SzeneInteraktion,
   SzeneLoop,
+  SzeneMitUntertitel,
+  UNTERTITEL_DAUER,
 } from './longform/baukasten-demo';
 
 export const RemotionRoot: React.FC = () => (
@@ -314,6 +316,17 @@ export const RemotionRoot: React.FC = () => (
         component={SzeneInteraktion}
         defaultProps={{}}
         durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Vollstaendige Szene mit Untertiteln statt Ton — zum Mitlesen,
+          solange kein Voiceover aufgenommen ist. */}
+      <Composition
+        id="KI-Szene-Untertitel"
+        component={SzeneMitUntertitel}
+        defaultProps={{}}
+        durationInFrames={UNTERTITEL_DAUER}
         fps={DEMO_FPS}
         width={AGENT_LOOP_WIDTH}
         height={AGENT_LOOP_HEIGHT}
