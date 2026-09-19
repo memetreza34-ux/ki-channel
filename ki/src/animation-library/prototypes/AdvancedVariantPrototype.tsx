@@ -7,10 +7,15 @@ import {
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
+import {staggerDelay, type MotionEasingName} from '../../motion/easing';
 
 const C = PROTOTYPE_PALETTE;
-const p = (frame: number, start: number, end: number): number =>
-  prototypeProgress(frame, start, end);
+const p = (
+  frame: number,
+  start: number,
+  end: number,
+  easing: MotionEasingName = 'enter',
+): number => prototypeProgress(frame, start, end, easing);
 const clamp = (value: number): number => Math.max(0, Math.min(1, value));
 const wave = (frame: number, speed = 12): number => (Math.sin(frame / speed) + 1) / 2;
 
@@ -304,7 +309,7 @@ const RelevancePulse: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const ConfidenceWeather: React.FC<{frame: number}> = ({frame}) => {
-  const settle = p(frame, 20, 150);
+  const settle = p(frame, 20, 150, 'move');
   const zones = [
     {x: 250, y: 500, radius: 185, color: C.accent, label: 'Text'},
     {x: 615, y: 390, radius: 145, color: C.success, label: 'Daten'},
@@ -418,7 +423,7 @@ const ExpertSwitchboard: React.FC<{frame: number}> = ({frame}) => {
             width: 180,
             height: 145,
             borderRadius: 28,
-            transform: `translate(-50%,-50%) scale(${0.75 + p(frame, 28 + index * 12, 58 + index * 12) * 0.25})`,
+            transform: `translate(-50%,-50%) scale(${0.75 + p(frame, 28 + staggerDelay(index, 12), 58 + staggerDelay(index, 12)) * 0.25})`,
             background: `${expert.color}18`,
             border: `4px solid ${expert.color}`,
             display: 'flex',
@@ -499,7 +504,7 @@ const TypeOrchestra: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const SourceCheckpoints: React.FC<{frame: number}> = ({frame}) => {
-  const travel = p(frame, 8, 160);
+  const travel = p(frame, 8, 160, 'move');
   const gates = [
     {label: 'QUELLE', x: 250, pass: true},
     {label: 'DATUM', x: 470, pass: true},
@@ -509,7 +514,7 @@ const SourceCheckpoints: React.FC<{frame: number}> = ({frame}) => {
     <Stage label="UNTERSTÜTZTE BEHAUPTUNGEN PASSIEREN · ANDERE WERDEN UMGELENKT">
       <div style={{position: 'absolute', left: 90, right: 90, top: 570, height: 30, borderRadius: 999, background: C.line}} />
       {gates.map((gate, index) => {
-        const reached = p(frame, 34 + index * 38, 56 + index * 38);
+        const reached = p(frame, 34 + staggerDelay(index, 38), 56 + staggerDelay(index, 38));
         return (
           <div
             key={gate.label}
@@ -611,7 +616,7 @@ const TradeoffLandscape: React.FC<{frame: number}> = ({frame}) => {
             position: 'absolute',
             left: 220 + index * 250,
             bottom: 130,
-            opacity: p(frame, 30 + index * 22, 55 + index * 22),
+            opacity: p(frame, 30 + staggerDelay(index, 22), 55 + staggerDelay(index, 22)),
           }}
         >
           <Badge accent={index === 2}>{metric}</Badge>
@@ -720,7 +725,7 @@ const CauseEffectBridge: React.FC<{frame: number}> = ({frame}) => {
       <div style={{position: 'absolute', left: 65, top: 680, width: 250, height: 280, background: 'linear-gradient(150deg,#463B58,#201B2A)', clipPath: 'polygon(0 0,100% 14%,100% 100%,0 100%)'}} />
       <div style={{position: 'absolute', right: 65, top: 550, width: 250, height: 410, background: 'linear-gradient(210deg,#3B6A58,#19352C)', clipPath: 'polygon(0 14%,100% 0,100% 100%,0 100%)'}} />
       {Array.from({length: 6}, (_, index) => {
-        const local = p(frame, 18 + index * 15, 42 + index * 15);
+        const local = p(frame, 18 + staggerDelay(index, 15), 42 + staggerDelay(index, 15));
         return (
           <div
             key={index}
@@ -916,7 +921,7 @@ const MultiAgentRoundtable: React.FC<{frame: number}> = ({frame}) => {
         return (
           <React.Fragment key={agent.label}>
             <div style={{position: 'absolute', left: x, top: y, width: 170, height: 115, borderRadius: 28, transform: 'translate(-50%,-50%)', background: `${agent.color}18`, border: `4px solid ${agent.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', fontSize: 20, fontWeight: 900}}>{agent.label}</div>
-            <div style={{position: 'absolute', left: interpolate(combine, [0, 1], [x, inwardX]), top: interpolate(combine, [0, 1], [y, inwardY]), width: 82, height: 60, borderRadius: 16, transform: 'translate(-50%,-50%)', background: agent.color, opacity: p(frame, 20 + index * 12, 45 + index * 12) * (1 - combine * 0.2)}} />
+            <div style={{position: 'absolute', left: interpolate(combine, [0, 1], [x, inwardX]), top: interpolate(combine, [0, 1], [y, inwardY]), width: 82, height: 60, borderRadius: 16, transform: 'translate(-50%,-50%)', background: agent.color, opacity: p(frame, 20 + staggerDelay(index, 12), 45 + staggerDelay(index, 12)) * (1 - combine * 0.2)}} />
           </React.Fragment>
         );
       })}
@@ -952,13 +957,13 @@ const EvidenceJury: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const ContextElevator: React.FC<{frame: number}> = ({frame}) => {
-  const compress = p(frame, 100, 165);
+  const compress = p(frame, 100, 165, 'move');
   const messages = ['Frage', 'Antwort', 'Quelle', 'Notiz', 'Korrektur'];
   return (
     <Stage label="KAPAZITÄT ERREICHT · MEHRERE EBENEN WERDEN ZUSAMMENGEFASST">
       <div style={{position: 'absolute', left: 250, right: 250, top: 150, bottom: 100, border: `8px solid ${C.foreground}`, borderRadius: 34, overflow: 'hidden'}}>
         {messages.map((message, index) => {
-          const visible = p(frame, 12 + index * 18, 38 + index * 18);
+          const visible = p(frame, 12 + staggerDelay(index, 18), 38 + staggerDelay(index, 18));
           const y = interpolate(compress, [0, 1], [770 - index * 135, index < 3 ? 680 : 770 - index * 135]);
           const hidden = compress * (index < 3 ? 1 : 0);
           return (

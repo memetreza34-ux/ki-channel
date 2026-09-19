@@ -1,5 +1,6 @@
 import React from 'react';
 import {useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -143,7 +144,7 @@ export const DependencyBridgeBuilderPrototype: React.FC = () => {
         ))}
 
         {[0.22, 0.48, 0.76].map((position, index) => {
-          const pulse = prototypeProgress(frame, 82 + index * 10, 105 + index * 10) * (1 - prototypeProgress(frame, 120 + index * 5, 138 + index * 5));
+          const pulse = prototypeProgress(frame, 82 + staggerDelay(index, 10), 105 + staggerDelay(index, 10)) * (1 - prototypeProgress(frame, 120 + staggerDelay(index, 5), 138 + staggerDelay(index, 5)));
           return <div key={position} style={{position: 'absolute', left: 170 + position * 585, top: 520 - Math.sin(position * Math.PI) * 150, width: 22, height: 22, borderRadius: 999, background: PROTOTYPE_PALETTE.white, border: `6px solid ${PROTOTYPE_PALETTE.accent}`, boxShadow: '0 0 26px rgba(135,87,232,.42)', opacity: pulse, transform: `translate(-50%, -50%) scale(${0.75 + pulse * 0.38})`, zIndex: 8}} />;
         })}
 

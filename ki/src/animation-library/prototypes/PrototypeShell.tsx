@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 import {usePrototypeContent} from './PrototypeContentContext';
-import {easedProgress, type MotionEasingName} from '../../motion/easing';
+import {easedProgress, followThrough, type MotionEasingName} from '../../motion/easing';
 
 export const PROTOTYPE_PALETTE = {
   background: '#F8F7FB',
@@ -148,6 +148,12 @@ export const PrototypeShell: React.FC<{
   const content = usePrototypeContent();
   const progress = prototypeProgress(frame, 0, durationInFrames - 1);
   const titleEnter = prototypeProgress(frame, 0, 18);
+  // Nachlauf: Augenbraue, Titel und Unterzeile sind ein gestapelter Block.
+  // Kommen sie auf demselben Frame zur Ruhe, liest das Auge ein einziges
+  // flaches Ereignis. Gestaffelt liest es drei Stufen einer Aussage.
+  const eyebrowEnter = prototypeProgress(frame, followThrough(0, 0), 18);
+  const headlineEnter = prototypeProgress(frame, followThrough(0, 1), 20);
+  const subtitleEnter = prototypeProgress(frame, followThrough(0, 2), 22);
   const displayFamily = readableFamily(family);
   const displayTitle = content
     ? content.title?.trim() || contentTitleFromMeaning(content)
@@ -218,8 +224,6 @@ export const PrototypeShell: React.FC<{
             left: 88,
             right: 88,
             top: 105,
-            opacity: titleEnter,
-            transform: `translateY(${(1 - titleEnter) * -30}px)`,
             zIndex: 20,
           }}
         >
@@ -230,6 +234,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 900,
               letterSpacing: 4,
               textTransform: 'uppercase',
+              opacity: eyebrowEnter,
+              transform: `translateY(${(1 - eyebrowEnter) * -30}px)`,
             }}
           >
             ANIMATION LIBRARY · {displayFamily}
@@ -243,6 +249,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 900,
               letterSpacing: -2,
               maxWidth: 900,
+              opacity: headlineEnter,
+              transform: `translateY(${(1 - headlineEnter) * -30}px)`,
             }}
           >
             {displayTitle}
@@ -255,6 +263,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 700,
               color: PROTOTYPE_PALETTE.muted,
               maxWidth: 860,
+              opacity: subtitleEnter,
+              transform: `translateY(${(1 - subtitleEnter) * -30}px)`,
               display: '-webkit-box',
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',

@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -110,7 +111,7 @@ export const TimelineMicroscopePrototype: React.FC = () => {
   const changes = ['größeres Fenster', 'bessere Werkzeuge', 'stabilere Planung'].map((fallback, index) =>
     getPrototypeLabel({content, key: `change${index + 1}`, fallback: content?.meaningContract.requiredVisualCues[index] ?? fallback}),
   );
-  const changeProgresses = changes.map((_, index) => prototypeProgress(frame, 104 + index * 10, 125 + index * 10));
+  const changeProgresses = changes.map((_, index) => prototypeProgress(frame, 104 + staggerDelay(index, 10), 125 + staggerDelay(index, 10)));
   const conclusion = getPrototypeLabel({
     content,
     key: 'conclusion',
@@ -125,7 +126,7 @@ export const TimelineMicroscopePrototype: React.FC = () => {
         <div style={{position: 'absolute', left: 100, right: 75, top: 410, height: 14, borderRadius: 999, background: PROTOTYPE_PALETTE.line, overflow: 'hidden'}}><div style={{width: `${line * 100}%`, height: '100%', background: `linear-gradient(90deg, ${PROTOTYPE_PALETTE.accentSoft}, ${PROTOTYPE_PALETTE.accent})`, boxShadow: '0 0 18px rgba(135,87,232,.4)'}} /></div>
 
         {milestones.map((milestone, index) => {
-          const reveal = prototypeProgress(frame, 8 + index * 7, 28 + index * 7);
+          const reveal = prototypeProgress(frame, 8 + staggerDelay(index, 7), 28 + staggerDelay(index, 7));
           const reached = line >= index / Math.max(1, milestones.length - 1);
           const focused = index === focusIndex && lensMove > 0.7;
           return (

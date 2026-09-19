@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   usePrototypeContent,
@@ -39,7 +40,7 @@ export const ResidualRiverPrototype: React.FC = () => {
       key: `layer${index + 1}`,
       fallback: stageTerms[index] ?? gate.label,
     }),
-    progress: prototypeProgress(frame, 38 + index * 30, 72 + index * 30),
+    progress: prototypeProgress(frame, 38 + staggerDelay(index, 30), 72 + staggerDelay(index, 30)),
   }));
   const inputLabel = getPrototypeLabel({
     content,
@@ -106,7 +107,7 @@ export const ResidualRiverPrototype: React.FC = () => {
         </svg>
 
         {gates.map((gate, index) => {
-          const reveal = prototypeProgress(frame, 18 + index * 14, 44 + index * 14);
+          const reveal = prototypeProgress(frame, 18 + staggerDelay(index, 14), 44 + staggerDelay(index, 14));
           const active = gate.progress > 0.12 && gate.progress < 0.92;
           const completed = gate.progress >= 0.92;
           return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -95,7 +96,7 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
     getPrototypeLabel({content, key: 'signal3', fallback: 'KONTEXT'}),
   ];
   const signalProgresses = signals.map((_, index) =>
-    prototypeProgress(frame, 38 + index * 20, 62 + index * 20),
+    prototypeProgress(frame, 38 + staggerDelay(index, 20), 62 + staggerDelay(index, 20)),
   );
   const contextProgress = signalProgresses.reduce((sum, value) => sum + value, 0) / signals.length;
   const resultLabel = getPrototypeLabel({
@@ -131,7 +132,7 @@ export const ProbabilityFluidColumnsPrototype: React.FC = () => {
           {candidates.map((candidate, index) => {
             const level = interpolate(contextProgress, [0, 1], [candidate.start, candidate.end]);
             const height = interpolate(level, [0, 100], [0, 570]);
-            const reveal = prototypeProgress(frame, 12 + index * 7, 34 + index * 7);
+            const reveal = prototypeProgress(frame, 12 + staggerDelay(index, 7), 34 + staggerDelay(index, 7));
             const winner = outcomeGrounded && index === winnerIndex && lock > 0.35;
             const delta = candidate.end - candidate.start;
             const relativeDirection = delta > 0 ? 'STEIGT' : delta < 0 ? 'SINKT' : 'STABIL';

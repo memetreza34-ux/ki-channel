@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -35,7 +36,7 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
   const frame = useCurrentFrame();
   const content = usePrototypeContent();
   const mapReveal = prototypeProgress(frame, 0, 48);
-  const travel = prototypeProgress(frame, 44, 145);
+  const travel = prototypeProgress(frame, 44, 145, 'move');
   const arrive = prototypeProgress(frame, 138, 172);
   const terms = content
     ? [...new Set([
@@ -86,7 +87,7 @@ export const SubwayWorkflowMapPrototype: React.FC = () => {
         </svg>
 
         {stations.map((station, index) => {
-          const reveal = prototypeProgress(frame, 8 + index * 8, 28 + index * 8);
+          const reveal = prototypeProgress(frame, 8 + staggerDelay(index, 8), 28 + staggerDelay(index, 8));
           const completed = travel >= 1 || index < activeStationIndex;
           const active = index === activeStationIndex && travel < 1;
           return (
