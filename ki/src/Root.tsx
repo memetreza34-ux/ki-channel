@@ -106,8 +106,10 @@ import {
   BaukastenDemo,
   DEMO_DAUER,
   DEMO_FPS,
+  SzeneBewegung,
   SzeneFlaechen,
   SzeneIcons,
+  SzeneInteraktion,
   SzeneLoop,
 } from './longform/baukasten-demo';
 
@@ -292,6 +294,24 @@ export const RemotionRoot: React.FC = () => (
       <Composition
         id="KI-Baukasten-Loop"
         component={SzeneLoop}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Bewegung"
+        component={SzeneBewegung}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Interaktion"
+        component={SzeneInteraktion}
         defaultProps={{}}
         durationInFrames={170}
         fps={DEMO_FPS}
