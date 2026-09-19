@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Html5Audio, Sequence, useCurrentFrame} from 'remotion';
+import {ThemeProvider} from '@studio/core';
 import {BRAND} from '../../../brand/brand';
 import {ChapterHeader} from './ChapterHeader';
 import {CHAPTER_SCENES} from './chapterScenes';
@@ -27,7 +28,7 @@ const ChapterLayer: React.FC<{chapter: AgentLoopChapter; index: number}> = ({cha
           Fortschrittsbalken. Frueher lag hier zusaetzlich eine Verschiebung
           plus Skalierung — zusammen mit der eigenen Box der Szene rutschte
           alles nach unten in den Fortschrittsbalken. */}
-      {items ? <LiveScene items={items} offset={chapter.startFrame} /> : null}
+      {items ? <LiveScene items={items} /> : null}
     </AbsoluteFill>
   );
 };
@@ -132,6 +133,9 @@ export type LongformAgentLoopProps = {voiceoverSrc?: string};
 export const LongformAgentLoop: React.FC<LongformAgentLoopProps> = ({voiceoverSrc}) => {
   const chapters = useMemo(() => AGENT_LOOP_CHAPTERS, []);
   return (
+    // Setzt --accent auf das Kanal-Lila. Ohne das faellt alles aus
+    // @studio/core auf den neutralen Blau-Default zurueck.
+    <ThemeProvider value={{accent: BRAND.accent, accentDk: BRAND.accentDk, bg: BRAND.bg, bgDeep: BRAND.bgDeep}}>
     <AbsoluteFill
       style={{
         background: '#FFFFFF',
@@ -154,5 +158,6 @@ export const LongformAgentLoop: React.FC<LongformAgentLoopProps> = ({voiceoverSr
       <Progress />
       {voiceoverSrc ? <Html5Audio src={voiceoverSrc} /> : null}
     </AbsoluteFill>
+    </ThemeProvider>
   );
 };

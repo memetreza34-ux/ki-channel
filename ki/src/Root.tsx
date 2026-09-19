@@ -102,6 +102,14 @@ import {
   LongformAgentLoop,
   ThumbnailAgentLoop,
 } from './longform/agent-loop-explained';
+import {
+  BaukastenDemo,
+  DEMO_DAUER,
+  DEMO_FPS,
+  SzeneFlaechen,
+  SzeneIcons,
+  SzeneLoop,
+} from './longform/baukasten-demo';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -248,6 +256,45 @@ export const RemotionRoot: React.FC = () => (
         defaultProps={{}}
         durationInFrames={1}
         fps={AGENT_LOOP_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Stummer Funktionsnachweis fuer die Bausteine — kein Voiceover.
+          Jede Szene ist zusaetzlich einzeln registriert, damit sie sich im
+          Studio per Doppelklick aus der Timeline oeffnen laesst. */}
+      <Composition
+        id="KI-Baukasten-Demo"
+        component={BaukastenDemo}
+        defaultProps={{}}
+        durationInFrames={DEMO_DAUER}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Icons"
+        component={SzeneIcons}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Flaechen"
+        component={SzeneFlaechen}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Loop"
+        component={SzeneLoop}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
         width={AGENT_LOOP_WIDTH}
         height={AGENT_LOOP_HEIGHT}
       />
