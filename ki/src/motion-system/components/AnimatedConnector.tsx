@@ -1,6 +1,6 @@
 import React from 'react';
 import {useCurrentFrame} from 'remotion';
-import {easedProgress} from '../../motion/easing';
+import {durationForDistance, easedProgress} from '../../motion/easing';
 
 export const AnimatedConnector: React.FC<{
   from: {x: number; y: number};
@@ -8,9 +8,14 @@ export const AnimatedConnector: React.FC<{
   startFrame: number;
   durationFrames?: number;
   color?: string;
-}> = ({from, to, startFrame, durationFrames = 24, color = '#B98CFF'}) => {
+}> = ({from, to, startFrame, durationFrames, color = '#B98CFF'}) => {
   const frame = useCurrentFrame();
-  const progress = easedProgress(frame, startFrame, startFrame + durationFrames);
+  // Ohne ausdrueckliche Dauer richtet sie sich nach der Strecke. Eine kurze und
+  // eine bildschirmbreite Verbindung duerfen nicht dieselbe Dauer teilen -
+  // sonst wirkt die lange gewichtslos.
+  const distance = Math.hypot(to.x - from.x, to.y - from.y);
+  const travelFrames = durationFrames ?? durationForDistance(24, distance);
+  const progress = easedProgress(frame, startFrame, startFrame + travelFrames);
   const x2 = from.x + (to.x - from.x) * progress;
   const y2 = from.y + (to.y - from.y) * progress;
 

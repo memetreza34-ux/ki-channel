@@ -1,5 +1,6 @@
 import React from 'react';
 import {useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -86,7 +87,7 @@ export const ConfidenceGlassCrackPrototype: React.FC = () => {
   const confidenceExact = !content || spokenConfidence !== null;
   const safeConfidence = spokenConfidence ?? inferredConfidence;
   const checkProgresses = checks.map((_, index) =>
-    prototypeProgress(frame, 64 + index * 14, 88 + index * 14),
+    prototypeProgress(frame, 64 + staggerDelay(index, 14), 88 + staggerDelay(index, 14)),
   );
   const failedChecks = checkProgresses.filter((value) => value > 0.72).length;
   const crackStrength = failedChecks / checks.length;

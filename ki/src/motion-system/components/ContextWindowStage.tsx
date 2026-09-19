@@ -35,7 +35,9 @@ export const ContextWindowStage: React.FC<{
 
   const oldEntry = easedProgress(frame, oldFrame, oldFrame + 18);
   const activeOpacity = easedProgress(frame, currentFrame, currentFrame + 18);
-  const oldDim = easedProgress(frame, dimOldFrame, dimOldFrame + 22);
+  // Austritt: der alte Kontext verblasst auf 0.18 und wandert 130px weg.
+  // Austritte beschleunigen fort, statt sanft auszuschwingen wie ein Eintritt.
+  const oldDim = easedProgress(frame, dimOldFrame, dimOldFrame + 22, 'exit');
   const oldOpacity = oldEntry * interpolate(oldDim, [0, 1], [1, 0.18]);
   const oldShift = interpolate(oldDim, [0, 1], [0, -130]);
   const newOpacity = easedProgress(frame, newFrame, newFrame + 18);

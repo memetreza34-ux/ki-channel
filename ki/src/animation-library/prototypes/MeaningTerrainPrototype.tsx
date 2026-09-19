@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -118,7 +119,7 @@ export const MeaningTerrainPrototype: React.FC = () => {
         </svg>
 
         {concepts.map((concept, index) => {
-          const enter = prototypeProgress(frame, 10 + index * 5, 34 + index * 5);
+          const enter = prototypeProgress(frame, 10 + staggerDelay(index, 5), 34 + staggerDelay(index, 5));
           const x = interpolate(clusterForm, [0, 1], [concept.start.x, concept.targetX]);
           const y = interpolate(clusterForm, [0, 1], [concept.start.y, concept.targetY]);
           const color = concept.cluster === 1 ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.success;

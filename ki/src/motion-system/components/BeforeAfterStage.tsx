@@ -25,7 +25,13 @@ export const BeforeAfterStage: React.FC<{
   const before = spring({fps, frame: frame - beforeFrame, config: {damping: 18, stiffness: 170}});
   const after = spring({fps, frame: frame - afterFrame, config: {damping: 18, stiffness: 170}});
   const transform = easedProgress(frame, transitionFrame, transitionEndFrame);
-  const beforeDim = easedProgress(frame, transitionFrame, Math.max(transitionFrame + 1, afterFrame));
+  // Der Vorher-Zustand tritt ab, waehrend der Nachher-Zustand einsetzt.
+  const beforeDim = easedProgress(
+    frame,
+    transitionFrame,
+    Math.max(transitionFrame + 1, afterFrame),
+    'exit',
+  );
 
   const panel = (
     label: string,

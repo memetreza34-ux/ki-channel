@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -130,7 +131,7 @@ export const AnomalyXRayScannerPrototype: React.FC = () => {
 
         {steps.map((step, index) => {
           const point = STEP_POINTS[index];
-          const reveal = prototypeProgress(frame, 8 + index * 7, 28 + index * 7);
+          const reveal = prototypeProgress(frame, 8 + staggerDelay(index, 7), 28 + staggerDelay(index, 7));
           const scanned = scannerX >= point.x;
           const repairOffset = Math.max(0, index - errorIndex);
           const repairAtStep = index < errorIndex

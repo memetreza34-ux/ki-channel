@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -124,7 +125,7 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
     }),
   );
   const criterionProgresses = criteria.map((_, index) =>
-    prototypeProgress(frame, 28 + index * 38, 58 + index * 38),
+    prototypeProgress(frame, 28 + staggerDelay(index, 38), 58 + staggerDelay(index, 38)),
   );
   const currentScores = candidates.map((candidate) => scoreAt(frame, candidate));
   const rankedIndices = currentScores
@@ -171,7 +172,7 @@ export const DynamicPodiumRisePrototype: React.FC = () => {
               extrapolateLeft: 'clamp',
               extrapolateRight: 'clamp',
             });
-            const reveal = prototypeProgress(frame, 14 + index * 8, 38 + index * 8);
+            const reveal = prototypeProgress(frame, 14 + staggerDelay(index, 8), 38 + staggerDelay(index, 8));
             const isWinner = outcomeGrounded && index === winnerIndex && lock > 0.35;
             const valueLabel = candidate.exact && lock > 0.35
               ? `${Math.round(candidate.end)} P`
