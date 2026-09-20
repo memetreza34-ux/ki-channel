@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {
   CREATIVE_RECIPE_IDS,
   CREATIVE_RECIPE_RENDER_CONTRACT,
+  getCreativeRecipeSourceFingerprint,
 } from './creative-recipe-release-contract.mjs';
 
 const OUTPUT_DIR =
@@ -13,6 +14,7 @@ const reportPath = resolve(OUTPUT_DIR, 'technical-check.json');
 const PNG_SIGNATURE = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
 
 const plan = JSON.parse(await readFile(planPath, 'utf8'));
+const currentSourceFingerprint = await getCreativeRecipeSourceFingerprint();
 if (
   plan.version !== 2 ||
   plan.contractVersion !== CREATIVE_RECIPE_RENDER_CONTRACT.version ||
@@ -20,6 +22,14 @@ if (
   plan.recipes.length === 0
 ) {
   throw new Error('Creative-Recipe render-plan.json ist ungültig oder stammt aus einem alten Contract.');
+}
+if (plan.sourceFingerprint !== currentSourceFingerprint) {
+  throw new Error(
+    `Creative-Recipe-Renders sind stale: plan=${plan.sourceFingerprint ?? 'none'} current=${currentSourceFingerprint}.`,
+  );
+}
+if (!plan.generatedAt || Number.isNaN(Date.parse(plan.generatedAt))) {
+  throw new Error('Creative-Recipe-Renderplan benötigt einen gültigen generatedAt-Zeitstempel.');
 }
 
 const unknownRecipeIds = plan.recipes
@@ -112,6 +122,8 @@ const invalid = artifacts.filter((artifact) => !artifact.valid);
 const report = {
   version: 2,
   contractVersion: CREATIVE_RECIPE_RENDER_CONTRACT.version,
+  sourceFingerprint: currentSourceFingerprint,
+  generatedAt: plan.generatedAt,
   mode: plan.mode,
   recipeCount: plan.recipes.length,
   artifactCount: artifacts.length,
@@ -133,5 +145,5 @@ if (invalid.length > 0) {
 }
 
 console.log(
-  `Creative-Recipe-Artefakte technisch gültig: ${artifacts.length} Dateien für ${plan.recipes.length} Recipes.`,
+  `Creative-Recipe-Artefakte technisch gültig: ${artifacts.length} Dateien für ${plan.recipes.length} Recipes · Fingerprint ${currentSourceFingerprint}.`,
 );
