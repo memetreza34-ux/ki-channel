@@ -7,6 +7,7 @@ import {
 } from 'remotion';
 import {BRAND} from '../../brand/brand';
 import {
+  CREATIVE_RECIPE_DEFINITIONS,
   CREATIVE_RECIPE_IDS,
   type CreativeRecipeId,
 } from './creativeRecipeCatalog';
@@ -75,6 +76,23 @@ export const isCreativeRecipeRuntimeSupported = (
   recipeId: string,
 ): recipeId is CreativeRecipeId =>
   (CREATIVE_RECIPE_IDS as readonly string[]).includes(recipeId);
+
+export const assertCreativeRecipeRuntimeContract = (
+  spec: AnimationBuildSpec,
+): void => {
+  if (!isCreativeRecipeRuntimeSupported(spec.creativeRecipeId)) {
+    throw new Error(`unsupported creative recipe runtime: ${spec.creativeRecipeId}`);
+  }
+  const expected = CREATIVE_RECIPE_DEFINITIONS[spec.creativeRecipeId].runtimeMechanisms;
+  if (
+    expected.length !== spec.runtimeMechanisms.length ||
+    expected.some((mechanism, index) => spec.runtimeMechanisms[index] !== mechanism)
+  ) {
+    throw new Error(
+      `creative recipe runtime mechanisms drifted for ${spec.creativeRecipeId}: expected ${expected.join(', ')}, received ${spec.runtimeMechanisms.join(', ')}`,
+    );
+  }
+};
 
 const ObjectMorphStage: React.FC<{spec: AnimationBuildSpec}> = ({spec}) => {
   const frame = useCurrentFrame();
@@ -237,18 +255,19 @@ const XRayOverlay: React.FC<{spec: AnimationBuildSpec}> = ({spec}) => {
   const scan = p(frame, durationInFrames * 0.16, durationInFrames * 0.63);
   const reveal = p(frame, durationInFrames * 0.34, durationInFrames * 0.68);
   const scanX = interpolate(scan, [0, 1], [210, 875]);
+  const clipId = `xray-runtime-${spec.animationId.replace(/[^a-z0-9_-]+/gi, '-')}`;
 
   return (
     <AbsoluteFill style={{fontFamily: BRAND.font}}>
       <svg viewBox="0 0 1080 1100" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
         <defs>
-          <clipPath id="xray-runtime-window">
+          <clipPath id={clipId}>
             <rect x="190" y="245" width={Math.max(0, scanX - 190)} height="565" rx="58" />
           </clipPath>
         </defs>
         <rect x="190" y="245" width="700" height="565" rx="58" fill="#fff" stroke={accent} strokeWidth="6" />
         <rect x="225" y="280" width="630" height="495" rx="44" fill="#F8F5FB" stroke={line} strokeWidth="3" />
-        <g clipPath="url(#xray-runtime-window)" opacity={reveal}>
+        <g clipPath={`url(#${clipId})`} opacity={reveal}>
           <rect x="225" y="280" width="630" height="495" rx="44" fill="rgba(185,140,255,.14)" />
           {[0,1,2,3].map((index)=><path key={index} d={`M285 ${365+index*86} C390 ${300+index*90}, 540 ${445+index*40}, 790 ${340+index*95}`} fill="none" stroke={index===2?danger:purple} strokeWidth={index===2?9:6} strokeLinecap="round" opacity={.85}/>) }
           {[{x:320,y:420},{x:515,y:525},{x:730,y:465},{x:650,y:675}].map((node,index)=><circle key={index} cx={node.x} cy={node.y} r={index===2?30:22} fill={index===2?danger:purple} opacity={.82}/>) }
@@ -401,9 +420,7 @@ export const CreativeRecipeRuntime: React.FC<CreativeRecipeRuntimeProps> = ({
   showRecipeLabel = false,
 }) => {
   const {durationInFrames} = useVideoConfig();
-  if (!isCreativeRecipeRuntimeSupported(spec.creativeRecipeId)) {
-    throw new Error(`unsupported creative recipe runtime: ${spec.creativeRecipeId}`);
-  }
+  assertCreativeRecipeRuntimeContract(spec);
 
   return (
     <AbsoluteFill style={{background:'transparent',color:ink,fontFamily:BRAND.font,overflow:'hidden'}}>
