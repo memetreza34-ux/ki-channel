@@ -1,6 +1,10 @@
 import type {PreparedReelProduction} from './reelLifecycle';
 import type {SceneMeaningContract} from './meaningContract';
 import {areProductionRuntimeScenesReady} from './productionEligibility';
+import {
+  deriveVisualFingerprint,
+  type VisualFingerprint,
+} from './visualFingerprint';
 
 export type ImplementationPhaseBrief = {
   phaseId: string;
@@ -19,6 +23,7 @@ export type SceneImplementationBrief = {
   visualFamily: string;
   layoutFamily: string;
   motionSignature: string;
+  visualFingerprint: VisualFingerprint;
   primaryDirection: string;
   energy: string;
   semanticTags: string[];
@@ -158,6 +163,7 @@ export const compileReelImplementationBrief = (
       visualFamily: scene.catalogEntry.visualFamily,
       layoutFamily: scene.catalogEntry.layoutFamily,
       motionSignature: scene.catalogEntry.motionSignature,
+      visualFingerprint: deriveVisualFingerprint(scene.catalogEntry),
       primaryDirection: scene.catalogEntry.primaryDirection,
       energy: scene.catalogEntry.energy,
       semanticTags: [...analysis.semanticTags],
@@ -186,12 +192,16 @@ export const compileReelImplementationBrief = (
     readyForImplementation:
       prepared.diagnostics.passed &&
       blockers.length === 0 &&
+      warnings.length === 0 &&
       areProductionRuntimeScenesReady(prepared.plan.productionPlan.scenes),
     blockers,
     warnings,
     globalRules: [
       'Never repeat a complete animation inside the same reel.',
       'Never place the same layout family or motion signature in consecutive scenes.',
+      'Different animation IDs do not prove visual diversity; compare primary primitive, camera, depth, entry mechanism, medium, direction, layout, and motion.',
+      'Avoid adjacent near-identical visual fingerprints when a semantically valid alternative exists.',
+      'Avoid three consecutive scenes with the same primary primitive, locked camera, or flat depth when the content allows a clearer variation.',
       'Spoken meaning, visible state change, and final result outrank novelty and transition smoothness.',
       'Build a new animation when no library choice expresses the exact sentence strongly enough.',
       'Treat library entries as adaptable motion grammars rather than identical reusable scene templates.',
@@ -205,6 +215,7 @@ export const compileReelImplementationBrief = (
       'The opening frame, visible change, and final hold satisfy the scene meaning contract.',
       'The scene remains understandable without sound and readable at smartphone size.',
       'No overflow, accidental empty frame, repeated full animation, or meaningless decorative motion remains.',
+      'No avoidable run of Card/UI + locked camera + flat depth + slide/fade survives manual review.',
       'A reviewer cannot replace the spoken sentence with an unrelated sentence while keeping the same animation.',
       'Semantic clarity is at least 82, novelty at least 72, and production confidence at least 75.',
       'Only a scene that passes both technical and manual review may become verified.',
@@ -227,11 +238,13 @@ export const renderReelImplementationBriefMarkdown = (
       )
       .join('\n');
     const meaning = scene.meaningContract;
+    const fingerprint = scene.visualFingerprint;
     return `## Szene ${index + 1}: ${scene.sceneId}\n\n` +
       `**Sprechtext:** ${scene.spokenText}\n\n` +
       `**Quelle:** ${scene.source}\n\n` +
       `**Animation:** \`${scene.animationId}\` — ${scene.title}\n\n` +
       `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
+      `**Visual Fingerprint:** ${fingerprint.primaryPrimitive} / ${fingerprint.cameraMotion} / ${fingerprint.depthStyle} / ${fingerprint.entryMechanism} / ${fingerprint.medium}\n\n` +
       `**Richtung / Energie:** ${scene.primaryDirection} / ${scene.energy}\n\n` +
       `### Bedeutungsvertrag\n` +
       `- **Kommunikationsziel:** ${meaning.communicationGoal}\n` +
