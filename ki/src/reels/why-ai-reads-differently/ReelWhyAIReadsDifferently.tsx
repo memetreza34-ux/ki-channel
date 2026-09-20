@@ -11,7 +11,10 @@ import {NextTokenBranchRaceScene} from './scenes/NextTokenBranchRaceScene';
 import {SentenceTokenShatterScene} from './scenes/SentenceTokenShatterScene';
 import {TokenVectorScannerScene} from './scenes/TokenVectorScannerScene';
 import {TransformerLayerElevatorScene} from './scenes/TransformerLayerElevatorScene';
+import {assertWhyAIVisualContract} from './visualProfiles';
 import {palette} from './visualUtils';
+
+assertWhyAIVisualContract();
 
 export type ReelWhyAIReadsDifferentlyProps = {
   voiceoverSrc?: string;
