@@ -1,4 +1,5 @@
-import {access, readFile} from 'node:fs/promises';
+import {access, readFile, readdir} from 'node:fs/promises';
+import {join} from 'node:path';
 
 const failures = [];
 const warnings = [];
@@ -46,6 +47,17 @@ const forbidMarkers = (label, text, markers) => {
   }
 };
 
+const walkSourceFiles = async (directory) => {
+  const files = [];
+  const entries = await readdir(directory, {withFileTypes: true});
+  for (const entry of entries) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await walkSourceFiles(path));
+    else if (/\.(?:ts|tsx)$/.test(entry.name)) files.push(path);
+  }
+  return files;
+};
+
 const root = await readJson('package.json');
 const core = await readJson('core/package.json');
 const ki = await readJson('ki/package.json');
@@ -56,6 +68,7 @@ const kiReadme = await readText('ki/README.md');
 const agents = await readText('AGENTS.md');
 const kiAgents = await readText('ki/AGENTS.md');
 const reelAgents = await readText('ki/reels/AGENTS.md');
+const sourceReelAgents = await readText('ki/src/reels/AGENTS.md');
 const platformAgents = await readText('ki/plattformen/AGENTS.md');
 const gemini = await readText('GEMINI.md');
 const master = await readText('ki/gehirn/MASTER.md');
@@ -64,6 +77,7 @@ const production = await readText('ki/gehirn/PRODUKTIONSABLAUF.md');
 const reels = await readText('ki/gehirn/REELS.md');
 const platforms = await readText('ki/gehirn/PLATTFORMEN.md');
 const imageStyle = await readText('ki/BILDSTIL.md');
+const remotionCapabilities = await readText('ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md');
 const youtubeReadme = await readText('ki/plattformen/youtube/README.md');
 const youtubeShorts = await readText('ki/plattformen/youtube/SHORTS.md');
 const youtubeLongform = await readText('ki/plattformen/youtube/LONGFORM.md');
@@ -117,8 +131,10 @@ requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische P
 requireMarkers('README.md', rootReadme, ['REPO-STATE.md','ki/plattformen/','YouTube Shorts','platform-copy.md']);
 requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
 requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
-requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover']);
+requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover','REMOTION_ANIMATION_CAPABILITIES.md']);
 requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
+requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
+requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
@@ -147,8 +163,9 @@ for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platfo
 
 for (const path of [
   'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
-  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md',
-  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/BILDSTIL.md',
+  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md','ki/src/reels/AGENTS.md',
+  'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md','ki/BILDSTIL.md',
+  'ki/src/animation-library/visualFingerprint.ts','ki/src/animation-library/authoredProductionGate.ts','ki/src/animation-library/productionCatalog.ts','ki/src/animation-library/creativeMotionPrimitives.tsx',
   'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
   'ki/plattformen/youtube/README.md','ki/plattformen/youtube/SHORTS.md','ki/plattformen/youtube/LONGFORM.md','ki/plattformen/youtube/THUMBNAILS.md','ki/plattformen/youtube/UPLOAD.md',
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
@@ -157,6 +174,15 @@ for (const path of [
   'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
   '.agents/skills/build-context-overload-reel/SKILL.md'
 ]) await assertFile(path);
+
+if (await exists('ki/src/reels')) {
+  for (const path of await walkSourceFiles('ki/src/reels')) {
+    const source = await readText(path);
+    if (/from\s+['"][^'"]*motion-system\//.test(source) || /import\s*\(['"][^'"]*motion-system\//.test(source)) {
+      failures.push(`${path}: Production-Reel darf den Legacy motion-system-Pfad nicht importieren.`);
+    }
+  }
+}
 
 if (await exists('ki/reels/_codex-hybrid-template')) failures.push('Veralteter ki/reels/_codex-hybrid-template darf nicht mehr existieren.');
 if (await exists('ki/reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/PHASE-2-IMPLEMENTATION.md')) failures.push('Legacy-Datei PHASE-2-IMPLEMENTATION.md darf nicht mehr existieren.');
@@ -170,4 +196,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Gehirn, Bildprompt-System, Plattformstruktur, YouTube-Handoff und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
