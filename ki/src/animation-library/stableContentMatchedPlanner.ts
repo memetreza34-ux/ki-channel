@@ -89,17 +89,36 @@ const selectionNeedsIsolation = ({
 }): boolean => {
   if (!selection.animationId) return true;
   if (!selection.score) return true;
-  if (selection.score.total < brain.globalRules.preferNewAnimationBelowScore) {
-    return true;
-  }
-  if (selection.score.meaningCompatibility < 35) return true;
-  if (selection.score.semanticFit < 42) return true;
-  if (selection.score.avoidancePenalty > 0) return true;
 
   const entry = entries.find(
     (candidate) => candidate.animationId === selection.animationId,
   );
-  return entry ? hasGoalIncompatibleShortcut({scene, entry}) : true;
+  if (!entry) return true;
+
+  const explicitlyPreferredFamily =
+    scene.preferredVisualFamilies?.includes(entry.visualFamily) ?? false;
+  const strongExplicitFit =
+    explicitlyPreferredFamily &&
+    selection.score.semanticFit >= 50 &&
+    selection.score.meaningCompatibility >= 25;
+
+  // A strong, explicitly requested family match must not be thrown away merely
+  // because the aggregate novelty/transition score lands a few points below the
+  // generic NEW_BUILD threshold. Semantic/meaning minimums and avoidance rules
+  // still protect against approximate reuse.
+  if (
+    selection.score.total < brain.globalRules.preferNewAnimationBelowScore &&
+    !strongExplicitFit
+  ) {
+    return true;
+  }
+  if (selection.score.meaningCompatibility < 35 && !strongExplicitFit) {
+    return true;
+  }
+  if (selection.score.semanticFit < 42) return true;
+  if (selection.score.avoidancePenalty > 0) return true;
+
+  return hasGoalIncompatibleShortcut({scene, entry});
 };
 
 const mergeProposalConstraints = ({
