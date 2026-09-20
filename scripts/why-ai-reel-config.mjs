@@ -37,8 +37,14 @@ const collectFiles = (path) => {
     .sort();
 };
 
+const isProductionSource = (file) =>
+  /\.(ts|tsx)$/.test(file) &&
+  !file.includes('/__tests__/') &&
+  !file.includes('\\__tests__\\') &&
+  !/\.(?:test|spec)\.(?:ts|tsx)$/.test(file);
+
 export const WHY_AI_REEL_SOURCE_FILES = Object.freeze([
-  ...collectFiles('ki/src/reels/why-ai-reads-differently').filter((file) => /\.(ts|tsx)$/.test(file)),
+  ...collectFiles('ki/src/reels/why-ai-reads-differently').filter(isProductionSource),
   SOURCE_REEL_PATH,
   resolve('ki/src/Root.tsx'),
   resolve('ki/src/index.ts'),
