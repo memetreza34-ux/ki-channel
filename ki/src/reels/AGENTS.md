@@ -78,6 +78,44 @@ Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden 
 
 Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
 
+## Verbindlicher Creative-Director-Pfad
+
+Ein Production-Reel darf die zentrale Anti-Wiederholungslogik nicht umgehen.
+
+Zulässig sind nur zwei Wege:
+
+1. Das Reel entsteht aus `planReelAnimationsFromText` / `prepareReelAnimationProduction` und trägt den daraus erzeugten ProductionPlan, Implementierungsbrief und Visual Fingerprint bis in die Umsetzung.
+2. Eine bewusst handgeschriebene Reel-Szene besitzt ein explizites authored Visual Manifest und muss `assertAuthoredVisualDiversity(...)` bestehen.
+
+Für handgeschriebene Szenen muss pro Szene mindestens festgehalten werden:
+
+- eindeutige `sceneId`
+- eindeutige `visualId`
+- `primaryPrimitive`
+- `cameraMotion`
+- `depthStyle`
+- `entryMechanism`
+- `medium`
+- `direction`
+- `visualFamily`
+- `layoutFamily`
+- `motionSignature`
+
+Andere Animation-IDs oder andere Texte gelten **nicht** als ausreichende visuelle Variation.
+
+Blockierend sind insbesondere:
+
+- vollständiges Visual zweimal im selben Reel
+- gleiche Layout-Familie direkt hintereinander
+- gleiche Motion-Signature direkt hintereinander
+- visuelle Fingerprint-Ähnlichkeit über dem Hard-Limit
+- zu geringe Hauptprimitive-Vielfalt bei längeren Reels
+- Card-Dominanz trotz vorhandener besserer Erklärmechanik
+
+Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal und müssen bewusst begründet oder verbessert werden.
+
+Die alte `ki/src/motion-system/`-Welt darf für Preview/Legacy erhalten bleiben, ist aber **kein alternativer Produktionsweg**, um die aktuelle Creative-Director-/Diversity-Prüfung zu umgehen.
+
 ## Caption-Position ist Source-Vertrag
 
 Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
