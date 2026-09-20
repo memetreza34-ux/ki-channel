@@ -133,12 +133,62 @@ const inferPrimaryPrimitive = (
   if (includesAny(strong, ['particle', 'spark', 'fragment-cloud', 'data-particles'])) {
     return 'particles';
   }
-  if (includesAny(strong, ['network-node', 'node-', 'network', 'cluster', 'constellation', 'dependency-bridge'])) {
-    return 'nodes';
-  }
-  if (includesAny(strong, ['flow-path', 'path-node', 'path-', 'route-', 'connector', 'line-', 'trace-marker', 'workflow-map'])) {
+
+  // Explicit path primitives are stronger evidence than incidental words such as
+  // "node" inside `path-node`. Keep this before network detection.
+  if (
+    includesAny(primitives, [
+      'flow-path',
+      'path-node',
+      'path-segment',
+      'path-line',
+      'trace-marker',
+      'route-line',
+      'route-path',
+      'metro-line',
+      'track-line',
+      'bezier-path',
+    ]) ||
+    includesAny(structure, [
+      'open-path',
+      'path-trace',
+      'trace-field',
+      'workflow-map',
+      'route-field',
+      'single-route',
+      'path-flow',
+    ])
+  ) {
     return 'path';
   }
+
+  if (
+    includesAny(primitives, [
+      'network-node',
+      'graph-node',
+      'node-leaf',
+      'star-node',
+      'cluster-node',
+    ]) ||
+    includesAny(structure, [
+      'network',
+      'cluster',
+      'constellation',
+      'dependency-bridge',
+      'graph-bloom',
+      'node-field',
+    ])
+  ) {
+    return 'nodes';
+  }
+
+  // Generic connectors/lines only count as a path after stronger network grammar
+  // has been ruled out. Do not use broad `route-`/`path-` substring checks here:
+  // layout names such as `card-route` are still card-first compositions.
+  if (includesAny(primitives, ['connector-line', 'route-connector', 'path-connector'])) {
+    return 'path';
+  }
+
   if (includesAny(strong, ['browser', 'terminal', 'window', 'app-', 'interface', 'ui-', 'ui-surface', 'state-control'])) {
     return 'ui';
   }
