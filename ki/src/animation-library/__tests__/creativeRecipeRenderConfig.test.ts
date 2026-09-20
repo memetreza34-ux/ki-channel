@@ -8,6 +8,10 @@ const renderScript = readFileSync(
   resolve('scripts/render-creative-recipes.mjs'),
   'utf8',
 );
+const checkScript = readFileSync(
+  resolve('scripts/check-creative-recipe-renders.mjs'),
+  'utf8',
+);
 const releaseContract = readFileSync(
   resolve('scripts/creative-recipe-release-contract.mjs'),
   'utf8',
@@ -43,6 +47,17 @@ describe('Creative Recipe render configuration', () => {
     expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.height');
     expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames');
     expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.smokeCheckpoints');
+    expect(renderScript).toContain('getCreativeRecipeSourceFingerprint');
+    expect(renderScript).toContain('rm(recipe.outputDir, {recursive: true, force: true})');
+  });
+
+  it('forces the artifact checker to reject plan-only and incomplete evidence', () => {
+    expect(checkScript).toContain("new Set(['smoke', 'stills', 'videos', 'all'])");
+    expect(checkScript).toContain('!ARTIFACT_MODES.has(plan.mode)');
+    expect(checkScript).toContain('expectedArtifactCount === 0');
+    expect(checkScript).toContain('artifacts.length !== expectedArtifactCount');
+    expect(checkScript).toContain('plan.sourceFingerprint !== currentSourceFingerprint');
+    expect(checkScript).toContain('new Set(plan.recipes.map((recipe) => recipe.recipeId)).size');
   });
 
   it('keeps the isolated recipe canvas and deterministic checkpoints in the shared contract', () => {
@@ -50,5 +65,6 @@ describe('Creative Recipe render configuration', () => {
     expect(releaseContract).toContain('height: 1100');
     expect(releaseContract).toContain('durationInFrames: 180');
     expect(releaseContract).toContain('smokeCheckpoints: Object.freeze([0, 90, 179])');
+    expect(releaseContract).toContain('getCreativeRecipeSourceFingerprint');
   });
 });
