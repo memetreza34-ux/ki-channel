@@ -1,5 +1,7 @@
 import reelJson from '../../../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-08-10_bis_2026-08-16/02_Warum-unklare-Prompts-die-KI-raten-lassen/03-caption/subtitle-cues.json';
+import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {AMBIGUOUS_PROMPTS_VISUAL_PROFILES} from './visualProfiles';
 
 export type AmbiguousPromptScene = {
   sceneId: string;
@@ -70,6 +72,13 @@ export const assertAmbiguousPromptsContract = (): void => {
     if (cues.some((cue) => cue.startFrame < scene.startFrame || cue.endFrame > scene.endFrame)) throw new Error(`subtitle outside scene: ${scene.sceneId}`);
     if (normalizeAmbiguousPromptText(cues.map((cue) => cue.text).join(' ')) !== normalizeAmbiguousPromptText(scene.spokenText)) throw new Error(`subtitle mismatch: ${scene.sceneId}`);
   }
+
+  const plannedSceneIds = AMBIGUOUS_PROMPTS_SCENES.map((scene) => scene.sceneId);
+  const profiledSceneIds = AMBIGUOUS_PROMPTS_VISUAL_PROFILES.map((profile) => profile.sceneId);
+  if (plannedSceneIds.join('|') !== profiledSceneIds.join('|')) {
+    throw new Error('ambiguous prompts visual profiles must exactly cover the authored scene order');
+  }
+  assertAuthoredVisualDiversity(AMBIGUOUS_PROMPTS_VISUAL_PROFILES);
 };
 
 assertAmbiguousPromptsContract();
