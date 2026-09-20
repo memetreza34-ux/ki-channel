@@ -34,6 +34,7 @@ await mkdir(outputRoot, {recursive: true});
 const summaryPath = resolve(outputRoot, `${requestedMode}-summary.json`);
 const startedAt = new Date().toISOString();
 const steps = [];
+const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const verificationSteps = [
   {
@@ -42,9 +43,14 @@ const verificationSteps = [
     label: 'Fokussierte Content-Runtime-Verifikation',
   },
   {
-    command: process.platform === 'win32' ? 'npm.cmd' : 'npm',
+    command: npmCommand,
     args: ['run', 'animation-library:verify'],
     label: 'Vollständige Animation-Library-Verifikation',
+  },
+  {
+    command: npmCommand,
+    args: ['run', 'creative-recipes:verify'],
+    label: 'Creative-Recipe-Compiler, Runtime, Gallery und Renderplan verifizieren',
   },
 ];
 
@@ -70,6 +76,16 @@ const smokeSteps = [
     label: '6 Edge-Case-Smoke-Artefakte prüfen',
   },
   {
+    command: npmCommand,
+    args: ['run', 'creative-recipes:smoke'],
+    label: '8 Creative-Recipe-Smoke-Renders',
+  },
+  {
+    command: npmCommand,
+    args: ['run', 'creative-recipes:check'],
+    label: 'Creative-Recipe-Smoke-Artefakte technisch prüfen',
+  },
+  {
     command: process.execPath,
     args: ['scripts/build-content-review-gallery.mjs'],
     label: '22+6 Smoke-Review-Galerie erzeugen',
@@ -82,6 +98,16 @@ const smokeSteps = [
 ];
 
 const fullSteps = [
+  {
+    command: npmCommand,
+    args: ['run', 'creative-recipes:render'],
+    label: '8 Creative Recipes vollständig rendern',
+  },
+  {
+    command: npmCommand,
+    args: ['run', 'creative-recipes:check'],
+    label: 'Creative-Recipe-Stills und Videos technisch prüfen',
+  },
   {
     command: process.execPath,
     args: ['scripts/render-all-content-release.mjs'],
@@ -106,11 +132,12 @@ const writeSummary = async ({status, error = null}) => {
     summaryPath,
     `${JSON.stringify(
       {
-        version: 1,
+        version: 2,
         mode: requestedMode,
         status,
         gitHead: currentGitHead,
         trackedWorktreeClean: trackedWorktreeStatus === '',
+        creativeRecipeGateEnabled: true,
         expectedStepCount: requestedSteps.length,
         startedAt,
         completedAt: status === 'running' ? null : new Date().toISOString(),
@@ -203,12 +230,17 @@ try {
   console.log(
     `[content-release:${requestedMode}] Report: ${summaryPath}`,
   );
+  if (requestedMode === 'smoke') {
+    console.log(
+      '[content-release:smoke] Creative-Recipe-Smoke-Frames wurden technisch geprüft; ihre visuelle Qualität bleibt ein manueller Review-Punkt.',
+    );
+  }
   if (requestedMode === 'full') {
     console.log(
-      '[content-release:full] Technischer Release bestanden. Manuelle visuelle Freigabe der Review-Galerie bleibt weiterhin Pflicht.',
+      '[content-release:full] Technischer Release bestanden. Manuelle visuelle Freigabe der Content-Review-Galerie und Creative-Recipe-Renders bleibt weiterhin Pflicht.',
     );
     console.log(
-      '[content-release:full] Review: out/content-review-gallery/index.html',
+      '[content-release:full] Review: out/content-review-gallery/index.html und out/creative-recipes/',
     );
   }
 } catch (error) {
