@@ -12,6 +12,7 @@ const OUTPUT_DIR =
 const planPath = resolve(OUTPUT_DIR, 'render-plan.json');
 const reportPath = resolve(OUTPUT_DIR, 'technical-check.json');
 const PNG_SIGNATURE = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
+const ARTIFACT_MODES = new Set(['smoke', 'stills', 'videos', 'all']);
 
 const plan = JSON.parse(await readFile(planPath, 'utf8'));
 const currentSourceFingerprint = await getCreativeRecipeSourceFingerprint();
@@ -22,6 +23,11 @@ if (
   plan.recipes.length === 0
 ) {
   throw new Error('Creative-Recipe render-plan.json ist ungültig oder stammt aus einem alten Contract.');
+}
+if (!ARTIFACT_MODES.has(plan.mode)) {
+  throw new Error(
+    `Creative-Recipe-Artefaktprüfung benötigt smoke/stills/videos/all; mode=${plan.mode ?? 'unknown'} enthält keinen verifizierbaren Render.`,
+  );
 }
 if (plan.sourceFingerprint !== currentSourceFingerprint) {
   throw new Error(
@@ -37,6 +43,9 @@ const unknownRecipeIds = plan.recipes
   .filter((recipeId) => !CREATIVE_RECIPE_IDS.includes(recipeId));
 if (unknownRecipeIds.length > 0) {
   throw new Error(`Render-Plan enthält unbekannte Creative Recipes: ${unknownRecipeIds.join(', ')}`);
+}
+if (new Set(plan.recipes.map((recipe) => recipe.recipeId)).size !== plan.recipes.length) {
+  throw new Error('Render-Plan enthält doppelte Creative-Recipe-IDs.');
 }
 
 const inspectPng = async (path) => {
@@ -90,6 +99,10 @@ const inspectMp4 = async (path) => {
 const artifacts = [];
 const expectsStills = new Set(['smoke', 'stills', 'all']).has(plan.mode);
 const expectsVideos = new Set(['videos', 'all']).has(plan.mode);
+const expectedCheckpoints =
+  plan.mode === 'smoke'
+    ? CREATIVE_RECIPE_RENDER_CONTRACT.smokeCheckpoints
+    : CREATIVE_RECIPE_RENDER_CONTRACT.checkpoints;
 
 for (const recipe of plan.recipes) {
   if (
@@ -99,6 +112,10 @@ for (const recipe of plan.recipes) {
     recipe.durationInFrames !== CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames
   ) {
     throw new Error(`Render-Plan weicht vom Creative-Recipe-Contract ab: ${recipe.recipeId}`);
+  }
+  const expectedRecipeCheckpoints = expectsStills ? [...expectedCheckpoints] : [...CREATIVE_RECIPE_RENDER_CONTRACT.checkpoints];
+  if (JSON.stringify(recipe.checkpoints) !== JSON.stringify(expectedRecipeCheckpoints)) {
+    throw new Error(`Render-Plan enthält unerwartete Checkpoints für ${recipe.recipeId}: ${JSON.stringify(recipe.checkpoints)}.`);
   }
   if (expectsStills) {
     for (const frame of recipe.checkpoints) {
@@ -118,6 +135,15 @@ for (const recipe of plan.recipes) {
   }
 }
 
+const expectedArtifactCount =
+  plan.recipes.length *
+  ((expectsStills ? expectedCheckpoints.length : 0) + (expectsVideos ? 1 : 0));
+if (artifacts.length !== expectedArtifactCount || expectedArtifactCount === 0) {
+  throw new Error(
+    `Creative-Recipe-Artefaktmenge ungültig: ${artifacts.length} gefunden, ${expectedArtifactCount} erwartet.`,
+  );
+}
+
 const invalid = artifacts.filter((artifact) => !artifact.valid);
 const report = {
   version: 2,
@@ -126,6 +152,7 @@ const report = {
   generatedAt: plan.generatedAt,
   mode: plan.mode,
   recipeCount: plan.recipes.length,
+  expectedArtifactCount,
   artifactCount: artifacts.length,
   validArtifactCount: artifacts.length - invalid.length,
   invalidArtifactCount: invalid.length,
@@ -145,5 +172,5 @@ if (invalid.length > 0) {
 }
 
 console.log(
-  `Creative-Recipe-Artefakte technisch gültig: ${artifacts.length} Dateien für ${plan.recipes.length} Recipes · Fingerprint ${currentSourceFingerprint}.`,
+  `Creative-Recipe-Artefakte technisch gültig: ${artifacts.length}/${expectedArtifactCount} Dateien für ${plan.recipes.length} Recipes · Fingerprint ${currentSourceFingerprint}.`,
 );
