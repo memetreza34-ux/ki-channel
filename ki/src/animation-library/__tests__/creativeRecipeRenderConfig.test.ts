@@ -1,27 +1,31 @@
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {describe, expect, it} from 'vitest';
-import {
-  CREATIVE_RECIPE_IDS,
-} from '../creativeRecipeCatalog';
-import {
-  CREATIVE_RECIPE_GALLERY_COMPOSITION_IDS,
-} from '../CreativeRecipeGalleryRoot';
+import {CREATIVE_RECIPE_IDS} from '../creativeRecipeCatalog';
+import {CREATIVE_RECIPE_GALLERY_COMPOSITION_IDS} from '../CreativeRecipeGalleryRoot';
 
 const renderScript = readFileSync(
   resolve('scripts/render-creative-recipes.mjs'),
   'utf8',
 );
+const releaseContract = readFileSync(
+  resolve('scripts/creative-recipe-release-contract.mjs'),
+  'utf8',
+);
 
-const scriptRecipeIds = (() => {
-  const match = /const CREATIVE_RECIPE_IDS = \[([\s\S]*?)\];/.exec(renderScript);
-  if (!match) throw new Error('render script is missing CREATIVE_RECIPE_IDS');
+const contractRecipeIds = (() => {
+  const match = /CREATIVE_RECIPE_IDS = Object\.freeze\(\[([\s\S]*?)\]\);/.exec(
+    releaseContract,
+  );
+  if (!match) {
+    throw new Error('creative recipe release contract is missing CREATIVE_RECIPE_IDS');
+  }
   return [...match[1].matchAll(/'([^']+)'/g)].map((item) => item[1]);
 })();
 
 describe('Creative Recipe render configuration', () => {
-  it('keeps the render runner aligned with the canonical recipe catalog', () => {
-    expect(scriptRecipeIds).toEqual([...CREATIVE_RECIPE_IDS]);
+  it('keeps release contract aligned with the canonical recipe catalog', () => {
+    expect(contractRecipeIds).toEqual([...CREATIVE_RECIPE_IDS]);
   });
 
   it('keeps gallery composition ids unique and aligned with the catalog', () => {
@@ -33,10 +37,18 @@ describe('Creative Recipe render configuration', () => {
     );
   });
 
-  it('keeps the isolated recipe canvas and deterministic checkpoints in the runner', () => {
-    expect(renderScript).toContain('width: 1080');
-    expect(renderScript).toContain('height: 1100');
-    expect(renderScript).toContain('durationInFrames: 180');
-    expect(renderScript).toContain('const SMOKE_CHECKPOINTS = [0, 90, 179]');
+  it('forces the render runner to consume the shared release contract', () => {
+    expect(renderScript).toContain("from './creative-recipe-release-contract.mjs'");
+    expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.width');
+    expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.height');
+    expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames');
+    expect(renderScript).toContain('CREATIVE_RECIPE_RENDER_CONTRACT.smokeCheckpoints');
+  });
+
+  it('keeps the isolated recipe canvas and deterministic checkpoints in the shared contract', () => {
+    expect(releaseContract).toContain('width: 1080');
+    expect(releaseContract).toContain('height: 1100');
+    expect(releaseContract).toContain('durationInFrames: 180');
+    expect(releaseContract).toContain('smokeCheckpoints: Object.freeze([0, 90, 179])');
   });
 });
