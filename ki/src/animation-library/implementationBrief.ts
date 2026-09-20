@@ -1,3 +1,4 @@
+import type {CreativeRecipeId} from './creativeRecipeCatalog';
 import type {PreparedReelProduction} from './reelLifecycle';
 import type {SceneMeaningContract} from './meaningContract';
 import {areProductionRuntimeScenesReady} from './productionEligibility';
@@ -24,6 +25,8 @@ export type SceneImplementationBrief = {
   layoutFamily: string;
   motionSignature: string;
   visualFingerprint: VisualFingerprint;
+  creativeRecipeId: CreativeRecipeId | null;
+  runtimeMechanisms: string[];
   primaryDirection: string;
   energy: string;
   semanticTags: string[];
@@ -136,13 +139,18 @@ export const compileReelImplementationBrief = (
   const analysisByScene = new Map(
     prepared.plan.analyses.map((analysis) => [analysis.sceneId, analysis]),
   );
-  const blockers = prepared.diagnostics.diagnostics
-    .filter((diagnostic) => diagnostic.severity === 'blocker')
-    .map((diagnostic) => diagnostic.message);
+  const blockers = unique([
+    ...prepared.plan.productionPlan.qualityBlockers,
+    ...prepared.diagnostics.diagnostics
+      .filter((diagnostic) => diagnostic.severity === 'blocker')
+      .map((diagnostic) => diagnostic.message),
+  ]);
   const warnings = removeResolvedRuntimeWarnings({
     prepared,
     warnings: unique([
-      ...prepared.plan.productionPlan.qualityWarnings,
+      ...prepared.plan.productionPlan.qualityWarnings.filter(
+        (warning) => !prepared.plan.productionPlan.qualityBlockers.includes(warning),
+      ),
       ...prepared.diagnostics.diagnostics
         .filter((diagnostic) => diagnostic.severity === 'warning')
         .map((diagnostic) => diagnostic.message),
@@ -164,6 +172,8 @@ export const compileReelImplementationBrief = (
       layoutFamily: scene.catalogEntry.layoutFamily,
       motionSignature: scene.catalogEntry.motionSignature,
       visualFingerprint: deriveVisualFingerprint(scene.catalogEntry),
+      creativeRecipeId: spec?.creativeRecipeId ?? null,
+      runtimeMechanisms: spec ? [...spec.runtimeMechanisms] : [],
       primaryDirection: scene.catalogEntry.primaryDirection,
       energy: scene.catalogEntry.energy,
       semanticTags: [...analysis.semanticTags],
@@ -192,7 +202,6 @@ export const compileReelImplementationBrief = (
     readyForImplementation:
       prepared.diagnostics.passed &&
       blockers.length === 0 &&
-      warnings.length === 0 &&
       areProductionRuntimeScenesReady(prepared.plan.productionPlan.scenes),
     blockers,
     warnings,
@@ -202,6 +211,8 @@ export const compileReelImplementationBrief = (
       'Different animation IDs do not prove visual diversity; compare primary primitive, camera, depth, entry mechanism, medium, direction, layout, and motion.',
       'Avoid adjacent near-identical visual fingerprints when a semantically valid alternative exists.',
       'Avoid three consecutive scenes with the same primary primitive, locked camera, or flat depth when the content allows a clearer variation.',
+      'Soft diversity warnings require review but do not block implementation by themselves; structural repetition and runtime ineligibility do.',
+      'For NEW_BUILD scenes, start from the declared Creative Recipe runtime and replace generic labels/geometry with content-specific semantics rather than discarding the recipe into a generic card layout.',
       'Spoken meaning, visible state change, and final result outrank novelty and transition smoothness.',
       'Build a new animation when no library choice expresses the exact sentence strongly enough.',
       'Treat library entries as adaptable motion grammars rather than identical reusable scene templates.',
@@ -245,7 +256,9 @@ export const renderReelImplementationBriefMarkdown = (
       `**Animation:** \`${scene.animationId}\` — ${scene.title}\n\n` +
       `**Familie / Layout / Bewegung:** ${scene.visualFamily} / ${scene.layoutFamily} / ${scene.motionSignature}\n\n` +
       `**Visual Fingerprint:** ${fingerprint.primaryPrimitive} / ${fingerprint.cameraMotion} / ${fingerprint.depthStyle} / ${fingerprint.entryMechanism} / ${fingerprint.medium}\n\n` +
+      `**Creative Recipe:** ${scene.creativeRecipeId ?? 'library-reuse'}\n\n` +
       `**Richtung / Energie:** ${scene.primaryDirection} / ${scene.energy}\n\n` +
+      `### Runtime-Mechanismen\n${bulletList(scene.runtimeMechanisms)}\n\n` +
       `### Bedeutungsvertrag\n` +
       `- **Kommunikationsziel:** ${meaning.communicationGoal}\n` +
       `- **Startzustand:** ${meaning.startState}\n` +
