@@ -14,6 +14,17 @@ const exists = async (path) => {
   }
 };
 
+if (/01-script-audio\/voiceover\.(?:wav|mp3|mp4|m4a|aac|ogg)/i.test(rootSource)) {
+  failures.push(
+    'Root.tsx darf optionale Phase-2-Voiceover-Dateien nicht statisch importieren; echtes Audio wird in Phase 3 als voiceoverSrc-Prop übergeben.',
+  );
+}
+if (/import\s+voiceover[A-Za-z0-9_]*\s+from\s+['"]/i.test(rootSource)) {
+  failures.push(
+    'Root.tsx enthält einen direkten Voiceover-Import. Der kanonische Production-Root muss auch ohne Phase-2-Audio bundlen.',
+  );
+}
+
 const registeredModulePaths = [
   ...rootSource.matchAll(/from\s+['"](\.\/(?:reels|longform)\/[^'"]+)['"]/g),
 ].map((match) => match[1]);
@@ -82,5 +93,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts und einen aktiven Authored-Diversity-Gate.`,
+  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts, einen aktiven Authored-Diversity-Gate und der Root bleibt ohne optionales Phase-2-Audio bundelbar.`,
 );
