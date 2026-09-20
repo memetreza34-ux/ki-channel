@@ -61,8 +61,10 @@ const tests = [
   'ki/src/animation-library/__tests__/productionCatalog.test.ts',
   'ki/src/animation-library/__tests__/proposalCompiler.test.ts',
   'ki/src/animation-library/__tests__/creativeRecipeRuntime.test.ts',
+  'ki/src/animation-library/__tests__/creativeRecipeRenderConfig.test.ts',
   'ki/src/animation-library/__tests__/productionSceneRuntime.test.ts',
   'ki/src/animation-library/__tests__/implementationBrief.test.ts',
+  'ki/src/reels/ai-hallucinations/__tests__/canonicalRuntime.test.ts',
   'ki/src/reels/ai-agents/__tests__/visualProfiles.test.ts',
   'ki/src/reels/ambiguous-prompts/__tests__/visualProfiles.test.ts',
   'ki/src/reels/ai-app-prototype/visualProfiles.test.ts',
@@ -72,7 +74,6 @@ const tests = [
 const outputDir = resolve('out/content-matched/runtime-verification');
 await mkdir(outputDir, {recursive: true});
 const samplePropsPath = resolve(outputDir, 'sample-performance-props.json');
-
 const sampleProps = {
   content: {
     title: 'Latenz · Kapazität · Engpass',
@@ -156,12 +157,12 @@ try {
   await run(
     'node',
     ['scripts/check-canonical-content-release-paths.mjs'],
-    'Kanonischer Release-Pfad bleibt Meaning -> Deriver -> Sanitizer -> Association -> Render-Props',
+    'Kanonischer Release-Pfad umfasst Production, Edge Cases, Creative Recipes, Review und Finalisierung',
   );
   await run(
     'node',
     ['scripts/check-content-review-finalization-path.mjs'],
-    'Manuelle 22+6 Review-ID, Export-Nachweis und Finalizer-Reihenfolge bleiben verpflichtend',
+    'Manuelle 36-Karten-Review-ID, Recipe-Fingerprint, Export-Nachweis und Finalizer-Reihenfolge bleiben verpflichtend',
   );
   await run(
     'node',
@@ -171,7 +172,7 @@ try {
   await run(
     'node',
     ['scripts/check-content-release-status-contract.mjs'],
-    'Release-Status meldet Full-, Artefakt-, Visual-Review- und Finalisierungsblocker in fester Reihenfolge',
+    'Release-Status meldet Full-, Recipe-, Artefakt-, Visual-Review- und Finalisierungsblocker in fester Reihenfolge',
   );
   await run(
     'npx',
@@ -181,7 +182,7 @@ try {
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-, Creative-Recipe-, Scene-Runtime-, Diversity-, V2-Reel- und Production-Regressionstests',
+    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, V2-Reel- und Production-Regressionstests',
   );
   await run(
     'node',
@@ -196,7 +197,7 @@ try {
 
   console.log('\n[content-runtime] Technische Runtime-Prüfung bestanden.');
   console.log(
-    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für Production-Prototypes, Creative Recipes und freizugebende Reels visuell prüfen und den jeweiligen Review-Nachweis finalisieren.',
+    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für Production-Prototypes, Creative Recipes und freizugebende Reels visuell prüfen und den 36-Karten-Review-Nachweis finalisieren.',
   );
 } catch (error) {
   console.error('\n[content-runtime] Prüfung fehlgeschlagen.');
