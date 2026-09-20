@@ -5,6 +5,11 @@ import {
   HALLUCINATION_SCENES,
   buildHallucinationSceneRuntime,
 } from '../ReelHallucinations';
+import {
+  HALLUCINATION_VISUAL_DIVERSITY,
+  HALLUCINATION_VISUAL_MANIFEST,
+  assertHallucinationVisualDiversity,
+} from '../visualProfiles';
 
 const source = readFileSync(
   resolve('ki/src/reels/ai-hallucinations/ReelHallucinations.tsx'),
@@ -23,6 +28,16 @@ describe('AI hallucinations canonical production runtime', () => {
         scene.visualLabels.shellIcon,
       );
     }
+  });
+
+  it('enforces authored visual diversity from the same production animation ids', () => {
+    expect(HALLUCINATION_VISUAL_MANIFEST).toHaveLength(HALLUCINATION_SCENES.length);
+    expect(HALLUCINATION_VISUAL_MANIFEST.map((scene) => scene.visualId)).toEqual(
+      HALLUCINATION_SCENES.map((scene) => scene.animationId),
+    );
+    expect(() => assertHallucinationVisualDiversity()).not.toThrow();
+    expect(HALLUCINATION_VISUAL_DIVERSITY.passed).toBe(true);
+    expect(HALLUCINATION_VISUAL_DIVERSITY.uniquePrimitiveCount).toBeGreaterThanOrEqual(3);
   });
 
   it('does not rebuild the prototype derivation pipeline inside the reel', () => {
