@@ -14,6 +14,6 @@ describe('AI app workflow longform contract',()=>{
   it('has continuous chapters covering the whole baseline',()=>{
     expect(AI_APP_WORKFLOW_CHAPTERS[0].startFrame).toBe(0);
     AI_APP_WORKFLOW_CHAPTERS.slice(1).forEach((c,i)=>expect(c.startFrame).toBe(AI_APP_WORKFLOW_CHAPTERS[i].endFrame));
-    expect(AI_APP_WORKFLOW_CHAPTERS.at(-1)?.endFrame).toBe(AI_APP_WORKFLOW_DURATION_IN_FRAMES);
+    expect(AI_APP_WORKFLOW_CHAPTERS[AI_APP_WORKFLOW_CHAPTERS.length-1]?.endFrame).toBe(AI_APP_WORKFLOW_DURATION_IN_FRAMES);
   });
 });
