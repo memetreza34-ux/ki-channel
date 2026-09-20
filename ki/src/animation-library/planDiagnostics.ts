@@ -1,6 +1,10 @@
-import {getAnimationLibraryEntry} from './catalog';
 import {isProductionReadyLibraryAnimation} from './productionEligibility';
 import type {RawReelAnimationPlan} from './reelPlanningPipeline';
+import {
+  deriveVisualFingerprint,
+  VISUAL_SIMILARITY_HARD_LIMIT,
+  visualSimilarityScore,
+} from './visualFingerprint';
 
 export type ReelPlanDiagnosticSeverity = 'info' | 'warning' | 'blocker';
 
@@ -34,6 +38,9 @@ export const diagnoseRawReelAnimationPlan = (
 ): ReelPlanDiagnostics => {
   const diagnostics: ReelPlanDiagnostic[] = [];
   const decisions = plan.decisionSummary;
+  const productionByScene = new Map(
+    plan.productionPlan.scenes.map((scene) => [scene.sceneId, scene]),
+  );
   const animationIds = decisions.map((decision) => decision.selectedAnimationId);
   const familyNames = decisions.map((decision) => decision.primaryFamily);
   const newBuildSceneCount = decisions.filter(
@@ -64,8 +71,8 @@ export const diagnoseRawReelAnimationPlan = (
 
   decisions.slice(1).forEach((decision, index) => {
     const previous = decisions[index];
-    const currentEntry = getAnimationLibraryEntry(decision.selectedAnimationId);
-    const previousEntry = getAnimationLibraryEntry(previous.selectedAnimationId);
+    const currentEntry = productionByScene.get(decision.sceneId)?.catalogEntry;
+    const previousEntry = productionByScene.get(previous.sceneId)?.catalogEntry;
     if (
       currentEntry &&
       previousEntry &&
@@ -90,6 +97,21 @@ export const diagnoseRawReelAnimationPlan = (
         message: `Direkt aufeinanderfolgende Szenen wiederholen ${currentEntry.motionSignature}.`,
       });
     }
+    if (currentEntry && previousEntry) {
+      const similarity = visualSimilarityScore(previousEntry, currentEntry);
+      if (similarity >= VISUAL_SIMILARITY_HARD_LIMIT) {
+        const currentFingerprint = deriveVisualFingerprint(currentEntry);
+        diagnostics.push({
+          code: 'consecutive-visual-fingerprint',
+          severity: 'blocker',
+          sceneIds: [previous.sceneId, decision.sceneId],
+          message:
+            `Die Szenen sind trotz unterschiedlicher IDs visuell zu ähnlich (${Math.round(similarity * 100)} %): ` +
+            `${currentFingerprint.primaryPrimitive} / ${currentFingerprint.cameraMotion} / ` +
+            `${currentFingerprint.depthStyle} / ${currentFingerprint.entryMechanism}.`,
+        });
+      }
+    }
     if (decision.primaryFamily === previous.primaryFamily) {
       diagnostics.push({
         code: 'consecutive-visual-family',
@@ -99,6 +121,42 @@ export const diagnoseRawReelAnimationPlan = (
       });
     }
   });
+
+  for (let index = 2; index < decisions.length; index += 1) {
+    const trio = decisions.slice(index - 2, index + 1);
+    const fingerprints = trio.map((decision) => {
+      const entry = productionByScene.get(decision.sceneId)?.catalogEntry;
+      return entry ? deriveVisualFingerprint(entry) : null;
+    });
+    if (fingerprints.some((fingerprint) => fingerprint === null)) continue;
+    const resolved = fingerprints.filter(
+      (fingerprint): fingerprint is NonNullable<typeof fingerprint> => fingerprint !== null,
+    );
+    if (new Set(resolved.map((fingerprint) => fingerprint.primaryPrimitive)).size === 1) {
+      diagnostics.push({
+        code: 'three-scene-primary-primitive-run',
+        severity: 'warning',
+        sceneIds: trio.map((decision) => decision.sceneId),
+        message: `Drei Szenen hintereinander verwenden ${resolved[0].primaryPrimitive} als Hauptprimitive.`,
+      });
+    }
+    if (resolved.every((fingerprint) => fingerprint.cameraMotion === 'locked')) {
+      diagnostics.push({
+        code: 'three-scene-locked-camera-run',
+        severity: 'warning',
+        sceneIds: trio.map((decision) => decision.sceneId),
+        message: 'Drei Szenen hintereinander verwenden eine statische/locked Kamera.',
+      });
+    }
+    if (resolved.every((fingerprint) => fingerprint.depthStyle === 'flat')) {
+      diagnostics.push({
+        code: 'three-scene-flat-depth-run',
+        severity: 'warning',
+        sceneIds: trio.map((decision) => decision.sceneId),
+        message: 'Drei Szenen hintereinander bleiben in einer flachen visuellen Tiefenebene.',
+      });
+    }
+  }
 
   const uniqueFamilyCount = new Set(familyNames).size;
   if (decisions.length >= 4 && uniqueFamilyCount < 4) {
