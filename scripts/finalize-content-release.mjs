@@ -1,6 +1,7 @@
 import {execFileSync, spawn} from 'node:child_process';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {CONTENT_REVIEW_COUNTS} from './content-review-contract.mjs';
 
 const visualReviewPath = process.argv[2]
   ? resolve(process.argv[2])
@@ -18,21 +19,19 @@ const steps = [];
 const writeFinalization = async ({status, error = null, reviewId = null}) => {
   await writeFile(
     finalizationPath,
-    `${JSON.stringify(
-      {
-        version: 1,
-        status,
-        gitHead: currentGitHead,
-        reviewId,
-        visualReviewPath,
-        startedAt,
-        completedAt: status === 'running' ? null : new Date().toISOString(),
-        error,
-        steps,
-      },
-      null,
-      2,
-    )}\n`,
+    `${JSON.stringify({
+      version: 2,
+      status,
+      gitHead: currentGitHead,
+      reviewId,
+      reviewCardCount: CONTENT_REVIEW_COUNTS.total,
+      creativeRecipeReviewRequired: true,
+      visualReviewPath,
+      startedAt,
+      completedAt: status === 'running' ? null : new Date().toISOString(),
+      error,
+      steps,
+    }, null, 2)}\n`,
     'utf8',
   );
 };
@@ -82,77 +81,72 @@ try {
 
   await run(
     ['scripts/verify-all-content-release.mjs'],
-    'Aktuelle Full-Release-Artefakte erneut gegen Source-Fingerprints, Props und Dateisignaturen prüfen',
+    'Aktuelle Production- und Edge-Release-Artefakte erneut gegen Source-Fingerprints, Props und Dateisignaturen prüfen',
+  );
+  await writeFinalization({status: 'running'});
+
+  await run(
+    ['scripts/check-creative-recipe-renders.mjs'],
+    'Aktuelle Creative-Recipe-Artefakte erneut gegen Runtime-Fingerprint und Dateisignaturen prüfen',
   );
   await writeFinalization({status: 'running'});
 
   await run(
     ['scripts/verify-content-review-gallery.mjs', 'full'],
-    'Aktuelle 22+6 Full-Review-Galerie prüfen',
+    `Aktuelle ${CONTENT_REVIEW_COUNTS.total}-Karten Full-Review-Galerie prüfen`,
   );
   const manifest = JSON.parse(
-    await readFile(
-      resolve('out/content-review-gallery/review-manifest.json'),
-      'utf8',
-    ),
+    await readFile(resolve('out/content-review-gallery/review-manifest.json'), 'utf8'),
   );
   await writeFinalization({status: 'running', reviewId: manifest.reviewId ?? null});
 
   await run(
     ['scripts/verify-content-visual-review.mjs', visualReviewPath],
-    '28/28 manuelle Visual-Review-Entscheidungen prüfen',
+    `${CONTENT_REVIEW_COUNTS.total}/${CONTENT_REVIEW_COUNTS.total} manuelle Visual-Review-Entscheidungen inklusive Creative Recipes prüfen`,
   );
 
-  if (steps.length !== 4 || steps.some((step) => step.status !== 'passed')) {
-    throw new Error(
-      `Finalisierung inkonsistent: ${steps.filter((step) => step.status === 'passed').length}/4 Schritte passed.`,
-    );
+  if (steps.length !== 5 || steps.some((step) => step.status !== 'passed')) {
+    throw new Error(`Finalisierung inkonsistent: ${steps.filter((step) => step.status === 'passed').length}/5 Schritte passed.`);
   }
 
   const [technicalSummary, visualReview] = await Promise.all([
-    readFile(
-      resolve('out/content-release-run/full-summary.json'),
-      'utf8',
-    ).then(JSON.parse),
+    readFile(resolve('out/content-release-run/full-summary.json'), 'utf8').then(JSON.parse),
     readFile(visualReviewPath, 'utf8').then(JSON.parse),
   ]);
 
   await writeFile(
     finalizationPath,
-    `${JSON.stringify(
-      {
-        version: 1,
-        status: 'passed',
-        gitHead: currentGitHead,
-        reviewId: manifest.reviewId,
-        visualReviewPath,
-        technicalCompletedAt: technicalSummary.completedAt,
-        reviewedAt: visualReview.reviewedAt,
-        finalizedAt: new Date().toISOString(),
-        technicalArtifactsReverified: true,
-        manualVisualReviewRequired: true,
-        manualVisualReviewVerified: true,
-        steps,
-      },
-      null,
-      2,
-    )}\n`,
+    `${JSON.stringify({
+      version: 2,
+      status: 'passed',
+      gitHead: currentGitHead,
+      reviewId: manifest.reviewId,
+      reviewCardCount: CONTENT_REVIEW_COUNTS.total,
+      creativeRecipeReviewRequired: true,
+      creativeRecipeReviewVerified: true,
+      visualReviewPath,
+      technicalCompletedAt: technicalSummary.completedAt,
+      reviewedAt: visualReview.reviewedAt,
+      finalizedAt: new Date().toISOString(),
+      technicalArtifactsReverified: true,
+      manualVisualReviewRequired: true,
+      manualVisualReviewVerified: true,
+      steps,
+    }, null, 2)}\n`,
     'utf8',
   );
 
   console.log('\n[content-finalize] FINALISIERUNG BESTANDEN.');
   console.log(`[content-finalize] Git-HEAD: ${currentGitHead}`);
   console.log(`[content-finalize] Review-ID: ${manifest.reviewId}`);
+  console.log(`[content-finalize] Review: ${CONTENT_REVIEW_COUNTS.total} Karten inklusive ${CONTENT_REVIEW_COUNTS.recipe} Creative Recipes.`);
   console.log(`[content-finalize] Nachweis: ${finalizationPath}`);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   let reviewId = null;
   try {
     const manifest = JSON.parse(
-      await readFile(
-        resolve('out/content-review-gallery/review-manifest.json'),
-        'utf8',
-      ),
+      await readFile(resolve('out/content-review-gallery/review-manifest.json'), 'utf8'),
     );
     reviewId = manifest.reviewId ?? null;
   } catch {
