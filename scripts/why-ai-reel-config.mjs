@@ -10,7 +10,7 @@ const sourceReel = JSON.parse(readFileSync(SOURCE_REEL_PATH, 'utf8'));
 export const WHY_AI_REEL_CONFIG = Object.freeze({
   reelId: sourceReel.reelId,
   compositionId: sourceReel.compositionId,
-  entryPoint: 'ki/src/index.ts',
+  entryPoint: 'ki/src/production-entry.tsx',
   outputDir: 'out/reels/why-ai-reads-differently',
   width: sourceReel.format.width,
   height: sourceReel.format.height,
@@ -46,8 +46,8 @@ const isProductionSource = (file) =>
 export const WHY_AI_REEL_SOURCE_FILES = Object.freeze([
   ...collectFiles('ki/src/reels/why-ai-reads-differently').filter(isProductionSource),
   SOURCE_REEL_PATH,
-  resolve('ki/src/Root.tsx'),
-  resolve('ki/src/index.ts'),
+  resolve('ki/src/ProductionRoot.tsx'),
+  resolve('ki/src/production-entry.tsx'),
   resolve('ki/brand/brand.ts'),
 ].sort());
 
