@@ -196,12 +196,10 @@ export const deriveVisualFingerprint = (
   };
 };
 
-export const visualSimilarityScore = (
-  left: AnimationLibraryEntry,
-  right: AnimationLibraryEntry,
+export const visualFingerprintSimilarityScore = (
+  a: VisualFingerprint,
+  b: VisualFingerprint,
 ): number => {
-  const a = deriveVisualFingerprint(left);
-  const b = deriveVisualFingerprint(right);
   let score = 0;
   if (a.primaryPrimitive === b.primaryPrimitive) score += 0.24;
   if (a.cameraMotion === b.cameraMotion) score += 0.14;
@@ -214,6 +212,15 @@ export const visualSimilarityScore = (
   if (a.motionSignature === b.motionSignature) score += 0.05;
   return Number(score.toFixed(4));
 };
+
+export const visualSimilarityScore = (
+  left: AnimationLibraryEntry,
+  right: AnimationLibraryEntry,
+): number =>
+  visualFingerprintSimilarityScore(
+    deriveVisualFingerprint(left),
+    deriveVisualFingerprint(right),
+  );
 
 export const VISUAL_SIMILARITY_SOFT_LIMIT = 0.7;
 export const VISUAL_SIMILARITY_HARD_LIMIT = 0.82;
