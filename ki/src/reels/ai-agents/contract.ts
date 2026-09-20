@@ -1,5 +1,7 @@
 import reelJson from '../../../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-08-10_bis_2026-08-16/03_Warum-KI-Agenten-mehr-als-Chatbots-sind/03-caption/subtitle-cues.json';
+import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {AI_AGENTS_VISUAL_PROFILES} from './visualProfiles';
 
 export type AIAgentScene = {
   sceneId: string;
@@ -70,6 +72,13 @@ export const assertAIAgentsContract = (): void => {
     if (cues.some((cue) => cue.startFrame < scene.startFrame || cue.endFrame > scene.endFrame)) throw new Error(`subtitle outside scene: ${scene.sceneId}`);
     if (normalizeAIAgentText(cues.map((cue) => cue.text).join(' ')) !== normalizeAIAgentText(scene.spokenText)) throw new Error(`subtitle mismatch: ${scene.sceneId}`);
   }
+
+  const plannedSceneIds = AI_AGENTS_SCENES.map((scene) => scene.sceneId);
+  const profiledSceneIds = AI_AGENTS_VISUAL_PROFILES.map((profile) => profile.sceneId);
+  if (plannedSceneIds.join('|') !== profiledSceneIds.join('|')) {
+    throw new Error('AI agents visual profiles must exactly cover the authored scene order');
+  }
+  assertAuthoredVisualDiversity(AI_AGENTS_VISUAL_PROFILES);
 };
 
 assertAIAgentsContract();
