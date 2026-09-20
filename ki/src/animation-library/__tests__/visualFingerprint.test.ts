@@ -22,7 +22,7 @@ const makeEntry = (
   semanticTags: ['workflow', 'process'],
   explanationPatterns: ['cause-and-effect'],
   avoidWhen: [],
-  primitiveTags: ['card', 'panel', 'connector'],
+  primitiveTags: ['card', 'panel'],
   transitionInTags: ['slide-entry'],
   transitionOutTags: ['result-exit'],
   cameraStyle: 'locked-camera',
@@ -47,6 +47,35 @@ describe('visual fingerprints', () => {
     expect(fingerprint.depthStyle).toBe('flat');
     expect(fingerprint.entryMechanism).toBe('slide');
     expect(fingerprint.medium).toBe('remotion-native');
+  });
+
+  it('prefers a dominant path system over incidental card or panel chrome', () => {
+    const fingerprint = deriveVisualFingerprint(
+      makeEntry({
+        title: 'Workflow panel with routed movement',
+        layoutFamily: 'open-path-trace-field',
+        motionSignature: 'draw-path-travel-branch-resolve',
+        primitiveTags: ['card', 'flow-path', 'path-node', 'trace-marker'],
+        transitionInTags: ['path-reveal'],
+        cameraStyle: 'directional-follow-pan',
+      }),
+    );
+    expect(fingerprint.primaryPrimitive).toBe('path');
+    expect(fingerprint.cameraMotion).toBe('pan');
+    expect(fingerprint.entryMechanism).toBe('draw');
+  });
+
+  it('prefers a network grammar over a supporting panel', () => {
+    const fingerprint = deriveVisualFingerprint(
+      makeEntry({
+        layoutFamily: 'layered-network-bloom',
+        motionSignature: 'seed-connect-pulse-prune-resolve',
+        primitiveTags: ['panel', 'network-node', 'bezier-connector', 'pulse-marker'],
+        cameraStyle: 'slow-orbital-parallax',
+      }),
+    );
+    expect(fingerprint.primaryPrimitive).toBe('nodes');
+    expect(fingerprint.cameraMotion).toBe('orbit');
   });
 
   it('flags different animation ids that still use nearly identical visual grammar', () => {
