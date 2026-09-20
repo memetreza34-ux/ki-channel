@@ -13,6 +13,7 @@ export * from './importantWordCoverage';
 export * from './universalMotionPlan';
 export * from './channelReelMasterPlan';
 export * from './remotionChoreographyCompiler';
+export * from './visualFingerprint';
 export * from './brain';
 export * from './brainTuning';
 export * from './completePrototypeRegistry';
