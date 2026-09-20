@@ -3,7 +3,10 @@ import {
   CREATIVE_RECIPE_DEFINITIONS,
   CREATIVE_RECIPE_IDS,
 } from '../creativeRecipeCatalog';
-import {isCreativeRecipeRuntimeSupported} from '../creativeRecipeRuntime';
+import {
+  assertCreativeRecipeRuntimeContract,
+  isCreativeRecipeRuntimeSupported,
+} from '../creativeRecipeRuntime';
 import {compileNewAnimationProposal} from '../proposalCompiler';
 
 describe('creative recipe runtime contract', () => {
@@ -34,9 +37,33 @@ describe('creative recipe runtime contract', () => {
     expect(spec.runtimeMechanisms).toEqual(
       CREATIVE_RECIPE_DEFINITIONS[spec.creativeRecipeId].runtimeMechanisms,
     );
+    expect(() => assertCreativeRecipeRuntimeContract(spec)).not.toThrow();
     expect(
       spec.implementationRules.some((rule) => rule.includes('Runtime mechanisms:')),
     ).toBe(true);
+  });
+
+  it('rejects stale build specs when recipe mechanisms drift from the canonical catalog', () => {
+    const spec = compileNewAnimationProposal({
+      proposal: {
+        proposalId: 'runtime-contract-drift',
+        sceneId: 'scene-drift',
+        reason: 'requires a purpose-built explanation',
+        requiredSemanticTags: ['workflow', 'process', 'result'],
+        suggestedVisualFamily: 'process-flow',
+        forbiddenLayoutFamilies: [],
+        forbiddenMotionSignatures: [],
+        suggestedDirection: 'left-to-right',
+        suggestedEnergy: 'dynamic',
+      },
+    });
+
+    expect(() =>
+      assertCreativeRecipeRuntimeContract({
+        ...spec,
+        runtimeMechanisms: ['stale-mechanism'],
+      }),
+    ).toThrow(/runtime mechanisms drifted/);
   });
 
   it('rotates away from a recipe when its layout and motion roots were already used', () => {
