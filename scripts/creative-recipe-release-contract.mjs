@@ -1,3 +1,6 @@
+import {createHash} from 'node:crypto';
+import {readFile} from 'node:fs/promises';
+
 export const CREATIVE_RECIPE_IDS = Object.freeze([
   'object-morph-stage',
   'path-trace-field',
@@ -21,6 +24,26 @@ export const CREATIVE_RECIPE_RENDER_CONTRACT = Object.freeze({
   smokeCheckpoints: Object.freeze([0, 90, 179]),
   videoFileName: 'recipe.mp4',
 });
+
+export const CREATIVE_RECIPE_SOURCE_PATHS = Object.freeze([
+  'ki/src/animation-library/creativeRecipeCatalog.ts',
+  'ki/src/animation-library/creativeRecipeRuntime.tsx',
+  'ki/src/animation-library/creativeMotionPrimitives.tsx',
+  'ki/src/animation-library/CreativeRecipeGalleryRoot.tsx',
+  'ki/src/animation-library/proposalCompiler.ts',
+  'ki/src/animation-library/productionSceneRuntime.tsx',
+  'scripts/creative-recipe-release-contract.mjs',
+]);
+
+export const getCreativeRecipeSourceFingerprint = async () => {
+  const hash = createHash('sha256');
+  for (const path of CREATIVE_RECIPE_SOURCE_PATHS) {
+    hash.update(`${path}\0`);
+    hash.update(await readFile(path));
+    hash.update('\0');
+  }
+  return hash.digest('hex');
+};
 
 export const CREATIVE_RECIPE_REVIEW_EXPECTATIONS = Object.freeze({
   'object-morph-stage': Object.freeze({
