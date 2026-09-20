@@ -274,7 +274,7 @@ const distributeProbabilityRemainder = ({
   exactValues: readonly (number | null)[];
   fallbackValues: readonly number[];
 }): number[] => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -326,7 +326,7 @@ const sanitizeProbability = (
   });
   const fallbackPercentage = explicitPercentage(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {...values};
+  const nextValues: Record<string, string | number> = {...values};
 
   for (let index = 0; index < 3; index += 1) {
     const exact = exactValues[index] !== null;
@@ -375,7 +375,7 @@ const sanitizeRanking = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     rankingOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -405,7 +405,7 @@ const sanitizeComparison = (
 ): Record<string, string | number> => {
   const scores = scoreMeasurements(spokenText);
   const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'competitor', count: 2});
-  const nextValues = {
+  const nextValues: Record<string, string | number> = {
     ...values,
     comparisonOutcomeGrounded: scores.length >= 2 || winnerCue >= 0 ? 1 : 0,
   };
@@ -435,7 +435,10 @@ const sanitizeCost = (
     values.initialCost !== undefined &&
     values.optimizedCost !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {
+    ...values,
+    measurementExact: exact ? 1 : 0,
+  };
 
   if (boundMeasurements.length >= 2) {
     const initial = Math.max(boundMeasurements[0], boundMeasurements[1]);
@@ -478,7 +481,10 @@ const sanitizeLatency = (
     values.slowLatency !== undefined &&
     values.fastLatency !== undefined;
   const exact = boundMeasurements.length >= 2 || fallbackExact;
-  const nextValues = {...values, measurementExact: exact ? 1 : 0};
+  const nextValues: Record<string, string | number> = {
+    ...values,
+    measurementExact: exact ? 1 : 0,
+  };
 
   if (boundMeasurements.length >= 2) {
     nextValues.slowLatency = boundMeasurements[0];
