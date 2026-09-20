@@ -6,6 +6,7 @@ import {
 } from './productionEligibility';
 import {
   planReelChoreography,
+  type PlannedAnimationSelection,
   type ReelChoreographyPlan,
   type ReelSceneBrief,
 } from './planner';
@@ -117,6 +118,46 @@ const isBlockingQualityWarning = (warning: string): boolean =>
   warning.includes('repeat the same layout family') ||
   warning.includes('repeat the same motion signature');
 
+const resolveExactFamilyProductionFallback = ({
+  scene,
+  selection,
+  productionEntries,
+  usedAnimationIds,
+  usedLayouts,
+  usedMotions,
+}: {
+  scene: ReelSceneBrief;
+  selection: PlannedAnimationSelection;
+  productionEntries: readonly AnimationLibraryEntry[];
+  usedAnimationIds: ReadonlySet<string>;
+  usedLayouts: ReadonlySet<string>;
+  usedMotions: ReadonlySet<string>;
+}): AnimationLibraryEntry | null => {
+  if (scene.mustBeNew || selection.animationId || !selection.score) return null;
+  if (selection.score.semanticFit < 42) return null;
+  if (selection.score.meaningCompatibility < 25) return null;
+  if (selection.score.avoidancePenalty > 0) return null;
+
+  const preferredFamilies = [
+    ...(scene.preferredVisualFamilies ?? []),
+    ...(scene.meaningContract?.preferredVisualFamilies ?? []),
+  ];
+  if (preferredFamilies.length === 0) return null;
+
+  for (const family of preferredFamilies) {
+    const exactFamilyCandidates = productionEntries.filter(
+      (entry) =>
+        entry.visualFamily === family &&
+        !usedAnimationIds.has(entry.animationId) &&
+        !usedLayouts.has(entry.layoutFamily) &&
+        !usedMotions.has(entry.motionSignature),
+    );
+    if (exactFamilyCandidates.length === 1) return exactFamilyCandidates[0];
+  }
+
+  return null;
+};
+
 export const planProductionReelAnimations = ({
   reelId,
   reelIndex,
@@ -157,6 +198,7 @@ export const planProductionReelAnimations = ({
     ...entries.map((entry) => entry.animationId),
     ...PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
   ]);
+  const usedProductionAnimationIds = new Set<string>();
   const usedProductionLayoutFamilies = new Set<string>();
   const usedProductionMotionSignatures = new Set<string>();
   const scenePlans: ProductionSceneAnimationPlan[] = [];
@@ -174,8 +216,36 @@ export const planProductionReelAnimations = ({
         selectionScore: selection.score?.total ?? null,
         selectionReasons: selection.reasons,
       });
+      usedProductionAnimationIds.add(entry.animationId);
       usedProductionLayoutFamilies.add(entry.layoutFamily);
       usedProductionMotionSignatures.add(entry.motionSignature);
+      return;
+    }
+
+    const exactFamilyFallback = resolveExactFamilyProductionFallback({
+      scene,
+      selection,
+      productionEntries,
+      usedAnimationIds: usedProductionAnimationIds,
+      usedLayouts: usedProductionLayoutFamilies,
+      usedMotions: usedProductionMotionSignatures,
+    });
+    if (exactFamilyFallback) {
+      scenePlans.push({
+        sceneId: scene.sceneId,
+        source: 'library',
+        animationId: exactFamilyFallback.animationId,
+        catalogEntry: exactFamilyFallback,
+        buildSpec: null,
+        selectionScore: selection.score?.total ?? null,
+        selectionReasons: [
+          ...selection.reasons,
+          `production exact-family fallback reused ${exactFamilyFallback.animationId}`,
+        ],
+      });
+      usedProductionAnimationIds.add(exactFamilyFallback.animationId);
+      usedProductionLayoutFamilies.add(exactFamilyFallback.layoutFamily);
+      usedProductionMotionSignatures.add(exactFamilyFallback.motionSignature);
       return;
     }
 
@@ -230,6 +300,7 @@ export const planProductionReelAnimations = ({
           : []),
       ],
     });
+    usedProductionAnimationIds.add(buildSpec.animationId);
     usedProductionLayoutFamilies.add(buildSpec.layoutFamily);
     usedProductionMotionSignatures.add(buildSpec.motionSignature);
   });
