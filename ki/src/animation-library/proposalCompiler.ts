@@ -47,6 +47,17 @@ type CompilableNewAnimationProposal = Omit<
   meaningContract?: SceneMeaningContract;
 };
 
+type NativeCreativeRecipe = {
+  id: string;
+  layoutRoot: string;
+  motionRoot: string;
+  primitiveHints: string[];
+  cameraStyle: string;
+  transitionIn: string;
+  transitionOut: string;
+  explanationPattern: string;
+};
+
 const slugify = (value: string): string =>
   value
     .toLocaleLowerCase('de-DE')
@@ -57,6 +68,15 @@ const slugify = (value: string): string =>
     .slice(0, 52);
 
 const unique = <T,>(values: readonly T[]): T[] => [...new Set(values)];
+
+const stableHash = (value: string): number => {
+  let hash = 2166136261;
+  for (const char of value) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+};
 
 const directionLayout: Record<
   AnimationLibraryEntry['primaryDirection'],
@@ -88,6 +108,105 @@ const directionMotion: Record<
   'depth-forward': 'layers-open-camera-push-result',
   'depth-backward': 'result-freeze-xray-reconstruct',
   mixed: 'multi-source-cross-morph-resolve',
+};
+
+const CREATIVE_RECIPES: NativeCreativeRecipe[] = [
+  {
+    id: 'object-morph-stage',
+    layoutRoot: 'hero-object-morph-stage',
+    motionRoot: 'assemble-object-morph-resolve',
+    primitiveHints: ['semantic-object', 'shape-morph', 'layered-object'],
+    cameraStyle: 'gentle-parallax-object-stage',
+    transitionIn: 'assemble-entry',
+    transitionOut: 'morph-result',
+    explanationPattern: 'object-transformation',
+  },
+  {
+    id: 'path-trace-field',
+    layoutRoot: 'open-path-trace-field',
+    motionRoot: 'draw-path-travel-branch-resolve',
+    primitiveHints: ['flow-path', 'path-node', 'trace-marker'],
+    cameraStyle: 'directional-follow-pan',
+    transitionIn: 'path-reveal',
+    transitionOut: 'path-resolve',
+    explanationPattern: 'spatial-process-trace',
+  },
+  {
+    id: 'network-bloom',
+    layoutRoot: 'layered-network-bloom',
+    motionRoot: 'seed-connect-pulse-prune-resolve',
+    primitiveHints: ['network-node', 'bezier-connector', 'pulse-marker'],
+    cameraStyle: 'slow-orbital-parallax',
+    transitionIn: 'assemble-entry',
+    transitionOut: 'network-collapse-result',
+    explanationPattern: 'relationship-network',
+  },
+  {
+    id: 'xray-overlay',
+    layoutRoot: 'layered-xray-overlay',
+    motionRoot: 'surface-lock-xray-reveal-verify',
+    primitiveHints: ['semantic-object', 'xray-layer', 'overlay-marker'],
+    cameraStyle: 'controlled-micro-push-with-layer-parallax',
+    transitionIn: 'mask-reveal',
+    transitionOut: 'overlay-resolve',
+    explanationPattern: 'surface-vs-hidden-state',
+  },
+  {
+    id: 'typographic-construct',
+    layoutRoot: 'kinetic-type-construction-field',
+    motionRoot: 'mask-type-build-transform-lock',
+    primitiveHints: ['kinetic-type', 'word-form', 'mask-plane'],
+    cameraStyle: 'locked-text-plane-with-micro-push',
+    transitionIn: 'mask-reveal',
+    transitionOut: 'type-morph-result',
+    explanationPattern: 'typographic-transformation',
+  },
+  {
+    id: 'cutaway-stack',
+    layoutRoot: 'pseudo-3d-cutaway-stack',
+    motionRoot: 'mask-open-layers-separate-inspect-resolve',
+    primitiveHints: ['layer-plane', 'cutaway-window', 'state-marker', 'pseudo-3d'],
+    cameraStyle: 'angled-cutaway-pan',
+    transitionIn: 'mask-reveal',
+    transitionOut: 'layers-recompose',
+    explanationPattern: 'layered-cutaway-explanation',
+  },
+  {
+    id: 'depth-corridor',
+    layoutRoot: 'pseudo-3d-semantic-corridor',
+    motionRoot: 'depth-enter-pass-layers-focus-result',
+    primitiveHints: ['semantic-object', 'depth-layer', 'perspective-plane', 'pseudo-3d'],
+    cameraStyle: 'controlled-depth-push-with-stable-text-plane',
+    transitionIn: 'depth-entry',
+    transitionOut: 'depth-result-hold',
+    explanationPattern: 'spatial-depth-reveal',
+  },
+  {
+    id: 'ui-state-machine',
+    layoutRoot: 'single-interface-state-machine',
+    motionRoot: 'ui-state-trigger-transform-confirm',
+    primitiveHints: ['ui-surface', 'state-control', 'result-indicator'],
+    cameraStyle: 'slight-interface-parallax-push',
+    transitionIn: 'interface-assemble',
+    transitionOut: 'state-confirm-result',
+    explanationPattern: 'interface-state-change',
+  },
+];
+
+const GOAL_RECIPES: Record<
+  SceneMeaningContract['communicationGoal'],
+  string[]
+> = {
+  rank: ['path-trace-field', 'network-bloom', 'typographic-construct'],
+  compare: ['object-morph-stage', 'xray-overlay', 'cutaway-stack'],
+  'show-limitation': ['xray-overlay', 'cutaway-stack', 'typographic-construct'],
+  'show-change-over-time': ['path-trace-field', 'object-morph-stage', 'depth-corridor'],
+  'explain-process': ['path-trace-field', 'cutaway-stack', 'depth-corridor'],
+  'show-transformation': ['object-morph-stage', 'typographic-construct', 'depth-corridor'],
+  'reveal-cause': ['xray-overlay', 'cutaway-stack', 'path-trace-field'],
+  'show-collaboration': ['network-bloom', 'path-trace-field', 'object-morph-stage'],
+  'warn-or-verify': ['xray-overlay', 'path-trace-field', 'cutaway-stack'],
+  'show-result': ['object-morph-stage', 'typographic-construct', 'depth-corridor'],
 };
 
 const semanticPrimitiveMap: Record<string, string[]> = {
@@ -154,6 +273,45 @@ const resolveMeaningContract = (
     proposal.spokenText ?? proposal.requiredSemanticTags.join(' '),
   );
 
+const chooseCreativeRecipe = ({
+  proposal,
+  contentContract,
+  semanticTags,
+}: {
+  proposal: CompilableNewAnimationProposal;
+  contentContract: SceneMeaningContract;
+  semanticTags: readonly string[];
+}): NativeCreativeRecipe => {
+  const byId = new Map(CREATIVE_RECIPES.map((recipe) => [recipe.id, recipe]));
+  const hasUiSubject = semanticTags.some((tag) =>
+    ['app', 'browser', 'interface', 'ui', 'button', 'website', 'tool'].some((term) =>
+      tag.includes(term),
+    ),
+  );
+  const preferredIds = unique([
+    ...(hasUiSubject ? ['ui-state-machine'] : []),
+    ...GOAL_RECIPES[contentContract.communicationGoal],
+  ]);
+  const preferred = preferredIds
+    .map((id) => byId.get(id))
+    .filter((recipe): recipe is NativeCreativeRecipe => Boolean(recipe));
+  const forbiddenCorpus = [
+    ...proposal.forbiddenLayoutFamilies,
+    ...proposal.forbiddenMotionSignatures,
+  ]
+    .map(slugify)
+    .join('|');
+  const unused = preferred.filter((recipe) => !forbiddenCorpus.includes(recipe.id));
+  const candidates = unused.length > 0 ? unused : preferred.length > 0 ? preferred : CREATIVE_RECIPES;
+  const seed = [
+    proposal.proposalId,
+    proposal.sceneId,
+    contentContract.communicationGoal,
+    ...semanticTags,
+  ].join('|');
+  return candidates[stableHash(seed) % candidates.length];
+};
+
 const buildPhases = (
   semanticTags: readonly string[],
   content: SceneMeaningContract,
@@ -213,18 +371,6 @@ export const compileNewAnimationProposal = ({
       contentContract.preferredVisualFamilies[0] ||
       'custom-explanation',
   );
-  const baseLayout = `${family}-${directionLayout[proposal.suggestedDirection]}`;
-  const baseMotion = `${family}-${directionMotion[proposal.suggestedDirection]}`;
-  const layoutFamily = deriveUnusedValue({
-    preferred: baseLayout,
-    forbidden: proposal.forbiddenLayoutFamilies,
-    suffix: 'layout',
-  });
-  const motionSignature = deriveUnusedValue({
-    preferred: baseMotion,
-    forbidden: proposal.forbiddenMotionSignatures,
-    suffix: 'motion',
-  });
   const semanticTags = unique(
     [
       ...proposal.requiredSemanticTags,
@@ -235,7 +381,21 @@ export const compileNewAnimationProposal = ({
       .map(slugify)
       .filter(Boolean),
   ).slice(0, 16);
+  const recipe = chooseCreativeRecipe({proposal, contentContract, semanticTags});
+  const baseLayout = `${family}-${recipe.layoutRoot}-${directionLayout[proposal.suggestedDirection]}`;
+  const baseMotion = `${family}-${recipe.motionRoot}-${directionMotion[proposal.suggestedDirection]}`;
+  const layoutFamily = deriveUnusedValue({
+    preferred: baseLayout,
+    forbidden: proposal.forbiddenLayoutFamilies,
+    suffix: 'layout',
+  });
+  const motionSignature = deriveUnusedValue({
+    preferred: baseMotion,
+    forbidden: proposal.forbiddenMotionSignatures,
+    suffix: 'motion',
+  });
   const primitiveTags = unique([
+    ...recipe.primitiveHints,
     ...inferPrimitives(semanticTags),
     ...contentContract.requiredVisualCues.map(slugify),
   ]).slice(0, 12);
@@ -253,10 +413,11 @@ export const compileNewAnimationProposal = ({
     visualFamily: family,
     layoutFamily,
     motionSignature,
-    noveltyGroup: `${family}-${slugify(proposal.suggestedDirection)}`,
+    noveltyGroup: `${family}-${recipe.id}-${slugify(proposal.suggestedDirection)}`,
     semanticTags,
     explanationPatterns: unique([
       ...contentContract.preferredExplanationPatterns.map(slugify),
+      recipe.explanationPattern,
       'semantic-cause-and-effect',
       proposal.suggestedDirection.startsWith('depth')
         ? 'layered-reveal'
@@ -264,18 +425,16 @@ export const compileNewAnimationProposal = ({
     ]).slice(0, 8),
     primitiveTags,
     transitionInTags: unique([
+      recipe.transitionIn,
       `${proposal.suggestedDirection}-entry`,
       primitiveTags[0],
     ]),
     transitionOutTags: unique([
+      recipe.transitionOut,
       `${proposal.suggestedDirection}-result`,
       primitiveTags[primitiveTags.length - 1],
     ]),
-    cameraStyle: proposal.suggestedDirection.startsWith('depth')
-      ? 'controlled-depth-push-with-stable-text-plane'
-      : proposal.suggestedDirection === 'circular'
-        ? 'gentle-orbit-with-locked-safe-zones'
-        : 'locked-camera-with-directional-object-motion',
+    cameraStyle: recipe.cameraStyle,
     primaryDirection: proposal.suggestedDirection,
     energy: proposal.suggestedEnergy,
     density: semanticTags.length >= 5 ? 'dense' : 'balanced',
@@ -292,11 +451,15 @@ export const compileNewAnimationProposal = ({
       proposal.spokenText
         ? `Build for this exact spoken sentence: “${proposal.spokenText}”.`
         : 'Build for the exact semantic tags and content contract; do not invent a different message.',
+      `Creative recipe: ${recipe.id}. Preserve its dominant visual grammar unless the exact spoken meaning requires an even stronger content-specific alternative.`,
       `The opening frame must show: ${contentContract.startState}.`,
       `The dominant motion must show: ${contentContract.visibleChange}.`,
       `The final hold must show: ${contentContract.endState}.`,
       `Required visual cues: ${contentContract.requiredVisualCues.join(', ')}.`,
       `Forbidden visual shortcuts: ${contentContract.forbiddenVisualCues.join(', ')}.`,
+      `Primary construction should be driven by ${recipe.primitiveHints.join(', ')} rather than generic presentation cards.`,
+      `Camera grammar: ${recipe.cameraStyle}.`,
+      'Prefer React/SVG/CSS/Canvas and pseudo-3D composition before adding an external asset; use real Three/Lottie/Rive only when the scene and available assets justify it.',
       'Do not reuse a full scene composition from the existing animation library.',
       'Every dominant movement must explain a spoken concept or causal relationship.',
       'Keep title, main animation, and kinetic subtitles in separate safe zones.',
