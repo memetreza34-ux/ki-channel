@@ -142,6 +142,10 @@ export const ProductionSceneRuntimeRenderer: React.FC<
   ProductionSceneRuntimeInput
 > = (input) => {
   const runtime = buildProductionSceneRuntime(input);
-  const Component = runtime.component;
-  return <Component {...runtime.renderProps} />;
+  if (runtime.source === 'library') {
+    const LibraryComponent = runtime.component;
+    return <LibraryComponent {...runtime.renderProps} />;
+  }
+  const NewBuildComponent = runtime.component;
+  return <NewBuildComponent {...runtime.renderProps} />;
 };
