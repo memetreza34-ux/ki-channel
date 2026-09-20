@@ -3,21 +3,179 @@ import {interpolate,useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 
 const OK='#4F9D74';
-const MUTED='rgba(26,26,46,.48)';
-const card:React.CSSProperties={background:'#fff',border:'2px solid rgba(110,69,201,.18)',borderRadius:30,boxShadow:'0 24px 70px rgba(26,26,46,.10)'};
-const label:React.CSSProperties={fontFamily:BRAND.font,fontWeight:850,fontSize:32,color:BRAND.ink};
-const stage:React.CSSProperties={position:'absolute',left:70,right:70,top:35,bottom:35};
-const clamp=(v:number)=>Math.max(0,Math.min(1,v));
-const p=(f:number,a:number,b:number)=>clamp(interpolate(f,[a,b],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
+const BAD='#D95C6A';
+const PURPLE=BRAND.accentDk;
+const ACCENT=BRAND.accent;
+const INK=BRAND.ink;
+const MUTED='rgba(26,26,46,.52)';
+const stage:React.CSSProperties={position:'absolute',inset:'18px 38px 28px',overflow:'hidden'};
+const clamp=(value:number)=>Math.max(0,Math.min(1,value));
+const progress=(frame:number,start:number,end:number)=>clamp(interpolate(frame,[start,Math.max(start+1,end)],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
+const dash=(value:number,length:number)=>length*(1-value);
 
-const FileCard:React.FC<{name:string;kind:string;opacity?:number}> = ({name,kind,opacity=1}) => <div style={{...card,width:176,height:150,padding:20,opacity,display:'flex',flexDirection:'column',justifyContent:'space-between'}}><div style={{fontFamily:BRAND.font,fontSize:25,fontWeight:900,color:BRAND.accentDk}}>{kind}</div><div style={{...label,fontSize:27}}>{name}</div></div>;
+const Grid:React.FC<{opacity?:number}>=({opacity=.3})=><div style={{position:'absolute',inset:0,opacity,backgroundImage:'linear-gradient(rgba(110,69,201,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(110,69,201,.04) 1px,transparent 1px)',backgroundSize:'52px 52px',maskImage:'radial-gradient(circle at 50% 48%,black,rgba(0,0,0,.78) 58%,transparent 88%)'}}/>;
 
-export const FolderMemoryVisual:React.FC=()=>{const f=useCurrentFrame();const open=p(f,0,45);const files=p(f,45,125);const memory=p(f,145,285);return <div style={stage}><div style={{position:'absolute',top:95,left:120,right:120,height:500,...card,borderRadius:48,background:'linear-gradient(145deg,#fff,#F3EEFC)',transform:`scale(${.94+.06*open})`,opacity:.45+.55*open}}><div style={{position:'absolute',top:-42,left:58,width:270,height:86,borderRadius:'30px 30px 10px 10px',background:'#E8DDFB',border:'2px solid rgba(110,69,201,.24)'}}/><div style={{position:'absolute',left:52,right:52,top:90,display:'flex',justifyContent:'space-between',transform:`translateY(${(1-files)*35}px)`,opacity:files}}><FileCard kind="CODE" name="app.tsx"/><FileCard kind="DOC" name="README"/><FileCard kind="CFG" name="config"/></div><div style={{position:'absolute',left:70,right:70,bottom:48,textAlign:'center',...label,fontSize:42,color:BRAND.accentDk}}>PROJEKT-REPOSITORY</div></div><div style={{position:'absolute',top:690,left:120,right:120,height:12,borderRadius:20,background:'rgba(110,69,201,.10)'}}><div style={{height:'100%',width:`${memory*100}%`,borderRadius:20,background:BRAND.accentDk}}/></div><div style={{position:'absolute',top:648,left:120,right:120,display:'flex',justifyContent:'space-between',opacity:memory}}>{[0,1,2,3].map(i=><div key={i} style={{width:30,height:30,borderRadius:'50%',background:i===3?BRAND.accentDk:'#D8C6F5',border:'6px solid #fff',boxShadow:'0 4px 14px rgba(110,69,201,.22)'}}/>)}</div><div style={{position:'absolute',top:770,left:210,right:210,...card,padding:'26px 30px',textAlign:'center',...label,fontSize:38,color:BRAND.accentDk,opacity:memory}}>Ordner + Versionsgedächtnis</div></div>};
+export const FolderMemoryVisual:React.FC=()=>{
+  const frame=useCurrentFrame();
+  const enter=progress(frame,0,55);
+  const open=progress(frame,45,165);
+  const files=progress(frame,135,250);
+  const history=progress(frame,235,385);
+  const lidRotate=interpolate(open,[0,1],[0,-56]);
+  const fileData=[
+    {name:'app.tsx',kind:'CODE',x:270,delay:0},
+    {name:'hero.png',kind:'BILD',x:455,delay:.18},
+    {name:'README',kind:'DOC',x:640,delay:.36},
+  ];
+  return <div style={{...stage,perspective:1050}}>
+    <Grid opacity={.22}/>
+    <div style={{position:'absolute',left:145,top:160,width:710,height:560,transformStyle:'preserve-3d',transform:`translateY(${(1-enter)*42}px) rotateX(${interpolate(enter,[0,1],[12,3])}deg) rotateZ(-1deg)`}}>
+      <div style={{position:'absolute',left:62,right:62,bottom:34,height:355,borderRadius:'34px 34px 58px 58px',background:'linear-gradient(160deg,#F7F2FF,#E8DDFB)',border:'3px solid rgba(110,69,201,.24)',boxShadow:'0 42px 85px rgba(26,26,46,.13)',transform:'translateZ(-22px)'}}/>
+      <div style={{position:'absolute',left:88,top:12,width:245,height:96,borderRadius:'28px 28px 10px 10px',background:'#E7DAFA',border:'3px solid rgba(110,69,201,.22)',transformOrigin:'bottom left',transform:`rotateX(${lidRotate}deg) translateZ(28px)`}}/>
+      <div style={{position:'absolute',left:62,right:62,top:94,height:285,borderRadius:'42px 42px 24px 24px',background:'linear-gradient(180deg,#FFFFFF,#F3EDFD)',border:'3px solid rgba(110,69,201,.24)',transformOrigin:'bottom center',transform:`rotateX(${lidRotate*.82}deg) translateZ(46px)`,boxShadow:'0 28px 48px rgba(26,26,46,.10)'}}/>
+      {fileData.map((file,index)=>{
+        const local=progress(files,file.delay,Math.min(1,file.delay+.42));
+        return <div key={file.name} style={{position:'absolute',left:file.x-145,top:235-interpolate(local,[0,1],[0,155+index*18]),width:160,height:190,borderRadius:24,background:index===0?'linear-gradient(180deg,#EEE4FF,#FFFFFF)':'#fff',border:'2px solid rgba(110,69,201,.18)',boxShadow:'0 18px 36px rgba(26,26,46,.09)',opacity:local,transform:`translateZ(${70+index*22}px) rotateZ(${(index-1)*3}deg)`}}>
+          <div style={{height:44,borderRadius:'22px 22px 0 0',background:index===0?'rgba(185,140,255,.32)':'rgba(26,26,46,.06)',fontFamily:BRAND.font,fontSize:20,fontWeight:950,color:index===0?PURPLE:MUTED,display:'flex',alignItems:'center',justifyContent:'center'}}>{file.kind}</div>
+          <div style={{position:'absolute',left:16,right:16,bottom:26,fontFamily:BRAND.font,fontSize:24,fontWeight:900,color:INK,textAlign:'center'}}>{file.name}</div>
+        </div>;
+      })}
+    </div>
+    <svg viewBox="0 0 1000 1120" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}>
+      <path d="M180 858 C350 805 650 805 820 858" fill="none" stroke="rgba(110,69,201,.14)" strokeWidth="24" strokeLinecap="round"/>
+      <path d="M180 858 C350 805 650 805 820 858" fill="none" stroke={PURPLE} strokeWidth="7" strokeLinecap="round" strokeDasharray="780" strokeDashoffset={dash(history,780)}/>
+      {[210,390,580,790].map((x,index)=><circle key={x} cx={x} cy={840+(index%2?0:18)} r={15+index*2} fill={index===3?PURPLE:ACCENT} opacity={progress(history,index*.18,Math.min(1,index*.18+.28))}/>) }
+    </svg>
+    <div style={{position:'absolute',left:160,right:160,bottom:58,textAlign:'center',fontFamily:BRAND.font,fontSize:34,fontWeight:950,color:INK,opacity:history}}>Ordner + <span style={{color:PURPLE}}>Versionsgedächtnis</span></div>
+  </div>;
+};
 
-export const ContentsVisual:React.FC=()=>{const f=useCurrentFrame();const show=p(f,0,80);const delta=p(f,90,160);const meta=p(f,170,260);const items=[['CODE','app.tsx'],['BILD','hero.png'],['DOC','README'],['CFG','.env']];return <div style={stage}><div style={{position:'absolute',top:70,left:65,right:65,height:510,...card,padding:36}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}><div style={{...label,fontSize:38,color:BRAND.accentDk}}>repository/</div><div style={{...label,fontSize:27,color:MUTED}}>4 Dateitypen</div></div><div style={{marginTop:42,display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>{items.map((x,i)=><div key={x[0]} style={{height:130,borderRadius:24,border:`2px solid ${i===0&&delta>.35?'#6E45C9':'rgba(110,69,201,.16)'}`,background:i===0&&delta>.35?'rgba(185,140,255,.16)':'#fff',display:'flex',alignItems:'center',padding:'0 28px',gap:22,opacity:Math.min(1,show*(1.6-i*.15))}}><div style={{width:86,...label,fontSize:27,color:BRAND.accentDk}}>{x[0]}</div><div style={{...label,fontSize:31}}>{x[1]}</div></div>)}</div></div><div style={{position:'absolute',top:650,left:95,right:95,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:18,opacity:meta}}>{[['ÄNDERUNG','app.tsx'],['ZEIT','07:24'],['PERSON','du']].map(x=><div key={x[0]} style={{...card,height:150,padding:22,textAlign:'center'}}><div style={{fontFamily:BRAND.font,fontSize:25,fontWeight:900,color:MUTED}}>{x[0]}</div><div style={{marginTop:24,...label,fontSize:32,color:BRAND.accentDk}}>{x[1]}</div></div>)}</div><div style={{position:'absolute',top:875,left:170,right:170,...card,padding:'24px 28px',textAlign:'center',...label,fontSize:35,opacity:meta}}>Git merkt sich den Kontext</div></div>};
+export const ContentsVisual:React.FC=()=>{
+  const frame=useCurrentFrame();
+  const core=progress(frame,0,70);
+  const orbit=progress(frame,55,190);
+  const metadata=progress(frame,175,300);
+  const angle=interpolate(orbit,[0,1],[-35,18]);
+  const items=[
+    {kind:'CODE',name:'app.tsx',base:-90},
+    {kind:'BILD',name:'hero.png',base:0},
+    {kind:'DOC',name:'README',base:90},
+    {kind:'CFG',name:'.env',base:180},
+  ];
+  return <div style={stage}>
+    <Grid opacity={.3}/>
+    <svg viewBox="0 0 1000 1120" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
+      <ellipse cx="500" cy="460" rx="320" ry="245" fill="none" stroke="rgba(110,69,201,.12)" strokeWidth="3" strokeDasharray="9 12" opacity={orbit}/>
+      <ellipse cx="500" cy="460" rx="230" ry="170" fill="rgba(185,140,255,.05)" stroke="rgba(110,69,201,.10)" strokeWidth="2" opacity={core}/>
+      {items.map((item,index)=>{
+        const radians=(item.base+angle)*Math.PI/180;
+        const x=500+Math.cos(radians)*310;
+        const y=460+Math.sin(radians)*225;
+        const show=progress(orbit,index*.16,Math.min(1,index*.16+.38));
+        return <React.Fragment key={item.kind}>
+          <path d={`M500 460 Q${(500+x)/2} ${(460+y)/2-28} ${x} ${y}`} fill="none" stroke="rgba(110,69,201,.28)" strokeWidth="4" opacity={show}/>
+          <circle cx={x} cy={y} r="72" fill="#fff" stroke={index===0?PURPLE:'rgba(110,69,201,.24)'} strokeWidth="4" opacity={show}/>
+          <text x={x} y={y-8} textAnchor="middle" fill={PURPLE} fontFamily={BRAND.font} fontSize="22" fontWeight="950" opacity={show}>{item.kind}</text>
+          <text x={x} y={y+24} textAnchor="middle" fill={INK} fontFamily={BRAND.font} fontSize="19" fontWeight="850" opacity={show}>{item.name}</text>
+        </React.Fragment>;
+      })}
+      <circle cx="500" cy="460" r="105" fill="#fff" stroke={PURPLE} strokeWidth="5" opacity={core}/>
+      <circle cx="500" cy="460" r={62+Math.sin(frame/10)*4} fill="rgba(185,140,255,.16)" opacity={core}/>
+      <text x="500" y="452" textAnchor="middle" fill={PURPLE} fontFamily={BRAND.font} fontSize="27" fontWeight="950" opacity={core}>REPO</text>
+      <text x="500" y="486" textAnchor="middle" fill={MUTED} fontFamily={BRAND.font} fontSize="20" fontWeight="800" opacity={core}>Arbeitskontext</text>
+    </svg>
+    <div style={{position:'absolute',left:120,right:120,top:780,display:'flex',justifyContent:'space-between',gap:18,opacity:metadata}}>
+      {[['ÄNDERUNG','app.tsx'],['ZEIT','07:24'],['PERSON','du']].map(([key,value],index)=><div key={key} style={{flex:1,textAlign:'center',transform:`translateY(${(1-metadata)*(18+index*8)}px)`}}><div style={{fontFamily:BRAND.font,fontSize:22,fontWeight:900,color:MUTED}}>{key}</div><div style={{marginTop:10,fontFamily:BRAND.font,fontSize:32,fontWeight:950,color:index===0?PURPLE:INK}}>{value}</div><div style={{height:4,marginTop:14,borderRadius:99,background:index===0?PURPLE:'rgba(110,69,201,.18)'}}/></div>)}
+    </div>
+    <div style={{position:'absolute',left:180,right:180,bottom:62,textAlign:'center',fontFamily:BRAND.font,fontSize:33,fontWeight:950,color:INK,opacity:metadata}}>Git speichert <span style={{color:PURPLE}}>Datei + Zeit + Person</span></div>
+  </div>;
+};
 
-export const CommitHistoryVisual:React.FC=()=>{const f=useCurrentFrame();const build=p(f,0,100);const diff=p(f,100,160);const rewind=p(f,160,220);const nodes=['c1','c2','c3','c4'];return <div style={stage}><div style={{position:'absolute',top:175,left:100,right:100,height:210}}><div style={{position:'absolute',left:35,right:35,top:86,height:12,borderRadius:20,background:'rgba(110,69,201,.12)'}}><div style={{height:'100%',width:`${build*100}%`,background:BRAND.accentDk,borderRadius:20}}/></div><div style={{position:'absolute',left:24,right:24,top:53,display:'flex',justifyContent:'space-between'}}>{nodes.map((n,i)=>{const on=build>i/(nodes.length-1);return <div key={n} style={{width:78,height:78,borderRadius:'50%',background:on?BRAND.accentDk:'#E9E2F4',border:'8px solid #fff',boxShadow:'0 8px 25px rgba(26,26,46,.12)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:BRAND.font,fontSize:23,fontWeight:900,color:on?'#fff':MUTED}}>{n}</div>})}</div></div><div style={{position:'absolute',top:470,left:140,right:140,...card,padding:34,opacity:diff}}><div style={{...label,fontSize:30,color:MUTED}}>COMMIT c4 · Unterschied</div><div style={{marginTop:28,fontFamily:'monospace',fontSize:31,lineHeight:1.7}}><div style={{padding:'5px 12px',borderRadius:12,background:'rgba(217,92,106,.08)',color:'#B84959'}}>- button disabled</div><div style={{marginTop:10,padding:'5px 12px',borderRadius:12,background:'rgba(79,157,116,.09)',color:OK}}>+ button enabled</div></div></div><div style={{position:'absolute',top:820,left:205,right:205,...card,height:132,display:'flex',alignItems:'center',justifyContent:'center',gap:20,opacity:rewind,transform:`scale(${.94+.06*rewind})`}}><div style={{fontSize:44,color:BRAND.accentDk}}>↶</div><div style={{...label,fontSize:34}}>Früherer Stand auffindbar</div></div></div>};
+export const CommitHistoryVisual:React.FC=()=>{
+  const frame=useCurrentFrame();
+  const line=progress(frame,0,130);
+  const lens=progress(frame,110,235);
+  const rewind=progress(frame,225,330);
+  const nodes=[150,365,590,820];
+  const lensX=interpolate(lens,[0,1],[345,815]);
+  return <div style={stage}>
+    <Grid opacity={.2}/>
+    <svg viewBox="0 0 1000 1120" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
+      <path d="M150 360 H820" stroke="rgba(110,69,201,.12)" strokeWidth="22" strokeLinecap="round"/>
+      <path d="M150 360 H820" stroke={PURPLE} strokeWidth="7" strokeLinecap="round" strokeDasharray="670" strokeDashoffset={dash(line,670)}/>
+      {nodes.map((x,index)=>{
+        const show=progress(line,index*.2,Math.min(1,index*.2+.3));
+        return <React.Fragment key={x}>
+          <circle cx={x} cy="360" r={index===3?34:28} fill={index===3?PURPLE:'#fff'} stroke={PURPLE} strokeWidth="6" opacity={show}/>
+          <text x={x} y="425" textAnchor="middle" fill={MUTED} fontFamily={BRAND.font} fontSize="21" fontWeight="900" opacity={show}>c{index+1}</text>
+        </React.Fragment>;
+      })}
+      <circle cx={lensX} cy="360" r="86" fill="rgba(255,255,255,.84)" stroke={ACCENT} strokeWidth="6" opacity={lens}/>
+      <line x1={lensX+62} y1="420" x2={lensX+125} y2="485" stroke={ACCENT} strokeWidth="13" strokeLinecap="round" opacity={lens}/>
+      <path d="M815 360 C760 575 585 700 355 760" fill="none" stroke={OK} strokeWidth="7" strokeDasharray="520" strokeDashoffset={dash(rewind,520)} strokeLinecap="round"/>
+      <path d="M355 760 l36 -26 m-36 26 l38 14" stroke={OK} strokeWidth="7" strokeLinecap="round" opacity={rewind}/>
+    </svg>
+    <div style={{position:'absolute',left:192,right:192,top:535,fontFamily:'monospace',fontSize:30,lineHeight:1.55,opacity:lens}}>
+      <div style={{padding:'8px 16px',borderRadius:12,background:'rgba(217,92,106,.08)',color:BAD}}>- button disabled</div>
+      <div style={{marginTop:10,padding:'8px 16px',borderRadius:12,background:'rgba(79,157,116,.09)',color:OK}}>+ button enabled</div>
+    </div>
+    <div style={{position:'absolute',left:170,right:170,bottom:72,textAlign:'center',fontFamily:BRAND.font,fontSize:33,fontWeight:950,color:INK,opacity:rewind}}>Jeder Commit macht einen früheren Zustand <span style={{color:OK}}>auffindbar</span></div>
+  </div>;
+};
 
-export const BranchPullRequestVisual:React.FC=()=>{const f=useCurrentFrame();const split=p(f,10,60);const work=p(f,60,100);const review=p(f,100,140);const merge=p(f,140,175);return <div style={stage}><svg style={{position:'absolute',top:85,left:35}} width="940" height="530" viewBox="0 0 940 530"><path d="M90 90 H850" stroke="rgba(110,69,201,.22)" strokeWidth="16" strokeLinecap="round"/><path d="M90 90 H850" stroke="#6E45C9" strokeWidth="12" strokeLinecap="round"/><path d="M300 90 C360 90 360 280 440 280 H690 C760 280 760 90 825 90" fill="none" stroke="rgba(110,69,201,.16)" strokeWidth="18" strokeLinecap="round"/><path d="M300 90 C360 90 360 280 440 280 H690 C760 280 760 90 825 90" fill="none" stroke="#B98CFF" strokeWidth="12" strokeLinecap="round" strokeDasharray="650" strokeDashoffset={650*(1-split)}/><circle cx="300" cy="90" r="23" fill="#6E45C9"/><circle cx="825" cy="90" r="26" fill={merge>.55?OK:'#D8C6F5'}/><circle cx={440+250*work} cy="280" r="24" fill="#B98CFF" opacity={split}/></svg><div style={{position:'absolute',top:72,left:150,...label,fontSize:30,color:BRAND.accentDk}}>MAIN · stabil</div><div style={{position:'absolute',top:340,left:330,...card,width:420,height:125,padding:'22px 28px',opacity:split}}><div style={{...label,fontSize:28,color:MUTED}}>FEATURE-BRANCH</div><div style={{marginTop:12,...label,fontSize:33}}>Neue Funktion getrennt</div></div><div style={{position:'absolute',top:660,left:205,right:205,...card,height:155,padding:28,textAlign:'center',opacity:review,transform:`scale(${.94+.06*review})`}}><div style={{...label,fontSize:29,color:MUTED}}>PULL REQUEST</div><div style={{marginTop:16,...label,fontSize:38,color:BRAND.accentDk}}>Änderung prüfen</div></div><div style={{position:'absolute',top:880,left:270,right:270,height:105,borderRadius:30,background:'rgba(79,157,116,.12)',border:'2px solid rgba(79,157,116,.45)',display:'flex',alignItems:'center',justifyContent:'center',...label,fontSize:38,color:OK,opacity:merge}}>MERGE ✓</div></div>};
+export const BranchPullRequestVisual:React.FC=()=>{
+  const frame=useCurrentFrame();
+  const split=progress(frame,0,70);
+  const feature=progress(frame,55,150);
+  const review=progress(frame,135,235);
+  const merge=progress(frame,215,310);
+  return <div style={{...stage,perspective:1000}}>
+    <Grid opacity={.2}/>
+    <div style={{position:'absolute',left:110,right:110,top:145,height:650,transformStyle:'preserve-3d',transform:`rotateX(${interpolate(split,[0,1],[14,5])}deg)`}}>
+      <div style={{position:'absolute',left:40,right:40,top:105,height:92,borderRadius:46,background:'linear-gradient(90deg,#EFE8FA,#FFFFFF)',border:'3px solid rgba(110,69,201,.22)',transform:'translateZ(0px)'}}/>
+      <div style={{position:'absolute',left:95,right:95,top:315,height:92,borderRadius:46,background:'linear-gradient(90deg,#FAF6FF,#EEE3FF)',border:'3px solid rgba(185,140,255,.32)',opacity:split,transform:`translateZ(${35*split}px) translateY(${(1-split)*-110}px)`}}/>
+      <div style={{position:'absolute',left:78,top:127,fontFamily:BRAND.font,fontSize:28,fontWeight:950,color:PURPLE}}>MAIN · STABIL</div>
+      <div style={{position:'absolute',left:132,top:337,fontFamily:BRAND.font,fontSize:28,fontWeight:950,color:ACCENT,opacity:split}}>FEATURE · GETRENNT</div>
+      <div style={{position:'absolute',left:160+feature*350,top:326,width:70,height:70,borderRadius:'50%',background:ACCENT,boxShadow:'0 14px 32px rgba(110,69,201,.18)',opacity:split}}/>
+      <div style={{position:'absolute',left:570,top:270,width:190,height:190,borderRadius:'50%',border:'4px dashed rgba(110,69,201,.28)',display:'flex',alignItems:'center',justifyContent:'center',opacity:review,transform:`translateZ(${80*review}px) scale(${.88+.12*review})`}}>
+        <div style={{width:126,height:126,borderRadius:'50%',background:'#fff',border:'4px solid rgba(110,69,201,.22)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:BRAND.font,fontSize:24,fontWeight:950,color:PURPLE,textAlign:'center'}}>PULL<br/>REQUEST</div>
+      </div>
+      <div style={{position:'absolute',left:620,top:82,width:118,height:118,borderRadius:'50%',background:merge>.7?'rgba(79,157,116,.14)':'rgba(185,140,255,.12)',border:`4px solid ${merge>.7?OK:'rgba(110,69,201,.22)'}`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:BRAND.font,fontSize:24,fontWeight:950,color:merge>.7?OK:MUTED,opacity:review}}>MERGE</div>
+      <svg viewBox="0 0 800 650" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
+        <path d="M190 365 C320 365 420 355 565 365 C650 365 650 195 690 160" fill="none" stroke={OK} strokeWidth="8" strokeLinecap="round" strokeDasharray="760" strokeDashoffset={dash(merge,760)} opacity={review}/>
+      </svg>
+    </div>
+    <div style={{position:'absolute',left:170,right:170,bottom:70,textAlign:'center',fontFamily:BRAND.font,fontSize:32,fontWeight:950,color:INK,opacity:merge}}>Neue Arbeit bleibt getrennt, bis sie <span style={{color:OK}}>geprüft</span> ist</div>
+  </div>;
+};
 
-export const RepositoryWholeVisual:React.FC=()=>{const f=useCurrentFrame();const modules=p(f,0,125);const join=p(f,110,230);const share=p(f,225,330);const finish=p(f,300,365);const parts=[['DATEIEN','{ }'],['VERLAUF','●—●'],['TEAM','◉ ◉']];return <div style={stage}><div style={{position:'absolute',top:80,left:70,right:70,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>{parts.map((x,i)=><div key={x[0]} style={{...card,height:190,padding:24,textAlign:'center',opacity:Math.min(1,modules*(1.5-i*.15)),transform:`translateY(${(1-modules)*(24+i*8)}px)`}}><div style={{fontFamily:BRAND.font,fontWeight:950,fontSize:40,color:BRAND.accentDk}}>{x[1]}</div><div style={{marginTop:28,...label,fontSize:29}}>{x[0]}</div></div>)}</div><div style={{position:'absolute',top:420,left:170,right:170,height:285,...card,borderRadius:46,background:'linear-gradient(145deg,#fff,#F3EEFC)',opacity:join,transform:`scale(${.9+.1*join})`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}><div style={{fontSize:78,color:BRAND.accentDk}}>▰</div><div style={{marginTop:18,...label,fontSize:43,color:BRAND.accentDk}}>REPOSITORY</div><div style={{marginTop:13,...label,fontSize:27,color:MUTED}}>Dateien + Geschichte + Team</div></div><div style={{position:'absolute',top:770,left:150,right:150,height:95,display:'flex',alignItems:'center',gap:24,opacity:share}}><div style={{flex:1,height:10,borderRadius:20,background:'rgba(110,69,201,.12)'}}><div style={{width:`${share*100}%`,height:'100%',borderRadius:20,background:BRAND.accentDk}}/></div><div style={{...label,fontSize:36,color:BRAND.accentDk}}>→</div><div style={{width:90,height:90,borderRadius:'50%',background:'rgba(185,140,255,.20)',border:'3px solid rgba(110,69,201,.30)',display:'flex',alignItems:'center',justifyContent:'center',...label,fontSize:32,color:BRAND.accentDk}}>DU</div></div><div style={{position:'absolute',top:915,left:170,right:170,...card,height:115,display:'flex',alignItems:'center',justifyContent:'center',...label,fontSize:36,color:BRAND.accentDk,opacity:finish}}>Das Projekt + seine Entwicklung</div></div>};
+export const RepositoryWholeVisual:React.FC=()=>{
+  const frame=useCurrentFrame();
+  const build=progress(frame,0,155);
+  const bind=progress(frame,130,285);
+  const share=progress(frame,270,420);
+  const finish=progress(frame,390,505);
+  const layers=[
+    {label:'DATEIEN',z:0,y:520,rotate:-5},
+    {label:'VERLAUF',z:46,y:430,rotate:3},
+    {label:'TEAM',z:92,y:340,rotate:-2},
+  ];
+  return <div style={{...stage,perspective:1150}}>
+    <Grid opacity={.24}/>
+    <div style={{position:'absolute',left:185,right:185,top:110,height:730,transformStyle:'preserve-3d',transform:`rotateX(${interpolate(build,[0,1],[18,7])}deg) rotateY(${interpolate(build,[0,1],[-12,5])}deg)`}}>
+      {layers.map((layer,index)=>{
+        const local=progress(build,index*.18,Math.min(1,index*.18+.44));
+        return <div key={layer.label} style={{position:'absolute',left:58,right:58,top:layer.y-interpolate(bind,[0,1],[0,index*105]),height:150,borderRadius:38,background:index===2?'linear-gradient(135deg,#EFE4FF,#FFFFFF)':'rgba(255,255,255,.88)',border:`3px solid ${index===1?'rgba(110,69,201,.34)':'rgba(110,69,201,.20)'}`,boxShadow:'0 28px 55px rgba(26,26,46,.10)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:BRAND.font,fontSize:38,fontWeight:950,color:index===1?PURPLE:INK,opacity:local,transform:`translateZ(${layer.z*bind}px) rotateZ(${layer.rotate*(1-bind)}deg) translateY(${(1-local)*36}px)`}}>{layer.label}</div>;
+      })}
+      <div style={{position:'absolute',left:155,right:155,top:540-interpolate(bind,[0,1],[0,315]),height:260,borderRadius:62,border:'5px solid rgba(110,69,201,.28)',background:'rgba(185,140,255,.08)',opacity:bind,transform:`translateZ(${150*bind}px) scale(${.82+.18*bind})`}}/>
+      <div style={{position:'absolute',left:255,right:255,top:620-interpolate(bind,[0,1],[0,385]),height:92,borderRadius:46,background:PURPLE,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:BRAND.font,fontSize:32,fontWeight:950,color:'#fff',opacity:bind,transform:`translateZ(${190*bind}px)`}}>REPOSITORY</div>
+    </div>
+    <svg viewBox="0 0 1000 1120" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}>
+      <path d="M500 720 C500 855 700 865 815 900" fill="none" stroke="rgba(110,69,201,.14)" strokeWidth="22" strokeLinecap="round"/>
+      <path d="M500 720 C500 855 700 865 815 900" fill="none" stroke={PURPLE} strokeWidth="7" strokeLinecap="round" strokeDasharray="500" strokeDashoffset={dash(share,500)}/>
+      <circle cx="830" cy="905" r="54" fill="#fff" stroke={PURPLE} strokeWidth="5" opacity={share}/>
+      <text x="830" y="914" textAnchor="middle" fill={PURPLE} fontFamily={BRAND.font} fontSize="26" fontWeight="950" opacity={share}>DU</text>
+    </svg>
+    <div style={{position:'absolute',left:145,right:145,bottom:54,textAlign:'center',fontFamily:BRAND.font,fontSize:34,fontWeight:950,color:INK,opacity:finish}}>Dateien + Geschichte + Team = <span style={{color:PURPLE}}>Projektentwicklung</span></div>
+  </div>;
+};
