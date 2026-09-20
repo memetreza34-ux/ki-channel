@@ -71,7 +71,10 @@ const winnerCueIndex = (
     if (normalize(label).length < 2) continue;
     const escapedLabel = normalizedLabelPattern(label);
     const peers = labels.filter((_, labelIndex) => labelIndex !== index);
-    const gap = winnerGap(peers, 18);
+    // Natural German score phrases such as “Tool A erreicht 96 Punkte und gewinnt”
+    // are longer than the old 18-character gap. Other candidate labels,
+    // punctuation and explicit negation still terminate the association.
+    const gap = winnerGap(peers, 36);
     const labelBeforeCue = new RegExp(
       `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}\\b${cue}\\b${notNegatedAfterCue}`,
     );
