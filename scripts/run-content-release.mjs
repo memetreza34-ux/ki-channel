@@ -1,13 +1,12 @@
 import {execFileSync, spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {CONTENT_REVIEW_COUNTS} from './content-review-contract.mjs';
 
 const requestedMode = process.argv[2] ?? 'verify';
 const VALID_MODES = new Set(['verify', 'smoke', 'full']);
 if (!VALID_MODES.has(requestedMode)) {
-  console.error(
-    'Aufruf: node scripts/run-content-release.mjs [verify|smoke|full]',
-  );
+  console.error('Aufruf: node scripts/run-content-release.mjs [verify|smoke|full]');
   process.exit(1);
 }
 
@@ -21,14 +20,12 @@ const readGitValue = (args) => {
     return null;
   }
 };
-
 const readTrackedWorktreeStatus = () =>
   readGitValue(['status', '--porcelain', '--untracked-files=no']);
 
 const currentGitHead = readGitValue(['rev-parse', 'HEAD']);
 const initialTrackedWorktreeStatus = readTrackedWorktreeStatus();
 const initialTrackedWorktreeClean = initialTrackedWorktreeStatus === '';
-
 const outputRoot = resolve('out/content-release-run');
 await mkdir(outputRoot, {recursive: true});
 const summaryPath = resolve(outputRoot, `${requestedMode}-summary.json`);
@@ -58,37 +55,37 @@ const smokeSteps = [
   {
     command: process.execPath,
     args: ['scripts/render-masterplan-content-release.mjs', 'smoke'],
-    label: '22 Production-Smoke-Renders',
+    label: `${CONTENT_REVIEW_COUNTS.production} Production-Smoke-Renders`,
   },
   {
     command: process.execPath,
     args: ['scripts/verify-masterplan-content-release.mjs'],
-    label: '22 Production-Smoke-Artefakte und Runtime-Props prüfen',
+    label: `${CONTENT_REVIEW_COUNTS.production} Production-Smoke-Artefakte und Runtime-Props prüfen`,
   },
   {
     command: process.execPath,
     args: ['scripts/render-content-motion-edge-cases.mjs', 'smoke'],
-    label: '6 semantische Edge-Case-Smoke-Renders',
+    label: `${CONTENT_REVIEW_COUNTS.edge} semantische Edge-Case-Smoke-Renders`,
   },
   {
     command: process.execPath,
     args: ['scripts/verify-content-motion-edge-case-renders.mjs', 'smoke'],
-    label: '6 Edge-Case-Smoke-Artefakte prüfen',
+    label: `${CONTENT_REVIEW_COUNTS.edge} Edge-Case-Smoke-Artefakte prüfen`,
   },
   {
     command: npmCommand,
     args: ['run', 'creative-recipes:smoke'],
-    label: '8 Creative-Recipe-Smoke-Renders',
+    label: `${CONTENT_REVIEW_COUNTS.recipe} Creative-Recipe-Smoke-Renders`,
   },
   {
     command: npmCommand,
     args: ['run', 'creative-recipes:check'],
-    label: 'Creative-Recipe-Smoke-Artefakte technisch prüfen',
+    label: 'Creative-Recipe-Smoke-Artefakte technisch und gegen Source-Fingerprint prüfen',
   },
   {
     command: process.execPath,
     args: ['scripts/build-content-review-gallery.mjs'],
-    label: '22+6 Smoke-Review-Galerie erzeugen',
+    label: `${CONTENT_REVIEW_COUNTS.total}-Karten Smoke-Review-Galerie erzeugen`,
   },
   {
     command: process.execPath,
@@ -99,24 +96,14 @@ const smokeSteps = [
 
 const fullSteps = [
   {
-    command: npmCommand,
-    args: ['run', 'creative-recipes:render'],
-    label: '8 Creative Recipes vollständig rendern',
-  },
-  {
-    command: npmCommand,
-    args: ['run', 'creative-recipes:check'],
-    label: 'Creative-Recipe-Stills und Videos technisch prüfen',
-  },
-  {
     command: process.execPath,
     args: ['scripts/render-all-content-release.mjs'],
-    label: 'Kanonischen vollständigen Content-Release rendern',
+    label: 'Kanonischen vollständigen Content-Release inklusive Creative Recipes rendern',
   },
   {
     command: process.execPath,
     args: ['scripts/verify-all-content-release.mjs'],
-    label: 'Kanonischen vollständigen Content-Release verifizieren',
+    label: 'Kanonischen vollständigen Content-Release inklusive Recipe-Artefakten verifizieren',
   },
 ];
 
@@ -130,23 +117,19 @@ const writeSummary = async ({status, error = null}) => {
   const trackedWorktreeStatus = readTrackedWorktreeStatus();
   await writeFile(
     summaryPath,
-    `${JSON.stringify(
-      {
-        version: 2,
-        mode: requestedMode,
-        status,
-        gitHead: currentGitHead,
-        trackedWorktreeClean: trackedWorktreeStatus === '',
-        creativeRecipeGateEnabled: true,
-        expectedStepCount: requestedSteps.length,
-        startedAt,
-        completedAt: status === 'running' ? null : new Date().toISOString(),
-        error,
-        steps,
-      },
-      null,
-      2,
-    )}\n`,
+    `${JSON.stringify({
+      version: 2,
+      mode: requestedMode,
+      status,
+      gitHead: currentGitHead,
+      trackedWorktreeClean: trackedWorktreeStatus === '',
+      creativeRecipeGateEnabled: true,
+      expectedStepCount: requestedSteps.length,
+      startedAt,
+      completedAt: status === 'running' ? null : new Date().toISOString(),
+      error,
+      steps,
+    }, null, 2)}\n`,
     'utf8',
   );
 };
@@ -163,13 +146,11 @@ const run = (command, args, label) =>
     steps.push(step);
     console.log(`\n[content-release:${requestedMode}] ${label}`);
     console.log(`[content-release:${requestedMode}] > ${step.command}`);
-
     const child = spawn(command, args, {
       stdio: 'inherit',
       shell: process.platform === 'win32',
       env: process.env,
     });
-
     child.on('error', (error) => {
       step.status = 'failed';
       step.completedAt = new Date().toISOString();
@@ -187,61 +168,35 @@ const run = (command, args, label) =>
     });
   });
 
-// Invalidate any older successful report before validating the repository state
-// or starting the first child process.
 await writeSummary({status: 'running'});
-
 try {
   if (!currentGitHead) {
-    throw new Error(
-      'Content-Release benötigt ein Git-Repository mit auflösbarem HEAD.',
-    );
+    throw new Error('Content-Release benötigt ein Git-Repository mit auflösbarem HEAD.');
   }
   if (!initialTrackedWorktreeClean) {
-    throw new Error(
-      `Content-Release benötigt einen sauberen tracked Worktree. Nicht committe Änderungen:\n${initialTrackedWorktreeStatus}`,
-    );
+    throw new Error(`Content-Release benötigt einen sauberen tracked Worktree. Nicht committe Änderungen:\n${initialTrackedWorktreeStatus}`);
   }
-
   for (const step of requestedSteps) {
     await run(step.command, step.args, step.label);
     await writeSummary({status: 'running'});
   }
-  if (
-    steps.length !== requestedSteps.length ||
-    steps.some((step) => step.status !== 'passed')
-  ) {
-    throw new Error(
-      `Release-Schrittkonsistenz verletzt: ${steps.filter((step) => step.status === 'passed').length}/${requestedSteps.length} Schritte sind passed.`,
-    );
+  if (steps.length !== requestedSteps.length || steps.some((step) => step.status !== 'passed')) {
+    throw new Error(`Release-Schrittkonsistenz verletzt: ${steps.filter((step) => step.status === 'passed').length}/${requestedSteps.length} Schritte sind passed.`);
   }
-
   const finalTrackedWorktreeStatus = readTrackedWorktreeStatus();
   if (finalTrackedWorktreeStatus !== '') {
-    throw new Error(
-      `Content-Release hat den tracked Worktree während des Laufs verändert oder dirty hinterlassen:\n${finalTrackedWorktreeStatus ?? 'Git-Status nicht lesbar'}`,
-    );
+    throw new Error(`Content-Release hat den tracked Worktree während des Laufs verändert oder dirty hinterlassen:\n${finalTrackedWorktreeStatus ?? 'Git-Status nicht lesbar'}`);
   }
 
   await writeSummary({status: 'passed'});
-  console.log(
-    `\n[content-release:${requestedMode}] Alle ${requestedSteps.length} Schritte bestanden.`,
-  );
-  console.log(
-    `[content-release:${requestedMode}] Report: ${summaryPath}`,
-  );
+  console.log(`\n[content-release:${requestedMode}] Alle ${requestedSteps.length} Schritte bestanden.`);
+  console.log(`[content-release:${requestedMode}] Report: ${summaryPath}`);
   if (requestedMode === 'smoke') {
-    console.log(
-      '[content-release:smoke] Creative-Recipe-Smoke-Frames wurden technisch geprüft; ihre visuelle Qualität bleibt ein manueller Review-Punkt.',
-    );
+    console.log(`[content-release:smoke] ${CONTENT_REVIEW_COUNTS.total}-Karten Smoke-Galerie inklusive Creative Recipes technisch geprüft; visuelle Qualität bleibt manueller Review-Punkt.`);
   }
   if (requestedMode === 'full') {
-    console.log(
-      '[content-release:full] Technischer Release bestanden. Manuelle visuelle Freigabe der Content-Review-Galerie und Creative-Recipe-Renders bleibt weiterhin Pflicht.',
-    );
-    console.log(
-      '[content-release:full] Review: out/content-review-gallery/index.html und out/creative-recipes/',
-    );
+    console.log(`[content-release:full] Technischer Release bestanden. Manuelle visuelle Freigabe aller ${CONTENT_REVIEW_COUNTS.total} Karten inklusive ${CONTENT_REVIEW_COUNTS.recipe} Creative Recipes bleibt Pflicht.`);
+    console.log('[content-release:full] Review: out/content-review-gallery/index.html');
   }
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
