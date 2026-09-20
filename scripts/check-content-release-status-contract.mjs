@@ -10,13 +10,18 @@ const requireContains = (fragment) => {
 for (const required of [
   'getMasterplanContentSourceFingerprint',
   'getEdgeCaseSourceFingerprint',
+  'getCreativeRecipeSourceFingerprint',
+  'CONTENT_REVIEW_COUNTS',
   "['status', '--porcelain', '--untracked-files=no']",
   'verify-summary.json',
   'smoke-summary.json',
   'full-summary.json',
+  'render-plan.json',
   'review-manifest.json',
   'visual-review.json',
   'finalization.json',
+  'creativeRecipes: recipeState',
+  'creativeRecipeReviewVerified',
   "code: 'commit-tracked-changes'",
   "code: 'run-full-release'",
   "code: 'rebuild-full-artifacts'",
@@ -25,7 +30,7 @@ for (const required of [
   "code: 'release-complete'",
   'node scripts/run-content-release.mjs full',
   'node scripts/finalize-content-release.mjs',
-  '28/28 Karten',
+  'Creative Recipes',
   '--json',
 ]) {
   requireContains(required);
@@ -45,9 +50,7 @@ if (
   finalizeIndex <= visualIndex ||
   completeIndex <= finalizeIndex
 ) {
-  failures.push(
-    'Next-Action-Reihenfolge muss dirty -> full -> artifacts -> visual review -> finalize -> complete bleiben',
-  );
+  failures.push('Next-Action-Reihenfolge muss dirty -> full -> artifacts -> visual review -> finalize -> complete bleiben');
 }
 
 if (failures.length > 0) {
@@ -56,6 +59,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(
-  'Content-Release-Status-Gate bestanden: Statusbericht prüft Git/Full-Freshness, Production-/Edge-Fingerprints, 28er Review und Finalisierung in fester Reihenfolge.',
-);
+console.log('Content-Release-Status-Gate bestanden: Statusbericht prüft Git/Full-Freshness, Production-/Edge-/Recipe-Fingerprints, 36er Review und Finalisierung in fester Reihenfolge.');
