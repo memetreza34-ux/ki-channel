@@ -69,6 +69,8 @@ const tests = [
   'ki/src/reels/ambiguous-prompts/__tests__/visualProfiles.test.ts',
   'ki/src/reels/ai-app-prototype/visualProfiles.test.ts',
   'ki/src/reels/ai-product-ad/visualProfiles.test.ts',
+  'ki/src/reels/ai-sketch-website/visualProfiles.test.ts',
+  'ki/src/reels/github-repository-basics/visualProfiles.test.ts',
 ];
 
 const outputDir = resolve('out/content-matched/runtime-verification');
@@ -181,8 +183,13 @@ try {
   );
   await run(
     'npx',
+    ['--no-install', 'tsc', '-p', 'ki/tsconfig.motion.json'],
+    'TypeScript-Prüfung der Production-Reels inklusive authored Diversity-Migrationen',
+  );
+  await run(
+    'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, V2-Reel- und Production-Regressionstests',
+    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, Legacy-Reel- und Production-Regressionstests',
   );
   await run(
     'node',
