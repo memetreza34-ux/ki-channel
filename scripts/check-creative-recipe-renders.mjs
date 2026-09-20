@@ -1,4 +1,4 @@
-import {readFile, stat, writeFile} from 'node:fs/promises';
+import {open, readFile, stat, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
 const OUTPUT_DIR = process.env.CREATIVE_RECIPE_OUTPUT_DIR ?? 'out/creative-recipes';
@@ -32,9 +32,20 @@ const inspectPng = async (path) => {
   };
 };
 
+const readHeader = async (path, length) => {
+  const handle = await open(path, 'r');
+  try {
+    const buffer = Buffer.alloc(length);
+    const {bytesRead} = await handle.read(buffer, 0, length, 0);
+    return buffer.subarray(0, bytesRead);
+  } finally {
+    await handle.close();
+  }
+};
+
 const inspectMp4 = async (path) => {
   const info = await stat(path);
-  const header = (await readFile(path)).subarray(0, 32);
+  const header = await readHeader(path, 32);
   const signatureValid =
     header.length >= 8 && header.subarray(4, 8).toString('ascii') === 'ftyp';
   return {
