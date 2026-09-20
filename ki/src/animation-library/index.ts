@@ -4,6 +4,7 @@ export * from './advancedRecipes';
 export * from './catalog';
 export * from './catalogExpansion';
 export * from './extendedCatalog';
+export * from './productionCatalog';
 export * from './channelContentModes';
 export * from './channelContentModeResolver';
 export * from './microMotionCatalog';
