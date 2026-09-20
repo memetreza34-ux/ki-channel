@@ -4,6 +4,7 @@ import {resolve} from 'node:path';
 import {
   CREATIVE_RECIPE_IDS,
   CREATIVE_RECIPE_RENDER_CONTRACT,
+  getCreativeRecipeSourceFingerprint,
 } from './creative-recipe-release-contract.mjs';
 
 const MODE = process.argv[2] ?? 'plan';
@@ -60,6 +61,8 @@ const plan = selected.map((recipeId) => ({
   durationInFrames: CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames,
   checkpoints: [...checkpoints],
 }));
+const sourceFingerprint = await getCreativeRecipeSourceFingerprint();
+const generatedAt = new Date().toISOString();
 
 await mkdir(OUTPUT_DIR, {recursive: true});
 await writeFile(
@@ -69,6 +72,8 @@ await writeFile(
       version: 2,
       mode: MODE,
       contractVersion: CREATIVE_RECIPE_RENDER_CONTRACT.version,
+      sourceFingerprint,
+      generatedAt,
       recipes: plan,
     },
     null,
@@ -78,7 +83,7 @@ await writeFile(
 );
 
 if (MODE === 'plan') {
-  console.log(JSON.stringify(plan, null, 2));
+  console.log(JSON.stringify({sourceFingerprint, recipes: plan}, null, 2));
   process.exit(0);
 }
 
