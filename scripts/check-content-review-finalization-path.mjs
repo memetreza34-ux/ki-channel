@@ -111,10 +111,11 @@ for (const required of [
   requireContains(reviewContract, required, 'content-review-contract');
 }
 for (const required of [
+  "import {createHash} from 'node:crypto'",
   'CREATIVE_RECIPE_SOURCE_PATHS',
   'getCreativeRecipeSourceFingerprint',
   'CREATIVE_RECIPE_REVIEW_EXPECTATIONS',
-  'sourceFingerprint',
+  "hash.digest('hex')",
 ]) {
   requireContains(recipeContract, required, 'creative-recipe-release-contract');
 }
