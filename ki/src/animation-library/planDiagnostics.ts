@@ -38,8 +38,12 @@ export const diagnoseRawReelAnimationPlan = (
 ): ReelPlanDiagnostics => {
   const diagnostics: ReelPlanDiagnostic[] = [];
   const decisions = plan.decisionSummary;
+  // Diagnostics also accepts historical/raw planner fixtures that predate the
+  // compiled production plan. Compiled scenes enrich fingerprint checks, but
+  // their absence must not make the basic duplicate/family diagnostics crash.
+  const productionScenes = plan.productionPlan?.scenes ?? [];
   const productionByScene = new Map(
-    plan.productionPlan.scenes.map((scene) => [scene.sceneId, scene]),
+    productionScenes.map((scene) => [scene.sceneId, scene]),
   );
   const animationIds = decisions.map((decision) => decision.selectedAnimationId);
   const familyNames = decisions.map((decision) => decision.primaryFamily);
