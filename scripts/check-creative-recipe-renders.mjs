@@ -1,20 +1,39 @@
 import {open, readFile, stat, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {
+  CREATIVE_RECIPE_IDS,
+  CREATIVE_RECIPE_RENDER_CONTRACT,
+} from './creative-recipe-release-contract.mjs';
 
-const OUTPUT_DIR = process.env.CREATIVE_RECIPE_OUTPUT_DIR ?? 'out/creative-recipes';
+const OUTPUT_DIR =
+  process.env.CREATIVE_RECIPE_OUTPUT_DIR ??
+  CREATIVE_RECIPE_RENDER_CONTRACT.outputDir;
 const planPath = resolve(OUTPUT_DIR, 'render-plan.json');
 const reportPath = resolve(OUTPUT_DIR, 'technical-check.json');
 const PNG_SIGNATURE = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
 
 const plan = JSON.parse(await readFile(planPath, 'utf8'));
-if (plan.version !== 1 || !Array.isArray(plan.recipes) || plan.recipes.length === 0) {
-  throw new Error('Creative-Recipe render-plan.json ist ungültig.');
+if (
+  plan.version !== 2 ||
+  plan.contractVersion !== CREATIVE_RECIPE_RENDER_CONTRACT.version ||
+  !Array.isArray(plan.recipes) ||
+  plan.recipes.length === 0
+) {
+  throw new Error('Creative-Recipe render-plan.json ist ungültig oder stammt aus einem alten Contract.');
+}
+
+const unknownRecipeIds = plan.recipes
+  .map((recipe) => recipe.recipeId)
+  .filter((recipeId) => !CREATIVE_RECIPE_IDS.includes(recipeId));
+if (unknownRecipeIds.length > 0) {
+  throw new Error(`Render-Plan enthält unbekannte Creative Recipes: ${unknownRecipeIds.join(', ')}`);
 }
 
 const inspectPng = async (path) => {
   const file = await readFile(path);
   const signatureValid =
-    file.length >= 24 && file.subarray(0, 8).equals(PNG_SIGNATURE) &&
+    file.length >= 24 &&
+    file.subarray(0, 8).equals(PNG_SIGNATURE) &&
     file.subarray(12, 16).toString('ascii') === 'IHDR';
   const width = signatureValid ? file.readUInt32BE(16) : null;
   const height = signatureValid ? file.readUInt32BE(20) : null;
@@ -26,8 +45,8 @@ const inspectPng = async (path) => {
     height,
     valid:
       signatureValid &&
-      width === 1080 &&
-      height === 1100 &&
+      width === CREATIVE_RECIPE_RENDER_CONTRACT.width &&
+      height === CREATIVE_RECIPE_RENDER_CONTRACT.height &&
       file.length >= 1024,
   };
 };
@@ -63,6 +82,14 @@ const expectsStills = new Set(['smoke', 'stills', 'all']).has(plan.mode);
 const expectsVideos = new Set(['videos', 'all']).has(plan.mode);
 
 for (const recipe of plan.recipes) {
+  if (
+    recipe.width !== CREATIVE_RECIPE_RENDER_CONTRACT.width ||
+    recipe.height !== CREATIVE_RECIPE_RENDER_CONTRACT.height ||
+    recipe.fps !== CREATIVE_RECIPE_RENDER_CONTRACT.fps ||
+    recipe.durationInFrames !== CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames
+  ) {
+    throw new Error(`Render-Plan weicht vom Creative-Recipe-Contract ab: ${recipe.recipeId}`);
+  }
   if (expectsStills) {
     for (const frame of recipe.checkpoints) {
       artifacts.push(
@@ -73,13 +100,18 @@ for (const recipe of plan.recipes) {
     }
   }
   if (expectsVideos) {
-    artifacts.push(await inspectMp4(resolve(recipe.outputDir, 'recipe.mp4')));
+    artifacts.push(
+      await inspectMp4(
+        resolve(recipe.outputDir, CREATIVE_RECIPE_RENDER_CONTRACT.videoFileName),
+      ),
+    );
   }
 }
 
 const invalid = artifacts.filter((artifact) => !artifact.valid);
 const report = {
-  version: 1,
+  version: 2,
+  contractVersion: CREATIVE_RECIPE_RENDER_CONTRACT.version,
   mode: plan.mode,
   recipeCount: plan.recipes.length,
   artifactCount: artifacts.length,
