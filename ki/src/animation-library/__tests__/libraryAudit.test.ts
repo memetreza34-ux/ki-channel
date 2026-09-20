@@ -36,16 +36,16 @@ describe('animation library audit', () => {
     );
   });
 
-  it('can report families that still lack executable prototypes', () => {
+  it('confirms every visual family now has a prototype', () => {
     const audit = auditAnimationLibrary({
       entries: ANIMATION_LIBRARY_ENTRIES,
       expectedVariantsPerFamily: 4,
       requirePrototypePerFamily: true,
     });
 
-    expect(audit.prototypeFamilyCount).toBeGreaterThanOrEqual(12);
+    expect(audit.prototypeFamilyCount).toBe(22);
     expect(
       audit.issues.some((issue) => issue.code === 'missing-prototype-family'),
-    ).toBe(true);
+    ).toBe(false);
   });
 });
