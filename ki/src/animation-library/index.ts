@@ -10,6 +10,8 @@ export * from './channelContentModeResolver';
 export * from './microMotionCatalog';
 export * from './microMotionRuntime';
 export * from './creativeMotionPrimitives';
+export * from './creativeRecipeCatalog';
+export * from './creativeRecipeRuntime';
 export * from './semanticBeatPlanner';
 export * from './importantWordCoverage';
 export * from './universalMotionPlan';
