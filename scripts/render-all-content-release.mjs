@@ -1,4 +1,5 @@
 import {spawn} from 'node:child_process';
+import {CONTENT_REVIEW_COUNTS} from './content-review-contract.mjs';
 
 const run = (args, label) =>
   new Promise((resolvePromise, reject) => {
@@ -22,24 +23,24 @@ try {
   );
   await run(
     ['scripts/render-masterplan-content-release.mjs', 'all'],
-    '22/22 exakte Masterplan-Content-Kompositionen rendern',
+    `${CONTENT_REVIEW_COUNTS.production}/${CONTENT_REVIEW_COUNTS.production} exakte Masterplan-Content-Kompositionen rendern`,
   );
   await run(
     ['scripts/render-content-motion-edge-cases.mjs', 'all'],
-    'Sechs semantische Edge-Case-Kompositionen rendern',
+    `${CONTENT_REVIEW_COUNTS.edge} semantische Edge-Case-Kompositionen rendern`,
+  );
+  await run(
+    ['scripts/render-creative-recipes.mjs', 'all'],
+    `${CONTENT_REVIEW_COUNTS.recipe} Creative-Recipe-Kompositionen rendern`,
   );
   await run(
     ['scripts/build-content-review-gallery.mjs'],
-    'Review-Galerie aus Production- und Edge-Case-Artefakten erzeugen',
+    `${CONTENT_REVIEW_COUNTS.total}-Karten Review-Galerie aus Production-, Edge- und Recipe-Artefakten erzeugen`,
   );
 
-  console.log('\n[all-content-render] Alle Release-Artefakte und die Review-Galerie wurden erzeugt.');
-  console.log(
-    '[all-content-render] Danach ausführen: node scripts/verify-all-content-release.mjs',
-  );
-  console.log(
-    '[all-content-render] Visuelle Prüfung: out/content-review-gallery/index.html',
-  );
+  console.log('\n[all-content-render] Alle Release-Artefakte inklusive Creative Recipes und Review-Galerie wurden erzeugt.');
+  console.log('[all-content-render] Danach ausführen: node scripts/verify-all-content-release.mjs');
+  console.log('[all-content-render] Visuelle Prüfung: out/content-review-gallery/index.html');
 } catch (error) {
   console.error('\n[all-content-render] Renderlauf fehlgeschlagen.');
   console.error(error instanceof Error ? error.message : error);
