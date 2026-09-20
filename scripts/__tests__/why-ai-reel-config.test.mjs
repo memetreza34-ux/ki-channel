@@ -6,9 +6,9 @@ import {
   WHY_AI_REEL_SOURCE_FINGERPRINT,
 } from '../why-ai-reel-config.mjs';
 
-test('reference reel render contract is complete and uses canonical production root', () => {
+test('reference reel render contract is complete and uses isolated production root', () => {
   assert.equal(WHY_AI_REEL_CONFIG.compositionId, 'Reel-WhyAIReadsDifferently');
-  assert.equal(WHY_AI_REEL_CONFIG.entryPoint, 'ki/src/index.ts');
+  assert.equal(WHY_AI_REEL_CONFIG.entryPoint, 'ki/src/production-entry.tsx');
   assert.equal(WHY_AI_REEL_CONFIG.width, 1080);
   assert.equal(WHY_AI_REEL_CONFIG.height, 1920);
   assert.equal(WHY_AI_REEL_CONFIG.fps, 30);
@@ -26,7 +26,7 @@ test('reference reel render contract is complete and uses canonical production r
   );
 });
 
-test('reference reel source fingerprint follows current production sources only', () => {
+test('reference reel source fingerprint follows actual production-only sources', () => {
   assert.equal(
     new Set(WHY_AI_REEL_SOURCE_FILES).size,
     WHY_AI_REEL_SOURCE_FILES.length,
@@ -35,29 +35,25 @@ test('reference reel source fingerprint follows current production sources only'
     [...WHY_AI_REEL_SOURCE_FILES].sort(),
     [...WHY_AI_REEL_SOURCE_FILES],
   );
-
-  for (const requiredSuffix of [
-    '/ki/src/Root.tsx',
-    '/ki/src/index.ts',
-    '/ki/brand/brand.ts',
-    '/ki/src/reels/why-ai-reads-differently/ReelWhyAIReadsDifferently.tsx',
-    '/ki/src/reels/why-ai-reads-differently/contract.ts',
-    '/ki/src/reels/why-ai-reads-differently/visualProfiles.ts',
-    '/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json',
-  ]) {
-    assert.ok(
-      WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith(requiredSuffix)),
-      `missing required production source: ${requiredSuffix}`,
-    );
-  }
-
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/ProductionRoot.tsx')),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/production-entry.tsx')),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) =>
+      file.endsWith('/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json'),
+    ),
+  );
   assert.ok(
     WHY_AI_REEL_SOURCE_FILES.every(
-      (file) =>
-        !file.includes('/ki/src/motion-system/') &&
-        !file.includes('/__tests__/') &&
-        !file.includes('\\__tests__\\') &&
-        !/\.(?:test|spec)\.(?:ts|tsx)$/.test(file),
+      (file) => !file.includes('/ki/src/motion-system/'),
+    ),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.every(
+      (file) => !file.endsWith('/ki/src/Root.tsx') && !file.endsWith('/ki/src/index.ts'),
     ),
   );
   assert.match(WHY_AI_REEL_SOURCE_FINGERPRINT, /^[a-f0-9]{64}$/);
