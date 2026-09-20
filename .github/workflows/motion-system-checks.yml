@@ -1,10 +1,19 @@
 name: Repository and Content System Checks
 
-# GitHub Actions for this private repository is currently blocked before Step 1
-# by the account's Actions billing/spending state. Keep this workflow manual until
-# the runner is available again. The commands below are the canonical repository
-# and content-release gates and can also be run locally.
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ki/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'tsconfig*.json'
+      - 'vitest.config.ts'
+      - 'AGENTS.md'
+      - 'REPO-STATE.md'
+      - 'README.md'
+      - '.github/workflows/motion-system-checks.yml'
   workflow_dispatch:
     inputs:
       release_mode:
@@ -20,10 +29,36 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: repository-content-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  release:
+  pull-request-verify:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install canonical workspaces without writing a lockfile
+        run: npm install --package-lock=false --no-audit --no-fund
+
+      - name: Repository, TypeScript, tests and runtime gates
+        run: npm run repo:verify
+
+  manual-release:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    env:
+      RELEASE_MODE: ${{ inputs.release_mode }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,7 +79,7 @@ jobs:
             echo "npm=$(npm --version)"
             echo "pwd=$(pwd)"
             echo "head=$(git rev-parse HEAD)"
-            echo "release_mode=${{ inputs.release_mode }}"
+            echo "release_mode=${RELEASE_MODE}"
           } | tee ci-logs/environment.log
 
       - name: Verify repository wiring before install
@@ -84,7 +119,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          npm run "release:${{ inputs.release_mode }}" 2>&1 | tee ci-logs/content-release.log
+          npm run "release:${RELEASE_MODE}" 2>&1 | tee ci-logs/content-release.log
 
       - name: Upload release summary and diagnostics
         if: always()
