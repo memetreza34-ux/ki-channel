@@ -92,6 +92,13 @@
     "micro-motion:render": "node scripts/render-micro-motions.mjs all",
     "micro-motion:check": "node scripts/check-micro-motion-renders.mjs",
     "micro-motion:full-release-check": "npm run micro-motion:verify && npm run micro-motion:render && npm run micro-motion:check",
+    "creative-recipes:test": "vitest run ki/src/animation-library/__tests__/proposalCompiler.test.ts ki/src/animation-library/__tests__/creativeRecipeRuntime.test.ts ki/src/animation-library/__tests__/productionSceneRuntime.test.ts ki/src/animation-library/__tests__/visualFingerprint.test.ts ki/src/animation-library/__tests__/implementationBrief.test.ts",
+    "creative-recipes:verify": "node --check scripts/render-creative-recipes.mjs && npm run typecheck:animation-library && npm run creative-recipes:test && npm run creative-recipes:plan",
+    "creative-recipes:plan": "node scripts/render-creative-recipes.mjs plan",
+    "creative-recipes:smoke": "node scripts/render-creative-recipes.mjs smoke",
+    "creative-recipes:stills": "node scripts/render-creative-recipes.mjs stills",
+    "creative-recipes:videos": "node scripts/render-creative-recipes.mjs videos",
+    "creative-recipes:render": "node scripts/render-creative-recipes.mjs all",
     "bits:find": "npx -y remotion-bits find",
     "bits:fetch": "npx -y remotion-bits fetch",
     "bits:mcp": "npx -y remotion-bits mcp"
