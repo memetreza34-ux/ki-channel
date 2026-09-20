@@ -1,4 +1,5 @@
 import React, {type ComponentType} from 'react';
+import {getAnimationLibraryEntry} from './catalog';
 import {CreativeRecipeRuntime} from './creativeRecipeRuntime';
 import {enhanceSceneMeaning} from './extendedMeaningContract';
 import {associatePrototypeRuntimeContent} from './prototypeRuntimeContentAssociation';
@@ -14,6 +15,15 @@ import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 
 export type ProductionSceneRuntimeInput = {
   scenePlan: ProductionSceneAnimationPlan;
+  spokenText: string;
+  title?: string;
+  labels?: Record<string, string>;
+  values?: Record<string, string | number>;
+};
+
+export type LibraryAnimationRuntimeInput = {
+  sceneId: string;
+  animationId: string;
   spokenText: string;
   title?: string;
   labels?: Record<string, string>;
@@ -48,6 +58,64 @@ const registrationByAnimationId = new Map(
   ] as const),
 );
 
+export const buildLibraryAnimationRuntime = ({
+  sceneId,
+  animationId,
+  spokenText,
+  title,
+  labels,
+  values,
+}: LibraryAnimationRuntimeInput): LibraryProductionSceneRuntime => {
+  if (!spokenText.trim()) {
+    throw new Error(`library production scene ${sceneId} requires spokenText`);
+  }
+  const registration = registrationByAnimationId.get(animationId);
+  if (!registration) {
+    throw new Error(
+      `library production scene ${sceneId} is missing registered runtime ${animationId}`,
+    );
+  }
+  const catalogEntry = getAnimationLibraryEntry(animationId);
+  if (!catalogEntry) {
+    throw new Error(
+      `library production scene ${sceneId} is missing catalog entry ${animationId}`,
+    );
+  }
+
+  const meaningContract = enhanceSceneMeaning(spokenText);
+  const derived = derivePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    meaningContract,
+  });
+  const sanitized = sanitizePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    derived,
+  });
+  const associated = associatePrototypeRuntimeContent({
+    animationId,
+    spokenText,
+    content: sanitized,
+  });
+  const renderProps = createPrototypeRenderProps({
+    spokenText,
+    meaningContract,
+    title: title?.trim() || catalogEntry.title,
+    labels: {...associated.labels, ...labels},
+    values: {...associated.values, ...values},
+  });
+
+  return {
+    source: 'library',
+    sceneId,
+    animationId,
+    registration,
+    component: registration.component,
+    renderProps,
+  };
+};
+
 const buildLibraryRuntime = ({
   scenePlan,
   spokenText,
@@ -55,50 +123,19 @@ const buildLibraryRuntime = ({
   labels,
   values,
 }: ProductionSceneRuntimeInput): LibraryProductionSceneRuntime => {
-  const registration = registrationByAnimationId.get(scenePlan.animationId);
-  if (!registration) {
-    throw new Error(
-      `library production scene ${scenePlan.sceneId} is missing registered runtime ${scenePlan.animationId}`,
-    );
-  }
   if (scenePlan.buildSpec !== null) {
     throw new Error(
       `library production scene ${scenePlan.sceneId} must not carry a new-build specification`,
     );
   }
-
-  const meaningContract = enhanceSceneMeaning(spokenText);
-  const derived = derivePrototypeRuntimeContent({
-    animationId: scenePlan.animationId,
-    spokenText,
-    meaningContract,
-  });
-  const sanitized = sanitizePrototypeRuntimeContent({
-    animationId: scenePlan.animationId,
-    spokenText,
-    derived,
-  });
-  const associated = associatePrototypeRuntimeContent({
-    animationId: scenePlan.animationId,
-    spokenText,
-    content: sanitized,
-  });
-  const renderProps = createPrototypeRenderProps({
-    spokenText,
-    meaningContract,
-    title: title?.trim() || scenePlan.catalogEntry.title,
-    labels: {...associated.labels, ...labels},
-    values: {...associated.values, ...values},
-  });
-
-  return {
-    source: 'library',
+  return buildLibraryAnimationRuntime({
     sceneId: scenePlan.sceneId,
     animationId: scenePlan.animationId,
-    registration,
-    component: registration.component,
-    renderProps,
-  };
+    spokenText,
+    title,
+    labels,
+    values,
+  });
 };
 
 const buildNewBuildRuntime = ({
@@ -114,7 +151,6 @@ const buildNewBuildRuntime = ({
       `new-build production scene ${scenePlan.sceneId} has mismatched runtime id ${scenePlan.buildSpec.animationId}`,
     );
   }
-
   return {
     source: 'new-build',
     sceneId: scenePlan.sceneId,
