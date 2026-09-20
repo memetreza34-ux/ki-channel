@@ -17,5 +17,8 @@
     "src/longform/**/*.ts",
     "src/longform/**/*.tsx",
     "reels/**/*.json"
+  ],
+  "exclude": [
+    "src/longform/ai-app-workflow/Visuals.tsx"
   ]
 }
