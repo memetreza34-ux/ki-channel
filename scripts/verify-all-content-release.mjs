@@ -1,4 +1,5 @@
 import {spawn} from 'node:child_process';
+import {CONTENT_REVIEW_COUNTS} from './content-review-contract.mjs';
 
 const run = (args, label) =>
   new Promise((resolvePromise, reject) => {
@@ -33,6 +34,10 @@ try {
     'Sechs semantische Edge-Case-Renders inklusive PNG/MP4 und Props prüfen',
   );
   await run(
+    ['scripts/check-creative-recipe-renders.mjs'],
+    `${CONTENT_REVIEW_COUNTS.recipe} Creative-Recipe-Renders gegen Source-Fingerprint und Artefaktvertrag prüfen`,
+  );
+  await run(
     ['scripts/check-production-derived-runtime-keys.mjs'],
     'Abgeleitete Runtime-Keys gegen TSX-Komponenten prüfen',
   );
@@ -42,15 +47,11 @@ try {
   );
   await run(
     ['scripts/verify-content-review-gallery.mjs', 'full'],
-    'Vollständigkeit der 22+6 visuellen Full-Review-Galerie prüfen',
+    `Vollständigkeit der ${CONTENT_REVIEW_COUNTS.total}-Karten Full-Review-Galerie inklusive Creative Recipes prüfen`,
   );
 
-  console.log(
-    '\n[all-content-release] Vollständiger technischer Content-Releasevertrag bestanden.',
-  );
-  console.log(
-    '[all-content-release] Zusätzlich weiterhin erforderlich: Review-Galerie manuell visuell freigeben; technische Galerie-Vollständigkeit ist kein visuelles Qualitätsurteil.',
-  );
+  console.log('\n[all-content-release] Vollständiger technischer Content-Releasevertrag bestanden.');
+  console.log(`[all-content-release] Zusätzlich erforderlich: ${CONTENT_REVIEW_COUNTS.total}/${CONTENT_REVIEW_COUNTS.total} Karten der Review-Galerie manuell visuell freigeben; technische Galerie-Vollständigkeit ist kein visuelles Qualitätsurteil.`);
 } catch (error) {
   console.error('\n[all-content-release] Releaseprüfung fehlgeschlagen.');
   console.error(error instanceof Error ? error.message : error);
