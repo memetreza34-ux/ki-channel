@@ -71,6 +71,8 @@ const tests = [
   'ki/src/reels/ai-product-ad/visualProfiles.test.ts',
   'ki/src/reels/ai-sketch-website/visualProfiles.test.ts',
   'ki/src/reels/github-repository-basics/visualProfiles.test.ts',
+  'ki/src/reels/antigravity-context-overload/__tests__/canonicalRuntime.test.ts',
+  'ki/src/reels/why-ai-reads-differently/__tests__/visualProfiles.test.ts',
 ];
 
 const outputDir = resolve('out/content-matched/runtime-verification');
