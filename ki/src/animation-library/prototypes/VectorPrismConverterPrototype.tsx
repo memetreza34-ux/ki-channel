@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -57,7 +58,7 @@ export const VectorPrismConverterPrototype: React.FC = () => {
     fallback: 'VEKTOR',
   });
   const dimensionReveals = dimensions.map((_, index) =>
-    prototypeProgress(frame, 72 + index * 10, 112 + index * 10),
+    prototypeProgress(frame, 72 + staggerDelay(index, 10), 112 + staggerDelay(index, 10)),
   );
   const vectorOutput = vectorExact
     ? `[${dimensions

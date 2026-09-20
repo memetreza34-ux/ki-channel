@@ -36,14 +36,34 @@ describe('animation library audit', () => {
     );
   });
 
-  it('can report families that still lack executable prototypes', () => {
+  it('sieht inzwischen fuer jede Familie einen Prototypen', () => {
     const audit = auditAnimationLibrary({
       entries: ANIMATION_LIBRARY_ENTRIES,
       expectedVariantsPerFamily: 4,
       requirePrototypePerFamily: true,
     });
 
-    expect(audit.prototypeFamilyCount).toBeGreaterThanOrEqual(12);
+    expect(audit.prototypeFamilyCount).toBe(audit.familyCount);
+    expect(
+      audit.issues.some((issue) => issue.code === 'missing-prototype-family'),
+    ).toBe(false);
+  });
+
+  it('meldet eine Familie ohne Prototyp, sobald es eine gibt', () => {
+    // Der echte Katalog hat die Luecke geschlossen. Geprueft wird deshalb der
+    // Melder selbst, an einer Familie, deren Eintraege alle 'concept' sind.
+    const withoutPrototype = ANIMATION_LIBRARY_ENTRIES.map((entry) =>
+      entry.visualFamily === ANIMATION_LIBRARY_ENTRIES[0].visualFamily
+        ? {...entry, status: 'concept' as const}
+        : entry,
+    );
+    const audit = auditAnimationLibrary({
+      entries: withoutPrototype,
+      expectedVariantsPerFamily: 4,
+      requirePrototypePerFamily: true,
+    });
+
+    expect(audit.prototypeFamilyCount).toBe(audit.familyCount - 1);
     expect(
       audit.issues.some((issue) => issue.code === 'missing-prototype-family'),
     ).toBe(true);

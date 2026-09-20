@@ -30,6 +30,26 @@ Ausführbarer Source:
 ki/src/longform/<slug>/
 ```
 
+Der Brand-Import liegt im Source drei Ebenen höher — `import {BRAND} from '../../../brand/brand';`. Ein falscher relativer Pfad bricht den kompletten Remotion-Bundle.
+
+## Paket anlegen und prüfen
+
+Neues Longform-Paket niemals von Hand anlegen:
+
+```bash
+npm run new-longform -- "Video Titel"
+```
+
+Das erzeugt die vollständige 01–06-Struktur mit allen Pflichtdateien im Status `OFFEN`.
+
+Nach jeder Struktur- oder Source-Änderung verpflichtend:
+
+```bash
+npm run ki:longform:structure-check
+```
+
+Der Check prüft Datumsordner, Paketstruktur, die Trennung von Planung und Source sowie die Auflösbarkeit aller relativen Source-Imports. Er läuft auch als Teil von `npm test`.
+
 ## 3 Phasen
 
 ### Phase 1 — ChatGPT
@@ -42,7 +62,18 @@ Nur den freigegebenen Sprechertext vertonen und als `voiceover.wav` oder `voiceo
 
 ### Phase 3 — Codex / Antigravity
 
-Audio messen und integrieren, Kapitel/Visual Beats an reale Stimme anpassen, Tests und Smoke-Frames ausführen, Thumbnail rendern, finalen Master rendern und normal sowie verkleinert visuell/akustisch prüfen.
+Phase 3 startet **immer** mit dem Preflight:
+
+```bash
+npm run phase3:check -- ki/youtube-longform/<Datum>/<NN_Video-Titel>
+```
+
+Meldet er einen Blocker, ist Phase 3 beendet. Der Blocker wird wörtlich
+zurückgegeben, und es wird keine Datei angefasst — kein Platzhalter-Audio,
+kein Vorbauen der Timeline, kein Anpassen von Phase-1-Dateien, damit der
+Check grün wird.
+
+Erst wenn der Preflight besteht: Audio messen und integrieren, Kapitel/Visual Beats an reale Stimme anpassen, Tests und Smoke-Frames ausführen, Thumbnail rendern, finalen Master rendern und normal sowie verkleinert visuell/akustisch prüfen.
 
 Fehlt Audio, exakt stoppen mit:
 

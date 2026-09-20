@@ -287,3 +287,26 @@ export const enhanceSceneMeaning = (
 
 export const EXTENDED_MEANING_RULE_IDS: readonly ExtendedMeaningRuleId[] =
   RULES.map((rule) => rule.id);
+
+/**
+ * Löst den Meaning-Contract einer Szene auf, ohne einen redaktionell
+ * geschriebenen Contract zu überschreiben.
+ *
+ * Phase 1 formuliert Meaning-Contracts von Hand. Fehlt einer oder entspricht
+ * er exakt der automatischen Basisanalyse, wird er angereichert. Weicht er
+ * davon ab, ist er eine bewusste redaktionelle Entscheidung und bleibt
+ * unverändert — jede Planungsschicht muss dieselbe Regel anwenden, sonst
+ * hebelt eine nachgelagerte Anreicherung die vorgelagerte Entscheidung aus.
+ */
+export const resolveAuthoredMeaningContract = (
+  spokenText: string,
+  supplied?: SceneMeaningContract,
+): SceneMeaningContract => {
+  if (!supplied) return enhanceSceneMeaning(spokenText);
+  const automaticBase = analyzeSceneMeaning(spokenText);
+  const suppliedLooksAutomatic =
+    JSON.stringify(supplied) === JSON.stringify(automaticBase);
+  return suppliedLooksAutomatic
+    ? enhanceSceneMeaning(spokenText, supplied)
+    : supplied;
+};

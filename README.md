@@ -72,6 +72,22 @@ Strukturprüfung:
 npm run ki:reel:structure-check
 ```
 
+## YouTube-Longform
+
+Longform ist ein eigenes Format unter `ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/`, ausführbarer Source unter `ki/src/longform/<slug>/`. Regeln: `ki/youtube-longform/AGENTS.md`.
+
+Neues Longform-Video:
+
+```bash
+npm run new-longform -- "Video Titel"
+```
+
+Strukturprüfung:
+
+```bash
+npm run ki:longform:structure-check
+```
+
 ## Publishing / Plattformen
 
 Ein Short-Form-Reel wird **einmal** produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
@@ -129,6 +145,8 @@ Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/PLATTFORMEN.md`
 ```bash
 npm run repo:wiring-check
 npm run ki:reel:structure-check
+npm run ki:longform:structure-check
+npm run brand:font-check
 npm run typecheck
 npm test
 npm run content:runtime:verify

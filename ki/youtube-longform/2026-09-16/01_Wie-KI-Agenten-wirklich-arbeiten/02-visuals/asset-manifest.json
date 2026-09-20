@@ -1,0 +1,6 @@
+{
+  "decision": "REMOTION_NATIVE_ONLY",
+  "externalAssetsRequired": false,
+  "assets": [],
+  "reason": "Alle Aussagen lassen sich durch UI, Diagramme, Dokumentkarten, Tool-Module und Prozessanimationen verständlicher direkt in Remotion erklären."
+}

@@ -31,7 +31,17 @@ type VariantSeed = {
 
 type FamilySeed = {
   family: string;
+  /** Englische Tags - historische Basis des Katalogs. */
   tags: string[];
+  /**
+   * Deutsche Tags derselben Familie.
+   *
+   * Der Kanal spricht Deutsch, der Katalog war rein englisch getaggt. Dadurch
+   * fand die Szenenanalyse zu einem Satz wie "Die Latenz sinkt" keinen
+   * passenden Eintrag, der Reuse-Score blieb unter der Schwelle und der Planer
+   * baute jede Szene neu, statt vorhandene Prototypen zu verwenden.
+   */
+  germanTags: string[];
   variants: VariantSeed[];
 };
 
@@ -39,6 +49,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'tokenization',
     tags: ['token', 'text', 'word', 'language', 'segment', 'prompt'],
+    germanTags: ['token', 'text', 'wort', 'wörter', 'sprache', 'zerlegen', 'baustein', 'satz'],
     variants: [
       {
         slug: 'magnetic-phrase-slicer',
@@ -114,6 +125,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'data-transformation',
     tags: ['data', 'vector', 'number', 'convert', 'encode', 'representation'],
+    germanTags: ['daten', 'vektor', 'zahl', 'umwandeln', 'umwandlung', 'kodieren', 'darstellung', 'format'],
     variants: [
       {
         slug: 'vector-prism-converter',
@@ -189,6 +201,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'semantic-space',
     tags: ['meaning', 'embedding', 'similarity', 'cluster', 'concept', 'semantic'],
+    germanTags: ['bedeutung', 'einbettung', 'ähnlichkeit', 'cluster', 'gruppe', 'begriff', 'nähe', 'raum'],
     variants: [
       {
         slug: 'meaning-terrain',
@@ -264,6 +277,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'relationship-network',
     tags: ['attention', 'relationship', 'graph', 'connection', 'dependency', 'context'],
+    germanTags: ['aufmerksamkeit', 'beziehung', 'graph', 'verbindung', 'abhängigkeit', 'kontext', 'netz', 'bezug'],
     variants: [
       {
         slug: 'dependency-bridge-builder',
@@ -339,6 +353,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'probability',
     tags: ['probability', 'prediction', 'candidate', 'confidence', 'next-token', 'uncertainty'],
+    germanTags: ['wahrscheinlichkeit', 'vorhersage', 'kandidat', 'konfidenz', 'unsicherheit', 'prozent', 'anteil'],
     variants: [
       {
         slug: 'probability-fluid-columns',
@@ -414,6 +429,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'model-processing',
     tags: ['model', 'layer', 'transformer', 'processing', 'inference', 'expert'],
+    germanTags: ['modell', 'schicht', 'schichten', 'transformer', 'verarbeitung', 'inferenz', 'experte', 'rechnen'],
     variants: [
       {
         slug: 'residual-river',
@@ -489,6 +505,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'generation',
     tags: ['generate', 'answer', 'output', 'word-by-word', 'completion', 'response'],
+    germanTags: ['erzeugen', 'antwort', 'ausgabe', 'generieren', 'vervollständigung', 'ausgeben', 'schreiben'],
     variants: [
       {
         slug: 'answer-loom',
@@ -564,6 +581,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'risk-contrast',
     tags: ['risk', 'hallucination', 'wrong', 'verify', 'truth', 'confidence'],
+    germanTags: ['risiko', 'halluzination', 'falsch', 'prüfen', 'wahrheit', 'fehlannahme', 'stimmt'],
     variants: [
       {
         slug: 'confidence-glass-crack',
@@ -639,6 +657,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'comparison',
     tags: ['compare', 'versus', 'difference', 'better', 'faster', 'choice'],
+    germanTags: ['vergleich', 'vergleichen', 'gegenüber', 'unterschied', 'besser', 'schneller', 'wahl'],
     variants: [
       {
         slug: 'benchmark-racetrack',
@@ -714,6 +733,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'ranking',
     tags: ['ranking', 'top', 'order', 'best', 'score', 'priority'],
+    germanTags: ['rangliste', 'reihenfolge', 'beste', 'bewertung', 'priorität', 'platz', 'sortieren'],
     variants: [
       {
         slug: 'dynamic-podium-rise',
@@ -789,6 +809,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'process-flow',
     tags: ['process', 'steps', 'workflow', 'pipeline', 'sequence', 'automation'],
+    germanTags: ['prozess', 'schritt', 'schritte', 'ablauf', 'reihenfolge', 'automatisierung', 'kette'],
     variants: [
       {
         slug: 'subway-workflow-map',
@@ -864,6 +885,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'input-output',
     tags: ['input', 'output', 'result', 'transform', 'cause', 'effect'],
+    germanTags: ['eingabe', 'ausgabe', 'ergebnis', 'umwandeln', 'ursache', 'wirkung', 'hinein', 'heraus'],
     variants: [
       {
         slug: 'cause-effect-bridge',
@@ -881,7 +903,6 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'dynamic',
         density: 'minimal',
         complexity: 'medium',
-        status: 'prototype',
       },
       {
         slug: 'transformation-portal',
@@ -916,6 +937,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
         energy: 'measured',
         density: 'dense',
         complexity: 'medium',
+        status: 'prototype',
       },
       {
         slug: 'machine-blueprint-reveal',
@@ -939,6 +961,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'error-detection',
     tags: ['error', 'debug', 'anomaly', 'failure', 'fix', 'warning'],
+    germanTags: ['fehler', 'debuggen', 'anomalie', 'ausfall', 'beheben', 'warnung', 'panne'],
     variants: [
       {
         slug: 'anomaly-xray-scanner',
@@ -1014,6 +1037,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'retrieval-search',
     tags: ['search', 'retrieval', 'rag', 'document', 'evidence', 'knowledge'],
+    germanTags: ['suche', 'suchen', 'abruf', 'dokument', 'beleg', 'wissen', 'quelle', 'quellen'],
     variants: [
       {
         slug: 'knowledge-magnet',
@@ -1089,6 +1113,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'security-privacy',
     tags: ['security', 'privacy', 'encryption', 'permission', 'data', 'protection'],
+    germanTags: ['sicherheit', 'datenschutz', 'verschlüsselung', 'berechtigung', 'daten', 'schutz', 'zugriff'],
     variants: [
       {
         slug: 'encryption-vault-layers',
@@ -1164,6 +1189,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'scale-performance',
     tags: ['performance', 'latency', 'scale', 'throughput', 'load', 'speed'],
+    germanTags: ['leistung', 'latenz', 'skalierung', 'durchsatz', 'last', 'geschwindigkeit', 'tempo', 'kapazität', 'engpass'],
     variants: [
       {
         slug: 'latency-tunnel-race',
@@ -1239,6 +1265,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'cost-efficiency',
     tags: ['cost', 'price', 'budget', 'efficiency', 'token-cost', 'resource'],
+    germanTags: ['kosten', 'preis', 'budget', 'effizienz', 'tokenkosten', 'ressource', 'sparen', 'teuer'],
     variants: [
       {
         slug: 'budget-leak-meter',
@@ -1314,6 +1341,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'time-change',
     tags: ['time', 'timeline', 'evolution', 'version', 'before-after', 'change'],
+    germanTags: ['zeit', 'zeitachse', 'entwicklung', 'version', 'vorher', 'nachher', 'veränderung', 'verlauf'],
     variants: [
       {
         slug: 'timeline-microscope',
@@ -1389,6 +1417,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'human-ai-collaboration',
     tags: ['human', 'ai', 'collaboration', 'agent', 'feedback', 'team'],
+    germanTags: ['mensch', 'ki', 'zusammenarbeit', 'agent', 'rückmeldung', 'team', 'gemeinsam'],
     variants: [
       {
         slug: 'human-ai-relay',
@@ -1464,6 +1493,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'decision-logic',
     tags: ['decision', 'logic', 'if-then', 'choice', 'evidence', 'tradeoff'],
+    germanTags: ['entscheidung', 'logik', 'wenn', 'dann', 'wahl', 'beleg', 'abwägung', 'regel'],
     variants: [
       {
         slug: 'decision-tree-burst',
@@ -1539,6 +1569,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'context-window',
     tags: ['context', 'window', 'memory', 'prompt', 'limit', 'conversation'],
+    germanTags: ['kontext', 'fenster', 'gedächtnis', 'speicher', 'grenze', 'gespräch', 'verlauf'],
     variants: [
       {
         slug: 'context-window-train',
@@ -1614,6 +1645,7 @@ const FAMILY_SEEDS: FamilySeed[] = [
   {
     family: 'learning-update',
     tags: ['learning', 'update', 'feedback', 'new-information', 'knowledge', 'adapt'],
+    germanTags: ['lernen', 'aktualisierung', 'rückmeldung', 'wissen', 'anpassen', 'erfahrung', 'korrektur'],
     variants: [
       {
         slug: 'knowledge-tree-graft',
@@ -1701,7 +1733,13 @@ const entries: AnimationLibraryEntry[] = FAMILY_SEEDS.flatMap((familySeed) =>
     layoutFamily: variant.layout,
     motionSignature: variant.motion,
     noveltyGroup: variant.novelty,
-    semanticTags: [...new Set([...familySeed.tags, ...variant.patterns])],
+    semanticTags: [
+      ...new Set([
+        ...familySeed.tags,
+        ...familySeed.germanTags,
+        ...variant.patterns,
+      ]),
+    ],
     explanationPatterns: variant.patterns,
     avoidWhen: variant.avoidWhen ?? DEFAULT_AVOID,
     primitiveTags: variant.primitives,

@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
@@ -72,14 +73,8 @@ export const DataFlowStage: React.FC<{
 
   const input = spring({fps, frame: frame - inputFrame, config: {damping: 18, stiffness: 175}});
   const output = spring({fps, frame: frame - outputFrame, config: {damping: 18, stiffness: 175}});
-  const flow = interpolate(frame, [inputFlowFrame, flowEndFrame], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const secondHalfActive = interpolate(frame, [outputFlowFrame, outputFlowFrame + 12], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const flow = easedProgress(frame, inputFlowFrame, flowEndFrame);
+  const secondHalfActive = easedProgress(frame, outputFlowFrame, outputFlowFrame + 12);
 
   const start = {x: 300, y: 740};
   const mid = {x: 540, y: 720};

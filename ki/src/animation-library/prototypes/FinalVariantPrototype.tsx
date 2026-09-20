@@ -7,10 +7,15 @@ import {
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
+import {staggerDelay, type MotionEasingName} from '../../motion/easing';
 
 const C = PROTOTYPE_PALETTE;
-const prog = (frame: number, start: number, end: number): number =>
-  prototypeProgress(frame, start, end);
+const prog = (
+  frame: number,
+  start: number,
+  end: number,
+  easing: MotionEasingName = 'enter',
+): number => prototypeProgress(frame, start, end, easing);
 const clamp = (value: number): number => Math.max(0, Math.min(1, value));
 
 const Stage: React.FC<{label: string; children: React.ReactNode}> = ({label, children}) => (
@@ -106,7 +111,7 @@ const ContextualTokenRiver: React.FC<{frame: number}> = ({frame}) => {
         />
       </svg>
       {words.map((word, index) => {
-        const travel = prog(frame, index * 8, 120 + index * 3);
+        const travel = prog(frame, index * 8, 120 + index * 3, 'move');
         const x = interpolate(travel, [0, 1], [60, 820]);
         const baseY = 610 - Math.sin((x / 900) * Math.PI * 3 + index) * 150;
         const splitOffset = split * (index === 1 ? -75 : index === 2 ? 65 : 0);
@@ -147,7 +152,7 @@ const RepresentationMorphCascade: React.FC<{frame: number}> = ({frame}) => {
         <path d="M100 760 C300 690 420 540 560 430 C690 330 760 250 840 180" fill="none" stroke={C.accent} strokeWidth="8" strokeLinecap="round" strokeDasharray="1300" strokeDashoffset={1300 * (1 - prog(frame, 5, 155))} />
       </svg>
       {stages.map((stage, index) => {
-        const reveal = prog(frame, 18 + index * 30, 42 + index * 30);
+        const reveal = prog(frame, 18 + staggerDelay(index, 30), 42 + staggerDelay(index, 30));
         const y = 800 - index * 190;
         return (
           <div key={stage.label} style={{position: 'absolute', left: stage.x, top: y, transform: `translate(-50%,-50%) scale(${0.68 + reveal * 0.32})`, opacity: reveal}}>
@@ -187,7 +192,8 @@ const ConceptNeighborhoodElevator: React.FC<{frame: number}> = ({frame}) => {
 
 const ContextThreadBraider: React.FC<{frame: number}> = ({frame}) => {
   const braid = prog(frame, 5, 125);
-  const remove = prog(frame, 120, 168);
+  // Austritt: die verworfene Lesart verschwindet.
+  const remove = prog(frame, 120, 168, 'exit');
   const colors = [C.accent, C.success, C.warning];
   return (
     <Stage label="DREI KONTEXTE BILDEN EINE INTERPRETATION · EIN FEHLENDER STRANG ÄNDERT SIE">
@@ -262,7 +268,7 @@ const ResponseConstellationWrite: React.FC<{frame: number}> = ({frame}) => {
   return (
     <Stage label="KONZEPTPUNKTE SINKEN HERAB UND WERDEN ZU WÖRTERN">
       {words.map((word, index) => {
-        const reveal = prog(frame, 12 + index * 20, 42 + index * 20);
+        const reveal = prog(frame, 12 + staggerDelay(index, 20), 42 + staggerDelay(index, 20));
         const startX = 130 + (index * 137) % 720;
         const startY = 130 + (index % 3) * 90;
         const targetX = 105 + index * 137;
@@ -310,7 +316,7 @@ const ParallelWorldsSplit: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const ConstellationRankAlign: React.FC<{frame: number}> = ({frame}) => {
-  const align = prog(frame, 28, 150);
+  const align = prog(frame, 28, 150, 'move');
   const candidates = [
     {label: 'A', sx: 160, sy: 760, rank: 1, color: C.accent},
     {label: 'B', sx: 720, sy: 300, rank: 2, color: C.success},
@@ -435,7 +441,7 @@ const ScalingStaircase: React.FC<{frame: number}> = ({frame}) => {
       {Array.from({length: 7}, (_, index) => {
         const x = 95 + index * 115;
         const stepHeight = 90 + index * 100;
-        const capReveal = prog(frame, 35 + index * 14, 58 + index * 14);
+        const capReveal = prog(frame, 35 + staggerDelay(index, 14), 58 + staggerDelay(index, 14));
         return (
           <React.Fragment key={index}>
             <div style={{position: 'absolute', left: x, bottom: 105, width: 105, height: stepHeight, background: 'rgba(135,87,232,.12)', border: `3px solid ${C.accentSoft}`, borderRadius: '16px 16px 0 0'}} />
@@ -490,7 +496,7 @@ const DecayRenewalCycle: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const CopilotDualTrack: React.FC<{frame: number}> = ({frame}) => {
-  const travel = prog(frame, 5, 160);
+  const travel = prog(frame, 5, 160, 'move');
   const checkpoints = [0.25, 0.55, 0.82];
   return (
     <Stage label="MENSCHLICHE ABSICHT UND KI-AUSFÜHRUNG TREFFEN SICH AN FREIGABEPUNKTEN">

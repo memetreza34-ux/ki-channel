@@ -12,6 +12,7 @@ import {
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
+import {staggerDelay} from '../../motion/easing';
 
 const DEFAULT_DOCUMENTS = [
   {label: 'Quelle A', x: 145, y: 450, relevant: false},
@@ -196,7 +197,11 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
             const pull = document.relevant
               ? Math.min(1, Math.max(0, (attraction - relevantIndex * 0.12) / 0.65))
               : 0;
-            const repel = document.relevant ? 0 : prototypeProgress(frame, 88 + index * 3, 142);
+            const repel = document.relevant
+              ? 0
+              // Austritt: unpassende Dokumente werden weggedrueckt und
+              // verblassen. Ein Abgang beschleunigt fort.
+              : prototypeProgress(frame, 88 + staggerDelay(index, 3), 142, 'exit');
             const centeredIndex = relevantIndex - (relevantDocuments.length - 1) / 2;
             const endX = 454 + centeredIndex * 105;
             const endY = 845;

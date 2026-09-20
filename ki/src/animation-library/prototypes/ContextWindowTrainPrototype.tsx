@@ -1,5 +1,6 @@
 import React from 'react';
 import {useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -102,10 +103,10 @@ export const ContextWindowTrainPrototype: React.FC = () => {
   }));
   const overflowCount = Math.max(0, messages.length - capacity);
   const arrivalProgresses = Array.from({length: overflowCount}, (_, index) =>
-    prototypeProgress(frame, 54 + index * 26, 82 + index * 26),
+    prototypeProgress(frame, 54 + staggerDelay(index, 26), 82 + staggerDelay(index, 26)),
   );
   const shiftProgresses = Array.from({length: overflowCount}, (_, index) =>
-    prototypeProgress(frame, 72 + index * 26, 102 + index * 26),
+    prototypeProgress(frame, 72 + staggerDelay(index, 26), 102 + staggerDelay(index, 26)),
   );
   const shiftedSlots = shiftProgresses.reduce((sum, value) => sum + value, 0);
   const overflow = clamp01(shiftedSlots);

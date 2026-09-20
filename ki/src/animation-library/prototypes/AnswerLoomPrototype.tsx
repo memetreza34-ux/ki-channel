@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   usePrototypeContent,
@@ -70,7 +71,7 @@ export const AnswerLoomPrototype: React.FC = () => {
   });
   const generatedWordCount = words.reduce(
     (count, _, index) =>
-      count + (prototypeProgress(frame, 38 + index * 23, 63 + index * 23) > 0.65 ? 1 : 0),
+      count + (prototypeProgress(frame, 38 + staggerDelay(index, 23), 63 + staggerDelay(index, 23)) > 0.65 ? 1 : 0),
     0,
   );
 
@@ -106,7 +107,7 @@ export const AnswerLoomPrototype: React.FC = () => {
             {content ? 'WORT FÜR WORT' : `WORT ${generatedWordCount}/${words.length}`}
           </div>
           {words.map((word, index) => {
-            const wordReveal = prototypeProgress(frame, 38 + index * 23, 63 + index * 23);
+            const wordReveal = prototypeProgress(frame, 38 + staggerDelay(index, 23), 63 + staggerDelay(index, 23));
             return (
               <div key={`${word}-${index}`} style={{position: 'absolute', left: 36 + (index % 2) * 175, top: 95 + index * 105, minWidth: 145, maxWidth: 175, padding: '16px 20px', borderRadius: 21, background: index === 2 ? PROTOTYPE_PALETTE.accent : PROTOTYPE_PALETTE.white, border: '2px solid rgba(135,87,232,.18)', color: index === 2 ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.foreground, fontSize: word.length > 11 ? 20 : 30, fontWeight: 900, textAlign: 'center', opacity: wordReveal, transform: `translateY(${(1 - wordReveal) * 35}px) scale(${0.86 + wordReveal * 0.14})`, boxShadow: index === 2 ? '0 16px 44px rgba(135,87,232,.32)' : '0 12px 32px rgba(55,38,83,.09)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{word}</div>
             );

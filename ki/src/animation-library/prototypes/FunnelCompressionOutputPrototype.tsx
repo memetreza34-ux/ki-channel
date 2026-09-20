@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   getPrototypeValue,
@@ -44,7 +45,7 @@ export const FunnelCompressionOutputPrototype: React.FC = () => {
   const inputsEnter = prototypeProgress(frame, 0, 46);
   const funnelActivate = prototypeProgress(frame, 36, 88);
   const filterPhase = prototypeProgress(frame, 70, 116);
-  const compress = prototypeProgress(frame, 82, 136);
+  const compress = prototypeProgress(frame, 82, 136, 'move');
   const output = prototypeProgress(frame, 122, 170);
   const terms = content
     ? [...new Set([
@@ -141,14 +142,14 @@ export const FunnelCompressionOutputPrototype: React.FC = () => {
           </defs>
           <path d="M 170 390 L 762 390 L 570 690 L 570 810 L 362 810 L 362 690 Z" fill="url(#funnel-fill)" stroke={PROTOTYPE_PALETTE.accent} strokeWidth={7} opacity={funnelActivate} style={{filter: 'drop-shadow(0 22px 35px rgba(135,87,232,.2))'}} />
           {[0, 1, 2].map((index) => (
-            <line key={index} x1={260 + index * 105} y1={515 + index * 75} x2={675 - index * 105} y2={515 + index * 75} stroke={index === 1 ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.accentSoft} strokeWidth={10} strokeLinecap="round" opacity={prototypeProgress(frame, 52 + index * 12, 84 + index * 12)} />
+            <line key={index} x1={260 + index * 105} y1={515 + index * 75} x2={675 - index * 105} y2={515 + index * 75} stroke={index === 1 ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.accentSoft} strokeWidth={10} strokeLinecap="round" opacity={prototypeProgress(frame, 52 + staggerDelay(index, 12), 84 + staggerDelay(index, 12))} />
           ))}
         </svg>
 
         {keptInputs.flatMap((input, inputIndex) =>
           Array.from({length: 3}, (_, particleIndex) => {
             const index = inputIndex * 3 + particleIndex;
-            const phase = prototypeProgress(frame, 88 + index * 2, 132 + index * 2);
+            const phase = prototypeProgress(frame, 88 + staggerDelay(index, 2), 132 + staggerDelay(index, 2));
             const x = interpolate(phase, [0, 1], [350 + inputIndex * 65, 466]);
             const y = interpolate(phase, [0, 1], [470 + particleIndex * 30, 845]);
             return <div key={`${input.label}-particle-${particleIndex}`} style={{position: 'absolute', left: x, top: y, width: 12 + (particleIndex % 3) * 4, height: 12 + (particleIndex % 3) * 4, borderRadius: 999, background: particleIndex === 0 ? PROTOTYPE_PALETTE.success : PROTOTYPE_PALETTE.accent, opacity: phase * (1 - output * 0.5), transform: `translate(-50%, -50%) scale(${0.6 + phase * 0.4})`, boxShadow: '0 0 18px rgba(135,87,232,.35)', zIndex: 7}} />;

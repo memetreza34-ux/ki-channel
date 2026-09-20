@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   usePrototypeContent,
@@ -73,7 +74,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
     };
   });
   const stageProgresses = stages.map((_, index) =>
-    prototypeProgress(frame, 22 + index * 31, 50 + index * 31),
+    prototypeProgress(frame, 22 + staggerDelay(index, 31), 50 + staggerDelay(index, 31)),
   );
   const completedStages = stageProgresses.filter((value) => value > 0.92).length;
   const currentStageIndex = Math.min(
@@ -123,7 +124,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
           </div>
 
           {stages.slice(0, -1).map((stage, index) => {
-            const handoff = prototypeProgress(frame, 45 + index * 31, 60 + index * 31);
+            const handoff = prototypeProgress(frame, 45 + staggerDelay(index, 31), 60 + staggerDelay(index, 31));
             const nextStage = stages[index + 1];
             return (
               <div key={`handoff-${index}`} style={{position: 'absolute', left: (stage.x + nextStage.x) / 2, top: 235, transform: `translate(-50%, -50%) scale(${0.85 + handoff * 0.15})`, padding: '8px 12px', borderRadius: 14, background: 'rgba(255,255,255,.94)', border: `2px solid ${nextStage.color}55`, color: nextStage.color, fontSize: 12, fontWeight: 900, letterSpacing: 1.3, opacity: handoff}}>
@@ -142,7 +143,7 @@ export const HumanAIRelayPrototype: React.FC = () => {
           })}
 
           {stages.map((stage, index) => {
-            const reveal = prototypeProgress(frame, 18 + index * 22, 45 + index * 22);
+            const reveal = prototypeProgress(frame, 18 + staggerDelay(index, 22), 45 + staggerDelay(index, 22));
             const active = index === currentStageIndex && taskProgress < 1;
             const completed = stageProgresses[index] > 0.92;
             return (

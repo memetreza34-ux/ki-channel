@@ -49,7 +49,10 @@ export const animationLibraryEntrySchema = z.object({
   layoutFamily: z.string().min(2),
   motionSignature: z.string().min(3),
   noveltyGroup: z.string().min(2),
-  semanticTags: z.array(z.string().min(2)).min(2).max(16),
+  // Zweisprachig: englische und deutsche Tags derselben Familie plus die
+  // Muster der Variante. Die alte Obergrenze 16 stammt aus der rein englischen
+  // Zeit des Katalogs.
+  semanticTags: z.array(z.string().min(2)).min(2).max(28),
   explanationPatterns: z.array(z.string().min(2)).min(1).max(8),
   avoidWhen: z.array(z.string().min(2)).max(8),
   primitiveTags: z.array(z.string().min(2)).min(1).max(12),

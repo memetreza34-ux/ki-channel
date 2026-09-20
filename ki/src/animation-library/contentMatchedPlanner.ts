@@ -8,6 +8,7 @@ import {
   scoreMeaningCompatibility,
   type SceneMeaningContract,
 } from './meaningContract';
+import {GERMAN_TAG_BRIDGE} from './germanTagBridge';
 
 export type ReelSceneBrief = {
   sceneId: string;
@@ -95,8 +96,18 @@ const normalizeTag = (value: string): string =>
     .replace(/[_\s]+/g, '-')
     .replace(/[^a-z0-9-]/g, '');
 
-const normalizeTags = (values: readonly string[]): Set<string> =>
-  new Set(values.map(normalizeTag).filter(Boolean));
+
+const normalizeTags = (values: readonly string[]): Set<string> => {
+  const normalized = new Set<string>();
+  for (const value of values) {
+    const tag = normalizeTag(value);
+    if (!tag) continue;
+    normalized.add(tag);
+    const bridged = GERMAN_TAG_BRIDGE[tag];
+    if (bridged) normalized.add(bridged);
+  }
+  return normalized;
+};
 
 const segments = (value: string): string[] =>
   normalizeTag(value).split('-').filter((segment) => segment.length >= 3);

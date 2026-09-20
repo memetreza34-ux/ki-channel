@@ -40,11 +40,26 @@ const asDataUrl = (source) =>
 export const loadSceneMeaningEnhancer = async () => {
   if (cachedEnhancer) return cachedEnhancer;
 
-  // meaningContract.ts only imports AnimationLibraryEntry as a TypeScript type,
-  // so its emitted JavaScript is self-contained.
-  const meaningSource = await transpileModule(
+  // germanTagBridge.ts ist die einzige Laufzeit-Abhaengigkeit von
+  // meaningContract.ts und selbst importfrei.
+  const bridgeSource = await transpileModule(
+    'ki/src/animation-library/germanTagBridge.ts',
+  );
+  const bridgeUrl = asDataUrl(bridgeSource);
+
+  const rawMeaningSource = await transpileModule(
     'ki/src/animation-library/meaningContract.ts',
   );
+  const meaningSource = rawMeaningSource
+    .replace("from './germanTagBridge'", `from '${bridgeUrl}'`)
+    .replace('from "./germanTagBridge"', `from '${bridgeUrl}'`);
+
+  if (meaningSource === rawMeaningSource) {
+    throw new Error(
+      'meaningContract konnte nicht gelinkt werden: Runtime-Import ./germanTagBridge fehlt nach TypeScript-Transpile.',
+    );
+  }
+
   const meaningUrl = asDataUrl(meaningSource);
 
   // extendedMeaningContract.ts has one runtime dependency on meaningContract.

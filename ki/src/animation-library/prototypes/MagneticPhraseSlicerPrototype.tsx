@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {staggerDelay} from '../../motion/easing';
 import {
   getPrototypeLabel,
   usePrototypeContent,
@@ -31,7 +32,7 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
   const sentenceEnter = prototypeProgress(frame, 0, 24);
   const blade = prototypeProgress(frame, 28, 72);
   const separate = prototypeProgress(frame, 64, 112);
-  const settle = prototypeProgress(frame, 104, 154);
+  const settle = prototypeProgress(frame, 104, 154, 'move');
   const resolve = prototypeProgress(frame, 146, 176);
   const contentWords = content?.spokenText
     ? visibleWords(content.spokenText)
@@ -123,7 +124,7 @@ export const MagneticPhraseSlicerPrototype: React.FC = () => {
           const x = interpolate(settle, [0, 1], [separatedX, targetX]);
           const y = interpolate(settle, [0, 1], [265, 690]);
           const highlighted = index === 1 || index === tokenLabels.length - 1;
-          const localReveal = prototypeProgress(frame, 4 + index * 4, 18 + index * 4);
+          const localReveal = prototypeProgress(frame, 4 + staggerDelay(index, 4), 18 + staggerDelay(index, 4));
           return (
             <div key={`${label}-${index}`} style={{position: 'absolute', left: x, top: y, minWidth: 118, maxWidth: 190, padding: '17px 20px', borderRadius: 22, textAlign: 'center', fontSize: label.length > 11 ? 25 : 34, fontWeight: 900, color: highlighted ? PROTOTYPE_PALETTE.white : PROTOTYPE_PALETTE.foreground, background: highlighted ? `linear-gradient(135deg, ${PROTOTYPE_PALETTE.accent}, #6635CE)` : PROTOTYPE_PALETTE.white, border: '2px solid rgba(135,87,232,.2)', boxShadow: highlighted ? '0 16px 42px rgba(135,87,232,.30)' : '0 12px 34px rgba(55,38,83,.10)', transform: `translate(-50%, -50%) scale(${0.88 + localReveal * 0.12 + separate * 0.04})`, opacity: localReveal, zIndex: 5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
               {label}

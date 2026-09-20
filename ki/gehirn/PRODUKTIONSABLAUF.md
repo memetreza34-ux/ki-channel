@@ -96,12 +96,28 @@ Regeln für Audio-Retiming:
 
 Wenn ein Abschnitt retimed wurde, muss Phase 3 im Abschlussbericht kurz nennen, **welcher Abschnitt und welcher Faktor** verwendet wurde.
 
+### Phase-3-Preflight — verbindlich vor jeder anderen Handlung
+
+Phase 3 beginnt **immer** mit diesem Befehl:
+
+```bash
+npm run phase3:check -- <paket-pfad>
+```
+
+Meldet er einen Blocker, ist Phase 3 beendet, bevor sie beginnt. Dann wird
+exakt der gemeldete Blocker zurückgegeben — bei fehlendem Audio also
+`PHASE 2 AUDIO FEHLT` — und **keine** Datei angefasst.
+
+Kein Anlegen von Platzhalter-Audio, kein „ich baue schon mal die Timeline
+vor", kein Umschreiben von Phase-1-Dateien, um den Check zufriedenzustellen.
+Der Preflight ist eine Startbedingung, kein Hinweis.
+
 Pflichten:
 
-1. Branch/Status prüfen.
-2. `PHASE-STATUS.md` und Reel-Verträge lesen.
-3. Struktur-/Preflight-Checks ausführen.
-4. echtes Voiceover finden; bei Fehlen mit `PHASE 2 AUDIO FEHLT` stoppen.
+1. `npm run phase3:check -- <paket-pfad>` ausführen. Bei Blocker: stoppen.
+2. Branch/Status prüfen.
+3. `PHASE-STATUS.md` und Reel-Verträge lesen.
+4. Struktur-/Preflight-Checks ausführen.
 5. reale Audio-Dauer messen.
 6. Audio render-sicher integrieren.
 7. Timeline nach obigem Prinzip an reales Audio anpassen; Sprechertext nicht umschreiben. **WICHTIG:** Keine rein mathematische/lineare Aufteilung der Gesamt-Frames auf die Szenen oder Cues! Die Szenen-Grenzen und Cues (in `reel.json` und `subtitle-cues.json`) müssen zwingend auf Basis einer Audio-Analyse (z.B. Extrahieren der Timestamps aus den Audio-Metadaten oder einem ersten Test-Render) an die realen Sprechpausen und -geschwindigkeit gekoppelt werden.
@@ -121,6 +137,9 @@ Pflichten:
 
 ## Stop-Bedingungen
 
+**Nicht starten** bei rotem `npm run phase3:check`. Ein Blocker beendet Phase 3
+sofort; er wird gemeldet, nicht umgangen.
+
 Nicht als fertig melden bei:
 
 - fehlendem Audio
@@ -129,6 +148,7 @@ Nicht als fertig melden bei:
 - Text-/Caption-Mismatch
 - hörbar künstlichem oder abruptem Voiceover-Speedwechsel
 - Audio-Retiming außerhalb des Qualitätskorridors ohne neue Phase-2-Aufnahme
+- rotem `npm run brand:font-check` — die Markenschrift würde im Export fehlen
 - überlappender oder abgeschnittener Typografie
 - internen Regie-/Goal-Texten im Video
 - unnötiger Caption-/Animations-Textdopplung

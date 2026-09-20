@@ -49,6 +49,12 @@ const STOPWORDS = new Set([
   'sie', 'sind', 'so', 'und', 'von', 'vor', 'während', 'weil', 'wenn', 'wie',
   'wird', 'werden', 'zu', 'zum', 'zur', 'the', 'a', 'and', 'from', 'into',
   'of', 'to', 'with',
+  // Meta-Begriffe: benennen die Messgroesse oder das Konzept selbst und sind
+  // deshalb nie eine konkrete Option. Ohne sie wird aus 'die Wahrscheinlichkeit
+  // fuer Antwort A' ein Kandidat namens 'Wahrscheinlichkeit'.
+  'kontext', 'kontextsignal', 'kontextsignale', 'kontextsignalen',
+  'wahrscheinlichkeit', 'wahrscheinlichkeiten', 'prozent', 'vergleich',
+  'wert', 'werte', 'werten',
 ]);
 
 const contentWords = (spokenText: string): string[] =>
@@ -217,6 +223,29 @@ const pick = (
   fallback: string,
 ): string => compact(values[index] ?? fallback, 36);
 
+// Kandidaten muessen disjunkt sein. Steht "antwort" neben "Antwort A", matchen
+// beide dieselbe Zahl im Sprechertext, und die Anteile summieren sich auf ueber
+// 100 Prozent. Der laengere, spezifischere Begriff gewinnt.
+const withoutOverlaps = (values: readonly string[]): string[] => {
+  const sorted = [...values].sort((left, right) => right.length - left.length);
+  const kept: string[] = [];
+  for (const value of sorted) {
+    const normalized = normalize(value).trim();
+    if (!normalized) continue;
+    if (kept.some((other) => normalize(other).includes(normalized))) continue;
+    kept.push(value);
+  }
+  return values.filter((value) => kept.includes(value));
+};
+
+const withoutMetaTerms = (values: readonly string[]): string[] =>
+  values.filter((value) => {
+    const normalized = normalize(value).trim();
+    if (!normalized) return false;
+    // Auch zusammengesetzte Formen wie "Kontextsignalen" aussortieren.
+    return !normalized.split(/\s+/).every((part) => STOPWORDS.has(part));
+  });
+
 const labelRecord = (
   prefix: string,
   values: readonly string[],
@@ -233,7 +262,7 @@ const labelRecord = (
 const deriveRetrieval: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const pool = semanticPool(spokenText, meaningContract).slice(0, 6);
   const sources = pool.length >= 2 ? pool : ['Beleg', 'Quelle'];
-  const labels = {
+  const labels: Record<string, string> = {
     query: compact(spokenText, 58),
     ...labelRecord('source', sources, 6, ['Beleg', 'Quelle', 'Dokument', 'Hinweis', 'Archiv', 'Kommentar']),
     resultLabel: compact(meaningContract.endState, 60),
@@ -411,7 +440,7 @@ const deriveRanking: RuntimeDeriver = ({spokenText, meaningContract}) => {
     ...meaningContract.resultTerms.map(humanize),
   ]).filter((term) => !candidates.some((candidate) => normalize(candidate) === normalize(term)));
   const numbers = extractNumbers(spokenText).filter((number) => number >= 0 && number <= 100);
-  const labels = {
+  const labels: Record<string, string> = {
     ...labelRecord('candidate', candidates, 3, ['Option A', 'Option B', 'Option C']),
     ...labelRecord('criterion', criteria, 3, ['Kriterium 1', 'Kriterium 2', 'Kriterium 3']),
     resultLabel: compact(meaningContract.endState, 60),
@@ -489,7 +518,7 @@ const deriveSemanticSpace: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const entities = capitalizedEntities(spokenText);
   const pool = unique([...entities, ...semanticPool(spokenText, meaningContract)]).slice(0, 6);
   const contrastIndex = normalize(spokenText).indexOf(' als ');
-  const labels = {
+  const labels: Record<string, string> = {
     ...labelRecord('concept', pool, 6, ['Begriff 1', 'Begriff 2', 'Begriff 3', 'Begriff 4', 'Begriff 5', 'Begriff 6']),
     cluster1: pick(meaningContract.subjectTerms.map(humanize), 0, 'Cluster 1'),
     cluster2: pick(meaningContract.resultTerms.map(humanize), 0, 'Cluster 2'),
@@ -534,7 +563,7 @@ const deriveRelationship: RuntimeDeriver = ({spokenText, meaningContract}) => {
 const deriveProbability: RuntimeDeriver = ({spokenText, meaningContract}) => {
   const entities = capitalizedEntities(spokenText);
   const pool = semanticPool(spokenText, meaningContract);
-  const candidates = unique([...entities, ...meaningContract.resultTerms.map(humanize), ...pool]).slice(0, 3);
+  const candidates = withoutOverlaps(withoutMetaTerms(unique([...entities, ...meaningContract.resultTerms.map(humanize), ...pool]))).slice(0, 3);
   const signals = unique([...meaningContract.subjectTerms.map(humanize), ...meaningContract.actionTerms.map(humanize)]);
   const numbers = extractNumbers(spokenText).filter((number) => number >= 0 && number <= 100);
   const primaryEnd = Math.max(1, Math.min(98, numbers[0] ?? 60));

@@ -1,0 +1,25 @@
+{
+  "slug": "agent-loop-explained",
+  "title": "Wie KI-Agenten wirklich arbeiten",
+  "date": "2026-09-16",
+  "language": "de",
+  "format": {"width": 1920, "height": 1080, "fps": 30},
+  "baselineDurationInFrames": 10020,
+  "baselineDurationSeconds": 334,
+  "voiceoverWordCount": 777,
+  "compositionId": "KI-Longform-AgentLoop",
+  "thumbnailCompositionId": "KI-Longform-AgentLoop-Thumbnail",
+  "visualPolicy": "REMOTION_NATIVE_MAXIMUM",
+  "externalAssets": false,
+  "chapters": [
+    {"id":"hook","startFrame":0,"endFrame":720},
+    {"id":"compare","startFrame":720,"endFrame":1770},
+    {"id":"anatomy","startFrame":1770,"endFrame":2970},
+    {"id":"loop","startFrame":2970,"endFrame":4170},
+    {"id":"example","startFrame":4170,"endFrame":5430},
+    {"id":"tools","startFrame":5430,"endFrame":6690},
+    {"id":"risks","startFrame":6690,"endFrame":7950},
+    {"id":"guardrails","startFrame":7950,"endFrame":9000},
+    {"id":"fit","startFrame":9000,"endFrame":10020}
+  ]
+}

@@ -10,12 +10,17 @@ import {
   PrototypeShell,
   prototypeProgress,
 } from './PrototypeShell';
+import {staggerDelay, type MotionEasingName} from '../../motion/easing';
 
 const C = PROTOTYPE_PALETTE;
 
 const clamp = (value: number): number => Math.max(0, Math.min(1, value));
-const phase = (frame: number, start: number, end: number): number =>
-  prototypeProgress(frame, start, end);
+const phase = (
+  frame: number,
+  start: number,
+  end: number,
+  easing: MotionEasingName = 'enter',
+): number => prototypeProgress(frame, start, end, easing);
 const pulse = (frame: number, speed = 10): number =>
   (Math.sin(frame / speed) + 1) / 2;
 
@@ -84,8 +89,8 @@ const Pill: React.FC<{
 );
 
 const SyllableConveyor: React.FC<{frame: number}> = ({frame}) => {
-  const travel = phase(frame, 8, 112);
-  const sort = phase(frame, 92, 154);
+  const travel = phase(frame, 8, 112, 'move');
+  const sort = phase(frame, 92, 154, 'move');
   const words = ['Neu', 'ro', 'na', 'les', 'Netz'];
   return (
     <Stage label="ERKENNEN → TRENNEN → SORTIEREN">
@@ -132,7 +137,7 @@ const SyllableConveyor: React.FC<{frame: number}> = ({frame}) => {
       </div>
       {words.map((word, index) => {
         const itemStart = 42 + index * 10;
-        const itemTravel = phase(frame, itemStart, itemStart + 65);
+        const itemTravel = phase(frame, itemStart, itemStart + 65, 'move');
         const targetX = 165 + index * 135;
         const targetY = sort > 0 ? 710 + (index % 2) * 132 : 305;
         const x = interpolate(itemTravel, [0, 1], [130, targetX]);
@@ -288,7 +293,7 @@ const MatrixWaterfall: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const ConceptConstellation: React.FC<{frame: number}> = ({frame}) => {
-  const settle = phase(frame, 18, 124);
+  const settle = phase(frame, 18, 124, 'move');
   const lock = phase(frame, 108, 162);
   const nodes = [
     {label: 'Hund', sx: 90, sy: 210, tx: 280, ty: 440, color: C.accent},
@@ -379,6 +384,8 @@ const ConceptConstellation: React.FC<{frame: number}> = ({frame}) => {
 const GraphBloom: React.FC<{frame: number}> = ({frame}) => {
   const grow = phase(frame, 8, 112);
   const prune = phase(frame, 112, 164);
+  // Abgang der schwachen Aeste, getrennt vom Eintritt der Bildunterschrift.
+  const pruneExit = phase(frame, 112, 164, 'exit');
   const branches = [
     {angle: -125, length: 245, strong: false},
     {angle: -72, length: 320, strong: true},
@@ -394,7 +401,7 @@ const GraphBloom: React.FC<{frame: number}> = ({frame}) => {
           const angle = (branch.angle * Math.PI) / 180;
           const x = 466 + Math.cos(angle) * branch.length;
           const y = 560 + Math.sin(angle) * branch.length;
-          const visible = grow * (branch.strong ? 1 : 1 - prune);
+          const visible = grow * (branch.strong ? 1 : 1 - pruneExit);
           return (
             <g key={index} opacity={visible}>
               <path
@@ -543,7 +550,7 @@ const CandidateOrbit: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const TransformerTunnel: React.FC<{frame: number}> = ({frame}) => {
-  const travel = phase(frame, 4, 158);
+  const travel = phase(frame, 4, 158, 'move');
   const rings = ['KONTEXT', 'MUSTER', 'GEWICHT', 'AUSWAHL'];
   return (
     <Stage label="JEDE SCHICHT VERÄNDERT EINE SICHTBARE EIGENSCHAFT">
@@ -635,7 +642,7 @@ const SentenceRibbon: React.FC<{frame: number}> = ({frame}) => {
         }}
       >
         {words.map((word, index) => {
-          const p = phase(frame, 12 + index * 17, 34 + index * 17);
+          const p = phase(frame, 12 + staggerDelay(index, 17), 34 + staggerDelay(index, 17));
           const fold = interpolate(p, [0, 1], [88, 0]);
           return (
             <div
@@ -888,7 +895,7 @@ const PriorityOrbit: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const AutomationCells: React.FC<{frame: number}> = ({frame}) => {
-  const travel = phase(frame, 8, 158);
+  const travel = phase(frame, 8, 158, 'move');
   const cells = [
     {label: 'LESEN', icon: 'A'},
     {label: 'PRÜFEN', icon: '✓'},
@@ -967,7 +974,7 @@ const AutomationCells: React.FC<{frame: number}> = ({frame}) => {
 };
 
 const TransformationPortal: React.FC<{frame: number}> = ({frame}) => {
-  const travel = phase(frame, 10, 154);
+  const travel = phase(frame, 10, 154, 'move');
   const x = interpolate(travel, [0, 1], [130, 820]);
   const morph = phase(frame, 62, 115);
   return (
@@ -1154,7 +1161,7 @@ const PermissionCity: React.FC<{frame: number}> = ({frame}) => {
         <path d="M110 920 C210 760 330 720 470 560 C600 410 700 330 840 170" fill="none" stroke={C.success} strokeWidth="12" strokeLinecap="round" strokeDasharray="1400" strokeDashoffset={1400 * (1 - route)} />
       </svg>
       {gates.map((gate, index) => {
-        const active = phase(frame, 32 + index * 34, 50 + index * 34);
+        const active = phase(frame, 32 + staggerDelay(index, 34), 50 + staggerDelay(index, 34));
         return (
           <div
             key={gate.label}
@@ -1363,7 +1370,7 @@ const VersionEvolutionTree: React.FC<{frame: number}> = ({frame}) => {
         <path d="M520 470 C650 520 740 610 820 690" fill="none" stroke={C.accentSoft} strokeWidth="12" strokeLinecap="round" strokeDasharray="700" strokeDashoffset={700 * (1 - grow)} />
       </svg>
       {versions.map((version, index) => {
-        const p = phase(frame, 18 + index * 18, 42 + index * 18);
+        const p = phase(frame, 18 + staggerDelay(index, 18), 42 + staggerDelay(index, 18));
         return (
           <div
             key={version.label}
@@ -1456,7 +1463,7 @@ const IfThenGates: React.FC<{frame: number}> = ({frame}) => {
   return (
     <Stage label="NUR EIN VOLLSTÄNDIG ERFÜLLTER REGELSATZ ÖFFNET DEN AUSGANG">
       {signals.map((signal, index) => {
-        const p = phase(frame, 18 + index * 36, 62 + index * 36);
+        const p = phase(frame, 18 + staggerDelay(index, 36), 62 + staggerDelay(index, 36));
         return (
           <React.Fragment key={signal.label}>
             <div

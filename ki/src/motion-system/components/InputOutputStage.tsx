@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 import {ProcessingCore} from './ProcessingCore';
 
@@ -26,10 +27,7 @@ export const InputOutputStage: React.FC<{
 
   const input = spring({fps, frame: frame - inputFrame, config: {damping: 18, stiffness: 170}});
   const output = spring({fps, frame: frame - outputFrame, config: {damping: 18, stiffness: 170}});
-  const flow = interpolate(frame, [flowFrame, flowEndFrame], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const flow = easedProgress(frame, flowFrame, flowEndFrame);
 
   const card = (label: string, x: number, y: number, progress: number, accent: string) => {
     const typography = getLabelTypography(label, {maxFontSize: 34, minFontSize: 22});

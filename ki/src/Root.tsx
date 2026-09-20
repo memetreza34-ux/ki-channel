@@ -9,6 +9,7 @@ import voiceoverApp from '../reels/2026-08-10_bis_2026-08-16/04_So-baut-KI-aus-e
 import voiceoverProductAd from '../reels/2026-08-10_bis_2026-08-16/05_So-wird-aus-einem-Produktfoto-ein-KI-Werbeclip/01-script-audio/voiceover.mp4';
 import voiceoverSketchWebsite from '../reels/2026-08-10_bis_2026-08-16/07_So-wird-aus-einer-Skizze-eine-Website/01-script-audio/voiceover.mp4';
 import voiceoverGithubRepo from '../reels/2026-08-10_bis_2026-08-16/08_Was-ist-ein-GitHub-Repository/01-script-audio/voiceover.mp4';
+import voiceoverAgentLoop from '../youtube-longform/2026-09-16/01_Wie-KI-Agenten-wirklich-arbeiten/01-script-audio/voiceover.mp3';
 import {
   CONTEXT_OVERLOAD_COMPOSITION_ID,
   CONTEXT_OVERLOAD_DURATION_IN_FRAMES,
@@ -91,6 +92,30 @@ import {
   LongformAIAppWorkflow,
   ThumbnailAIAppWorkflow,
 } from './longform/ai-app-workflow';
+import {
+  AGENT_LOOP_COMPOSITION_ID,
+  AGENT_LOOP_DURATION_IN_FRAMES,
+  AGENT_LOOP_FPS,
+  AGENT_LOOP_HEIGHT,
+  AGENT_LOOP_THUMBNAIL_ID,
+  AGENT_LOOP_WIDTH,
+  LongformAgentLoop,
+  ThumbnailAgentLoop,
+} from './longform/agent-loop-explained';
+import {
+  BaukastenDemo,
+  DEMO_DAUER,
+  DEMO_FPS,
+  SzeneBewegung,
+  SzeneFlaechen,
+  SzeneIcons,
+  SzeneInteraktion,
+  SzeneLoop,
+  SzeneKontext,
+  SzeneMitUntertitel,
+  KONTEXT_DAUER,
+  UNTERTITEL_DAUER,
+} from './longform/baukasten-demo';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -221,6 +246,103 @@ export const RemotionRoot: React.FC = () => (
         fps={AI_APP_WORKFLOW_FPS}
         width={AI_APP_WORKFLOW_WIDTH}
         height={AI_APP_WORKFLOW_HEIGHT}
+      />
+      <Composition
+        id={AGENT_LOOP_COMPOSITION_ID}
+        component={LongformAgentLoop}
+        defaultProps={{voiceoverSrc: voiceoverAgentLoop}}
+        durationInFrames={AGENT_LOOP_DURATION_IN_FRAMES}
+        fps={AGENT_LOOP_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id={AGENT_LOOP_THUMBNAIL_ID}
+        component={ThumbnailAgentLoop}
+        defaultProps={{}}
+        durationInFrames={1}
+        fps={AGENT_LOOP_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Stummer Funktionsnachweis fuer die Bausteine — kein Voiceover.
+          Jede Szene ist zusaetzlich einzeln registriert, damit sie sich im
+          Studio per Doppelklick aus der Timeline oeffnen laesst. */}
+      <Composition
+        id="KI-Baukasten-Demo"
+        component={BaukastenDemo}
+        defaultProps={{}}
+        durationInFrames={DEMO_DAUER}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Icons"
+        component={SzeneIcons}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Flaechen"
+        component={SzeneFlaechen}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Loop"
+        component={SzeneLoop}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Bewegung"
+        component={SzeneBewegung}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      <Composition
+        id="KI-Baukasten-Interaktion"
+        component={SzeneInteraktion}
+        defaultProps={{}}
+        durationInFrames={170}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Vollstaendige Szene mit Untertiteln statt Ton — zum Mitlesen,
+          solange kein Voiceover aufgenommen ist. */}
+      <Composition
+        id="KI-Szene-Untertitel"
+        component={SzeneMitUntertitel}
+        defaultProps={{}}
+        durationInFrames={UNTERTITEL_DAUER}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
+      />
+      {/* Anderes Thema, andere Bausteine: Klappanzeige, Ziffernwalze,
+          Balken, gezeichnete Flaeche, Donut — alle vorher ungenutzt. */}
+      <Composition
+        id="KI-Szene-Kontextfenster"
+        component={SzeneKontext}
+        defaultProps={{}}
+        durationInFrames={KONTEXT_DAUER}
+        fps={DEMO_FPS}
+        width={AGENT_LOOP_WIDTH}
+        height={AGENT_LOOP_HEIGHT}
       />
     </Folder>
 

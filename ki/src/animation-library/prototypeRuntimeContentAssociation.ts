@@ -71,7 +71,10 @@ const winnerCueIndex = (
     if (normalize(label).length < 2) continue;
     const escapedLabel = normalizedLabelPattern(label);
     const peers = labels.filter((_, labelIndex) => labelIndex !== index);
-    const gap = winnerGap(peers, 18);
+    // 18 Zeichen sind fuer deutsche Saetze zu knapp: zwischen Subjekt und
+    // Siegermarker steht oft eine Angabe wie "erreicht 96 Punkte und".
+    // Die Luecke sperrt weiterhin Peer-Labels, Verneinungen und Satzgrenzen.
+    const gap = winnerGap(peers, 32);
     const labelBeforeCue = new RegExp(
       `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}\\b${cue}\\b${notNegatedAfterCue}`,
     );
@@ -95,10 +98,10 @@ const scoreForLabel = (
   const gap = safeGap(otherLabels, 24);
   const score = '(-?\\d+(?:[.,]\\d+)?)';
   const labelBefore = new RegExp(
-    `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${score}\\s*(?:punkte?|points?|%|prozent)\\b`,
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${gap}${score}\\s*(?:%|(?:punkte?|points?|prozent)\\b)`,
   );
   const scoreBefore = new RegExp(
-    `${score}\\s*(?:punkte?|points?|%|prozent)\\b${safeGap(otherLabels, 18)}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    `${score}\\s*(?:%|(?:punkte?|points?|prozent)\\b)${safeGap(otherLabels, 18)}\\b(?:fur|bei|von)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
   );
   const match = labelBefore.exec(text) ?? scoreBefore.exec(text);
   if (!match) return null;
@@ -117,10 +120,10 @@ const percentageForLabel = (
   const escapedLabel = normalizedLabelPattern(label);
   const number = '(\\d{1,3}(?:[.,]\\d+)?)';
   const labelBefore = new RegExp(
-    `(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap(otherLabels, 28)}${number}\\s*(?:%|prozent)\\b`,
+    `(?:^|\\b)${escapedLabel}(?:\\b|$)${safeGap(otherLabels, 28)}${number}\\s*(?:%|prozent\\b)`,
   );
   const percentageBefore = new RegExp(
-    `${number}\\s*(?:%|prozent)\\b${safeGap(otherLabels, 20)}\\b(?:fur|bei|auf|entfallen\\s+auf|fallen\\s+auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
+    `${number}\\s*(?:%|prozent\\b)${safeGap(otherLabels, 20)}\\b(?:fur|bei|auf|entfallen\\s+auf|fallen\\s+auf)\\b\\s+(?:^|\\b)${escapedLabel}(?:\\b|$)`,
   );
   const match = labelBefore.exec(text) ?? percentageBefore.exec(text);
   if (!match) return null;
@@ -324,7 +327,7 @@ const distributeProbabilityRemainder = (
   exactValues: readonly (number | null)[],
   fallbackValues: readonly number[],
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -367,7 +370,7 @@ const alignProbabilityWinner = (
   exactValues: readonly (number | null)[],
   winnerIndex: number,
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );

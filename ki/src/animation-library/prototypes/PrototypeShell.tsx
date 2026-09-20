@@ -1,7 +1,8 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 import {usePrototypeContent} from './PrototypeContentContext';
+import {easedProgress, followThrough, type MotionEasingName} from '../../motion/easing';
 
 export const PROTOTYPE_PALETTE = {
   background: '#F8F7FB',
@@ -20,15 +21,21 @@ const PRODUCTION_CONTENT_LIFT_PX = 96;
 const PRODUCTION_ANIMATION_CUTOFF_Y = 1440;
 const PRODUCTION_ANIMATION_CLIP_BOTTOM_PX = 1920 - PRODUCTION_ANIMATION_CUTOFF_Y;
 
+/**
+ * Zentrale Zeitachse aller Prototypen.
+ *
+ * Bewusst NICHT linear: eine lineare Rampe hat weder Anlauf noch Auslauf und
+ * liest sich als mechanisch. Standard ist eine Ease-out-Kurve - schneller
+ * Einsatz, sanftes Einschwingen.
+ *
+ * Fuer Endlos-Schleifen (Spinner, Marquee) explizit 'loop' uebergeben.
+ */
 export const prototypeProgress = (
   frame: number,
   start: number,
   end: number,
-): number =>
-  interpolate(frame, [start, end], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  easing: MotionEasingName = 'enter',
+): number => easedProgress(frame, start, end, easing);
 
 const readableFamily = (value: string): string =>
   value.replace(/[-_]+/g, ' ').toLocaleUpperCase('de-DE');
@@ -141,6 +148,12 @@ export const PrototypeShell: React.FC<{
   const content = usePrototypeContent();
   const progress = prototypeProgress(frame, 0, durationInFrames - 1);
   const titleEnter = prototypeProgress(frame, 0, 18);
+  // Nachlauf: Augenbraue, Titel und Unterzeile sind ein gestapelter Block.
+  // Kommen sie auf demselben Frame zur Ruhe, liest das Auge ein einziges
+  // flaches Ereignis. Gestaffelt liest es drei Stufen einer Aussage.
+  const eyebrowEnter = prototypeProgress(frame, followThrough(0, 0), 18);
+  const headlineEnter = prototypeProgress(frame, followThrough(0, 1), 20);
+  const subtitleEnter = prototypeProgress(frame, followThrough(0, 2), 22);
   const displayFamily = readableFamily(family);
   const displayTitle = content
     ? content.title?.trim() || contentTitleFromMeaning(content)
@@ -171,6 +184,25 @@ export const PrototypeShell: React.FC<{
         }}
       />
 
+      {/*
+        Textur-Ebene der Bewegungshierarchie: unterschwellig, kontrastarm,
+        unbewegt. Die grossflaechigen Lila-Verlaeufe auf 1080x1920 neigen zu
+        Banding, besonders nach der Plattform-Kompression. Feines Korn bricht
+        die Stufen auf. Gekachelt statt bildfuellend, damit der Filter pro Frame
+        bezahlbar bleibt.
+      */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.8%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27180%27%20height%3D%27180%27%20filter%3D%27url%28%23n%29%27%2F%3E%3C%2Fsvg%3E")`,
+          backgroundSize: '180px 180px',
+          opacity: 0.035,
+          mixBlendMode: 'multiply',
+          pointerEvents: 'none',
+        }}
+      />
+
       {content ? (
         <div
           style={{
@@ -193,7 +225,7 @@ export const PrototypeShell: React.FC<{
             style={{
               maxWidth: 820,
               color: BRAND.accentDk,
-              fontFamily: BRAND.font,
+              fontFamily: BRAND.font.body,
               fontSize: displayTitle.length > 30 ? 50 : 58,
               lineHeight: 1.02,
               fontWeight: 900,
@@ -211,8 +243,6 @@ export const PrototypeShell: React.FC<{
             left: 88,
             right: 88,
             top: 105,
-            opacity: titleEnter,
-            transform: `translateY(${(1 - titleEnter) * -30}px)`,
             zIndex: 20,
           }}
         >
@@ -223,6 +253,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 900,
               letterSpacing: 4,
               textTransform: 'uppercase',
+              opacity: eyebrowEnter,
+              transform: `translateY(${(1 - eyebrowEnter) * -30}px)`,
             }}
           >
             ANIMATION LIBRARY · {displayFamily}
@@ -236,6 +268,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 900,
               letterSpacing: -2,
               maxWidth: 900,
+              opacity: headlineEnter,
+              transform: `translateY(${(1 - headlineEnter) * -30}px)`,
             }}
           >
             {displayTitle}
@@ -248,6 +282,8 @@ export const PrototypeShell: React.FC<{
               fontWeight: 700,
               color: PROTOTYPE_PALETTE.muted,
               maxWidth: 860,
+              opacity: subtitleEnter,
+              transform: `translateY(${(1 - subtitleEnter) * -30}px)`,
               display: '-webkit-box',
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',

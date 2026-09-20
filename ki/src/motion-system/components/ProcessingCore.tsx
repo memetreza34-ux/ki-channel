@@ -1,5 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
+import {easedProgress} from '../../motion/easing';
 import {getLabelTypography} from '../textLayout';
 
 export const PROCESSING_CORE_ENTRY_DURATION = 16;
@@ -16,12 +17,7 @@ export const getProcessingCoreEntryProgress = (
     throw new Error('Core-Einstiegsdauer muss eine positive Zahl sein.');
   }
 
-  return interpolate(
-    frame,
-    [startFrame, startFrame + durationFrames],
-    [0, 1],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
+  return easedProgress(frame, startFrame, startFrame + durationFrames);
 };
 
 export const ProcessingCore: React.FC<{
