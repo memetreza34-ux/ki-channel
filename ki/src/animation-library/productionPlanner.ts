@@ -14,6 +14,7 @@ import {
   createCatalogEntryFromBuildSpec,
   type AnimationBuildSpec,
 } from './proposalCompiler';
+import {findVisualDiversityWarnings} from './visualFingerprint';
 
 export type ProductionSceneAnimationPlan = {
   sceneId: string;
@@ -253,7 +254,12 @@ export const planProductionReelAnimations = ({
   const motionSignatures = scenePlans.map(
     (scene) => scene.catalogEntry.motionSignature,
   );
-  const qualityWarnings = [...choreography.warnings];
+  const qualityWarnings = [
+    ...choreography.warnings,
+    ...findVisualDiversityWarnings(
+      scenePlans.map((scene) => scene.catalogEntry),
+    ),
+  ];
 
   const allowedNewAnimations = Math.ceil(
     scenes.length * maximumNewAnimationRatio,
