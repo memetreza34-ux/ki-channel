@@ -69,6 +69,17 @@ const normalize = (value: string): string =>
 const includesAny = (corpus: string, values: readonly string[]): boolean =>
   values.some((value) => corpus.includes(value));
 
+const hasExplicitThreeMarker = (corpus: string): boolean =>
+  includesAny(corpus, [
+    'three-js',
+    'react-three',
+    'three-canvas',
+    'three-object',
+    'webgl',
+    'webgpu',
+    'r3f-',
+  ]);
+
 const entryCorpus = (entry: AnimationLibraryEntry): string =>
   normalize(
     [
@@ -88,9 +99,7 @@ const entryCorpus = (entry: AnimationLibraryEntry): string =>
   );
 
 const inferPrimaryPrimitive = (corpus: string): VisualPrimaryPrimitive => {
-  if (includesAny(corpus, ['three-', 'webgl', '3d-object', 'mesh-', 'geometry-'])) {
-    return 'three-object';
-  }
+  if (hasExplicitThreeMarker(corpus)) return 'three-object';
   if (includesAny(corpus, ['card', 'panel', 'tile'])) return 'card';
   if (includesAny(corpus, ['chart', 'graph', 'bar-', 'plot-', 'meter-'])) return 'chart';
   if (includesAny(corpus, ['kinetic-type', 'typography', 'word-', 'text-', 'headline-'])) {
@@ -139,9 +148,7 @@ const inferCameraMotion = (
 };
 
 const inferDepthStyle = (corpus: string): VisualDepthStyle => {
-  if (includesAny(corpus, ['three-', 'webgl', '3d-object', 'mesh-', 'geometry-'])) {
-    return 'three-3d';
-  }
+  if (hasExplicitThreeMarker(corpus)) return 'three-3d';
   if (includesAny(corpus, ['pseudo-3d', 'perspective', 'depth-', 'corridor', 'z-axis'])) {
     return 'pseudo-3d';
   }
@@ -167,7 +174,7 @@ const inferEntryMechanism = (corpus: string): VisualEntryMechanism => {
 const inferMedium = (corpus: string): VisualMedium => {
   if (includesAny(corpus, ['lottie'])) return 'lottie';
   if (includesAny(corpus, ['rive'])) return 'rive';
-  if (includesAny(corpus, ['three-', 'webgl', 'react-three', 'mesh-'])) return 'three';
+  if (hasExplicitThreeMarker(corpus)) return 'three';
   if (includesAny(corpus, ['hybrid', 'image-required', 'photo-', 'bitmap-'])) return 'hybrid';
   return 'remotion-native';
 };
