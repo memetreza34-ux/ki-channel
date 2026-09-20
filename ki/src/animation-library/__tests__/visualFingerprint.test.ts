@@ -66,7 +66,7 @@ describe('visual fingerprints', () => {
     const spatial = makeEntry({
       animationId: 'spatial-v1',
       title: 'Layered 3D object corridor',
-      description: 'A Three WebGL object moves through a layered depth corridor.',
+      description: 'A React Three WebGL object moves through a layered depth corridor.',
       visualFamily: 'spatial-metaphor',
       layoutFamily: 'layered-depth-corridor',
       motionSignature: 'assemble-orbit-depth-resolve',
@@ -79,6 +79,22 @@ describe('visual fingerprints', () => {
     expect(visualSimilarityScore(cards, spatial)).toBeLessThan(
       VISUAL_SIMILARITY_HARD_LIMIT,
     );
+    expect(deriveVisualFingerprint(spatial).medium).toBe('three');
+  });
+
+  it('does not confuse the word three with a Three.js renderer', () => {
+    const fluidColumns = makeEntry({
+      animationId: 'probability-three-fluid-columns-v1',
+      title: 'Three Fluid Columns',
+      description: 'Three probability columns rise and fall as values change.',
+      layoutFamily: 'three-fluid-columns',
+      primitiveTags: ['probability-column', 'value-label', 'selected-token'],
+      cameraStyle: 'locked-front-view',
+    });
+    const fingerprint = deriveVisualFingerprint(fluidColumns);
+    expect(fingerprint.medium).toBe('remotion-native');
+    expect(fingerprint.depthStyle).not.toBe('three-3d');
+    expect(fingerprint.primaryPrimitive).not.toBe('three-object');
   });
 
   it('warns about repeated primitives, locked camera and flat depth across a run', () => {
