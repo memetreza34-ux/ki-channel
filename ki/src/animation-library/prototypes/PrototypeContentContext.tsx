@@ -49,8 +49,9 @@ const matchCount = (value: string, pattern: RegExp): number =>
 const likelyEnglishState = (value: string): boolean => {
   // Strong markers are English grammar/action words that are unlikely to appear
   // naturally in a German render state. Technical nouns such as input/output/result
-  // and weak articles are deliberately insufficient on their own. This prevents
-  // German sentences such as “An der Grenze …” from being mistaken for English.
+  // are deliberately insufficient on their own. English articles `a`/`an` are not
+  // markers because German `an` is a frequent preposition and may appear twice in
+  // one perfectly valid state (for example “An der Grenze … an.”).
   const strongMarkerCount = matchCount(
     value,
     /\b(multiple|several|visible|through|while|without|into|from|remains|changes|shows|begins|ends|waits|moves|becomes|increases|reduces|fixed|clearly|labeled)\b/gi,
@@ -59,7 +60,7 @@ const likelyEnglishState = (value: string): boolean => {
 
   const weakMarkerCount = matchCount(
     value,
-    /\b(the|a|an|one|state|result|input|output|and)\b/gi,
+    /\b(the|one|state|result|input|output|and)\b/gi,
   );
   return weakMarkerCount >= 2;
 };
@@ -169,7 +170,7 @@ export const getPrototypeValue = ({
   fallback,
 }: {
   content: ResolvedPrototypeContent | null;
-  key: string;
+  key: string,
   fallback: string | number;
 }): string | number => content?.values[key] ?? fallback;
 
