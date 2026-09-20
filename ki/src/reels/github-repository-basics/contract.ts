@@ -1,3 +1,6 @@
+import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {GITHUB_REPOSITORY_VISUAL_PROFILES} from './visualProfiles';
+
 export const GITHUB_REPOSITORY_COMPOSITION_ID = 'KI-GitHubRepository';
 export const GITHUB_REPOSITORY_FPS = 30;
 export const GITHUB_REPOSITORY_WIDTH = 1080;
@@ -43,3 +46,28 @@ export const GITHUB_REPOSITORY_SUBTITLES: GitHubRepositoryCue[] = [
   {sceneId:'repo-05',startFrame:1350,endFrame:1500,text:'Es bündelt Dateien, Versionsverlauf und Zusammenarbeit an einem Ort.'},
   {sceneId:'repo-05',startFrame:1500,endFrame:1785,text:'Wenn jemand dir also ein GitHub-Repo schickt, zeigt er dir nicht nur Code, sondern die komplette Entwicklung des Projekts.'},
 ];
+
+export const assertGitHubRepositoryVisualContract = (): void => {
+  if (
+    GITHUB_REPOSITORY_WIDTH !== 1080 ||
+    GITHUB_REPOSITORY_HEIGHT !== 1920 ||
+    GITHUB_REPOSITORY_FPS !== 30
+  ) {
+    throw new Error('GitHub repository reel format must be 1080x1920 @30fps');
+  }
+  if (GITHUB_REPOSITORY_SCENES.length !== 5) {
+    throw new Error('GitHub repository reel must contain five authored scenes');
+  }
+  const plannedSceneIds = GITHUB_REPOSITORY_SCENES.map((scene) => scene.sceneId);
+  const profiledSceneIds = GITHUB_REPOSITORY_VISUAL_PROFILES.map(
+    (profile) => profile.sceneId,
+  );
+  if (plannedSceneIds.join('|') !== profiledSceneIds.join('|')) {
+    throw new Error(
+      'GitHub repository visual profiles must exactly cover the authored scene order',
+    );
+  }
+  assertAuthoredVisualDiversity(GITHUB_REPOSITORY_VISUAL_PROFILES);
+};
+
+assertGitHubRepositoryVisualContract();
