@@ -1,8 +1,15 @@
 import {access, readFile, readdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
-const ROOT_PATH = resolve('ki/src/Root.tsx');
-const rootSource = await readFile(ROOT_PATH, 'utf8');
+const STUDIO_ROOT_PATH = resolve('ki/src/Root.tsx');
+const PRODUCTION_ROOT_PATH = resolve('ki/src/ProductionRoot.tsx');
+const PRODUCTION_ENTRY_PATH = resolve('ki/src/production-entry.tsx');
+
+const [studioRootSource, productionRootSource, productionEntrySource] = await Promise.all([
+  readFile(STUDIO_ROOT_PATH, 'utf8'),
+  readFile(PRODUCTION_ROOT_PATH, 'utf8'),
+  readFile(PRODUCTION_ENTRY_PATH, 'utf8'),
+]);
 const failures = [];
 
 const exists = async (path) => {
@@ -14,24 +21,41 @@ const exists = async (path) => {
   }
 };
 
-if (/01-script-audio\/voiceover\.(?:wav|mp3|mp4|m4a|aac|ogg)/i.test(rootSource)) {
+const hasStaticVoiceoverImport = (source) =>
+  /01-script-audio\/voiceover\.(?:wav|mp3|mp4|m4a|aac|ogg)/i.test(source) ||
+  /import\s+voiceover[A-Za-z0-9_]*\s+from\s+['"]/i.test(source);
+
+if (hasStaticVoiceoverImport(productionRootSource)) {
   failures.push(
-    'Root.tsx darf optionale Phase-2-Voiceover-Dateien nicht statisch importieren; echtes Audio wird in Phase 3 als voiceoverSrc-Prop übergeben.',
+    'ProductionRoot.tsx darf optionale Phase-2-Voiceover-Dateien nicht statisch importieren; echtes Audio wird in Phase 3 als voiceoverSrc-Prop übergeben.',
   );
 }
-if (/import\s+voiceover[A-Za-z0-9_]*\s+from\s+['"]/i.test(rootSource)) {
-  failures.push(
-    'Root.tsx enthält einen direkten Voiceover-Import. Der kanonische Production-Root muss auch ohne Phase-2-Audio bundlen.',
-  );
+if (!studioRootSource.includes("from './ProductionRoot'")) {
+  failures.push('Root.tsx muss ProductionRoot als einzige Production-Registrierung einbinden.');
+}
+if (!studioRootSource.includes("from './motion-system/MotionPreviewRoot'")) {
+  failures.push('Root.tsx muss MotionPreviewRoot nur als Studio-/Preview-Erweiterung einbinden.');
+}
+if (/from\s+['"]\.\/(?:reels|longform)\//.test(studioRootSource)) {
+  failures.push('Root.tsx darf keine Production-Reels/Longform direkt importieren; diese Liste gehört ausschließlich in ProductionRoot.tsx.');
+}
+if (!productionEntrySource.includes("from './ProductionRoot'")) {
+  failures.push('production-entry.tsx muss ausschließlich den kanonischen ProductionRoot registrieren.');
+}
+if (!productionEntrySource.includes('registerRoot(ProductionRoot)')) {
+  failures.push('production-entry.tsx registriert ProductionRoot nicht.');
+}
+if (productionEntrySource.includes('MotionPreviewRoot') || productionEntrySource.includes('motion-system/')) {
+  failures.push('production-entry.tsx darf keinerlei Legacy-/Preview-Motion-System importieren.');
 }
 
 const registeredModulePaths = [
-  ...rootSource.matchAll(/from\s+['"](\.\/(?:reels|longform)\/[^'"]+)['"]/g),
+  ...productionRootSource.matchAll(/from\s+['"](\.\/(?:reels|longform)\/[^'"]+)['"]/g),
 ].map((match) => match[1]);
 
 const uniqueModulePaths = [...new Set(registeredModulePaths)];
 if (uniqueModulePaths.length === 0) {
-  throw new Error('Root.tsx enthält keine registrierten Production-Reel-/Longform-Module.');
+  throw new Error('ProductionRoot.tsx enthält keine registrierten Production-Reel-/Longform-Module.');
 }
 
 for (const modulePath of uniqueModulePaths) {
@@ -75,13 +99,13 @@ const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./lo
 
 if (reelModules.length !== 9) {
   failures.push(
-    `Root.tsx erwartet derzeit 9 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 9 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }
 if (longformModules.length !== 1) {
   failures.push(
-    `Root.tsx erwartet derzeit 1 Longform-Production-Modul, gefunden: ${longformModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 1 Longform-Production-Modul, gefunden: ${longformModules.length}. ` +
       'Wenn Longform erweitert wurde, diesen Guard bewusst aktualisieren.',
   );
 }
@@ -93,5 +117,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts, einen aktiven Authored-Diversity-Gate und der Root bleibt ohne optionales Phase-2-Audio bundelbar.`,
+  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts und einen aktiven Authored-Diversity-Gate; Studio- und Production-Entry sind getrennt und Production bleibt ohne optionales Phase-2-Audio bundelbar.`,
 );
