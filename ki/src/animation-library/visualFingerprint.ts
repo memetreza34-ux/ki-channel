@@ -98,24 +98,56 @@ const entryCorpus = (entry: AnimationLibraryEntry): string =>
     ].join(' '),
   );
 
-const inferPrimaryPrimitive = (corpus: string): VisualPrimaryPrimitive => {
-  if (hasExplicitThreeMarker(corpus)) return 'three-object';
-  if (includesAny(corpus, ['card', 'panel', 'tile'])) return 'card';
-  if (includesAny(corpus, ['chart', 'graph', 'bar-', 'plot-', 'meter-'])) return 'chart';
-  if (includesAny(corpus, ['kinetic-type', 'typography', 'word-', 'text-', 'headline-'])) {
+const primitiveCorpus = (entry: AnimationLibraryEntry): string =>
+  normalize(entry.primitiveTags.join(' '));
+
+const structuralCorpus = (entry: AnimationLibraryEntry): string =>
+  normalize(
+    [
+      entry.title,
+      entry.visualFamily,
+      entry.layoutFamily,
+      entry.motionSignature,
+      entry.noveltyGroup,
+      ...entry.explanationPatterns,
+    ].join(' '),
+  );
+
+const inferPrimaryPrimitive = (
+  entry: AnimationLibraryEntry,
+  corpus: string,
+): VisualPrimaryPrimitive => {
+  const primitives = primitiveCorpus(entry);
+  const structure = structuralCorpus(entry);
+  const strong = `${primitives}-${structure}`;
+
+  if (hasExplicitThreeMarker(strong) || hasExplicitThreeMarker(corpus)) {
+    return 'three-object';
+  }
+  if (includesAny(strong, ['chart', 'bar-chart', 'plot-', 'meter-', 'axis-', 'histogram'])) {
+    return 'chart';
+  }
+  if (includesAny(strong, ['kinetic-type', 'typography', 'word-form', 'word-', 'text-strip', 'headline-'])) {
     return 'typography';
   }
-  if (includesAny(corpus, ['particle', 'spark', 'fragment-cloud'])) return 'particles';
-  if (includesAny(corpus, ['node', 'network', 'cluster', 'constellation'])) return 'nodes';
-  if (includesAny(corpus, ['path', 'route', 'connector', 'line-', 'flow-line'])) return 'path';
-  if (includesAny(corpus, ['browser', 'terminal', 'window', 'app-', 'interface', 'ui-'])) {
+  if (includesAny(strong, ['particle', 'spark', 'fragment-cloud', 'data-particles'])) {
+    return 'particles';
+  }
+  if (includesAny(strong, ['network-node', 'node-', 'network', 'cluster', 'constellation', 'dependency-bridge'])) {
+    return 'nodes';
+  }
+  if (includesAny(strong, ['flow-path', 'path-node', 'path-', 'route-', 'connector', 'line-', 'trace-marker', 'workflow-map'])) {
+    return 'path';
+  }
+  if (includesAny(strong, ['browser', 'terminal', 'window', 'app-', 'interface', 'ui-', 'ui-surface', 'state-control'])) {
     return 'ui';
   }
-  if (includesAny(corpus, ['illustration', 'metaphor', 'scene-', 'environment'])) {
+  if (includesAny(strong, ['illustration', 'metaphor', 'scene-', 'environment'])) {
     return 'illustration';
   }
   if (
-    includesAny(corpus, [
+    includesAny(strong, [
+      'semantic-object',
       'object',
       'device',
       'document',
@@ -124,10 +156,22 @@ const inferPrimaryPrimitive = (corpus: string): VisualPrimaryPrimitive => {
       'phone',
       'cube',
       'prism',
+      'layer-plane',
     ])
   ) {
     return 'object';
   }
+
+  const cardDominantInPrimitives = includesAny(primitives, ['card', 'panel', 'tile']);
+  const cardDominantInLayout = includesAny(structure, [
+    'card-grid',
+    'card-stack',
+    'card-route',
+    'panel-grid',
+    'tile-grid',
+  ]);
+  if (cardDominantInPrimitives || cardDominantInLayout) return 'card';
+
   return 'mixed';
 };
 
@@ -184,7 +228,7 @@ export const deriveVisualFingerprint = (
 ): VisualFingerprint => {
   const corpus = entryCorpus(entry);
   return {
-    primaryPrimitive: inferPrimaryPrimitive(corpus),
+    primaryPrimitive: inferPrimaryPrimitive(entry, corpus),
     cameraMotion: inferCameraMotion(entry, corpus),
     depthStyle: inferDepthStyle(corpus),
     entryMechanism: inferEntryMechanism(corpus),
