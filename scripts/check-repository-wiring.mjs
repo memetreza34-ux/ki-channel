@@ -12,7 +12,6 @@ const readJson = async (path) => {
     return null;
   }
 };
-
 const readText = async (path) => {
   try {
     return await readFile(path, 'utf8');
@@ -21,32 +20,18 @@ const readText = async (path) => {
     return '';
   }
 };
-
 const exists = async (path) => {
-  try {
-    await access(path);
-    return true;
-  } catch {
-    return false;
-  }
+  try { await access(path); return true; } catch { return false; }
 };
-
 const assertFile = async (path) => {
   if (!(await exists(path))) failures.push(`Pflichtdatei fehlt: ${path}`);
 };
-
 const requireMarkers = (label, text, markers) => {
-  for (const marker of markers) {
-    if (!text.includes(marker)) failures.push(`${label}: Pflichtmarker fehlt: ${marker}`);
-  }
+  for (const marker of markers) if (!text.includes(marker)) failures.push(`${label}: Pflichtmarker fehlt: ${marker}`);
 };
-
 const forbidMarkers = (label, text, markers) => {
-  for (const marker of markers) {
-    if (text.includes(marker)) failures.push(`${label}: veralteter/unerlaubter Marker gefunden: ${marker}`);
-  }
+  for (const marker of markers) if (text.includes(marker)) failures.push(`${label}: veralteter/unerlaubter Marker gefunden: ${marker}`);
 };
-
 const walkSourceFiles = async (directory) => {
   const files = [];
   const entries = await readdir(directory, {withFileTypes: true});
@@ -92,15 +77,18 @@ const creativeRecipeRuntime = await readText('ki/src/animation-library/creativeR
 const productionSceneRuntime = await readText('ki/src/animation-library/productionSceneRuntime.tsx');
 const creativeRecipeRender = await readText('scripts/render-creative-recipes.mjs');
 const creativeRecipeCheck = await readText('scripts/check-creative-recipe-renders.mjs');
+const creativeRecipeReleaseContract = await readText('scripts/creative-recipe-release-contract.mjs');
+const contentReviewContract = await readText('scripts/content-review-contract.mjs');
+const reviewGallery = await readText('scripts/build-content-review-gallery.mjs');
+const reviewGalleryVerifier = await readText('scripts/verify-content-review-gallery.mjs');
+const releaseFinalizer = await readText('scripts/finalize-content-release.mjs');
+const releaseStatus = await readText('scripts/content-release-status.mjs');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
-  if (JSON.stringify(root.workspaces) !== JSON.stringify(expectedWorkspaces)) {
-    failures.push(`package.json workspaces müssen exakt ${expectedWorkspaces.join(', ')} sein.`);
-  }
+  if (JSON.stringify(root.workspaces) !== JSON.stringify(expectedWorkspaces)) failures.push(`package.json workspaces müssen exakt ${expectedWorkspaces.join(', ')} sein.`);
   if (root.name !== 'ki-channel') failures.push('package.json name muss ki-channel sein.');
   if (root.engines?.node !== '>=20 <21') failures.push('package.json muss Node 20 festlegen (>=20 <21).');
-
   const requiredScripts = {
     'ki:reel:structure-check': 'node scripts/check-ki-reel-folder-structure.mjs',
     'repo:wiring-check': 'node scripts/check-repository-wiring.mjs',
@@ -116,10 +104,7 @@ if (root) {
     'creative-recipes:full-release-check': 'npm run creative-recipes:verify && npm run creative-recipes:render && npm run creative-recipes:check',
     'new-video': 'node scripts/new-ki-reel.mjs',
   };
-  for (const [name, command] of Object.entries(requiredScripts)) {
-    if (root.scripts?.[name] !== command) failures.push(`package.json script ${name} muss exakt "${command}" sein.`);
-  }
-
+  for (const [name, command] of Object.entries(requiredScripts)) if (root.scripts?.[name] !== command) failures.push(`package.json script ${name} muss exakt "${command}" sein.`);
   const serializedScripts = JSON.stringify(root.scripts ?? {});
   for (const target of ['validate-worktree-rules.mjs','validate-channels.mjs','validate-studio-skills.mjs','scripts/typecheck.mjs','scripts/new-channel.sh','prepare-voiceover.mjs','transcribe.mjs']) {
     if (serializedScripts.includes(target)) failures.push(`Totes Legacy-Skript ist wieder eingetragen: ${target}`);
@@ -134,7 +119,6 @@ if (ki) {
   if (ki.name !== '@studio/ki') failures.push('ki/package.json name muss @studio/ki sein.');
   if (ki.dependencies?.['@studio/core'] !== '*') failures.push('ki/package.json muss @studio/core als Workspace-Abhängigkeit deklarieren.');
 }
-
 if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
 if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts enthält wieder channels/**.');
 
@@ -149,8 +133,14 @@ requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Vis
 requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
 requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','assertCreativeRecipeRuntimeContract','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
 requireMarkers('productionSceneRuntime.tsx', productionSceneRuntime, ['buildProductionSceneRuntime','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','ANIMATION_PROTOTYPE_REGISTRY']);
-requireMarkers('render-creative-recipes.mjs', creativeRecipeRender, ['CreativeRecipe-','CREATIVE_RECIPE_IDS','smoke','stills','videos','render-plan.json']);
-requireMarkers('check-creative-recipe-renders.mjs', creativeRecipeCheck, ['technical-check.json','1080','1100','ftyp','PNG_SIGNATURE']);
+requireMarkers('creative-recipe-release-contract.mjs', creativeRecipeReleaseContract, ['CREATIVE_RECIPE_IDS','CREATIVE_RECIPE_RENDER_CONTRACT','CREATIVE_RECIPE_REVIEW_EXPECTATIONS','getCreativeRecipeSourceFingerprint','width: 1080','height: 1100']);
+requireMarkers('content-review-contract.mjs', contentReviewContract, ['CONTENT_REVIEW_COUNTS','production: 22','edge: 6','CONTENT_REVIEW_REQUIRED_CHECK_KEYS']);
+requireMarkers('render-creative-recipes.mjs', creativeRecipeRender, ['creative-recipe-release-contract.mjs','getCreativeRecipeSourceFingerprint','render-plan.json','sourceFingerprint','generatedAt']);
+requireMarkers('check-creative-recipe-renders.mjs', creativeRecipeCheck, ['technical-check.json','CREATIVE_RECIPE_RENDER_CONTRACT','getCreativeRecipeSourceFingerprint','ftyp','PNG_SIGNATURE']);
+requireMarkers('build-content-review-gallery.mjs', reviewGallery, ['CREATIVE_RECIPE_REVIEW_EXPECTATIONS','recipeCount','recipeSourceFingerprint','Creative Recipes','version: 2']);
+requireMarkers('verify-content-review-gallery.mjs', reviewGalleryVerifier, ['getCreativeRecipeSourceFingerprint','CONTENT_REVIEW_COUNTS','recipeCount','Creative-Recipe-Review']);
+requireMarkers('finalize-content-release.mjs', releaseFinalizer, ['check-creative-recipe-renders.mjs','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS','version: 2']);
+requireMarkers('content-release-status.mjs', releaseStatus, ['getCreativeRecipeSourceFingerprint','creativeRecipes: recipeState','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS']);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
@@ -172,7 +162,6 @@ forbidMarkers('AGENTS.md', agents, ['channels/ki','--workspaces=false']);
 forbidMarkers('GEMINI.md', gemini, ['channels/ki','--workspaces=false','Only after preflight may executable implementation be created']);
 forbidMarkers('ki/README.md', kiReadme, ['channels/ki','agent/ki-reel-builder-v1','CHATGPT_START_HIER.md','Draft-PR']);
 forbidMarkers('CODEX_REEL_WORKFLOW.md', codexWorkflow, ['_codex-hybrid-template']);
-
 for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platform-copy.md', "'05-export'", 'PHASE-STATUS.md']) {
   if (!generator.includes(marker)) failures.push(`new-ki-reel.mjs: kanonischer Generator-Marker fehlt: ${marker}`);
 }
@@ -187,7 +176,7 @@ for (const path of [
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
   'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
   'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs','scripts/render-creative-recipes.mjs','scripts/check-creative-recipe-renders.mjs',
+  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs','scripts/render-creative-recipes.mjs','scripts/check-creative-recipe-renders.mjs','scripts/creative-recipe-release-contract.mjs','scripts/content-review-contract.mjs','scripts/build-content-review-gallery.mjs','scripts/verify-content-review-gallery.mjs','scripts/verify-content-visual-review.mjs','scripts/finalize-content-release.mjs','scripts/content-release-status.mjs','scripts/check-content-release-status-contract.mjs',
   '.agents/skills/build-context-overload-reel/SKILL.md'
 ]) await assertFile(path);
 
@@ -199,10 +188,8 @@ if (await exists('ki/src/reels')) {
     }
   }
 }
-
 if (await exists('ki/reels/_codex-hybrid-template')) failures.push('Veralteter ki/reels/_codex-hybrid-template darf nicht mehr existieren.');
 if (await exists('ki/reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/PHASE-2-IMPLEMENTATION.md')) failures.push('Legacy-Datei PHASE-2-IMPLEMENTATION.md darf nicht mehr existieren.');
-
 if (!(await exists('package-lock.json'))) warnings.push('package-lock.json fehlt noch; erst nach echtem npm-Installationslauf vertrauenswürdig erzeugen.');
 
 for (const warning of warnings) console.warn(`WARN: ${warning}`);
@@ -211,5 +198,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Creative-Recipe-Render-Gates, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Source-Fingerprints, 36-Karten-Review-Gate, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
