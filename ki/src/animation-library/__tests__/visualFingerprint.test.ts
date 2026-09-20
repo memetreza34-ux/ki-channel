@@ -128,7 +128,7 @@ describe('visual fingerprints', () => {
 
   it('warns about repeated primitives, locked camera and flat depth across a run', () => {
     const warnings = findVisualDiversityWarnings([
-      makeEntry({animationId: 'one-v1'}),
+      makeEntry({animationId: 'one-v1', layoutFamily: 'card-row'}),
       makeEntry({
         animationId: 'two-v1',
         layoutFamily: 'card-grid',
@@ -136,7 +136,7 @@ describe('visual fingerprints', () => {
       }),
       makeEntry({
         animationId: 'three-v1',
-        layoutFamily: 'card-stack',
+        layoutFamily: 'card-row-alt',
         motionSignature: 'scale-slide-focus',
       }),
     ]);
