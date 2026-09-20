@@ -9,6 +9,11 @@ import {
   type ReelSceneBrief,
 } from './contentMatchedPlanner';
 import {enhanceSceneMeaning} from './extendedMeaningContract';
+import {
+  findVisualDiversityWarnings,
+  VISUAL_SIMILARITY_HARD_LIMIT,
+  visualSimilarityScore,
+} from './visualFingerprint';
 
 const normalize = (value: string): string =>
   value
@@ -110,6 +115,24 @@ const mergeProposalConstraints = ({
   };
 };
 
+const visualWarningsForContiguousRuns = (
+  entries: readonly (AnimationLibraryEntry | null)[],
+): string[] => {
+  const warnings: string[] = [];
+  let run: AnimationLibraryEntry[] = [];
+  const flush = (): void => {
+    if (run.length > 1) warnings.push(...findVisualDiversityWarnings(run));
+    run = [];
+  };
+
+  for (const entry of entries) {
+    if (entry) run.push(entry);
+    else flush();
+  }
+  flush();
+  return warnings;
+};
+
 export const planReelChoreography = ({
   reelId,
   reelIndex,
@@ -136,14 +159,18 @@ export const planReelChoreography = ({
   }));
   const selections: PlannedAnimationSelection[] = [];
   const acceptedEntries: AnimationLibraryEntry[] = [];
+  const selectedEntries: Array<AnimationLibraryEntry | null> = [];
   const usedAnimationIds = new Set<string>();
   const usedLayouts = new Set<string>();
   const usedMotions = new Set<string>();
   let cardPrimaryCount = 0;
+  let previousWasNewBuild = false;
 
   const availableEntries = (): AnimationLibraryEntry[] => {
-    const previous = acceptedEntries[acceptedEntries.length - 1];
-    return entries.filter((entry) => {
+    const previous = previousWasNewBuild
+      ? undefined
+      : acceptedEntries[acceptedEntries.length - 1];
+    const policyFiltered = entries.filter((entry) => {
       if (
         brain.globalRules.forbidDuplicateAnimationWithinReel &&
         usedAnimationIds.has(entry.animationId)
@@ -164,6 +191,16 @@ export const planReelChoreography = ({
       }
       return true;
     });
+
+    if (!previous || policyFiltered.length <= 1) return policyFiltered;
+    const visuallyDistinct = policyFiltered.filter(
+      (entry) =>
+        visualSimilarityScore(previous, entry) < VISUAL_SIMILARITY_HARD_LIMIT,
+    );
+
+    // Prefer a genuinely different visual grammar when alternatives exist, but do not
+    // create a false dead end if semantic matching leaves only similar candidates.
+    return visuallyDistinct.length > 0 ? visuallyDistinct : policyFiltered;
   };
 
   const appendSelection = (
@@ -177,7 +214,11 @@ export const planReelChoreography = ({
     });
     selections.push(constrained);
 
-    if (!constrained.animationId) return;
+    if (!constrained.animationId) {
+      selectedEntries.push(null);
+      previousWasNewBuild = true;
+      return;
+    }
     const entry = entries.find(
       (candidate) => candidate.animationId === constrained.animationId,
     );
@@ -187,6 +228,8 @@ export const planReelChoreography = ({
       );
     }
     acceptedEntries.push(entry);
+    selectedEntries.push(entry);
+    previousWasNewBuild = false;
     usedAnimationIds.add(entry.animationId);
     usedLayouts.add(entry.layoutFamily);
     usedMotions.add(entry.motionSignature);
@@ -270,7 +313,7 @@ export const planReelChoreography = ({
   const visualFamilies = acceptedEntries.map((entry) => entry.visualFamily);
   const layoutFamilies = acceptedEntries.map((entry) => entry.layoutFamily);
   const motionSignatures = acceptedEntries.map((entry) => entry.motionSignature);
-  const warnings: string[] = [];
+  const warnings: string[] = visualWarningsForContiguousRuns(selectedEntries);
   const uniqueVisualFamilies = new Set([
     ...visualFamilies,
     ...selections.flatMap((selection) =>
