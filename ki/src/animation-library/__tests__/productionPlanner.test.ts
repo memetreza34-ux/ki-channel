@@ -59,6 +59,7 @@ describe('production reel animation planner', () => {
           isProductionReadyLibraryAnimation(scene.animationId),
       ),
     ).toBe(true);
+    expect(plan.qualityBlockers).toEqual([]);
     expect(plan.readyForImplementation).toBe(true);
   });
 
@@ -154,7 +155,10 @@ describe('production reel animation planner', () => {
     expect(plan.newAnimationCount).toBe(1);
     expect(plan.scenes[0].source).toBe('new-build');
     expect(plan.scenes[0].buildSpec).not.toBeNull();
+    expect(plan.scenes[0].buildSpec?.creativeRecipeId).toBeTruthy();
+    expect(plan.scenes[0].buildSpec?.runtimeMechanisms.length).toBeGreaterThanOrEqual(3);
     expect(plan.scenes[0].catalogEntry.status).toBe('concept');
+    expect(plan.qualityBlockers).toEqual([]);
     expect(plan.readyForImplementation).toBe(false);
     expect(plan.scenes[0].buildSpec?.implementationRules).toContain(
       'Reject the result if it is only a card layout with different labels.',
@@ -250,6 +254,7 @@ describe('production reel animation planner', () => {
     expect(new Set(plan.scenes.map((scene) => scene.animationId)).size).toBe(2);
     expect(new Set(plan.layoutFamilies).size).toBe(2);
     expect(new Set(plan.motionSignatures).size).toBe(2);
+    expect(new Set(plan.scenes.map((scene) => scene.buildSpec?.creativeRecipeId)).size).toBe(2);
     expect(
       plan.scenes.some((scene) =>
         scene.selectionReasons.some((reason) =>
@@ -270,6 +275,7 @@ describe('production reel animation planner', () => {
         warning.includes('repeat the same motion signature'),
       ),
     ).toBe(false);
+    expect(plan.qualityBlockers).toEqual([]);
     expect(plan.readyForImplementation).toBe(false);
   });
 
