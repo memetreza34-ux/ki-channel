@@ -106,6 +106,20 @@ Keine Planungsdokumente in den Source-Ordner kopieren.
 
 Longform-Source folgt zusätzlich `ki/src/longform/AGENTS.md`.
 
+## Kanonischer Remotion-Root
+
+Für echte Production-Compositions gilt genau eine Registrierungswahrheit:
+
+- `ki/src/ProductionRoot.tsx` registriert alle echten Short-Form- und Longform-Production-Compositions.
+- `ki/src/production-entry.tsx` ist der Entry Point für echte Production-Renders und registriert ausschließlich `ProductionRoot`.
+- `ki/src/Root.tsx` ist nur der Studio-Root: Er kombiniert `<ProductionRoot />` mit `MotionPreviewRoot` für lokale Preview-Zwecke.
+- `MotionPreviewRoot` und `ki/src/motion-system/` dürfen kein indirekter Bestandteil eines echten Production-Renderpfads sein.
+- Production-Module werden nicht zusätzlich direkt in `Root.tsx` registriert.
+- Optionales Phase-2-Voiceover wird nicht statisch in `ProductionRoot.tsx` importiert. Audio wird in Phase 3 explizit per Prop gebunden.
+- Spezielle Production-Render-Skripte verwenden `ki/src/production-entry.tsx`; Library-/Prototype-/Gallery-Renderer dürfen ihre eigenen isolierten Entry Points behalten.
+
+`scripts/check-production-visual-contracts.mjs` und `ki/src/productionRootIsolation.test.ts` sichern diese Trennung ab.
+
 ## Plattformbereich
 
 Publishing-Regeln liegen unter:
@@ -179,6 +193,7 @@ Mindestens formatbezogen prüfen:
 - Visual-Fingerprint-/Diversity-Warnungen prüfen und bei vermeidbarer Wiederholung nicht ignorieren
 - Packaging/Metadaten vorhanden
 - Thumbnail bei Longform separat und in kleiner Darstellung geprüft
+- Production-Root-/Entry-Isolation
 - finaler Render gehört exakt zum aktuellen Source-Stand
 
 Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.
