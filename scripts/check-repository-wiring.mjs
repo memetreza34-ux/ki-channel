@@ -90,6 +90,8 @@ const phase3Skill = await readText('.agents/skills/build-context-overload-reel/S
 const creativeRecipeCatalog = await readText('ki/src/animation-library/creativeRecipeCatalog.ts');
 const creativeRecipeRuntime = await readText('ki/src/animation-library/creativeRecipeRuntime.tsx');
 const productionSceneRuntime = await readText('ki/src/animation-library/productionSceneRuntime.tsx');
+const creativeRecipeRender = await readText('scripts/render-creative-recipes.mjs');
+const creativeRecipeCheck = await readText('scripts/check-creative-recipe-renders.mjs');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -106,6 +108,12 @@ if (root) {
     'release:verify': 'node scripts/run-content-release.mjs verify',
     'release:smoke': 'node scripts/run-content-release.mjs smoke',
     'release:full': 'node scripts/run-content-release.mjs full',
+    'creative-recipes:verify': 'node --check scripts/render-creative-recipes.mjs && node --check scripts/check-creative-recipe-renders.mjs && npm run typecheck:animation-library && npm run creative-recipes:test && npm run creative-recipes:plan',
+    'creative-recipes:plan': 'node scripts/render-creative-recipes.mjs plan',
+    'creative-recipes:smoke': 'node scripts/render-creative-recipes.mjs smoke',
+    'creative-recipes:render': 'node scripts/render-creative-recipes.mjs all',
+    'creative-recipes:check': 'node scripts/check-creative-recipe-renders.mjs',
+    'creative-recipes:full-release-check': 'npm run creative-recipes:verify && npm run creative-recipes:render && npm run creative-recipes:check',
     'new-video': 'node scripts/new-ki-reel.mjs',
   };
   for (const [name, command] of Object.entries(requiredScripts)) {
@@ -139,8 +147,10 @@ requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-Z
 requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
 requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
 requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
-requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
+requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','assertCreativeRecipeRuntimeContract','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
 requireMarkers('productionSceneRuntime.tsx', productionSceneRuntime, ['buildProductionSceneRuntime','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','ANIMATION_PROTOTYPE_REGISTRY']);
+requireMarkers('render-creative-recipes.mjs', creativeRecipeRender, ['CreativeRecipe-','CREATIVE_RECIPE_IDS','smoke','stills','videos','render-plan.json']);
+requireMarkers('check-creative-recipe-renders.mjs', creativeRecipeCheck, ['technical-check.json','1080','1100','ftyp','PNG_SIGNATURE']);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
@@ -177,7 +187,7 @@ for (const path of [
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
   'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
   'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs',
+  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs','scripts/render-creative-recipes.mjs','scripts/check-creative-recipe-renders.mjs',
   '.agents/skills/build-context-overload-reel/SKILL.md'
 ]) await assertFile(path);
 
@@ -202,4 +212,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Creative-Recipe-Render-Gates, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
