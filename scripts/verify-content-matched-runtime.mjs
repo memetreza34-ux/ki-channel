@@ -73,6 +73,7 @@ const tests = [
   'ki/src/reels/github-repository-basics/visualProfiles.test.ts',
   'ki/src/reels/antigravity-context-overload/__tests__/canonicalRuntime.test.ts',
   'ki/src/reels/why-ai-reads-differently/__tests__/visualProfiles.test.ts',
+  'ki/src/longform/ai-app-workflow/visualProfiles.test.ts',
 ];
 
 const outputDir = resolve('out/content-matched/runtime-verification');
@@ -179,6 +180,11 @@ try {
     'Release-Status meldet Full-, Recipe-, Artefakt-, Visual-Review- und Finalisierungsblocker in fester Reihenfolge',
   );
   await run(
+    'node',
+    ['scripts/check-production-visual-contracts.mjs'],
+    'Alle registrierten Short-Form- und Longform-Produktionen besitzen Visual Profiles und einen aktiven Diversity-Gate',
+  );
+  await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
     'TypeScript-Prüfung der gesamten Animationsbibliothek inklusive Creative-Recipe-Runtime',
@@ -186,12 +192,12 @@ try {
   await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.motion.json'],
-    'TypeScript-Prüfung der Production-Reels inklusive authored Diversity-Migrationen',
+    'TypeScript-Prüfung der Production-Reels und Longform inklusive authored Diversity-Migrationen',
   );
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, Legacy-Reel- und Production-Regressionstests',
+    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, Legacy-Reel-, Longform- und Production-Regressionstests',
   );
   await run(
     'node',
@@ -206,7 +212,7 @@ try {
 
   console.log('\n[content-runtime] Technische Runtime-Prüfung bestanden.');
   console.log(
-    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für Production-Prototypes, Creative Recipes und freizugebende Reels visuell prüfen und den 36-Karten-Review-Nachweis finalisieren.',
+    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für Production-Prototypes, Creative Recipes, Production-Reels und Longform visuell prüfen und den 36-Karten-Review-Nachweis finalisieren.',
   );
 } catch (error) {
   console.error('\n[content-runtime] Prüfung fehlgeschlagen.');
