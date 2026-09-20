@@ -9,6 +9,7 @@ export * from './channelContentModes';
 export * from './channelContentModeResolver';
 export * from './microMotionCatalog';
 export * from './microMotionRuntime';
+export * from './creativeMotionPrimitives';
 export * from './semanticBeatPlanner';
 export * from './importantWordCoverage';
 export * from './universalMotionPlan';
