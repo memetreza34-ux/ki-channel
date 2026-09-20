@@ -6,8 +6,9 @@ import {
   WHY_AI_REEL_SOURCE_FINGERPRINT,
 } from '../why-ai-reel-config.mjs';
 
-test('reference reel render contract is complete', () => {
+test('reference reel render contract is complete and uses canonical production root', () => {
   assert.equal(WHY_AI_REEL_CONFIG.compositionId, 'Reel-WhyAIReadsDifferently');
+  assert.equal(WHY_AI_REEL_CONFIG.entryPoint, 'ki/src/index.ts');
   assert.equal(WHY_AI_REEL_CONFIG.width, 1080);
   assert.equal(WHY_AI_REEL_CONFIG.height, 1920);
   assert.equal(WHY_AI_REEL_CONFIG.fps, 30);
@@ -25,7 +26,7 @@ test('reference reel render contract is complete', () => {
   );
 });
 
-test('reference reel source fingerprint is stable in shape', () => {
+test('reference reel source fingerprint follows current production sources', () => {
   assert.ok(WHY_AI_REEL_SOURCE_FILES.length >= 15);
   assert.equal(
     new Set(WHY_AI_REEL_SOURCE_FILES).size,
@@ -34,6 +35,22 @@ test('reference reel source fingerprint is stable in shape', () => {
   assert.deepEqual(
     [...WHY_AI_REEL_SOURCE_FILES].sort(),
     [...WHY_AI_REEL_SOURCE_FILES],
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/Root.tsx')),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/index.ts')),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.some((file) =>
+      file.endsWith('/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json'),
+    ),
+  );
+  assert.ok(
+    WHY_AI_REEL_SOURCE_FILES.every(
+      (file) => !file.includes('/ki/src/motion-system/'),
+    ),
   );
   assert.match(WHY_AI_REEL_SOURCE_FINGERPRINT, /^[a-f0-9]{64}$/);
 });
