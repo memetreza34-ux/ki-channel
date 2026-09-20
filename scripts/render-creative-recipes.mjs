@@ -1,5 +1,5 @@
 import {spawn} from 'node:child_process';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, rm, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {
   CREATIVE_RECIPE_IDS,
@@ -65,6 +65,11 @@ const sourceFingerprint = await getCreativeRecipeSourceFingerprint();
 const generatedAt = new Date().toISOString();
 
 await mkdir(OUTPUT_DIR, {recursive: true});
+if (MODE !== 'plan') {
+  for (const recipe of plan) {
+    await rm(recipe.outputDir, {recursive: true, force: true});
+  }
+}
 await writeFile(
   resolve(OUTPUT_DIR, 'render-plan.json'),
   `${JSON.stringify(
