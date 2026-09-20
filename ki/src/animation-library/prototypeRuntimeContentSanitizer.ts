@@ -254,7 +254,7 @@ const winnerCueIndex = ({
   const text = normalize(spokenText);
   const cue = '(?:gewinnt|gewinner|sieger|fuhrt|vorne|platz\\s*1|erster|erste|bestes|beste|besten)';
   const negative = '(?:nicht|kein|keine|keinen|keiner|keinem|weder|nie|niemals)';
-  const safeGap = `(?:(?!\\b${negative}\\b)[^,.!?;]){0,18}`;
+  const safeGap = `(?:(?!\\b${negative}\\b)[^,.!?;]){0,36}`;
   const notNegatedAfterCue = `(?!\\s+${negative}\\b)`;
   for (let index = 0; index < count; index += 1) {
     const label = normalize(labels[`${prefix}${index + 1}`] ?? '');
@@ -320,13 +320,25 @@ const sanitizeProbability = (
   const fallbackValues = [1, 2, 3].map((index) =>
     Number(values[`candidate${index}End`] ?? 0),
   );
+  const fallbackPercentage = explicitPercentage(spokenText);
+  const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
+  const nextValues: Record<string, string | number> = {...values};
+
+  if (sequentialPercentages.length === 1 && sequentialPercentages[0] === 100) {
+    const explicitlyBoundIndex = exactValues.findIndex((value) => value === 100);
+    const hundredIndex = explicitlyBoundIndex >= 0 ? explicitlyBoundIndex : 0;
+    for (let index = 0; index < 3; index += 1) {
+      nextValues[`candidate${index + 1}End`] = index === hundredIndex ? 100 : 0;
+      nextValues[`candidate${index + 1}ProbabilityExact`] = index === hundredIndex ? 1 : 0;
+    }
+    nextValues.probabilityOutcomeGrounded = 1;
+    return nextValues;
+  }
+
   const resolvedEnds = distributeProbabilityRemainder({
     exactValues,
     fallbackValues,
   });
-  const fallbackPercentage = explicitPercentage(spokenText);
-  const winnerCue = winnerCueIndex({spokenText, labels, prefix: 'candidate', count: 3});
-  const nextValues: Record<string, string | number> = {...values};
 
   for (let index = 0; index < 3; index += 1) {
     const exact = exactValues[index] !== null;
