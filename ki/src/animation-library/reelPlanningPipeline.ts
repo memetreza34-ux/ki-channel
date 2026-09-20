@@ -1,5 +1,6 @@
 import type {AnimationLibraryEntry, CreativeBrainState} from './schema';
 import {enhanceSceneMeaning} from './extendedMeaningContract';
+import {CANONICAL_PRODUCTION_ANIMATION_ENTRIES} from './productionCatalog';
 import {
   planProductionReelAnimations,
   type ProductionReelAnimationPlan,
@@ -86,14 +87,14 @@ export const planReelAnimationsFromText = ({
   reelId,
   reelIndex,
   scenes,
-  entries,
+  entries = CANONICAL_PRODUCTION_ANIMATION_ENTRIES,
   brain,
   maximumNewAnimationRatio = 0.75,
 }: {
   reelId: string;
   reelIndex: number;
   scenes: readonly RawReelSceneInput[];
-  entries: readonly AnimationLibraryEntry[];
+  entries?: readonly AnimationLibraryEntry[];
   brain: CreativeBrainState;
   maximumNewAnimationRatio?: number;
 }): RawReelAnimationPlan => {
