@@ -3,6 +3,10 @@ import {
   compileNewAnimationProposal,
   createCatalogEntryFromBuildSpec,
 } from '../proposalCompiler';
+import {
+  VISUAL_SIMILARITY_HARD_LIMIT,
+  visualSimilarityScore,
+} from '../visualFingerprint';
 
 const proposal = {
   proposalId: 'proposal-scene-04-security',
@@ -40,6 +44,39 @@ describe('new animation proposal compiler', () => {
       'contrast',
       'resolve',
     ]);
+  });
+
+  it('rotates the creative recipe when the previous new-build grammar is forbidden', () => {
+    const first = compileNewAnimationProposal({proposal});
+    const second = compileNewAnimationProposal({
+      proposal: {
+        ...proposal,
+        proposalId: 'proposal-scene-05-security',
+        sceneId: 'scene-05',
+        forbiddenLayoutFamilies: [
+          ...proposal.forbiddenLayoutFamilies,
+          first.layoutFamily,
+        ],
+        forbiddenMotionSignatures: [
+          ...proposal.forbiddenMotionSignatures,
+          first.motionSignature,
+        ],
+      },
+    });
+
+    expect(second.noveltyGroup).not.toBe(first.noveltyGroup);
+
+    const firstEntry = createCatalogEntryFromBuildSpec({
+      spec: first,
+      description: 'First security explanation.',
+    });
+    const secondEntry = createCatalogEntryFromBuildSpec({
+      spec: second,
+      description: 'Second security explanation.',
+    });
+    expect(visualSimilarityScore(firstEntry, secondEntry)).toBeLessThan(
+      VISUAL_SIMILARITY_HARD_LIMIT,
+    );
   });
 
   it('converts the specification into a catalog-compatible concept', () => {
