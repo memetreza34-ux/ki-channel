@@ -10,12 +10,15 @@ Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die aut
 - `REELS.md` — Reel- und Text-Hierarchie
 - `PLATTFORMEN.md` — Publishing, YouTube und weitere Plattformen
 - `PRODUKTIONSABLAUF.md` — 3 Phasen
+- `REMOTION_ANIMATION_CAPABILITIES.md` — aktuelle Technik-Auswahl, Visual-Fingerprint- und Diversity-Regeln
 - `../BILDSTIL.md` — Bild-/Prompt-Qualität
 
 Danach den passenden Produktionsvertrag lesen:
 
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
+
+Bei neuer oder geänderter Remotion-Animation ist `ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md` verbindlich mitzuprüfen. Versions-/API-Fragen trotzdem gegen die aktuelle offizielle Remotion-Dokumentation verifizieren.
 
 ## Harte Short-Form-Ordnerstruktur
 
@@ -141,6 +144,13 @@ Wenn Phase-3-Audio fehlt: `PHASE 2 AUDIO FEHLT`.
 - bei zu flachen Code-Visuals zuerst Komposition, Perspektive, Schatten, Tiefe und Layering verbessern
 - externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
 - keine erfundenen Zahlen
+- andere `animationId` allein gilt **nicht** als visuelle Vielfalt; Visual Fingerprints mit Primitive, Kamera, Tiefe, Entry, Medium, Richtung, Layout und Motion vergleichen
+- wenn eine Alternative existiert, keine direkt benachbarten Szenen mit nahezu identischer visueller Grammatik
+- keine drei Szenen hintereinander mit demselben Primary Primitive
+- keine drei Szenen hintereinander nur statische/locked Kamera, wenn der Inhalt eine andere räumliche Inszenierung sinnvoll erlaubt
+- installierte Techniken wie Paths/Shapes/Three/Motion Blur/Transitions bewusst prüfen statt automatisch bei Card/CSS/Slide zu bleiben
+- Lottie/Rive nur mit real vorhandenem, bereitgestelltem Asset und echtem semantischem Fit
+- deprecated `@remotion/light-leaks` nicht für neue Visuals verwenden
 
 ## Text-Hierarchie
 
@@ -166,6 +176,7 @@ Mindestens formatbezogen prüfen:
 - Asset-Pfade
 - keine ungrounded Werte
 - Visual-Safe-Zones über reale Smoke-Frames
+- Visual-Fingerprint-/Diversity-Warnungen prüfen und bei vermeidbarer Wiederholung nicht ignorieren
 - Packaging/Metadaten vorhanden
 - Thumbnail bei Longform separat und in kleiner Darstellung geprüft
 - finaler Render gehört exakt zum aktuellen Source-Stand
