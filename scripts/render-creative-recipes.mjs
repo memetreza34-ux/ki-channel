@@ -1,24 +1,17 @@
 import {spawn} from 'node:child_process';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {
+  CREATIVE_RECIPE_IDS,
+  CREATIVE_RECIPE_RENDER_CONTRACT,
+} from './creative-recipe-release-contract.mjs';
 
 const MODE = process.argv[2] ?? 'plan';
 const VALID_MODES = new Set(['plan', 'smoke', 'stills', 'videos', 'all']);
-const ENTRY_POINT = 'ki/src/animation-library/remotion-entry.tsx';
-const OUTPUT_DIR = process.env.CREATIVE_RECIPE_OUTPUT_DIR ?? 'out/creative-recipes';
+const OUTPUT_DIR =
+  process.env.CREATIVE_RECIPE_OUTPUT_DIR ??
+  CREATIVE_RECIPE_RENDER_CONTRACT.outputDir;
 const CONCURRENCY = Number(process.env.CREATIVE_RECIPE_CONCURRENCY ?? '1');
-const CREATIVE_RECIPE_IDS = [
-  'object-morph-stage',
-  'path-trace-field',
-  'network-bloom',
-  'xray-overlay',
-  'typographic-construct',
-  'cutaway-stack',
-  'depth-corridor',
-  'ui-state-machine',
-];
-const CHECKPOINTS = [0, 30, 60, 90, 120, 150, 179];
-const SMOKE_CHECKPOINTS = [0, 90, 179];
 
 if (!VALID_MODES.has(MODE)) {
   console.error(`Unbekannter Creative-Recipe-Modus: ${MODE}.`);
@@ -52,23 +45,35 @@ if (selected.length === 0) {
   process.exit(1);
 }
 
-const checkpoints = MODE === 'smoke' ? SMOKE_CHECKPOINTS : CHECKPOINTS;
+const checkpoints =
+  MODE === 'smoke'
+    ? CREATIVE_RECIPE_RENDER_CONTRACT.smokeCheckpoints
+    : CREATIVE_RECIPE_RENDER_CONTRACT.checkpoints;
 const plan = selected.map((recipeId) => ({
   recipeId,
   compositionId: `CreativeRecipe-${recipeId}`,
-  entryPoint: ENTRY_POINT,
+  entryPoint: CREATIVE_RECIPE_RENDER_CONTRACT.entryPoint,
   outputDir: `${OUTPUT_DIR}/${recipeId}`,
-  fps: 30,
-  width: 1080,
-  height: 1100,
-  durationInFrames: 180,
-  checkpoints,
+  fps: CREATIVE_RECIPE_RENDER_CONTRACT.fps,
+  width: CREATIVE_RECIPE_RENDER_CONTRACT.width,
+  height: CREATIVE_RECIPE_RENDER_CONTRACT.height,
+  durationInFrames: CREATIVE_RECIPE_RENDER_CONTRACT.durationInFrames,
+  checkpoints: [...checkpoints],
 }));
 
 await mkdir(OUTPUT_DIR, {recursive: true});
 await writeFile(
   resolve(OUTPUT_DIR, 'render-plan.json'),
-  `${JSON.stringify({version: 1, mode: MODE, recipes: plan}, null, 2)}\n`,
+  `${JSON.stringify(
+    {
+      version: 2,
+      mode: MODE,
+      contractVersion: CREATIVE_RECIPE_RENDER_CONTRACT.version,
+      recipes: plan,
+    },
+    null,
+    2,
+  )}\n`,
   'utf8',
 );
 
@@ -108,7 +113,7 @@ for (const recipe of plan) {
           '--no-install',
           'remotion',
           'still',
-          ENTRY_POINT,
+          CREATIVE_RECIPE_RENDER_CONTRACT.entryPoint,
           recipe.compositionId,
           output,
           `--frame=${frame}`,
@@ -119,12 +124,15 @@ for (const recipe of plan) {
   }
   if (shouldRenderVideos) {
     tasks.push(async () => {
-      const output = resolve(recipe.outputDir, 'recipe.mp4');
+      const output = resolve(
+        recipe.outputDir,
+        CREATIVE_RECIPE_RENDER_CONTRACT.videoFileName,
+      );
       await run('npx', [
         '--no-install',
         'remotion',
         'render',
-        ENTRY_POINT,
+        CREATIVE_RECIPE_RENDER_CONTRACT.entryPoint,
         recipe.compositionId,
         output,
         '--codec=h264',
