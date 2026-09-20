@@ -1,3 +1,4 @@
+import {getAnimationLibraryEntry} from './catalog';
 import {isProductionReadyLibraryAnimation} from './productionEligibility';
 import type {RawReelAnimationPlan} from './reelPlanningPipeline';
 import {
@@ -38,13 +39,19 @@ export const diagnoseRawReelAnimationPlan = (
 ): ReelPlanDiagnostics => {
   const diagnostics: ReelPlanDiagnostic[] = [];
   const decisions = plan.decisionSummary;
-  // Diagnostics also accepts historical/raw planner fixtures that predate the
-  // compiled production plan. Compiled scenes enrich fingerprint checks, but
-  // their absence must not make the basic duplicate/family diagnostics crash.
+  // Diagnostics accepts both fully compiled plans and historical/raw fixtures.
+  // When compiled scene metadata is unavailable, a library decision can still be
+  // resolved deterministically from its canonical animation ID.
   const productionScenes = plan.productionPlan?.scenes ?? [];
   const productionByScene = new Map(
     productionScenes.map((scene) => [scene.sceneId, scene]),
   );
+  const entryForDecision = (decision: (typeof decisions)[number]) =>
+    productionByScene.get(decision.sceneId)?.catalogEntry ??
+    (decision.source === 'library'
+      ? getAnimationLibraryEntry(decision.selectedAnimationId)
+      : undefined);
+
   const animationIds = decisions.map((decision) => decision.selectedAnimationId);
   const familyNames = decisions.map((decision) => decision.primaryFamily);
   const newBuildSceneCount = decisions.filter(
@@ -75,8 +82,8 @@ export const diagnoseRawReelAnimationPlan = (
 
   decisions.slice(1).forEach((decision, index) => {
     const previous = decisions[index];
-    const currentEntry = productionByScene.get(decision.sceneId)?.catalogEntry;
-    const previousEntry = productionByScene.get(previous.sceneId)?.catalogEntry;
+    const currentEntry = entryForDecision(decision);
+    const previousEntry = entryForDecision(previous);
     if (
       currentEntry &&
       previousEntry &&
@@ -129,7 +136,7 @@ export const diagnoseRawReelAnimationPlan = (
   for (let index = 2; index < decisions.length; index += 1) {
     const trio = decisions.slice(index - 2, index + 1);
     const fingerprints = trio.map((decision) => {
-      const entry = productionByScene.get(decision.sceneId)?.catalogEntry;
+      const entry = entryForDecision(decision);
       return entry ? deriveVisualFingerprint(entry) : null;
     });
     if (fingerprints.some((fingerprint) => fingerprint === null)) continue;
