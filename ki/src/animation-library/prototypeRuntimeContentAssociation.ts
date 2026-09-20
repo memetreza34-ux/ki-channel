@@ -324,7 +324,7 @@ const distributeProbabilityRemainder = (
   exactValues: readonly (number | null)[],
   fallbackValues: readonly number[],
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
@@ -367,7 +367,7 @@ const alignProbabilityWinner = (
   exactValues: readonly (number | null)[],
   winnerIndex: number,
 ): number[] | null => {
-  const exactSum = exactValues.reduce(
+  const exactSum = exactValues.reduce<number>(
     (sum, value) => sum + (value ?? 0),
     0,
   );
