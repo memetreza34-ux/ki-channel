@@ -83,6 +83,10 @@ const reviewGallery = await readText('scripts/build-content-review-gallery.mjs')
 const reviewGalleryVerifier = await readText('scripts/verify-content-review-gallery.mjs');
 const releaseFinalizer = await readText('scripts/finalize-content-release.mjs');
 const releaseStatus = await readText('scripts/content-release-status.mjs');
+const productionVisualContracts = await readText('scripts/check-production-visual-contracts.mjs');
+const longformProduction = await readText('ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx');
+const longformV2 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx');
+const longformProfiles = await readText('ki/src/longform/ai-app-workflow/visualProfiles.ts');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -132,7 +136,7 @@ requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creat
 requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
 requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
 requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','assertCreativeRecipeRuntimeContract','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
-requireMarkers('productionSceneRuntime.tsx', productionSceneRuntime, ['buildProductionSceneRuntime','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','ANIMATION_PROTOTYPE_REGISTRY']);
+requireMarkers('productionSceneRuntime.tsx', productionSceneRuntime, ['buildProductionSceneRuntime','buildLibraryAnimationRuntime','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','ANIMATION_PROTOTYPE_REGISTRY']);
 requireMarkers('creative-recipe-release-contract.mjs', creativeRecipeReleaseContract, ['CREATIVE_RECIPE_IDS','CREATIVE_RECIPE_RENDER_CONTRACT','CREATIVE_RECIPE_REVIEW_EXPECTATIONS','getCreativeRecipeSourceFingerprint','width: 1080','height: 1100']);
 requireMarkers('content-review-contract.mjs', contentReviewContract, ['CONTENT_REVIEW_COUNTS','production: 22','edge: 6','CONTENT_REVIEW_REQUIRED_CHECK_KEYS']);
 requireMarkers('render-creative-recipes.mjs', creativeRecipeRender, ['creative-recipe-release-contract.mjs','getCreativeRecipeSourceFingerprint','render-plan.json','sourceFingerprint','generatedAt']);
@@ -141,6 +145,11 @@ requireMarkers('build-content-review-gallery.mjs', reviewGallery, ['CREATIVE_REC
 requireMarkers('verify-content-review-gallery.mjs', reviewGalleryVerifier, ['getCreativeRecipeSourceFingerprint','CONTENT_REVIEW_COUNTS','recipeCount','Creative-Recipe-Review']);
 requireMarkers('finalize-content-release.mjs', releaseFinalizer, ['check-creative-recipe-renders.mjs','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS','version: 2']);
 requireMarkers('content-release-status.mjs', releaseStatus, ['getCreativeRecipeSourceFingerprint','creativeRecipes: recipeState','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS']);
+requireMarkers('check-production-visual-contracts.mjs', productionVisualContracts, ['Root.tsx','visualProfiles.ts','assertAuthoredVisualDiversity','reelModules.length !== 9','longformModules.length !== 1']);
+requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV2'",'AI_APP_WORKFLOW_CHAPTERS']);
+requireMarkers('CreativeVisualsV2.tsx', longformV2, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1100','perspective:1150']);
+requireMarkers('longform visualProfiles.ts', longformProfiles, ['AI_APP_WORKFLOW_VISUAL_PROFILES','primaryPrimitive','cameraMotion','depthStyle','motionSignature']);
+forbidMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './Visuals'"]);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
@@ -171,20 +180,22 @@ for (const path of [
   'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md','ki/src/reels/AGENTS.md',
   'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md','ki/BILDSTIL.md',
   'ki/src/animation-library/visualFingerprint.ts','ki/src/animation-library/authoredProductionGate.ts','ki/src/animation-library/productionCatalog.ts','ki/src/animation-library/creativeMotionPrimitives.tsx','ki/src/animation-library/creativeRecipeCatalog.ts','ki/src/animation-library/creativeRecipeRuntime.tsx','ki/src/animation-library/CreativeRecipeGalleryRoot.tsx','ki/src/animation-library/productionSceneRuntime.tsx',
+  'ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx','ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx','ki/src/longform/ai-app-workflow/visualProfiles.ts',
   'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
   'ki/plattformen/youtube/README.md','ki/plattformen/youtube/SHORTS.md','ki/plattformen/youtube/LONGFORM.md','ki/plattformen/youtube/THUMBNAILS.md','ki/plattformen/youtube/UPLOAD.md',
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
   'docs/CODEX_REEL_WORKFLOW.md','docs/CODEX_CONTEXT_INDEX.md',
   'ki/tsconfig.motion.json','ki/tsconfig.animation-library.json',
-  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/run-content-release.mjs','scripts/render-creative-recipes.mjs','scripts/check-creative-recipe-renders.mjs','scripts/creative-recipe-release-contract.mjs','scripts/content-review-contract.mjs','scripts/build-content-review-gallery.mjs','scripts/verify-content-review-gallery.mjs','scripts/verify-content-visual-review.mjs','scripts/finalize-content-release.mjs','scripts/content-release-status.mjs','scripts/check-content-release-status-contract.mjs',
+  'scripts/check-ki-reel-folder-structure.mjs','scripts/prepare-codex-reel.mjs','scripts/verify-content-matched-runtime.mjs','scripts/check-production-visual-contracts.mjs','scripts/run-content-release.mjs','scripts/render-creative-recipes.mjs','scripts/check-creative-recipe-renders.mjs','scripts/creative-recipe-release-contract.mjs','scripts/content-review-contract.mjs','scripts/build-content-review-gallery.mjs','scripts/verify-content-review-gallery.mjs','scripts/verify-content-visual-review.mjs','scripts/finalize-content-release.mjs','scripts/content-release-status.mjs','scripts/check-content-release-status-contract.mjs',
   '.agents/skills/build-context-overload-reel/SKILL.md'
 ]) await assertFile(path);
 
-if (await exists('ki/src/reels')) {
-  for (const path of await walkSourceFiles('ki/src/reels')) {
+for (const productionDirectory of ['ki/src/reels','ki/src/longform']) {
+  if (!(await exists(productionDirectory))) continue;
+  for (const path of await walkSourceFiles(productionDirectory)) {
     const source = await readText(path);
     if (/from\s+['"][^'"]*motion-system\//.test(source) || /import\s*\(['"][^'"]*motion-system\//.test(source)) {
-      failures.push(`${path}: Production-Reel darf den Legacy motion-system-Pfad nicht importieren.`);
+      failures.push(`${path}: Production-Code darf den Legacy motion-system-Pfad nicht importieren.`);
     }
   }
 }
@@ -198,4 +209,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Source-Fingerprints, 36-Karten-Review-Gate, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates für alle registrierten Short-Form-/Longform-Produktionen, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Source-Fingerprints, 36-Karten-Review-Gate, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
