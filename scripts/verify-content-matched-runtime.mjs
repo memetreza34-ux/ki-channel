@@ -56,6 +56,17 @@ const tests = [
   'ki/src/animation-library/__tests__/prototypeContentContext.test.ts',
   'ki/src/animation-library/__tests__/channelReelMasterPlanContentBinding.test.ts',
   'ki/src/animation-library/__tests__/channelMasterplanSanitizedProps.test.ts',
+  'ki/src/animation-library/__tests__/visualFingerprint.test.ts',
+  'ki/src/animation-library/__tests__/authoredProductionGate.test.ts',
+  'ki/src/animation-library/__tests__/productionCatalog.test.ts',
+  'ki/src/animation-library/__tests__/proposalCompiler.test.ts',
+  'ki/src/animation-library/__tests__/creativeRecipeRuntime.test.ts',
+  'ki/src/animation-library/__tests__/productionSceneRuntime.test.ts',
+  'ki/src/animation-library/__tests__/implementationBrief.test.ts',
+  'ki/src/reels/ai-agents/__tests__/visualProfiles.test.ts',
+  'ki/src/reels/ambiguous-prompts/__tests__/visualProfiles.test.ts',
+  'ki/src/reels/ai-app-prototype/visualProfiles.test.ts',
+  'ki/src/reels/ai-product-ad/visualProfiles.test.ts',
 ];
 
 const outputDir = resolve('out/content-matched/runtime-verification');
@@ -165,12 +176,12 @@ try {
   await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.animation-library.json'],
-    'TypeScript-Prüfung der gesamten Animationsbibliothek',
+    'TypeScript-Prüfung der gesamten Animationsbibliothek inklusive Creative-Recipe-Runtime',
   );
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-Matching-, Produktions-, Varianten-Promotion-, Production-Fixture-, Fixture-Isolation-, Manifest-, Registry-, Deriver-, Sanitizer-, Association-, Winner-Cue-, Messwert-, Sichtpräzisions-, Production-Shell-, Cross-Label-, Masterplan-Props-, Key-Consumer-, Diagnostics- und Runtime-Regressionstests',
+    'Gezielte Content-, Creative-Recipe-, Scene-Runtime-, Diversity-, V2-Reel- und Production-Regressionstests',
   );
   await run(
     'node',
@@ -185,7 +196,7 @@ try {
 
   console.log('\n[content-runtime] Technische Runtime-Prüfung bestanden.');
   console.log(
-    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für alle 22 Kompositionen visuell prüfen und visual-review.json finalisieren.',
+    '[content-runtime] Noch erforderlich: echte Kontrollframes und Videos für Production-Prototypes, Creative Recipes und freizugebende Reels visuell prüfen und den jeweiligen Review-Nachweis finalisieren.',
   );
 } catch (error) {
   console.error('\n[content-runtime] Prüfung fehlgeschlagen.');
