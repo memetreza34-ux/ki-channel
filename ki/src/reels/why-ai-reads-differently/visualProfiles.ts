@@ -1,4 +1,8 @@
-import type {AuthoredVisualScene} from '../../animation-library/authoredProductionGate';
+import {
+  assertAuthoredVisualDiversity,
+  evaluateAuthoredVisualDiversity,
+  type AuthoredVisualScene,
+} from '../../animation-library/authoredProductionGate';
 import rawReel from '../../../reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json';
 
 const scenes = rawReel.scenes;
@@ -114,3 +118,41 @@ export const WHY_AI_VISUAL_PROFILES: readonly AuthoredVisualScene[] = scenes.map
     });
   },
 );
+
+export const WHY_AI_VISUAL_DIVERSITY = Object.freeze(
+  evaluateAuthoredVisualDiversity(WHY_AI_VISUAL_PROFILES),
+);
+
+export const assertWhyAIVisualContract = (): void => {
+  const policy = rawReel.variationPolicy;
+  if (
+    policy.forbidDuplicateAnimationWithinReel !== true ||
+    policy.forbidConsecutiveLayoutFamily !== true ||
+    policy.minimumVisualFamilies !== 8 ||
+    policy.allowFullStageReuse !== false
+  ) {
+    throw new Error('why-ai variation policy drifted from the authored production contract');
+  }
+
+  const animationIds = scenes.map((scene) => scene.animationId);
+  const visualFamilies = scenes.map((scene) => scene.visualFamily);
+  if (new Set(animationIds).size !== scenes.length) {
+    throw new Error('why-ai reel reuses a full animation inside the same reel');
+  }
+  if (new Set(visualFamilies).size < policy.minimumVisualFamilies) {
+    throw new Error(
+      `why-ai reel uses only ${new Set(visualFamilies).size} visual families; ${policy.minimumVisualFamilies} are required`,
+    );
+  }
+  for (let index = 1; index < scenes.length; index += 1) {
+    if (scenes[index - 1].layoutFamily === scenes[index].layoutFamily) {
+      throw new Error(
+        `why-ai consecutive scenes repeat layout family ${scenes[index].layoutFamily}`,
+      );
+    }
+  }
+
+  assertAuthoredVisualDiversity(WHY_AI_VISUAL_PROFILES);
+};
+
+assertWhyAIVisualContract();
