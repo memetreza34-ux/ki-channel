@@ -4,6 +4,7 @@
   "private": true,
   "description": "Kanal: KI — Künstliche Intelligenz erklärt",
   "dependencies": {
-    "@studio/core": "*"
+    "@studio/core": "*",
+    "react-is": "^18.2.0"
   }
 }
