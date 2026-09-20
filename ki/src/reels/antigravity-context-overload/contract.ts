@@ -1,5 +1,7 @@
 import reelJson from '../../../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/03-caption/subtitle-cues.json';
+import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {CONTEXT_OVERLOAD_VISUAL_MANIFEST} from './visualProfiles';
 
 export type ContextOverloadScene = {
   sceneId: string;
@@ -156,6 +158,15 @@ export const assertContextOverloadContract = (): void => {
       throw new Error(`subtitle coverage mismatch for ${scene.sceneId}`);
     }
   }
+
+  const plannedSceneIds = CONTEXT_OVERLOAD_SCENES.map((scene) => scene.sceneId);
+  const profiledSceneIds = CONTEXT_OVERLOAD_VISUAL_MANIFEST.map((profile) => profile.sceneId);
+  if (plannedSceneIds.join('|') !== profiledSceneIds.join('|')) {
+    throw new Error(
+      'context-overload visual manifest must exactly cover the authored scene order',
+    );
+  }
+  assertAuthoredVisualDiversity(CONTEXT_OVERLOAD_VISUAL_MANIFEST);
 };
 
 assertContextOverloadContract();
