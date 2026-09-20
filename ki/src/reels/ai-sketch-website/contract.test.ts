@@ -5,7 +5,7 @@ describe('AI sketch website reel contract',()=>{
   it('covers full timeline with five contiguous scenes',()=>{
     expect(AI_SKETCH_WEBSITE_SCENES).toHaveLength(5);
     expect(AI_SKETCH_WEBSITE_SCENES[0]?.startFrame).toBe(0);
-    expect(AI_SKETCH_WEBSITE_SCENES.at(-1)?.endFrame).toBe(AI_SKETCH_WEBSITE_DURATION_IN_FRAMES);
+    expect(AI_SKETCH_WEBSITE_SCENES[AI_SKETCH_WEBSITE_SCENES.length-1]?.endFrame).toBe(AI_SKETCH_WEBSITE_DURATION_IN_FRAMES);
     for(let i=1;i<AI_SKETCH_WEBSITE_SCENES.length;i++)expect(AI_SKETCH_WEBSITE_SCENES[i-1]?.endFrame).toBe(AI_SKETCH_WEBSITE_SCENES[i]?.startFrame);
   });
   it('protects caption zone and timeline',()=>{
