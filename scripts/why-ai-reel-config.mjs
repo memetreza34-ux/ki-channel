@@ -2,15 +2,20 @@ import {createHash} from 'node:crypto';
 import {readdirSync, readFileSync, statSync} from 'node:fs';
 import {relative, resolve} from 'node:path';
 
+const SOURCE_REEL_PATH = resolve(
+  'ki/reels/2026-08-03_bis_2026-08-09/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json',
+);
+const sourceReel = JSON.parse(readFileSync(SOURCE_REEL_PATH, 'utf8'));
+
 export const WHY_AI_REEL_CONFIG = Object.freeze({
-  reelId: '2026-08-04-warum-ki-text-anders-liest',
-  compositionId: 'Reel-WhyAIReadsDifferently',
-  entryPoint: 'ki/src/motion-system/remotion-entry.tsx',
+  reelId: sourceReel.reelId,
+  compositionId: sourceReel.compositionId,
+  entryPoint: 'ki/src/index.ts',
   outputDir: 'out/reels/why-ai-reads-differently',
-  width: 1080,
-  height: 1920,
-  fps: 30,
-  durationInFrames: 1080,
+  width: sourceReel.format.width,
+  height: sourceReel.format.height,
+  fps: sourceReel.format.fps,
+  durationInFrames: sourceReel.format.durationInFrames,
   smokeCheckpoints: Object.freeze([0, 38, 114, 234, 354, 489, 654, 789, 939, 1079]),
   checkpoints: Object.freeze([
     0, 38, 74, 113,
@@ -34,9 +39,10 @@ const collectFiles = (path) => {
 
 export const WHY_AI_REEL_SOURCE_FILES = Object.freeze([
   ...collectFiles('ki/src/reels/why-ai-reads-differently').filter((file) => /\.(ts|tsx)$/.test(file)),
-  resolve('ki/reels/2026-08-04-warum-ki-text-anders-liest/reel.json'),
-  resolve('ki/src/motion-system/MotionPreviewRoot.tsx'),
-  resolve('ki/src/motion-system/remotion-entry.tsx'),
+  SOURCE_REEL_PATH,
+  resolve('ki/src/Root.tsx'),
+  resolve('ki/src/index.ts'),
+  resolve('ki/brand/brand.ts'),
 ].sort());
 
 const hash = createHash('sha256');
