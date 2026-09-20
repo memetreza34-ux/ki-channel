@@ -87,6 +87,9 @@ const codexWorkflow = await readText('docs/CODEX_REEL_WORKFLOW.md');
 const contextIndex = await readText('docs/CODEX_CONTEXT_INDEX.md');
 const generator = await readText('scripts/new-ki-reel.mjs');
 const phase3Skill = await readText('.agents/skills/build-context-overload-reel/SKILL.md');
+const creativeRecipeCatalog = await readText('ki/src/animation-library/creativeRecipeCatalog.ts');
+const creativeRecipeRuntime = await readText('ki/src/animation-library/creativeRecipeRuntime.tsx');
+const productionSceneRuntime = await readText('ki/src/animation-library/productionSceneRuntime.tsx');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -133,8 +136,11 @@ requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.
 requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
 requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover','REMOTION_ANIMATION_CAPABILITIES.md']);
 requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
-requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
+requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
 requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
+requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
+requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
+requireMarkers('productionSceneRuntime.tsx', productionSceneRuntime, ['buildProductionSceneRuntime','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','ANIMATION_PROTOTYPE_REGISTRY']);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
@@ -165,7 +171,7 @@ for (const path of [
   'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
   'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md','ki/src/reels/AGENTS.md',
   'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md','ki/BILDSTIL.md',
-  'ki/src/animation-library/visualFingerprint.ts','ki/src/animation-library/authoredProductionGate.ts','ki/src/animation-library/productionCatalog.ts','ki/src/animation-library/creativeMotionPrimitives.tsx',
+  'ki/src/animation-library/visualFingerprint.ts','ki/src/animation-library/authoredProductionGate.ts','ki/src/animation-library/productionCatalog.ts','ki/src/animation-library/creativeMotionPrimitives.tsx','ki/src/animation-library/creativeRecipeCatalog.ts','ki/src/animation-library/creativeRecipeRuntime.tsx','ki/src/animation-library/CreativeRecipeGalleryRoot.tsx','ki/src/animation-library/productionSceneRuntime.tsx',
   'ki/plattformen/AGENTS.md','ki/plattformen/README.md',
   'ki/plattformen/youtube/README.md','ki/plattformen/youtube/SHORTS.md','ki/plattformen/youtube/LONGFORM.md','ki/plattformen/youtube/THUMBNAILS.md','ki/plattformen/youtube/UPLOAD.md',
   'ki/plattformen/instagram/README.md','ki/plattformen/tiktok/README.md','ki/plattformen/facebook/README.md','ki/plattformen/snapchat/README.md',
@@ -196,4 +202,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
