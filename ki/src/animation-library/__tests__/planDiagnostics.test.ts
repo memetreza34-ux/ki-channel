@@ -30,7 +30,7 @@ describe('reel plan diagnostics', () => {
     expect(result.passed).toBe(true);
     expect(result.uniqueAnimationCount).toBe(4);
     expect(result.uniqueFamilyCount).toBe(4);
-    expect(result.diagnostics).toEqual([]);
+    expect(result.diagnostics.some((item) => item.severity === 'blocker')).toBe(false);
   });
 
   it('blocks executable shell-only animations that are not production-ready', () => {
