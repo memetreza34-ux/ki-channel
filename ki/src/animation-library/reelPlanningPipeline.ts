@@ -45,12 +45,15 @@ const synchronizeEnhancedAnalysis = (
   const validFamilies = new Set(
     analysis.familyScores.map((score) => score.visualFamily),
   );
+  // Keep direct lexical/phrase evidence authoritative. Meaning analysis is a
+  // semantic fallback and enrichment layer, not a reason to replace a strong
+  // family match such as latency/performance with a generic input-output family.
   const preferredVisualFamilies = unique([
+    ...analysis.preferredVisualFamilies,
     ...meaningContract.preferredVisualFamilies.filter(
       (family): family is AnimationFamilyName =>
         validFamilies.has(family as AnimationFamilyName),
     ),
-    ...analysis.preferredVisualFamilies,
   ]).slice(0, 3);
   const semanticTags = unique([
     ...analysis.semanticTags,
