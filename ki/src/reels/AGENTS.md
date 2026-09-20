@@ -87,6 +87,15 @@ Zulässig sind nur zwei Wege:
 1. Das Reel entsteht aus `planReelAnimationsFromText` / `prepareReelAnimationProduction` und trägt den daraus erzeugten ProductionPlan, Implementierungsbrief und Visual Fingerprint bis in die Umsetzung.
 2. Eine bewusst handgeschriebene Reel-Szene besitzt ein explizites authored Visual Manifest und muss `assertAuthoredVisualDiversity(...)` bestehen.
 
+Für **planbasierte** Reels gilt zusätzlich:
+
+- die konkrete Szenenausgabe läuft standardmäßig über `ProductionSceneRuntimeRenderer`
+- `REUSE_EXACT`/Library-Szenen werden dort über die registrierten content-aware Prototypes aufgelöst
+- `NEW_BUILD` startet dort über den im BuildSpec festgelegten `CreativeRecipeRuntime`
+- `creativeRecipeId` und `runtimeMechanisms` aus dem Implementierungsbrief sind verbindliche Ausgangsgrammatik, keine optionale Deko
+- ein lokales `visualByScene`-Mapping darf den zentralen Renderer nicht ersetzen, nur wenn eine bewusst handgeschriebene Ausnahme mit authored Visual Manifest vorliegt
+- der generische Recipe-Runtime ist ein Implementierungs-Scaffold und **keine automatische Release-Freigabe**; vor `verified` bleibt technischer + manueller Render-Review Pflicht
+
 Für handgeschriebene Szenen muss pro Szene mindestens festgehalten werden:
 
 - eindeutige `sceneId`
@@ -112,7 +121,7 @@ Blockierend sind insbesondere:
 - zu geringe Hauptprimitive-Vielfalt bei längeren Reels
 - Card-Dominanz trotz vorhandener besserer Erklärmechanik
 
-Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal und müssen bewusst begründet oder verbessert werden.
+Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal und müssen bewusst begründet oder verbessert werden. Solche weichen Diversity-Warnungen blockieren die Implementierung nicht automatisch, dürfen aber vor finaler Freigabe nicht ignoriert werden.
 
 Die alte `ki/src/motion-system/`-Welt darf für Preview/Legacy erhalten bleiben, ist aber **kein alternativer Produktionsweg**, um die aktuelle Creative-Director-/Diversity-Prüfung zu umgehen.
 
