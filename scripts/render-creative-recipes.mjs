@@ -7,7 +7,7 @@ const VALID_MODES = new Set(['plan', 'smoke', 'stills', 'videos', 'all']);
 const ENTRY_POINT = 'ki/src/animation-library/remotion-entry.tsx';
 const OUTPUT_DIR = process.env.CREATIVE_RECIPE_OUTPUT_DIR ?? 'out/creative-recipes';
 const CONCURRENCY = Number(process.env.CREATIVE_RECIPE_CONCURRENCY ?? '1');
-const RECIPE_IDS = [
+const CREATIVE_RECIPE_IDS = [
   'object-morph-stage',
   'path-trace-field',
   'network-bloom',
@@ -37,14 +37,16 @@ const requested = process.env.CREATIVE_RECIPE_IDS
     )
   : null;
 const unknown = requested
-  ? [...requested].filter((value) => !RECIPE_IDS.includes(value))
+  ? [...requested].filter((value) => !CREATIVE_RECIPE_IDS.includes(value))
   : [];
 if (unknown.length > 0) {
   console.error(`Unbekannte Creative Recipes: ${unknown.join(', ')}`);
   process.exit(1);
 }
 
-const selected = RECIPE_IDS.filter((recipeId) => !requested || requested.has(recipeId));
+const selected = CREATIVE_RECIPE_IDS.filter(
+  (recipeId) => !requested || requested.has(recipeId),
+);
 if (selected.length === 0) {
   console.error('Keine Creative Recipes ausgewählt.');
   process.exit(1);
