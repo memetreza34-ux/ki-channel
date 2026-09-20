@@ -5,7 +5,7 @@ describe('AI product ad reel contract', () => {
   it('covers the full timeline with five contiguous scenes', () => {
     expect(AI_PRODUCT_AD_SCENES).toHaveLength(5);
     expect(AI_PRODUCT_AD_SCENES[0]?.startFrame).toBe(0);
-    expect(AI_PRODUCT_AD_SCENES.at(-1)?.endFrame).toBe(AI_PRODUCT_AD_DURATION_IN_FRAMES);
+    expect(AI_PRODUCT_AD_SCENES[AI_PRODUCT_AD_SCENES.length-1]?.endFrame).toBe(AI_PRODUCT_AD_DURATION_IN_FRAMES);
     for (let i=1;i<AI_PRODUCT_AD_SCENES.length;i++) {
       expect(AI_PRODUCT_AD_SCENES[i-1]?.endFrame).toBe(AI_PRODUCT_AD_SCENES[i]?.startFrame);
     }
