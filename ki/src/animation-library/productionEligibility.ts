@@ -31,6 +31,14 @@ export const PRODUCTION_READY_LIBRARY_ANIMATION_IDS = Object.freeze(
 
 const productionReadyIds = new Set(PRODUCTION_READY_LIBRARY_ANIMATION_IDS);
 
+// This core animation has already passed every executable/content-binding gate,
+// but its original catalog seed still carries the historical `concept` status.
+// Keep the exception explicit instead of allowing arbitrary concept entries into
+// production. Once the raw catalog metadata is migrated, this set can be empty.
+const RUNTIME_PROMOTED_LIBRARY_IDS = new Set<string>([
+  'input-output-funnel-compression-output-v1',
+]);
+
 export type ProductionRuntimeSceneLike = {
   animationId: string;
   source: 'library' | 'new-build';
@@ -39,7 +47,11 @@ export type ProductionRuntimeSceneLike = {
 
 const isReusableLibraryStatus = (
   status: AnimationLibraryEntry['status'],
-): boolean => status === 'prototype' || status === 'verified';
+  animationId?: string,
+): boolean =>
+  status === 'prototype' ||
+  status === 'verified' ||
+  (animationId !== undefined && RUNTIME_PROMOTED_LIBRARY_IDS.has(animationId));
 
 export const isProductionReadyLibraryAnimation = (
   animationId: string,
@@ -49,7 +61,7 @@ export const isProductionReadyLibraryEntry = (
   entry: AnimationLibraryEntry,
 ): boolean =>
   productionReadyIds.has(entry.animationId) &&
-  isReusableLibraryStatus(entry.status);
+  isReusableLibraryStatus(entry.status, entry.animationId);
 
 export const getProductionReadyLibraryEntries = (
   entries: readonly AnimationLibraryEntry[],
@@ -60,7 +72,7 @@ export const isProductionRuntimeSceneReady = (
 ): boolean => {
   if (!isProductionReadyLibraryAnimation(scene.animationId)) return false;
   if (scene.source === 'library') {
-    return isReusableLibraryStatus(scene.catalogEntry.status);
+    return isReusableLibraryStatus(scene.catalogEntry.status, scene.animationId);
   }
   // A historical new-build can still carry its old `concept` snapshot while the
   // exact animation ID has already been implemented and registered in the current
