@@ -1,83 +1,59 @@
 import {readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {
+  CONTENT_REVIEW_COUNTS,
+  CONTENT_REVIEW_REQUIRED_CHECK_KEYS,
+  assertContentReviewCounts,
+} from './content-review-contract.mjs';
 
 const galleryRoot = resolve('out/content-review-gallery');
 const manifestPath = resolve(galleryRoot, 'review-manifest.json');
 const visualReviewPath = resolve(
   process.argv[2] ?? resolve(galleryRoot, 'visual-review.json'),
 );
-
 const [manifest, review] = await Promise.all([
   readFile(manifestPath, 'utf8').then(JSON.parse),
   readFile(visualReviewPath, 'utf8').then(JSON.parse),
 ]);
 
-if (manifest.version !== 1 || !manifest.reviewId) {
-  throw new Error('Review-Galerie-Manifest besitzt keine gültige Review-ID.');
+if (manifest.version !== 2 || !manifest.reviewId) {
+  throw new Error('Review-Galerie-Manifest besitzt keine gültige Review-ID oder ist veraltet.');
 }
 if (manifest.upstreamMode !== 'all') {
-  throw new Error(
-    `Manuelle Freigabe benötigt eine Full-Galerie mit upstreamMode=all, gefunden: ${manifest.upstreamMode}.`,
-  );
+  throw new Error(`Manuelle Freigabe benötigt upstreamMode=all, gefunden: ${manifest.upstreamMode}.`);
 }
-if (
-  manifest.masterplanCount !== 22 ||
-  manifest.edgeCaseCount !== 6 ||
-  manifest.cards?.length !== 28
-) {
-  throw new Error(
-    `Manuelle Freigabe benötigt 22 Production + 6 Edge Cases, gefunden: ${manifest.masterplanCount} + ${manifest.edgeCaseCount}.`,
-  );
-}
-if (manifest.totalVideos !== 28) {
-  throw new Error(
-    `Manuelle Freigabe benötigt 28 Full-Videos, gefunden: ${manifest.totalVideos}.`,
-  );
+assertContentReviewCounts({
+  production: manifest.masterplanCount,
+  edge: manifest.edgeCaseCount,
+  recipe: manifest.recipeCount,
+  total: manifest.cards?.length,
+  label: 'Manuelle Freigabe',
+});
+if (manifest.totalVideos !== CONTENT_REVIEW_COUNTS.total) {
+  throw new Error(`Manuelle Freigabe benötigt ${CONTENT_REVIEW_COUNTS.total} Full-Videos, gefunden: ${manifest.totalVideos}.`);
 }
 
-if (review.version !== 1) {
-  throw new Error(`Visual-Review-Version ungültig: ${review.version}.`);
-}
+if (review.version !== 1) throw new Error(`Visual-Review-Version ungültig: ${review.version}.`);
 if (review.reviewId !== manifest.reviewId) {
-  throw new Error(
-    `Visual Review gehört zu einer anderen Rendergeneration: review=${review.reviewId}, gallery=${manifest.reviewId}.`,
-  );
+  throw new Error(`Visual Review gehört zu einer anderen Rendergeneration: review=${review.reviewId}, gallery=${manifest.reviewId}.`);
 }
 if (!review.reviewedAt || Number.isNaN(Date.parse(review.reviewedAt))) {
   throw new Error('Visual Review benötigt einen gültigen reviewedAt-Zeitstempel.');
 }
-if (
-  manifest.generatedAt &&
-  Date.parse(review.reviewedAt) < Date.parse(manifest.generatedAt)
-) {
-  throw new Error(
-    'Visual Review ist älter als die aktuelle Review-Galerie und damit stale.',
-  );
+if (manifest.generatedAt && Date.parse(review.reviewedAt) < Date.parse(manifest.generatedAt)) {
+  throw new Error('Visual Review ist älter als die aktuelle Review-Galerie und damit stale.');
 }
-if (!Array.isArray(review.cards) || review.cardCount !== 28 || review.cards.length !== 28) {
-  throw new Error(
-    `Visual Review benötigt exakt 28 Karten, gefunden: ${review.cards?.length ?? 0}.`,
-  );
+if (!Array.isArray(review.cards) || review.cardCount !== CONTENT_REVIEW_COUNTS.total || review.cards.length !== CONTENT_REVIEW_COUNTS.total) {
+  throw new Error(`Visual Review benötigt exakt ${CONTENT_REVIEW_COUNTS.total} Karten, gefunden: ${review.cards?.length ?? 0}.`);
 }
-if (review.completedCardCount !== 28) {
-  throw new Error(
-    `Visual Review ist unvollständig: ${review.completedCardCount}/28 Karten vollständig geprüft.`,
-  );
+if (review.completedCardCount !== CONTENT_REVIEW_COUNTS.total) {
+  throw new Error(`Visual Review ist unvollständig: ${review.completedCardCount}/${CONTENT_REVIEW_COUNTS.total} Karten vollständig geprüft.`);
 }
 
-const requiredCheckKeys = [
-  'contentCorrect',
-  'noDemoDebug',
-  'noFakePrecision',
-  'stateChangeClear',
-  'endHoldClear',
-];
-const manifestById = new Map(
-  manifest.cards.map((card) => [card.id, card]),
-);
+const manifestById = new Map(manifest.cards.map((card) => [card.id, card]));
 const seen = new Set();
+const reviewedKinds = {production: 0, edge: 0, recipe: 0};
 const failures = [];
-
 for (const card of review.cards) {
   if (!card?.id || seen.has(card.id)) {
     failures.push(`${card?.id ?? 'unknown'}: fehlende oder doppelte Karten-ID`);
@@ -95,24 +71,24 @@ for (const card of review.cards) {
     card.frameCount !== expected.frameCount ||
     card.hasVideo !== expected.hasVideo
   ) {
-    failures.push(
-      `${card.id}: Review-Metadaten stimmen nicht mit der aktuellen Galerie überein`,
-    );
+    failures.push(`${card.id}: Review-Metadaten stimmen nicht mit der aktuellen Galerie überein`);
   }
-  if (card.approved !== true) {
-    failures.push(`${card.id}: visuell geprüft/approved fehlt`);
-  }
-  for (const checkKey of requiredCheckKeys) {
-    if (card.checks?.[checkKey] !== true) {
-      failures.push(`${card.id}: Pflichtcheck ${checkKey} ist nicht bestätigt`);
-    }
+  if (card.kind in reviewedKinds) reviewedKinds[card.kind] += 1;
+  else failures.push(`${card.id}: unbekannte Review-Art ${card.kind}`);
+  if (card.approved !== true) failures.push(`${card.id}: visuell geprüft/approved fehlt`);
+  for (const checkKey of CONTENT_REVIEW_REQUIRED_CHECK_KEYS) {
+    if (card.checks?.[checkKey] !== true) failures.push(`${card.id}: Pflichtcheck ${checkKey} ist nicht bestätigt`);
   }
 }
-
 for (const expected of manifest.cards) {
-  if (!seen.has(expected.id)) {
-    failures.push(`${expected.id}: fehlt im Visual Review`);
-  }
+  if (!seen.has(expected.id)) failures.push(`${expected.id}: fehlt im Visual Review`);
+}
+for (const [kind, expected] of Object.entries({
+  production: CONTENT_REVIEW_COUNTS.production,
+  edge: CONTENT_REVIEW_COUNTS.edge,
+  recipe: CONTENT_REVIEW_COUNTS.recipe,
+})) {
+  if (reviewedKinds[kind] !== expected) failures.push(`${kind}: ${reviewedKinds[kind]} Reviews statt ${expected}`);
 }
 
 if (failures.length > 0) {
@@ -122,8 +98,6 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `[content-visual-review] Freigabenachweis vollständig: Review-ID ${manifest.reviewId}, 28/28 Karten mit allen Pflichtchecks.`,
+  `[content-visual-review] Freigabenachweis vollständig: Review-ID ${manifest.reviewId}, ${CONTENT_REVIEW_COUNTS.total}/${CONTENT_REVIEW_COUNTS.total} Karten mit allen Pflichtchecks inklusive ${CONTENT_REVIEW_COUNTS.recipe} Creative Recipes.`,
 );
-console.log(
-  '[content-visual-review] Der Nachweis bestätigt die dokumentierten manuellen Entscheidungen für genau diese Full-Rendergeneration.',
-);
+console.log('[content-visual-review] Der Nachweis bestätigt die dokumentierten manuellen Entscheidungen für genau diese Full-Rendergeneration.');
