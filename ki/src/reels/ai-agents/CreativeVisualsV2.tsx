@@ -387,7 +387,7 @@ export const PermissionCascadeVisual: React.FC = () => {
       {actions.map((action, index) => {
         const start = 126 + index * 36;
         const progress = p(frame, start, start + 100);
-        const x = 160 + index * 380;
+        const x = 130 + index * 295;
         const drift = (index - 1) * 46 * progress;
         const y = 760 + progress * 180;
         const failed = cascade > (index + 0.25) / 3;
