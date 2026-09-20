@@ -13,6 +13,7 @@ export * from './creativeMotionPrimitives';
 export * from './creativeRecipeCatalog';
 export * from './creativeRecipeRuntime';
 export * from './CreativeRecipeGalleryRoot';
+export * from './productionSceneRuntime';
 export * from './semanticBeatPlanner';
 export * from './importantWordCoverage';
 export * from './universalMotionPlan';
