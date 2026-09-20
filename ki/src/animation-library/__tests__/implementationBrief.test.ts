@@ -35,12 +35,38 @@ describe('reel implementation brief compiler', () => {
     expect(brief.scenes.every((scene) => scene.phases.length >= 3)).toBe(true);
     expect(brief.scenes.every((scene) => scene.implementationRules.length >= 5)).toBe(true);
     expect(new Set(brief.scenes.map((scene) => scene.animationId)).size).toBe(4);
+    expect(brief.scenes.every((scene) => scene.creativeRecipeId === null)).toBe(true);
+    expect(brief.scenes.every((scene) => scene.runtimeMechanisms.length === 0)).toBe(true);
+  });
+
+  it('exposes the executable recipe contract for new-build scenes', () => {
+    const prepared = prepareReelAnimationProduction({
+      reelId: 'new-build-brief-reel',
+      reelIndex: 41,
+      entries: ANIMATION_LIBRARY_ENTRIES,
+      brain,
+      maximumNewAnimationRatio: 1,
+      scenes: [
+        {
+          sceneId: 'scene-new',
+          spokenText: 'Eine neue visuelle Metapher verbindet Unsicherheit mit Wetter.',
+          forceNewAnimation: true,
+        },
+      ],
+    });
+    const brief = compileReelImplementationBrief(prepared);
+    const scene = brief.scenes[0];
+
+    expect(scene.source).toBe('new-build');
+    expect(scene.creativeRecipeId).not.toBeNull();
+    expect(scene.runtimeMechanisms.length).toBeGreaterThanOrEqual(3);
+    expect(brief.readyForImplementation).toBe(false);
   });
 
   it('renders readable Markdown with all scene contracts', () => {
     const prepared = prepareReelAnimationProduction({
       reelId: 'markdown-brief-reel',
-      reelIndex: 41,
+      reelIndex: 42,
       entries: ANIMATION_LIBRARY_ENTRIES,
       brain,
       maximumNewAnimationRatio: 1,
@@ -59,6 +85,8 @@ describe('reel implementation brief compiler', () => {
     expect(markdown).toContain('# Reel-Implementierungsbrief: markdown-brief-reel');
     expect(markdown).toContain('## Szene 1: scene-new');
     expect(markdown).toContain('**Quelle:** new-build');
+    expect(markdown).toContain('**Creative Recipe:**');
+    expect(markdown).toContain('### Runtime-Mechanismen');
     expect(markdown).toContain('### Choreografiephasen');
     expect(markdown).toContain('### Implementierungsregeln');
     expect(markdown).toContain('Review-Gates');
@@ -67,7 +95,7 @@ describe('reel implementation brief compiler', () => {
   it('keeps diagnostic blockers visible instead of hiding them', () => {
     const prepared = prepareReelAnimationProduction({
       reelId: 'blocked-brief-reel',
-      reelIndex: 42,
+      reelIndex: 43,
       entries: ANIMATION_LIBRARY_ENTRIES,
       brain,
       scenes: [
