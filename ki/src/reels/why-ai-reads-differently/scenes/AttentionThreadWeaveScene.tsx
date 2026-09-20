@@ -78,6 +78,7 @@ export const AttentionThreadWeaveScene: React.FC = () => {
             const x = interpolate(collapse, [0, 1], [node.x, targetX]);
             const y = interpolate(collapse, [0, 1], [node.y, targetY]);
             const isStrong = node.id === 'ki' || node.id === 'text';
+            const accent = 'accent' in node ? node.accent : false;
             return (
               <div
                 key={node.id}
@@ -90,7 +91,7 @@ export const AttentionThreadWeaveScene: React.FC = () => {
                   zIndex: 4,
                 }}
               >
-                <TokenCapsule text={node.label} accent={node.accent} />
+                <TokenCapsule text={node.label} accent={accent} />
                 <div
                   style={{
                     marginTop: 10,
