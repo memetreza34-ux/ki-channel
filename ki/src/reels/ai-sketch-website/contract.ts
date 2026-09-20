@@ -1,3 +1,6 @@
+import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {AI_SKETCH_WEBSITE_VISUAL_PROFILES} from './visualProfiles';
+
 export const AI_SKETCH_WEBSITE_COMPOSITION_ID = 'KI-AISketchWebsite';
 export const AI_SKETCH_WEBSITE_FPS = 30;
 export const AI_SKETCH_WEBSITE_WIDTH = 1080;
@@ -37,3 +40,28 @@ export const AI_SKETCH_WEBSITE_SUBTITLES:AISketchWebsiteCue[]=[
   {sceneId:'sketch-05',startFrame:1460,endFrame:1680,text:'Wenn etwas nicht passt, wird nicht alles neu gebaut. Die KI korrigiert gezielt die betroffene Stelle.'},
   {sceneId:'sketch-05',startFrame:1680,endFrame:1879,text:'So wird aus einer schnellen Zeichnung kein perfektes Produkt auf Knopfdruck, aber ein funktionierender Prototyp, den du weiter verbessern kannst.'},
 ];
+
+export const assertAISketchWebsiteVisualContract = (): void => {
+  if (
+    AI_SKETCH_WEBSITE_WIDTH !== 1080 ||
+    AI_SKETCH_WEBSITE_HEIGHT !== 1920 ||
+    AI_SKETCH_WEBSITE_FPS !== 30
+  ) {
+    throw new Error('AI sketch website format must be 1080x1920 @30fps');
+  }
+  if (AI_SKETCH_WEBSITE_SCENES.length !== 5) {
+    throw new Error('AI sketch website must contain five authored scenes');
+  }
+  const plannedSceneIds = AI_SKETCH_WEBSITE_SCENES.map((scene) => scene.sceneId);
+  const profiledSceneIds = AI_SKETCH_WEBSITE_VISUAL_PROFILES.map(
+    (profile) => profile.sceneId,
+  );
+  if (plannedSceneIds.join('|') !== profiledSceneIds.join('|')) {
+    throw new Error(
+      'AI sketch website visual profiles must exactly cover the authored scene order',
+    );
+  }
+  assertAuthoredVisualDiversity(AI_SKETCH_WEBSITE_VISUAL_PROFILES);
+};
+
+assertAISketchWebsiteVisualContract();
