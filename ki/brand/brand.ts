@@ -6,7 +6,12 @@ export const BRAND = {
   handle:   '@ki',
   topic:    'Künstliche Intelligenz verständlich erklärt (Tools, Konzepte, News)',
   voice:    'neugierig, klar — immer „du"',
-  font:     FONT,
+  // Backward-compatible CSS font string used throughout the existing Remotion scenes.
+  font:     FONT.body,
+  // Full typography palette for new code that explicitly distinguishes display/body.
+  fonts:    FONT,
+  titleFont: FONT.title,
+  bodyFont:  FONT.body,
   // Theme:
   accent:   '#B98CFF',       // 🟣 Lila — premium/besonders
   accentDk: '#6E45C9',
