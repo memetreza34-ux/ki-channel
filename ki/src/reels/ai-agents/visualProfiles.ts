@@ -21,7 +21,7 @@ export const AI_AGENTS_VISUAL_PROFILES: readonly AuthoredVisualScene[] = [
     visualId: 'ai-agents-radial-tool-orchestration-v2',
     fingerprint: {
       primaryPrimitive: 'nodes',
-      cameraMotion: 'orbit',
+      cameraMotion: 'parallax',
       depthStyle: 'flat',
       entryMechanism: 'draw',
       medium: 'remotion-native',
