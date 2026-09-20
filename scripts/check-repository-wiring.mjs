@@ -54,6 +54,7 @@ const agents = await readText('AGENTS.md');
 const kiAgents = await readText('ki/AGENTS.md');
 const reelAgents = await readText('ki/reels/AGENTS.md');
 const sourceReelAgents = await readText('ki/src/reels/AGENTS.md');
+const longformAgents = await readText('ki/src/longform/AGENTS.md');
 const platformAgents = await readText('ki/plattformen/AGENTS.md');
 const gemini = await readText('GEMINI.md');
 const master = await readText('ki/gehirn/MASTER.md');
@@ -87,6 +88,7 @@ const productionVisualContracts = await readText('scripts/check-production-visua
 const longformProduction = await readText('ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx');
 const longformV2 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx');
 const longformProfiles = await readText('ki/src/longform/ai-app-workflow/visualProfiles.ts');
+const motionTsconfig = await readText('ki/tsconfig.motion.json');
 
 if (root) {
   const expectedWorkspaces = ['core', 'ki'];
@@ -133,6 +135,8 @@ requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch',
 requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover','REMOTION_ANIMATION_CAPABILITIES.md']);
 requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
 requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
+requireMarkers('ki/src/longform/AGENTS.md', longformAgents, ['Verbindlicher Creative-Director-Pfad','visualProfiles.ts','assertAuthoredVisualDiversity','Card-/Panel-/AppWindow-/Chip-Grammatiken','keine lokale Kopie von Meaning','scripts/check-production-visual-contracts.mjs']);
+requireMarkers('ki/tsconfig.motion.json', motionTsconfig, ['src/longform/**/*.ts','src/longform/**/*.tsx']);
 requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
 requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
 requireMarkers('creativeRecipeRuntime.tsx', creativeRecipeRuntime, ['CreativeRecipeRuntime','assertCreativeRecipeRuntimeContract','ObjectMorphStage','PathTraceField','NetworkBloom','XRayOverlay','TypographicConstruct','CutawayStack','DepthCorridor','UIStateMachine']);
@@ -177,7 +181,7 @@ for (const marker of ["'02-bilder'", 'image-prompts.md', "'03-caption'", 'platfo
 
 for (const path of [
   'REPO-STATE.md','AGENTS.md','GEMINI.md','README.md',
-  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md','ki/src/reels/AGENTS.md',
+  'core/brand-kit/index.ts','ki/brand/brand.ts','ki/README.md','ki/AGENTS.md','ki/reels/AGENTS.md','ki/src/reels/AGENTS.md','ki/src/longform/AGENTS.md',
   'ki/gehirn/MASTER.md','ki/gehirn/KANAL.md','ki/gehirn/REELS.md','ki/gehirn/PLATTFORMEN.md','ki/gehirn/PRODUKTIONSABLAUF.md','ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md','ki/BILDSTIL.md',
   'ki/src/animation-library/visualFingerprint.ts','ki/src/animation-library/authoredProductionGate.ts','ki/src/animation-library/productionCatalog.ts','ki/src/animation-library/creativeMotionPrimitives.tsx','ki/src/animation-library/creativeRecipeCatalog.ts','ki/src/animation-library/creativeRecipeRuntime.tsx','ki/src/animation-library/CreativeRecipeGalleryRoot.tsx','ki/src/animation-library/productionSceneRuntime.tsx',
   'ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx','ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx','ki/src/longform/ai-app-workflow/visualProfiles.ts',
@@ -209,4 +213,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates für alle registrierten Short-Form-/Longform-Produktionen, Creative-Recipe-Runtime, kanonischer Scene-Renderer, Source-Fingerprints, 36-Karten-Review-Gate, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
+console.log('Repository-Wiring und Agent-Contract konsistent: Workspaces, kanonische Pfade, 3-Phasen-Modell, Creative Director, Visual-Diversity-Gates für alle registrierten Short-Form-/Longform-Produktionen, Creative-Recipe-Runtime, kanonischer Scene-Renderer, expliziter Longform-Typecheck, Source-Fingerprints, 36-Karten-Review-Gate, Remotion-Fähigkeiten, Plattformstruktur und Agent-Verträge stimmen überein.');
