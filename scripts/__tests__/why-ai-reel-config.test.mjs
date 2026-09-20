@@ -26,8 +26,7 @@ test('reference reel render contract is complete and uses canonical production r
   );
 });
 
-test('reference reel source fingerprint follows current production sources', () => {
-  assert.ok(WHY_AI_REEL_SOURCE_FILES.length >= 15);
+test('reference reel source fingerprint follows current production sources only', () => {
   assert.equal(
     new Set(WHY_AI_REEL_SOURCE_FILES).size,
     WHY_AI_REEL_SOURCE_FILES.length,
@@ -36,20 +35,29 @@ test('reference reel source fingerprint follows current production sources', () 
     [...WHY_AI_REEL_SOURCE_FILES].sort(),
     [...WHY_AI_REEL_SOURCE_FILES],
   );
-  assert.ok(
-    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/Root.tsx')),
-  );
-  assert.ok(
-    WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith('/ki/src/index.ts')),
-  );
-  assert.ok(
-    WHY_AI_REEL_SOURCE_FILES.some((file) =>
-      file.endsWith('/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json'),
-    ),
-  );
+
+  for (const requiredSuffix of [
+    '/ki/src/Root.tsx',
+    '/ki/src/index.ts',
+    '/ki/brand/brand.ts',
+    '/ki/src/reels/why-ai-reads-differently/ReelWhyAIReadsDifferently.tsx',
+    '/ki/src/reels/why-ai-reads-differently/contract.ts',
+    '/ki/src/reels/why-ai-reads-differently/visualProfiles.ts',
+    '/01_Warum-KI-Text-anders-liest/06-projektdateien/reel.json',
+  ]) {
+    assert.ok(
+      WHY_AI_REEL_SOURCE_FILES.some((file) => file.endsWith(requiredSuffix)),
+      `missing required production source: ${requiredSuffix}`,
+    );
+  }
+
   assert.ok(
     WHY_AI_REEL_SOURCE_FILES.every(
-      (file) => !file.includes('/ki/src/motion-system/'),
+      (file) =>
+        !file.includes('/ki/src/motion-system/') &&
+        !file.includes('/__tests__/') &&
+        !file.includes('\\__tests__\\') &&
+        !/\.(?:test|spec)\.(?:ts|tsx)$/.test(file),
     ),
   );
   assert.match(WHY_AI_REEL_SOURCE_FINGERPRINT, /^[a-f0-9]{64}$/);
