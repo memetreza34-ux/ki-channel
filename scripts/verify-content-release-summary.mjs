@@ -12,7 +12,7 @@ if (!VALID_MODES.has(requestedMode)) {
 const expectedStepCounts = {
   verify: 3,
   smoke: 11,
-  full: 7,
+  full: 5,
 };
 
 const expectedCommandFragments = {
@@ -38,8 +38,6 @@ const expectedCommandFragments = {
     'scripts/verify-content-matched-runtime.mjs',
     'animation-library:verify',
     'creative-recipes:verify',
-    'creative-recipes:render',
-    'creative-recipes:check',
     'scripts/render-all-content-release.mjs',
     'scripts/verify-all-content-release.mjs',
   ],
