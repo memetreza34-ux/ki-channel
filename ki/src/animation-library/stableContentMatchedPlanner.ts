@@ -9,6 +9,7 @@ import {
   type ReelSceneBrief,
 } from './contentMatchedPlanner';
 import {enhanceSceneMeaning} from './extendedMeaningContract';
+import {analyzeSceneMeaning} from './meaningContract';
 import {
   findVisualDiversityWarnings,
   VISUAL_SIMILARITY_HARD_LIMIT,
@@ -22,6 +23,22 @@ const normalize = (value: string): string =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-');
 
+const resolveStableMeaningContract = (
+  scene: ReelSceneBrief,
+): NonNullable<ReelSceneBrief['meaningContract']> => {
+  if (!scene.meaningContract) {
+    return enhanceSceneMeaning(scene.spokenText);
+  }
+
+  const automaticBase = analyzeSceneMeaning(scene.spokenText);
+  const suppliedLooksAutomatic =
+    JSON.stringify(scene.meaningContract) === JSON.stringify(automaticBase);
+
+  return suppliedLooksAutomatic
+    ? enhanceSceneMeaning(scene.spokenText, scene.meaningContract)
+    : scene.meaningContract;
+};
+
 const isCardPrimaryVisual = (entry: AnimationLibraryEntry): boolean =>
   entry.layoutFamily.includes('card') ||
   entry.primitiveTags.filter((tag) => tag.includes('card')).length >= 2;
@@ -33,7 +50,7 @@ const hasGoalIncompatibleShortcut = ({
   scene: ReelSceneBrief;
   entry: AnimationLibraryEntry;
 }): boolean => {
-  const contract = enhanceSceneMeaning(scene.spokenText, scene.meaningContract);
+  const contract = resolveStableMeaningContract(scene);
   const corpus = normalize(
     [
       entry.title,
@@ -152,10 +169,7 @@ export const planReelChoreography = ({
 }): ReelChoreographyPlan => {
   const enrichedScenes = scenes.map((scene) => ({
     ...scene,
-    meaningContract: enhanceSceneMeaning(
-      scene.spokenText,
-      scene.meaningContract,
-    ),
+    meaningContract: resolveStableMeaningContract(scene),
   }));
   const selections: PlannedAnimationSelection[] = [];
   const acceptedEntries: AnimationLibraryEntry[] = [];
@@ -198,8 +212,6 @@ export const planReelChoreography = ({
         visualSimilarityScore(previous, entry) < VISUAL_SIMILARITY_HARD_LIMIT,
     );
 
-    // Prefer a genuinely different visual grammar when alternatives exist, but do not
-    // create a false dead end if semantic matching leaves only similar candidates.
     return visuallyDistinct.length > 0 ? visuallyDistinct : policyFiltered;
   };
 
@@ -310,18 +322,19 @@ export const planReelChoreography = ({
 
   processSegment(enrichedScenes);
 
-  const visualFamilies = acceptedEntries.map((entry) => entry.visualFamily);
+  const visualFamilies = selections.map((selection) => {
+    if (selection.newAnimationProposal) {
+      return selection.newAnimationProposal.suggestedVisualFamily;
+    }
+    const entry = selection.animationId
+      ? entries.find((candidate) => candidate.animationId === selection.animationId)
+      : undefined;
+    return entry?.visualFamily ?? 'custom-explanation';
+  });
   const layoutFamilies = acceptedEntries.map((entry) => entry.layoutFamily);
   const motionSignatures = acceptedEntries.map((entry) => entry.motionSignature);
   const warnings: string[] = visualWarningsForContiguousRuns(selectedEntries);
-  const uniqueVisualFamilies = new Set([
-    ...visualFamilies,
-    ...selections.flatMap((selection) =>
-      selection.newAnimationProposal
-        ? [selection.newAnimationProposal.suggestedVisualFamily]
-        : [],
-    ),
-  ]);
+  const uniqueVisualFamilies = new Set(visualFamilies);
 
   if (
     uniqueVisualFamilies.size <
