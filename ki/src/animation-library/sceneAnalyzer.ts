@@ -158,13 +158,15 @@ export const analyzeSceneForAnimation = ({
     right.score - left.score || left.visualFamily.localeCompare(right.visualFamily),
   );
 
-  const hasDirectEvidence = familyScores.some(
+  const directEvidenceFamilies = familyScores.filter(
     (family) => family.matchedTerms.length > 0 || family.matchedPhrases.length > 0,
   );
+  const hasDirectEvidence = directEvidenceFamilies.length > 0;
   const positive = familyScores.filter((family) => family.score > 0);
   const validFamilies = new Set(FAMILY_RULES.map((rule) => rule.family));
   const fallback: AnimationFamilyName = 'input-output';
   const preferredVisualFamilies = unique([
+    ...directEvidenceFamilies.map((family) => family.visualFamily),
     ...meaningContract.preferredVisualFamilies.filter(
       (family): family is AnimationFamilyName => validFamilies.has(family as AnimationFamilyName),
     ),
