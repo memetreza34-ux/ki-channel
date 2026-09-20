@@ -17,7 +17,9 @@ describe('Motion-Renderplan', () => {
     for (const item of MOTION_RENDER_PLAN) {
       expect(item.checkpoints.length).toBeGreaterThanOrEqual(4);
       expect(item.checkpoints[0]).toBe(0);
-      expect(item.checkpoints.at(-1)).toBe(item.storyboard.durationInFrames - 1);
+      expect(item.checkpoints[item.checkpoints.length - 1]).toBe(
+        item.storyboard.durationInFrames - 1,
+      );
       expect(item.checkpoints.every((frame) => frame >= 0)).toBe(true);
       expect(item.checkpoints.every((frame) => frame < item.storyboard.durationInFrames)).toBe(true);
       expect([...item.checkpoints].sort((a, b) => a - b)).toEqual(item.checkpoints);
