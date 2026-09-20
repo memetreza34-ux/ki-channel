@@ -5,7 +5,7 @@ describe('GitHub repository reel contract',()=>{
   it('covers the full timeline with five contiguous scenes',()=>{
     expect(GITHUB_REPOSITORY_SCENES).toHaveLength(5);
     expect(GITHUB_REPOSITORY_SCENES[0]?.startFrame).toBe(0);
-    expect(GITHUB_REPOSITORY_SCENES.at(-1)?.endFrame).toBe(GITHUB_REPOSITORY_DURATION_IN_FRAMES);
+    expect(GITHUB_REPOSITORY_SCENES[GITHUB_REPOSITORY_SCENES.length-1]?.endFrame).toBe(GITHUB_REPOSITORY_DURATION_IN_FRAMES);
     for(let i=1;i<GITHUB_REPOSITORY_SCENES.length;i++) expect(GITHUB_REPOSITORY_SCENES[i-1]?.endFrame).toBe(GITHUB_REPOSITORY_SCENES[i]?.startFrame);
   });
   it('keeps the caption zone hard and all cues valid',()=>{
