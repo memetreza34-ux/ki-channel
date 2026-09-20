@@ -36,6 +36,7 @@ export type ProductionReelAnimationPlan = {
   visualFamilies: string[];
   layoutFamilies: string[];
   motionSignatures: string[];
+  qualityBlockers: string[];
   qualityWarnings: string[];
   readyForImplementation: boolean;
 };
@@ -111,6 +112,11 @@ const reserveUniqueBuildSpec = ({
   return {...spec, animationId: candidate};
 };
 
+const isBlockingQualityWarning = (warning: string): boolean =>
+  warning.includes('duplicate full animation selections remain') ||
+  warning.includes('repeat the same layout family') ||
+  warning.includes('repeat the same motion signature');
+
 export const planProductionReelAnimations = ({
   reelId,
   reelIndex,
@@ -137,11 +143,6 @@ export const planProductionReelAnimations = ({
     throw new Error('maximumNewAnimationRatio must be between 0 and 1');
   }
 
-  // Production reuse is intentionally stricter than generic choreography planning.
-  // Analysis and expansion tooling may still inspect the complete catalog, including
-  // executable variants that only have a semantic shell. A real content-matched
-  // production plan may reuse only animations that are executable, natively bound,
-  // and addressable through the content-render configuration.
   const productionEntries = getProductionReadyLibraryEntries(entries);
 
   const choreography = planReelChoreography({
@@ -152,9 +153,6 @@ export const planProductionReelAnimations = ({
     brain,
   });
 
-  // New-build IDs are deterministic by semantic content. Reserve every supplied
-  // catalog ID plus every globally production-ready runtime ID so a newly compiled
-  // build can never inherit readiness merely by colliding with an existing runtime.
   const reservedAnimationIds = new Set([
     ...entries.map((entry) => entry.animationId),
     ...PRODUCTION_READY_LIBRARY_ANIMATION_IDS,
@@ -187,11 +185,6 @@ export const planProductionReelAnimations = ({
       );
     }
 
-    // The generic planner intentionally does not reserve implementation details for
-    // new-build scenes. At production compilation time we do know the concrete build
-    // specs, so carry every already-used production layout/motion into the compiler's
-    // forbidden sets. This prevents two purpose-built scenes from collapsing into the
-    // same visual grammar even when their semantic inputs are nearly identical.
     const productionAwareProposal = {
       ...selection.newAnimationProposal,
       forbiddenLayoutFamilies: [
@@ -308,6 +301,7 @@ export const planProductionReelAnimations = ({
   }
 
   const uniqueWarnings = [...new Set(qualityWarnings)];
+  const qualityBlockers = uniqueWarnings.filter(isBlockingQualityWarning);
   return {
     reelId,
     reelIndex,
@@ -318,8 +312,9 @@ export const planProductionReelAnimations = ({
     visualFamilies,
     layoutFamilies,
     motionSignatures,
+    qualityBlockers,
     qualityWarnings: uniqueWarnings,
     readyForImplementation:
-      uniqueWarnings.length === 0 && areProductionRuntimeScenesReady(scenePlans),
+      qualityBlockers.length === 0 && areProductionRuntimeScenesReady(scenePlans),
   };
 };
