@@ -7,7 +7,7 @@ export const AI_PRODUCT_AD_VISUAL_PROFILES: readonly AuthoredVisualScene[] = [
   },
   {
     sceneId:'ad-02', visualId:'product-ad-creative-brief-orbit-v2',
-    fingerprint:{primaryPrimitive:'nodes',cameraMotion:'orbit',depthStyle:'flat',entryMechanism:'draw',medium:'remotion-native',direction:'circular',visualFamily:'creative-brief',layoutFamily:'brief-orbit-storyboard-rail',motionSignature:'brief-core-orbit-connect-storyboard-draw'},
+    fingerprint:{primaryPrimitive:'nodes',cameraMotion:'parallax',depthStyle:'flat',entryMechanism:'draw',medium:'remotion-native',direction:'circular',visualFamily:'creative-brief',layoutFamily:'brief-orbit-storyboard-rail',motionSignature:'brief-core-orbit-connect-storyboard-draw'},
   },
   {
     sceneId:'ad-03', visualId:'product-ad-keyframe-consistency-line-v2',
