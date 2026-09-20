@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {CREATIVE_RECIPE_DEFINITIONS} from '../creativeRecipeCatalog';
 import {
   compileNewAnimationProposal,
   createCatalogEntryFromBuildSpec,
@@ -38,6 +39,9 @@ describe('new animation proposal compiler', () => {
       proposal.forbiddenMotionSignatures[0],
     );
     expect(first.primitiveTags).toContain('shield-boundary');
+    expect(first.runtimeMechanisms).toEqual(
+      CREATIVE_RECIPE_DEFINITIONS[first.creativeRecipeId].runtimeMechanisms,
+    );
     expect(first.phases.map((phase) => phase.phaseId)).toEqual([
       'establish',
       'explain',
@@ -64,6 +68,7 @@ describe('new animation proposal compiler', () => {
       },
     });
 
+    expect(second.creativeRecipeId).not.toBe(first.creativeRecipeId);
     expect(second.noveltyGroup).not.toBe(first.noveltyGroup);
 
     const firstEntry = createCatalogEntryFromBuildSpec({
@@ -77,6 +82,22 @@ describe('new animation proposal compiler', () => {
     expect(visualSimilarityScore(firstEntry, secondEntry)).toBeLessThan(
       VISUAL_SIMILARITY_HARD_LIMIT,
     );
+  });
+
+  it('recognizes previous recipe roots even when the full generated family differs', () => {
+    const first = compileNewAnimationProposal({proposal});
+    const definition = CREATIVE_RECIPE_DEFINITIONS[first.creativeRecipeId];
+    const second = compileNewAnimationProposal({
+      proposal: {
+        ...proposal,
+        proposalId: 'proposal-scene-06-security',
+        sceneId: 'scene-06',
+        forbiddenLayoutFamilies: [`legacy-prefix-${definition.layoutRoot}-variant`],
+        forbiddenMotionSignatures: [`legacy-prefix-${definition.motionRoot}-variant`],
+      },
+    });
+
+    expect(second.creativeRecipeId).not.toBe(first.creativeRecipeId);
   });
 
   it('converts the specification into a catalog-compatible concept', () => {
