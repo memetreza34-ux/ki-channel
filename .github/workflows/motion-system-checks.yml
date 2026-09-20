@@ -105,6 +105,7 @@ jobs:
           path: |
             out/masterplan-content-release/
             out/content-motion-edge-cases/
+            out/creative-recipes/
             out/content-review-gallery/
           if-no-files-found: warn
 
