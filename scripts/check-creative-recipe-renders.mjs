@@ -1,0 +1,94 @@
+import {readFile, stat, writeFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+
+const OUTPUT_DIR = process.env.CREATIVE_RECIPE_OUTPUT_DIR ?? 'out/creative-recipes';
+const planPath = resolve(OUTPUT_DIR, 'render-plan.json');
+const reportPath = resolve(OUTPUT_DIR, 'technical-check.json');
+const PNG_SIGNATURE = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
+
+const plan = JSON.parse(await readFile(planPath, 'utf8'));
+if (plan.version !== 1 || !Array.isArray(plan.recipes) || plan.recipes.length === 0) {
+  throw new Error('Creative-Recipe render-plan.json ist ungültig.');
+}
+
+const inspectPng = async (path) => {
+  const file = await readFile(path);
+  const signatureValid =
+    file.length >= 24 && file.subarray(0, 8).equals(PNG_SIGNATURE) &&
+    file.subarray(12, 16).toString('ascii') === 'IHDR';
+  const width = signatureValid ? file.readUInt32BE(16) : null;
+  const height = signatureValid ? file.readUInt32BE(20) : null;
+  return {
+    path,
+    type: 'png',
+    sizeBytes: file.length,
+    width,
+    height,
+    valid:
+      signatureValid &&
+      width === 1080 &&
+      height === 1100 &&
+      file.length >= 1024,
+  };
+};
+
+const inspectMp4 = async (path) => {
+  const info = await stat(path);
+  const header = (await readFile(path)).subarray(0, 32);
+  const signatureValid =
+    header.length >= 8 && header.subarray(4, 8).toString('ascii') === 'ftyp';
+  return {
+    path,
+    type: 'mp4',
+    sizeBytes: info.size,
+    width: null,
+    height: null,
+    valid: signatureValid && info.size >= 4096,
+  };
+};
+
+const artifacts = [];
+const expectsStills = new Set(['smoke', 'stills', 'all']).has(plan.mode);
+const expectsVideos = new Set(['videos', 'all']).has(plan.mode);
+
+for (const recipe of plan.recipes) {
+  if (expectsStills) {
+    for (const frame of recipe.checkpoints) {
+      artifacts.push(
+        await inspectPng(
+          resolve(recipe.outputDir, `frame-${String(frame).padStart(3, '0')}.png`),
+        ),
+      );
+    }
+  }
+  if (expectsVideos) {
+    artifacts.push(await inspectMp4(resolve(recipe.outputDir, 'recipe.mp4')));
+  }
+}
+
+const invalid = artifacts.filter((artifact) => !artifact.valid);
+const report = {
+  version: 1,
+  mode: plan.mode,
+  recipeCount: plan.recipes.length,
+  artifactCount: artifacts.length,
+  validArtifactCount: artifacts.length - invalid.length,
+  invalidArtifactCount: invalid.length,
+  passed: invalid.length === 0,
+  artifacts,
+};
+await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+
+if (invalid.length > 0) {
+  console.error('Creative-Recipe-Artefaktprüfung fehlgeschlagen:');
+  for (const artifact of invalid) {
+    console.error(
+      `- ${artifact.path}: type=${artifact.type}, size=${artifact.sizeBytes}, dimensions=${artifact.width ?? '?'}x${artifact.height ?? '?'}`,
+    );
+  }
+  process.exit(1);
+}
+
+console.log(
+  `Creative-Recipe-Artefakte technisch gültig: ${artifacts.length} Dateien für ${plan.recipes.length} Recipes.`,
+);
