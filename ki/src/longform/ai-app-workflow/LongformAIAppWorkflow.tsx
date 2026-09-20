@@ -2,7 +2,7 @@ import React,{useMemo} from 'react';
 import {AbsoluteFill,Html5Audio,Sequence,interpolate,useCurrentFrame} from 'remotion';
 import {BRAND} from '../../brand/brand';
 import {AI_APP_WORKFLOW_CHAPTERS,type LongformChapter} from './contract';
-import {BranchVisual,BuildVisual,FinishVisual,FlowVisual,HookVisual,RepoVisual,ScopeVisual,TestVisual} from './Visuals';
+import {BranchVisual,BuildVisual,FinishVisual,FlowVisual,HookVisual,RepoVisual,ScopeVisual,TestVisual} from './CreativeVisualsV2';
 
 const visuals:Record<LongformChapter['id'],React.FC>={hook:HookVisual,scope:ScopeVisual,flow:FlowVisual,repo:RepoVisual,build:BuildVisual,test:TestVisual,branch:BranchVisual,finish:FinishVisual};
 
