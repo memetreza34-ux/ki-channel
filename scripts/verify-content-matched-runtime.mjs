@@ -21,6 +21,7 @@ const run = (command, args, label) =>
   });
 
 const tests = [
+  'ki/src/productionRootIsolation.test.ts',
   'ki/src/animation-library/__tests__/contentMatching.test.ts',
   'ki/src/animation-library/__tests__/stableContentMatchedPlanner.test.ts',
   'ki/src/animation-library/__tests__/extendedMeaningContract.test.ts',
@@ -182,7 +183,7 @@ try {
   await run(
     'node',
     ['scripts/check-production-visual-contracts.mjs'],
-    'Alle registrierten Short-Form- und Longform-Produktionen besitzen Visual Profiles und einen aktiven Diversity-Gate',
+    'Alle registrierten Short-Form- und Longform-Produktionen besitzen Visual Profiles, Diversity-Gates und einen Preview-freien Production-Entry',
   );
   await run(
     'npx',
@@ -192,12 +193,12 @@ try {
   await run(
     'npx',
     ['--no-install', 'tsc', '-p', 'ki/tsconfig.motion.json'],
-    'TypeScript-Prüfung der Production-Reels und Longform inklusive authored Diversity-Migrationen',
+    'TypeScript-Prüfung der Production-Reels und Longform inklusive ProductionRoot-Isolation und authored Diversity-Migrationen',
   );
   await run(
     'npx',
     ['--no-install', 'vitest', 'run', ...tests],
-    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Diversity-, Legacy-Reel-, Longform- und Production-Regressionstests',
+    'Gezielte Content-, Creative-Recipe-, Canonical-Runtime-, Root-Isolation-, Diversity-, Legacy-Reel-, Longform- und Production-Regressionstests',
   );
   await run(
     'node',
