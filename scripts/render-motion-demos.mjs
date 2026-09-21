@@ -33,6 +33,24 @@ const DEMOS = [
     checkpoints: [20, 70, 120, 170],
   },
   {
+    compositionId: 'Szene-Naechstes-Wort',
+    slug: 'szene-naechstes-wort',
+    technik: 'vollstaendige Einzelszene nach BEWEGUNG.md',
+    checkpoints: [40, 110, 180, 230],
+  },
+  {
+    compositionId: 'Reel-Warum-Unsinn',
+    slug: 'reel-warum-unsinn',
+    technik: 'Reel aus Sprechskript: Skript -> Cues -> Szenen',
+    checkpoints: [120, 420, 900, 1500],
+  },
+  {
+    compositionId: 'Reel-Vom-Satz-Zur-Antwort',
+    slug: 'reel-vom-satz-zur-antwort',
+    technik: 'Reel mit 13 kurzen Szenen und hartem Schnitt',
+    checkpoints: [60, 340, 760, 1600],
+  },
+  {
     compositionId: 'Demo-Transitions',
     slug: 'transitions',
     technik: '@remotion/transitions TransitionSeries clockWipe + wipe',
