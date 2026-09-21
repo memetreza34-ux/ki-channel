@@ -17,6 +17,7 @@ Diese Datei ist die Antwort. Sie ist bewusst eine Tabelle und kein Aufsatz.
 | 2 | Tonfall und Hierarchie | `motion-art-direction` | Was ist Held, was Stütze, was bewegt sich **nicht** |
 | 3 | Bildaufbau | `shot-composition` | Raster, sichere Zonen, woher Elemente kommen und wohin sie gehen |
 | 4 | Mechanik wählen | `REMOTION_ANIMATION_CAPABILITIES.md` | Erst die Mechanik, dann die Technik |
+| 4a | Technik ansehen | `npm run motion-demos:list` | Lauffähige Beispiele für Form-Morphing, Pfad-Reise und Übergänge |
 | 5 | API nachschlagen | `remotion-docs` | Aktuelle Signaturen statt Erinnerung |
 | 6 | Bewegung umsetzen | `animation-principles` + `BEWEGUNG.md` | Kurve, Dauer, Staffelung — die Zahlen |
 | 7 | Farbe über Zeit | `color-motion` | Palette, Verläufe, Übergänge ohne matschige Mitte |
@@ -24,6 +25,21 @@ Diese Datei ist die Antwort. Sie ist bewusst eine Tabelle und kein Aufsatz.
 | 9 | Vor dem Render prüfen | `content-grounding-test` | Inhalt trägt wirklich bis in die Render-Props |
 | 10 | Rendern | `remotion-render` | Export und Kontrolle |
 | 11 | Nach dem Render | `POST_RENDER_REVIEW.md` | Sichtprüfung |
+
+## Technik-Demos
+
+`ki/src/animation-library/demo/` zeigt drei Mechaniken, die im Katalog bisher
+nicht vorkommen: echtes Form-Morphing, eine Pfad-Reise mit Tangentenführung und
+Szenenübergänge.
+
+```bash
+npm run motion-demos:stills
+```
+
+Sie sind **nicht** in der Prototypen-Registry. Der Katalog ist auf exakt 88
+Einträge und vier Varianten je Familie festgelegt; eine bestehende Variante zu
+verdrängen wäre eine inhaltliche Entscheidung. Bis die gefallen ist, dienen die
+Demos als Vorlage zum Abschauen, nicht als Produktionsanimation.
 
 ## Agenten
 
