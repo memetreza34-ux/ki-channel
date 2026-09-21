@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
+import {easedProgress} from '../../motion/easing';
 
 const ink = BRAND.ink;
 const purple = BRAND.accentDk;
@@ -12,10 +13,7 @@ const danger = '#E35D6A';
 const success = '#35A779';
 
 const p = (frame: number, start: number, end: number): number =>
-  interpolate(frame, [start, end], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  easedProgress(frame, start, end);
 
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 

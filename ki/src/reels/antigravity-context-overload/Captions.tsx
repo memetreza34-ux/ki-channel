@@ -5,15 +5,18 @@ import {
   CONTEXT_OVERLOAD_SUBTITLES,
   type ContextOverloadSubtitleCue,
 } from './contract';
+import {MOTION_EASING} from '../../motion/easing';
 
 const edgeFade = (frame: number, startFrame: number, endFrame: number): number => {
   const fadeFrames = 4;
   return Math.min(
     interpolate(frame, [startFrame, startFrame + fadeFrames], [0, 1], {
+      easing: MOTION_EASING.enter,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
     interpolate(frame, [endFrame - fadeFrames, endFrame], [1, 0], {
+      easing: MOTION_EASING.exit,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),

@@ -15,6 +15,37 @@ const PRODUCTION_DIRS = [
   'ki/src/motion-system/components',
 ];
 
+/** Rekursiv alle .tsx unter einem Ordner, ohne Fremdvorlagen. */
+const tsxFilesBelow = (dir: string): string[] => {
+  const out: string[] = [];
+  const walk = (current: string) => {
+    for (const entry of readdirSync(current, {withFileTypes: true})) {
+      const full = join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === 'vendor-templates') continue;
+        walk(full);
+      } else if (entry.name.endsWith('.tsx')) {
+        out.push(full);
+      }
+    }
+  };
+  walk(dir);
+  return out;
+};
+
+/**
+ * Zeitachsen, die bewusst linear bleiben.
+ *
+ * An die Stimme gekoppelte Werte duerfen nicht geeast werden: der Untertitel
+ * muss dem Sprecher folgen, nicht einer Kurve. Ein durchlaufender
+ * Fortschrittsbalken ist ebenfalls kein wahrnehmbares Einzelereignis.
+ */
+const DELIBERATELY_LINEAR = [
+  /\[\s*cue\.startFrame\s*,\s*Math\.max\(/,
+  /\[\s*startFrame\s*,\s*Math\.max\(\s*startFrame \+ 1/,
+  /\[\s*0\s*,\s*[A-Z_]*DURATION_IN_FRAMES - 1\s*\]/,
+];
+
 const productionSources = (): {path: string; source: string}[] =>
   PRODUCTION_DIRS.flatMap((dir) =>
     readdirSync(dir)
@@ -102,6 +133,40 @@ describe('Bewegungssprache', () => {
 
     // Handgerollte Versaetze haben keine Obergrenze: bei langen Listen
     // schleppt der Schwanz laenger als die Aussage dauert.
+    expect(offenders).toEqual([]);
+  });
+
+  it('laesst in den Reels nur begruendete lineare Zeitachsen zu', () => {
+    const offenders: string[] = [];
+
+    for (const dir of ['ki/src/reels', 'ki/src/longform']) {
+      for (const path of tsxFilesBelow(dir)) {
+        const source = readFileSync(path, 'utf8');
+        const needle = 'interpolate(';
+        for (
+          let at = source.indexOf(needle);
+          at >= 0;
+          at = source.indexOf(needle, at + 1)
+        ) {
+          let depth = 0;
+          let end = at + needle.length - 1;
+          for (; end < source.length; end += 1) {
+            if (source[end] === '(') depth += 1;
+            else if (source[end] === ')') {
+              depth -= 1;
+              if (depth === 0) break;
+            }
+          }
+          const call = source.slice(at, end + 1);
+          if (!/^frame\s*,/.test(call.slice(needle.length).trimStart())) continue;
+          if (call.includes('easing:')) continue;
+          if (DELIBERATELY_LINEAR.some((pattern) => pattern.test(call))) continue;
+          offenders.push(`${path}: ${call.slice(0, 60).replace(/\s+/g, ' ')}`);
+        }
+      }
+    }
+
+    // Entweder eine Kurve oder ein dokumentierter Grund. Nichts dazwischen.
     expect(offenders).toEqual([]);
   });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate,useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
+import {easedProgress} from '../../motion/easing';
 
 const OK='#4F9D74';
 const BAD='#D95C6A';
@@ -12,7 +13,7 @@ const LINE='rgba(110,69,201,.18)';
 const SOFT='rgba(185,140,255,.12)';
 const stage:React.CSSProperties={position:'absolute',inset:'20px 40px 28px',overflow:'hidden'};
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
-const p=(frame:number,start:number,end:number)=>clamp(interpolate(frame,[start,Math.max(start+1,end)],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
+const p=(frame:number,start:number,end:number)=>clamp(easedProgress(frame, start, Math.max(start+1,end)));
 const dash=(progress:number,length:number)=>length*(1-progress);
 
 const GridGlow:React.FC<{opacity?:number}>=({opacity=.42})=><div style={{position:'absolute',inset:0,opacity,backgroundImage:'linear-gradient(rgba(110,69,201,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(110,69,201,.045) 1px,transparent 1px)',backgroundSize:'48px 48px',maskImage:'radial-gradient(circle at 50% 48%,black 0%,rgba(0,0,0,.78) 55%,transparent 86%)'}}/>;

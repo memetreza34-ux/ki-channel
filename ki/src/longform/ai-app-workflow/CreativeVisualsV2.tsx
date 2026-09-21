@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate,spring,useCurrentFrame,useVideoConfig} from 'remotion';
 import {BRAND} from '../../brand/brand';
+import {easedProgress} from '../../motion/easing';
 
 const PURPLE=BRAND.accentDk;
 const ACCENT=BRAND.accent;
@@ -10,7 +11,7 @@ const BAD='#D95C6A';
 const MUTED='rgba(26,26,46,.50)';
 const stage:React.CSSProperties={position:'absolute',left:90,right:90,top:120,bottom:70,overflow:'hidden'};
 const clamp=(value:number)=>Math.max(0,Math.min(1,value));
-const p=(frame:number,start:number,end:number)=>clamp(interpolate(frame,[start,Math.max(start+1,end)],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
+const p=(frame:number,start:number,end:number)=>clamp(easedProgress(frame, start, Math.max(start+1,end)));
 const dash=(value:number,length:number)=>length*(1-value);
 
 const Grid:React.FC<{opacity?:number}>=({opacity=.24})=><div style={{position:'absolute',inset:0,opacity,backgroundImage:'linear-gradient(rgba(110,69,201,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(110,69,201,.04) 1px,transparent 1px)',backgroundSize:'64px 64px',maskImage:'radial-gradient(circle at 50% 48%,black,rgba(0,0,0,.72) 58%,transparent 88%)'}}/>;

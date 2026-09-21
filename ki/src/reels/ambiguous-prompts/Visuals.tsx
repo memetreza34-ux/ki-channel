@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {BRAND} from '../../../brand/brand';
+import {easedProgress} from '../../motion/easing';
 
 const ink = BRAND.ink;
 const purple = BRAND.accentDk;
@@ -10,7 +11,7 @@ const muted = '#777083';
 const danger = '#E35D6A';
 const success = '#35A779';
 
-const p = (frame: number, a: number, b: number) => interpolate(frame, [a,b], [0,1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+const p = (frame: number, a: number, b: number) => easedProgress(frame, a, b);
 const Card: React.FC<React.PropsWithChildren<{style?: React.CSSProperties}>> = ({children,style}) => <div style={{background:'#fff',border:'2px solid #E9E1F2',borderRadius:30,boxShadow:'0 18px 46px rgba(52,35,80,.10)',...style}}>{children}</div>;
 const Chip: React.FC<{label:string; active?:boolean}> = ({label,active}) => <div style={{padding:'18px 28px',borderRadius:999,background:active?soft:'#fff',border:`2px solid ${active?BRAND.accent:line}`,fontSize:30,fontWeight:850,color:active?purple:ink}}>{label}</div>;
 

@@ -11,6 +11,8 @@ import {
   type AmbiguousPromptScene,
 } from './contract';
 import {BranchingPromptVisual, ChoiceVisual, ConstraintCollapseVisual, ExampleAnchorVisual, ThreeStepPromptVisual} from './CreativeVisualsV2';
+import {easedProgress} from '../../motion/easing';
+import {MOTION_EASING} from '../../motion/easing';
 
 const visualByScene: Record<string, React.FC> = {
   'ambiguous-01': BranchingPromptVisual,
@@ -37,7 +39,7 @@ const iconPaths: Record<string, React.ReactNode> = {
 };
 
 const Header: React.FC<{scene: AmbiguousPromptScene}> = ({scene}) => {
-  const frame=useCurrentFrame(); const enter=interpolate(frame,[0,18],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+  const frame=useCurrentFrame(); const enter=easedProgress(frame,0,18);
   return <div style={{position:'absolute',left:64,right:64,top:92,zIndex:50,display:'flex',justifyContent:'center',alignItems:'center',gap:22,opacity:enter,transform:`translateY(${(1-enter)*-20}px)`}}>
     <div style={{width:72,height:72,borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(185,140,255,.16)',border:'1.5px solid rgba(110,69,201,.25)',color:BRAND.accentDk,boxShadow:'0 12px 30px rgba(110,69,201,.12)'}}><svg width="42" height="42" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{iconPaths[scene.icon] ?? iconPaths.choice}</svg></div>
     <div style={{maxWidth:820,textAlign:'center',fontFamily:BRAND.font,fontSize:scene.headline.length>25?50:58,lineHeight:1.02,fontWeight:900,letterSpacing:-1.8,color:BRAND.accentDk,textShadow:'0 7px 22px rgba(110,69,201,.11)'}}>{scene.headline}</div>
@@ -54,7 +56,7 @@ const activeWordIndex=(frame:number,cue:AmbiguousPromptCue,count:number):number=
 const Captions: React.FC = () => {
   const frame=useCurrentFrame(); const cue=AMBIGUOUS_PROMPTS_SUBTITLES.find((c)=>frame>=c.startFrame&&frame<c.endFrame); if(!cue)return null;
   const words=cue.words?.length?cue.words.map((w)=>w.text):cue.text.trim().split(/\s+/).filter(Boolean); const active=activeWordIndex(frame,cue,words.length);
-  const fade=Math.min(interpolate(frame,[cue.startFrame,cue.startFrame+4],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),interpolate(frame,[cue.endFrame-4,cue.endFrame],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
+  const fade=Math.min(easedProgress(frame,cue.startFrame,cue.startFrame+4),interpolate(frame,[cue.endFrame-4,cue.endFrame],[1,0],{easing:MOTION_EASING.exit,extrapolateLeft:'clamp',extrapolateRight:'clamp'}));
   return <div style={{position:'absolute',left:REEL_CAPTION_SAFE.horizontalInset,right:REEL_CAPTION_SAFE.horizontalInset,bottom:REEL_CAPTION_SAFE.bottom,zIndex:200,display:'flex',justifyContent:'center',opacity:fade,pointerEvents:'none'}}><div style={{width:'100%',maxWidth:REEL_CAPTION_SAFE.maxWidth,textAlign:'center',fontFamily:BRAND.font,fontSize:47,fontWeight:850,lineHeight:1.18,letterSpacing:-.8,color:BRAND.ink,textShadow:'0 2px 0 rgba(255,255,255,.98),0 0 15px rgba(255,255,255,.98),0 8px 30px rgba(26,26,46,.10)'}}>{words.map((word,i)=><React.Fragment key={`${cue.sceneId}-${cue.startFrame}-${i}`}><span style={{display:'inline-block',color:i===active?BRAND.accentDk:BRAND.ink,transform:`scale(${i===active?1.035:1})`,transformOrigin:'50% 70%'}}>{word}</span>{i<words.length-1?' ':null}</React.Fragment>)}</div></div>;
 };
 

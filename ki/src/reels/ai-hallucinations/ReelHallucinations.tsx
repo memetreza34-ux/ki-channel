@@ -13,6 +13,7 @@ import {
 } from '../../animation-library/productionSceneRuntime';
 import reelJson from '../../../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-08-10_bis_2026-08-16/01_Warum-KI-Dinge-erfindet/03-caption/subtitle-cues.json';
+import {MOTION_EASING} from '../../motion/easing';
 
 export type HallucinationScene = {
   sceneId: string;
@@ -172,10 +173,12 @@ const edgeFade = (
   const fadeFrames = 4;
   return Math.min(
     interpolate(frame, [startFrame, startFrame + fadeFrames], [0, 1], {
+      easing: MOTION_EASING.enter,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
     interpolate(frame, [endFrame - fadeFrames, endFrame], [1, 0], {
+      easing: MOTION_EASING.exit,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),

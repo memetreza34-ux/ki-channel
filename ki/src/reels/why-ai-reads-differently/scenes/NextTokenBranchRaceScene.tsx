@@ -2,6 +2,7 @@ import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {GlassPanel, SceneShell, TokenCapsule} from '../components/SceneShell';
 import {palette, progress} from '../visualUtils';
+import {MOTION_EASING} from '../../../motion/easing';
 
 const CANDIDATES = [
   {word: 'Text', color: '#8757E8', path: 'M 150 470 C 300 300, 540 300, 760 220'},
@@ -15,11 +16,13 @@ const probabilityAt = (frame: number, index: number): number => {
   const end = [57, 26, 13][index];
   if (frame < 90) {
     return interpolate(frame, [20, 90], [first, middle], {
+      easing: MOTION_EASING.move,
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
   }
   return interpolate(frame, [90, 146], [middle, end], {
+      easing: MOTION_EASING.move,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
