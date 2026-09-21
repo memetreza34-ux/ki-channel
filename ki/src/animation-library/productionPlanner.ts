@@ -118,6 +118,18 @@ const isBlockingQualityWarning = (warning: string): boolean =>
   warning.includes('repeat the same layout family') ||
   warning.includes('repeat the same motion signature');
 
+/**
+ * Marker fuer eine Auswahl, die der Produktionsplaner bewusst unterhalb der
+ * Reuse-Schwelle akzeptiert hat.
+ *
+ * Der Exact-Family-Fallback greift, wenn der Beam-Search keine Wiederverwendung
+ * zulaesst, es aber genau einen freien Prototypen in der gewuenschten Familie
+ * gibt. Die Diagnose muss diesen Fall kennen, sonst blockiert sie genau die
+ * Auswahl, die der Planer eine Zeile vorher absichtlich getroffen hat.
+ */
+export const PRODUCTION_EXACT_FAMILY_FALLBACK_REASON =
+  'production exact-family fallback reused';
+
 const resolveExactFamilyProductionFallback = ({
   scene,
   selection,
@@ -240,7 +252,7 @@ export const planProductionReelAnimations = ({
         selectionScore: selection.score?.total ?? null,
         selectionReasons: [
           ...selection.reasons,
-          `production exact-family fallback reused ${exactFamilyFallback.animationId}`,
+          `${PRODUCTION_EXACT_FAMILY_FALLBACK_REASON} ${exactFamilyFallback.animationId}`,
         ],
       });
       usedProductionAnimationIds.add(exactFamilyFallback.animationId);

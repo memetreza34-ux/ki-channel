@@ -1,5 +1,6 @@
 import {getAnimationLibraryEntry} from './catalog';
 import {isProductionReadyLibraryAnimation} from './productionEligibility';
+import {PRODUCTION_EXACT_FAMILY_FALLBACK_REASON} from './productionPlanner';
 import type {RawReelAnimationPlan} from './reelPlanningPipeline';
 import {
   deriveVisualFingerprint,
@@ -208,9 +209,18 @@ export const diagnoseRawReelAnimationPlan = (
       decision.selectionScore !== null &&
       decision.selectionScore < 68
     ) {
+      // Der Produktionsplaner darf unterhalb der Schwelle wiederverwenden, wenn
+      // genau ein passender Prototyp der gewuenschten Familie frei ist. Diese
+      // Auswahl bleibt schwach und wird gemeldet - aber sie blockiert nicht,
+      // sonst widerspraeche die Diagnose der Entscheidung des Planers.
+      const acceptedByFallback = (
+        productionByScene.get(decision.sceneId)?.selectionReasons ?? []
+      ).some((reason) =>
+        reason.startsWith(PRODUCTION_EXACT_FAMILY_FALLBACK_REASON),
+      );
       diagnostics.push({
         code: 'weak-library-selection',
-        severity: 'blocker',
+        severity: acceptedByFallback ? 'warning' : 'blocker',
         sceneIds: [decision.sceneId],
         message: `Bibliotheksauswahl ${decision.selectedAnimationId} erreicht nur ${decision.selectionScore.toFixed(1)} Punkte.`,
       });

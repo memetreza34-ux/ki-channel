@@ -49,6 +49,15 @@ const STOPWORDS = new Set([
   'sie', 'sind', 'so', 'und', 'von', 'vor', 'während', 'weil', 'wenn', 'wie',
   'wird', 'werden', 'zu', 'zum', 'zur', 'the', 'a', 'and', 'from', 'into',
   'of', 'to', 'with',
+  // Meta-Begriffe: benennen die Messgroesse oder das Konzept selbst und sind
+  // deshalb nie eine konkrete Option. Ohne sie wird aus "die Wahrscheinlichkeit
+  // fuer Antwort A" ein Kandidat namens "Wahrscheinlichkeit".
+  //
+  // Diese Liste stand schon einmal hier und ging beim Zusammenfuehren der
+  // beiden Entwicklungslinien verloren.
+  'kontext', 'kontextsignal', 'kontextsignale', 'kontextsignalen',
+  'wahrscheinlichkeit', 'wahrscheinlichkeiten', 'prozent', 'vergleich',
+  'wert', 'werte', 'werten',
 ]);
 
 const contentWords = (spokenText: string): string[] =>
