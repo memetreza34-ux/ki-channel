@@ -2,6 +2,8 @@
 
 Dieser Ablauf ist der Normalfall für jedes neue Short-Form-Reel.
 
+**Welches Werkzeug in welchem Schritt:** `WERKZEUGE.md`. Jeder Schritt hat sein eigenes — nicht für alles dasselbe nehmen.
+
 ## Phase 1 — ChatGPT: komplette Grundlage
 
 Ziel: Nach Phase 1 muss der Mensch **nur noch das Voiceover erzeugen**.

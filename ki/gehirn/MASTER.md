@@ -14,7 +14,8 @@ Diese Datei verbindet Identität, Reel-Logik, Longform, Bildstil, Plattformen un
 8. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
 9. `../BILDSTIL.md` — Bild- und Prompt-Qualität
 10. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
-11. named reel/longform package — konkrete Inhalte
+11. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
+12. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
