@@ -22,6 +22,26 @@ const PRODUCTION_ANIMATION_CUTOFF_Y = 1440;
 const PRODUCTION_ANIMATION_CLIP_BOTTOM_PX = 1920 - PRODUCTION_ANIMATION_CUTOFF_Y;
 
 /**
+ * Massstab, damit die ganze Leinwand in den sichtbaren Streifen passt.
+ *
+ * Die Prototypen sind fuer volle 1920 px gebaut. Die Untertitel-Sperrzone kam
+ * spaeter dazu und schneidet bei y=1440 hart ab - die Buehnen enden aber je
+ * nach Prototyp bei 1730, 1770 oder sogar 1920. Ergebnis war eine harte Kante
+ * quer durch das Bild und halbierte Inhalte.
+ *
+ * Eine Korrektur pro Prototyp scheidet aus: die Buehnenmasse sind nicht
+ * einheitlich. Stattdessen wird die gesamte Ebene einmal so verkleinert, dass
+ * auch der unterste denkbare Punkt oberhalb der Schnittkante landet:
+ *
+ *   y * MASSSTAB - LIFT <= CUTOFF   fuer y = 1920
+ *   1920 * 0.8 - 96 = 1440
+ *
+ * Der frei werdende Streifen unten ist kein Verlust - dort sitzt die Caption.
+ */
+const PRODUCTION_CONTENT_SCALE =
+  (PRODUCTION_ANIMATION_CUTOFF_Y + PRODUCTION_CONTENT_LIFT_PX) / 1920;
+
+/**
  * Zentrale Zeitachse aller Prototypen.
  *
  * Bewusst NICHT linear: eine lineare Rampe hat weder Anlauf noch Auslauf und
@@ -308,7 +328,12 @@ export const PrototypeShell: React.FC<{
           style={{
             position: 'absolute',
             inset: 0,
-            transform: content ? `translateY(-${PRODUCTION_CONTENT_LIFT_PX}px)` : undefined,
+            transform: content
+              ? `translateY(-${PRODUCTION_CONTENT_LIFT_PX}px) scale(${PRODUCTION_CONTENT_SCALE})`
+              : undefined,
+            // Waagerecht mittig, senkrecht oben verankert: die Breite bleibt
+            // zentriert, und oben bleibt der Abstand zur Ueberschrift gleich.
+            transformOrigin: content ? '50% 0' : undefined,
           }}
         >
           {children}
