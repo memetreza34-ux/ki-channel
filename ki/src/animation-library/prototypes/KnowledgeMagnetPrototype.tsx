@@ -32,6 +32,17 @@ const CONTENT_SOURCE_FALLBACKS = [
   'QUELLE F',
 ] as const;
 
+const STAGE_WIDTH_PX = 908;
+const CARD_WIDTH_PX = 150;
+const CARD_SPACING_PX = CARD_WIDTH_PX + 15;
+
+/** Haelt eine mittig gesetzte Karte vollstaendig innerhalb der Buehne. */
+const clampToStage = (centerX: number): number =>
+  Math.min(
+    STAGE_WIDTH_PX - CARD_WIDTH_PX / 2,
+    Math.max(CARD_WIDTH_PX / 2, centerX),
+  );
+
 const compactText = (value: string, maximum: number): string =>
   value.length <= maximum ? value : `${value.slice(0, maximum - 1).trim()}…`;
 
@@ -203,11 +214,23 @@ export const KnowledgeMagnetPrototype: React.FC = () => {
               // verblassen. Ein Abgang beschleunigt fort.
               : prototypeProgress(frame, 88 + staggerDelay(index, 3), 142, 'exit');
             const centeredIndex = relevantIndex - (relevantDocuments.length - 1) / 2;
-            const endX = 454 + centeredIndex * 105;
+            // Abstand mindestens so gross wie eine Karte, sonst schieben sich die
+            // angezogenen Belege uebereinander und schneiden ihre Beschriftung ab.
+            // Bei vielen Belegen wird er so weit reduziert, dass die Gruppe noch
+            // in die Buehne passt.
+            const endGap = Math.min(
+              CARD_SPACING_PX,
+              STAGE_WIDTH_PX / Math.max(1, relevantDocuments.length),
+            );
+            const endX = 454 + centeredIndex * endGap;
             const endY = 845;
             const x = document.relevant
               ? interpolate(pull, [0, 1], [document.x, endX])
-              : document.x + (document.x < 454 ? -1 : 1) * repel * 135;
+              // Der Abgang darf die Karte nicht aus der Buehne schieben - sonst
+              // wird sie am Rand abgeschnitten, statt sichtbar wegzugehen.
+              : clampToStage(
+                  document.x + (document.x < 454 ? -1 : 1) * repel * 135,
+                );
             const y = document.relevant
               ? interpolate(pull, [0, 1], [document.y, endY])
               : document.y + repel * 30;
