@@ -56,6 +56,35 @@ const winnerGap = (otherLabels: readonly string[], maxChars: number): string => 
   return `(?:(?!\\b${negative}\\b)${otherLabelGuard(otherLabels)}[^,.!?;]){0,${maxChars}}`;
 };
 
+/**
+ * Trennt Peer-Labels von Masseinheiten.
+ *
+ * Die Luecke zwischen Subjekt und Siegermarker darf kein anderes Kandidaten-
+ * Label ueberspringen - sonst wuerde "gewinnt" der falschen Option zugeordnet.
+ * Steht ein Label im Satz aber direkt hinter einer Zahl, ist es dort keine
+ * konkurrierende Option, sondern die Einheit der Messung:
+ *
+ *   "Antwort B liegt bei 40 Prozent und gewinnt"
+ *                          ^^^^^^^ Einheit, kein Mitbewerber
+ *
+ * Ohne diese Unterscheidung blockiert die Einheit die Zuordnung des Siegers.
+ */
+const blocksWinnerGap = (normalizedText: string, peer: string): boolean => {
+  const normalizedPeer = normalize(peer);
+  if (normalizedPeer.length < 2) return false;
+  const asUnit = new RegExp(
+    `\\d+(?:[.,]\\d+)?\\s*${escapeRegex(normalizedPeer)}\\b`,
+  );
+  const occurrences =
+    normalizedText.match(
+      new RegExp(`\\b${escapeRegex(normalizedPeer)}\\b`, 'g'),
+    )?.length ?? 0;
+  const unitOccurrences =
+    normalizedText.match(new RegExp(asUnit.source, 'g'))?.length ?? 0;
+  // Nur wenn jedes Vorkommen eine Einheit ist, ist das Label kein Mitbewerber.
+  return occurrences > unitOccurrences;
+};
+
 const winnerCueIndex = (
   spokenText: string,
   labels: readonly string[],
@@ -70,7 +99,9 @@ const winnerCueIndex = (
     const label = labels[index];
     if (normalize(label).length < 2) continue;
     const escapedLabel = normalizedLabelPattern(label);
-    const peers = labels.filter((_, labelIndex) => labelIndex !== index);
+    const peers = labels
+      .filter((_, labelIndex) => labelIndex !== index)
+      .filter((peer) => blocksWinnerGap(text, peer));
     // Natural German score phrases such as “Tool A erreicht 96 Punkte und gewinnt”
     // are longer than the old 18-character gap. Other candidate labels,
     // punctuation and explicit negation still terminate the association.
