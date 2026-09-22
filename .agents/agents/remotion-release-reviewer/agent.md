@@ -29,8 +29,8 @@ corrections for the builder.
 
 Before PASS, require:
 
-- `npm run remotion:integration-check` passed
-- `npm run remotion:readiness` passed for the reviewed source state
+- `node scripts/verify-remotion-integration.mjs` passed
+- `node scripts/run-remotion-readiness.mjs` passed for the reviewed source state
 - real final master exists
 - required smoke frames exist and were visually inspected
 - final audio track exists where expected
