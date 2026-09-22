@@ -2,284 +2,355 @@
 
 ## Ziel
 
-Ein Reel erklärt **eine** KI-Idee mit einem klaren Spannungsbogen und einem sichtbaren Mechanismus. Kein Mini-Vortrag, keine Feature-Liste.
+Ein Reel erklärt **eine** KI-Idee mit einem klaren Spannungsbogen, einem sichtbaren Mechanismus und einem konkreten Aha.
 
-**Neue Standardlänge:** ungefähr **50–60 Sekunden**. Als Planungsrichtwert meist ungefähr **120–150 gesprochene Wörter**, abhängig von natürlichem Sprechtempo. Nicht künstlich strecken; das echte Voiceover bestimmt in Phase 3 die finale Dauer. Kürzer nur, wenn die Idee wirklich vorher vollständig erklärt ist.
+Kein Mini-Vortrag. Keine Feature-Liste. Keine animierte PowerPoint.
+
+Die Reihenfolge ist verbindlich:
+
+```text
+Story / Hook
+→ Fakten
+→ Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Mechanik
+→ Source
+→ echtes Audio
+→ Render
+→ Creative QA
+```
+
+Details:
+
+- `STORY_RETENTION.md`
+- `FAKTENQUELLEN.md`
+- `VISUAL_STRATEGY.md`
+- `CREATIVE_QA.md`
+
+## Länge
+
+50–60 Sekunden sind erlaubt, wenn das Thema diese Tiefe trägt. Sie sind **kein Streckziel**.
+
+- kein Zusatzsatz nur für Wortzahl
+- kein langsamer Hold nur für Laufzeit
+- kein künstlich hektisches Sprechen, um zu viel Inhalt unterzubringen
+- wenn das Versprechen nach 35–45 Sekunden erfüllt ist, darf das Reel enden
+- wenn 60 Sekunden nicht reichen, Thema enger schneiden
+
+Das echte Voiceover bestimmt Phase 3. Geschätzte Cue-Zeiten sind nur Planung.
 
 ## Spannungsbogen
 
 ```text
-HOOK      Reibung, Frage oder überraschender wahrer Effekt
+HOOK      Ergebnis, Konflikt, Beweis oder echte Frage
 EINSATZ   warum betrifft das den Zuschauer?
 MECHANIK  Ursache / Ablauf / Vergleich sichtbar machen
-AHA       klare Einordnung oder Ergebnis
-ENDE      kurzer Hold; CTA nur wenn natürlich
+AHA       klare Einordnung, Grenze oder Ergebnis
+ENDE      konkrete Regel/Entscheidung; CTA nur wenn natürlich
 ```
 
-## Szenenregel
+Der Hook beginnt ohne Begrüßung, Kanalname oder „Heute zeige ich …“.
 
-Jede Szene braucht genau einen dominanten Erklärgedanken:
+## Vor dem Script: Creative Brief
 
-```text
-Startzustand
-→ sichtbare Veränderung
-→ Ergebniszustand
-```
+V2-Reels führen `06-projektdateien/creative-brief.md`.
 
-Wenn die Bewegung keinen Inhalt erklärt, entfernen.
+Pflicht:
 
-## Animationsregel — Inhalt zuerst, Library danach
+- Viewer promise
+- Hook tension
+- 3-second proof
+- Why care
+- Core mechanism
+- Payoff
+- Memorable moment
+- Truth risk
 
-**Es ist verboten, zuerst eine vorhandene Animation auszuwählen und den Inhalt anschließend passend zu machen.**
+Wenn Hook, Mechanismus oder Memorable Moment nicht konkret sind: **noch kein Remotion-Code**.
 
-Für jeden neuen Sprechertext gilt zuerst:
+## Szenen- und Visual-Beat-Regel
 
-1. Sprechertext in bedeutungstragende **Visual Beats** zerlegen.
-2. Für jeden Beat bestimmen, **was der Zuschauer genau sehen muss**, damit die Aussage verständlich wird.
-3. Erst danach prüfen, ob eine bestehende Remotion-Animation diesen Mechanismus **exakt** abbildet.
-4. Passt keine vorhandene Animation exakt, wird eine **individuelle reel-spezifische Remotion-Animation** gebaut.
+Eine Szene trägt einen dominanten Erklärgedanken, kann aber mehrere Micro-Beats enthalten.
 
-Ein Visual Beat kann je nach Inhalt sein:
-
-- ein einzelnes wichtiges Wort
-- eine kurze Wortgruppe
-- ein Halbsatz
-- ein ganzer Satz
-- mehrere Sätze, wenn sie sichtbar denselben Mechanismus fortsetzen
-
-Die Granularität wird **nach Bedeutung**, nicht nach einer festen Sekunden- oder Szenenregel gewählt.
-
-### Pflicht für jeden Visual Beat
-
-`animation-plan.md` muss mindestens dokumentieren:
+Jeder bedeutungstragende Beat braucht:
 
 ```text
 Sprecherstelle
-→ gemeinte Aussage
-→ sichtbarer Startzustand
-→ konkrete Bewegung / Veränderung
-→ sichtbarer Endzustand
-→ REUSE_EXACT oder NEW_BUILD
-→ Timing relativ zum Sprecher
+→ Bedeutung
+→ Zuschauer muss sehen
+→ Hauptverb
+→ Startzustand
+→ sichtbare Veränderung
+→ Endzustand
 ```
 
-**REUSE_EXACT** ist nur erlaubt, wenn Mechanik, räumliche Beziehung, Zustandsänderung und Aussage wirklich passen. „Ähnlich“, „kann man dafür benutzen“ oder „haben wir schon“ reicht nicht.
+Gute Hauptverben:
 
-**NEW_BUILD ist der Normalfall**, wenn eine individuelle Animation die Aussage besser erklärt.
+- wählt
+- zerfällt
+- verbindet
+- prüft
+- blockiert
+- sortiert
+- vergleicht
+- öffnet
+- sucht
+- verwirft
+- verwandelt
+- reist
 
-Eine Szene darf deshalb mehrere aufeinanderfolgende Micro-Animationen enthalten. Wenn sich die Bedeutung mitten im Satz ändert, soll sich auch sichtbarer Fokus, Objektzustand oder Animation passend mitändern. Nicht jedes Wort braucht Bewegung; aber jedes bedeutungstragende Wort / jede bedeutungstragende Phrase braucht eine bewusste visuelle Entscheidung.
+Schwaches Hauptverb: nur „erscheint“.
 
-Keine dekorative Füllanimation. Keine Animation nur wegen Wiederverwendung. Keine semantisch falsche Library-Animation.
+Nicht jedes Wort muss animiert werden. Aber Bedeutungsänderungen brauchen eine bewusste sichtbare Reaktion.
 
-## Timeline-Regel — Stimme und Animation werden gemeinsam feinjustiert
+## Visual Strategy kommt vor Technik
 
-Das finale Voiceover ist kein starres Hindernis, sondern der akustische Master für die reale Timeline.
+Für jeden Beat zuerst in `06-projektdateien/visual-strategy.md` die primäre Modality wählen:
 
-Phase 3 muss für jeden Visual Beat prüfen:
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+Erst danach:
+
+1. Mechanik entwerfen
+2. Art Direction / Shot Composition
+3. prüfen, ob vorhandene Library exakt passt
+4. bei exaktem Fit `REUSE_EXACT`
+5. sonst `NEW_BUILD` oder erforderliches reales/external Asset
+
+**Verboten:** vorhandene Animation wählen und Inhalt passend machen.
+
+## REUSE_EXACT
+
+Wiederverwendung ist nur erlaubt, wenn alle Punkte passen:
+
+- Mechanik
+- räumliche Beziehung
+- Zustandsänderung
+- semantische Aussage
+- notwendige Text-/Datenstruktur
+
+„Ähnlich“ reicht nicht.
+
+Library = Werkzeugkasten, nicht Ideengeber.
+
+## Anti-Karten-Grammatik
+
+Karten/Panels sind sinnvoll, wenn sie wirklich etwas darstellen:
+
+- UI
+- Dokument
+- Datei
+- Nachricht
+- Datensatz
+- Token/Chip
+
+Nicht als Standard für abstrakte Aussagen.
+
+Richtwerte:
+
+- normalerweise höchstens etwa ein Drittel der Hauptbeats primär Karten/Panel
+- nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
+- mindestens ein bewusst geplanter Hero-/Memorable-Moment
+- Diversity nicht künstlich erzwingen, wenn ein fortlaufender Prozess bewusst konsistent bleiben muss
+
+## Bewegungsqualität
+
+- eine dominante Bewegung pro Beat
+- maximal drei starke gleichzeitige Bewegungen
+- Startzustand sofort lesbar
+- sichtbare Ursache/Wirkung statt Dekoration
+- Endzustand braucht Hold
+- Hard Cut ist Standard
+- Transition nur bei echter Objekt-/Form-/Zustandskontinuität
+- Zoom nur bei echtem Fokuswechsel
+- keine Partikel/Glow als Ersatz für Erklärung
+- kein permanentes Hintergrundwackeln
+
+Motion beantwortet **was sich ändert und warum**, nicht nur „wie kann etwas hübsch reinfliegen?“.
+
+## Text-Hierarchie
+
+### Zwischenüberschrift + Icon
+
+- pro Szene eine kurze Zwischenüberschrift, normalerweise 3–7 Wörter
+- oben mittig
+- semantisch passendes Icon
+- Titel/Icon in dunklem Marken-Lila `#6E45C9`
+- keine zweite erklärende Unterzeile
+- Header ordnet ein, er wiederholt nicht den kompletten Sprechertext
+
+### Caption
+
+`CAPTION_SAFE_POSITION.md` ist verbindlich.
+
+Bei 1080 × 1920 als Standard:
+
+- `bottom: 520px`
+- horizontal ca. `104px` Sicherheitsabstand
+- bevorzugte maximale Breite ca. `820px`
+- normalerweise 4–6 Wörter pro Sinnblock
+- maximal 2 Zeilen gleichzeitig
+- kein weißer Caption-Kasten
+- aktiver Sprechfokus in Marken-Lila
+- finale Wort-/Cue-Timestamps nur aus echtem Audio
+
+### Animationstext
+
+- wenige Objekt-/Zustandslabels
+- keine Satzkopie
+- keine internen Planner-/Goal-/Debug-Texte
+
+```text
+Sprecher = Aussage
+Caption = sprachliche Lesbarkeit
+Visual = Erklärung
+Header = Kapitelmarker
+```
+
+## Caption-/Visual-Trennung
+
+Für 1080 × 1920:
+
+- Hauptvisuals nach Möglichkeit bis etwa `y≈1240–1280` abschließen
+- sichtbare Luft zur Caption anstreben
+- ungefähr ab `y=1440` harter technischer Guard
+- kein wichtiges Visual/Label hinter oder unter der Caption
+- rechts Feed-Interaktionsleiste mitdenken
+- wenn Visual zu tief reicht: Visual neu komponieren, nicht Caption verschieben
+
+Ein abgeschnittenes Hauptobjekt ist kein bestandener Guard, sondern Layoutfehler.
+
+## REAL_CAPTURE
+
+Reale UI/Capture einsetzen, wenn das tatsächliche Produktverhalten selbst Teil des Beweises ist.
+
+Pflicht:
+
+- Produkt/Datum dokumentieren
+- sensible Daten entfernen
+- nur relevante Fläche zeigen
+- aktuelle UI/Feature-Aussagen im Source Ledger prüfen
+- nicht mit erfundener UI ersetzen, wenn gerade die echte Oberfläche wichtig ist
+
+## Externe Still-/Hybrid-/Motion-Assets
+
+Nur verwenden, wenn `VISUAL_STRATEGY.md` sie begründet.
+
+- Still/Hybrid folgt `ki/BILDSTIL.md`
+- exaktes Asset im Manifest
+- fehlendes Pflichtasset als `MISSING_REQUIRED`
+- Remotion ergänzt präzise Texte, Pfeile, UI, Zahlen, Fokus und Captions
+- kein Füllasset nur für Abwechslung
+
+Fehlt ein Pflichtasset in Phase 3: nicht stillschweigend eine generische Karte bauen.
+
+## Timeline-Regel
+
+Echtes Voiceover ist der akustische Master.
+
+Für jeden Beat:
 
 ```text
 gesprochene Phrase
 → tatsächliche Start-/Endzeit
 → sichtbarer Beat-Start
 → Zustandswechsel
-→ Hold / Übergang
+→ Hold/Übergang
 → Caption-/Wort-Timing
 ```
 
-Wenn die Stimme an einer einzelnen Stelle zu schnell oder zu langsam für die geplante visuelle Erklärung ist, gilt diese Reihenfolge:
+Reihenfolge bei Timingproblemen:
 
-1. Animation, Hold, Szenenlänge und Übergänge anpassen.
-2. Natürliche Pause vor/nach der Phrase leicht verkürzen oder verlängern.
-3. Nur wenn nötig die **ganze Phrase / den ganzen Cue pitch-erhaltend leicht schneller oder langsamer machen**.
-4. Danach Untertitel und aktive Wortmarkierung exakt auf die tatsächlich verwendete Audiospur synchronisieren.
+1. Animation/Hold/Szenenlänge anpassen
+2. natürliche Pause leicht anpassen
+3. nur wenn nötig ganze Phrase pitch-erhaltend retimen
+4. Captions danach exakt neu synchronisieren
 
-Audio-Retiming:
+Retiming:
 
-- nicht innerhalb eines Wortes
-- nicht mit abrupten Speed-Sprüngen
-- bevorzugt ungefähr `0.97x–1.03x`
-- bei echtem Bedarf ungefähr bis `0.94x–1.06x`
-- Pitch erhalten
-- niemals Wörter schneiden, ersetzen, umstellen oder hinzufügen
-- stärkere Änderung als ungefähr ±6 % bedeutet: lieber Voiceover neu erzeugen als hörbare Audio-Verzerrung akzeptieren
-- Gesamtdauer nicht künstlich auf exakt 60 Sekunden zwingen
-
-**Perfekte Timeline bedeutet:** Sprecherbedeutung, Animation, Zustandswechsel, Untertitel und Pausen fühlen sich gleichzeitig richtig an. Natürlichkeit der Stimme hat Vorrang vor einer starren Sekundenmarke.
-
-## Text-Hierarchie — keine Dopplung
-
-### Zwischenüberschrift oben
-
-- pro Szene genau eine kurze Zwischenüberschrift, normalerweise 3–7 Wörter
-- **oben mittig** statt linksbündiger großer Headline
-- direkt mit einem **semantisch passenden Icon** kombinieren
-- Icon und Zwischenüberschrift bilden zusammen einen kompakten Kapitelmarker
-- die komplette Zuschauer-Zwischenüberschrift ist **Lila**, bevorzugt dunkles Marken-Lila `#6E45C9`
-- das Icon ist ebenfalls lila, visuell deutlich genug und etwas größer als ein normales UI-Icon
-- Richtwert bei 1080 × 1920: Icon-Container ungefähr 68–76 px, Icon selbst ungefähr 38–44 px
-- keine zweite Unterzeile direkt unter der Zwischenüberschrift
-- keine lange Erklärung im Header
-- niemals interner `goal`, Planner-, Debug- oder Regietext
-- Zwischenüberschrift ordnet die Szene ein, sie kopiert nicht den gesprochenen Satz
-
-### Untertitel — plattformsicherer Feed-Bereich
-
-`CAPTION_SAFE_POSITION.md` ist für die genaue Position verbindlich. Die aktuelle Geometrie wurde zusätzlich anhand eines echten veröffentlichten Instagram-Feed-Screenshots des Kanals kalibriert.
-
-- Untertitel decken den gesprochenen Text vollständig ab
-- **kein weißer Kasten, keine Caption-Card, kein flächiger Hintergrund**
-- Text steht frei auf dem Bild und erhält nur so viel Schatten/Outline, wie für Lesbarkeit nötig ist
-- bei 1080 × 1920 gilt als Standard **`bottom: 520px`**
-- horizontal **104px Sicherheitsabstand** links und rechts; bevorzugte maximale Caption-Breite **820px**
-- der sichtbare Caption-Block liegt typischerweise ungefähr im Bereich **y≈1260–1400**, abhängig von Schriftgröße und Zeilenanzahl
-- die letzten ungefähr **420 px** am unteren Rand sind für Untertitel und andere kritische Informationen tabu
-- ungefähr **420–500 px Abstand vom unteren Rand** gelten nur als Puffer, nicht als bevorzugte Caption-Position
-- Untertitel normalerweise als **4–6 Wörter pro sichtbarem Sinnblock**, maximal **2 Zeilen gleichzeitig**
-- Untertitel sind klarer Sans-Serif-Text, keine dekorative Serifenschrift
-- aktives Wort bzw. aktive Wortgruppe wird synchron zum Sprecher in Marken-Lila hervorgehoben
-- bereits gesprochene Wörter bleiben normal dunkel; nur der aktuelle Sprechfokus wird lila
-- mit echtem Audio in Phase 3 echte Cue-/Wort-Timestamps an das Voiceover anpassen; nur proportional geschätzte Wortzeiten sind niemals die finale Freigabe
-- die Caption darf **nicht nach unten verschoben werden**, um Platz für ein zu tiefes Visual zu schaffen
-- neue Reel-Sources verwenden die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`
-
-Die genaue Plattform-UI kann sich je nach App, Gerät, Caption-Länge und Oberfläche verändern. Deshalb ist `bottom: 520px` ein konservativer kanalinterner Cross-Platform-Standard und kein behaupteter universeller Plattformwert.
-
-### Animationstext
-
-- 0–3 kurze Labels gleichzeitig als Standard
-- benennt Objekt, Zustand oder Kategorie
-- keine Satzkopie des Voiceovers
-- keine langen Erklärsätze
-
-### Verbotene Dopplung
-
-Nicht gleichzeitig denselben Gedanken als Zwischenüberschrift + zusätzliche Unterzeile + Animationssatz + Untertitel zeigen.
-
-```text
-Sprecher = Aussage
-Untertitel = sprachliche Lesbarkeit + Sprechersynchronität
-Animation = visuelle Erklärung
-Zwischenüberschrift + Icon = Kapitel/Kerngedanke
-```
-
-## Caption-/Visual-Trennung
-
-Für Production-Reels gilt eine **harte Trennung** zwischen erklärendem Visual und Caption-/Feed-Bereich.
-
-Bei 1080 × 1920:
-
-- die Caption sitzt standardmäßig mit `bottom: 520px`
-- neue bedeutungstragende Hauptvisuals sollen nach Möglichkeit bis ungefähr **y≈1240–1280** abgeschlossen sein
-- zwischen Hauptvisual und Caption ungefähr **80–120 px** sichtbare Luft anstreben
-- der bestehende technische Clip-Guard um ungefähr `y=1440` bleibt eine letzte Sicherung, ist aber **nicht** die eigentliche Caption-Positionsregel
-- kein wichtiges Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
-- rechts die Feed-Interaktionsleiste mitdenken; Caption und kritische Labels nicht bis an die rechte Kante ziehen
-- wenn eine Animation zu tief reicht: Animation höher setzen, neu komponieren oder kompakter bauen
-- **Untertitel niemals nach unten verschieben, nur um Platz für eine Animation zu schaffen**
-- wenn der Clip-Guard wichtigen Inhalt abschneidet, ist das Reel **nicht freigabefähig** und muss neu layoutet werden
-
-Die reale Kollision im Render entscheidet. Ein Element kann technisch oberhalb einer alten Clip-Grenze liegen und trotzdem visuell zu nah an der höher positionierten Caption sein.
-
-## Safe Zones — 1080 × 1920
-
-Als dauerhafte Produktionsrichtlinie:
-
-- keine kritische Schrift direkt am oberen Rand
-- Zwischenüberschrift + Icon kompakt im oberen sicheren Bereich platzieren
-- seitlich für Caption ungefähr **104px**, für andere kritische Texte mindestens ca. 70px Luft
-- die letzten ungefähr **420 px** unten nicht für Untertitel oder andere kritische Informationen verwenden
-- Bereich **420–500 px vom unteren Rand** nur als Sicherheits-Puffer behandeln
-- Caption standardmäßig bei **`bottom: 520px`**
-- Hauptvisuals für neue Reels möglichst bis ungefähr **y≈1240–1280** abschließen
-- zwischen Hauptanimation und Untertitel möglichst ungefähr 80–120 px sichtbare Luft lassen
-- wenn ein Mechanismus in den Caption-Bereich ragt: Animation höher/kompakter/new-build; Untertitel bleiben an ihrer sicheren Position
-- dekorative Fortschrittsleisten oder andere UI direkt am unteren Rand sind im Production-Reel zu vermeiden
-
-Vor finaler Freigabe den tatsächlichen Plattform-/Feed-Eindruck auf Smartphone-Größe prüfen. Ein Source-Change der Caption-Position macht eine frühere Render-Freigabe ungültig.
-
-## Visualisierung
-
-Entscheidungsreihenfolge:
-
-1. **individuellen visuellen Mechanismus aus dem Sprecherinhalt entwerfen**
-2. prüfen, ob vorhandene Low-Level-Primitives dafür helfen
-3. vorhandene production-ready Library-Animation nur bei **exaktem semantischem Fit** wiederverwenden
-4. sonst reel-spezifischer Remotion-New-Build
-5. Bild/Hybrid nur, wenn räumliche/illustrative Komplexität echten Mehrwert bringt
-
-Die Animation Library ist Werkzeugkasten, **nicht Ideengeber für den Inhalt**.
-
-## Bewegungsqualität
-
-- eine dominante Bewegung pro Visual Beat
-- maximal drei starke gleichzeitige Bewegungen
-- öffnender Zustand muss sofort lesbar sein
-- Endzustand braucht Hold
-- Hard Cut ist Standard
-- Übergang nur bei echter Objekt-/Form-/Zustandskontinuität
-- Zoom nur bei tatsächlichem Fokuswechsel
-- keine dekorativen Partikel-/Glow-Schichten als Ersatz für Inhalt
-- Sprecherbedeutung und sichtbare Zustandsänderung müssen zeitlich zusammenpassen
-
-## Bilder
-
-Bildbedarf in Phase 1 ausdrücklich entscheiden.
-
-Wenn Bild:
-
-- `ki/BILDSTIL.md` anwenden
-- Prompt unter `02-bilder/image-prompts.md`
-- Asset in `asset-manifest.json`
-- Bild-KI baut 3D-/räumliche Szene
-- Remotion baut Zwischenüberschrift + Icon, Untertitel, Zahlen, Pfeile, Diagramme und präzise Labels
-
-Wenn kein Bild: `BILDER NICHT ERFORDERLICH` dokumentieren. Keine Füllbilder.
-
-## Brand
-
-- 1080 × 1920 / 30 FPS als Standard
-- weiß/hell
-- dunkler Fließ-/Animations-Text
-- Marken-Lila `#B98CFF`
-- dunkles Lila `#6E45C9` für Zwischenüberschrift und aktiven Fokus
-- faceless
-- Smartphone zuerst
+- nicht mitten im Wort
+- keine abrupten Sprünge
+- bevorzugt `0.97x–1.03x`
+- bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- stärkere Änderung → neues Voiceover
+- nicht künstlich auf exakt 60 Sekunden zwingen
 
 ## Fakten und Grounding
 
-- sichtbare Zahlen nur, wenn Sprechertext/Quelle sie trägt
-- Gewinner/Ranking/Prozent nur bei echter Grounding-Grundlage
-- illustrative interne Motion-Werte dürfen nicht als Fakten sichtbar werden
-- Sprechertext → Meaning Contract → **Visual Beats** → individuelle Mechanik → Render-Props
+`FAKTENQUELLEN.md` und `06-projektdateien/source-ledger.md` sind für V2 verbindlich.
 
-## Qualitätsgate
+Besonders prüfen:
 
-Vor Freigabe tatsächlich prüfen:
+- sichtbare Zahlen/Prozentwerte
+- Preise/Limits
+- aktuelle Modell-/Feature-Namen
+- Benchmarks/Rankings
+- reale Quellen/Paper
+- Produktverhalten
+- Aussagen, die durch „immer“, „nie“, „alle“ zu absolut werden
 
-- Skript liegt standardmäßig im längeren 50–60-Sekunden-Korridor, sofern Inhalt das trägt
-- jeder bedeutungstragende Sprecherabschnitt hat einen dokumentierten Visual Beat
-- keine Animation wurde nur gewählt, weil sie bereits existierte
-- REUSE nur bei exaktem semantischem Fit; sonst NEW_BUILD
-- Voiceover, Visual Beats, Szenenwechsel und Captions sind auf derselben realen Timeline synchron
-- lokale Voiceover-Speedkorrekturen sind unhörbar/natürlich, pitch-erhaltend und innerhalb des Qualitätskorridors
-- Zwischenüberschrift oben mittig, vollständig lila und mit deutlich lesbarem passendem Icon
-- keine zusätzliche Header-Unterzeile
-- Untertitel ohne Hintergrundkarte
-- Caption bei 1080×1920 standardmäßig `bottom: 520px`
-- horizontaler Caption-Sicherheitsabstand 104px links/rechts; bevorzugte maximale Breite 820px
-- maximal 2 Zeilen und kompakte 4–6-Wort-Sinnblöcke, sofern der reel-spezifische Text nichts Begründetes anderes verlangt
-- Untertitel nicht von Plattform-UI gefährdet
-- aktive lila Hervorhebung folgt dem echten Sprecher
-- Hauptanimation und wichtige Animationslabels konkurrieren nicht mit dem Caption-Block
-- technische Clip-Grenze schneidet keinen wichtigen Inhalt ab
-- keine abgeschnittene Schrift
-- keine Zwischenüberschriften-/Caption-/Visual-Überlappung
-- keine internen Regietexte sichtbar
-- keine unnötige Textdopplung
-- keine leere erste Sekunde
-- klarer End-Hold
-- mobile Lesbarkeit
-- Motion passt semantisch exakt
-- Bilder frei von Wasserzeichen, Prompttext, zufälliger Schrift und Gesichtern
-- finale MP4 normal abspielen und ansehen
-- nach jeder Caption-Positionsänderung neu rendern und erneut auf Smartphone-/Feed-Größe prüfen
+Illustrative Motion-Werte dürfen nie wie echte Messergebnisse aussehen.
+
+## Hero-/Memorable-Moment
+
+Jedes Reel plant mindestens einen visuellen Höhepunkt, sofern die Idee ein Reel rechtfertigt.
+
+Nicht ausreichend:
+
+- Text wird größer
+- Glow wird stärker
+- Kamera zoomt ohne neue Aussage
+
+Gut ist ein Moment, an dem die Kernidee sichtbar **passiert**.
+
+## Creative QA
+
+Nach dem finalen Render zusätzlich zu technischen Checks `CREATIVE_QA.md` durchführen und in `06-projektdateien/creative-review.md` dokumentieren.
+
+Stop bei:
+
+- schwachem Hook
+- Leerlauf
+- repetitiver Karten-/Panelserie
+- fehlendem sichtbaren Mechanismus
+- keinem erinnerbaren visuellen Moment
+- unnötiger Textdopplung
+- Smartphone-Unlesbarkeit
+- ungeerdeten Zahlen/Claims
+
+## Qualitätsgate Phase 1
+
+Vor Voiceover muss vorhanden sein:
+
+- Creative Brief bestanden
+- Source Ledger fachlich sauber
+- finaler Sprechertext
+- vollständige Visual Beats
+- Visual Strategy pro Beat
+- Hero-Moment bestimmt
+- Animation-/Shot-Plan
+- externe Medienentscheidung + Manifest
+- Captions/Plattform-Copy Basis
+- `reel.json`
+- ausführbarer Source
+
+## Qualitätsgate Phase 3
+
+Vor Freigabe:
+
+- echtes Audio analysiert
+- Pflichtassets real vorhanden
+- Audio/Visual/Captions synchron
+- keine Caption-Kollision
+- Smoke-Frames angesehen
+- finales MP4 angesehen
+- Source Ledger Rechecks erledigt
+- technische Checks bestanden
+- Creative Review = PASS
+
+Technisch bestanden + kreativ langweilig = **nicht fertig**.
