@@ -1,28 +1,30 @@
 # KI-Channel — Regeln unter `ki/`
 
-Diese Datei erweitert `REPO-STATE.md` und `AGENTS.md`.
+Diese Datei erweitert `REPO-STATE.md` und das Root-`AGENTS.md`.
 
 ## Gehirn zuerst
 
-Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Es verweist auf die autoritativen Bereiche:
+Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Danach je nach Aufgabe die relevanten Verträge:
 
 - `KANAL.md` — Identität und Ton
-- `REELS.md` — Reel- und Text-Hierarchie
-- `PLATTFORMEN.md` — Publishing, YouTube und weitere Plattformen
+- `STORY_RETENTION.md` — Hook, Story, Retention vor Script/Code
+- `FAKTENQUELLEN.md` — Claims, Quellen, Recheck
+- `REELS.md` — Short-Form-Struktur und Text-Hierarchie
+- `VISUAL_STRATEGY.md` — beste Bildsprache pro Beat
+- `CREATIVE_QA.md` — finaler Zuschauer-Review
+- `PLATTFORMEN.md` — Publishing
 - `PRODUKTIONSABLAUF.md` — 3 Phasen
-- `REMOTION_ANIMATION_CAPABILITIES.md` — aktuelle Technik-Auswahl, Visual-Fingerprint- und Diversity-Regeln
-- `../BILDSTIL.md` — Bild-/Prompt-Qualität
+- `REMOTION_ANIMATION_CAPABILITIES.md` — technische Mechaniken nach der kreativen Entscheidung
+- `../BILDSTIL.md` — nur wenn externe Still-/Hybrid-Assets gewählt wurden
 
 Danach den passenden Produktionsvertrag lesen:
 
 - Short-Form → `ki/reels/AGENTS.md`
 - YouTube Longform → `ki/youtube-longform/AGENTS.md`
 
-Bei neuer oder geänderter Remotion-Animation ist `ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md` verbindlich mitzuprüfen. Versions-/API-Fragen trotzdem gegen die aktuelle offizielle Remotion-Dokumentation verifizieren.
+Bei neuer/geänderter Remotion-Animation `REMOTION_ANIMATION_CAPABILITIES.md` mitprüfen. API-/Versionsfragen gegen aktuelle offizielle Remotion-Dokumentation verifizieren.
 
 ## Harte Short-Form-Ordnerstruktur
-
-Jedes Produktionsreel liegt dauerhaft hier:
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -35,6 +37,18 @@ ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
 └── 06-projektdateien/
 ```
 
+Neue Pakete nur mit:
+
+```bash
+node scripts/new-ki-reel.mjs "Reel Titel"
+```
+
+Vor/nach Strukturänderungen:
+
+```bash
+node scripts/check-ki-reel-folder-structure.mjs
+```
+
 Nicht zulässig:
 
 ```text
@@ -43,21 +57,184 @@ ki/reels/<slug>/
 ki/src/reels/<planning-package>/
 ```
 
-Neue Pakete nur mit:
+## Datei-Eigentum Short-Form
 
-```bash
-node scripts/new-ki-reel.mjs "Reel Titel"
+- `01-script-audio/` — finaler Sprechertext, Copy-Fließtext, echtes Voiceover, Transcript/Timing
+- `02-bilder/` — reale externe Assets/Captures, Prompts/Shot-Briefs, Asset-Manifest
+- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Plattform-Copy
+- `04-pdf/` — optionale PDF-Quellen/Exports
+- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
+- `06-projektdateien/` — V2-Contract, Creative Brief, Source Ledger, Visual Strategy, reel.json, Pläne, Creative Review, Status
+
+Ausführbarer TS/TSX-Code ausschließlich:
+
+```text
+ki/src/reels/<slug>/
 ```
 
-Vor und nach Strukturänderungen:
+Keine Planungsdokumente in Source-Ordner kopieren.
 
-```bash
-node scripts/check-ki-reel-folder-structure.mjs
+## V2 Short-Form Contract
+
+Neue Reels führen mindestens:
+
+- `production-contract-v2.json`
+- `creative-brief.md`
+- `source-ledger.md`
+- `visual-strategy.md`
+- `creative-review.md`
+- `PHASE-STATUS.md`
+
+Reihenfolge:
+
+```text
+Story
+→ Fakten
+→ Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Mechanik
+→ Source
+→ Voiceover / reale Pflichtmedien
+→ Timeline
+→ Render
+→ technische QA
+→ Creative QA
 ```
 
-## Harte YouTube-Longform-Struktur
+Direkt vom Thema in Remotion-Code springen ist ein Prozessfehler.
 
-Longform ist ein separates aktives Produktionsformat:
+## Phasen
+
+### Phase 1
+
+Vor Audio bereits vollständig planen und Code-Grundlage bauen:
+
+- Creative Brief
+- Fakten-/Quellen-Ledger
+- finaler Sprechertext
+- Visual Beats
+- Visual Strategy pro Beat
+- Animation-/Shot-Plan
+- Asset-/Capture-Entscheidung
+- Captions/Plattform-Copy Basis
+- reel.json
+- Source + Composition
+
+### Phase 2
+
+Immer echtes Voiceover.
+
+Nur wenn Phase 1 es ausdrücklich verlangt zusätzlich:
+
+- REAL_CAPTURE
+- externes Still/Hybrid/Motion-Asset
+
+Phase 2 verändert keine Planungs-/Source-Dateien.
+
+### Phase 3
+
+Vorhandenen Source verwenden, Audio/Assets integrieren, reale Timeline synchronisieren, prüfen und rendern.
+
+Wenn ein Agent in Phase 3 Source aus Bequemlichkeit komplett neu erfindet, ist das ein Prozessfehler.
+
+Wenn Audio fehlt: `PHASE 2 AUDIO FEHLT`.
+
+## Visual Standard — beste Erklärung gewinnt
+
+**Kein `REMOTION_NATIVE_MAXIMUM` als pauschaler Default.**
+
+Vor Technik gilt `VISUAL_STRATEGY.md`.
+
+Mögliche primäre Modalities:
+
+- `REMOTION_NATIVE` — exakte UI, Daten, Prozesse, technische Mechanismen
+- `REAL_CAPTURE` — reales Produktverhalten ist Teil des Beweises
+- `HYBRID` — räumliches/physisches Motiv + präzise Remotion-Overlays
+- `EXTERNAL_STILL_REQUIRED` — komplexe räumliche/organische Momentaufnahme
+- `EXTERNAL_MOTION_REQUIRED` — komplexe physische Bewegung selbst ist Bedeutungsträger
+
+Remotion darf nicht nur aus Bequemlichkeit gewählt werden. Externe Medien dürfen ebenfalls nicht nur zur Abwechslung eingesetzt werden.
+
+### Immer gültig
+
+- heller/weißer editorialer Hintergrund als Markenbasis, sofern die Szene nichts anderes begründet
+- dunkle, smartphone-lesbare Typografie
+- `#B98CFF` Fokus-Akzent
+- `#6E45C9` Tiefe/Kontrast
+- faceless
+- keine generische Cyberpunk-/Neon-Ästhetik
+- keine erfundenen Zahlen
+- andere `animationId` allein ist keine visuelle Vielfalt
+- direkte Wiederholung gleicher visueller Grammatik vermeiden, wenn die Aussage eine bessere Alternative erlaubt
+- Lottie/Rive nur mit real vorhandenem Asset und semantischem Fit
+- deprecated `@remotion/light-leaks` nicht für neue Visuals verwenden
+
+## Anti-Karten-Grammatik
+
+Karte/Panel nur wenn semantisch wirklich UI, Dokument, Nachricht, Datei, Datensatz oder Token.
+
+Nicht als Standardcontainer für abstrakte Aussagen.
+
+Neue Reels prüfen:
+
+- nicht mehr als zwei gleiche Hauptgrammatiken direkt hintereinander, sofern nicht bewusst derselbe Prozess fortgeführt wird
+- Karten-/Panelbeats normalerweise höchstens ungefähr ein Drittel
+- mindestens ein Hero-/Memorable-Moment
+
+## Real Capture
+
+Wenn echte UI oder reales Tool-Ergebnis die Aussage trägt, `REAL_CAPTURE` prüfen statt erfundene UI zu bauen.
+
+Dokumentieren:
+
+- Produkt
+- Capture-Datum
+- Plan/Version, falls relevant
+- welche Aussage der Capture belegt
+- Recheck-Pflicht bei schnelllebigen Features
+
+Sensible Daten entfernen.
+
+## Text-Hierarchie
+
+- Short-Form-Zwischenüberschrift: kurz, oben mittig, Marken-Lila, semantisches Icon
+- Caption: synchroner Sprechertext, keine zweite Erklärung
+- Animationslabels: kurze Objekt-/Zustandsbegriffe
+- interne Regie-/Goal-/Debug-Texte: niemals sichtbar
+- kein langer Sprechertext doppelt als Header + Animationstext
+
+Für genaue Short-Form-Geometrie `CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verwenden.
+
+## Fakten
+
+`FAKTENQUELLEN.md` gilt besonders für:
+
+- Preise/Limits/Pläne
+- aktuelle Features/Modelle
+- sichtbare Zahlen/Prozentwerte
+- Benchmarks/Rankings
+- reale Quellen/Paper
+- News
+- Produktverhalten
+
+Ein Reel darf vereinfachen, aber kein falsches Mentalmodell erzeugen.
+
+## Kanonischer Remotion-Root
+
+Für echte Production-Compositions gilt:
+
+- `ki/src/ProductionRoot.tsx` registriert Production-Compositions
+- `ki/src/production-entry.tsx` registriert ausschließlich `ProductionRoot`
+- `ki/src/Root.tsx` ist Studio-/Preview-Root
+- `MotionPreviewRoot` darf kein indirekter Teil echter Production-Renders sein
+- Phase-2-Audio wird nicht statisch in `ProductionRoot.tsx` importiert; Phase 3 bindet es explizit
+
+`scripts/check-production-visual-contracts.mjs` und `ki/src/productionRootIsolation.test.ts` sichern diese Trennung.
+
+## YouTube Longform
+
+Longform bleibt separates Produktionsformat:
 
 ```text
 ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
@@ -70,130 +247,40 @@ ki/youtube-longform/YYYY-MM-DD/NN_Video-Titel/
 └── 06-projektdateien/
 ```
 
-Ausführbarer Longform-Source liegt ausschließlich hier:
+Source ausschließlich unter `ki/src/longform/<slug>/`.
 
-```text
-ki/src/longform/<slug>/
-```
-
-Aktueller Formatstandard: 1920×1080, 30 FPS, 16:9, 5:00–6:00 Minuten nach echtem Voiceover.
-
-## Datei-Eigentum Short-Form
-
-- `01-script-audio/` — Skript, Copy-Fließtext, echtes Voiceover, Transcript/Timing
-- `02-bilder/` — Bildentscheid, hochwertige Prompts, Asset-Manifest, Bilder/Layers/Masks
-- `03-caption/` — Subtitle-Cues, Wort-Timestamps, Social Caption und `platform-copy.md`
-- `04-pdf/` — optionale PDF-Assets
-- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
-- `06-projektdateien/` — `PHASE-STATUS`, `reel.json`, Szene/Animation, Assembly-Auftrag, Review
-
-Ausführbarer TS/TSX-Code ausschließlich separat:
-
-```text
-ki/src/reels/<slug>/
-```
-
-Keine Planungsdokumente in den Source-Ordner kopieren.
-
-## Datei-Eigentum Longform
-
-- `01-script-audio/` — finaler Sprechertext, Copy-Text, echtes Voiceover
-- `02-visuals/` — Kapitel-/Visualplan und Asset-Entscheidungen
-- `03-thumbnail/` — Thumbnail-Briefing und Thumbnail-Handoff
-- `04-metadata/` — YouTube-Titel, Beschreibung, Kapitel und Keywords
-- `05-export/` — Smoke-Frames, Thumbnail-Export, finaler 16:9-Master
-- `06-projektdateien/` — Status, Longform-Contract, Kapitel-/Animationsplan, Assembly und Review
-
-Longform-Source folgt zusätzlich `ki/src/longform/AGENTS.md`.
-
-## Kanonischer Remotion-Root
-
-Für echte Production-Compositions gilt genau eine Registrierungswahrheit:
-
-- `ki/src/ProductionRoot.tsx` registriert alle echten Short-Form- und Longform-Production-Compositions.
-- `ki/src/production-entry.tsx` ist der Entry Point für echte Production-Renders und registriert ausschließlich `ProductionRoot`.
-- `ki/src/Root.tsx` ist nur der Studio-Root: Er kombiniert `<ProductionRoot />` mit `MotionPreviewRoot` für lokale Preview-Zwecke.
-- `MotionPreviewRoot` und `ki/src/motion-system/` dürfen kein indirekter Bestandteil eines echten Production-Renderpfads sein.
-- Production-Module werden nicht zusätzlich direkt in `Root.tsx` registriert.
-- Optionales Phase-2-Voiceover wird nicht statisch in `ProductionRoot.tsx` importiert. Audio wird in Phase 3 explizit per Prop gebunden.
-- Spezielle Production-Render-Skripte verwenden `ki/src/production-entry.tsx`; Library-/Prototype-/Gallery-Renderer dürfen ihre eigenen isolierten Entry Points behalten.
-
-`scripts/check-production-visual-contracts.mjs` und `ki/src/productionRootIsolation.test.ts` sichern diese Trennung ab.
+Longform wird nicht aus Short-Form aufgeblasen und wählt seine Bildsprache ebenfalls nach Inhalt, nicht automatisch nach Remotion-Maximum.
 
 ## Plattformbereich
 
-Publishing-Regeln liegen unter:
+Publishing-Regeln unter `ki/plattformen/`.
 
-```text
-ki/plattformen/
-```
+Short-Form wird einmal produziert; Plattformen verwenden den freigegebenen Master, solange keine technisch notwendige Anpassung nötig ist.
 
-Bei Plattformaufgaben zusätzlich `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/AGENTS.md` lesen.
-
-Plattformordner dürfen kein zweites Skript, keinen zweiten Source und keine zweite Master-Wahrheit anlegen. Short-Form wird einmal produziert; YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden den freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
-
-YouTube Longform wird separat unter `ki/youtube-longform/` produziert und nicht automatisch aus Reels erzeugt.
-
-## Phasen
-
-Für Short-Form und Longform gilt:
-
-- Phase 1 muss **vor Audio** bereits Source-Code und Composition-Grundlage enthalten.
-- Phase 2 ist nur das menschliche Voiceover.
-- Phase 3 integriert das Audio in den vorhandenen Source, synchronisiert an die reale Stimme, testet, smoke-reviewt und rendert.
-
-Wenn ein Agent in Phase 3 Source neu von Null bauen will, ist das ein Prozessfehler.
-
-Wenn Phase-3-Audio fehlt: `PHASE 2 AUDIO FEHLT`.
-
-## Visual Standard
-
-- heller oder weißer editorialer Hintergrund
-- dunkle, formatgerecht lesbare Typografie
-- `#B98CFF` primärer Fokus-Akzent
-- `#6E45C9` Tiefe/Kontrast
-- faceless
-- keine generische Cyberpunk-/Neon-Ästhetik
-- `REMOTION_NATIVE_MAXIMUM`: möglichst alles Sichtbare direkt mit React/SVG/CSS/Canvas/WebGL/Remotion bauen
-- bei zu flachen Code-Visuals zuerst Komposition, Perspektive, Schatten, Tiefe und Layering verbessern
-- externe Bilder/Medien nur als begründete Ausnahme und niemals erfinden
-- keine erfundenen Zahlen
-- andere `animationId` allein gilt **nicht** als visuelle Vielfalt; Visual Fingerprints mit Primitive, Kamera, Tiefe, Entry, Medium, Richtung, Layout und Motion vergleichen
-- wenn eine Alternative existiert, keine direkt benachbarten Szenen mit nahezu identischer visueller Grammatik
-- keine drei Szenen hintereinander mit demselben Primary Primitive
-- keine drei Szenen hintereinander nur statische/locked Kamera, wenn der Inhalt eine andere räumliche Inszenierung sinnvoll erlaubt
-- installierte Techniken wie Paths/Shapes/Three/Motion Blur/Transitions bewusst prüfen statt automatisch bei Card/CSS/Slide zu bleiben
-- Lottie/Rive nur mit real vorhandenem, bereitgestelltem Asset und echtem semantischem Fit
-- deprecated `@remotion/light-leaks` nicht für neue Visuals verwenden
-
-## Text-Hierarchie
-
-- Überschrift/Kapitelmarker: kurz, Zuschauer-Sprache
-- Short-Form-Caption: Sprechertext synchron
-- Longform: keine dauerhaft eingebrannten Volltext-Untertitel als Standard
-- Animationslabels: kurze Objekt-/Zustandsbegriffe
-- interne Regie-/Goal-Texte: niemals sichtbar
-
-Kein langer Sprechertext doppelt als Headline und Animationstext. Keine wortweise Kopie des Transcripts in die Animation.
-
-## Bilder
-
-Bilder nur, wenn sie echten Mehrwert gegenüber Maximum-Remotion liefern. `ki/BILDSTIL.md` bestimmt Prompt-Aufbau, Safe-Zones, Dateinamen und Qualitätsgate. Für UI, Icons, Diagramme, technische Illustrationen, Mockups, Cover und pseudo-3D zuerst Remotion ausreizen.
+Plattformordner legen keine zweite Produktionswahrheit an.
 
 ## Testing
 
 Mindestens formatbezogen prüfen:
 
+- Struktur/V2-Contract
 - Format/FPS/Dauer
-- kontinuierliche Szenen-/Kapitelbereiche
+- kontinuierliche Szenenbereiche
 - eindeutige IDs
-- Asset-Pfade
+- Asset-Pfade und reale Asset-Status
 - keine ungrounded Werte
-- Visual-Safe-Zones über reale Smoke-Frames
-- Visual-Fingerprint-/Diversity-Warnungen prüfen und bei vermeidbarer Wiederholung nicht ignorieren
-- Packaging/Metadaten vorhanden
-- Thumbnail bei Longform separat und in kleiner Darstellung geprüft
+- Source Ledger Rechecks
+- Visual-Safe-Zones über echte Smoke-Frames
+- Diversity-/Fingerprint-Warnungen
 - Production-Root-/Entry-Isolation
 - finaler Render gehört exakt zum aktuellen Source-Stand
 
-Ein bestandenes Unit-Test-Set ersetzt keine visuelle Prüfung.
+Ein bestandenes Unit-Test-Set ersetzt **niemals** visuelle Prüfung.
+
+Final zusätzlich:
+
+- `POST_RENDER_REVIEW.md`
+- `CREATIVE_QA.md`
+- `creative-review.md` = PASS
+
+Technisch bestanden + kreativ langweilig = nicht fertig.
