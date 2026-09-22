@@ -74,11 +74,14 @@ for (const dir of dirs) {
 }
 
 const contract = {
-  version: 2,
+  version: 3,
   format: 'short-form-reel',
   title,
   slug,
   week: weekName,
+  preProductionRequiredArtifacts: [
+    'idea-evaluation.md',
+  ],
   phase1RequiredArtifacts: [
     'creative-brief.md',
     'source-ledger.md',
@@ -86,6 +89,9 @@ const contract = {
     'creative-review.md',
     'reel.json',
     'animation-plan.md',
+  ],
+  postPublishArtifacts: [
+    'performance-review.md',
   ],
   visualModalities: [
     'REMOTION_NATIVE',
@@ -97,15 +103,15 @@ const contract = {
 };
 
 const files = {
-  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Produktionsvertrag:** V2\n\n## Reihenfolge\n\n1. Creative Brief / Story\n2. Fakten & Quellen\n3. finaler Sprechertext\n4. Visual Beats + Visual Strategy\n5. Animation-/Shot-Plan\n6. ausführbare Source\n7. Voiceover / erforderliche reale Medien\n8. Timeline + Render\n9. technische QA + Creative QA\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/STORY_RETENTION.md\`, \`ki/gehirn/FAKTENQUELLEN.md\`, \`ki/gehirn/VISUAL_STRATEGY.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
+  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Produktionsvertrag:** V3\n\n## Reihenfolge\n\n0. Idea Gate: Angle + Hook-Kandidaten + Score\n1. Creative Brief / Story\n2. Fakten & Quellen\n3. finaler Sprechertext\n4. Visual Beats + Visual Strategy\n5. Animation-/Shot-Plan\n6. ausführbare Source\n7. Voiceover / erforderliche reale Medien\n8. Timeline + Render\n9. technische QA + Creative QA\n10. Veröffentlichung + Performance Review\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/IDEA_GATE.md\`, \`ki/gehirn/STORY_RETENTION.md\`, \`ki/gehirn/FAKTENQUELLEN.md\`, \`ki/gehirn/VISUAL_STRATEGY.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`, \`ki/gehirn/POST_PUBLISH_LEARNING.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
 
-  '01-script-audio/README.md': `# 01 — Script & Audio\n\nPhase 1 legt nach Creative Brief und Faktenprüfung \`voiceover.md\` sowie \`VOICEOVER-ZUM-KOPIEREN.txt\` an.\n\nPhase 2 erzeugt bevorzugt \`voiceover.wav\`, alternativ \`voiceover.mp3\`. Der Wortlaut bleibt identisch.\n`,
+  '01-script-audio/README.md': `# 01 — Script & Audio\n\nPhase 1 legt nach Idea Gate, Creative Brief und Faktenprüfung \`voiceover.md\` sowie \`VOICEOVER-ZUM-KOPIEREN.txt\` an.\n\nPhase 2 erzeugt bevorzugt \`voiceover.wav\`, alternativ \`voiceover.mp3\`. Der Wortlaut bleibt identisch.\n`,
 
   '02-bilder/README.md': `# 02 — Assets\n\nDieser Ordner enthält externe Still-/Hybrid-/Motion-Assets, wenn die Visual Strategy sie ausdrücklich verlangt. REAL_CAPTURE kann ebenfalls hier oder in einem reel-spezifisch dokumentierten Unterordner liegen.\n\nKeine Füllbilder. Keine fehlenden Assets vortäuschen.\n\nStill-/Hybrid-Prompts folgen \`ki/BILDSTIL.md\`. Alle Medien werden im \`asset-manifest.json\` mit realem Status geführt.\n`,
 
   '02-bilder/image-prompts.md': `# Image / Shot Prompts\n\n**Status:** OFFEN\n\nNur verwenden, wenn \`visual-strategy.md\` ein externes Still-/Hybrid-/Motion-Asset begründet.\n\nPro Asset dokumentieren:\n\n- Beat-/Scene-ID\n- Zweck / Kernaussage\n- Modality\n- warum Remotion/Real Capture nicht die bessere Lösung ist\n- erwarteter Dateiname\n- vollständiger Prompt oder Shot-Brief\n- was Remotion später ergänzt\n- Crop/Fokus/Layers, falls relevant\n\nKeine dekorativen Füllassets.\n`,
 
-  '02-bilder/asset-manifest.json': `${JSON.stringify({version: 2, assets: []}, null, 2)}\n`,
+  '02-bilder/asset-manifest.json': `${JSON.stringify({version: 3, assets: []}, null, 2)}\n`,
 
   '03-caption/README.md': `# 03 — Captions & Plattform-Copy\n\nPhase 1 legt audio-unabhängige Basiscues und Plattform-Copy an. Phase 3 ersetzt/justiert Cues mit realem Audio-Timing.\n\nCaptions sind Lesbarkeit, nicht zweite Erklärungsebene.\n`,
 
@@ -115,11 +121,13 @@ const files = {
 
   '05-export/README.md': `# 05 — Export\n\nPhase 3 legt hier Smoke-Frames, Review-Renders und finale Exporte ab. Ein MP4 ist erst nach technischer und kreativer Prüfung freigegeben.\n`,
 
-  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nV2-Reels führen hier zwingend Story-, Grounding-, Visual- und Review-Artefakte. Ausführbarer TS/TSX-Code gehört nach \`ki/src/reels/<slug>/\`.\n`,
+  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nV3-Reels führen hier zwingend Idea-, Story-, Grounding-, Visual-, Review- und Learning-Artefakte. Ausführbarer TS/TSX-Code gehört nach \`ki/src/reels/<slug>/\`.\n`,
 
   '06-projektdateien/production-contract-v2.json': `${JSON.stringify(contract, null, 2)}\n`,
 
-  '06-projektdateien/creative-brief.md': `# Creative Brief — ${title}\n\n**Status:** OFFEN\n\n## Viewer promise\n\n## Hook tension\n\n## 3-second proof\n\n## Why care\n\n## Core mechanism\n\n## Payoff\n\n## Memorable moment\n\n## Truth risk\n\n## Story preflight\n\n- [ ] Hook funktioniert ohne Begrüßung/Kanalname\n- [ ] innerhalb weniger Sekunden ist Relevanz klar\n- [ ] Reel entwickelt einen Mechanismus statt nur Informationen aufzuzählen\n- [ ] mindestens ein visueller Höhepunkt ist konkret beschrieben\n- [ ] Schluss liefert eine klare Einordnung/Entscheidung\n`,
+  '06-projektdateien/idea-evaluation.md': `# Idea Evaluation — ${title}\n\n**Status:** OFFEN\n\nRegeln: \`ki/gehirn/IDEA_GATE.md\`.\n\n## Drei Angles\n\n### A — Konflikt / Irrtum\n\n### B — Demonstration / Ergebnis\n\n### C — Konsequenz / Nutzen\n\n## Gewählter Angle\n\n**Angle:** OFFEN\n\n**Warum:**\n\n## Hook-Kandidaten\n\n1.\n2.\n3.\n\n## 3-Sekunden-Proof\n\n## Visual-Potential\n\nMindestens drei bedeutungstragende Aktionen:\n\n1.\n2.\n3.\n\n## Score\n\n| Kriterium | 0–2 | Begründung |\n|---|---:|---|\n| Neugier | | |\n| Relevanz | | |\n| Visualisierbarkeit | | |\n| Eigenständigkeit | | |\n| Wahrheitsbasis | | |\n| Payoff | | |\n| **Gesamt / 12** | | |\n\n**GO / REWORK / DROP:** OFFEN\n`,
+
+  '06-projektdateien/creative-brief.md': `# Creative Brief — ${title}\n\n**Status:** OFFEN\n\n## Viewer promise\n\n## Hook tension\n\n## 3-second proof\n\n## Why care\n\n## Core mechanism\n\n## Payoff\n\n## Memorable moment\n\n## Truth risk\n\n## Story preflight\n\n- [ ] Idea Gate ist GO\n- [ ] Hook funktioniert ohne Begrüßung/Kanalname\n- [ ] innerhalb weniger Sekunden ist Relevanz klar\n- [ ] Reel entwickelt einen Mechanismus statt nur Informationen aufzuzählen\n- [ ] mindestens ein visueller Höhepunkt ist konkret beschrieben\n- [ ] Schluss liefert eine klare Einordnung/Entscheidung\n`,
 
   '06-projektdateien/source-ledger.md': `# Source Ledger — ${title}\n\n**Status:** OFFEN\n\nRegeln: \`ki/gehirn/FAKTENQUELLEN.md\`.\n\n| Claim-ID | Claim | Typ | Quelle / Referenz | geprüft am | Primärquelle | Einschränkung | Recheck | Status |\n|---|---|---|---|---|---|---|---|---|\n\nErlaubte Status: \`VERIFIED\`, \`QUALIFIED\`, \`REMOVE\`.\n\nWenn es wirklich keine extern zu prüfenden Claims gibt, statt einer leeren Tabelle exakt dokumentieren:\n\n\`NO_EXTERNAL_CLAIMS: <konkrete Begründung>\`\n`,
 
@@ -127,13 +135,15 @@ const files = {
 
   '06-projektdateien/creative-review.md': `# Creative Review — ${title}\n\n**Status:** WARTET AUF FINALEN RENDER\n\nRegeln: \`ki/gehirn/CREATIVE_QA.md\`.\n\n## Zuschauer-Test\n\n- [ ] Nach 1–2 Sekunden gibt es echten Grund weiterzusehen\n- [ ] Nach wenigen Sekunden ist Thema/Relevanz klar\n- [ ] kein unnötiger Leerlauf\n- [ ] keine repetitive Karten-/Panelserie\n- [ ] mindestens ein erinnerbarer visueller Moment\n- [ ] Kernmechanik grob auch ohne Ton erkennbar\n- [ ] keine Demo-Zahl wirkt versehentlich wie echter Messwert\n- [ ] finale Schlussaussage ist konkret\n\n## Ergebnis\n\n**PASS / FAIL:** OFFEN\n\n**Probleme / Änderungen:**\n`,
 
-  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n**Produktionsvertrag:** V2\n\n## Phase 1 — ChatGPT\n\n**Status:** OFFEN\n\nFertig erst mit Creative Brief, Source Ledger, finalem Script, Visual Strategy, Animation-Plan, Asset-Entscheidung/Manifest, Captions, Plattform-Copy, reel.json, ausführbarem Source, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nVoiceover erzeugen; nur wenn Visual Strategy es verlangt zusätzlich reale Captures/Assets bereitstellen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio/Assets integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render, technische QA und Creative QA.\n`,
+  '06-projektdateien/performance-review.md': `# Performance Review — ${title}\n\n**Status:** WARTET AUF VERÖFFENTLICHUNG\n\nRegeln: \`ki/gehirn/POST_PUBLISH_LEARNING.md\`.\n\n## Veröffentlichung\n\n| Plattform | Datum | Views | Avg. Watch | Completion | 1–3s Retention | Shares | Saves | Follows |\n|---|---|---:|---:|---:|---:|---:|---:|---:|\n\nNicht verfügbare Werte als \`NICHT VERFÜGBAR\` eintragen.\n\n## Auffällige Retention-Punkte\n\n| Zeitpunkt | Beobachtung | möglicher Grund |\n|---|---|---|\n\n## Qualitatives Feedback\n\n## Lernhypothesen — maximal drei\n\n1.\n2.\n3.\n\n## Kanalweite Konsequenz\n\n- [ ] keine — Einzelbeobachtung\n- [ ] als HYPOTHESE in \`ki/gehirn/LEARNINGS.md\` übernehmen\n- [ ] bestehendes Learning mit weiterer Evidenz aktualisieren\n`,
+
+  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n**Produktionsvertrag:** V3\n\n## Phase 0 — Idea Gate\n\n**Status:** OFFEN\n\nErst bei GO startet Phase 1. Angle, Hook-Kandidaten, 3-Sekunden-Proof, Visual-Potential und Score dokumentieren.\n\n## Phase 1 — ChatGPT\n\n**Status:** WARTET AUF IDEA GATE\n\nFertig erst mit Creative Brief, Source Ledger, finalem Script, Visual Strategy, Animation-Plan, Asset-Entscheidung/Manifest, Captions, Plattform-Copy, reel.json, ausführbarem Source, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nVoiceover erzeugen; nur wenn Visual Strategy es verlangt zusätzlich reale Captures/Assets bereitstellen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio/Assets integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render, technische QA und Creative QA.\n\n## Phase 4 — Post Publish Learning\n\n**Status:** WARTET AUF VERÖFFENTLICHUNG\n\nEchte Performance-Daten erfassen, maximal drei Hypothesen ableiten und wiederkehrende Evidenz in \`ki/gehirn/LEARNINGS.md\` überführen.\n`,
 };
 
 for (const [relative, content] of Object.entries(files)) {
   await writeFile(resolve(reelRoot, relative), content, 'utf8');
 }
 
-console.log(`KI-Reel V2 angelegt: ${reelRoot}`);
+console.log(`KI-Reel V3 angelegt: ${reelRoot}`);
 console.log('Pflicht: node scripts/check-ki-reel-folder-structure.mjs');
-console.log('Phase 1 startet mit Creative Brief und Source Ledger — nicht mit Remotion-Code.');
+console.log('Phase 0 startet mit Idea Gate — erst bei GO beginnt die eigentliche Produktion.');
