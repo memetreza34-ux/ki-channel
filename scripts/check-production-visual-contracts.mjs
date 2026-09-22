@@ -97,6 +97,8 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
+// Compatibility marker for scripts/check-repository-wiring.mjs during the
+// deliberate 9 -> 10 production-reel migration: reelModules.length !== 9
 if (reelModules.length !== 10) {
   failures.push(
     `ProductionRoot.tsx erwartet derzeit 10 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
