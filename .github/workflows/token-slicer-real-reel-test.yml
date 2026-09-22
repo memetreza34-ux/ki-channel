@@ -69,8 +69,11 @@ jobs:
             --props='{"showCaptions":true,"voiceoverSrc":"http://127.0.0.1:8765/token-slicer-voiceover.mp3"}' \
             --codec=h264 \
             --crf=18
+          test -s out/first-real-reel/token-slicer.mp4
+          ls -lh out/first-real-reel/token-slicer.mp4
 
-      - name: Upload rendered MP4
+      - name: Upload rendered MP4 when artifact quota allows
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: first-real-reel-token-slicer
@@ -78,4 +81,4 @@ jobs:
             out/first-real-reel/token-slicer.mp4
             out/first-real-reel/voiceover-duration.txt
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 1
