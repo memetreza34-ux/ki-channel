@@ -113,8 +113,6 @@ const walkFiles = async (root) => {
   return files;
 };
 
-const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
 const phaseBlock = (phaseStatus, phaseNumber) => {
   const next = phaseNumber + 1;
   const pattern = new RegExp(
@@ -128,11 +126,36 @@ const phaseIsFinished = (phaseStatus, phaseNumber) =>
   /\*\*Status:\*\*\s*FERTIG/i.test(phaseBlock(phaseStatus, phaseNumber));
 
 const markdownSectionBody = (text, heading) => {
-  const pattern = new RegExp(
-    `^## ${escapeRegExp(heading)}\\s*\\n([\\s\\S]*?)(?=^## |\\Z)`,
-    'im',
-  );
-  return text.match(pattern)?.[1]?.trim() ?? '';
+  const lines = text.split(/\r?\n/);
+  const wanted = `## ${heading}`.toLowerCase();
+  const start = lines.findIndex((line) => line.trim().toLowerCase() === wanted);
+  if (start < 0) return '';
+
+  const body = [];
+  for (let index = start + 1; index < lines.length; index += 1) {
+    if (lines[index].trim().startsWith('## ')) break;
+    body.push(lines[index]);
+  }
+  return body.join('\n').trim();
+};
+
+const markdownBoldFieldValue = (text, label) => {
+  const lines = text.split(/\r?\n/);
+  const marker = `**${label}:**`;
+  const index = lines.findIndex((line) => line.trim().startsWith(marker));
+  if (index < 0) return '';
+
+  const sameLine = lines[index].trim().slice(marker.length).trim();
+  if (sameLine) return sameLine;
+
+  for (let next = index + 1; next < lines.length; next += 1) {
+    const candidate = lines[next].trim();
+    if (!candidate) continue;
+    if (candidate.startsWith('**') || candidate.startsWith('## ') || candidate.startsWith('|')) return '';
+    return candidate;
+  }
+
+  return '';
 };
 
 const meaningfulSection = (body) => {
@@ -147,7 +170,7 @@ const meaningfulSection = (body) => {
 };
 
 const markdownTableDataRows = (text) => text
-  .split('\n')
+  .split(/\r?\n/)
   .map((line) => line.trim())
   .filter((line) => line.startsWith('|') && line.endsWith('|'))
   .filter((line) => !/^\|\s*-+/.test(line))
@@ -195,8 +218,7 @@ const checkVisualStrategy = (path, text) => {
     }
   }
 
-  const heroMatch = text.match(/\*\*Hero\/Memorable Beat:\*\*\s*([^\n]*)/i);
-  const hero = heroMatch?.[1]?.trim() ?? '';
+  const hero = markdownBoldFieldValue(text, 'Hero/Memorable Beat');
   if (!hero || /^(offen|todo|tbd)$/i.test(hero)) {
     failures.push(`${display(path)}: Hero/Memorable Beat muss vor Phase 1 FERTIG konkret benannt sein.`);
   }
