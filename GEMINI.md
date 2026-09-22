@@ -1,6 +1,21 @@
-# Antigravity / Gemini — KI-Channel Contract
+# Antigravity / Gemini — KI-Channel Contract V2
 
-Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen. Für KI-Reels zusätzlich `ki/AGENTS.md`, `ki/gehirn/MASTER.md` und `ki/reels/AGENTS.md`. Für Plattform-/YouTube-Aufgaben zusätzlich `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/AGENTS.md`.
+Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen.
+
+Für KI-Reels zusätzlich:
+
+1. `ki/AGENTS.md`
+2. `ki/gehirn/MASTER.md`
+3. `ki/reels/AGENTS.md`
+4. reel-spezifische V2-Dateien
+
+Je nach Aufgabe außerdem:
+
+- Story/Hook → `ki/gehirn/STORY_RETENTION.md`
+- Fakten → `ki/gehirn/FAKTENQUELLEN.md`
+- Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
+- finaler Zuschauerreview → `ki/gehirn/CREATIVE_QA.md`
+- Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
 
 ## Kanonischer Stand
 
@@ -8,17 +23,62 @@ Vor jeder Aufgabe zuerst `REPO-STATE.md`, danach `AGENTS.md` lesen. Für KI-Reel
 
 Normale Änderungen auf einem Arbeitsbranch von `main`; `main` nur bei ausdrücklich verlangter Repository-Kanonisierung direkt aktualisieren.
 
+## Neue Reels = V2
+
+Neue Reel-Pakete ausschließlich über:
+
+```bash
+node scripts/new-ki-reel.mjs "Reel Titel"
+```
+
+V2-Reels besitzen unter `06-projektdateien/` mindestens:
+
+- `production-contract-v2.json`
+- `creative-brief.md`
+- `source-ledger.md`
+- `visual-strategy.md`
+- `creative-review.md`
+- `PHASE-STATUS.md`
+
+Legacy-Reels ohne V2-Vertrag bleiben kompatibel, definieren aber nicht den neuen Produktionsstandard.
+
 ## 3 Phasen
 
 ### Phase 1 — ChatGPT
 
-Phase 1 erstellt bereits die komplette Code- und Planungsgrundlage. Dazu gehören Skript, `VOICEOVER-ZUM-KOPIEREN.txt`, Szenen, Visual Beats, individuelle Animationen/New-Build-Entscheidungen, Bildprompts/Manifest falls nötig, Captions, `03-caption/platform-copy.md`, `reel.json`, Remotion-Source, Composition und fokussierte Checks.
+Phase 1 erstellt die komplette Planungs- und Code-Grundlage **vor echtem Audio**.
 
-**Audio darf in Phase 1 fehlen.** Das ist normal.
+Reihenfolge:
+
+```text
+Creative Brief
+→ Fakten / Source Ledger
+→ finaler Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Animation-/Shot-Plan
+→ Asset-/Capture-Entscheidung
+→ Captions/Plattform-Copy
+→ reel.json
+→ Remotion-/Production-Source + Composition
+```
+
+Audio darf in Phase 1 fehlen. Das ist normal.
+
+Direkt vom Thema in Source-Code springen ist ein Prozessfehler.
 
 ### Phase 2 — Mensch
 
-Der Mensch erzeugt nur `voiceover.wav` oder `voiceover.mp3` aus dem freigegebenen Text.
+Immer:
+
+- `voiceover.wav` oder `voiceover.mp3` aus dem freigegebenen Copy-Text erzeugen
+
+Nur wenn `visual-strategy.md` es ausdrücklich verlangt:
+
+- REAL_CAPTURE aufnehmen
+- externes Still-/Hybrid-/Motion-Asset bereitstellen
+
+Wenn kein externes Medium erforderlich ist, bleibt Phase 2 ausschließlich Voiceover.
 
 ### Phase 3 — Antigravity / Codex
 
@@ -27,35 +87,90 @@ Antigravity arbeitet auf der vorhandenen Phase-1-Implementierung. Nicht von Null
 Ablauf:
 
 1. `PHASE-STATUS.md` lesen.
-2. Struktur prüfen.
-3. vorhandenen Source und Composition prüfen.
-4. echtes Voiceover suchen.
-5. fehlt Audio: `PHASE 2 AUDIO FEHLT` und stoppen.
-6. Audio-Dauer messen und integrieren.
-7. Visual Beats, Animation, Holds und Szenenwechsel an die reale Stimme anpassen.
-8. falls ein lokaler Sprecherabschnitt danach noch zu schnell/zu langsam für den geplanten Beat ist: zuerst Pause an natürlicher Grenze korrigieren, dann bei Bedarf die komplette Phrase/den Cue **pitch-erhaltend leicht time-stretchen**.
-9. Speedwechsel niemals mitten im Wort oder abrupt; Wortlaut/Reihenfolge unverändert lassen.
-10. bevorzugter Retiming-Bereich `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`; stärkere Korrektur → neues Phase-2-Voiceover statt hörbarer Verzerrung.
-11. Captions und Wort-Timestamps gegen das **final tatsächlich verwendete Audio** ausrichten.
-12. genehmigte Visual Beats, `REUSE_EXACT`/`NEW_BUILD` und Grounding-Pipeline erhalten.
-13. fokussierte Tests und TypeScript ausführen.
-14. drei Smoke-Frames pro Szene plus relevante Beat-Wechsel rendern und visuell prüfen.
-15. echte Probleme beheben.
-16. finales MP4 rendern, technisch prüfen und in normaler Geschwindigkeit ansehen; auch akustisch auf unnatürliche Speed-Stellen prüfen.
-17. Checkliste/Status nur für tatsächlich ausgeführte Prüfungen aktualisieren.
-18. im Abschlussbericht lokale Audio-Retiming-Stellen + Faktoren nennen oder `kein Retiming nötig` melden.
+2. `creative-brief.md`, `source-ledger.md`, `visual-strategy.md` lesen.
+3. Struktur/V2-Contract prüfen.
+4. vorhandenen Source und Composition prüfen.
+5. echtes Voiceover suchen.
+6. fehlt Audio: `PHASE 2 AUDIO FEHLT` und stoppen.
+7. alle im Manifest erforderlichen realen Assets/Captures prüfen; fehlende nicht ersetzen oder vortäuschen.
+8. Audio-Dauer, Phrasen und Pausen analysieren.
+9. Visual Beats, Animation, Holds und Szenenwechsel an die reale Sprecherbedeutung anpassen.
+10. Pausen sind Timing-Signale, aber nicht alleinige Szenenlogik.
+11. falls ein lokaler Sprecherabschnitt noch zu schnell/langsam ist: zuerst Visual/Hold, dann natürliche Pause, erst danach bei Bedarf komplette Phrase/Cue pitch-erhaltend leicht retimen.
+12. Speedwechsel niemals mitten im Wort oder abrupt; Wortlaut/Reihenfolge unverändert.
+13. bevorzugter Retiming-Bereich `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`; stärkere Korrektur → neues Phase-2-Voiceover.
+14. Captions/Wort-Timestamps gegen das final tatsächlich verwendete Audio ausrichten.
+15. genehmigte Modality, Visual Beats und `REUSE_EXACT`/`NEW_BUILD` erhalten.
+16. fokussierte Tests und TypeScript ausführen.
+17. Opening/Mid/End sowie relevante Beat-Wechsel als Smoke-Frames rendern und **ansehen**.
+18. echte Probleme beheben.
+19. finales MP4 rendern, technisch prüfen, in normaler Geschwindigkeit und auf Smartphone-Größe ansehen.
+20. `POST_RENDER_REVIEW.md` durchführen.
+21. `CREATIVE_QA.md` durchführen und `creative-review.md` dokumentieren.
+22. Source-Ledger-Claims mit Recheck-Pflicht vor Publishing erneut prüfen.
+23. Status nur für tatsächlich ausgeführte Prüfungen aktualisieren.
+24. lokale Audio-Retiming-Stellen/Faktoren nennen oder `kein Retiming nötig` melden.
+
+## Visual Strategy — kein Remotion-Default
+
+Vor technischer Umsetzung gilt `ki/gehirn/VISUAL_STRATEGY.md`.
+
+Erlaubte primäre Modalities:
+
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+Keine Modality ist automatisch besser. **Beste Erklärung gewinnt.**
+
+Wenn echte Tool-Oberfläche oder reales Ergebnis selbst Teil des Beweises ist, `REAL_CAPTURE` prüfen statt eine Fake-UI nachzubauen.
+
+Wenn ein räumliches/organisches Motiv die Aussage stärker trägt, kann Hybrid/externes Asset korrekt sein.
+
+## Anti-Karten-Regel
+
+Cards/Panels nur als echte semantische Objekte, z. B. UI, Dokument, Datei, Nachricht, Datensatz oder Token.
+
+Nicht als Standardcontainer für abstrakte Aussagen.
+
+Neue Reels sollen, sofern der Inhalt Alternativen erlaubt:
+
+- nicht mehr als zwei gleiche Hauptgrammatiken direkt hintereinander nutzen
+- Karten-/Panelbeats ungefähr auf ein Drittel oder weniger begrenzen
+- mindestens einen echten Hero-/Memorable-Moment enthalten
 
 ## Repository-Struktur
 
 Planung:
 
-`ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/`
+```text
+ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
+```
 
 Source:
 
-`ki/src/reels/<slug>/`
+```text
+ki/src/reels/<slug>/
+```
 
 Nie Planung nach `ki/src/reels/` verschieben. Nie flache Reel-Pakete unter `ki/reels/<slug>/` erzeugen.
+
+## Externe Bilder / Assets
+
+`ki/BILDSTIL.md` ist anzuwenden, **nachdem** die Visual Strategy `HYBRID` oder `EXTERNAL_STILL_REQUIRED` gewählt hat.
+
+Phase 1 darf:
+
+- Bedarf definieren
+- Prompt/Shot-Brief schreiben
+- erwarteten Dateinamen festlegen
+- Manifeststatus `MISSING_REQUIRED` setzen
+
+Phase 3 darf nur tatsächlich vorhandene Dateien verwenden.
+
+Präzise Header, Captions, Zahlen, Pfeile, Labels und UI-Overlays bleiben kontrollierte Remotion-Ebenen, sofern das Asset selbst nicht ein echter Capture dieser UI ist.
 
 ## Publishing / Plattformen
 
@@ -63,35 +178,33 @@ Short-Form wird einmal produziert. YouTube Shorts, Instagram Reels, TikTok, Face
 
 Plattform-Copy liegt im Reel unter:
 
-`03-caption/platform-copy.md`
+```text
+03-caption/platform-copy.md
+```
 
-Keine zweite Skript-/Source-Kopie in `ki/plattformen/` erzeugen. YouTube Longform ist ein separates Format und wird nicht automatisch aus einem Reel verlängert.
+Keine zweite Skript-/Source-Kopie in `ki/plattformen/` erzeugen. YouTube Longform ist separat.
 
 Aktuelle Plattformlimits/Monetarisierungsregeln bei konkreter Veröffentlichung neu prüfen.
 
-## Bilder
+## Spezieller Legacy-Fall: Context-Overload-Reel
 
-`ki/BILDSTIL.md` ist verbindlich. Phase 1 entscheidet zuerst, ob ein Bild überhaupt nötig ist. Falls ja, liegt der Prompt unter `02-bilder/image-prompts.md`; der Prompt ist standardmäßig Englisch, sichtbare Labels im Bild nur kurz und deutsch. Überschriften, Captions, Pfeile, Zahlen und längere Texte gehören in Remotion.
+Wenn ausdrücklich dieses bestehende Legacy-Reel fortgesetzt/fertiggestellt wird:
 
-## Aktuelles Context-Overload-Reel
+```text
+ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/
+```
 
-Wenn ausdrücklich dieses Reel fortgesetzt/fertiggestellt wird:
+Den vorhandenen Source unter:
 
-`ki/reels/2026-08-03_bis_2026-08-09/02_Warum-mehr-Kontext-KI-schlechter-macht/`
+```text
+ki/src/reels/antigravity-context-overload/
+```
 
-Phase-3-Skill:
-
-`.agents/skills/build-context-overload-reel/SKILL.md`
-
-Der vorhandene Source liegt unter:
-
-`ki/src/reels/antigravity-context-overload/`
-
-Er wird wiederverwendet und nicht neu erfunden.
+wiederverwenden und nicht neu erfinden. Legacy-Verträge dieses Reels gelten für seine Fortsetzung, solange sie nicht mit höherrangigen aktuellen Sicherheits-/Wahrheitsregeln kollidieren.
 
 ## Verifikation
 
-Canonical gates:
+Kanonische technische Gates:
 
 ```bash
 npm run repo:wiring-check
@@ -102,4 +215,14 @@ npm run content:runtime:verify
 npm run repo:verify
 ```
 
-Workspace-Auflösung und lokale Workspace-Verknüpfungen niemals durch Install-Flags oder alternative Teilinstallationen umgehen. Keine Demo-Werte, Fake-Assets oder erfundene Erfolgsmeldungen.
+Zusätzlich für V2-Reels:
+
+- Story-Preflight
+- Source Ledger
+- Visual Strategy
+- Smoke-Review
+- `POST_RENDER_REVIEW.md`
+- `CREATIVE_QA.md`
+- `creative-review.md = PASS`
+
+Keine Demo-Werte, Fake-Assets, nicht ausgeführte Tests oder erfundene Erfolgsmeldungen.
