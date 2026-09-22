@@ -4,12 +4,13 @@ Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionss
 
 ## Die Regel
 
-> Erst Story und Bedeutung entscheiden. Danach Fakten sichern. Danach Bildsprache wählen. Erst dann Technik und Motion.
+> Erst starke Idee wählen. Dann Story und Bedeutung entscheiden. Danach Fakten sichern. Danach Bildsprache wählen. Erst dann Technik und Motion. Nach Veröffentlichung aus echten Daten lernen.
 
 ## Reel bauen — in dieser Reihenfolge
 
 | # | Schritt | Werkzeug | Wofür genau |
 |---|---|---|---|
+| 0 | Thema auswählen | `THEMENWAHL.md` | Relevanz, Hook-Potenzial, sichtbarer Mechanismus, Payoff, Grounding |
 | 1 | Reel anlegen | `reel-production-pipeline` | Ordner, Phasen, V2-Pflichtdateien |
 | 2 | Story/Hook prüfen | `STORY_RETENTION.md` | Viewer Promise, Hook, 3-second proof, Payoff, Memorable Moment |
 | 3 | Fakten sichern | `FAKTENQUELLEN.md` | Claims klassifizieren, Quellen, sichtbare Zahlen, Recheck |
@@ -27,8 +28,11 @@ Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionss
 | 14 | Rendern | `remotion-render` | Export und technische Kontrolle |
 | 15 | Technischer Review | `POST_RENDER_REVIEW.md` | Kollisionen, Safe-Zones, Lesbarkeit, Renderfehler |
 | 16 | Creative Review | `CREATIVE_QA.md` | Hook, Tempo, Kartenlastigkeit, Storytelling, Smartphone-Eindruck |
+| 17 | Nach Veröffentlichung lernen | `PERFORMANCE_LEARNING.md` | echte Retention-/Watch-/Action-Signale diagnostizieren und kontrollierte Tests ableiten |
 
 **Schritt 16 ist ein echtes Stop-Gate.** Technisch fehlerfrei reicht nicht.
+
+Schritt 17 ist kein Release-Gate. Er verbessert zukünftige Themen-, Hook- und Visual-Entscheidungen anhand realer Kanal-Daten.
 
 ## Technik-Demos
 
@@ -51,7 +55,11 @@ Agenten starten nur, wenn der Schritt sie wirklich verlangt.
 
 ## Häufigste Fehler
 
-### 1. Zu früh an Motion denken
+### 1. Schlechte Idee technisch perfektionieren
+
+Wenn Relevanz, Hook, sichtbarer Mechanismus oder Payoff schon vor Produktion schwach sind, zuerst `THEMENWAHL.md` anwenden. Nicht hoffen, dass Motion das Thema rettet.
+
+### 2. Zu früh an Motion denken
 
 `animation-principles` beantwortet **wie** sich etwas bewegt. Es beantwortet nicht:
 
@@ -62,15 +70,19 @@ Agenten starten nur, wenn der Schritt sie wirklich verlangt.
 
 Wer hier startet, animiert oft eine Karte sauber, die nie hätte existieren sollen.
 
-### 2. Remotion mit Qualität verwechseln
+### 3. Remotion mit Qualität verwechseln
 
 Remotion ist stark für kontrollierbare Erklärlogik. Es ist aber nicht automatisch die beste Lösung für jedes Hero-Motiv.
 
 Wenn reale UI, räumliche Szene, Hybrid oder externes Motion-Asset die Aussage klarer macht, entscheidet `VISUAL_STRATEGY.md` entsprechend.
 
-### 3. Mehr Technik bauen, obwohl die Story schwach ist
+### 4. Mehr Technik bauen, obwohl die Story schwach ist
 
 Wenn Hook, Leerlauf oder visuelle Wiederholung das Problem sind, zuerst `STORY_RETENTION.md` und `CREATIVE_QA.md` anwenden — **nicht** die Animation Library erweitern.
+
+### 5. Auf einen einzelnen Upload überreagieren
+
+Performance-Daten sind wertvoll, aber eine einzelne Veröffentlichung ist kein neuer Kanalvertrag. `PERFORMANCE_LEARNING.md` trennt Diagnose von vorschnellen globalen Regeländerungen.
 
 ## Prüfung
 
