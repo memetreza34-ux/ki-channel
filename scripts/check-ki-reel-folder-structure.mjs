@@ -1,4 +1,4 @@
-import {readdir, stat} from 'node:fs/promises';
+import {readdir, readFile} from 'node:fs/promises';
 import {resolve, relative, basename} from 'node:path';
 
 const repoRoot = resolve(process.env.KI_REEL_STRUCTURE_ROOT ?? '.');
@@ -28,15 +28,12 @@ const ROOT_REEL_MARKERS = new Set([
   'review-checklist.md',
 ]);
 const SOURCE_FORBIDDEN_PLANNING_MARKERS = new Set([
-  'brief.json',
-  'reel.json',
-  'voiceover.md',
-  'scene-plan.md',
-  'animation-plan.md',
-  'subtitle-cues.json',
-  'asset-manifest.json',
-  'CODEX_ASSEMBLY_TASK.md',
-  'review-checklist.md',
+  ...ROOT_REEL_MARKERS,
+  'creative-brief.md',
+  'source-ledger.md',
+  'visual-strategy.md',
+  'creative-review.md',
+  'production-contract-v2.json',
   'caption.md',
   'audio-plan.md',
   'asset-prompts.md',
@@ -47,6 +44,21 @@ const ALLOWED_REELS_ROOT_FILES = new Set([
   'animation-history.json',
   '.gitkeep',
 ]);
+const V2_PROJECT_FILES = [
+  'production-contract-v2.json',
+  'creative-brief.md',
+  'source-ledger.md',
+  'visual-strategy.md',
+  'creative-review.md',
+  'PHASE-STATUS.md',
+];
+const V2_MODALITIES = [
+  'REMOTION_NATIVE',
+  'REAL_CAPTURE',
+  'HYBRID',
+  'EXTERNAL_STILL_REQUIRED',
+  'EXTERNAL_MOTION_REQUIRED',
+];
 
 const failures = [];
 const display = (path) => relative(repoRoot, path) || '.';
@@ -65,6 +77,15 @@ const directFileNames = async (path) => {
   return new Set(entries.filter((entry) => entry.isFile()).map((entry) => entry.name));
 };
 
+const readTextSafe = async (path) => {
+  try {
+    return await readFile(path, 'utf8');
+  } catch (error) {
+    failures.push(`${display(path)} kann nicht gelesen werden: ${error instanceof Error ? error.message : error}`);
+    return '';
+  }
+};
+
 const walkFiles = async (root) => {
   const files = [];
   const entries = await readDirSafe(root);
@@ -74,6 +95,89 @@ const walkFiles = async (root) => {
     else if (entry.isFile()) files.push(path);
   }
   return files;
+};
+
+const phase1IsFinished = (phaseStatus) => {
+  const phase1 = phaseStatus.match(/## Phase 1[\s\S]*?(?=\n## Phase 2|$)/i)?.[0] ?? '';
+  return /\*\*Status:\*\*\s*FERTIG/i.test(phase1);
+};
+
+const checkV2Contract = async (reelRoot) => {
+  const projectRoot = resolve(reelRoot, '06-projektdateien');
+  const projectFiles = await directFileNames(projectRoot);
+  if (!projectFiles.has('production-contract-v2.json')) return;
+
+  for (const required of V2_PROJECT_FILES) {
+    if (!projectFiles.has(required)) {
+      failures.push(`${display(projectRoot)}: V2-Pflichtdatei ${required} fehlt.`);
+    }
+  }
+
+  const assetFiles = await directFileNames(resolve(reelRoot, '02-bilder'));
+  if (!assetFiles.has('asset-manifest.json')) {
+    failures.push(`${display(resolve(reelRoot, '02-bilder'))}: V2 benötigt asset-manifest.json.`);
+  }
+
+  const contractPath = resolve(projectRoot, 'production-contract-v2.json');
+  const contractRaw = await readTextSafe(contractPath);
+  if (contractRaw) {
+    try {
+      const contract = JSON.parse(contractRaw);
+      if (contract.version !== 2) {
+        failures.push(`${display(contractPath)}: version muss 2 sein.`);
+      }
+      if (contract.format !== 'short-form-reel') {
+        failures.push(`${display(contractPath)}: format muss short-form-reel sein.`);
+      }
+      const modalities = new Set(Array.isArray(contract.visualModalities) ? contract.visualModalities : []);
+      const missingModalities = V2_MODALITIES.filter((name) => !modalities.has(name));
+      if (missingModalities.length > 0) {
+        failures.push(`${display(contractPath)}: Visual Modalities fehlen: ${missingModalities.join(', ')}.`);
+      }
+    } catch (error) {
+      failures.push(`${display(contractPath)} ist kein gültiges JSON: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+
+  const phasePath = resolve(projectRoot, 'PHASE-STATUS.md');
+  if (!projectFiles.has('PHASE-STATUS.md')) return;
+  const phaseStatus = await readTextSafe(phasePath);
+  if (!phase1IsFinished(phaseStatus)) return;
+
+  const phase1RequiredProjectFiles = [
+    'creative-brief.md',
+    'source-ledger.md',
+    'visual-strategy.md',
+    'reel.json',
+    'animation-plan.md',
+  ];
+  for (const required of phase1RequiredProjectFiles) {
+    if (!projectFiles.has(required)) {
+      failures.push(`${display(projectRoot)}: Phase 1 ist FERTIG markiert, aber ${required} fehlt.`);
+    }
+  }
+
+  for (const planned of ['creative-brief.md', 'source-ledger.md', 'visual-strategy.md']) {
+    if (!projectFiles.has(planned)) continue;
+    const text = await readTextSafe(resolve(projectRoot, planned));
+    if (/\*\*Status:\*\*\s*OFFEN/i.test(text)) {
+      failures.push(`${display(resolve(projectRoot, planned))}: Phase 1 ist FERTIG, Datei steht aber noch auf OFFEN.`);
+    }
+  }
+
+  const scriptFiles = await directFileNames(resolve(reelRoot, '01-script-audio'));
+  for (const required of ['voiceover.md', 'VOICEOVER-ZUM-KOPIEREN.txt']) {
+    if (!scriptFiles.has(required)) {
+      failures.push(`${display(resolve(reelRoot, '01-script-audio'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+    }
+  }
+
+  const captionFiles = await directFileNames(resolve(reelRoot, '03-caption'));
+  for (const required of ['subtitle-cues.json', 'platform-copy.md']) {
+    if (!captionFiles.has(required)) {
+      failures.push(`${display(resolve(reelRoot, '03-caption'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+    }
+  }
 };
 
 // 1) Reel projects must never live directly below ki/.
@@ -152,8 +256,12 @@ for (const entry of await readDirSafe(reelsRoot)) {
     if (flatPlanning.length > 0) {
       failures.push(
         `${display(reelRoot)} enthält flache Planungsdateien (${flatPlanning.join(', ')}). ` +
-        'Skript/Audio -> 01, Bilder -> 02, Caption -> 03, PDF -> 04, Export -> 05, Planung/Technik -> 06.',
+        'Skript/Audio -> 01, Assets -> 02, Caption -> 03, PDF -> 04, Export -> 05, Planung/Technik -> 06.',
       );
+    }
+
+    if (REQUIRED_REEL_DIRS.every((dir) => childDirs.has(dir))) {
+      await checkV2Contract(reelRoot);
     }
   }
 }
@@ -165,5 +273,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'KI-Reel-Strukturvertrag bestanden: keine Reel-Projekte im ki/-Root, Source und Planung getrennt, Wochenordner gültig und jedes Reel besitzt die feste 01–06-Produktionsstruktur.',
+  'KI-Reel-Strukturvertrag bestanden: Source/Planung getrennt, Wochenstruktur gültig und V2-Reels besitzen Creative-, Grounding- und Visual-Strategie-Verträge.',
 );
