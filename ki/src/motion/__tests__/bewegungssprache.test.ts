@@ -56,7 +56,6 @@ const productionSources = (): {path: string; source: string}[] =>
       })),
   );
 
-
 /**
  * Zaehlt frame-basierte interpolate-Aufrufe ohne Easing-Kurve.
  *
@@ -88,7 +87,7 @@ const uneasedFrameInterpolations = (source: string): number => {
 };
 
 describe('Bewegungssprache', () => {
-  it('haelt die Dauernskala als Vielfache des Grundtakts', () => {
+  it('haelt die zentrale Dauernskala konsistent', () => {
     expect(MOTION_BEAT_FRAMES).toBe(12);
     expect(MOTION_DURATION.standard).toBe(MOTION_BEAT_FRAMES);
     expect(MOTION_DURATION.micro * 2).toBe(MOTION_BEAT_FRAMES);
@@ -96,18 +95,19 @@ describe('Bewegungssprache', () => {
     expect(MOTION_HOLD_FRAMES).toBeGreaterThan(0);
   });
 
-  it('nutzt die Corporate-Signaturkurve als Standard', () => {
+  it('nutzt die Editorial-Tech-Signaturkurve als Standard', () => {
     const source = readFileSync('ki/src/motion/easing.ts', 'utf8');
     expect(source).toContain('enter: Easing.bezier(0.2, 0, 0, 1)');
   });
 
-  it('sperrt den Ueberschwinger im Produktionscode', () => {
+  it('sperrt unmotivierten Ueberschwinger im bestehenden Produktionscode', () => {
     const offenders = productionSources()
       .filter(({source}) => /['"]pop['"]/.test(source))
       .map(({path}) => path);
 
-    // Ueberschwinger liest sich als Spielzeug und widerspricht dem
-    // Kanalversprechen "keine Fake-Wunder".
+    // Pop/Overshoot bleibt fuer den aktuellen Production-Code gesperrt.
+    // Die Doku erlaubt eine spaetere Ausnahme nur mit expliziter semantischer
+    // Begruendung, nicht als allgemeine Stilkurve.
     expect(offenders).toEqual([]);
   });
 
@@ -170,10 +170,11 @@ describe('Bewegungssprache', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('haelt die Bewegungssprache im Gehirn fest', () => {
+  it('haelt die aktuelle Bewegungssprache im Gehirn fest', () => {
     const doc = readFileSync('ki/gehirn/BEWEGUNG.md', 'utf8');
-    expect(doc).toContain('Corporate');
+    expect(doc).toContain('Editorial Tech');
     expect(doc).toContain('cubic-bezier(0.2, 0, 0, 1)');
-    expect(doc).toContain(`${MOTION_BEAT_FRAMES} Frames`);
+    expect(doc).toContain('kein pauschaler Stillstand');
+    expect(doc).toContain('Hard Cut ist Standard');
   });
 });
