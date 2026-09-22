@@ -1,184 +1,429 @@
 ---
 name: reel-production-pipeline
 description: >
-  Standardisierter Workflow zur Produktion eines neuen KI-Channel-Reels.
-  Aktiviere diesen Skill, wenn der User ein neues Reel erstellen oder ein
-  bestehendes Reel mit neuem Audio synchronisieren möchte.
+  Verbindlicher V2-Workflow zur Produktion eines neuen KI-Channel-Reels.
+  Aktivieren, wenn ein neues Reel angelegt, Phase 1 vervollständigt oder ein
+  bestehendes V2-Reel in Phase 3 mit echtem Audio assembliert wird.
 ---
 
-# Reel Production Pipeline
+# Reel Production Pipeline V2
 
-## Übersicht
-Dieser Skill definiert den exakten, reproduzierbaren Workflow für die Erstellung
-eines neuen Reels im ki-channel Repository. Jeder Schritt ist zwingend und darf
-nicht übersprungen werden.
+## Zweck
+
+Dieser Skill setzt den Produktionsvertrag aus `ki/gehirn/MASTER.md`,
+`ki/gehirn/PRODUKTIONSABLAUF.md` und `ki/reels/AGENTS.md` praktisch um.
+
+**Wichtig:** Neue Reels beginnen nicht mit Audio und nicht mit Remotion-Code.
+
+```text
+Story
+→ Fakten
+→ Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Source
+→ echtes Voiceover / reale Pflichtmedien
+→ Timeline
+→ Render
+→ technische QA
+→ Creative QA
+```
 
 ## Voraussetzungen
-- Der User hat eine Audio-Datei (`.mp4` oder `.wav`) bereitgestellt
-- Das Repository ist unter `/Users/arman/.gemini/antigravity/scratch/ki-channel` ausgecheckt
-- Git Working Tree ist sauber
 
-## Kritische Regeln (aus MASTER.md)
+- Repository-Status/Branch geprüft
+- `REPO-STATE.md`, `ki/AGENTS.md`, `ki/gehirn/MASTER.md`, `ki/reels/AGENTS.md` gelesen
+- für neue Reels: noch **kein Audio erforderlich**
+- vorhandene reale Medien dürfen verwendet werden; fehlende Medien niemals vortäuschen
 
-> **STRIKE Speichern-Regel:** Alle Ergebnisse müssen JEDEN Wochentag als Git-Commit gesichert werden.
+## Kritische Regeln
 
-> **Keine Asset-Halluzination:** Du darfst unter keinen Umständen selbst Bilder, Assets oder Medien generieren. Nur vom User bereitgestellte Dateien verwenden.
+### Story vor Technik
 
-> **Audio-basierte Synchronisation:** Keine rein mathematische/lineare Aufteilung. Timings MÜSSEN auf Basis einer Audio-Analyse (`ffmpeg silencedetect`) an die realen Sprechpausen gekoppelt werden.
+Vor Script/Source `ki/gehirn/STORY_RETENTION.md` anwenden.
+
+### Fakten vor finalem Script
+
+`ki/gehirn/FAKTENQUELLEN.md` und `source-ledger.md` verwenden.
+
+### Bildsprache vor Remotion
+
+`ki/gehirn/VISUAL_STRATEGY.md` entscheidet pro Beat:
+
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+Keine pauschale Remotion-Default-Regel.
+
+### Keine Asset-Halluzination
+
+Phase 1 darf Asset-Bedarf, Prompt/Shot-Brief und erwarteten Dateinamen definieren. Phase 3 darf nur real vorhandene Dateien verwenden.
+
+### Audio-basierte Synchronisation
+
+Finale Timings werden in Phase 3 aus dem echten Voiceover bestimmt. Keine lineare Gesamtframe-Verteilung und keine Szenenbildung allein nach „fünf längsten Pausen“.
+
+Pausen sind ein Signal, **Sprecherbedeutung ist der Master**.
 
 ---
 
-## Workflow
+# Phase 1 — komplette Grundlage ohne echtes Audio
 
-### Schritt 1: Ordnerstruktur anlegen
+## Schritt 1: Reel mit V2-Scaffold anlegen
 
-Prüfe, ob der Wochenordner existiert. Falls nicht, erstelle ihn:
-
-```
-ki/reels/<YYYY-MM-DD>_bis_<YYYY-MM-DD>/<NN>_<Reel-Titel>/
-├── 01-script-audio/     ← Audio-Datei hierher kopieren
-├── 02-bilder/           ← asset-manifest.json
-├── 03-caption/          ← subtitle-cues.json (wird generiert)
-├── 04-vorschau/
-├── 05-export/           ← Render-Output + Cover
-└── 06-projektdateien/   ← reel.json (wird generiert)
+```bash
+node scripts/new-ki-reel.mjs "Reel Titel" [YYYY-MM-DD]
+node scripts/check-ki-reel-folder-structure.mjs
 ```
 
-### Schritt 2: Audio analysieren
+Erwartete Struktur:
 
-**2a. Dauer ermitteln:**
+```text
+ki/reels/<WOCHE>/<NN_Reel-Titel>/
+├── 01-script-audio/
+├── 02-bilder/
+├── 03-caption/
+├── 04-pdf/
+├── 05-export/
+└── 06-projektdateien/
+```
+
+V2 legt automatisch an:
+
+- `production-contract-v2.json`
+- `creative-brief.md`
+- `source-ledger.md`
+- `visual-strategy.md`
+- `creative-review.md`
+- `PHASE-STATUS.md`
+
+## Schritt 2: Creative Brief vervollständigen
+
+In `06-projektdateien/creative-brief.md`:
+
+- Viewer promise
+- Hook tension
+- 3-second proof
+- Why care
+- Core mechanism
+- Payoff
+- Memorable moment
+- Truth risk
+
+Wenn Hook/Mechanismus/Memorable Moment unklar: noch kein Code.
+
+## Schritt 3: Source Ledger
+
+In `06-projektdateien/source-ledger.md` relevante Claims erfassen.
+
+Besonders:
+
+- aktuelle Features/Modelle
+- Preise/Limits
+- sichtbare Zahlen
+- Rankings/Benchmarks
+- reale Paper/Quellen
+- News
+- aktuelle Tool-Oberfläche/-Funktion
+
+Status pro Claim: `VERIFIED`, `QUALIFIED` oder `REMOVE`.
+
+## Schritt 4: finalen Sprechertext schreiben
+
+Erstellen:
+
+```text
+01-script-audio/voiceover.md
+01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt
+```
+
+Der Copy-Text enthält ausschließlich den finalen gesprochenen Wortlaut.
+
+Keine Länge künstlich auf 50–60 Sekunden strecken.
+
+## Schritt 5: Visual Beats + Visual Strategy
+
+`06-projektdateien/visual-strategy.md` vervollständigen.
+
+Pro Beat:
+
+```text
+Beat-ID
+Sprecherstelle
+Bedeutung
+Zuschauer muss sehen
+Hauptverb
+Startzustand
+sichtbare Veränderung
+Endzustand
+Modality
+Mechanikfamilie
+Hero beat JA/NEIN
+Asset/Capture falls nötig
+```
+
+Danach erst `animation-plan.md`.
+
+## Schritt 6: Asset-/Capture-Entscheidung
+
+### Remotion-native
+
+Kein externes Asset nötig.
+
+### REAL_CAPTURE
+
+Dokumentieren:
+
+- Produkt
+- Capture-Datum
+- Zweck/Claim
+- erwarteter Dateiname
+
+### Still/Hybrid/Motion extern
+
+- Asset-/Shot-Brief schreiben
+- bei Still/Hybrid `ki/BILDSTIL.md` anwenden
+- Manifest-Eintrag mit realem Status
+- fehlt Datei: `MISSING_REQUIRED`
+
+Nicht durch generische Karten ersetzen.
+
+## Schritt 7: Projektdateien vervollständigen
+
+Mindestens:
+
+```text
+06-projektdateien/reel.json
+06-projektdateien/animation-plan.md
+03-caption/subtitle-cues.json
+03-caption/platform-copy.md
+02-bilder/asset-manifest.json
+```
+
+Audio-unabhängige Cue-Zeiten sind nur Planungswerte.
+
+## Schritt 8: Source erstellen
+
+Source ausschließlich unter:
+
+```text
+ki/src/reels/<slug>/
+```
+
+Production-Composition über den kanonischen Production-Root registrieren.
+
+Nicht:
+
+- Voiceover statisch importieren, bevor Phase 2 existiert
+- Planung in den Source-Ordner kopieren
+- Library-Animation aus Bequemlichkeit verwenden
+
+## Schritt 9: Phase-1-Checks
+
+```bash
+node scripts/check-ki-reel-folder-structure.mjs
+npm run typecheck
+npm test
+```
+
+Nur tatsächlich ausgeführte Checks als bestanden markieren.
+
+Phase 1 ist fertig, wenn Story, Grounding, Visual Strategy, Planung und ausführbare Source vorhanden sind.
+
+---
+
+# Phase 2 — Mensch: reale Medien
+
+## Voiceover
+
+`VOICEOVER-ZUM-KOPIEREN.txt` wortgetreu vertonen.
+
+Bevorzugt:
+
+```text
+01-script-audio/voiceover.wav
+```
+
+Alternativ `.mp3`.
+
+## Nur wenn Visual Strategy es verlangt
+
+Zusätzlich bereitstellen:
+
+- REAL_CAPTURE
+- externes Still-/Hybrid-/Motion-Asset
+
+Exakter Dateiname aus Manifest/Briefing.
+
+Phase 2 ändert keine Planungs-/Source-Dateien.
+
+---
+
+# Phase 3 — Assembly mit echtem Audio
+
+## Schritt 1: Preflight
+
+- `PHASE-STATUS.md` lesen
+- Creative Brief, Source Ledger, Visual Strategy lesen
+- Voiceover real vorhanden?
+- alle `MISSING_REQUIRED`-Pflichtmedien real vorhanden?
+
+Fehlt Audio:
+
+```text
+PHASE 2 AUDIO FEHLT
+```
+
+## Schritt 2: Audio analysieren
+
+Dauer z. B. mit:
+
 ```bash
 ffprobe -v error -show_entries format=duration -of csv=p=0 <audio-datei>
 ```
 
-**2b. Stille erkennen:**
-```bash
-ffmpeg -i <audio-datei> -af silencedetect=noise=-30dB:d=0.4 -f null - 2>&1 | grep silence
-```
-
-**2c. Frames berechnen:**
-- FPS = 30
-- Gesamtframes = `ceil(dauer * 30)`
-- Stille-Grenzen als Frame-Nummern: `round(silence_end * 30)`
-
-**2d. Szenen-Zuordnung:**
-- Die 5 längsten Stille-Pausen markieren Szenen-Grenzen
-- Szene 1: Frame 0 → erste große Pause
-- Szene 2: erste Pause → zweite Pause
-- usw.
-
-### Schritt 3: Projektdateien generieren
-
-**3a. `reel.json` erstellen** in `06-projektdateien/`:
-```json
-{
-  "compositionId": "KI-<ReelName>",
-  "format": {
-    "width": 1080,
-    "height": 1920,
-    "fps": 30,
-    "durationInFrames": <berechnete-frames>
-  },
-  "audio": {
-    "voiceoverRequired": true,
-    "music": false,
-    "sfx": false,
-    "adaptivePhraseRetiming": true
-  },
-  "scenes": [
-    {
-      "sceneId": "<prefix>-01",
-      "startFrame": 0,
-      "endFrame": <erste-grenze>,
-      "headline": "<kurz>",
-      "spokenText": "<text-aus-audio>",
-      "implementation": "NEW_BUILD"
-    }
-  ]
-}
-```
-
-**3b. `subtitle-cues.json` erstellen** in `03-caption/`:
-- Jeden gesprochenen Satz als einzelnen Cue mit sceneId, startFrame, endFrame, text
-- Cues MÜSSEN lückenlos innerhalb ihrer Szene sein
-- Alle sceneIds MÜSSEN gültigen Szenen entsprechen
-
-### Schritt 4: Source-Code erstellen/aktualisieren
-
-**4a. Reel-Verzeichnis** unter `ki/src/reels/<reel-name>/`:
-- `contract.ts` — Importiert `reel.json` und `subtitle-cues.json`, exportiert Konstanten
-- `Visuals.tsx` — Visuelle Komponenten für jede Szene
-- `Reel<Name>.tsx` — Hauptkomponente mit Audio, Szenen und Untertiteln
-- `index.ts` — Re-Exports
-
-**4b. `Root.tsx` aktualisieren:**
-- Voiceover importieren
-- Composition registrieren mit `voiceoverSrc` in `defaultProps`
-
-### Schritt 5: Pre-Render Validation
+Pausen können zusätzlich mit `silencedetect` analysiert werden:
 
 ```bash
-npx tsx ki/scripts/validate-reel.ts <composition-id>
+ffmpeg -i <audio-datei> -af silencedetect=noise=-30dB:d=0.3 -f null -
 ```
 
-Erst wenn ALLE Checks grün sind, weiter mit Schritt 6.
+**Aber:** Szenengrenzen entstehen aus Sprecherbedeutung + realen Phrasen/Pausen, nicht aus einer festen Anzahl längster Pausen.
 
-### Schritt 6: Rendern und Exportieren
+Wenn Wort-/Phrase-Timestamps technisch verfügbar sind, diese bevorzugen.
 
-**WICHTIG:** Das finale Video und ein ansprechendes Cover-Bild MÜSSEN im `05-export` Ordner gespeichert werden.
+## Schritt 3: Timeline an echte Stimme koppeln
+
+Für jeden Visual Beat:
+
+```text
+reale Phrase
+→ reale Start-/Endzeit
+→ sichtbarer Beat-Start
+→ Zustandswechsel
+→ Hold/Übergang
+→ Caption-Timing
+```
+
+Bei Timingproblem:
+
+1. Visual/Hold/Szene anpassen
+2. natürliche Pause leicht anpassen
+3. nur falls nötig ganze Phrase pitch-erhaltend leicht retimen
+4. Captions danach auf final verwendetes Audio synchronisieren
+
+## Schritt 4: Audio/Assets integrieren
+
+- reale Dateien verwenden
+- keine Render-Time-Downloads
+- Audio explizit über Production-Props/Source integrieren
+- fehlende Medien nicht vortäuschen
+
+## Schritt 5: technische Checks
+
+Mindestens passende Repo-Befehle ausführen:
 
 ```bash
-# Video rendern (speichert normalerweise in out/ oder direkt im Ordner)
-npx remotion render ki/src/index.ts <CompositionId> ki/reels/<woche>/<reel>/05-export/<name>.mp4
-
-# Wenn der Render nach out/ ging, MUSS er kopiert werden:
-cp out/<name>.mp4 ki/reels/<woche>/<reel>/05-export/
-
-# Ein repräsentatives Frame als cover.jpg extrahieren (falls nicht anders möglich)
-ffmpeg -y -ss 00:00:10 -i ki/reels/<woche>/<reel>/05-export/<name>.mp4 -frames:v 1 -q:v 2 ki/reels/<woche>/<reel>/05-export/cover.jpg
+node scripts/check-ki-reel-folder-structure.mjs
+npm run typecheck
+npm test
 ```
 
-### Schritt 7: Verifizieren
+Zusätzliche reel-spezifische Checks, falls vorhanden.
 
-```bash
-# Audio vorhanden?
-ffprobe -v error -show_entries stream=codec_type -of csv=p=0 <output.mp4> | grep audio
+## Schritt 6: Smoke-Frames
 
-# Dauer korrekt?
-ffprobe -v error -show_entries format=duration -of csv=p=0 <output.mp4>
-```
+Pro Szene/Beat relevante Zustände rendern:
 
-### Schritt 8: Git Commit (STRIKE-Regel!)
+- Opening
+- Mid/Mechanikwechsel
+- End-Hold
+- kritische Caption-/Safe-Zone-Zeitpunkte
 
-Da `.mp4`-Dateien und `images` in der `.gitignore` stehen, **MÜSSEN** die Exporte im Ordner `05-export/` zwingend per `-f` (force) hinzugefügt werden, damit sie auf GitHub laden:
+Stills **tatsächlich ansehen**.
 
-```bash
-git add -f ki/reels/<woche>/<reel>/05-export/<name>.mp4
-git add -f ki/reels/<woche>/<reel>/05-export/cover.jpg
-git add .
-git commit -m "feat(reel): render <reel-titel> with audio-synced timings and export cover"
-git push
-```
+## Schritt 7: Final rendern
+
+Mit dem Production-Entry/Composition-Workflow des Repos rendern.
+
+Finale Datei unter `05-export/` ablegen, sofern reel-spezifischer Vertrag nichts anderes sagt.
+
+## Schritt 8: technische Post-Render-QA
+
+`ki/gehirn/POST_RENDER_REVIEW.md` anwenden.
+
+Prüfen:
+
+- Audio-Spur
+- Dauer
+- Caption-Kollision
+- Smartphone-Lesbarkeit
+- keine geclippten Hauptvisuals
+- keine falschen Assets/Props
+
+## Schritt 9: Creative QA
+
+`ki/gehirn/CREATIVE_QA.md` anwenden.
+
+`06-projektdateien/creative-review.md` vervollständigen.
+
+Nicht freigeben bei:
+
+- schwachem Hook
+- Leerlauf
+- repetitiver Karten-/Panelserie
+- fehlendem sichtbaren Mechanismus
+- keinem Memorable Moment
+- Kernidee nur über Text verständlich
+- ungrounded sichtbaren Zahlen/Claims
+
+Finaler Status nur bei `creative-review.md = PASS`.
 
 ---
 
-## Checkliste (vor Abschluss)
+## Checkliste
 
-- [ ] Audio analysiert mit `ffmpeg silencedetect`
-- [ ] `reel.json` mit echten Audio-Timings
-- [ ] `subtitle-cues.json` lückenlos und innerhalb Szenen-Grenzen
-- [ ] `contract.ts` importiert JSON-Dateien (nicht hardcoden!)
-- [ ] `Root.tsx` hat Voiceover-Import UND `voiceoverSrc` in defaultProps
-- [ ] Pre-Render Validation bestanden
-- [ ] Render hat Audio-Spur
-- [ ] Finale .mp4 und cover.jpg im `05-export/` Verzeichnis abgelegt
-- [ ] Exporte per `git add -f` hinzugefügt und Commit/Push erstellt
+### Phase 1
 
-## Häufige Fehler (die dieser Skill verhindert)
+- [ ] V2-Scaffold
+- [ ] Creative Brief fertig
+- [ ] Source Ledger fertig
+- [ ] finaler Sprechertext + Copy-Datei
+- [ ] Visual Strategy pro Beat
+- [ ] Hero/Memorable Moment geplant
+- [ ] Animation-/Shot-Plan
+- [ ] Asset-Manifest mit realen Status
+- [ ] Captions/Plattform-Copy Basis
+- [ ] reel.json
+- [ ] Source + Composition
+- [ ] Struktur/Tests/Typecheck tatsächlich ausgeführt
 
-| Fehler | Ursache | Lösung |
+### Phase 3
+
+- [ ] echtes Audio vorhanden
+- [ ] alle Pflichtmedien vorhanden
+- [ ] echte Audioanalyse
+- [ ] semantische Beat-Timings
+- [ ] Captions am finalen Audio
+- [ ] technische Checks bestanden
+- [ ] Smoke-Frames angesehen
+- [ ] finaler MP4 angesehen
+- [ ] technische Post-Render-QA bestanden
+- [ ] Source-Ledger-Rechecks erledigt
+- [ ] Creative QA bestanden
+- [ ] `creative-review.md` = PASS
+
+## Typische Fehler
+
+| Fehler | Ursache | Korrektur |
 |---|---|---|
-| Stummes Video | `voiceoverSrc` fehlt in defaultProps | Immer in Root.tsx prüfen |
-| Animation asynchron | Lineare Aufteilung statt Stille-Erkennung | Immer `silencedetect` nutzen |
-| Test bricht | Hardcodierte Frame-Werte im Test | Strukturelle Invarianten prüfen |
-| Merge-Konflikt in Root.tsx | Parallele Branches | Immer zuerst `git pull` |
+| Reel wirkt wie PowerPoint | Karten als Standardvisual | Visual Strategy neu: Verb/Mechanik/Modality bestimmen |
+| technisch stark, Hook schwach | Code vor Story | zurück zu Creative Brief |
+| aktuelle Aussage falsch | kein Source Ledger/Recheck | Claim prüfen/qualifizieren/entfernen |
+| echte UI durch Fake-UI ersetzt | Remotion als Default | `REAL_CAPTURE` prüfen |
+| Animation asynchron | lineare Frame-Aufteilung | echte Phrase-/Pausen-Timings verwenden |
+| Pflichtasset fehlt | Manifest ignoriert | zurück zu Phase 2, nicht Ersatz erfinden |
+| Tests grün, Video langweilig | nur technische QA | Creative QA als Stop-Gate |
