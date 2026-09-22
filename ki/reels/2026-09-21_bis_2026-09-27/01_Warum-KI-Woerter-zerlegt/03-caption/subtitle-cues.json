@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "timingStatus": "APPROXIMATE_UNTIL_AUDIO_MATERIALIZED",
+  "cues": [
+    {"startMs":0,"endMs":2600,"text":"Für dich ist Berlin ein Wort."},
+    {"startMs":2600,"endMs":5200,"text":"Für eine KI muss das nicht so sein."},
+    {"startMs":5200,"endMs":9200,"text":"Bevor ein Sprachmodell Text verarbeitet, wird er in Tokens zerlegt."},
+    {"startMs":9200,"endMs":14500,"text":"Ein Token kann ein ganzes Wort sein, nur ein Teil davon, ein Zeichen oder Satzzeichen."},
+    {"startMs":14500,"endMs":19000,"text":"Welche Stücke entstehen, hängt vom verwendeten Modell und seiner Kodierung ab."},
+    {"startMs":19000,"endMs":23500,"text":"Genau deshalb ist die Zahl der Tokens nicht dasselbe wie die Zahl der Wörter."},
+    {"startMs":23500,"endMs":28000,"text":"Auch Leerzeichen und Großschreibung können die Aufteilung verändern."},
+    {"startMs":28000,"endMs":34500,"text":"Diese Tokens sind dann die eigentlichen Einheiten, die das Modell verarbeitet und wieder als Ausgabe erzeugt."},
+    {"startMs":34500,"endMs":38500,"text":"Deshalb zählen lange Prompts nicht nur nach Wörtern."},
+    {"startMs":38500,"endMs":42000,"text":"Entscheidend ist, wie viele Tokens daraus werden."}
+  ]
+}

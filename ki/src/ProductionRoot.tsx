@@ -73,6 +73,14 @@ import {
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
 import {
+  ReelTokenSlicer,
+  TOKEN_SLICER_COMPOSITION_ID,
+  TOKEN_SLICER_DURATION_IN_FRAMES,
+  TOKEN_SLICER_FPS,
+  TOKEN_SLICER_HEIGHT,
+  TOKEN_SLICER_WIDTH,
+} from './reels/token-slicer';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -166,6 +174,15 @@ export const ProductionRoot: React.FC = () => (
         fps={GITHUB_REPOSITORY_FPS}
         width={GITHUB_REPOSITORY_WIDTH}
         height={GITHUB_REPOSITORY_HEIGHT}
+      />
+      <Composition
+        id={TOKEN_SLICER_COMPOSITION_ID}
+        component={ReelTokenSlicer}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={TOKEN_SLICER_DURATION_IN_FRAMES}
+        fps={TOKEN_SLICER_FPS}
+        width={TOKEN_SLICER_WIDTH}
+        height={TOKEN_SLICER_HEIGHT}
       />
     </Folder>
 

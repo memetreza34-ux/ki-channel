@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "slug": "token-slicer",
+  "compositionId": "TokenSlicerReel",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 1260,
+  "voiceoverTiming": "approximate-until-phase-3-audio-analysis",
+  "scenes": [
+    {"sceneId":"s01-hook-slicer","from":0,"duration":156,"visualId":"token-slicer-hero-v1","beat":"B1"},
+    {"sceneId":"s02-tokenizer-flow","from":156,"duration":120,"visualId":"token-conveyor-v1","beat":"B2"},
+    {"sceneId":"s03-token-types","from":276,"duration":159,"visualId":"token-granularity-v1","beat":"B3"},
+    {"sceneId":"s04-encoding-routing","from":435,"duration":135,"visualId":"encoding-routing-v1","beat":"B4"},
+    {"sceneId":"s05-word-vs-token","from":570,"duration":135,"visualId":"word-token-counter-v1","beat":"B5"},
+    {"sceneId":"s06-case-spacing","from":705,"duration":135,"visualId":"case-spacing-shift-v1","beat":"B6"},
+    {"sceneId":"s07-model-core","from":840,"duration":195,"visualId":"token-model-core-v1","beat":"B7"},
+    {"sceneId":"s08-payoff","from":1035,"duration":225,"visualId":"token-payoff-v1","beat":"B8"}
+  ]
+}

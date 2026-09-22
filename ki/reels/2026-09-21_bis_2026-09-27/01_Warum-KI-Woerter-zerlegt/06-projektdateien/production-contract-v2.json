@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "format": "short-form-reel",
+  "slug": "token-slicer",
+  "compositionId": "TokenSlicerReel",
+  "language": "de-DE",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "targetDurationSeconds": 42,
+  "visualModalities": [
+    "REMOTION_NATIVE",
+    "REAL_CAPTURE",
+    "HYBRID",
+    "EXTERNAL_STILL_REQUIRED",
+    "EXTERNAL_MOTION_REQUIRED"
+  ],
+  "selectedModalities": ["REMOTION_NATIVE"],
+  "externalAssetsRequired": false,
+  "audioRequiredForPhase3": true
+}
