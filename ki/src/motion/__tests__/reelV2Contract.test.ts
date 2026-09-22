@@ -33,6 +33,12 @@ const findCreatedReel = (root: string) =>
     'ki/reels/2026-09-21_bis_2026-09-27/01_V2-Test-Reel',
   );
 
+const scaffoldReel = (root: string) => {
+  const result = run(newReelScript, ['V2 Test Reel', '2026-09-21'], root);
+  expect(result.status, result.stderr).toBe(0);
+  return findCreatedReel(root);
+};
+
 afterEach(() => {
   while (tempRoots.length > 0) {
     const root = tempRoots.pop();
@@ -41,13 +47,9 @@ afterEach(() => {
 });
 
 describe('V2 reel scaffold and structure contract', () => {
-  it('creates the creative, grounding and visual-strategy artifacts and passes the structure check while Phase 1 is open', () => {
+  it('creates creative, grounding and visual-strategy artifacts and passes while Phase 1 is open', () => {
     const root = makeRoot();
-    const scaffold = run(newReelScript, ['V2 Test Reel', '2026-09-21'], root);
-
-    expect(scaffold.status, scaffold.stderr).toBe(0);
-
-    const reelRoot = findCreatedReel(root);
+    const reelRoot = scaffoldReel(root);
     const projectRoot = resolve(reelRoot, '06-projektdateien');
 
     for (const file of [
@@ -84,15 +86,12 @@ describe('V2 reel scaffold and structure contract', () => {
     );
 
     expect(check.status, `${check.stdout}\n${check.stderr}`).toBe(0);
-    expect(check.stdout).toContain('V2-Reels besitzen Creative-, Grounding- und Visual-Strategie-Verträge');
+    expect(check.stdout).toContain('V2-Reels besitzen geprüfte Creative-, Grounding-, Visual-Strategy- und Review-Verträge');
   });
 
-  it('refuses a V2 reel marked Phase 1 FERTIG while mandatory Phase-1 artifacts are still missing/open', () => {
+  it('refuses Phase 1 FERTIG while mandatory Phase-1 artifacts are missing or still open', () => {
     const root = makeRoot();
-    const scaffold = run(newReelScript, ['V2 Test Reel', '2026-09-21'], root);
-    expect(scaffold.status, scaffold.stderr).toBe(0);
-
-    const reelRoot = findCreatedReel(root);
+    const reelRoot = scaffoldReel(root);
     const phasePath = resolve(reelRoot, '06-projektdateien/PHASE-STATUS.md');
     const phase = readFileSync(phasePath, 'utf8').replace(
       '**Status:** OFFEN',
@@ -113,6 +112,37 @@ describe('V2 reel scaffold and structure contract', () => {
     expect(check.stderr).toContain('animation-plan.md fehlt');
     expect(check.stderr).toContain('voiceover.md fehlt');
     expect(check.stderr).toContain('subtitle-cues.json fehlt');
+    expect(check.stderr).toContain('Datei steht aber noch auf OFFEN');
+  });
+
+  it('refuses Phase 3 FERTIG without a PASS creative review, real voiceover and resolved required assets', () => {
+    const root = makeRoot();
+    const reelRoot = scaffoldReel(root);
+    const projectRoot = resolve(reelRoot, '06-projektdateien');
+    const phasePath = resolve(projectRoot, 'PHASE-STATUS.md');
+
+    const phase = readFileSync(phasePath, 'utf8')
+      .replace('## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2', '## Phase 3 — Codex / Antigravity\n\n**Status:** FERTIG');
+    writeFileSync(phasePath, phase, 'utf8');
+
+    writeFileSync(
+      resolve(reelRoot, '02-bilder/asset-manifest.json'),
+      JSON.stringify({version: 2, assets: [{id: 'hero', status: 'MISSING_REQUIRED'}]}, null, 2),
+      'utf8',
+    );
+
+    const check = run(
+      structureCheckScript,
+      [],
+      repoRoot,
+      {KI_REEL_STRUCTURE_ROOT: root},
+    );
+
+    expect(check.status).not.toBe(0);
+    expect(check.stderr).toContain('Phase 3 darf nicht FERTIG sein, solange Phase 1 nicht FERTIG ist');
+    expect(check.stderr).toContain('Creative Review ist aber nicht PASS');
+    expect(check.stderr).toContain('echtes voiceover.wav/mp3 fehlt');
+    expect(check.stderr).toContain('enthält aber noch MISSING_REQUIRED');
   });
 
   it('keeps V2 planning artifacts out of executable source directories', () => {
