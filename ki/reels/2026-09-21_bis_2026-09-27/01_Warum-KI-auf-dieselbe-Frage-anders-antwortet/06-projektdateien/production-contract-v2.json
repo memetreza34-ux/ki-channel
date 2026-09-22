@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "format": "short-form-reel",
+  "title": "Warum KI auf dieselbe Frage anders antwortet",
+  "slug": "same-prompt-different-answer",
+  "week": "2026-09-21_bis_2026-09-27",
+  "preProductionRequiredArtifacts": ["idea-evaluation.md"],
+  "phase1RequiredArtifacts": ["creative-brief.md","source-ledger.md","visual-strategy.md","creative-review.md","reel.json","animation-plan.md"],
+  "postPublishArtifacts": ["performance-review.md"],
+  "visualModalities": ["REMOTION_NATIVE","REAL_CAPTURE","HYBRID","EXTERNAL_STILL_REQUIRED","EXTERNAL_MOTION_REQUIRED"]
+}
