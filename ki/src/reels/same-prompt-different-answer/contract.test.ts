@@ -28,7 +28,7 @@ describe('same-prompt-different-answer production contract', () => {
     expect(SAME_PROMPT_SCENES).toHaveLength(8);
     expect(new Set(SAME_PROMPT_SCENES.map((scene) => scene.visualId)).size).toBe(8);
     expect(SAME_PROMPT_SCENES[0].startFrame).toBe(0);
-    expect(SAME_PROMPT_SCENES.at(-1)?.endFrame).toBe(1410);
+    expect(SAME_PROMPT_SCENES[SAME_PROMPT_SCENES.length - 1]?.endFrame).toBe(1410);
   });
 
   it('keeps phase-one captions text-identical to the final voiceover', () => {
