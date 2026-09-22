@@ -32,7 +32,7 @@ describe('ProductionRoot isolation', () => {
     const reelImports = [...uniqueImports].filter((path) => path.startsWith('./reels/'));
     const longformImports = [...uniqueImports].filter((path) => path.startsWith('./longform/'));
 
-    expect(reelImports).toHaveLength(9);
+    expect(reelImports).toHaveLength(10);
     expect(longformImports).toHaveLength(1);
   });
 

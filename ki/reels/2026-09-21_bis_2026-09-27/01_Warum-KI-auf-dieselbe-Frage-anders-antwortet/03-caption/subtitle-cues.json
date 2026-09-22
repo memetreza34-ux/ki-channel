@@ -1,0 +1,30 @@
+{
+  "fps": 30,
+  "captions": [
+    {"text":"Dieselbe Frage. Dieselbe KI.","startMs":0,"endMs":1800,"timestampMs":null,"confidence":null},
+    {"text":"Zwei verschiedene Antworten.","startMs":1800,"endMs":3500,"timestampMs":null,"confidence":null},
+    {"text":"Das ist nicht automatisch","startMs":3500,"endMs":5200,"timestampMs":null,"confidence":null},
+    {"text":"ein Fehler.","startMs":5200,"endMs":6500,"timestampMs":null,"confidence":null},
+    {"text":"Viele Sprachmodelle berechnen","startMs":6500,"endMs":8500,"timestampMs":null,"confidence":null},
+    {"text":"für den nächsten Token","startMs":8500,"endMs":10300,"timestampMs":null,"confidence":null},
+    {"text":"mehrere mögliche Fortsetzungen","startMs":10300,"endMs":12200,"timestampMs":null,"confidence":null},
+    {"text":"mit unterschiedlichen Wahrscheinlichkeiten.","startMs":12200,"endMs":14300,"timestampMs":null,"confidence":null},
+    {"text":"Beim Sampling wird daraus","startMs":14300,"endMs":16200,"timestampMs":null,"confidence":null},
+    {"text":"eine Möglichkeit gewählt.","startMs":16200,"endMs":17900,"timestampMs":null,"confidence":null},
+    {"text":"Nicht zwingend immer dieselbe.","startMs":17900,"endMs":19600,"timestampMs":null,"confidence":null},
+    {"text":"Jetzt passiert der wichtige Teil:","startMs":19600,"endMs":21500,"timestampMs":null,"confidence":null},
+    {"text":"Schon ein anderes Token","startMs":21500,"endMs":23300,"timestampMs":null,"confidence":null},
+    {"text":"verändert die nächsten Wahrscheinlichkeiten.","startMs":23300,"endMs":25300,"timestampMs":null,"confidence":null},
+    {"text":"Eine kleine Abzweigung kann","startMs":25300,"endMs":27400,"timestampMs":null,"confidence":null},
+    {"text":"so den ganzen Satz verändern.","startMs":27400,"endMs":29400,"timestampMs":null,"confidence":null},
+    {"text":"Temperatur kann die Auswahl","startMs":29400,"endMs":31400,"timestampMs":null,"confidence":null},
+    {"text":"enger oder breiter machen,","startMs":31400,"endMs":33400,"timestampMs":null,"confidence":null},
+    {"text":"wenn Sampling verwendet wird.","startMs":33400,"endMs":35100,"timestampMs":null,"confidence":null},
+    {"text":"Für reproduzierbarere Antworten:","startMs":35100,"endMs":37000,"timestampMs":null,"confidence":null},
+    {"text":"Prompt, Modell und Einstellungen fixieren","startMs":37000,"endMs":39400,"timestampMs":null,"confidence":null},
+    {"text":"und Zufall reduzieren,","startMs":39400,"endMs":40900,"timestampMs":null,"confidence":null},
+    {"text":"soweit das System es erlaubt.","startMs":40900,"endMs":43200,"timestampMs":null,"confidence":null},
+    {"text":"Bei kreativen Aufgaben kann","startMs":43200,"endMs":45100,"timestampMs":null,"confidence":null},
+    {"text":"Variation dagegen genau gewollt sein.","startMs":45100,"endMs":47000,"timestampMs":null,"confidence":null}
+  ]
+}

@@ -73,6 +73,14 @@ import {
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
 import {
+  SAME_PROMPT_COMPOSITION_ID,
+  SAME_PROMPT_DURATION_IN_FRAMES,
+  SAME_PROMPT_FPS,
+  SAME_PROMPT_HEIGHT,
+  SAME_PROMPT_WIDTH,
+  ReelSamePromptDifferentAnswer,
+} from './reels/same-prompt-different-answer';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -166,6 +174,15 @@ export const ProductionRoot: React.FC = () => (
         fps={GITHUB_REPOSITORY_FPS}
         width={GITHUB_REPOSITORY_WIDTH}
         height={GITHUB_REPOSITORY_HEIGHT}
+      />
+      <Composition
+        id={SAME_PROMPT_COMPOSITION_ID}
+        component={ReelSamePromptDifferentAnswer}
+        defaultProps={{showCaptions: true}}
+        durationInFrames={SAME_PROMPT_DURATION_IN_FRAMES}
+        fps={SAME_PROMPT_FPS}
+        width={SAME_PROMPT_WIDTH}
+        height={SAME_PROMPT_HEIGHT}
       />
     </Folder>
 

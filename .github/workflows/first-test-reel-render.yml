@@ -1,0 +1,52 @@
+name: First Test Reel Render
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ki/src/reels/same-prompt-different-answer/**'
+      - 'ki/src/ProductionRoot.tsx'
+      - 'ki/reels/2026-09-21_bis_2026-09-27/01_Warum-KI-auf-dieselbe-Frage-anders-antwortet/**'
+      - '.github/workflows/first-test-reel-render.yml'
+
+jobs:
+  render-review:
+    if: github.head_ref == 'feat/test-reel-same-prompt-different-answer'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NPM_INSTALL_FLAGS: --package-lock=false --legacy-peer-deps --no-audit --no-fund
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install workspaces
+        run: npm install $NPM_INSTALL_FLAGS
+
+      - name: Render smoke frames
+        run: |
+          mkdir -p out/first-test-reel
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/01-hook.png --frame=45 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/02-probability.png --frame=255 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/03-sampling.png --frame=485 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/04-branch-hero.png --frame=660 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/05-sentence-cascade.png --frame=850 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/06-temperature.png --frame=1035 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/07-reproducibility.png --frame=1240 --overwrite
+          npx --no-install remotion still ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/08-payoff.png --frame=1370 --overwrite
+
+      - name: Render silent review MP4
+        run: npx --no-install remotion render ki/src/production-entry.tsx KI-SamePrompt-DifferentAnswer out/first-test-reel/review-silent.mp4 --codec=h264 --crf=20 --overwrite
+
+      - name: Upload review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-test-reel-review
+          path: out/first-test-reel/
+          if-no-files-found: error
+          retention-days: 7

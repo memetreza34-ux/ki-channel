@@ -1,0 +1,19 @@
+# Voiceover
+
+Dieselbe Frage. Dieselbe KI. Zwei verschiedene Antworten.
+
+Das ist nicht automatisch ein Fehler.
+
+Viele Sprachmodelle berechnen für den nächsten Token mehrere mögliche Fortsetzungen mit unterschiedlichen Wahrscheinlichkeiten.
+
+Beim Sampling wird daraus eine Möglichkeit gewählt. Nicht zwingend immer dieselbe.
+
+Jetzt passiert der wichtige Teil: Schon ein anderes Token verändert die nächsten Wahrscheinlichkeiten.
+
+Eine kleine Abzweigung kann so den ganzen Satz verändern.
+
+Temperatur kann die Auswahl enger oder breiter machen, wenn Sampling verwendet wird.
+
+Für reproduzierbarere Antworten: Prompt, Modell und Einstellungen fixieren und Zufall reduzieren, soweit das System es erlaubt.
+
+Bei kreativen Aufgaben kann Variation dagegen genau gewollt sein.
