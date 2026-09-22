@@ -59,6 +59,22 @@ const V2_MODALITIES = [
   'EXTERNAL_STILL_REQUIRED',
   'EXTERNAL_MOTION_REQUIRED',
 ];
+const ASSET_STATUSES = new Set([
+  'NOT_REQUIRED',
+  'MISSING_REQUIRED',
+  'PROVIDED',
+  'VERIFIED',
+]);
+const CREATIVE_BRIEF_SECTIONS = [
+  'Viewer promise',
+  'Hook tension',
+  '3-second proof',
+  'Why care',
+  'Core mechanism',
+  'Payoff',
+  'Memorable moment',
+  'Truth risk',
+];
 
 const failures = [];
 const display = (path) => relative(repoRoot, path) || '.';
@@ -97,9 +113,118 @@ const walkFiles = async (root) => {
   return files;
 };
 
-const phase1IsFinished = (phaseStatus) => {
-  const phase1 = phaseStatus.match(/## Phase 1[\s\S]*?(?=\n## Phase 2|$)/i)?.[0] ?? '';
-  return /\*\*Status:\*\*\s*FERTIG/i.test(phase1);
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const phaseBlock = (phaseStatus, phaseNumber) => {
+  const next = phaseNumber + 1;
+  const pattern = new RegExp(
+    `## Phase ${phaseNumber}[^\\n]*\\n([\\s\\S]*?)(?=\\n## Phase ${next}|$)`,
+    'i',
+  );
+  return phaseStatus.match(pattern)?.[0] ?? '';
+};
+
+const phaseIsFinished = (phaseStatus, phaseNumber) =>
+  /\*\*Status:\*\*\s*FERTIG/i.test(phaseBlock(phaseStatus, phaseNumber));
+
+const markdownSectionBody = (text, heading) => {
+  const pattern = new RegExp(
+    `^## ${escapeRegExp(heading)}\\s*\\n([\\s\\S]*?)(?=^## |\\Z)`,
+    'im',
+  );
+  return text.match(pattern)?.[1]?.trim() ?? '';
+};
+
+const meaningfulSection = (body) => {
+  if (!body) return false;
+  const cleaned = body
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('- [ ]') && !line.startsWith('<!--'))
+    .join(' ')
+    .trim();
+  return cleaned.length >= 3 && !/^(offen|todo|tbd|n\/a)$/i.test(cleaned);
+};
+
+const markdownTableDataRows = (text) => text
+  .split('\n')
+  .map((line) => line.trim())
+  .filter((line) => line.startsWith('|') && line.endsWith('|'))
+  .filter((line) => !/^\|\s*-+/.test(line))
+  .filter((line) => !/Claim-ID|Beat\s*\|\s*Sprecherstelle/i.test(line));
+
+const checkCreativeBrief = (path, text) => {
+  for (const section of CREATIVE_BRIEF_SECTIONS) {
+    const body = markdownSectionBody(text, section);
+    if (!meaningfulSection(body)) {
+      failures.push(`${display(path)}: Abschnitt "${section}" ist für Phase 1 FERTIG noch leer/Placeholder.`);
+    }
+  }
+};
+
+const checkSourceLedger = (path, text) => {
+  const rows = markdownTableDataRows(text);
+  const noExternalClaims = /NO_EXTERNAL_CLAIMS:\s*\S+/i.test(text);
+
+  if (rows.length === 0 && !noExternalClaims) {
+    failures.push(
+      `${display(path)}: Phase 1 ist FERTIG, aber es gibt weder Claim-Zeile noch ` +
+      '`NO_EXTERNAL_CLAIMS: <Begründung>`.',
+    );
+  }
+
+  for (const row of rows) {
+    if (/\|\s*REMOVE\s*\|?\s*$/i.test(row)) {
+      failures.push(`${display(path)}: Claim mit Status REMOVE ist bei Phase 1 FERTIG noch im Ledger.`);
+    }
+    if (!/\|\s*(VERIFIED|QUALIFIED)\s*\|?\s*$/i.test(row)) {
+      failures.push(`${display(path)}: Claim-Zeile benötigt am Ende VERIFIED oder QUALIFIED: ${row}`);
+    }
+  }
+};
+
+const checkVisualStrategy = (path, text) => {
+  const rows = markdownTableDataRows(text);
+  if (rows.length === 0) {
+    failures.push(`${display(path)}: Phase 1 ist FERTIG, aber das Beat Sheet enthält keinen Visual Beat.`);
+  }
+
+  for (const row of rows) {
+    if (!V2_MODALITIES.some((modality) => row.includes(modality))) {
+      failures.push(`${display(path)}: Visual-Beat-Zeile ohne gültige Modality: ${row}`);
+    }
+  }
+
+  const heroMatch = text.match(/\*\*Hero\/Memorable Beat:\*\*\s*([^\n]*)/i);
+  const hero = heroMatch?.[1]?.trim() ?? '';
+  if (!hero || /^(offen|todo|tbd)$/i.test(hero)) {
+    failures.push(`${display(path)}: Hero/Memorable Beat muss vor Phase 1 FERTIG konkret benannt sein.`);
+  }
+};
+
+const parseAssetManifest = async (path) => {
+  const raw = await readTextSafe(path);
+  if (!raw) return null;
+  try {
+    const manifest = JSON.parse(raw);
+    if (!Array.isArray(manifest.assets)) {
+      failures.push(`${display(path)}: assets muss ein Array sein.`);
+      return null;
+    }
+    for (const [index, asset] of manifest.assets.entries()) {
+      const status = asset?.status;
+      if (!ASSET_STATUSES.has(status)) {
+        failures.push(
+          `${display(path)}: assets[${index}].status muss einer von ` +
+          `${[...ASSET_STATUSES].join(', ')} sein.`,
+        );
+      }
+    }
+    return manifest;
+  } catch (error) {
+    failures.push(`${display(path)} ist kein gültiges JSON: ${error instanceof Error ? error.message : error}`);
+    return null;
+  }
 };
 
 const checkV2Contract = async (reelRoot) => {
@@ -113,9 +238,11 @@ const checkV2Contract = async (reelRoot) => {
     }
   }
 
-  const assetFiles = await directFileNames(resolve(reelRoot, '02-bilder'));
+  const assetRoot = resolve(reelRoot, '02-bilder');
+  const assetFiles = await directFileNames(assetRoot);
+  const assetManifestPath = resolve(assetRoot, 'asset-manifest.json');
   if (!assetFiles.has('asset-manifest.json')) {
-    failures.push(`${display(resolve(reelRoot, '02-bilder'))}: V2 benötigt asset-manifest.json.`);
+    failures.push(`${display(assetRoot)}: V2 benötigt asset-manifest.json.`);
   }
 
   const contractPath = resolve(projectRoot, 'production-contract-v2.json');
@@ -139,43 +266,79 @@ const checkV2Contract = async (reelRoot) => {
     }
   }
 
+  const manifest = assetFiles.has('asset-manifest.json')
+    ? await parseAssetManifest(assetManifestPath)
+    : null;
+
   const phasePath = resolve(projectRoot, 'PHASE-STATUS.md');
   if (!projectFiles.has('PHASE-STATUS.md')) return;
   const phaseStatus = await readTextSafe(phasePath);
-  if (!phase1IsFinished(phaseStatus)) return;
+  const phase1Finished = phaseIsFinished(phaseStatus, 1);
+  const phase3Finished = phaseIsFinished(phaseStatus, 3);
 
-  const phase1RequiredProjectFiles = [
-    'creative-brief.md',
-    'source-ledger.md',
-    'visual-strategy.md',
-    'reel.json',
-    'animation-plan.md',
-  ];
-  for (const required of phase1RequiredProjectFiles) {
-    if (!projectFiles.has(required)) {
-      failures.push(`${display(projectRoot)}: Phase 1 ist FERTIG markiert, aber ${required} fehlt.`);
+  if (phase1Finished) {
+    const phase1RequiredProjectFiles = [
+      'creative-brief.md',
+      'source-ledger.md',
+      'visual-strategy.md',
+      'reel.json',
+      'animation-plan.md',
+    ];
+    for (const required of phase1RequiredProjectFiles) {
+      if (!projectFiles.has(required)) {
+        failures.push(`${display(projectRoot)}: Phase 1 ist FERTIG markiert, aber ${required} fehlt.`);
+      }
+    }
+
+    for (const planned of ['creative-brief.md', 'source-ledger.md', 'visual-strategy.md']) {
+      if (!projectFiles.has(planned)) continue;
+      const path = resolve(projectRoot, planned);
+      const text = await readTextSafe(path);
+      if (/\*\*Status:\*\*\s*OFFEN/i.test(text)) {
+        failures.push(`${display(path)}: Phase 1 ist FERTIG, Datei steht aber noch auf OFFEN.`);
+      }
+      if (planned === 'creative-brief.md') checkCreativeBrief(path, text);
+      if (planned === 'source-ledger.md') checkSourceLedger(path, text);
+      if (planned === 'visual-strategy.md') checkVisualStrategy(path, text);
+    }
+
+    const scriptFiles = await directFileNames(resolve(reelRoot, '01-script-audio'));
+    for (const required of ['voiceover.md', 'VOICEOVER-ZUM-KOPIEREN.txt']) {
+      if (!scriptFiles.has(required)) {
+        failures.push(`${display(resolve(reelRoot, '01-script-audio'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+      }
+    }
+
+    const captionFiles = await directFileNames(resolve(reelRoot, '03-caption'));
+    for (const required of ['subtitle-cues.json', 'platform-copy.md']) {
+      if (!captionFiles.has(required)) {
+        failures.push(`${display(resolve(reelRoot, '03-caption'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+      }
     }
   }
 
-  for (const planned of ['creative-brief.md', 'source-ledger.md', 'visual-strategy.md']) {
-    if (!projectFiles.has(planned)) continue;
-    const text = await readTextSafe(resolve(projectRoot, planned));
-    if (/\*\*Status:\*\*\s*OFFEN/i.test(text)) {
-      failures.push(`${display(resolve(projectRoot, planned))}: Phase 1 ist FERTIG, Datei steht aber noch auf OFFEN.`);
+  if (phase3Finished) {
+    if (!phase1Finished) {
+      failures.push(`${display(phasePath)}: Phase 3 darf nicht FERTIG sein, solange Phase 1 nicht FERTIG ist.`);
     }
-  }
 
-  const scriptFiles = await directFileNames(resolve(reelRoot, '01-script-audio'));
-  for (const required of ['voiceover.md', 'VOICEOVER-ZUM-KOPIEREN.txt']) {
-    if (!scriptFiles.has(required)) {
-      failures.push(`${display(resolve(reelRoot, '01-script-audio'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+    const reviewPath = resolve(projectRoot, 'creative-review.md');
+    if (!projectFiles.has('creative-review.md')) {
+      failures.push(`${display(projectRoot)}: Phase 3 ist FERTIG, aber creative-review.md fehlt.`);
+    } else {
+      const review = await readTextSafe(reviewPath);
+      if (!/\*\*PASS \/ FAIL:\*\*\s*PASS\b/i.test(review)) {
+        failures.push(`${display(reviewPath)}: Phase 3 ist FERTIG, Creative Review ist aber nicht PASS.`);
+      }
     }
-  }
 
-  const captionFiles = await directFileNames(resolve(reelRoot, '03-caption'));
-  for (const required of ['subtitle-cues.json', 'platform-copy.md']) {
-    if (!captionFiles.has(required)) {
-      failures.push(`${display(resolve(reelRoot, '03-caption'))}: Phase 1 ist FERTIG, aber ${required} fehlt.`);
+    const audioFiles = await directFileNames(resolve(reelRoot, '01-script-audio'));
+    if (!audioFiles.has('voiceover.wav') && !audioFiles.has('voiceover.mp3')) {
+      failures.push(`${display(resolve(reelRoot, '01-script-audio'))}: Phase 3 ist FERTIG, aber echtes voiceover.wav/mp3 fehlt.`);
+    }
+
+    if (manifest?.assets?.some((asset) => asset?.status === 'MISSING_REQUIRED')) {
+      failures.push(`${display(assetManifestPath)}: Phase 3 ist FERTIG, enthält aber noch MISSING_REQUIRED.`);
     }
   }
 };
@@ -273,5 +436,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  'KI-Reel-Strukturvertrag bestanden: Source/Planung getrennt, Wochenstruktur gültig und V2-Reels besitzen Creative-, Grounding- und Visual-Strategie-Verträge.',
+  'KI-Reel-Strukturvertrag bestanden: Source/Planung getrennt, Wochenstruktur gültig und V2-Reels besitzen geprüfte Creative-, Grounding-, Visual-Strategy- und Review-Verträge.',
 );
