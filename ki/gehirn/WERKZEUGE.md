@@ -1,77 +1,77 @@
 # 🧰 Werkzeuge — welches wann
 
-Das Repository hat Skills und Agenten, die selten bis nie benutzt wurden. Nicht
-weil sie schlecht sind, sondern weil nirgends stand, **wann** sie dran sind.
-Diese Datei ist die Antwort. Sie ist bewusst eine Tabelle und kein Aufsatz.
+Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionsschritte. Diese Datei legt fest, **wann** was dran ist.
 
 ## Die Regel
 
-> Jeder Schritt hat sein eigenes Werkzeug. Wer für alles dasselbe nimmt,
-> bekommt für alles dasselbe Ergebnis.
+> Erst Story und Bedeutung entscheiden. Danach Fakten sichern. Danach Bildsprache wählen. Erst dann Technik und Motion.
 
 ## Reel bauen — in dieser Reihenfolge
 
 | # | Schritt | Werkzeug | Wofür genau |
 |---|---|---|---|
-| 1 | Reel anlegen | `reel-production-pipeline` | Ordner, Phasen, Pflichtdateien |
-| 2 | Tonfall und Hierarchie | `motion-art-direction` | Was ist Held, was Stütze, was bewegt sich **nicht** |
-| 3 | Bildaufbau | `shot-composition` | Raster, sichere Zonen, woher Elemente kommen und wohin sie gehen |
-| 4 | Mechanik wählen | `REMOTION_ANIMATION_CAPABILITIES.md` | Erst die Mechanik, dann die Technik |
-| 4a | Technik ansehen | `npm run motion-demos:list` | Lauffähige Beispiele für Form-Morphing, Pfad-Reise und Übergänge |
-| 5 | API nachschlagen | `remotion-docs` | Aktuelle Signaturen statt Erinnerung |
-| 6 | Bewegung umsetzen | `animation-principles` + `BEWEGUNG.md` | Kurve, Dauer, Staffelung — die Zahlen |
-| 7 | Farbe über Zeit | `color-motion` | Palette, Verläufe, Übergänge ohne matschige Mitte |
-| 8 | Rhythmus zum Ton | `beat-sync-editing` | Schnitte und Akzente auf den Beat |
-| 9 | Vor dem Render prüfen | `content-grounding-test` | Inhalt trägt wirklich bis in die Render-Props |
-| 10 | Rendern | `remotion-render` | Export und technische Kontrolle |
-| 11 | Technischer Review | `POST_RENDER_REVIEW.md` | Kollisionen, Safe-Zones, Lesbarkeit, Renderfehler |
-| 12 | Creative Review | `CREATIVE_QA.md` | Hook, Leerlauf, Kartenlastigkeit, visuelles Storytelling und Smartphone-Eindruck |
+| 1 | Reel anlegen | `reel-production-pipeline` | Ordner, Phasen, V2-Pflichtdateien |
+| 2 | Story/Hook prüfen | `STORY_RETENTION.md` | Viewer Promise, Hook, 3-second proof, Payoff, Memorable Moment |
+| 3 | Fakten sichern | `FAKTENQUELLEN.md` | Claims klassifizieren, Quellen, sichtbare Zahlen, Recheck |
+| 4 | Sprechertext finalisieren | `REELS.md` | eine klare Idee, gesprochener Spannungsbogen, Visual Beats vorbereiten |
+| 5 | Bildsprache wählen | `VISUAL_STRATEGY.md` | REMOTION_NATIVE vs REAL_CAPTURE vs HYBRID vs externe Assets |
+| 6 | Tonfall und Hierarchie | `motion-art-direction` | Was ist Held, was Stütze, was bewegt sich nicht |
+| 7 | Bildaufbau | `shot-composition` | Raster, sichere Zonen, Objektbeziehungen, Blickführung |
+| 8 | Mechanik wählen | `REMOTION_ANIMATION_CAPABILITIES.md` | passende Technik erst nach der Visual Strategy |
+| 8a | Technik ansehen | `npm run motion-demos:list` | Beispiele für Morph, Pfad, Prozess und Übergänge |
+| 9 | API nachschlagen | `remotion-docs` | aktuelle Signaturen statt Erinnerung |
+| 10 | Bewegung umsetzen | `animation-principles` + `BEWEGUNG.md` | Kurve, Dauer, Staffelung |
+| 11 | Farbe über Zeit | `color-motion` | Palette und Zustandswechsel |
+| 12 | Rhythmus zum Ton | `beat-sync-editing` | Schnitte/Akzente am echten Voiceover |
+| 13 | Grounding prüfen | `content-grounding-test` | Sprecher → Meaning → Beat → Modality → Render-Props |
+| 14 | Rendern | `remotion-render` | Export und technische Kontrolle |
+| 15 | Technischer Review | `POST_RENDER_REVIEW.md` | Kollisionen, Safe-Zones, Lesbarkeit, Renderfehler |
+| 16 | Creative Review | `CREATIVE_QA.md` | Hook, Tempo, Kartenlastigkeit, Storytelling, Smartphone-Eindruck |
 
-**Schritt 12 ist ein echtes Stop-Gate.** Ein Reel darf technisch fehlerfrei sein
-und trotzdem nicht freigegeben werden, wenn es langsam, repetitiv oder visuell
-zu abstrakt ist.
+**Schritt 16 ist ein echtes Stop-Gate.** Technisch fehlerfrei reicht nicht.
 
 ## Technik-Demos
 
-`ki/src/animation-library/demo/` zeigt Mechaniken, die ueber die klassische
-Karten-Grammatik hinausgehen: Form-Morphing, Pfad-Reise, Szenenuebergaenge und
-reel-spezifische Prozessvisualisierungen.
+`ki/src/animation-library/demo/` zeigt Mechaniken, die über klassische Karten-Grammatik hinausgehen.
 
 ```bash
 npm run motion-demos:stills
 ```
 
-Sie sind **nicht automatisch** Produktionsanimationen. Erst die Aussage und den
-Visual Beat bestimmen, dann entscheiden, ob eine Demo-Technik wirklich passt.
+Demos sind keine automatische Produktionswahl. Erst Aussage, Beat und Modality bestimmen, dann entscheiden, ob eine Demo-Technik passt.
 
 ## Agenten
 
 | Agent | Wann |
 |---|---|
-| `content-test-runner` | Grounding-Tests laufen und diagnostizieren lassen, bevor gerendert wird |
-| `context-overload-reel-builder` | Phase 3 des freigegebenen Context-Overload-Reels |
+| `content-test-runner` | Grounding-Tests diagnostizieren, bevor gerendert wird |
+| `context-overload-reel-builder` | nur für den dafür freigegebenen reel-spezifischen Phase-3-Fall |
 
-Agenten starten nur, wenn der Nutzer sie nennt oder der Schritt sie ausdrücklich
-verlangt. Für eine einzelne Frage kein Agent — der kostet mehr, als er bringt.
+Agenten starten nur, wenn der Schritt sie wirklich verlangt.
 
-## Häufigster Fehler
+## Häufigste Fehler
 
-Für jede Bewegungsfrage `animation-principles` zu nehmen. Der Skill liefert
-Kurven, Dauern und Staffelabstände — also **wie** sich etwas bewegt.
+### 1. Zu früh an Motion denken
 
-Er beantwortet nicht, **was** sich bewegen soll (Schritt 2), **wo** es im Bild
-steht (Schritt 3) oder **welche Mechanik** die Aussage überhaupt trägt
-(Schritt 4). Wer bei 6 anfängt, animiert eine Karte sauber, die gar keine Karte
-hätte sein dürfen.
+`animation-principles` beantwortet **wie** sich etwas bewegt. Es beantwortet nicht:
 
-Der zweithaeufigste Fehler ist inzwischen das Gegenteil: technisch immer mehr zu
-bauen, obwohl der Engpass ein schwacher Hook oder eine repetitive Bildsprache
-ist. In diesem Fall zuerst `CREATIVE_QA.md` anwenden und **nicht** die Library
-erweitern.
+- ob die Story stark ist
+- welche Aussage wichtig ist
+- welche Bildsprache die beste ist
+- ob reale UI der bessere Beweis wäre
+
+Wer hier startet, animiert oft eine Karte sauber, die nie hätte existieren sollen.
+
+### 2. Remotion mit Qualität verwechseln
+
+Remotion ist stark für kontrollierbare Erklärlogik. Es ist aber nicht automatisch die beste Lösung für jedes Hero-Motiv.
+
+Wenn reale UI, räumliche Szene, Hybrid oder externes Motion-Asset die Aussage klarer macht, entscheidet `VISUAL_STRATEGY.md` entsprechend.
+
+### 3. Mehr Technik bauen, obwohl die Story schwach ist
+
+Wenn Hook, Leerlauf oder visuelle Wiederholung das Problem sind, zuerst `STORY_RETENTION.md` und `CREATIVE_QA.md` anwenden — **nicht** die Animation Library erweitern.
 
 ## Prüfung
 
-`ki/src/motion/__tests__/werkzeuge.test.ts` hält die Tabelle ehrlich: jeder
-installierte Skill unter `.claude/skills/` muss hier auftauchen, und jedes hier
-genannte Werkzeug muss existieren. Ein neu installierter Skill, den niemand
-einordnet, lässt den Test fehlschlagen — statt still liegenzubleiben.
+`ki/src/motion/__tests__/werkzeuge.test.ts` hält die Tabelle ehrlich: installierte Skills und Agenten müssen eingeordnet sein; referenzierte Gehirn-Dokumente müssen existieren.
