@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "token-slicer-visuals",
+      "type": "REMOTION_NATIVE",
+      "status": "NOT_REQUIRED",
+      "reason": "Alle erklärenden Motive werden deterministisch in Remotion/SVG/CSS gebaut; keine externen Bilder nötig."
+    }
+  ]
+}
