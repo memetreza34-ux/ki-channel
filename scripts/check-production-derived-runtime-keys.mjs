@@ -1,8 +1,10 @@
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {loadSceneMeaningEnhancer} from './load-scene-meaning-enhancer.mjs';
 import {loadPrototypeRuntimeContentAssociation} from './load-prototype-runtime-content-association.mjs';
 import {loadPrototypeRuntimeContentDeriver} from './load-prototype-runtime-content-deriver.mjs';
 import {loadPrototypeRuntimeContentSanitizer} from './load-prototype-runtime-content-sanitizer.mjs';
+import {getMasterplanFixtureContent} from './masterplan-content-release-utils.mjs';
 
 const PROTOTYPE_SOURCES = new Map([
   ['error-detection-anomaly-xray-scanner-v1', 'AnomalyXRayScannerPrototype.tsx'],
@@ -55,21 +57,28 @@ const buildKeyMatcher = (source) => {
   };
 };
 
-const fixtures = JSON.parse(
+const fixtureConfig = JSON.parse(
   readFileSync(
-    resolve('ki/src/animation-library/content-render-fixtures.json'),
+    resolve('ki/src/animation-library/masterplan-content-fixtures.json'),
     'utf8',
   ),
-).fixtures;
-if (!Array.isArray(fixtures)) {
-  throw new Error('Content-Render-Fixtures fehlen oder sind ungültig.');
+);
+const fixtures = fixtureConfig.fixtures;
+if (fixtureConfig.version !== 1 || !Array.isArray(fixtures)) {
+  throw new Error('Masterplan-Content-Fixtures fehlen oder sind ungültig.');
 }
 if (PROTOTYPE_SOURCES.size !== 22) {
   throw new Error(
     `Production-Derived-Key-Gate erwartet 22 Prototype-Sources, gefunden: ${PROTOTYPE_SOURCES.size}.`,
   );
 }
+if (fixtures.length !== PROTOTYPE_SOURCES.size) {
+  throw new Error(
+    `Production-Derived-Key-Gate erwartet 22 kanonische Production-Fixtures, gefunden: ${fixtures.length}.`,
+  );
+}
 
+const enhanceSceneMeaning = await loadSceneMeaningEnhancer();
 const derivePrototypeRuntimeContent =
   await loadPrototypeRuntimeContentDeriver();
 const sanitizePrototypeRuntimeContent =
@@ -79,6 +88,7 @@ const associatePrototypeRuntimeContent =
 const failures = [];
 let checkedLabels = 0;
 let checkedValues = 0;
+let enhancedMeaningContracts = 0;
 
 for (const fixture of fixtures) {
   const fileName = PROTOTYPE_SOURCES.get(fixture.animationId);
@@ -88,9 +98,24 @@ for (const fixture of fixtures) {
     );
     continue;
   }
-  const content = fixture.content ?? fixture.props?.content;
-  if (!content?.spokenText || !content?.meaningContract) {
-    failures.push(`${fixture.animationId}: Fixture ohne spokenText/meaningContract`);
+
+  const sourceContent = getMasterplanFixtureContent(fixture);
+  if (!sourceContent?.spokenText) {
+    failures.push(`${fixture.animationId}: Production-Fixture ohne spokenText`);
+    continue;
+  }
+
+  const meaningContract =
+    sourceContent.meaningContract ?? enhanceSceneMeaning(sourceContent.spokenText);
+  if (!sourceContent.meaningContract) enhancedMeaningContracts += 1;
+  if (
+    !meaningContract?.startState ||
+    !meaningContract?.visibleChange ||
+    !meaningContract?.endState
+  ) {
+    failures.push(
+      `${fixture.animationId}: Scene-Meaning-Enhancer liefert keinen vollständigen Contract`,
+    );
     continue;
   }
 
@@ -101,17 +126,17 @@ for (const fixture of fixtures) {
   const matcher = buildKeyMatcher(source);
   const derived = derivePrototypeRuntimeContent({
     animationId: fixture.animationId,
-    spokenText: content.spokenText,
-    meaningContract: content.meaningContract,
+    spokenText: sourceContent.spokenText,
+    meaningContract,
   });
   const sanitized = sanitizePrototypeRuntimeContent({
     animationId: fixture.animationId,
-    spokenText: content.spokenText,
+    spokenText: sourceContent.spokenText,
     derived,
   });
   const associated = associatePrototypeRuntimeContent({
     animationId: fixture.animationId,
-    spokenText: content.spokenText,
+    spokenText: sourceContent.spokenText,
     content: sanitized,
   });
   const labelKeys = Object.keys(associated.labels);
@@ -142,7 +167,7 @@ for (const fixture of fixtures) {
 
 for (const animationId of PROTOTYPE_SOURCES.keys()) {
   if (!fixtures.some((fixture) => fixture.animationId === animationId)) {
-    failures.push(`${animationId}: Content-Render-Fixture fehlt`);
+    failures.push(`${animationId}: kanonisches Masterplan-Content-Fixture fehlt`);
   }
 }
 
@@ -153,5 +178,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Production-Derived-Runtime-Key-Gate bestanden: 22/22 Animationen, ${checkedLabels} finale Label-Keys und ${checkedValues} finale Value-Keys werden von ihren TSX-Komponenten konsumiert.`,
+  `Production-Derived-Runtime-Key-Gate bestanden: 22/22 Animationen, ${enhancedMeaningContracts} Meaning-Contracts aus Production-Sprechertext abgeleitet, ${checkedLabels} finale Label-Keys und ${checkedValues} finale Value-Keys werden von ihren TSX-Komponenten konsumiert.`,
 );
