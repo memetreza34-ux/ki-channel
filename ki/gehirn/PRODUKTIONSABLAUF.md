@@ -2,158 +2,299 @@
 
 Dieser Ablauf ist der Normalfall für jedes neue Short-Form-Reel.
 
-**Welches Werkzeug in welchem Schritt:** `WERKZEUGE.md`. Jeder Schritt hat sein eigenes — nicht für alles dasselbe nehmen.
+**Welches Werkzeug in welchem Schritt:** `WERKZEUGE.md`.
 
-## Phase 1 — ChatGPT: komplette Grundlage
+## Grundsatz
 
-Ziel: Nach Phase 1 muss der Mensch **nur noch das Voiceover erzeugen**.
+Phase 1 beginnt **nicht mit Code**.
 
-Phase 1 erstellt:
+```text
+Thema
+→ Creative Brief / Story
+→ Fakten & Quellen
+→ finaler Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Animation-/Shot-Plan
+→ Source
+→ Voiceover
+→ Timeline
+→ Render
+→ technische QA
+→ Creative QA
+```
 
-- Thema, Titel und stabilen Slug
-- Fakten-/Quellenprüfung, wenn Aktualität oder Genauigkeit es verlangt
-- Wochenpaket mit 01–06-Struktur
-- finalen Sprechertext in `01-script-audio/voiceover.md`
-- denselben Sprechertext **ohne Szenen, Überschriften oder Anweisungen** als `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
-- Short-Form standardmäßig ausführlicher planen: ungefähr **50–60 Sekunden** und meist ungefähr **120–150 gesprochene Wörter**, wenn der Inhalt das trägt
-- Szenenplan
-- Sprechertext in bedeutungstragende **Visual Beats** zerlegen
-- für jeden Visual Beat zuerst die individuelle visuelle Mechanik bestimmen
-- für jeden Beat `REUSE_EXACT` oder `NEW_BUILD` begründen; bestehende Animation nur bei exaktem semantischem Fit
-- `animation-plan.md` mit Sprecherstelle → Bedeutung → Startzustand → sichtbare Veränderung → Endzustand → Umsetzung → Timing
-- Zuschauer-Überschriften und kurze Animationslabels ohne Caption-Dopplung
-- Bildbedarf pro Szene
-- bei Bildbedarf hochwertige `02-bilder/image-prompts.md` nach `ki/BILDSTIL.md`
-- `02-bilder/asset-manifest.json`, auch wenn bewusst keine externen Assets nötig sind
-- `03-caption/subtitle-cues.json` als Audio-unabhängige Basis
-- `03-caption/platform-copy.md` für YouTube Shorts, Instagram, TikTok, Facebook und ggf. Snapchat
-- `06-projektdateien/reel.json`
-- Assembly-Auftrag und Review-Checkliste
-- ausführbaren Remotion-Source unter `ki/src/reels/<slug>/`
-- individuelle Micro-Animationen im Source, wenn Sprecherinhalt innerhalb einer Szene mehrere sichtbare Beats verlangt
-- Content-Grounding: Sprechertext → Meaning → Visual Beats → Mechanik → Render-Props
-- Composition-Registrierung
-- harte Caption-Zone berücksichtigen: bei 1080 × 1920 keine sichtbare Animation ab ungefähr `y=1440`
-- fokussierte Source-/Contract-Checks
-- `PHASE-STATUS.md`
-
-**Phase 1 darf kein echtes Voiceover vortäuschen.** Fehlendes Audio ist hier normal.
-
-**Verboten:** erst eine vorhandene Library-Animation wählen und dann den Inhalt darauf anpassen. Die Library wird erst nach der inhaltlichen Visual-Beat-Planung geprüft.
-
-Plattform-Copy ist Packaging und darf die fachliche Aussage des Reels nicht verändern. Regeln: `PLATTFORMEN.md`.
-
-### Phase-1-Fertigkriterium
-
-Planung und Code-Grundlage sind vorhanden; der einzige normale manuelle nächste Schritt lautet:
-
-> **PHASE 2: Voiceover erzeugen.**
-
-Nur Skript/Plan ohne ausführbaren Source ist nicht Phase-1-fertig.
+Neue Reels verwenden den V2-Produktionsvertrag aus dem Scaffold.
 
 ---
 
-## Phase 2 — Mensch: nur Voiceover
+## Phase 1 — ChatGPT: komplette Grundlage
+
+Ziel: Nach Phase 1 muss der Mensch im Normalfall nur noch das Voiceover erzeugen. Externe Medien/REAL_CAPTURE kommen nur hinzu, wenn die Visual Strategy sie ausdrücklich als notwendig begründet.
+
+### Schritt 1 — Creative Brief
+
+Vor Script oder Remotion-Code `06-projektdateien/creative-brief.md` vervollständigen.
+
+Pflicht:
+
+- Viewer promise
+- Hook tension
+- 3-second proof
+- Why care
+- Core mechanism
+- Payoff
+- Memorable moment
+- Truth risk
+
+Regeln: `STORY_RETENTION.md`.
+
+**Stop:** Hook, Mechanismus oder sichtbarer Höhepunkt unklar → noch kein Code.
+
+### Schritt 2 — Fakten & Quellen
+
+`06-projektdateien/source-ledger.md` anlegen/vervollständigen.
+
+Ins Ledger gehören insbesondere:
+
+- aktuelle Produkt-/Modell-/Feature-Aussagen
+- sichtbare Zahlen, Preise, Rankings, Limits
+- reale Paper/Quellen
+- Benchmarks
+- News
+- kritische Vereinfachungen
+
+Regeln: `FAKTENQUELLEN.md`.
+
+**Stop:** sichtbare Zahl/aktuelle Behauptung ohne tragende Grundlage → Script nicht finalisieren.
+
+### Schritt 3 — finaler Sprechertext
+
+Erstellen:
+
+- `01-script-audio/voiceover.md`
+- denselben Sprechertext ohne Szenen/Anweisungen als `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
+
+Länge ist Inhaltsergebnis, kein Selbstzweck. 50–60 Sekunden sind möglich, aber nichts wird künstlich gestreckt.
+
+Der Text muss:
+
+- mit dem eigentlichen Hook beginnen
+- eine klare Entwicklung statt Feature-/Faktenliste haben
+- fachlich mit dem Source Ledger übereinstimmen
+- mit einem konkreten Aha, Limit oder Handlungsresultat enden
+
+### Schritt 4 — Visual Beats und Visual Strategy
+
+Sprechertext in bedeutungstragende Visual Beats zerlegen.
+
+Für jeden Beat zuerst `06-projektdateien/visual-strategy.md` dokumentieren:
+
+```text
+Beat-ID
+Sprecherstelle
+Bedeutung
+Zuschauer muss sehen
+Hauptverb
+Startzustand
+sichtbare Veränderung
+Endzustand
+Modality
+Mechanikfamilie
+Hero beat JA/NEIN
+Asset/Capture, falls nötig
+```
+
+Erlaubte primäre Modalities:
+
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+Regeln: `VISUAL_STRATEGY.md`.
+
+**Verboten:** zuerst vorhandene Library-Animation auswählen und Inhalt passend machen.
+
+### Schritt 5 — Produktionsplan
+
+Danach erstellen:
+
+- Szenenplan
+- `06-projektdateien/animation-plan.md`
+- Sprecherstelle → Bedeutung → Startzustand → Veränderung → Endzustand → Umsetzung → Timing
+- `REUSE_EXACT` oder `NEW_BUILD` nur nach semantischem Fit
+- Zuschauer-Zwischenüberschriften und minimale Labels ohne Caption-Dopplung
+- Hero-/Memorable-Moment explizit markieren
+- Diversity prüfen: keine unnötige Folge gleicher Karten-/Panelgrammatik
+
+### Schritt 6 — externe Medienentscheidung
+
+Für jeden externen Bedarf:
+
+- Still/Hybrid → `ki/BILDSTIL.md`
+- Real Capture → Produkt/Datum/Zweck dokumentieren
+- Motion-Asset → Shot-/Motion-Brief dokumentieren
+- erwarteten Dateinamen im Manifest festlegen
+- fehlende Pflichtmedien als `MISSING_REQUIRED` markieren
+
+Phase 1 darf fehlende Assets **nicht vortäuschen**.
+
+Wenn kein externes Medium nötig ist, ausdrücklich dokumentieren.
+
+### Schritt 7 — Caption, Copy und Projektvertrag
+
+Erstellen/vervollständigen:
+
+- `03-caption/subtitle-cues.json` als Audio-unabhängige Basis
+- `03-caption/platform-copy.md`
+- `02-bilder/asset-manifest.json` bzw. allgemeines Asset-Manifest mit realem Status
+- `06-projektdateien/reel.json`
+- `06-projektdateien/production-contract-v2.json`
+- Assembly-Auftrag
+- Review-Checkliste
+- `06-projektdateien/creative-review.md` als noch offenes finaler Review-Artefakt
+- `PHASE-STATUS.md`
+
+Plattform-Copy ist Packaging und verändert die fachliche Aussage nicht.
+
+### Schritt 8 — ausführbare Source
+
+Erst jetzt:
+
+- Source unter `ki/src/reels/<slug>/`
+- Composition-Registrierung
+- reel-spezifische Micro-Animationen
+- Library nur bei exaktem Fit
+- Caption-Safe-Zone berücksichtigen
+- Content-Grounding Sprecher → Meaning → Visual Beat → Modality → Mechanik → Render-Props
+- fokussierte Tests und TypeScript
+
+### Phase-1-Fertigkriterium
+
+Phase 1 ist erst fertig, wenn Story, Grounding, Visual Strategy, Planung und ausführbare Code-Grundlage vorhanden sind.
+
+Der normale nächste Schritt lautet dann:
+
+> **PHASE 2: Voiceover erzeugen.**
+
+Falls `REAL_CAPTURE` oder ein externes Pflichtasset vorgesehen ist, gehört auch dieses reale Medium zu Phase 2.
+
+Nur Script/Plan ohne ausführbaren Source ist nicht Phase-1-fertig.
+
+---
+
+## Phase 2 — Mensch: reale Medien
+
+### Immer
 
 1. `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt` öffnen.
 2. Text wortgetreu mit der gewünschten Stimme erzeugen.
 3. bevorzugt `voiceover.wav`, alternativ `voiceover.mp3` speichern.
 4. Datei in `01-script-audio/` ablegen.
-5. keine JSON-, Caption-, Szenen-, Prompt-, Plattform-Copy- oder TS/TSX-Datei ändern.
 
-Wenn der Text geändert werden soll, zurück zu Phase 1.
+### Nur wenn Phase 1 es verlangt
+
+- notwendiges REAL_CAPTURE aufnehmen
+- notwendiges externes Still-/Motion-Asset erzeugen/bereitstellen
+- exakt unter dem im Manifest vereinbarten Dateinamen ablegen
+
+Keine Planungs-/Source-Dateien in Phase 2 ändern.
+
+Wenn der Sprechertext geändert werden soll, zurück zu Phase 1.
 
 ### Phase-2-Fertigkriterium
 
-Echte Audiodatei liegt neben dem finalen Skript.
+- echte Audiodatei liegt vor
+- alle als `MISSING_REQUIRED` markierten Pflichtmedien, die für den finalen Render nötig sind, liegen real vor
 
 ---
 
 ## Phase 3 — Codex oder Antigravity: Assembly und Release
 
-Phase 3 verwendet die vorhandene Phase-1-Grundlage und baut nicht neu von Null.
+Phase 3 verwendet die Phase-1-Grundlage und baut nicht kreativ von Null neu.
 
-### Timeline-Prinzip — natürliches Audio, perfekte Synchronität
+### Timeline-Prinzip
 
-Das echte Voiceover ist der akustische Master. Die Timeline wird **an der realen Stimme feinjustiert**; die Stimme muss aber nicht starr unverändert bleiben, wenn einzelne Stellen hörbar zu schnell oder zu langsam für die geplanten Visual Beats sind.
+Das echte Voiceover ist der akustische Master.
 
-Reihenfolge für jeden problematischen Abschnitt:
+Reihenfolge bei Timingproblemen:
 
-1. zuerst Visual-Beat-, Szenen-, Hold- und Animations-Timing an die echte Stimme anpassen
-2. natürliche Pausen an Satz-/Phrasengrenzen leicht verkürzen oder verlängern
-3. wenn danach ein lokaler Abschnitt noch sichtbar zu schnell/zu langsam ist: **pitch-erhaltendes Time-Stretching auf Phrase-/Cue-Ebene** verwenden
-4. Captions und Wort-Timestamps anschließend exakt auf das tatsächlich verwendete Audio legen
+1. Visual-Beat-, Szenen- und Hold-Timing anpassen
+2. natürliche Pausen an Satz-/Phrasengrenzen leicht anpassen
+3. nur wenn nötig eine ganze Phrase/Cue pitch-erhaltend leicht retimen
+4. Captions/Wort-Timestamps exakt auf das tatsächlich verwendete Audio legen
 
-Regeln für Audio-Retiming:
+Audio-Retiming:
 
-- niemals mitten in einem Wort die Geschwindigkeit wechseln
-- keine abrupten Speed-Sprünge; nur an natürlichen Phrasen-/Pausengrenzen
-- Pitch/Stimmhöhe erhalten
-- Wortlaut, Wortreihenfolge und Bedeutung niemals verändern
-- keine Wörter abschneiden, verschlucken, duplizieren oder künstlich ergänzen
-- normale Korrektur möglichst ungefähr `0.97x–1.03x`
-- bei Bedarf bis ungefähr `0.94x–1.06x`; stärkere Änderung gilt als Qualitätswarnung und soll normalerweise durch neues Voiceover/Phase 2 gelöst werden statt die Stimme hörbar zu verzerren
-- nicht auf eine exakte Gesamtlänge zwingen, wenn dadurch die Stimme unnatürlich klingt
-- Ziel ist eine **natürliche Stimme + semantisch perfekte Visual-Beat-Timeline**, nicht eine mathematisch starre Sekundenmarke
+- niemals mitten im Wort
+- keine abrupten Speed-Sprünge
+- Pitch erhalten
+- Wortlaut/Reihenfolge unverändert
+- bevorzugt `0.97x–1.03x`
+- bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- stärkere Änderung → neues Voiceover statt hörbarer Verzerrung
 
-Wenn ein Abschnitt retimed wurde, muss Phase 3 im Abschlussbericht kurz nennen, **welcher Abschnitt und welcher Faktor** verwendet wurde.
+Wenn retimed wurde, Abschnitt + Faktor im Abschlussbericht nennen.
 
-Pflichten:
+### Pflichten Phase 3
 
-1. Branch/Status prüfen.
-2. `PHASE-STATUS.md` und Reel-Verträge lesen.
+1. Branch/Status und Produktionsvertrag prüfen.
+2. `creative-brief.md`, `source-ledger.md`, `visual-strategy.md`, `PHASE-STATUS.md` lesen.
 3. Struktur-/Preflight-Checks ausführen.
 4. echtes Voiceover finden; bei Fehlen mit `PHASE 2 AUDIO FEHLT` stoppen.
-5. reale Audio-Dauer messen.
-6. Audio render-sicher integrieren.
-7. Timeline nach obigem Prinzip an reales Audio anpassen; Sprechertext nicht umschreiben. **WICHTIG:** Keine rein mathematische/lineare Aufteilung der Gesamt-Frames auf die Szenen oder Cues! Die Szenen-Grenzen und Cues (in `reel.json` und `subtitle-cues.json`) müssen zwingend auf Basis einer Audio-Analyse (z.B. Extrahieren der Timestamps aus den Audio-Metadaten oder einem ersten Test-Render) an die realen Sprechpausen und -geschwindigkeit gekoppelt werden.
-8. Visual Beats am echten Sprecher ausrichten; sichtbare Zustandswechsel müssen zur gemeinten Phrase/Satzstelle passen.
-9. lokale Pausen/Speed nur dort korrigieren, wo die audiovisuelle Timeline dadurch klarer wird; danach Caption-/Wort-Timestamps exakt und asymmetrisch (anhand der realen Sprechpausen) neu ausrichten.
-10. genehmigte `REUSE_EXACT`-/`NEW_BUILD`-Entscheidungen erhalten; keine bequemere Library-Animation einsetzen.
-11. prüfen, dass **ab ungefähr y=1440 keinerlei Animation sichtbar ist** und die Caption die unterste Inhaltsebene bleibt.
-12. falls der technische Clip-Guard wichtigen Inhalt abschneidet: Animation neu layouten, nicht als bestanden akzeptieren.
-13. Strukturcheck, fokussierte Tests und TypeScript ausführen.
-14. pro Szene Opening/Mid/End-Hold sowie relevante Beat-Wechsel in Smoke-Frames rendern.
-15. Smoke-Frames tatsächlich visuell prüfen und Fehler beheben.
-16. finales MP4 rendern.
-17. MP4 technisch validieren und normal/auf Smartphone-Größe ansehen.
-18. bei normaler Wiedergabe zusätzlich prüfen, dass Voiceover-Retiming nirgends künstlich, hektisch oder gedehnt klingt.
-19. Review-Checkliste und Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
-20. finalen Master und `platform-copy.md` als Publishing-Handoff bereitstellen; Veröffentlichung selbst nur ausführen, wenn ausdrücklich beauftragt.
+5. alle Pflichtassets/Captures aus Manifest prüfen; fehlendes Pflichtmedium nicht durch generische Grafik ersetzen.
+6. reale Audio-Dauer und Sprechpausen analysieren.
+7. Audio render-sicher integrieren.
+8. Szenengrenzen/Cues anhand realer Audioanalyse ausrichten; keine rein lineare Gesamtframe-Verteilung.
+9. sichtbare Zustandswechsel an gemeinte Sprecherphrase koppeln.
+10. genehmigte Modality-/REUSE_EXACT-/NEW_BUILD-Entscheidungen erhalten.
+11. Caption-/Visual-Trennung prüfen; kein erklärender Inhalt im reservierten Bottom-Bereich.
+12. Strukturcheck, fokussierte Tests und TypeScript ausführen.
+13. Opening/Mid/End-Holds und relevante Beat-Wechsel als Smoke-Frames rendern.
+14. Smoke-Frames tatsächlich visuell prüfen.
+15. finales MP4 rendern.
+16. MP4 technisch validieren und normal sowie auf Smartphone-Größe ansehen.
+17. `CREATIVE_QA.md` vollständig durchführen.
+18. Ergebnis in `06-projektdateien/creative-review.md` dokumentieren.
+19. Claims mit Recheck-Pflicht vor Publishing erneut prüfen.
+20. Status nur für tatsächlich abgeschlossene Punkte aktualisieren.
 
 ## Stop-Bedingungen
 
 Nicht als fertig melden bei:
 
 - fehlendem Audio
+- fehlendem Pflichtasset/Capture
 - fehlender Phase-1-Source
+- fehlendem Creative Brief / Visual Strategy / Source Ledger bei V2-Reels
 - fehlgeschlagenen Tests/Strukturchecks
 - Text-/Caption-Mismatch
-- hörbar künstlichem oder abruptem Voiceover-Speedwechsel
-- Audio-Retiming außerhalb des Qualitätskorridors ohne neue Phase-2-Aufnahme
-- überlappender oder abgeschnittener Typografie
-- internen Regie-/Goal-Texten im Video
-- unnötiger Caption-/Animations-Textdopplung
-- ungrounded Zahlen
-- einer Animation, die nur „ungefähr“ statt exakt zum Sprecherinhalt passt
-- fehlenden Visual Beats für bedeutungstragende Sprecherstellen
-- sichtbarer Animation in/unter der Caption-Zone
-- wichtigem Inhalt, der vom Caption-Clip abgeschnitten wird
+- hörbar künstlichem Audio-Retiming
+- überlappender/abgeschnittener Typografie
+- internen Regie-/Debug-Texten im Video
+- unnötiger Textdopplung
+- ungrounded Zahlen oder aktuellen Claims
+- einer Animation, die nur ungefähr statt exakt zum Sprecher passt
+- fehlenden Visual Beats
+- sichtbarer erklärender Animation in der Caption-Zone
 - ungeprüften Smoke-Frames
 - nicht angesehenem finalen MP4
-- fehlender/irreführender Plattform-Copy bei behaupteter Publishing-Bereitschaft
+- nicht bestandenem Creative Review
+- Hook/Tempo/Kartenlastigkeit, die im Creative Review als Stop-Fehler markiert wurden
 
 ## Kurzform
 
 ```text
 PHASE 1 — ChatGPT
-Inhalt + individuelle Visual Beats + Source, alles außer echtem Audio
+Story → Fakten → Script → Visual Strategy → Source
         ↓
 PHASE 2 — Mensch
-nur Voiceover
+Voiceover + nur die ausdrücklich benötigten realen Medien
         ↓
 PHASE 3 — Codex / Antigravity
-Audio analysieren → Timeline/Visual Beats anpassen → bei Bedarf lokal natürlich retimen → Captions exakt synchronisieren → prüfen → rendern
+Audio/Assets prüfen → Timeline → Render → technische QA → Creative QA
         ↓
 PUBLISHING
 freigegebenen Master plattformgerecht verpacken
