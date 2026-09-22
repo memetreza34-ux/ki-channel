@@ -35,14 +35,26 @@ jobs:
           node scripts/check-production-visual-contracts.mjs
           npm run ki:reel:structure-check
 
+      - name: Materialize generated voiceover
+        run: |
+          mkdir -p public out/first-real-reel
+          curl -fL 'https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/56f288df-5d80-40aa-ac40-e64cb37fce80.mp3' -o /tmp/token-slicer-voice-a.mp3
+          curl -fL 'https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/da0e902e-8323-4b78-b98f-291e489ad40d.mp3' -o /tmp/token-slicer-voice-b.mp3
+          ffmpeg -hide_banner -loglevel error -y \
+            -i /tmp/token-slicer-voice-a.mp3 \
+            -i /tmp/token-slicer-voice-b.mp3 \
+            -filter_complex '[0:a][1:a]concat=n=2:v=0:a=1[a]' \
+            -map '[a]' -c:a libmp3lame -q:a 2 \
+            public/token-slicer-voiceover.mp3
+          ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 public/token-slicer-voiceover.mp3 | tee out/first-real-reel/voiceover-duration.txt
+
       - name: Render real reel with generated voiceover
         run: |
-          mkdir -p out/first-real-reel
           npx --no-install remotion render \
             ki/src/production-entry.tsx \
             TokenSlicerReel \
             out/first-real-reel/token-slicer.mp4 \
-            --props='{"showCaptions":true,"voiceoverSrc":"https://www.aidocmaker.com/g0/audio?name=3863947350524eefa9bc3e46918d060f"}' \
+            --props='{"showCaptions":true,"voiceoverSrc":"/token-slicer-voiceover.mp3"}' \
             --codec=h264 \
             --crf=18
 
@@ -50,6 +62,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: first-real-reel-token-slicer
-          path: out/first-real-reel/token-slicer.mp4
+          path: |
+            out/first-real-reel/token-slicer.mp4
+            out/first-real-reel/voiceover-duration.txt
           if-no-files-found: error
           retention-days: 7
