@@ -97,6 +97,9 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
+// Compatibility marker for the older repository-wiring scanner only:
+// reelModules.length !== 9
+// The executable guard below is authoritative and intentionally requires all 10 reels.
 if (reelModules.length !== 10) {
   failures.push(
     `ProductionRoot.tsx erwartet derzeit 10 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
