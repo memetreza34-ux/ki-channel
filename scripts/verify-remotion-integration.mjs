@@ -60,6 +60,7 @@ const studioEntry = await readText('ki/src/index.ts');
 const studioRoot = await readText('ki/src/Root.tsx');
 const productionEntry = await readText('ki/src/production-entry.tsx');
 const productionRoot = await readText('ki/src/ProductionRoot.tsx');
+const captionContract = await readText('ki/src/reels/captionContract.ts');
 const toolsRouting = await readText('ki/gehirn/WERKZEUGE.md');
 const orchestrationSkill = await readText('ki/skills/remotion-production-orchestration/SKILL.md');
 const builderAgent = await readText('.agents/agents/remotion-production-builder/agent.md');
@@ -71,6 +72,8 @@ for (const path of [
   'ki/src/Root.tsx',
   'ki/src/ProductionRoot.tsx',
   'ki/src/production-entry.tsx',
+  'ki/src/reels/captionContract.ts',
+  'ki/src/reels/captionContract.test.ts',
   'ki/skills/remotion-production-orchestration/SKILL.md',
   '.agents/agents/remotion-production-builder/agent.md',
   '.agents/agents/remotion-release-reviewer/agent.md',
@@ -130,6 +133,12 @@ requireMarkers('ki/src/index.ts', studioEntry, ['registerRoot', 'RemotionRoot'])
 requireMarkers('ki/src/Root.tsx', studioRoot, ['ProductionRoot', 'MotionPreviewRoot']);
 requireMarkers('ki/src/production-entry.tsx', productionEntry, ['ProductionRoot', 'registerRoot(ProductionRoot)']);
 requireMarkers('ki/src/ProductionRoot.tsx', productionRoot, ['Composition', 'KI-Production-Reels']);
+requireMarkers('captionContract.ts', captionContract, [
+  "from '@remotion/captions'",
+  'assertReelCaptionTimeline',
+  'captionMsToFrame',
+  'findCaptionAtMs',
+]);
 
 if (productionEntry.includes('MotionPreviewRoot') || productionEntry.includes('motion-system/')) {
   failures.push('production-entry.tsx darf MotionPreviewRoot/motion-system nicht importieren.');
@@ -165,6 +174,8 @@ requireMarkers('remotion-production-orchestration', orchestrationSkill, [
   'remotion-captions',
   'remotion-studio',
   'remotion-render',
+  'captionContract.ts',
+  'assertReelCaptionTimeline',
   'production-entry.tsx',
   'run-remotion-readiness.mjs',
 ]);
@@ -201,7 +212,10 @@ for (const path of productionFiles) {
   if (/@keyframes\b/.test(source)) {
     failures.push(`${path}: CSS @keyframes gefunden; Render-Timing muss framebasiert sein.`);
   }
-  if (/\b(?:animation|animationName|transition|transitionProperty)\s*:/.test(source)) {
+
+  const hasAnimationProperty = /\b(?:animation|animationName|transitionProperty)\s*:/.test(source);
+  const hasNonNoneTransition = /\btransition\s*:\s*(?!['"]none['"])/.test(source);
+  if (hasAnimationProperty || hasNonNoneTransition) {
     warnings.push(`${path}: moegliches CSS-Animation/Transition-Timing gefunden; manuell gegen Remotion-Frame-Timing pruefen.`);
   }
 }
