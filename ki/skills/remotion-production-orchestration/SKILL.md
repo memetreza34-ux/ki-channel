@@ -65,7 +65,8 @@ uebernehmen, bevor sie fuer die installierte Remotion-Version verifiziert wurde.
 
 ## Caption Contract
 
-Neue oder ueberarbeitete Caption-Pipelines orientieren sich am offiziellen
+Neue oder ueberarbeitete Caption-Pipelines verwenden den gemeinsamen Runtime-
+Vertrag `ki/src/reels/captionContract.ts`. Er basiert auf dem offiziellen
 `Caption`-Datenmodell aus `@remotion/captions`:
 
 ```ts
@@ -77,6 +78,10 @@ type Caption = {
   confidence: number | null;
 };
 ```
+
+Vor finalem Render `assertReelCaptionTimeline(...)` auf die tatsaechlich verwendete
+Caption-Timeline anwenden. `captionMsToFrame(...)` ist der kanonische Helfer fuer
+die Umrechnung auf die Remotion-Timeline.
 
 Phase 1 darf Planungs-Cues fuehren. Phase 3 erzeugt/justiert finale Zeiten gegen
 das tatsaechlich verwendete Voiceover. Kein Caption-Timing nur aus Gesamtlaenge
@@ -128,6 +133,7 @@ Der Check sichert mindestens:
 - Studio- und Production-Entry existieren und sind getrennt
 - ProductionRoot existiert
 - Remotion-Skill/Agent-Routing ist vorhanden
+- gemeinsamer Caption-Runtime-Vertrag existiert
 - deterministische Production-Source
 - Readiness-Runner ist verdrahtet
 
@@ -136,7 +142,7 @@ Der Check sichert mindestens:
 1. Voiceover und Pflichtassets pruefen.
 2. Audio-Dauer/Pausen/Phrasen analysieren.
 3. Timeline an reale Sprache koppeln.
-4. Captions gegen finales Audio ausrichten.
+4. Captions gegen finales Audio ausrichten und mit `assertReelCaptionTimeline(...)` validieren.
 5. `node scripts/run-remotion-readiness.mjs` ausfuehren.
 6. relevante Smoke-Stills rendern und **ansehen**.
 7. sichtbare Fehler an der Source beheben.
@@ -153,6 +159,7 @@ Nicht render-ready melden bei:
 - Production-/Studio-Root-Verwechslung
 - CSS-Timing statt framebasierter Animation
 - nicht verifizierter Remotion-API
+- nicht bestandener Caption-Timeline-Validierung
 - nicht bestandener Readiness
 - nicht angesehenen Smoke-Frames
 - Caption-/Audio-Mismatch
