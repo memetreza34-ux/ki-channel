@@ -74,7 +74,7 @@ for (const dir of dirs) {
 }
 
 const contract = {
-  version: 3,
+  version: 2,
   format: 'short-form-reel',
   title,
   slug,
@@ -103,7 +103,7 @@ const contract = {
 };
 
 const files = {
-  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Produktionsvertrag:** V3\n\n## Reihenfolge\n\n0. Idea Gate: Angle + Hook-Kandidaten + Score\n1. Creative Brief / Story\n2. Fakten & Quellen\n3. finaler Sprechertext\n4. Visual Beats + Visual Strategy\n5. Animation-/Shot-Plan\n6. ausführbare Source\n7. Voiceover / erforderliche reale Medien\n8. Timeline + Render\n9. technische QA + Creative QA\n10. Veröffentlichung + Performance Review\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/IDEA_GATE.md\`, \`ki/gehirn/STORY_RETENTION.md\`, \`ki/gehirn/FAKTENQUELLEN.md\`, \`ki/gehirn/VISUAL_STRATEGY.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`, \`ki/gehirn/POST_PUBLISH_LEARNING.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
+  'README.md': `# ${title}\n\n**Woche:** ${weekName}\n**Produktionsvertrag:** V2 + Idea/Learning Gates\n\n## Reihenfolge\n\n0. Idea Gate: Angle + Hook-Kandidaten + Score\n1. Creative Brief / Story\n2. Fakten & Quellen\n3. finaler Sprechertext\n4. Visual Beats + Visual Strategy\n5. Animation-/Shot-Plan\n6. ausführbare Source\n7. Voiceover / erforderliche reale Medien\n8. Timeline + Render\n9. technische QA + Creative QA\n10. Veröffentlichung + Performance Review\n\nVerbindlich: \`REPO-STATE.md\`, \`ki/gehirn/MASTER.md\`, \`ki/gehirn/IDEA_GATE.md\`, \`ki/gehirn/STORY_RETENTION.md\`, \`ki/gehirn/FAKTENQUELLEN.md\`, \`ki/gehirn/VISUAL_STRATEGY.md\`, \`ki/gehirn/PRODUKTIONSABLAUF.md\`, \`ki/gehirn/POST_PUBLISH_LEARNING.md\`.\n\nAktueller Status: \`06-projektdateien/PHASE-STATUS.md\`.\n`,
 
   '01-script-audio/README.md': `# 01 — Script & Audio\n\nPhase 1 legt nach Idea Gate, Creative Brief und Faktenprüfung \`voiceover.md\` sowie \`VOICEOVER-ZUM-KOPIEREN.txt\` an.\n\nPhase 2 erzeugt bevorzugt \`voiceover.wav\`, alternativ \`voiceover.mp3\`. Der Wortlaut bleibt identisch.\n`,
 
@@ -111,7 +111,7 @@ const files = {
 
   '02-bilder/image-prompts.md': `# Image / Shot Prompts\n\n**Status:** OFFEN\n\nNur verwenden, wenn \`visual-strategy.md\` ein externes Still-/Hybrid-/Motion-Asset begründet.\n\nPro Asset dokumentieren:\n\n- Beat-/Scene-ID\n- Zweck / Kernaussage\n- Modality\n- warum Remotion/Real Capture nicht die bessere Lösung ist\n- erwarteter Dateiname\n- vollständiger Prompt oder Shot-Brief\n- was Remotion später ergänzt\n- Crop/Fokus/Layers, falls relevant\n\nKeine dekorativen Füllassets.\n`,
 
-  '02-bilder/asset-manifest.json': `${JSON.stringify({version: 3, assets: []}, null, 2)}\n`,
+  '02-bilder/asset-manifest.json': `${JSON.stringify({version: 2, assets: []}, null, 2)}\n`,
 
   '03-caption/README.md': `# 03 — Captions & Plattform-Copy\n\nPhase 1 legt audio-unabhängige Basiscues und Plattform-Copy an. Phase 3 ersetzt/justiert Cues mit realem Audio-Timing.\n\nCaptions sind Lesbarkeit, nicht zweite Erklärungsebene.\n`,
 
@@ -121,7 +121,7 @@ const files = {
 
   '05-export/README.md': `# 05 — Export\n\nPhase 3 legt hier Smoke-Frames, Review-Renders und finale Exporte ab. Ein MP4 ist erst nach technischer und kreativer Prüfung freigegeben.\n`,
 
-  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nV3-Reels führen hier zwingend Idea-, Story-, Grounding-, Visual-, Review- und Learning-Artefakte. Ausführbarer TS/TSX-Code gehört nach \`ki/src/reels/<slug>/\`.\n`,
+  '06-projektdateien/README.md': `# 06 — Projektdateien\n\nV2-Reels führen hier zwingend Idea-, Story-, Grounding-, Visual-, Review- und Learning-Artefakte. Ausführbarer TS/TSX-Code gehört nach \`ki/src/reels/<slug>/\`.\n`,
 
   '06-projektdateien/production-contract-v2.json': `${JSON.stringify(contract, null, 2)}\n`,
 
@@ -137,13 +137,13 @@ const files = {
 
   '06-projektdateien/performance-review.md': `# Performance Review — ${title}\n\n**Status:** WARTET AUF VERÖFFENTLICHUNG\n\nRegeln: \`ki/gehirn/POST_PUBLISH_LEARNING.md\`.\n\n## Veröffentlichung\n\n| Plattform | Datum | Views | Avg. Watch | Completion | 1–3s Retention | Shares | Saves | Follows |\n|---|---|---:|---:|---:|---:|---:|---:|---:|\n\nNicht verfügbare Werte als \`NICHT VERFÜGBAR\` eintragen.\n\n## Auffällige Retention-Punkte\n\n| Zeitpunkt | Beobachtung | möglicher Grund |\n|---|---|---|\n\n## Qualitatives Feedback\n\n## Lernhypothesen — maximal drei\n\n1.\n2.\n3.\n\n## Kanalweite Konsequenz\n\n- [ ] keine — Einzelbeobachtung\n- [ ] als HYPOTHESE in \`ki/gehirn/LEARNINGS.md\` übernehmen\n- [ ] bestehendes Learning mit weiterer Evidenz aktualisieren\n`,
 
-  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n**Produktionsvertrag:** V3\n\n## Phase 0 — Idea Gate\n\n**Status:** OFFEN\n\nErst bei GO startet Phase 1. Angle, Hook-Kandidaten, 3-Sekunden-Proof, Visual-Potential und Score dokumentieren.\n\n## Phase 1 — ChatGPT\n\n**Status:** WARTET AUF IDEA GATE\n\nFertig erst mit Creative Brief, Source Ledger, finalem Script, Visual Strategy, Animation-Plan, Asset-Entscheidung/Manifest, Captions, Plattform-Copy, reel.json, ausführbarem Source, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nVoiceover erzeugen; nur wenn Visual Strategy es verlangt zusätzlich reale Captures/Assets bereitstellen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio/Assets integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render, technische QA und Creative QA.\n\n## Phase 4 — Post Publish Learning\n\n**Status:** WARTET AUF VERÖFFENTLICHUNG\n\nEchte Performance-Daten erfassen, maximal drei Hypothesen ableiten und wiederkehrende Evidenz in \`ki/gehirn/LEARNINGS.md\` überführen.\n`,
+  '06-projektdateien/PHASE-STATUS.md': `# Produktionsstatus — ${title}\n\n**Produktionsvertrag:** V2 + Idea/Learning Gates\n\n## Phase 0 — Idea Gate\n\n**Status:** OFFEN\n\nErst bei GO startet Phase 1. Angle, Hook-Kandidaten, 3-Sekunden-Proof, Visual-Potential und Score dokumentieren.\n\n## Phase 1 — ChatGPT\n\n**Status:** WARTET AUF IDEA GATE\n\nFertig erst mit Creative Brief, Source Ledger, finalem Script, Visual Strategy, Animation-Plan, Asset-Entscheidung/Manifest, Captions, Plattform-Copy, reel.json, ausführbarem Source, Composition und fokussierten Checks.\n\n## Phase 2 — Mensch\n\n**Status:** WARTET AUF PHASE 1\n\nVoiceover erzeugen; nur wenn Visual Strategy es verlangt zusätzlich reale Captures/Assets bereitstellen.\n\n## Phase 3 — Codex / Antigravity\n\n**Status:** WARTET AUF PHASE 2\n\nAudio/Assets integrieren, reales Timing, Tests/TypeScript, Smoke-Review, Final-Render, technische QA und Creative QA.\n\n## Phase 4 — Post Publish Learning\n\n**Status:** WARTET AUF VERÖFFENTLICHUNG\n\nEchte Performance-Daten erfassen, maximal drei Hypothesen ableiten und wiederkehrende Evidenz in \`ki/gehirn/LEARNINGS.md\` überführen.\n`,
 };
 
 for (const [relative, content] of Object.entries(files)) {
   await writeFile(resolve(reelRoot, relative), content, 'utf8');
 }
 
-console.log(`KI-Reel V3 angelegt: ${reelRoot}`);
+console.log(`KI-Reel V2 + Gates angelegt: ${reelRoot}`);
 console.log('Pflicht: node scripts/check-ki-reel-folder-structure.mjs');
 console.log('Phase 0 startet mit Idea Gate — erst bei GO beginnt die eigentliche Produktion.');
