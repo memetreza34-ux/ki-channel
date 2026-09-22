@@ -1,105 +1,148 @@
-# KI Production Reels — Remotion-native Visual Contract
+# KI Production Reels — Source Contract V2
 
-Gilt für **alle** ausführbaren Reel-Sources unter `ki/src/reels/`.
+Gilt für **alle ausführbaren Reel-Sources** unter `ki/src/reels/`.
 
-## Grundregel — maximal Code vor Bild
+Dieser Vertrag beginnt erst, nachdem Story, Fakten und `visual-strategy.md` festgelegt wurden. Source-Code darf diese Entscheidungen nicht nachträglich auf einen bequemeren Remotion-Pfad reduzieren.
 
-Wenn ein visueller Bestandteil hochwertig mit React, SVG, CSS, Canvas, WebGL und Remotion gebaut werden kann, wird er **direkt in Code gebaut** und nicht als gerendertes PNG/JPG aus einer Bild-KI eingebettet.
+## Grundregel — Source setzt die gewählte Bildsprache um
 
-Das gilt nicht nur für UI und technische Grafiken. Ziel ist, **so viel wie möglich vom gesamten sichtbaren Reel Remotion-native zu bauen**, inklusive stilisierter Illustrationen, Hero-Motive, Cover-Kompositionen, Mockups und pseudo-3D-Szenen.
+Die primäre Visual Modality wird **nicht hier erfunden**, sondern kommt aus dem Reel-Paket:
 
-Das betrifft insbesondere:
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+`ki/gehirn/VISUAL_STRATEGY.md` ist dafür autoritativ.
+
+### Was Remotion immer kontrolliert, wenn es sinnvoll ist
+
+Unabhängig von der primären Modality bleiben präzise Informationsschichten möglichst kontrollierbar:
+
+- Header/Zwischenüberschrift
+- Captions
+- exakte Zahlen und Diagramme
+- Pfeile, Fokus, Masken und Zustandsmarkierungen
+- UI-Overlays und kurze Labels
+- zeitliche Zustandswechsel
+- Sprecher-Synchronität
+
+Das bedeutet aber **nicht**, dass jedes Hero-Motiv, jede reale Tool-Demo oder jede räumliche Szene aus Prinzip in Code nachgebaut werden muss.
+
+## `REMOTION_NATIVE`
+
+Diese Modality eignet sich besonders für:
 
 - Icons und Symbole
-- App-, Browser-, Smartphone- und Desktop-UI
+- App-/Browser-/Smartphone-/Desktop-UI, wenn keine reale Capture-Pflicht besteht
 - Buttons, Inputs, Cards, Tabs, Menüs und Dialoge
-- Codefenster, Terminalfenster und Dateibäume
-- Diagramme, Charts, Balken, Kreise und Fortschrittsanzeigen
-- Nodes, Verbindungen, Pfeile, Linien und Prozessgrafiken
-- Timelines, Branches, Commits und Versionsverläufe
-- Tabellen, Badges, Statusanzeigen und Labels
-- abstrakte technische Objekte und einfache 2D-/2.5D-Formen
-- Zustandswechsel, Before/After-Mechaniken und interaktive Abläufe
-- illustrative Hero-Motive und Cover-Kompositionen
-- Geräte, Ordner, Dokumente, Clouds, Server, Datenpakete und ähnliche Erklärobjekte
-- stilisierte Produktdarstellungen, wenn echte Fotorealistik nicht notwendig ist
-- pseudo-3D mit Layering, CSS-Transforms, SVG, Schatten, Gradients und Perspektive
-- visuelle Metaphern wie Wege, Türen, Trichter, Schichten, Container, Netzwerke und Waagen
-- einfache stilisierte Räume, Schreibtische, Bühnen und technische Umgebungen
-- Licht-, Glas-, Material- und Tiefenillusionen, soweit sauber kontrollierbar
+- Code-/Terminalfenster und Dateibäume
+- Diagramme, Charts, Timelines und Prozessgrafiken
+- Nodes, Verbindungen, Pfeile und Datenfluss
+- abstrakte technische Objekte
+- Zustandswechsel / Before-After
+- kontrollierbare 2D-/2.5D-/Three.js-Erklärmechaniken
 
-**Für diese Kategorien sind statische KI-Bilder als Ersatz grundsätzlich nicht erlaubt, wenn der Code-Nachbau technisch und gestalterisch vernünftig möglich ist.**
+Technik-Reihenfolge innerhalb dieser Modality:
 
-## Bevorzugte Technik
-
-Reihenfolge:
-
-1. React-Komponenten für semantische Struktur
-2. SVG für Icons, Illustrationen, Linien, Diagramme, Masken und frei skalierbare Formen
-3. CSS für Layout, Flächen, Schatten, Karten, Geräte-/Fensterrahmen, Perspektive und pseudo-3D
-4. Remotion für Timing, Interpolation, Sequenzen, Zustände, Kamera und Sprecher-Synchronität
+1. React für semantische Struktur
+2. SVG für skalierbare Formen/Illustrationen
+3. CSS für Layout, Flächen, Schatten, Perspektive
+4. Remotion für Timing/Sequenzen/Kamera
 5. Canvas für komplexere 2D-Zeichenlogik
-6. WebGL / Three.js, wenn echte räumliche Tiefe die Aussage verbessert
-7. externes Bild erst als letzte Option
+6. WebGL/Three.js, wenn räumliche Tiefe die Aussage wirklich verbessert
 
-Alle wichtigen visuellen Bestandteile sollen skalierbar, deterministisch und framegenau steuerbar bleiben.
+## `REAL_CAPTURE`
 
-## Wann ein Bild trotzdem sinnvoll ist
+Wenn das tatsächliche Produktverhalten Teil des Beweises ist, darf Source nicht aus Bequemlichkeit eine erfundene UI nachbauen.
 
-Externe oder generierte Bilder sind nur zulässig, wenn die Aussage etwas benötigt, das in Remotion unverhältnismäßig teuer oder qualitativ deutlich schwächer wäre, zum Beispiel:
+Source-Aufgaben:
 
-- echte Fotorealistik
-- komplexe organische Motive
-- reale Menschen/Hände, wenn inhaltlich unvermeidbar
-- ein konkretes reales Produkt, das exakt erkennbar sein muss
-- komplexe physische Materialien/Naturdetails
-- komplexe räumliche 3D-Umgebungen
-- bewusst fotografischer / cinematic Look
+- reale Capture-Datei über Repository-/staticFile-Pfad laden
+- Crop, Zoom, Fokus und Markierungen kontrollieren
+- vertrauliche Bereiche ggf. maskieren
+- präzise Remotion-Overlays darüberlegen
+- Capture-Datum/Produktkontext aus dem Produktionspaket respektieren
 
-Vorher muss geprüft werden, ob eine **stilisierte Remotion-Illustration** die Aussage nicht genauso gut oder besser erklärt.
+Keine Render-Time-Netzwerkaufrufe oder Live-Webseiten.
 
-Auch bei externem Bild gilt: **Text, UI, Pfeile, Zahlen, Diagramme, Labels, Geräte-/Browserrahmen und präzise Zustände nicht in das Bild backen.** Diese Ebenen bleiben Remotion-native.
+## `HYBRID`
 
-## Cover-Regel
+Ein reales/externes räumliches Hero-Motiv darf die Szene tragen, während Remotion die kontrollierbaren Informationsschichten übernimmt.
 
-Cover werden standardmäßig ebenfalls in Remotion gebaut, wenn der Hook als kontrollierte Hero-Komposition mit Typografie, SVG, Devices, UI, Before/After, pseudo-3D und Schatten umsetzbar ist.
+Typisch:
 
-Ein externes Cover-Bild ist nur dann gerechtfertigt, wenn echte Fotografie, ein reales Produkt oder eine komplexe organische Szene notwendig ist.
+- räumliche 3D-/Alltagsszene als Asset
+- darüber Fokus, Labels, Verbindungen, Zustände und Caption
+- Bewegungs-/Kameraeffekte nur soweit sie die Aussage unterstützen
 
-## Medium-Entscheidung pro Visual Beat
+Das Asset darf nicht mit generiertem UI-/Textmüll die kontrollierte Overlay-Ebene ersetzen.
 
-Zusätzlich zu `NEW_BUILD` / `REUSE_EXACT` muss bei der Umsetzung unterschieden werden:
+## `EXTERNAL_STILL_REQUIRED`
 
-- `REMOTION_NATIVE` — vollständig React/SVG/CSS/Canvas/WebGL/Remotion
-- `IMAGE_REQUIRED` — externes Bild ist inhaltlich wirklich erforderlich
-- `HYBRID` — Bild nur für komplexen unvermeidbaren Motivteil; alle steuerbaren Informationsschichten in Remotion
+Wenn die Visual Strategy einen externen Still verlangt:
 
-`REMOTION_NATIVE` ist der Default und soll maximal ausgereizt werden.
+- nur real vorhandene, im Manifest referenzierte Datei verwenden
+- keine Fake-Datei oder Ersatzgrafik erfinden
+- Asset in die bestehende Komposition integrieren
+- notwendige Text-/Datenebenen weiterhin kontrolliert bauen
 
-Wenn `IMAGE_REQUIRED` oder `HYBRID` gewählt wird, muss klar begründbar sein, warum auch eine hochwertige stilisierte Remotion-Version nicht die bessere kontrollierbare Lösung ist.
+Fehlt das Pflichtasset: Phase-3-Stop, kein Karten-Fallback.
 
-## Verbindlicher Creative-Director-Pfad
+## `EXTERNAL_MOTION_REQUIRED`
 
-Ein Production-Reel darf die zentrale Anti-Wiederholungslogik nicht umgehen.
+Für reale/extern erzeugte Motion-Assets:
 
-Zulässig sind nur zwei Wege:
+- nur real vorhandene Datei verwenden
+- Dauer, Framerate/Playback und Crop bewusst behandeln
+- keine Bewegung doppelt dekorativ überanimieren
+- Sprecherbedeutung und entscheidende Motion-Aktion synchronisieren
 
-1. Das Reel entsteht aus `planReelAnimationsFromText` / `prepareReelAnimationProduction` und trägt den daraus erzeugten ProductionPlan, Implementierungsbrief und Visual Fingerprint bis in die Umsetzung.
-2. Eine bewusst handgeschriebene Reel-Szene besitzt ein explizites authored Visual Manifest und muss `assertAuthoredVisualDiversity(...)` bestehen.
+Fehlt das Pflichtasset: Phase-3-Stop.
 
-Für **planbasierte** Reels gilt zusätzlich:
+## REUSE_EXACT / NEW_BUILD
 
-- die konkrete Szenenausgabe läuft standardmäßig über `ProductionSceneRuntimeRenderer`
-- `REUSE_EXACT`/Library-Szenen werden dort über die registrierten content-aware Prototypes aufgelöst
-- `NEW_BUILD` startet dort über den im BuildSpec festgelegten `CreativeRecipeRuntime`
-- `creativeRecipeId` und `runtimeMechanisms` aus dem Implementierungsbrief sind verbindliche Ausgangsgrammatik, keine optionale Deko
-- ein lokales `visualByScene`-Mapping darf den zentralen Renderer nicht ersetzen, nur wenn eine bewusst handgeschriebene Ausnahme mit authored Visual Manifest vorliegt
-- der generische Recipe-Runtime ist ein Implementierungs-Scaffold und **keine automatische Release-Freigabe**; vor `verified` bleibt technischer + manueller Render-Review Pflicht
+Die Visual Strategy bestimmt zuerst Modality und Mechanik. Danach darf Library-Reuse geprüft werden.
 
-Für handgeschriebene Szenen muss pro Szene mindestens festgehalten werden:
+`REUSE_EXACT` nur bei tatsächlichem Fit von:
 
-- eindeutige `sceneId`
-- eindeutige `visualId`
+- Mechanik
+- räumlicher Beziehung
+- Zustandsänderung
+- semantischer Aussage
+- notwendigen Daten-/Textstrukturen
+
+Andere Animation-ID oder anderes Label macht eine Szene nicht automatisch passend oder vielfältig.
+
+Ohne exakten Fit: `NEW_BUILD` innerhalb der gewählten Modality.
+
+## Verbindlicher Creative-Director-/Diversity-Pfad
+
+Production-Reels dürfen die zentrale Anti-Wiederholungslogik nicht umgehen.
+
+Zulässig sind zwei technische Wege:
+
+1. planbasiert über `planReelAnimationsFromText` / `prepareReelAnimationProduction`, wobei ProductionPlan, Implementierungsbrief und Visual Fingerprint bis in die Umsetzung getragen werden
+2. bewusst handgeschriebene Reel-Szene mit explizitem authored Visual Manifest und `assertAuthoredVisualDiversity(...)`
+
+Diese technische Diversity-Prüfung ergänzt die V2-Visual-Strategy; sie ersetzt sie nicht.
+
+### Für planbasierte Reels
+
+- konkrete Szenenausgabe standardmäßig über `ProductionSceneRuntimeRenderer`
+- `REUSE_EXACT`/Library-Szenen über registrierte content-aware Prototypes
+- `NEW_BUILD` startet über den im BuildSpec vorgesehenen `CreativeRecipeRuntime`, sofern die gewählte Modality Remotion-native ist
+- `creativeRecipeId` und `runtimeMechanisms` sind technische Ausgangsgrammatik, keine kreative Entscheidung vor Story/Visual Strategy
+- ein lokales `visualByScene`-Mapping ersetzt den zentralen Renderer nur bei bewusst handgeschriebener Ausnahme mit authored Visual Manifest
+- generischer Recipe-Runtime ist Implementierungs-Scaffold, keine automatische Release-Freigabe
+
+### Für handgeschriebene Szenen
+
+Pro Szene mindestens festhalten:
+
+- `sceneId`
+- `visualId`
 - `primaryPrimitive`
 - `cameraMotion`
 - `depthStyle`
@@ -110,61 +153,75 @@ Für handgeschriebene Szenen muss pro Szene mindestens festgehalten werden:
 - `layoutFamily`
 - `motionSignature`
 
-Andere Animation-IDs oder andere Texte gelten **nicht** als ausreichende visuelle Variation.
-
-Blockierend sind insbesondere:
+Blockierend bzw. stark zu prüfen:
 
 - vollständiges Visual zweimal im selben Reel
-- gleiche Layout-Familie direkt hintereinander
-- gleiche Motion-Signature direkt hintereinander
-- visuelle Fingerprint-Ähnlichkeit über dem Hard-Limit
+- gleiche Layout-Familie direkt hintereinander ohne semantische Begründung
+- gleiche Motion-Signature direkt hintereinander ohne Grund
+- Visual-Fingerprint-Ähnlichkeit über Hard-Limit
 - zu geringe Hauptprimitive-Vielfalt bei längeren Reels
-- Card-Dominanz trotz vorhandener besserer Erklärmechanik
+- Card-Dominanz trotz besserer Mechanik
 
-Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal und müssen bewusst begründet oder verbessert werden. Solche weichen Diversity-Warnungen blockieren die Implementierung nicht automatisch, dürfen aber vor finaler Freigabe nicht ignoriert werden.
+Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal.
 
-Die alte `ki/src/motion-system/`-Welt darf für Preview/Legacy erhalten bleiben, ist aber **kein alternativer Produktionsweg**, um die aktuelle Creative-Director-/Diversity-Prüfung zu umgehen.
+Die alte `ki/src/motion-system/`-Welt darf für Preview/Legacy bestehen, ist aber kein alternativer Produktionsweg zum Umgehen aktueller Contracts.
+
+## Anti-Karten-Grammatik im Source
+
+Cards/Panels sind erlaubt, wenn sie semantisch tatsächlich UI, Dokument, Nachricht, Datei, Datensatz oder Token sind.
+
+Nicht zulässig als bequemer Ersatz für geplante Prozess-/Objekt-/Capture-/Hybridmechanik.
+
+Wenn `visual-strategy.md` beispielsweise `REAL_CAPTURE` oder `HYBRID` verlangt, darf Source nicht einfach eine Card-Version desselben Gedankens bauen.
 
 ## Caption-Position ist Source-Vertrag
 
 Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
 
-- neue Reel-Sources müssen `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE` aus `../captionSafe` verwenden
-- Standard: **`bottom: 520px`**
-- horizontaler Sicherheitsabstand: **`104px` links/rechts**
-- bevorzugte maximale Caption-Breite: **`820px`**
-- sichtbare Caption normalerweise 4–6 Wörter pro Sinnblock, maximal 2 Zeilen
-- die letzten ungefähr **420px** unten nicht für Caption oder kritische Information verwenden
-- Bereich 420–500px vom unteren Rand nur als Puffer behandeln
-- Visuals so komponieren, dass sie nicht mit dem höheren Caption-Block konkurrieren
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
-- keine Altwerte wie 264/270/360/440/460px als neue Caption-Position hart codieren
-- wenn Platz fehlt, Visual ändern; Caption nicht in Richtung Plattform-UI drücken
+- neue Reel-Sources verwenden `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE`
+- Standard: `bottom: 520px`
+- horizontaler Sicherheitsabstand: `104px`
+- bevorzugte maximale Caption-Breite: `820px`
+- normalerweise 4–6 Wörter pro sichtbarem Sinnblock, maximal 2 Zeilen
+- letzte ungefähr 420px unten nicht für kritische Information
+- Bereich 420–500px nur als Puffer
+- bedeutungstragende Hauptvisuals möglichst bis ungefähr `y≈1240–1280` abschließen
+- keine Altwerte als neue Caption-Position hart codieren
+- wenn Platz fehlt, Visual ändern; Caption nicht Richtung Plattform-UI drücken
 
-Eine Caption-Positionsänderung ist ein Source-Change und verlangt einen neuen Render plus Smartphone-/Feed-Review. Ein alter MP4 darf den neuen Stand nicht freigeben.
+Eine Caption-Positionsänderung verlangt neuen Render + Smartphone-/Feed-Review.
+
+## Motion-Regeln
+
+- deterministisch
+- kein `Math.random()` im Render
+- keine Render-Time-Netzwerkaufrufe/Downloads
+- direkte Frame-Seeks müssen funktionieren
+- Hard Cut ist Standard
+- Transition nur bei echter semantischer Kontinuität
+- eine dominante Bewegung pro Beat, maximal drei starke gleichzeitige Bewegungen
+- Easing passend zur Bewegung; lineare Progression nur bei semantisch linearer Bewegung
+- Gruppen nicht blind gleichzeitig einblenden
+- Endzustand ausreichend halten
+- keine Partikel/Glow/Kamerafahrt als Ersatz für fehlende Erklärung
 
 ## Qualitätsregeln
 
-- keine Screenshot-Optik, wenn dieselbe UI sauber nativ nachgebaut werden kann
-- keine zufälligen AI-generierten Symbole oder UI-Texte
-- keine Bitmap-Icons, wenn SVG möglich ist
-- keine KI-generierten Illustrationen aus Bequemlichkeit, wenn eine gute Code-Illustration möglich ist
+- keine Fake-UI, wenn reale UI laut Visual Strategy Beweis ist
+- keine zufälligen AI-Symbole oder generierten UI-Texte
+- keine Bitmap-Icons, wenn skalierbares SVG die bessere kontrollierbare Ebene ist
 - keine unnötigen Asset-Abhängigkeiten
-- keine visuelle Deko ohne erklärende Funktion
+- keine Deko ohne Erklärfunktion
 - Smartphone-Lesbarkeit vor Detailreichtum
 - kritische Labels kurz und groß genug
-- Code-Visuals dürfen nicht wie PowerPoint aussehen: Hierarchie, Tiefe, Schatten, Perspektive, Layering und Objektgröße aktiv gestalten
-- Sprecherbedeutung → sichtbarer Zustand → Animation bleiben framegenau synchron
-- Caption-Safe-Position und alle übergeordneten Reel-Verträge bleiben vollständig gültig
+- Source respektiert `source-ledger.md`: keine ungrounded sichtbaren Werte
+- Sprecherbedeutung → sichtbarer Zustand → Caption bleiben framegenau synchron
+- aktueller Render muss exakt zum aktuellen Source-Stand gehören
 
-## Entscheidungsfrage
+## Stop-Regel
 
-Vor jedem Bildasset zuerst fragen:
+Wenn Source nur deshalb von der geplanten Modality abweichen soll, weil eine andere Umsetzung technisch schneller ist:
 
-> **Kann ich das als hochwertige stilisierte Illustration, pseudo-3D-Szene, SVG, UI, Objektkomposition oder Motion-Graphic direkt in Remotion bauen?**
+> **nicht still ändern**.
 
-Wenn **ja** → in Remotion bauen.
-
-Wenn **teilweise** → Hybrid, aber nur den unvermeidbaren externen Motivteil als Bild nutzen.
-
-Wenn **nein** → Bild konkret begründen.
+Zur Visual Strategy zurückkehren und die Abweichung fachlich/visuell begründen. Bequemlichkeit ist kein ausreichender Grund.
