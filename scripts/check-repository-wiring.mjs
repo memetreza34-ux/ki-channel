@@ -128,14 +128,14 @@ if (ki) {
 if (!vitest.includes("'ki/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts muss Tests unter ki/** einschließen.');
 if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vitest.config.ts enthält wieder channels/**.');
 
-requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','PHASE 1 — ChatGPT','PHASE 2 — Mensch','PHASE 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
-requireMarkers('README.md', rootReadme, ['REPO-STATE.md','ki/plattformen/','YouTube Shorts','platform-copy.md']);
+requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','### Phase 1 — ChatGPT','### Phase 2 — Mensch','### Phase 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
+requireMarkers('README.md', rootReadme, ['REPO-STATE.md','plattformen/','YouTube Shorts','platform-copy.md']);
 requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
-requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','nicht von Null neu bauen','platform-copy.md']);
-requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Phase 2 ist nur das menschliche Voiceover','REMOTION_ANIMATION_CAPABILITIES.md']);
-requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig']);
-requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
-requireMarkers('ki/src/longform/AGENTS.md', longformAgents, ['Verbindlicher Creative-Director-Pfad','visualProfiles.ts','assertAuthoredVisualDiversity','Card-/Panel-/AppWindow-/Chip-Grammatiken','keine lokale Kopie von Meaning','scripts/check-production-visual-contracts.mjs']);
+requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','verwendet vorhandene Phase-1-Source','platform-copy.md']);
+requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Immer echtes Voiceover.','REMOTION_ANIMATION_CAPABILITIES.md']);
+requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Script-/Plan-only Paket ist nicht Phase-1-fertig.']);
+requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-/Diversity-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
+requireMarkers('ki/src/longform/AGENTS.md', longformAgents, ['Verbindlicher Creative-Director-Pfad','visualProfiles.ts','assertAuthoredVisualDiversity','Card-/Panel-/AppWindow-/Chip-Grammatiken','keine lokale Kopie der gesamten Meaning→Props-Pipeline bauen','scripts/check-production-visual-contracts.mjs']);
 requireMarkers('ki/tsconfig.motion.json', motionTsconfig, ['src/longform/**/*.ts','src/longform/**/*.tsx']);
 requireMarkers('REMOTION_ANIMATION_CAPABILITIES.md', remotionCapabilities, ['Visual Fingerprint','Lottie','Rive','Three','Card']);
 requireMarkers('creativeRecipeCatalog.ts', creativeRecipeCatalog, ['CREATIVE_RECIPE_IDS','runtimeMechanisms','object-morph-stage','depth-corridor','ui-state-machine']);
@@ -158,10 +158,10 @@ requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produk
 requireMarkers('GEMINI.md', gemini, ['REPO-STATE.md','Audio darf in Phase 1 fehlen','Nicht von Null neu bauen','PHASE 2 AUDIO FEHLT']);
 requireMarkers('ki/gehirn/MASTER.md', master, ['ÜBERSCHRIFT','ANIMATIONSTEXT','CAPTION','Phase 1 — ChatGPT','PLATTFORMEN.md']);
 requireMarkers('KANAL.md', channel, ['YouTube Shorts','Instagram Reels','TikTok','Facebook Reels','PLATTFORMEN.md']);
-requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','alles außer echtem Audio','nur Voiceover','PHASE 2 AUDIO FEHLT','platform-copy.md']);
-requireMarkers('REELS.md', reels, ['Text-Hierarchie — keine Dopplung','niemals interner `goal`','BILDER NICHT ERFORDERLICH']);
+requireMarkers('PRODUKTIONSABLAUF.md', production, ['VOICEOVER-ZUM-KOPIEREN.txt','ausführbare Code-Grundlage','nur noch das Voiceover erzeugen','PHASE 2 AUDIO FEHLT','platform-copy.md']);
+requireMarkers('REELS.md', reels, ['## Text-Hierarchie','keine internen Planner-/Goal-/Debug-Texte','EXTERNAL_STILL_REQUIRED']);
 requireMarkers('PLATTFORMEN.md', platforms, ['Content einmal, Publishing mehrfach','03-caption/platform-copy.md','YouTube Shorts','YouTube Longform']);
-requireMarkers('BILDSTIL.md', imageStyle, ['Prompt wird standardmäßig **auf Englisch**','REMOTION WILL ADD','Qualitätsgate']);
+requireMarkers('BILDSTIL.md', imageStyle, ['standardmäßig auf **Englisch** geschrieben','REMOTION WILL ADD','Qualitätsgate']);
 requireMarkers('YouTube README', youtubeReadme, ['YouTube — Kanalstruktur','SHORTS.md','LONGFORM.md','THUMBNAILS.md','UPLOAD.md']);
 requireMarkers('YouTube SHORTS', youtubeShorts, ['03-caption/platform-copy.md','kein eigenes Produktionsprojekt','UPLOAD.md']);
 requireMarkers('YouTube LONGFORM', youtubeLongform, ['eigenes Content-Format','nicht automatisch aus einem Reel verlängert','THUMBNAILS.md']);

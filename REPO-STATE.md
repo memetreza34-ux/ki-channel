@@ -25,6 +25,7 @@ Bei KI-Kanal-Arbeit gilt:
    - Story/Hook → `ki/gehirn/STORY_RETENTION.md`
    - Fakten/Quellen → `ki/gehirn/FAKTENQUELLEN.md`
    - Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
+   - Remotion-Implementierung/Render → `ki/skills/remotion-production-orchestration/SKILL.md` + `ki/gehirn/WERKZEUGE.md`
    - Creative Review → `ki/gehirn/CREATIVE_QA.md`
    - YouTube Longform → `ki/youtube-longform/AGENTS.md`
    - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
@@ -184,15 +185,18 @@ Wenn kein externes Medium nötig ist, bleibt Phase 2 weiterhin Voiceover-only.
 reale Medien prüfen
 → Audio analysieren
 → semantische Timeline synchronisieren
-→ technische Checks
+→ Remotion-Readiness
 → Smoke-Review
 → Final-Render
 → technische Post-Render-QA
 → Creative QA
+→ unabhängiger Release-Review
 → Fakten-Rechecks
 ```
 
 Codex/Antigravity bauen ein Phase-1-fertiges Reel nicht aus Bequemlichkeit neu von Null.
+
+Für neue generische Phase-3-Reels gilt `remotion-production-builder`; der finale Master wird anschließend unabhängig durch `remotion-release-reviewer` geprüft.
 
 Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
 
@@ -225,7 +229,28 @@ Verbindliche Modalities:
 
 **Keine Modality ist pauschal Default oder Premium. Beste Erklärung gewinnt.**
 
-## 8. Verbindliche visuelle Identität
+## 8. Remotion-Produktionswahrheit
+
+Für echte Production-Compositions:
+
+- `ki/src/ProductionRoot.tsx` ist die kanonische Production-Registrierung.
+- `ki/src/production-entry.tsx` registriert ausschließlich `ProductionRoot`.
+- `ki/src/index.ts` / `ki/src/Root.tsx` dienen Studio/Preview und dürfen `MotionPreviewRoot` enthalten.
+- `MotionPreviewRoot` darf niemals in den echten Production-Entry gelangen.
+- alle `remotion`- und `@remotion/*`-Pakete bleiben auf exakt derselben Version.
+- neue APIs aus Dokumentation/Skills werden gegen die im Repo installierte Version geprüft.
+- Render-Timing ist framebasiert; kein CSS-Animationstiming und kein `Math.random()` im Production-Render.
+
+Vor dem ersten echten Produktions-Test und vor relevanten Remotion-Releases:
+
+```bash
+node scripts/verify-remotion-integration.mjs
+node scripts/run-remotion-readiness.mjs
+```
+
+`REMOTION READINESS: PASS` ist das technische Start-Gate für den echten End-to-End-Test. Es ersetzt nicht den späteren visuellen Review.
+
+## 9. Verbindliche visuelle Identität
 
 - Short-Form standardmäßig 1080 × 1920 / 30 FPS
 - Longform aktuell 1920 × 1080 / 30 FPS
@@ -254,7 +279,7 @@ Richtwerte für neue Reels:
 
 Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/VISUAL_STRATEGY.md`, `ki/BILDSTIL.md`.
 
-## 9. Story-/Retention-Qualität
+## 10. Story-/Retention-Qualität
 
 `ki/gehirn/STORY_RETENTION.md` ist vor Source verbindlich.
 
@@ -270,7 +295,7 @@ Neue Reels brauchen:
 
 50–60 Sekunden sind kein Laufzeitziel. Ein Reel endet, wenn sein Versprechen erfüllt ist.
 
-## 10. Fakten-/Quellen-Qualität
+## 11. Fakten-/Quellen-Qualität
 
 `ki/gehirn/FAKTENQUELLEN.md` ist verbindlich.
 
@@ -286,7 +311,7 @@ Aktuelle oder messbare Aussagen werden in `source-ledger.md` geerdet, insbesonde
 
 Claims mit Recheck-Pflicht werden vor Veröffentlichung erneut geprüft.
 
-## 11. QA — technisch UND kreativ
+## 12. QA — technisch UND kreativ
 
 Statusbegriffe niemals vermischen:
 
@@ -304,6 +329,7 @@ veröffentlicht
 Technische QA umfasst u. a.:
 
 - Strukturvertrag
+- Remotion-Integration/Versionsgleichstand
 - Tests/TypeScript
 - Asset-Pfade
 - Audio-Sync
@@ -327,13 +353,16 @@ Verbindlich:
 - `ki/gehirn/POST_RENDER_REVIEW.md`
 - `ki/gehirn/CREATIVE_QA.md`
 - bei V2-Reels `06-projektdateien/creative-review.md`
+- finaler unabhängiger `remotion-release-reviewer`
 
 Ein technisch gültiges MP4 ist nicht automatisch kreativ freigegeben.
 
-## 12. Bekannte externe Einschränkungen
+## 13. CI- und Wahrheitspflicht
 
-- GitHub Actions ist für dieses private Repository derzeit auf Konto-/Billing-/Runner-Ebene kein verlässlicher aktueller Qualitätsbeweis. Wenn kein Run entsteht, lokale/ausführbare Checks nicht als ersetzt betrachten.
-- Nur tatsächlich ausgeführte Tests, Typechecks, Renders und Reviews dürfen als bestanden gemeldet werden.
-- Fehlende externe Medien, Audio oder Lockfiles niemals halluzinieren.
+GitHub Actions ist ein zusätzlicher reproduzierbarer Qualitätsbeweis, wenn ein Run tatsächlich ausgeführt wurde. Pull Requests gegen `main`, die relevante Repo-/Remotion-Dateien ändern, müssen die `Repository and Content System Checks` bestehen.
 
-Diese Betriebsgrenzen sind keine Erlaubnis, Struktur-, Test-, Story-, Fakten- oder Qualitätsregeln zu umgehen.
+CI ersetzt keinen visuellen oder akustischen Human-/Agent-Review des finalen Videos. Umgekehrt darf ein nicht ausgeführter CI-Run niemals als bestanden behauptet werden.
+
+Nur tatsächlich ausgeführte Tests, Typechecks, Renders und Reviews dürfen als bestanden gemeldet werden.
+
+Fehlende externe Medien, Audio oder Lockfiles niemals halluzinieren.

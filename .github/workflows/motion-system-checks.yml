@@ -7,6 +7,8 @@ on:
     paths:
       - 'ki/**'
       - 'scripts/**'
+      - '.agents/**'
+      - '.claude/**'
       - 'package.json'
       - 'tsconfig*.json'
       - 'vitest.config.ts'
@@ -40,7 +42,7 @@ jobs:
   pull-request-verify:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,8 +55,8 @@ jobs:
       - name: Install canonical workspaces without writing a lockfile
         run: npm install $NPM_INSTALL_FLAGS
 
-      - name: Repository, TypeScript, tests and runtime gates
-        run: npm run repo:verify
+      - name: Full Remotion production readiness
+        run: node scripts/run-remotion-readiness.mjs
 
   manual-release:
     if: github.event_name == 'workflow_dispatch'
@@ -100,6 +102,15 @@ jobs:
         run: |
           set -o pipefail
           npm install $NPM_INSTALL_FLAGS 2>&1 | tee ci-logs/install.log
+
+      - name: Verify Remotion integration
+        id: remotion_integration
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node scripts/verify-remotion-integration.mjs 2>&1 | tee ci-logs/remotion-integration.log
+          npx --no-install remotion versions 2>&1 | tee ci-logs/remotion-versions.log
 
       - name: Validate reel package structure
         id: structure
@@ -162,6 +173,7 @@ jobs:
           (
             steps.wiring.outcome == 'failure' ||
             steps.install.outcome == 'failure' ||
+            steps.remotion_integration.outcome == 'failure' ||
             steps.structure.outcome == 'failure' ||
             steps.motion_verify.outcome == 'failure' ||
             steps.content_release.outcome == 'failure'

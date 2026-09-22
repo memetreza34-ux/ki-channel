@@ -20,19 +20,46 @@ Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionss
 | 7 | Bildaufbau | `shot-composition` | Raster, sichere Zonen, Objektbeziehungen, Blickführung |
 | 8 | Mechanik wählen | `REMOTION_ANIMATION_CAPABILITIES.md` | passende Technik erst nach der Visual Strategy |
 | 8a | Technik ansehen | `npm run motion-demos:list` | Beispiele für Morph, Pfad, Prozess und Übergänge |
-| 9 | API nachschlagen | `remotion-docs` | aktuelle Signaturen statt Erinnerung |
+| 8b | Remotion-Ausführung starten | `remotion-production-orchestration` | verbindlicher Pfad für Source, Studio, Captions, Audio, Production-Root und Render |
+| 9 | Remotion-Best-Practices laden | `remotion-best-practices` | offizieller Router für die aktuelle Remotion-Aufgabe |
+| 9a | React-Markup | `remotion-markup` | framebasierte React-/SVG-/3D-/Media-Umsetzung |
+| 9b | Studio-Editierbarkeit | `remotion-interactivity` | nur wenn interaktive Studio-Struktur sinnvoll ist |
+| 9c | Captions | `remotion-captions` | offizielles Caption-Datenmodell und Caption-Pipeline |
+| 9d | Preview | `remotion-studio` | Studio über `ki/src/index.ts`, niemals als Production-Root |
+| 9e | API nachschlagen | `remotion-docs` | aktuelle Signaturen statt Erinnerung; gegen Repo-Version prüfen |
 | 10 | Bewegung umsetzen | `animation-principles` + `BEWEGUNG.md` | Kurve, Dauer, Staffelung |
 | 11 | Farbe über Zeit | `color-motion` | Palette und Zustandswechsel |
 | 12 | Rhythmus zum Ton | `beat-sync-editing` | Schnitte/Akzente am echten Voiceover |
 | 13 | Grounding prüfen | `content-grounding-test` | Sprecher → Meaning → Beat → Modality → Render-Props |
-| 14 | Rendern | `remotion-render` | Export und technische Kontrolle |
+| 13a | Remotion-Readiness | `node scripts/run-remotion-readiness.mjs` | Paketversionen, Root-Isolation, Repo-Tests, Production-Verträge und Motion-Tests |
+| 14 | Rendern | `remotion-render` | Production-Export/Stills nach bestandenem Readiness-Gate |
 | 15 | Technischer Review | `POST_RENDER_REVIEW.md` | Kollisionen, Safe-Zones, Lesbarkeit, Renderfehler |
 | 16 | Creative Review | `CREATIVE_QA.md` | Hook, Tempo, Kartenlastigkeit, Storytelling, Smartphone-Eindruck |
+| 16a | Unabhängiger Release-Gate | `remotion-release-reviewer` | finales MP4/Smoke-Frames/Audio/Creative-QA unabhängig prüfen |
 | 17 | Nach Veröffentlichung lernen | `PERFORMANCE_LEARNING.md` | echte Retention-/Watch-/Action-Signale diagnostizieren und kontrollierte Tests ableiten |
 
-**Schritt 16 ist ein echtes Stop-Gate.** Technisch fehlerfrei reicht nicht.
+**Schritt 16/16a ist ein echtes Stop-Gate.** Technisch fehlerfrei reicht nicht.
 
 Schritt 17 ist kein Release-Gate. Er verbessert zukünftige Themen-, Hook- und Visual-Entscheidungen anhand realer Kanal-Daten.
+
+## Offizielle Remotion-Skills
+
+Die Remotion Agent Skills sind kein Ersatz für die Repo-Verträge. Sie werden durch `remotion-production-orchestration` passend zur Aufgabe geroutet.
+
+Wichtige Basis-Skills:
+
+- `remotion-best-practices`
+- `remotion-markup`
+- `remotion-interactivity`
+- `remotion-captions`
+- `remotion-studio`
+- `remotion-render`
+- `remotion-docs`
+- `remotion-upgrade` — nur für einen bewusst gestarteten Upgrade-Schritt
+- `remotion-multimedia` — nur bei Media-Analyse/Trim/Crop/Metadaten
+- `remotion-maps` — nur bei Karten-/Geo-Szenen
+
+**Versionsregel:** Die im Repo installierte Remotion-Version ist die technische Baseline. Neuere API-Beispiele aus Skills/Dokumentation erst übernehmen, wenn sie für diese Version verifiziert wurden.
 
 ## Technik-Demos
 
@@ -49,9 +76,24 @@ Demos sind keine automatische Produktionswahl. Erst Aussage, Beat und Modality b
 | Agent | Wann |
 |---|---|
 | `content-test-runner` | Grounding-Tests diagnostizieren, bevor gerendert wird |
-| `context-overload-reel-builder` | nur für den dafür freigegebenen reel-spezifischen Phase-3-Fall |
+| `remotion-production-builder` | generische Phase-3-Assembly: echtes Audio/Assets → Timeline → Smoke → Master |
+| `remotion-release-reviewer` | unabhängiger finaler PASS/FAIL-Review; prüft, baut aber nicht selbst um |
+| `context-overload-reel-builder` | nur für den dafür freigegebenen reel-spezifischen Legacy-/Spezialfall |
+
+Für neue echte Reel-Tests ist `remotion-production-builder` der generische Phase-3-Agent. Reel-spezifische Builder werden nur verwendet, wenn ein bestehender Produktionsvertrag sie ausdrücklich verlangt.
 
 Agenten starten nur, wenn der Schritt sie wirklich verlangt.
+
+## Remotion-Preflight
+
+Vor einem echten End-to-End-Test:
+
+```bash
+node scripts/verify-remotion-integration.mjs
+node scripts/run-remotion-readiness.mjs
+```
+
+Erst bei `REMOTION READINESS: PASS` beginnt der echte Produktions-Test.
 
 ## Häufigste Fehler
 
@@ -76,14 +118,24 @@ Remotion ist stark für kontrollierbare Erklärlogik. Es ist aber nicht automati
 
 Wenn reale UI, räumliche Szene, Hybrid oder externes Motion-Asset die Aussage klarer macht, entscheidet `VISUAL_STRATEGY.md` entsprechend.
 
-### 4. Mehr Technik bauen, obwohl die Story schwach ist
+### 4. Studio und Production vermischen
+
+`ki/src/index.ts`/`Root.tsx` darf Preview-Komponenten enthalten. Echte Exporte laufen über `ki/src/production-entry.tsx` und `ProductionRoot.tsx`. `MotionPreviewRoot` gehört niemals in einen Production-Render.
+
+### 5. CSS-Motion statt Remotion-Timing
+
+CSS-`transition`, CSS-`animation` und `@keyframes` sind kein verlässlicher Remotion-Timeline-Ersatz. Bewegungen werden framebasiert mit Remotion bzw. den Repo-Easing-Helfern gesteuert.
+
+### 6. Mehr Technik bauen, obwohl die Story schwach ist
 
 Wenn Hook, Leerlauf oder visuelle Wiederholung das Problem sind, zuerst `STORY_RETENTION.md` und `CREATIVE_QA.md` anwenden — **nicht** die Animation Library erweitern.
 
-### 5. Auf einen einzelnen Upload überreagieren
+### 7. Auf einen einzelnen Upload überreagieren
 
 Performance-Daten sind wertvoll, aber eine einzelne Veröffentlichung ist kein neuer Kanalvertrag. `PERFORMANCE_LEARNING.md` trennt Diagnose von vorschnellen globalen Regeländerungen.
 
 ## Prüfung
 
 `ki/src/motion/__tests__/werkzeuge.test.ts` hält die Tabelle ehrlich: installierte Skills und Agenten müssen eingeordnet sein; referenzierte Gehirn-Dokumente müssen existieren.
+
+Zusätzlich prüft `scripts/verify-remotion-integration.mjs` die Remotion-spezifische Verdrahtung und `scripts/run-remotion-readiness.mjs` führt das vollständige Pre-Test-Gate aus.

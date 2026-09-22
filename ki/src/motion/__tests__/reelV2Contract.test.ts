@@ -47,17 +47,19 @@ afterEach(() => {
 });
 
 describe('V2 reel scaffold and structure contract', () => {
-  it('creates creative, grounding and visual-strategy artifacts and passes while Phase 1 is open', () => {
+  it('creates idea, creative, grounding, visual-strategy, review and learning artifacts and passes while production is open', () => {
     const root = makeRoot();
     const reelRoot = scaffoldReel(root);
     const projectRoot = resolve(reelRoot, '06-projektdateien');
 
     for (const file of [
       'production-contract-v2.json',
+      'idea-evaluation.md',
       'creative-brief.md',
       'source-ledger.md',
       'visual-strategy.md',
       'creative-review.md',
+      'performance-review.md',
       'PHASE-STATUS.md',
     ]) {
       expect(existsSync(resolve(projectRoot, file)), file).toBe(true);
@@ -67,9 +69,24 @@ describe('V2 reel scaffold and structure contract', () => {
 
     const contract = JSON.parse(
       readFileSync(resolve(projectRoot, 'production-contract-v2.json'), 'utf8'),
-    ) as {version: number; visualModalities: string[]};
+    ) as {
+      version: number;
+      preProductionRequiredArtifacts: string[];
+      phase1RequiredArtifacts: string[];
+      postPublishArtifacts: string[];
+      visualModalities: string[];
+    };
 
     expect(contract.version).toBe(2);
+    expect(contract.preProductionRequiredArtifacts).toContain('idea-evaluation.md');
+    expect(contract.phase1RequiredArtifacts).toEqual(expect.arrayContaining([
+      'creative-brief.md',
+      'source-ledger.md',
+      'visual-strategy.md',
+      'reel.json',
+      'animation-plan.md',
+    ]));
+    expect(contract.postPublishArtifacts).toContain('performance-review.md');
     expect(contract.visualModalities).toEqual(expect.arrayContaining([
       'REMOTION_NATIVE',
       'REAL_CAPTURE',
@@ -94,8 +111,8 @@ describe('V2 reel scaffold and structure contract', () => {
     const reelRoot = scaffoldReel(root);
     const phasePath = resolve(reelRoot, '06-projektdateien/PHASE-STATUS.md');
     const phase = readFileSync(phasePath, 'utf8').replace(
-      '**Status:** OFFEN',
-      '**Status:** FERTIG',
+      '## Phase 1 — ChatGPT\n\n**Status:** WARTET AUF IDEA GATE',
+      '## Phase 1 — ChatGPT\n\n**Status:** FERTIG',
     );
     writeFileSync(phasePath, phase, 'utf8');
 
@@ -113,6 +130,16 @@ describe('V2 reel scaffold and structure contract', () => {
     expect(check.stderr).toContain('voiceover.md fehlt');
     expect(check.stderr).toContain('subtitle-cues.json fehlt');
     expect(check.stderr).toContain('Datei steht aber noch auf OFFEN');
+  });
+
+  it('keeps Phase 0 and Phase 1 as separate statuses', () => {
+    const root = makeRoot();
+    const reelRoot = scaffoldReel(root);
+    const phasePath = resolve(reelRoot, '06-projektdateien/PHASE-STATUS.md');
+    const phase = readFileSync(phasePath, 'utf8');
+
+    expect(phase).toContain('## Phase 0 — Idea Gate\n\n**Status:** OFFEN');
+    expect(phase).toContain('## Phase 1 — ChatGPT\n\n**Status:** WARTET AUF IDEA GATE');
   });
 
   it('refuses Phase 3 FERTIG without a PASS creative review, real voiceover and resolved required assets', () => {
