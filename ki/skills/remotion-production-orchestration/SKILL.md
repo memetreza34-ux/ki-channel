@@ -87,13 +87,13 @@ linear verteilen.
 Standard:
 
 ```bash
-npm run remotion:studio
+npx --no-install remotion studio ki/src/index.ts --no-open
 ```
 
 Wenn File-Watcher-Limits auftreten:
 
 ```bash
-npm run remotion:studio:poll
+npx --no-install remotion studio ki/src/index.ts --no-open --webpack-poll 1000
 ```
 
 Studio ist fuer Preview und visuelle Inspektion. Ein Studio-Eindruck ersetzt
@@ -119,16 +119,17 @@ exaktem Fit. Sonst `NEW_BUILD`.
 Vor Render:
 
 ```bash
-npm run remotion:integration-check
+node scripts/verify-remotion-integration.mjs
 ```
 
-Der Check muss mindestens sichern:
+Der Check sichert mindestens:
 
 - alle `remotion` / `@remotion/*` Pakete sind versionsgleich
 - Studio- und Production-Entry existieren und sind getrennt
 - ProductionRoot existiert
 - Remotion-Skill/Agent-Routing ist vorhanden
-- Studio-/Readiness-Scripts existieren
+- deterministische Production-Source
+- Readiness-Runner ist verdrahtet
 
 ## Phase-3-Ausfuehrung
 
@@ -136,7 +137,7 @@ Der Check muss mindestens sichern:
 2. Audio-Dauer/Pausen/Phrasen analysieren.
 3. Timeline an reale Sprache koppeln.
 4. Captions gegen finales Audio ausrichten.
-5. `npm run remotion:readiness` ausfuehren.
+5. `node scripts/run-remotion-readiness.mjs` ausfuehren.
 6. relevante Smoke-Stills rendern und **ansehen**.
 7. sichtbare Fehler an der Source beheben.
 8. finales MP4 ueber Production-Entry rendern.
@@ -164,5 +165,5 @@ Remotion nicht nebenbei aktualisieren. Bei einem Upgrade:
 
 1. `remotion-upgrade` anwenden.
 2. alle `remotion` und `@remotion/*` Pakete auf **exakt dieselbe** Version bringen.
-3. `npx remotion versions` pruefen.
+3. `npx --no-install remotion versions` pruefen.
 4. TypeScript, Tests, Readiness, Smoke-Render und finalen Review erneut ausfuehren.
