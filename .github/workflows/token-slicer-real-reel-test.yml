@@ -91,7 +91,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add "$REEL_ROOT/01-script-audio/voiceover.mp3" "$REEL_ROOT/05-export/token-slicer.mp4" "$REEL_ROOT/05-export/voiceover-duration.txt"
+          git add -f "$REEL_ROOT/01-script-audio/voiceover.mp3" "$REEL_ROOT/05-export/token-slicer.mp4" "$REEL_ROOT/05-export/voiceover-duration.txt"
           if git diff --cached --quiet; then
             echo 'Rendered media already persisted.'
           else
