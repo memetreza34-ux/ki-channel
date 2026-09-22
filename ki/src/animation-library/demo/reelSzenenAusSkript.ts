@@ -5,21 +5,22 @@ import {REEL_CUES, REEL_LAENGE_IN_FRAMES} from './reelSkript';
  *
  * Jede Szene verweist auf die Cues, die sie traegt. Ihre Dauer ergibt sich aus
  * deren Timing - wer den Sprechertext aendert, aendert automatisch die Szene.
+ * Die Mechaniken sind bewusst objekt-/prozessbasiert statt eine Folge von
+ * Textkarten zu sein.
  */
 
 export type SzenenMechanik =
-  | 'frage'
-  | 'antwort-schnell'
-  | 'erfunden'
-  | 'kein-suchen'
-  | 'saeulen'
-  | 'wahl'
-  | 'schleife'
-  | 'kein-pruefen'
-  | 'muster'
-  | 'gleich-fluessig'
-  | 'entwurf'
-  | 'pruefen';
+  | 'fake-source-hook'
+  | 'search-vs-generate'
+  | 'token-stream'
+  | 'probability-field'
+  | 'sampling'
+  | 'verification-gate'
+  | 'same-fluency'
+  | 'grounding-tools'
+  | 'tool-limits'
+  | 'manual-check'
+  | 'draft-vs-proof';
 
 type SzenenEntwurf = {
   id: string;
@@ -30,18 +31,17 @@ type SzenenEntwurf = {
 };
 
 const ENTWURF: readonly SzenenEntwurf[] = [
-  {id: 's01', cues: [0, 0], ueberschrift: 'Du fragst etwas', mechanik: 'frage'},
-  {id: 's02', cues: [1, 1], ueberschrift: 'Die Antwort kommt sofort', mechanik: 'antwort-schnell'},
-  {id: 's03', cues: [2, 3], ueberschrift: 'Manchmal ist sie erfunden', mechanik: 'erfunden'},
-  {id: 's04', cues: [4, 5], ueberschrift: 'Sie sucht nicht, sie rechnet', mechanik: 'kein-suchen'},
-  {id: 's05', cues: [6, 6], ueberschrift: 'Jedes Wort hat eine Chance', mechanik: 'saeulen'},
-  {id: 's06', cues: [7, 7], ueberschrift: 'Das wahrscheinlichste gewinnt', mechanik: 'wahl'},
-  {id: 's07', cues: [8, 9], ueberschrift: 'Und dann von vorne', mechanik: 'schleife'},
-  {id: 's08', cues: [10, 10], ueberschrift: 'Geprüft wird nichts', mechanik: 'kein-pruefen'},
-  {id: 's09', cues: [11, 11], ueberschrift: 'Muster statt Fakten', mechanik: 'muster'},
-  {id: 's10', cues: [12, 13], ueberschrift: 'Erfundenes klingt gleich gut', mechanik: 'gleich-fluessig'},
-  {id: 's11', cues: [14, 15], ueberschrift: 'Antwort ist ein Entwurf', mechanik: 'entwurf'},
-  {id: 's12', cues: [16, 17], ueberschrift: 'Zahlen, Namen, Quellen', mechanik: 'pruefen'},
+  {id: 's01', cues: [0, 2], ueberschrift: 'Die Quelle ist erfunden', mechanik: 'fake-source-hook'},
+  {id: 's02', cues: [3, 4], ueberschrift: 'Kein eingebautes Nachschlagen', mechanik: 'search-vs-generate'},
+  {id: 's03', cues: [5, 6], ueberschrift: 'Text wird zu Tokens', mechanik: 'token-stream'},
+  {id: 's04', cues: [7, 8], ueberschrift: 'Fortsetzungen bekommen Gewichte', mechanik: 'probability-field'},
+  {id: 's05', cues: [9, 9], ueberschrift: 'Auswahl statt starrem Platz eins', mechanik: 'sampling'},
+  {id: 's06', cues: [10, 11], ueberschrift: 'Plausibel ist nicht geprüft', mechanik: 'verification-gate'},
+  {id: 's07', cues: [12, 13], ueberschrift: 'Falsch kann sauber klingen', mechanik: 'same-fluency'},
+  {id: 's08', cues: [14, 17], ueberschrift: 'Werkzeuge können nachschlagen', mechanik: 'grounding-tools'},
+  {id: 's09', cues: [18, 18], ueberschrift: 'Werkzeuge senken nur das Risiko', mechanik: 'tool-limits'},
+  {id: 's10', cues: [19, 20], ueberschrift: 'Kritisches selbst prüfen', mechanik: 'manual-check'},
+  {id: 's11', cues: [21, 22], ueberschrift: 'Entwurf statt Beleg', mechanik: 'draft-vs-proof'},
 ];
 
 export type ReelSzene = {
