@@ -1,135 +1,426 @@
-# 🧰 KI-Kanal — Baukasten nach Satz-Kategorien (Intent-Routing)
+# 🧰 KI-Kanal — Baustein-Katalog nach Mechanik
 
-> **So benutzen:** Du hast einen Satz aus dem Script → finde die passende **Kategorie** → nimm den/die
-> **Baustein(e)** → an KI-Kanal anpassen (🟣 Lila=KI/Fokus, 🔵 Blau=Tech/Info, 🟢 Grün=Vorteil/Lösung,
-> 🔴 Rot=Grenze/Risiko/Fehler; Fachbegriff nur mit sofortiger Erklärung).
-> Bausteine leben in `@studio/core` (Signaturen: `core/brand-kit/KATALOG.md`). **Erweiterbar** — neue Kategorie unten anhängen.
-> Regel: **erst Konzept/Kategorie, dann animieren.** Vor dem Bauen immer Abschnitt 0 in `KATALOG.md` checken
-> (Verwechslungsgefahr-Tabelle, z. B. `DramaticNumber` vs. `RollingNumber`).
+Diese Datei ist **kein Satz→Komponente-Router mehr**.
 
----
+Ein gesprochener Satz darf niemals automatisch zu `Card`, `Table`, `Badge`, `FeatureGrid` oder einer anderen vorhandenen Komponente werden.
 
-## 1 · Wie eine KI "denkt" (Kern-Baustein des Kanals)
-**Sätze:** „So verarbeitet ein neuronales Netz deine Eingabe." · „Das Modell gewichtet jeden Faktor."
-**Bausteine:** `NeuralNet` (Signal/Backprop/Gewichte, premium)
-**Farbe:** lila. **Tipp:** nicht zu lange stehen lassen — Signal-Fluss zeigen, dann weiter zum Nutzen.
+## Verbindliche Reihenfolge
 
-## 2 · Chat-/Tool-Demo (Kern-Baustein des Kanals)
-**Sätze:** „Du tippst das rein …" · „ChatGPT antwortet mit …" · „So sieht das Ergebnis aus."
-**Bausteine:** `ChatUI` (ChatGPT/Claude-Bubbles, tippt/antwortet) · `AiThinking` (kurzer Verarbeitungs-Moment
-zwischen Prompt und Antwort, statt improvisierter Wartezeit)
-**Tipp:** Prompt kurz & echt wirkend, Antwort nicht zu textlastig — Kernaussage highlighten (`Emphasis`).
+```text
+Sprecherbedeutung
+→ Visual Beat
+→ was muss der Zuschauer sehen?
+→ Hauptverb / Zustandsänderung
+→ Visual Modality
+→ Mechanik
+→ erst jetzt: passt ein vorhandener Baustein EXAKT?
+```
 
-## 2a · Text → Token/Vektor (Grundkonzept LLM)
-**Sätze:** „Die KI liest deinen Text nicht wie du — sie zerlegt ihn in **Token**." · „Jedes Wort wird zur Zahl."
-**Bausteine:** `TokenStream` (Wörter → Chips → Zahlen-Vektor/Embedding)
-**Tipp:** kurzer Satz reicht, nicht überladen — das AHA ist "Text = Zahlen für die Maschine".
+Autoritativ davor:
 
-## 2b · Bild-/Video-Generierung (Tool-Demo)
-**Sätze:** „Du gibst den Prompt ein — und die KI **malt** das Bild." · „Aus Text wird ein Video."
-**Bausteine:** `AiCanvasReveal` (Bild baut sich progressiv auf, Scan+Rausch→scharf)
-**Tipp:** Reveal spät zeigen (Spannungsbogen), Prompt-Text kurz vorher einblenden.
+- `STORY_RETENTION.md`
+- `FAKTENQUELLEN.md`
+- `REELS.md`
+- `VISUAL_STRATEGY.md`
 
-## 2c · Vorher/Nachher (Foto-/Video-Tool)
-**Sätze:** „So sah's vorher aus — und so macht's die KI." · „Ein Klick, komplett neues Ergebnis."
-**Bausteine:** `BeforeAfterSlider` (Wisch-Vergleich)
-**Verwechslungsgefahr:** NICHT `CompareSplit` nehmen (das ist nebeneinander/VS, kein Wisch-Reveal auf demselben Bild).
+Bausteine leben überwiegend in `@studio/core`; Signaturen stehen in `core/brand-kit/KATALOG.md`.
 
-## 3 · Prompt-Trick (schlecht vs. gut)
-**Sätze:** „So NICHT prompten." · „Mit dieser einen Änderung wird's 10× besser."
-**Bausteine:** `CompareSplit` (VS-Badge, zwei `ChatUI`-Ausschnitte nebeneinander)
-**Farbe:** eine Seite grau/rot (schlecht), andere lila/grün (gut).
+## Grundregel
 
-## 4 · Code/Prompt → Ergebnis live
-**Sätze:** „Du gibst diesen Befehl ein …" · „… und die KI baut das."
-**Bausteine:** `LiveCodeCompile` (tippt → läuft → Output) · `GlassCodeBlock` · `Terminal`
-**Tipp:** für technischere Tool-Reels (z. B. Coding-Assistenten), nicht für reine Konzept-Erklärer.
+> Ein vorhandener Baustein spart Implementierungszeit. Er darf niemals die kreative Entscheidung ersetzen.
 
-## 5 · Zusammenhänge / Wissens-Netz
-**Sätze:** „KI hängt mit [X, Y, Z] zusammen." · „Das ganze KI-Ökosystem im Überblick."
-**Bausteine:** `Constellation` (Wissens-/Ökosystem-Graph) · `Mindmap`
-**Farbe:** lila Knoten, Verbindungslinien dezent.
+`REUSE_EXACT` nur, wenn Mechanik, räumliche Beziehung, Zustandsänderung und Aussage wirklich passen.
 
-## 6 · Zahl enthüllen (dramatischer Reveal)
-**Sätze:** „**1 Milliarde** Anfragen pro Tag." · „Das Modell hat **175 Milliarden** Parameter."
-**Bausteine:** `DramaticNumber` (Spannung, Fake-Stopp) · `BigStat` · `Counter`
-**Tipp:** Zahl kommt SPÄT (Spannungsbogen), nicht am Anfang. `RollingNumber` nur für ruhige Nebensache.
-
-## 7 · Prozent / Quote / Wahrscheinlichkeit
-**Sätze:** „**73 %** der Firmen nutzen schon KI." · „Die KI ist sich zu **90 %** sicher."
-**Bausteine:** `PercentRing` (1 Quote) · `StatBar` · `Gauge` (Wahrscheinlichkeit/Konfidenz als Tacho)
-
-## 8 · Verteilung mehrerer Anteile
-**Sätze:** „So teilt sich der KI-Markt auf." · „Diese Anteile machen Trainingsdaten aus."
-**Bausteine:** `Donut` / `PiePremium` (NICHT `PercentRing` — das zeigt nur 1 Wert)
-
-## 9 · Zwei Dinge vergleichen (Duell)
-**Sätze:** „**Mensch vs. KI**." · „**GPT vs. Claude**." · „Alt vs. neu."
-**Bausteine:** `ComparisonBars` (genau 2 Werte) · `CompareSplit`
-**Farbe:** eine Seite neutral, andere lila hervorgehoben.
-
-## 10 · Rangliste / mehrere Tools
-**Sätze:** „Die **besten** KI-Tools gerade." · „Top 3 KI-Fehler, die du machst."
-**Bausteine:** `Ranking` · `BarsPremium` (3+ Kategorien) · `Table`
-
-## 11 · Wachstum über Zeit
-**Sätze:** „KI-Nutzung wächst **rasant**." · „So hat sich [Modell/Adoption] entwickelt."
-**Bausteine:** `GrowthChart` (mit Callout-Marker) · `AreaPremium` · `LabeledAxisChart` (Pflicht-Achsenbeschriftung)
-
-## 12 · Risiko / Abwägung / Grenze
-**Sätze:** „KI kann viel — aber nicht alles." · „Mehr Automatisierung = mehr Kontrollverlust?"
-**Bausteine:** `Gauge` (Tacho) · `Balance` (Waage kippt)
-**Farbe:** rot = Risiko-Seite, grün/lila = Nutzen-Seite.
-
-## 13 · Schritte / Anleitung
-**Sätze:** „In **3 Schritten** zum guten Prompt." · „So richtest du das Tool ein."
-**Bausteine:** `NumberedSteps` · `Checklist` · `CheckCards`
-
-## 14 · Kernaussage betonen (Vollbild-Statement)
-**Sätze:** „**KI ersetzt keine Ideen — nur Aufwand**." · „Nicht der Hype zählt. Der Nutzen."
-**Bausteine:** `KineticCenterBuild` (Wörter bauen sich auf) · `BigStat` · `MaskReveal`
-
-## 15 · Zitat / Autorität
-**Sätze:** „**Sam Altman**: ‚…'." · „Ein KI-Forscher sagt …"
-**Bausteine:** `Quote`
-
-## 16 · Label / Stempel
-**Sätze:** „**NEU**." · „**GRATIS**." · „**KOSTENLOS**." · „ACHTUNG: Fake."
-**Bausteine:** `Badge` (Stempel, gedreht)
-
-## 17 · Gründe / Vorteile (Grid)
-**Sätze:** „**3 Gründe**, warum du dieses Tool nutzen solltest." · „Das bringt dir KI."
-**Bausteine:** `FeatureGrid` (Icon-Karten) · `CheckCards`
-
-## 18 · Mythos / Falsch-Richtig-Check
-**Sätze:** „Viele denken, KI kann das — stimmt das?" · „Mythos vs. Realität."
-**Bausteine:** `IconStrike` (1 falsche Behauptung durchgestrichen) · `DontDoInstead` (3 Mythen → 3 Richtigstellungen)
-**Verwechslungsgefahr:** `IconStrike` nur für EINEN Moment, `DontDoInstead` für eine ganze 3er-Liste (siehe `KATALOG.md` Abschnitt 0).
-
-## 19 · Abstraktes KI-Konzept → Metapher (WICHTIG — der Premium-Hebel)
-**Sätze:** „Ein LLM ist wie ein **Autovervollständiger auf Steroiden**." · „Trainingsdaten sind der **Treibstoff**."
-**Bausteine:** custom SVG/Metapher passend zum Bild, ggf. Bild-Prompt an Arman (Flow/Nano Banana) + Kamera/Reveal.
-**Fehlt eine Metapher als Baustein?** → in `core/brand-kit/components/metaphors.tsx` bauen (goldene Regel: geteilt → core).
-
-## 20 · Hook / Frage (Reel-Start)
-**Sätze:** „Was, wenn eine KI das für dich in **10 Sekunden** macht?" · „Diesen Fehler bei ChatGPT machst du auch."
-**Bausteine:** `KineticCaption` + `MaskReveal` + geteaste große Zahl/Frage (`BigStat`, noch ohne Auflösung)
-
-## 21 · Gesprochener Satz (Untertitel)
-**Jede Script-Zeile:** → `KineticCaption` (Wort für Wort, Keyword glüht lila). Text jede Szene ANDERS animiert.
-
-## 22 · News / Aktualität (schnelle Produktion)
-**Sätze:** „Das ist **neu** bei [Tool/Modell]." · „Diese Woche hat sich das geändert."
-**Bausteine:** schnelle Kombi aus `ChatUI`/`Badge`("NEU")/`Table` — KEINE aufwendige Custom-Animation (Zeitdruck, siehe `REELS.md` „Aktualität").
-
-## 23 · Hintergrund & Stimmung (immer)
-**Jede Szene:** `LivingBackground` (lila) oder `ShaderBG` (WebGL) — **dezent**, futuristisch-clean, viel Luft. `FilmGrain` leicht.
-
-## 24 · Kamera & Übergänge (zwischen Szenen)
-**Szenenwechsel:** `WhipIn` · `ZoomPunch` · `PushThrough` · `KenBurns` · `Dissolve`/`WaveWipe` — variieren, nie 2× gleich.
+Wenn nicht: `NEW_BUILD` oder die in `visual-strategy.md` gewählte andere Modality.
 
 ---
 
-## ➕ Erweitern
-Neue Satz-Kategorie fällt auf? → hier als „## N · <Kategorie>" anhängen (Sätze + Baustein + ggf. Metapher).
-Fehlt ein Baustein für eine Kategorie? → in `core/brand-kit` bauen (goldene Regel: geteilt → core) und in `KATALOG.md` eintragen.
+## 1. Echte oder abstrahierte Tool-/UI-Zustände
+
+### Vor Auswahl zuerst fragen
+
+Ist die **reale Produktoberfläche oder das echte Ergebnis Teil des Beweises**?
+
+- Ja → `REAL_CAPTURE` prüfen.
+- Nein, nur der Mechanismus zählt → Remotion-native UI kann sinnvoll sein.
+
+### Mögliche Bausteine
+
+- `ChatUI`
+- `AiThinking`
+- `Terminal`
+- `GlassCodeBlock`
+- `LiveCodeCompile`
+
+### Gut geeignet für
+
+- Prompt → Antwort
+- Code → Output
+- klaren UI-Zustandswechsel
+
+### Nicht verwenden für
+
+- aktuelle Tool-Oberfläche, wenn deren tatsächliches Verhalten/Design Teil der Aussage ist
+- generische „KI arbeitet“-Szene ohne konkrete UI-Bedeutung
+
+---
+
+## 2. Text → Token / Datenfluss
+
+Mögliche Bausteine:
+
+- `TokenStream`
+- Nodes/Paths aus der Animation-Library
+- custom SVG/Path-Mechanik
+
+Gut geeignet, wenn wirklich sichtbar werden soll:
+
+```text
+Text
+→ Zerlegung
+→ Token/Datenobjekte
+→ Weiterverarbeitung
+```
+
+Nicht automatisch jeden LLM-Satz als Token-Chips darstellen.
+
+---
+
+## 3. Generierung / Reveal
+
+Mögliche Bausteine:
+
+- `AiCanvasReveal`
+- `MaskReveal`
+- custom Transform-/Morph-Mechanik
+
+Nur wenn **Entstehung/Transformation selbst** die Aussage trägt.
+
+Ein Reveal ist keine Universaltransition.
+
+---
+
+## 4. Vorher / Nachher
+
+Mögliche Mechaniken:
+
+- `BeforeAfterSlider` — derselbe Gegenstand/Zustand vor und nach Veränderung
+- `CompareSplit` — zwei parallele Zustände/Alternativen
+
+Nicht verwechseln:
+
+- Wisch-Reveal ≠ zwei unabhängige Dinge vergleichen
+- Vergleich ≠ Rangliste
+
+Wenn ein reales Tool-Ergebnis demonstriert wird, reale Captures/Assets verwenden, falls sie die Wahrheit der Aussage tragen.
+
+---
+
+## 5. Prozess / Reise / Reihenfolge
+
+Bevorzugte sichtbare Verben:
+
+- reist
+- durchläuft
+- verbindet
+- verzweigt
+- blockiert
+- passiert ein Gate
+- kehrt zurück
+
+Mögliche Bausteine:
+
+- Path-/Node-Mechaniken
+- `NumberedSteps`, wenn echte nummerierte Schritte erklärt werden
+- `Checklist`, wenn tatsächliche Prüfpunkte abgehakt werden
+- custom Prozessgrafik
+
+Nicht jeden Ablauf als Reihe von Karten bauen.
+
+---
+
+## 6. Vergleich / Abwägung
+
+Mögliche Bausteine:
+
+- `CompareSplit`
+- `ComparisonBars`
+- `Balance`
+
+Nur wenn die Aussage wirklich zwei Zustände/Optionen gegenüberstellt.
+
+Kein künstliches „VS“, nur weil zwei Begriffe im Satz vorkommen.
+
+---
+
+## 7. Verifizierte Zahlen und Daten
+
+Mögliche Bausteine:
+
+- `DramaticNumber`
+- `BigStat`
+- `Counter`
+- `PercentRing`
+- `StatBar`
+- `Gauge`
+- `Donut`
+- `PiePremium`
+- `BarsPremium`
+- `GrowthChart`
+- `AreaPremium`
+- `LabeledAxisChart`
+- `Table`
+- `Ranking`
+
+### Harte Regel
+
+Solche Bausteine dürfen nur sichtbare Werte tragen, wenn `source-ledger.md` die Zahlen/Rankings stützt oder sie **klar als Illustration** gekennzeichnet sind.
+
+Nicht erlaubt:
+
+- erfundene Prozentwerte als Modellwahrscheinlichkeit
+- erfundene Latenz
+- unbelegte „10× besser“-Claims
+- Rankings ohne Grundlage
+- Achsen/Charts ohne sinnvolle Skala/Quelle
+
+Ein Chart wird nicht eingesetzt, nur weil Zahlen vorkommen. Er muss einen Vergleich oder Verlauf besser verständlich machen.
+
+---
+
+## 8. Netzwerke / Beziehungen
+
+Mögliche Bausteine:
+
+- `Constellation`
+- `Mindmap`
+- custom Nodes/Edges
+
+Nur wenn **Beziehungen zwischen Elementen** die Aussage sind.
+
+Nicht als dekoratives „KI-Netzwerk“ verwenden.
+
+---
+
+## 9. Risiko / Fehler / Grenze
+
+Mögliche Mechaniken:
+
+- `IconStrike` — ein einzelner falscher/entfernter Zustand
+- `DontDoInstead` — mehrere echte Gegenüberstellungen
+- `Balance` — Trade-off
+- Gate/Block/Reject-New-Build
+
+Rot markiert Risiko/Fehler/Grenze, aber Farbe allein erklärt den Fehler nicht.
+
+Die Szene braucht weiterhin eine sichtbare Handlung oder Zustandsänderung.
+
+---
+
+## 10. Dokument / Quelle / Beleg
+
+Dokumente, Dateien und Quellen dürfen bewusst als Karten-/Paper-Objekte erscheinen, weil die Form **semantisch das Objekt selbst** ist.
+
+Sinnvolle Mechaniken:
+
+```text
+Quelle erscheint
+→ wird gesucht/geöffnet
+→ wird verifiziert oder verworfen
+```
+
+Keine erfundene real wirkende Quelle als Demonstration. Demo-Quelle sichtbar als Beispiel kennzeichnen.
+
+---
+
+## 11. Schritte / Checkliste
+
+Mögliche Bausteine:
+
+- `NumberedSteps`
+- `Checklist`
+- `CheckCards`
+
+Nur für tatsächliche Schrittfolge oder Prüfung.
+
+Nicht einsetzen, wenn der Sprecher nur drei lose Informationen aufzählt. In diesem Fall zuerst prüfen, ob das Reel überhaupt zu listenartig geschrieben ist.
+
+---
+
+## 12. Feature-/Gründe-Grid
+
+Mögliche Bausteine:
+
+- `FeatureGrid`
+- `CheckCards`
+
+**Sparsam verwenden.**
+
+Ein Grid ist eine sinnvolle Informationsform, wenn mehrere gleichrangige Dinge gleichzeitig verglichen/überblickt werden müssen.
+
+Es ist kein Default für:
+
+- „3 Vorteile“
+- „3 Fehler“
+- „3 Gründe“
+
+Wenn jeder Punkt eine eigene sichtbare Handlung besitzt, sind individuelle Beats meist stärker.
+
+---
+
+## 13. Typografischer Akzent
+
+Mögliche Bausteine:
+
+- `KineticCenterBuild`
+- `BigStat`
+- `MaskReveal`
+- kurze `Badge`
+
+Nur als kurzer Akzent, wenn Sprache selbst der visuelle Gegenstand ist.
+
+Nicht mehrere Sekunden Sprechertext durch großen Text ersetzen.
+
+---
+
+## 14. Caption
+
+Caption ist **kein normaler Szenenbaustein**.
+
+Die globale Caption folgt:
+
+- `CAPTION_SAFE_POSITION.md`
+- `REELS.md`
+- realem finalen Audio-Timing
+
+Keine zufällige andere Caption-Animation pro Szene nur für Abwechslung.
+
+Wiedererkennbarkeit und Lesbarkeit sind wichtiger als Effektvariation.
+
+---
+
+## 15. Physische / räumliche Metapher
+
+Wenn ein abstrakter Mechanismus durch eine physische Szene klarer wird:
+
+1. in `visual-strategy.md` entscheiden, ob `REMOTION_NATIVE`, `HYBRID`, `EXTERNAL_STILL_REQUIRED` oder `EXTERNAL_MOTION_REQUIRED`
+2. Metapher exakt beschreiben
+3. erst dann vorhandene Komponenten prüfen
+
+Mögliche Remotion-native Elemente:
+
+- custom SVG
+- Paths/Shapes
+- pseudo-3D
+- Three.js, wenn echte Tiefe hilft
+
+Wenn Raum, Material oder organische Komplexität extern deutlich stärker sind, keine Code-Lösung erzwingen.
+
+---
+
+## 16. Hintergrund
+
+`LivingBackground`, `ShaderBG`, `FilmGrain` oder andere Hintergründe sind **optional**, nicht „immer“.
+
+Default:
+
+- ruhiger heller Markenraum
+- nur so viel Tiefe/Bewegung wie nötig
+
+Ein Hintergrund darf:
+
+- Fokus unterstützen
+- Raum/Tiefe geben
+- Zustandswechsel subtil verstärken
+
+Er darf nicht:
+
+- permanent Aufmerksamkeit ziehen
+- Leerlauf kaschieren
+- jede Szene künstlich „lebendig“ machen
+
+---
+
+## 17. Kamera und Übergänge
+
+Mögliche Techniken:
+
+- `WhipIn`
+- `ZoomPunch`
+- `PushThrough`
+- `KenBurns`
+- `Dissolve`
+- `WaveWipe`
+- Remotion-TransitionSeries
+
+**Keine Regel „nie zweimal gleich“.**
+
+Auswahl nur nach Bedeutung:
+
+- Hard Cut = Standard
+- Push/Travel = räumliche Fortsetzung
+- Morph = derselbe Gegenstand ändert Zustand/Form
+- Dissolve = bewusster weicher Zeit-/Zustandswechsel
+- Zoom = echter Fokuswechsel
+
+Variation ohne semantischen Grund ist Deko.
+
+---
+
+## 18. News / aktuelle Tools
+
+Zeitdruck ist **kein Grund für schwächere visuelle Qualität**.
+
+Bei News zuerst entscheiden:
+
+- braucht man reales Produkt-Capture?
+- gibt es einen klaren Vorher/Nachher-Zustand?
+- welche Änderung ist für Zuschauer wirklich relevant?
+
+Nicht automatisch `ChatUI + Badge + Table` verwenden.
+
+Bei aktueller Produktoberfläche/Feature-Demo ist `REAL_CAPTURE` oft ehrlicher und schneller als künstlicher UI-Nachbau.
+
+---
+
+## 19. Hook
+
+Es gibt **keinen Hook-Baustein als Default**.
+
+Der Hook kommt aus `STORY_RETENTION.md` und kann visuell sein als:
+
+- unerwartetes Ergebnis
+- Konflikt
+- echte Demonstration
+- sichtbarer Fehler
+- Vorher/Nachher
+- konkrete Frage mit sofort beginnender Mechanik
+
+`BigStat`, Text oder MaskReveal nur dann, wenn genau das der stärkste Hook ist.
+
+---
+
+## 20. Neue Bausteine
+
+Neue shared Komponente nur bauen, wenn:
+
+- sie einen wiederkehrenden **semantischen Mechanismus** abbildet
+- mindestens mehrere plausible zukünftige Einsätze existieren
+- sie nicht nur die Optik eines einzelnen Reels generalisiert
+
+Shared → `core/brand-kit` und `KATALOG.md` aktualisieren.
+
+Reel-spezifische Mechanik → lokal als `NEW_BUILD` belassen.
+
+## Schlussregel
+
+```text
+Vorhandener Baustein vorhanden ≠ Baustein verwenden.
+
+Exact semantic fit
++ passende Modality
++ passende Zustandsänderung
+= Reuse erlaubt.
+```
+
+Wenn das Ergebnis trotz korrektem Code wie eine animierte Präsentation wirkt, zurück zu `VISUAL_STRATEGY.md` statt weitere Cards oder Transitions hinzuzufügen.
