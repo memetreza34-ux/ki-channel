@@ -1,182 +1,225 @@
-# KI-Kanal — Bild- und Prompt-System
+# KI-Kanal — Bild- und Asset-Stil
 
 ## Zweck
 
-Generierte Bilder sind **Erklärassets**, keine Dekoration. Ein Bild wird nur eingesetzt, wenn eine räumliche, objektbasierte oder alltägliche Szene die Aussage schneller verständlich macht als reine Remotion-Grafik.
+Diese Datei ist **kein Top-Level-Router mehr**.
 
-**Ab sofort gilt zusätzlich:** Symbole, UI, Diagramme und erklärende Grafiken werden bevorzugt **direkt mit React, SVG, CSS und Remotion** gebaut. Sie dürfen nicht aus Bequemlichkeit als KI-Bild erzeugt werden, wenn ein sauberer Code-Nachbau technisch vernünftig möglich ist.
+Zuerst entscheidet `ki/gehirn/VISUAL_STRATEGY.md` pro Visual Beat die primäre Bildsprache:
 
-Standardstil für wirklich notwendige Bilder:
+- `REMOTION_NATIVE`
+- `REAL_CAPTURE`
+- `HYBRID`
+- `EXTERNAL_STILL_REQUIRED`
+- `EXTERNAL_MOTION_REQUIRED`
+
+Diese Datei wird vor allem dann angewendet, wenn `HYBRID` oder `EXTERNAL_STILL_REQUIRED` gewählt wurde. Für externe Motion-Assets liefert sie die Art-Direction-Basis; Bewegung/Shot-Brief wird zusätzlich reel-spezifisch beschrieben.
+
+## Grundsatz
+
+Externe/generierte Bilder sind **Erklärassets**, keine Dekoration.
+
+Ein Still-/Hybrid-Asset ist sinnvoll, wenn räumliche, physische, organische oder alltägliche Anschaulichkeit die Aussage deutlich stärker trägt als reine Code-Grafik.
+
+Standardstil für solche Assets:
 
 > hochwertige vereinfachte 3D-Editorial-Illustration, hell, faceless, wenige große Objekte, klare Tiefenwirkung, kontrollierter Marken-Lila-Akzent.
 
-## Erst entscheiden: Remotion-native, Hybrid oder Bild?
+Das ist ein Markenstandard, kein Zwang. Wenn ein reales Produkt/Tool selbst Beweis ist, gilt `REAL_CAPTURE` statt einer künstlich nachgebauten 3D-Version.
 
-Vor **jedem** geplanten Bildasset zuerst prüfen:
+## Was bewusst Remotion-native bleibt
 
-> Kann dieser visuelle Bestandteil sauber, hochwertig, skalierbar und kontrollierbar mit React/SVG/CSS in Remotion gebaut werden?
-
-Wenn **ja** → `REMOTION_NATIVE` und **kein Bild erzeugen**.
-
-Wenn **teilweise** → `HYBRID`: nur das komplexe Motiv als Bild; Text, UI, Pfeile, Zustände, Diagramme und andere präzise Informationsschichten bleiben Remotion-native.
-
-Nur wenn Remotion inhaltlich oder qualitativ klar unterlegen wäre → `IMAGE_REQUIRED`.
-
-### Remotion übernimmt standardmäßig
+Auch bei Hybrid-/externen Assets bleiben präzise Informationsschichten standardmäßig kontrollierbar:
 
 - Überschriften und Captions
-- Icons und Symbole
-- Zahlen, Rankings und Charts
-- Pfeile, Connectoren und Prozessdiagramme
-- App-, Browser-, Smartphone- und Desktop-UI
-- Buttons, Inputs, Cards, Tabs, Dialoge und Menüs
-- Code-/Terminal-Fenster und Dateibäume
-- Nodes, Timelines, Branches, Commits und Statusanzeigen
-- präzise UI/Chat/App-Texte
-- Karten, Labels und Callouts
-- animierte Fokuswechsel und Zustandsänderungen
-- einfache 2D-/2.5D-Objekte und technische Formen
+- exakte Zahlen und Rankings
+- Charts/Diagramme
+- Pfeile/Connectoren
+- Fokus-/Highlight-Zustände
+- UI-Texte
+- Buttons/Inputs/Labels, wenn sie nicht Teil eines echten Captures sind
+- Quellenmarker
+- animierte Zustandsänderungen
 
-### Bild-KI übernimmt nur bei echtem Mehrwert
+Keine generierte Interface-Grafik als Ersatz für präzise UI, wenn Remotion oder ein echter Capture die bessere Quelle ist.
 
-- hochwertige räumliche 3D-Szenen
-- reale/stilisierte Alltagssituationen
-- komplexe organische Objektgruppen
-- visuelle Metaphern, die als physische Szene funktionieren
-- Material, Licht, Schatten und Perspektive bei komplexen physischen Motiven
-- aufwendige Produkte oder Umgebungen
-- Umgebungen, die mit CSS/SVG unverhältnismäßig teuer wären
-- fotografische/cinematic Motive
+## Wann ein Still-/Hybrid-Asset echten Mehrwert hat
 
-Kein Bild erzeugen, wenn Remotion dieselbe Aussage klarer und kontrollierter bauen kann.
+Typische Fälle:
 
-**Bitmap-Icons, Screenshot-UI oder generierte Interface-Bilder sind nicht erlaubt, wenn SVG/React/CSS dieselbe Funktion sauber übernehmen kann.**
+- räumliche 3D-Szene
+- reale/stilisierte Alltagssituation
+- komplexe organische Objektgruppe
+- physische Metapher
+- Material/Licht/Perspektive sind Teil des Verständnisses
+- Produkt-/Umgebungsszene, die als Code unverhältnismäßig oder sichtbar schwächer wäre
+- fotografisch/cinematic geprägtes Motiv
 
-## Feste visuelle Regeln
+Kein externes Asset nur deshalb erzeugen, um „mehr Abwechslung“ vorzutäuschen. Die Bildidee muss semantisch tragen.
 
-- vertikal 9:16, Komposition für 1080 × 1920
-- weiß oder sehr hellgrau / leicht lila getönt
+## REAL_CAPTURE hat Vorrang, wenn Realität der Beweis ist
+
+Wenn aktuelle Tool-Oberfläche, Feature-Verhalten oder echtes Ergebnis selbst Teil der Aussage ist:
+
+- nicht als 3D-Illustration faken
+- nicht als generierte UI nachbauen
+- `REAL_CAPTURE` verwenden
+- Produkt/Datum/Plan/Version soweit relevant dokumentieren
+- aktuelle Fakten im `source-ledger.md` prüfen
+
+## Feste visuelle Regeln für externe Still-/Hybrid-Assets
+
+- vertikal 9:16, komponiert für 1080 × 1920
+- weiß, sehr hellgrau oder leicht lila getönter Grund
 - leicht isometrisch oder klare redaktionelle Perspektive
 - weiche realistische Schatten
-- hochwertige matte/halbmatte 3D-Materialien
+- hochwertige matte/halbmatte Materialien
 - 3–5 große Hauptobjekte als Richtwert
 - ein klarer Fokus
 - großzügige Abstände
-- `#B98CFF` nur als gezielter KI-/Fokus-Akzent
+- `#B98CFF` nur gezielt als KI-/Fokus-Akzent
 - `#6E45C9` für Tiefe/Kontrast
 - Grün nur Lösung/Vorteil
 - Rot nur Risiko/Fehler/Grenze
+- wichtige Objekte so komponieren, dass spätere Caption-/Header-Ebenen nicht kollidieren
 
 ## Faceless
 
 - keine erkennbaren Gesichter
 - keine Porträts
 - keine Face-Cam-Optik
-- Person nur, wenn sie inhaltlich nötig ist: von hinten, angeschnitten oder stilisierte gesichtslose Figur
-- keine Roboterfigur als generisches KI-Symbol
+- Person nur wenn inhaltlich nötig: von hinten, angeschnitten, Hände oder stilisierte gesichtslose Figur
+- keine generische Roboterfigur als KI-Symbol
 
-## Safe-Zones
+## Kompositions-/Safe-Zones
 
-- oben mindestens ca. 110 px ruhig lassen
-- unten mindestens ca. 220 px ruhig lassen
-- Hauptmotiv vollständig im mittleren sicheren Bereich
-- keine wichtigen Hände/Objekte/Labels an den Rand
+Für ein 1080 × 1920 Reel-Asset:
+
+- oberer Headerbereich ruhig halten
+- Hauptmotiv bevorzugt im oberen/mittleren visuellen Arbeitsraum
+- bedeutungstragende Hauptobjekte möglichst oberhalb des späteren Caption-Blocks abschließen
+- keine wichtigen Details in den letzten ungefähr 420px unten
+- keine wichtigen Hände/Objekte/Labels am Rand
+- rechts Feed-Interaktionsleiste mitdenken
 - keine sichtbaren Safe-Zone-Linien rendern
 
-## Text im generierten Bild
+Die finale Caption-Geometrie kommt aus `ki/gehirn/CAPTION_SAFE_POSITION.md`; das Asset selbst enthält keine Caption.
 
-Standard: **kein Text im Bild**.
+## Text im generierten/externen Bild
 
-Nur wenn ein Objektlabel für das Verständnis unverzichtbar ist und nicht sinnvoll als Remotion-Ebene darüberliegen kann:
+Standard: **kein eingebrannter Erklärungstext**.
 
-- maximal 0–3 Labels
+Nur wenn Text physisch zum Motiv gehört und nicht sinnvoll als Overlay getrennt werden kann:
+
+- maximal 0–3 kurze Labels
 - Deutsch
 - 1–3 Wörter je Label
 - keine Überschrift
 - kein Untertitel
 - kein Erklärungssatz
-- keine Zahlen, die Remotion präziser darstellen kann
+- keine präzisen Zahlen, die Remotion kontrollierter darstellen kann
 
 ## Sprache der Prompts
 
-Der vollständige Bildgenerierungs-Prompt wird standardmäßig **auf Englisch** geschrieben, weil räumliche, Material-, Kamera- und Lichtanweisungen so konsistent modellübergreifend formuliert werden können.
+Der vollständige Generierungs-/Art-Direction-Prompt wird standardmäßig auf **Englisch** geschrieben, weil räumliche, Material-, Kamera- und Lichtanweisungen so konsistent formuliert werden können.
 
-Sichtbarer Text im Bild bleibt, falls unvermeidbar, ausschließlich deutsch.
+Sichtbarer Text bleibt, falls unvermeidbar, deutsch.
 
-## Pflichtstruktur jedes Bildprompts
+## Pflichtstruktur jedes Still-/Hybrid-Prompts
 
-Jeder finale Prompt in `02-bilder/image-prompts.md` muss diese Informationen enthalten:
+Jeder finale Prompt in `02-bilder/image-prompts.md` dokumentiert:
 
-1. **Scene intent** — eine Aussage, die das Bild erklären soll
-2. **Why image is required** — warum `REMOTION_NATIVE` nicht die bessere Lösung ist
-3. **Visual metaphor / situation** — eine einzige klare Bildidee
-4. **Main subjects** — wenige konkrete Objekte
-5. **State / relationship** — was zwischen den Objekten sichtbar wahr sein muss
-6. **Composition** — Vordergrund/Mitte/Hintergrund, Fokus und freie Bereiche
-7. **Camera** — vertikal, Perspektive, Brennweitencharakter ohne extreme Verzerrung
-8. **Materials and lighting** — hochwertig, editorial, weiche Schatten
-9. **Brand accents** — Lila gezielt, nicht alles lila
-10. **Safe zones** — oben/unten frei
-11. **Negative constraints** — Gesichter, Cyberpunk, Wasserzeichen, zufälliger Text usw.
-12. **Remotion separation** — ausdrücklich nennen, welche Texte/Overlays später Remotion baut
-13. **Output filename** — erwarteter Asset-Name
+1. **Beat / Scene ID**
+2. **Scene intent** — was muss der Zuschauer verstehen?
+3. **Selected modality** — `HYBRID` oder `EXTERNAL_STILL_REQUIRED`
+4. **Why this modality** — warum ist diese Form besser als Remotion-native oder Real Capture?
+5. **Visual metaphor / situation** — eine klare Bildidee
+6. **Main subjects** — wenige konkrete Objekte
+7. **State / relationship** — was muss sichtbar wahr sein?
+8. **Composition** — Fokus, Raum, spätere Overlays
+9. **Camera** — Perspektive/Brennweitencharakter
+10. **Materials and lighting**
+11. **Brand accents**
+12. **Faceless constraints**
+13. **Text policy**
+14. **Safe zones**
+15. **Remotion separation** — was wird später präzise ergänzt?
+16. **Negative constraints**
+17. **Output filename**
+18. **Manifest status** — zunächst `MISSING_REQUIRED`, bis reale Datei vorliegt
 
 ## Canonical Prompt-Template
 
 ```text
-Create a premium stylized 3D editorial illustration for a German AI explainer reel, vertical 9:16, composed for 1080x1920.
+Create a premium stylized 3D editorial illustration for a German faceless AI explainer reel, vertical 9:16, composed for 1080x1920.
+
+BEAT / SCENE:
+[id]
 
 SCENE INTENT:
 [one precise idea the viewer must understand]
 
-WHY IMAGE IS REQUIRED:
-[one concrete reason why React/SVG/CSS/Remotion alone is not the better visual solution]
+SELECTED MODALITY:
+[HYBRID or EXTERNAL_STILL_REQUIRED]
+
+WHY THIS MODALITY:
+[why a spatial/physical still is clearer than Remotion-native graphics and why REAL_CAPTURE is not the right proof]
 
 VISUAL CONCEPT:
 [one simple physical scene or metaphor; no infographic collage]
 
 MAIN SUBJECTS:
-[3–5 large concrete objects, their positions and relationships]
+[3–5 large concrete objects, positions and relationships]
 
 VISIBLE STATE / RELATIONSHIP:
-[what must be visually true; start/result relationship if relevant]
+[what must be visually true]
 
 COMPOSITION AND CAMERA:
-clean editorial composition, strong central hierarchy, slightly isometric or natural product-illustration perspective, no extreme wide-angle distortion, important subjects fully inside the middle safe area, calm negative space above and below.
+clean editorial composition, strong hierarchy, slightly isometric or natural product-illustration perspective, no extreme wide-angle distortion, important subjects in the upper/middle safe working area, calm room for a compact header and later captions, no essential detail in the bottom platform-safe region.
 
 MATERIALS AND LIGHTING:
-premium simplified 3D forms, refined matte and semi-matte materials, soft realistic contact shadows, subtle ambient occlusion, controlled studio lighting, crisp silhouettes, high-quality editorial rendering.
+premium simplified 3D forms, refined matte and semi-matte materials, soft realistic contact shadows, subtle ambient occlusion, controlled studio lighting, crisp silhouettes.
 
 BRAND:
-white or very light warm-gray/lilac background; #B98CFF used only as the main AI/focus accent; #6E45C9 only for depth or contrast; natural object colors elsewhere.
+white or very light warm-gray/lilac background; #B98CFF only as the main AI/focus accent; #6E45C9 only for depth or contrast; natural object colors elsewhere.
 
 FACELESS:
-no recognizable faces, no portraits, no face-cam framing; if a human presence is essential, show only a faceless simplified figure, back view, crop, or hands.
+no recognizable faces, no portraits, no face-cam framing; if human presence is essential, use a back view, crop, hands, or a simplified faceless figure.
 
 TEXT:
-no headline, no subtitle, no paragraph text, no random letters, no watermark. If absolutely necessary, use only the explicitly listed short German object labels: [labels or NONE].
-
-SAFE ZONES:
-keep approximately the top 110 px and bottom 220 px visually calm and free of essential objects or labels. Do not draw guides or safe-zone lines.
+no headline, no subtitle, no paragraph text, no random letters, no watermark. If physically unavoidable, only these short German labels: [labels or NONE].
 
 REMOTION WILL ADD:
-[headline / captions / arrows / exact numbers / UI / labels / state changes / NONE]. Do not bake these elements into the image.
+[headline / captions / arrows / exact numbers / UI / labels / state changes / source markers / NONE]. Do not bake these elements into the image.
 
 AVOID:
-cyberpunk, neon sci-fi, dark server rooms, generic robots, overloaded infographic layouts, tiny objects, excessive icons, excessive arrows, random text, watermarks, distorted hands, cropped key objects, duplicate objects, inconsistent perspective, generated UI that should have been built in Remotion.
+cyberpunk, neon sci-fi, dark server rooms, generic robots, overloaded infographic layouts, tiny objects, excessive icons, excessive arrows, random text, watermarks, distorted anatomy, cropped key objects, duplicate objects, inconsistent perspective, generated UI that should be real capture or a controlled Remotion layer.
 
 OUTPUT:
-clean premium 3D editorial image, mobile-readable composition, filename: [scene-XX-description.png].
+clean premium editorial image, mobile-readable composition, filename: [scene-XX-description.png].
 ```
+
+## Externes Motion-Asset
+
+Wenn `EXTERNAL_MOTION_REQUIRED` gewählt wurde, zusätzlich zu visueller Art Direction dokumentieren:
+
+- welche **physische Bewegung** die Aussage trägt
+- Start- und Endzustand
+- Kamerabewegung nur wenn semantisch nötig
+- gewünschte Dauer / Loop ja-nein
+- was später in Remotion ergänzt wird
+- keine eingebrannten Captions/Header
+- erwarteter Dateiname
+- Manifest-Status
+
+Ein Motion-Asset ist nicht gerechtfertigt, wenn lediglich ein statisches Motiv leicht schweben/zoomen soll; das übernimmt Remotion besser.
 
 ## Dateinamen
 
-Für Reel-Assets:
+Still:
 
 ```text
 scene-01-<kurzer-name>.png
 scene-02-<kurzer-name>.png
-...
 ```
 
 Mehrere Layer:
@@ -187,25 +230,45 @@ scene-03-subject.png
 scene-03-overlay-mask.png
 ```
 
-Keine Namen wie `final2.png`, `image123.png` oder `neu.png`.
+Motion:
 
-## Qualitätsgate für jedes erzeugte Bild
+```text
+scene-04-<kurzer-name>.mp4
+```
+
+Keine Namen wie `final2.png`, `image123.png`, `neu.png`.
+
+## Asset-Manifest
+
+Das Manifest beschreibt die **reale Existenz**, nicht die Absicht.
+
+Empfohlene Status:
+
+- `NOT_REQUIRED`
+- `MISSING_REQUIRED`
+- `PROVIDED`
+- `VERIFIED`
+
+Phase 1 darf `MISSING_REQUIRED` setzen. Phase 3 darf daraus nicht automatisch `PROVIDED` machen, wenn die Datei nicht wirklich existiert.
+
+## Qualitätsgate für jedes externe Still-/Hybrid-Asset
 
 Vor Freigabe tatsächlich prüfen:
 
-- Bildbedarf gegenüber `REMOTION_NATIVE` konkret begründet
-- Aussage ohne Überschrift erkennbar
+- Modality in `visual-strategy.md` begründet
+- Aussage ohne Header grundsätzlich erkennbar
 - richtige 9:16-Komposition
 - keine erkennbaren Gesichter
 - kein Wasserzeichen
 - kein zufälliger/fehlerhafter Text
-- keine generierte UI, die besser als React/SVG/CSS gebaut worden wäre
+- keine Fake-UI, wenn Real Capture nötig wäre
 - keine abgeschnittenen Hauptobjekte
 - keine deformierten Hände/Objekte
-- konsistente Perspektive und Schatten
+- konsistente Perspektive/Schatten
 - Marken-Lila gezielt statt flächig
-- genügend Raum für Remotion-Header und Captions
+- genügend Raum für kontrollierte Header-/Caption-Ebenen
 - Smartphone-Lesbarkeit
 - kein unnötiges Objekt
+- reale Datei entspricht dem Manifest
 
-Wenn zwei oder mehr dieser Punkte scheitern: Bild neu generieren oder Bildstrategie ändern; nicht mit Overlays kaschieren.
+Wenn zwei oder mehr dieser Punkte scheitern: Asset neu erstellen/bereitstellen oder Visual Strategy ändern; nicht mit Overlays kaschieren.
