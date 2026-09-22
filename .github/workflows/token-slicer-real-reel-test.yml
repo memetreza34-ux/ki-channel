@@ -40,13 +40,15 @@ jobs:
           mkdir -p public out/first-real-reel
           curl -fL 'https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/56f288df-5d80-40aa-ac40-e64cb37fce80.mp3' -o /tmp/token-slicer-voice-a.mp3
           curl -fL 'https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/da0e902e-8323-4b78-b98f-291e489ad40d.mp3' -o /tmp/token-slicer-voice-b.mp3
-          ffmpeg -hide_banner -loglevel error -y \
+          REMOTION_FFMPEG='./node_modules/@remotion/compositor-linux-x64-gnu/ffmpeg'
+          REMOTION_FFPROBE='./node_modules/@remotion/compositor-linux-x64-gnu/ffprobe'
+          "$REMOTION_FFMPEG" -hide_banner -loglevel error -y \
             -i /tmp/token-slicer-voice-a.mp3 \
             -i /tmp/token-slicer-voice-b.mp3 \
             -filter_complex '[0:a][1:a]concat=n=2:v=0:a=1[a]' \
             -map '[a]' -c:a libmp3lame -q:a 2 \
             public/token-slicer-voiceover.mp3
-          ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 public/token-slicer-voiceover.mp3 | tee out/first-real-reel/voiceover-duration.txt
+          "$REMOTION_FFPROBE" -v error -show_entries format=duration -of default=nw=1:nk=1 public/token-slicer-voiceover.mp3 | tee out/first-real-reel/voiceover-duration.txt
 
       - name: Render real reel with generated voiceover
         run: |
