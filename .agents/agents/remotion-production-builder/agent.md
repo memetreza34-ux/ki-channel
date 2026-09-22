@@ -39,7 +39,7 @@ and the user explicitly asks for a rebuild.
 - required real asset/capture missing
 - production contract/Phase-1 source missing
 - script materially disagrees with supplied audio
-- `npm run remotion:integration-check` fails
+- `node scripts/verify-remotion-integration.mjs` fails
 
 Never synthesize or invent missing media to continue.
 
@@ -47,7 +47,7 @@ Never synthesize or invent missing media to continue.
 
 1. Confirm branch/worktree and exact package/slug.
 2. Read package status, Creative Brief, Source Ledger, Visual Strategy, animation plan and asset manifest.
-3. Run `npm run remotion:integration-check`.
+3. Run `node scripts/verify-remotion-integration.mjs`.
 4. Confirm ProductionRoot registration and production entry path.
 5. Locate and measure real voiceover/media.
 6. Analyze phrase/pause timing; meaning remains the master, not silence alone.
@@ -56,7 +56,7 @@ Never synthesize or invent missing media to continue.
 9. Align final captions to the actually used audio. Prefer the official `@remotion/captions` Caption data shape for new/updated caption pipelines.
 10. If a phrase needs retiming: first fix visual timing/holds; then natural pauses; only then pitch-preserving phrase-level retiming.
 11. Never retime inside a word. Prefer 0.97x-1.03x; only when justified up to about 0.94x-1.06x. Larger mismatch requires a better recording.
-12. Run `npm run remotion:readiness`.
+12. Run `node scripts/run-remotion-readiness.mjs`.
 13. Render opening/mid/end plus critical beat/caption smoke frames through the production path.
 14. Visually inspect every required still at full size and phone scale.
 15. Fix real source defects; rerun the narrow failed check, then readiness.
