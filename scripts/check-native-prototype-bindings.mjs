@@ -28,7 +28,7 @@ const CONTENT_BOUND_PROTOTYPES = [
 
 const MOTION_SEMANTIC_RULES = new Map([
   ['AnomalyXRayScannerPrototype.tsx', {required: ['errorScanned', 'repairAtStep', 'REPAIR'], forbidden: []}],
-  ['AnswerLoomPrototype.tsx', {required: ['semanticAnswer', 'generatedWordCount', 'WORT {generatedWordCount}'], forbidden: ['Math.sin(frame / 5)']}],
+  ['AnswerLoomPrototype.tsx', {required: ['semanticAnswer', 'generatedWordCount', 'WORT ${generatedWordCount}'], forbidden: ['Math.sin(frame / 5)']}],
   ['BenchmarkRacetrackPrototype.tsx', {required: ['metricLeaders', 'WIRD GEMESSEN', 'FÜHRT:'], forbidden: ['position * 450']}],
   ['BudgetLeakMeterPrototype.tsx', {required: ['sealedWeight', 'currentSavings', 'POTENZIAL'], forbidden: ['Math.sin((frame']}],
   ['ConfidenceGlassCrackPrototype.tsx', {required: ['checkProgresses', 'failedChecks', 'CHECKS FEHLEN'], forbidden: ['const crack = prototypeProgress']}],
@@ -43,11 +43,11 @@ const MOTION_SEMANTIC_RULES = new Map([
   ['KnowledgeTreeGraftPrototype.tsx', {required: ['verificationThreshold', 'acceptedSupersede', 'WISSEN BLEIBT UNVERÄNDERT'], forbidden: ['rotate(${(1 - newFact)']}],
   ['LatencyTunnelRacePrototype.tsx', {required: ['maximumLatency / tunnel.finalValue', 'latencyDelta', 'speedup'], forbidden: ['race * 360']}],
   ['MagneticPhraseSlicerPrototype.tsx', {required: ['finalPositions', 'REIHENFOLGE BLEIBT ERHALTEN'], forbidden: ['lane: index % 3']}],
-  ['MeaningTerrainPrototype.tsx', {required: ['concept${index + 1}Cluster', 'clusterForm', 'CLUSTER {concept.cluster}'], forbidden: ['const lift = concept.height']}],
+  ['MeaningTerrainPrototype.tsx', {required: ['concept${index + 1}Cluster', 'clusterForm', 'CLUSTER ${concept.cluster}'], forbidden: ['const lift = concept.height']}],
   ['ProbabilityFluidColumnsPrototype.tsx', {required: ['signalProgresses', 'contextProgress'], forbidden: ['const context = prototypeProgress']}],
   ['ResidualRiverPrototype.tsx', {required: ['progress: prototypeProgress', 'completedLayers', 'SCHICHTEN VERARBEITET'], forbidden: ['Math.sin(', 'rotate(${gateFlow']}],
   ['SubwayWorkflowMapPrototype.tsx', {required: ['showAlternative', 'inferredAlternative', 'completedStations'], forbidden: ['travel * 420']}],
-  ['TimelineMicroscopePrototype.tsx', {required: ['inferredFocus', 'changeProgresses', 'FOKUS {focusIndex + 1}'], forbidden: []}],
+  ['TimelineMicroscopePrototype.tsx', {required: ['inferredFocus', 'changeProgresses', 'FOKUS ${focusIndex + 1}'], forbidden: []}],
   ['VectorPrismConverterPrototype.tsx', {required: ['dimensionReveals', 'ZERLEGT MERKMALE'], forbidden: []}],
 ]);
 
