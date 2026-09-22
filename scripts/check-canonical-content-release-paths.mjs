@@ -10,6 +10,7 @@ const requireExcludes = (source, fragment, label) => {
   if (source.includes(fragment)) failures.push(`${label}: darf "${fragment}" nicht enthalten`);
 };
 
+const packageJson = JSON.parse(read('package.json'));
 const renderAll = read('scripts/render-all-content-release.mjs');
 const verifyAll = read('scripts/verify-all-content-release.mjs');
 const renderComplete = read('scripts/render-complete-content-release.mjs');
@@ -113,13 +114,24 @@ for (const required of [
   requireContains(releaseSummaryVerifier, required, 'verify-content-release-summary');
 }
 
+for (const [scriptName, mode] of [
+  ['release:verify', 'verify'],
+  ['release:smoke', 'smoke'],
+  ['release:full', 'full'],
+]) {
+  const expected = `node scripts/run-content-release.mjs ${mode}`;
+  if (packageJson.scripts?.[scriptName] !== expected) {
+    failures.push(`package.json ${scriptName}: erwartet "${expected}"`);
+  }
+}
+
 for (const required of [
   'workflow_dispatch:',
   'release_mode:',
   '- verify',
   '- smoke',
   '- full',
-  'node scripts/run-content-release.mjs "${{ inputs.release_mode }}"',
+  'npm run "release:${RELEASE_MODE}"',
   'out/content-release-run/',
 ]) {
   requireContains(actionsWorkflow, required, 'motion-system-checks workflow');
