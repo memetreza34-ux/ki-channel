@@ -52,11 +52,21 @@ jobs:
 
       - name: Render real reel with generated voiceover
         run: |
+          python3 -m http.server 8765 --directory public >/tmp/token-slicer-audio-server.log 2>&1 &
+          AUDIO_SERVER_PID=$!
+          trap 'kill "$AUDIO_SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in 1 2 3 4 5; do
+            if curl -fsI 'http://127.0.0.1:8765/token-slicer-voiceover.mp3' >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsI 'http://127.0.0.1:8765/token-slicer-voiceover.mp3' >/dev/null
           npx --no-install remotion render \
             ki/src/production-entry.tsx \
             TokenSlicerReel \
             out/first-real-reel/token-slicer.mp4 \
-            --props='{"showCaptions":true,"voiceoverSrc":"/token-slicer-voiceover.mp3"}' \
+            --props='{"showCaptions":true,"voiceoverSrc":"http://127.0.0.1:8765/token-slicer-voiceover.mp3"}' \
             --codec=h264 \
             --crf=18
 
