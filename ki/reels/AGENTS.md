@@ -1,6 +1,8 @@
-# KI-Reels — Produktionsvertrag
+# KI-Reels — Produktionsvertrag V2
 
 Gilt für alle Produktionspakete unter `ki/reels/` und erweitert `REPO-STATE.md`, `AGENTS.md`, `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.
+
+Legacy-Reels ohne `06-projektdateien/production-contract-v2.json` bleiben lesbar. **Neue Reels** werden mit V2 angelegt.
 
 ## Struktur ist unveränderlich
 
@@ -21,180 +23,305 @@ Die sechs nummerierten Ordner niemals entfernen, umbenennen, verschieben oder fl
 
 `06-projektdateien/PHASE-STATUS.md` entscheidet, welche Arbeit gerade zulässig ist.
 
-- Phase 1 offen → Planung und Code-Grundlage vervollständigen
-- Phase 2 → Mensch macht ausschließlich Voiceover
-- Phase 3 → Agent integriert Audio, synchronisiert, prüft und rendert
+- Phase 1 offen → Story, Fakten, Visual Strategy, Planung und Code-Grundlage vervollständigen
+- Phase 2 → Mensch erzeugt reales Voiceover und nur ausdrücklich benötigte reale Medien/Captures
+- Phase 3 → Agent integriert Audio/Assets, synchronisiert, prüft und rendert
 
-Phase 3 darf kein Phase-1-Reel neu entwerfen.
+Phase 3 darf kein Phase-1-Reel aus Bequemlichkeit neu entwerfen.
 
-## Phase-1-Pflichtinhalt
+## V2-Reihenfolge
 
-Ein Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
+```text
+Creative Brief
+→ Source Ledger
+→ finaler Sprechertext
+→ Visual Beats
+→ Visual Strategy
+→ Animation-/Shot-Plan
+→ Source
+→ Voiceover / reale Pflichtmedien
+→ Timeline
+→ Render
+→ technische QA
+→ Creative QA
+```
 
+Direkt vom Thema in Remotion-Code springen ist nicht zulässig.
+
+## Phase-1-Pflichtinhalt V2
+
+Ein V2-Reel ist erst Phase-1-fertig, wenn mindestens vorhanden sind:
+
+- `06-projektdateien/production-contract-v2.json`
+- `06-projektdateien/creative-brief.md`
+- `06-projektdateien/source-ledger.md`
 - finaler Sprechertext in `01-script-audio/voiceover.md`
 - reiner Copy-Fließtext in `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
-- Standardziel Short-Form: ungefähr **50–60 Sekunden** bzw. meist ungefähr **120–150 gesprochene Wörter**, wenn die Idee das trägt
+- `06-projektdateien/visual-strategy.md`
 - `06-projektdateien/reel.json`
-- `scene-plan.md`
-- `animation-plan.md`
+- `scene-plan.md`, falls reel-spezifischer Plan getrennt geführt wird
+- `06-projektdateien/animation-plan.md`
 - `03-caption/subtitle-cues.json`
 - `03-caption/platform-copy.md`
 - `02-bilder/asset-manifest.json`
-- bei Bildbedarf `02-bilder/image-prompts.md`
-- Assembly-/Agent-Auftrag
-- Review-Checkliste
+- bei externem Still-/Hybrid-/Motion-Bedarf `02-bilder/image-prompts.md` bzw. Shot-Brief
+- `06-projektdateien/creative-review.md` als offenes Phase-3-Review-Artefakt
+- Assembly-/Agent-Auftrag, falls benötigt
+- Review-Checkliste, falls reel-spezifisch benötigt
 - ausführbarer Source unter `ki/src/reels/<slug>/`
 - registrierte Composition
 - fokussierte Source-/Contract-Checks
 
-Ein Skript-/Plan-only Paket ist nicht Phase-1-fertig.
+Ein Script-/Plan-only Paket ist nicht Phase-1-fertig.
 
-## Animation Contract — individuell vor Reuse
+## Story Contract
 
-Vor Implementierung muss der Sprechertext in **Visual Beats** zerlegt werden. Ein Beat kann je nach Bedeutung ein Wort, eine Phrase, ein Halbsatz, ein Satz oder eine zusammenhängende Satzgruppe sein.
+Vor dem finalen Script gilt `ki/gehirn/STORY_RETENTION.md`.
 
-Für jeden Beat muss `animation-plan.md` festhalten:
+`creative-brief.md` beantwortet mindestens:
+
+- Viewer promise
+- Hook tension
+- 3-second proof
+- Why care
+- Core mechanism
+- Payoff
+- Memorable moment
+- Truth risk
+
+Wenn Hook, Mechanismus oder sichtbarer Höhepunkt nicht konkret sind: **noch kein Source-Code**.
+
+## Fakten Contract
+
+Es gilt `ki/gehirn/FAKTENQUELLEN.md`.
+
+`source-ledger.md` ist Pflicht für relevante Claims, insbesondere:
+
+- aktuelle Features/Modelle
+- Preise/Limits/Pläne
+- sichtbare Zahlen/Prozentwerte
+- Rankings/Benchmarks
+- reale Quellen/Paper
+- aktuelle News
+- kritische fachliche Vereinfachungen
+
+Kein sichtbarer Demo-Wert darf wie echter Messwert wirken.
+
+Claims mit Recheck-Pflicht werden vor Publishing erneut geprüft.
+
+## Visual Beat Contract
+
+Vor Implementierung Sprechertext in **Visual Beats** zerlegen.
+
+Ein Beat kann ein Wort, eine Phrase, ein Halbsatz, Satz oder zusammenhängende Satzgruppe sein.
+
+Für jeden Beat festhalten:
 
 ```text
 Sprecherstelle
-→ Aussage/Bedeutung
+→ Bedeutung
+→ Zuschauer muss sehen
+→ Hauptverb
 → Startzustand
 → sichtbare Veränderung
 → Endzustand
+→ Visual Modality
+→ Mechanikfamilie
 → REUSE_EXACT oder NEW_BUILD
 → Sprecher-Timing
 ```
 
-Regeln:
+Nicht jedes Wort braucht Bewegung. Jede echte Bedeutungsänderung braucht aber eine bewusste visuelle Entscheidung.
 
-- **nicht zuerst in der Library stöbern und danach Inhalt daraufbiegen**
-- bestehende Animation nur als `REUSE_EXACT`, wenn sie die Aussage wirklich exakt erklärt
-- „ähnlich“, „haben wir schon“ oder „passt ungefähr“ ist nicht ausreichend
-- ohne exakten Fit: **individuelle reel-spezifische Remotion-Animation bauen**
-- eine Szene darf mehrere Micro-Animationen enthalten
-- wenn sich die Aussage innerhalb eines Satzes sichtbar ändert, muss der visuelle Zustand passend reagieren
-- nicht jedes Wort braucht Bewegung; jedes bedeutungstragende Wort/jede Phrase braucht aber eine bewusste visuelle Entscheidung
-- keine dekorative Füllanimation
+## Visual Modality Contract — kein Remotion-Default
 
-Phase 3 darf NEW_BUILD/REUSE_EXACT nicht aus Bequemlichkeit ändern.
+Es gilt `ki/gehirn/VISUAL_STRATEGY.md`.
 
-## Remotion-native Visual Contract — Code vor Bild
-
-Zusätzlich gilt dauerhaft `REMOTION_NATIVE_VISUALS.md` und für ausführbaren Source `ki/src/reels/AGENTS.md`.
-
-**Wenn Symbole, UI oder erklärende Grafiken sauber mit React, SVG, CSS und Remotion gebaut werden können, werden sie direkt in Code gebaut.** Ein generiertes PNG/JPG ist dafür kein gleichwertiger Ersatz.
-
-Standardmäßig `REMOTION_NATIVE`:
-
-- Icons und Symbole
-- App-/Browser-/Smartphone-/Desktop-UI
-- Buttons, Inputs, Cards, Tabs, Menüs und Dialoge
-- Code-/Terminal-Fenster und Dateibäume
-- Charts, Diagramme, Timelines und Prozessgrafiken
-- Nodes, Connectoren, Pfeile, Linien und Statuspunkte
-- Tabellen, Badges, Labels und Fortschrittsanzeigen
-- Branches, Commits, Pull Requests und andere Git-/GitHub-Mechaniken
-- abstrakte technische Formen und einfache 2D-/2.5D-Objekte
-- Before/After- und Zustandswechsel
-
-Bilder sind nur vorzuziehen, wenn Fotografie, komplexe organische Motive, reale Menschen/Hände, Materialien, Produkte oder aufwendige räumliche 3D-Umgebungen einen echten Mehrwert liefern. Dann möglichst `HYBRID`: komplexes Motiv als Bild, präzise Informationsschichten weiterhin Remotion-native.
-
-Für jeden Visual Beat zusätzlich zur `NEW_BUILD`-/`REUSE_EXACT`-Entscheidung das Medium festlegen:
+Für jeden Beat primär eine Modality festlegen:
 
 ```text
 REMOTION_NATIVE
-IMAGE_REQUIRED
+REAL_CAPTURE
 HYBRID
+EXTERNAL_STILL_REQUIRED
+EXTERNAL_MOTION_REQUIRED
 ```
 
-`REMOTION_NATIVE` ist der Default. `IMAGE_REQUIRED` oder `HYBRID` brauchen eine konkrete Begründung.
+### `REMOTION_NATIVE`
 
-Nicht in ein generiertes Bild backen, wenn Remotion es kontrollierter übernehmen kann: Überschriften, Untertitel, UI-Text, Zahlen, Code, Buttons, Pfeile, Diagramme, Labels, Statusanzeigen oder animierte Fokuszustände.
+Für exakte, kontrollierbare Erklärung:
 
-## Phase-3 Timeline Contract — Audio darf lokal feinjustiert werden
+- UI
+- Daten/Diagramme
+- Prozesse
+- Tokens/Nodes/Pfade
+- Code/Terminal
+- abstrakte technische Mechanismen
 
-Das echte Voiceover ist die akustische Grundlage. Der Agent muss die **gesamte audiovisuelle Timeline** optimieren, nicht nur Captions verschieben.
+### `REAL_CAPTURE`
 
-Bei zu schnellem/zu langsamem Sprecherabschnitt gilt:
+Wenn das **echte Produktverhalten selbst Beweis** ist.
 
-1. zuerst Animation, Hold, Szenenlänge und Beat-Timing anpassen
-2. natürliche Pause an Phrase-/Satzgrenze leicht verkürzen oder verlängern
-3. wenn nötig eine komplette Phrase / einen Cue **pitch-erhaltend lokal time-stretchen**
-4. danach Caption-Cues und Wort-Timestamps auf das tatsächlich verwendete Audio neu synchronisieren
+Nicht durch erfundene UI ersetzen, wenn gerade aktuelle Oberfläche/Feature-Verhalten Teil der Aussage ist.
+
+### `HYBRID`
+
+Räumliches/physisches Hero-Motiv plus präzise Remotion-Schichten.
+
+### `EXTERNAL_STILL_REQUIRED`
+
+Wenn räumliche/organische Komplexität als Still deutlich stärker ist als Code.
+
+### `EXTERNAL_MOTION_REQUIRED`
+
+Nur wenn komplexe physische Bewegung selbst Bedeutungsträger ist und Code sichtbar schlechter/unverhältnismäßig wäre.
+
+**Keine Modality ist pauschal Premium oder Default. Beste Erklärung gewinnt.**
+
+## Reuse Contract
+
+Erst Story → Beat → Modality → Mechanik. Danach Library prüfen.
+
+`REUSE_EXACT` nur wenn wirklich passt:
+
+- Mechanik
+- räumliche Beziehung
+- Zustandsänderung
+- semantische Aussage
+- notwendige Daten-/Textstruktur
+
+„Ähnlich“, „haben wir schon“ oder „passt ungefähr“ reicht nicht.
+
+Ohne exakten Fit: `NEW_BUILD` oder das in der Visual Strategy verlangte reale/externe Medium.
+
+Phase 3 darf diese Entscheidung nicht aus Bequemlichkeit ersetzen.
+
+## Anti-Karten-/Panel-Regel
+
+Karten sind sinnvoll, wenn sie semantisch wirklich UI, Dokument, Nachricht, Datei, Datensatz oder Token darstellen.
+
+Nicht als Standardcontainer für abstrakte Aussagen.
+
+Richtwerte:
+
+- karten-/panelbasierte Hauptbeats normalerweise höchstens etwa ein Drittel
+- nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
+- mindestens ein bewusst geplanter Hero-/Memorable-Moment
+- Wiederholung nur, wenn sie Teil desselben fortlaufenden Prozesses ist
+
+## Phase-3 Timeline Contract
+
+Das echte Voiceover ist die akustische Grundlage.
+
+Bei zu schnellem/zu langsamem Abschnitt:
+
+1. Animation, Hold, Szenenlänge und Beat-Timing anpassen
+2. natürliche Pause an Phrase-/Satzgrenze leicht anpassen
+3. nur wenn nötig komplette Phrase/Cue pitch-erhaltend lokal retimen
+4. Caption-Cues/Wort-Timestamps auf final verwendetes Audio neu synchronisieren
 
 Verbindlich:
 
-- Speedwechsel nur an natürlichen Phrasen-/Pausengrenzen, niemals mitten im Wort
+- niemals Speedwechsel mitten im Wort
 - keine abrupten Speed-Sprünge
 - Pitch erhalten
-- Sprechertext bleibt wortgleich und in gleicher Reihenfolge
-- bevorzugt ungefähr `0.97x–1.03x`, bei echtem Bedarf bis ungefähr `0.94x–1.06x`
-- über ungefähr ±6 % nicht weiter verzerren; stattdessen Phase-2-Voiceover neu erzeugen lassen
-- keine Wörter schneiden, duplizieren oder künstlich verlängern
-- keine starre Zielsekunde erzwingen, wenn Natürlichkeit leidet
-- verwendete lokale Retiming-Faktoren im Phase-3-Abschlussbericht nennen
+- Wortlaut/Reihenfolge bleiben gleich
+- bevorzugt ungefähr `0.97x–1.03x`
+- bei echtem Bedarf bis ungefähr `0.94x–1.06x`
+- darüber lieber neues Voiceover
+- verwendete Retiming-Faktoren dokumentieren
 
-Ziel: **Stimme, Visual Beat, Animation, Zustandswechsel und Caption treffen denselben Moment.**
+Ziel: **Stimme, Visual Beat, Zustandswechsel und Caption treffen denselben Moment.**
 
-## Verbindliches sichtbares Textlayout
+## Sichtbares Textlayout
 
-Für Production-Reels gelten `ki/gehirn/REELS.md`, **`ki/gehirn/CAPTION_SAFE_POSITION.md`** und für Source **`ki/src/reels/captionSafe.ts`** ohne reel-spezifische Abweichung, sofern der Nutzer sie nicht ausdrücklich verlangt:
+Verbindlich: `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md`, `ki/src/reels/captionSafe.ts`.
 
-- pro Szene eine kurze **Zwischenüberschrift oben mittig**
-- komplette Zwischenüberschrift in dunklem Marken-Lila `#6E45C9`
-- zur Zwischenüberschrift ein semantisch passendes, deutlich lesbares und eher größeres Icon
+Bei 1080 × 1920:
+
+- eine kurze Zwischenüberschrift oben mittig
+- semantisch passendes Icon
+- Titel/Icon in dunklem Marken-Lila `#6E45C9`
 - keine zusätzliche Header-Unterzeile
-- Untertitel ohne weiße Box, Caption-Card oder flächigen Hintergrund
+- Caption ohne weiße Box
 - Sans-Serif und smartphone-lesbar
-- aktive Sprecherposition in Marken-Lila hervorheben
-- Untertitel bei 1080×1920 standardmäßig mit **`bottom: 520px`** positionieren
-- horizontal **104px Sicherheitsabstand** links und rechts
-- bevorzugte maximale Caption-Breite **820px**
-- Caption-Fenster normalerweise **4–6 Wörter**, maximal **2 Zeilen gleichzeitig**
-- die letzten ungefähr **420px** unten niemals für Untertitel oder andere kritische Informationen verwenden
-- `420–500px` vom unteren Rand nur als Puffer behandeln
-- neue Reel-Sources verwenden die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`; keine Altwerte neu hart codieren
-- finale Untertitel in Phase 3 mit dem **tatsächlich final verwendeten Audio** zeitlich abgleichen
+- aktiver Sprecherfokus in Marken-Lila
+- Caption standardmäßig `bottom: 520px`
+- horizontal ca. `104px` Sicherheitsabstand
+- bevorzugte maximale Caption-Breite ca. `820px`
+- normalerweise 4–6 Wörter pro sichtbarem Sinnblock
+- maximal 2 Zeilen gleichzeitig
+- finale Caption-Timestamps aus finalem Audio
 
 ## Caption-/Visual-Safe-Zone
 
-Bei 1080 × 1920 gilt:
+Bei 1080 × 1920:
 
-- Caption-Position: standardmäßig **`bottom: 520px`**
-- sichtbarer Caption-Block typischerweise ungefähr **y≈1260–1400**
-- neue bedeutungstragende Visuals nach Möglichkeit bis ungefähr **y≈1240–1280** abschließen
-- ungefähr **80–120px** Luft zwischen Hauptvisual und Caption anstreben
-- der bestehende technische Clip-Guard um `y≈1440` ist nur eine letzte Sicherung und **nicht** die Caption-Positionsregel
-- kein Animationsobjekt, keine Karte, kein Node, keine Linie, kein Partikel, keine Illustration und kein Animationslabel darf mit dem sichtbaren Caption-Block konkurrieren
-- rechts Interaktions-UI gedanklich mitprüfen; Caption/Labels nicht unnötig bis an die rechte Kante führen
+- Hauptvisuals möglichst bis etwa `y≈1240–1280` abschließen
+- sichtbare Luft zwischen Hauptvisual und Caption
+- technischer Guard ungefähr ab `y≈1440` nur als letzte Sicherung
+- kein wichtiges Objekt/Label hinter oder unter Caption
+- rechte Feed-Interaktionsleiste mitdenken
 
-Wenn Platz fehlt: Animation höher, kompakter oder individuell neu bauen. **Untertitel nicht nach unten verschieben.**
+Wenn Platz fehlt: Visual höher/kompakter/neu bauen. **Caption nicht nach unten verschieben.**
 
-Wird wichtiger Inhalt durch den technischen Clip-Guard abgeschnitten oder kollidiert er trotz technischer Bounds mit der Caption, ist das ein Layoutfehler und keine akzeptable Lösung.
+Wird wichtiges Visual geclippt, ist das Layout fehlerhaft.
 
-Wenn `reel.json` die Zwischenüberschrift und ein Icon-Mapping trägt, darf Phase 3 diese nicht durch generische Titel ersetzen.
+## Externe Medien und Asset-Manifest
 
-## Post-Render-Qualität ist verbindlich
+Phase 1 darf Bedarf/Prompt/Shot-Brief definieren, aber keine fehlende Datei vortäuschen.
 
-Zusätzlich gilt für **jedes** Reel `ki/gehirn/POST_RENDER_REVIEW.md`.
+Manifest-Status soll den realen Zustand ausdrücken, z. B.:
+
+- `NOT_REQUIRED`
+- `MISSING_REQUIRED`
+- `PROVIDED`
+- `VERIFIED`
+
+Fehlt in Phase 3 ein `MISSING_REQUIRED`-Pflichtasset: stoppen oder zurück zu Phase 2. Nicht generisch ersetzen.
+
+Still-/Hybrid-Prompts folgen `ki/BILDSTIL.md`.
+
+REAL_CAPTURE dokumentiert mindestens Produkt, Datum und Zweck.
+
+## Post-Render-Qualität
+
+Technische Prüfung: `ki/gehirn/POST_RENDER_REVIEW.md`.
+
+Creative Prüfung: `ki/gehirn/CREATIVE_QA.md`.
 
 Insbesondere:
 
-- erster visueller Zustand sofort bzw. innerhalb der ersten ungefähr `0.2–0.4 s` lesbar; kein leer wirkender weißer Einstieg
-- Hauptmechanik groß genug für Smartphone statt kleiner UI-Insel in viel Leerraum
-- kritische interne Labels kurz und in der Regel mindestens ungefähr `28–32 px` bei 1080 × 1920
-- vorhandene sinnvolle Mechanik vergrößern statt Leerraum mit Deko zu füllen
-- neue Sprecherbedeutung darf nicht über mehrere Sekunden auf praktisch unverändertem Bild liegen; ungefähr `>2.5 s` ist ein Review-Warnsignal, sofern kein bewusster End-Hold vorliegt
-- die letzte Szene muss bis zur letzten inhaltlichen Phrase sichtbar weiterentwickelt werden
-- Caption im Feed-Eindruck klar oberhalb von Beschreibung/Account-/Interaktions-UI halten
-- rechte Feed-Interaktionsleiste darf Caption oder kritische Visual-Labels nicht bedrängen
-- nach jeder Source- oder Caption-Positionsänderung ist ein **neuer** Render + neue visuelle Prüfung Pflicht; ein alter MP4 darf nie den neuen Source-Stand freigeben
+- Einstieg innerhalb weniger Augenblicke lesbar und interessant
+- Hauptmechanik groß genug für Smartphone
+- keine mehrere Sekunden statische Grafik, während neue Sprecherbedeutung weiterläuft
+- kein unnötiger Leerraum bei gleichzeitig kleiner Kernanimation
+- letzte Szene entwickelt sich bis zur letzten inhaltlichen Phrase
+- aktuelle Source muss zum geprüften Render gehören
+- nach Source-/Caption-Änderung neuer Render + neuer Review
 
-Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Analyse gibt und daraus konkrete Fehler sichtbar werden, diese Erkenntnisse nicht nur lokal reparieren: prüfen, ob sie als dauerhafte Produktionsregel in `POST_RENDER_REVIEW.md`, `REELS.md`, `CAPTION_SAFE_POSITION.md` oder diesem Vertrag verankert werden müssen.
+## Creative Review ist Pflicht
+
+`06-projektdateien/creative-review.md` dokumentiert den finalen Zuschauer-Test.
+
+Nicht freigeben bei:
+
+- schwachem Hook
+- Leerlauf
+- repetitiver Karten-/Panelserie
+- fehlendem sichtbaren Mechanismus
+- keinem erinnerbaren visuellen Moment
+- Kernidee nur durch Text statt Visual verständlich
+- ungeerdeten Zahlen/Claims
+- Smartphone-Unlesbarkeit
+
+Technisch bestanden + kreativ langweilig = **nicht fertig**.
 
 ## Plattform-Copy
 
-`03-caption/platform-copy.md` ist die einzige reel-spezifische Quelle für Publishing-Copy. Sie enthält mindestens getrennte Bereiche für:
+`03-caption/platform-copy.md` ist die reel-spezifische Quelle für Publishing-Copy.
+
+Mindestens getrennte Bereiche für:
 
 - neutralen Kerntitel
 - YouTube Shorts
@@ -203,68 +330,39 @@ Wenn ein Nutzer einen gerenderten MP4 oder echten Publishing-Screenshot zur Anal
 - Facebook Reels
 - Snapchat, falls genutzt
 
-Die Plattformtexte dürfen die fachliche Aussage nicht verändern oder mehr versprechen als das Reel liefert.
+Plattformtexte dürfen fachliche Aussage nicht verändern oder mehr versprechen als das Reel liefert.
 
-Keine plattformspezifische Kopie des gesamten Produktionspakets anlegen. Publishing-Regeln: `ki/gehirn/PLATTFORMEN.md` und `ki/plattformen/`.
-
-## Bildbereich
-
-Vor jedem externen Bild zuerst `REMOTION_NATIVE_VISUALS.md` anwenden.
-
-`02-bilder/README.md` und `ki/BILDSTIL.md` beachten. In `image-prompts.md` pro benötigtem Bild immer festhalten:
-
-- sceneId und Zweck
-- warum `REMOTION_NATIVE` hier nicht die bessere Lösung ist
-- was die Bild-KI erzeugt
-- was bewusst Remotion übernimmt
-- vollständiger hochwertiger Prompt
-- erwarteter Asset-Dateiname
-- Crop/Fokus/Layers, falls relevant
-
-Wenn kein Bild nötig ist, ausdrücklich `BILDER NICHT ERFORDERLICH` dokumentieren; keine dekorativen Assets erzeugen.
-
-## Autorität innerhalb eines Reels
+## Autorität innerhalb eines V2-Reels
 
 1. `PHASE-STATUS.md`
-2. `reel.json`
-3. `voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
-4. `scene-plan.md`
-5. `animation-plan.md`
-6. `subtitle-cues.json`
-7. `platform-copy.md`
-8. `asset-manifest.json` / `image-prompts.md`
-9. `CODEX_ASSEMBLY_TASK.md`
-10. `review-checklist.md`
+2. `production-contract-v2.json`
+3. `creative-brief.md`
+4. `source-ledger.md`
+5. `voiceover.md` / `VOICEOVER-ZUM-KOPIEREN.txt`
+6. `visual-strategy.md`
+7. `reel.json`
+8. `scene-plan.md`, falls vorhanden
+9. `animation-plan.md`
+10. `subtitle-cues.json`
+11. `platform-copy.md`
+12. `asset-manifest.json` / externe Asset-Briefs
+13. `creative-review.md`
 
 Widerspruch erkennen, nicht verstecken.
 
 ## Fertig bedeutet wirklich fertig
 
-Ein Reel ist erst vollständig fertig, wenn alle für Phase 3 relevanten aktuellen Checks tatsächlich bestanden sind, Smoke-Frames visuell geprüft wurden, das finale MP4 gerendert und in normaler Geschwindigkeit sowie auf Smartphone-/Feed-Größe angesehen wurde.
+Ein Reel ist erst fertig, wenn:
 
-Zur visuellen/akustischen Freigabe gehört ausdrücklich:
+- Phase-1-Verträge vollständig sind
+- reales Voiceover vorhanden ist
+- alle Pflichtmedien real vorhanden sind
+- Tests/TypeScript bestanden sind
+- Smoke-Frames angesehen wurden
+- finales MP4 angesehen wurde
+- Audio/Visual/Captions synchron sind
+- relevante Fakten-Rechecks erledigt sind
+- technische QA bestanden ist
+- Creative Review = PASS
 
-- Visual Beats passen exakt zum Sprecherinhalt
-- keine bequeme/ungefähre Library-Reuse
-- Symbole, UI und erklärende Grafiken sind Remotion-native, sofern technisch vernünftig möglich
-- `IMAGE_REQUIRED` / `HYBRID` ist bei externen Bildern nachvollziehbar begründet
-- Sprecher, Visual Beat und Caption treffen zeitlich denselben Moment
-- lokale Audio-Speedkorrekturen klingen natürlich und pitch-erhaltend
-- Header/Icon-Position
-- vollständige lila Zwischenüberschrift
-- Caption standardmäßig `bottom: 520px` bei 1080×1920
-- Caption verwendet die Shared-Geometrie aus `ki/src/reels/captionSafe.ts`
-- horizontaler Caption-Sicherheitsabstand zur Feed-UI ist eingehalten
-- maximal 2 Caption-Zeilen gleichzeitig
-- Caption nicht im unteren Plattform-/Feed-UI-Bereich
-- Hauptvisual auf Smartphone ausreichend groß
-- wichtige interne Labels auf Smartphone lesbar
-- keine unnötig große Leere bei gleichzeitig kleiner Kernanimation
-- kein langer statischer Abschnitt während neue Sprecherbedeutung weiterläuft
-- Schluss trägt sichtbar bis zur letzten inhaltlichen Phrase
-- keine Clip-bedingt abgeschnittenen wichtigen Inhalte
-- transparente Untertitel
-- Sprecher-Synchronität der lila Wort-/Phrasenhervorhebung
-- aktueller Render gehört exakt zum aktuell geprüften Source-Stand
-
-`veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische/visuelle Freigabe.
+`veröffentlicht` ist ein nachgelagerter Publishing-Status und ersetzt keine technische oder kreative Freigabe.
