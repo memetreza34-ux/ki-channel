@@ -64,6 +64,7 @@ const toolsRouting = await readText('ki/gehirn/WERKZEUGE.md');
 const orchestrationSkill = await readText('ki/skills/remotion-production-orchestration/SKILL.md');
 const builderAgent = await readText('.agents/agents/remotion-production-builder/agent.md');
 const reviewerAgent = await readText('.agents/agents/remotion-release-reviewer/agent.md');
+const readinessRunner = await readText('scripts/run-remotion-readiness.mjs');
 
 for (const path of [
   'ki/src/index.ts',
@@ -73,6 +74,7 @@ for (const path of [
   'ki/skills/remotion-production-orchestration/SKILL.md',
   '.agents/agents/remotion-production-builder/agent.md',
   '.agents/agents/remotion-release-reviewer/agent.md',
+  'scripts/run-remotion-readiness.mjs',
   'ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md',
   'ki/gehirn/POST_RENDER_REVIEW.md',
   'ki/gehirn/CREATIVE_QA.md',
@@ -117,16 +119,9 @@ if (root) {
     }
   }
 
-  const requiredScripts = {
-    'remotion:integration-check': 'node scripts/verify-remotion-integration.mjs',
-    'remotion:studio': 'npx --no-install remotion studio ki/src/index.ts --no-open',
-    'remotion:studio:poll': 'npx --no-install remotion studio ki/src/index.ts --no-open --webpack-poll 1000',
-    'remotion:versions': 'npx --no-install remotion versions',
-    'remotion:readiness': 'npm run remotion:integration-check && npm run remotion:versions && npm run motion:verify',
-  };
-  for (const [name, expected] of Object.entries(requiredScripts)) {
-    if (root.scripts?.[name] !== expected) {
-      failures.push(`package.json script ${name} muss exakt "${expected}" sein.`);
+  for (const requiredScript of ['repo:verify', 'motion:verify']) {
+    if (!root.scripts?.[requiredScript]) {
+      failures.push(`package.json: Pflichtscript fehlt: ${requiredScript}.`);
     }
   }
 }
@@ -171,18 +166,27 @@ requireMarkers('remotion-production-orchestration', orchestrationSkill, [
   'remotion-studio',
   'remotion-render',
   'production-entry.tsx',
-  'remotion:readiness',
+  'run-remotion-readiness.mjs',
 ]);
 requireMarkers('remotion-production-builder', builderAgent, [
-  'remotion:integration-check',
-  'remotion:readiness',
+  'verify-remotion-integration.mjs',
+  'run-remotion-readiness.mjs',
   'remotion-release-reviewer',
   'PHASE 2 AUDIO FEHLT',
 ]);
 requireMarkers('remotion-release-reviewer', reviewerAgent, [
   'RELEASE REVIEW: PASS',
   'RELEASE REVIEW: FAIL',
-  'remotion:readiness',
+  'run-remotion-readiness.mjs',
+]);
+requireMarkers('run-remotion-readiness.mjs', readinessRunner, [
+  'verify-remotion-integration.mjs',
+  'remotion',
+  'versions',
+  'repo:verify',
+  'check-production-visual-contracts.mjs',
+  'motion:verify',
+  'REMOTION READINESS: PASS',
 ]);
 
 const productionFiles = [
