@@ -1,0 +1,55 @@
+name: First Real Reel - Token Slicer
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ki/src/reels/token-slicer/**'
+      - 'ki/src/ProductionRoot.tsx'
+      - 'ki/reels/2026-09-21_bis_2026-09-27/01_Warum-KI-Woerter-zerlegt/**'
+      - '.github/workflows/token-slicer-real-reel-test.yml'
+  workflow_dispatch:
+
+jobs:
+  render-token-slicer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NPM_INSTALL_FLAGS: --package-lock=false --legacy-peer-deps --no-audit --no-fund
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install canonical workspaces
+        run: npm install $NPM_INSTALL_FLAGS
+
+      - name: Token Slicer focused typecheck and test
+        run: |
+          npm run typecheck:motion
+          npx --no-install vitest run ki/src/reels/token-slicer/tokenSlicerContract.test.ts
+          node scripts/check-production-visual-contracts.mjs
+          npm run ki:reel:structure-check
+
+      - name: Render real reel with generated voiceover
+        run: |
+          mkdir -p out/first-real-reel
+          npx --no-install remotion render \
+            ki/src/production-entry.tsx \
+            TokenSlicerReel \
+            out/first-real-reel/token-slicer.mp4 \
+            --props='{"showCaptions":true,"voiceoverSrc":"https://www.aidocmaker.com/g0/audio?name=3863947350524eefa9bc3e46918d060f"}' \
+            --codec=h264 \
+            --crf=18
+
+      - name: Upload rendered MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-real-reel-token-slicer
+          path: out/first-real-reel/token-slicer.mp4
+          if-no-files-found: error
+          retention-days: 7
