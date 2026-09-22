@@ -1,0 +1,14 @@
+{
+  "slug": "same-prompt-different-answer",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1410},
+  "scenes": [
+    {"sceneId":"s01-hook-split","startFrame":0,"endFrame":120,"headline":"Gleiche Frage. Andere Antwort.","icon":"◆","visualId":"prompt-split-fork"},
+    {"sceneId":"s02-probability-field","startFrame":120,"endFrame":390,"headline":"Mehrere Tokens sind plausibel","icon":"◌","visualId":"radial-token-field"},
+    {"sceneId":"s03-sampling-selector","startFrame":390,"endFrame":570,"headline":"Sampling trifft eine Auswahl","icon":"◎","visualId":"sampling-selector-ring"},
+    {"sceneId":"s04-context-fork","startFrame":570,"endFrame":750,"headline":"Ein Token verändert den Weg","icon":"⎇","visualId":"context-branch-switch"},
+    {"sceneId":"s05-sentence-cascade","startFrame":750,"endFrame":930,"headline":"Der Satz verzweigt sich","icon":"↗","visualId":"dual-sentence-cascade"},
+    {"sceneId":"s06-temperature-fan","startFrame":930,"endFrame":1140,"headline":"Temperatur verändert Streuung","icon":"◍","visualId":"temperature-distribution-fan"},
+    {"sceneId":"s07-reproducibility","startFrame":1140,"endFrame":1320,"headline":"So wird es reproduzierbarer","icon":"⌘","visualId":"settings-alignment-rails"},
+    {"sceneId":"s08-creative-payoff","startFrame":1320,"endFrame":1410,"headline":"Variation kann gewollt sein","icon":"◇","visualId":"stability-variation-balance"}
+  ]
+}
