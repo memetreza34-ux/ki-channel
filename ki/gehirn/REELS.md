@@ -224,7 +224,7 @@ Nicht als Standard verwenden:
 - Meta-Texte wie „vereinfachte Darstellung“
 - Text, der nur erklärt, was die Animation bereits sichtbar macht
 - Satzkopien aus dem Sprechertext
-- internen Planner-/Goal-/Debug-Text
+- keine internen Planner-/Goal-/Debug-Texte
 
 ```text
 Sprecher = Aussage
