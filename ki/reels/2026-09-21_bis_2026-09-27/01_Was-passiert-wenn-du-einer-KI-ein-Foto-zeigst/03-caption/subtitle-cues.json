@@ -1,0 +1,26 @@
+{
+  "fps": 30,
+  "timingStatus": "PLANNING_ONLY_UNTIL_REAL_AUDIO",
+  "cues": [
+    {"sceneId":"vision-photo-01","startFrame":0,"endFrame":70,"text":"Du schickst einer KI dieses Foto"},
+    {"sceneId":"vision-photo-01","startFrame":70,"endFrame":155,"text":"und fragst: Wo liegt der Schlüssel?"},
+    {"sceneId":"vision-photo-01","startFrame":155,"endFrame":240,"text":"Für dich ist es einfach ein Bild."},
+    {"sceneId":"vision-photo-02","startFrame":240,"endFrame":315,"text":"Viele moderne Bildmodelle zerlegen"},
+    {"sceneId":"vision-photo-02","startFrame":315,"endFrame":385,"text":"visuelle Informationen intern in kleinere Bereiche"},
+    {"sceneId":"vision-photo-02","startFrame":385,"endFrame":445,"text":"oder visuelle Tokens."},
+    {"sceneId":"vision-photo-02","startFrame":445,"endFrame":515,"text":"Stell dir vor: Das Foto wird"},
+    {"sceneId":"vision-photo-02","startFrame":515,"endFrame":570,"text":"in viele kleine Kacheln zerlegt."},
+    {"sceneId":"vision-photo-02","startFrame":570,"endFrame":630,"text":"Aus ihnen entstehen Zahlenrepräsentationen, mit denen das Modell weiterrechnet."},
+    {"sceneId":"vision-photo-03","startFrame":630,"endFrame":690,"text":"Dann kommt deine Frage dazu."},
+    {"sceneId":"vision-photo-03","startFrame":690,"endFrame":770,"text":"Bei „Schlüssel“ werden die Bildinformationen wichtig,"},
+    {"sceneId":"vision-photo-03","startFrame":770,"endFrame":855,"text":"die zu Form und Umgebung des Schlüssels passen."},
+    {"sceneId":"vision-photo-03","startFrame":855,"endFrame":930,"text":"Unwichtige Bereiche können in den Hintergrund treten."},
+    {"sceneId":"vision-photo-04","startFrame":930,"endFrame":1020,"text":"Danach erzeugt das Sprachmodell die Antwort Schritt für Schritt:"},
+    {"sceneId":"vision-photo-04","startFrame":1020,"endFrame":1140,"text":"„Der Schlüssel liegt neben der Tasse.“"},
+    {"sceneId":"vision-photo-05","startFrame":1140,"endFrame":1205,"text":"Aber das ist keine menschliche Sicht."},
+    {"sceneId":"vision-photo-05","startFrame":1205,"endFrame":1290,"text":"Kleine, unscharfe oder verdeckte Details können verloren gehen."},
+    {"sceneId":"vision-photo-05","startFrame":1290,"endFrame":1360,"text":"Deshalb gilt: Je klarer das Bild"},
+    {"sceneId":"vision-photo-05","startFrame":1360,"endFrame":1430,"text":"und je genauer die Frage,"},
+    {"sceneId":"vision-photo-05","startFrame":1430,"endFrame":1500,"text":"desto leichter kann das Modell die relevante Stelle finden."}
+  ]
+}

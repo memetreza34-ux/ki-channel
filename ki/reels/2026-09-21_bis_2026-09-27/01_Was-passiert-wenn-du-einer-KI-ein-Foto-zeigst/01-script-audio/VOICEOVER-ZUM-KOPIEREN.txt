@@ -1,0 +1,9 @@
+Du schickst einer KI dieses Foto und fragst: Wo liegt der Schlüssel? Für dich ist es einfach ein Bild.
+
+Viele moderne Bildmodelle zerlegen visuelle Informationen intern in kleinere Bereiche oder visuelle Tokens. Stell dir vor: Das Foto wird in viele kleine Kacheln zerlegt. Aus ihnen entstehen Zahlenrepräsentationen, mit denen das Modell weiterrechnet.
+
+Dann kommt deine Frage dazu. Bei „Schlüssel“ werden die Bildinformationen wichtig, die zu Form und Umgebung des Schlüssels passen. Unwichtige Bereiche können in den Hintergrund treten.
+
+Danach erzeugt das Sprachmodell die Antwort Schritt für Schritt: „Der Schlüssel liegt neben der Tasse.“
+
+Aber das ist keine menschliche Sicht. Kleine, unscharfe oder verdeckte Details können verloren gehen. Deshalb gilt: Je klarer das Bild und je genauer die Frage, desto leichter kann das Modell die relevante Stelle finden.

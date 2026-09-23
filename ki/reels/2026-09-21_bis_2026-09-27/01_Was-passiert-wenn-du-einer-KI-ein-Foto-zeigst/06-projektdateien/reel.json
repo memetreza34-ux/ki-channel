@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "slug": "vision-photo-understanding",
+  "title": "Was passiert, wenn du einer KI ein Foto zeigst?",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1500},
+  "captionZoneStartY": 1380,
+  "visualBeatCount": 15,
+  "externalAssetsRequired": false,
+  "scenes": [
+    {"sceneId":"vision-photo-01","startFrame":0,"endFrame":240,"headline":"Was sieht die KI?","icon":"camera","implementation":"NEW_BUILD","spokenText":"Du schickst einer KI dieses Foto und fragst: Wo liegt der Schlüssel? Für dich ist es einfach ein Bild.","beatIds":["vision-01-photo-enters","vision-02-question-pin","vision-03-key-focus"]},
+    {"sceneId":"vision-photo-02","startFrame":240,"endFrame":630,"headline":"Bild wird zu Tokens","icon":"grid","implementation":"NEW_BUILD","spokenText":"Viele moderne Bildmodelle zerlegen visuelle Informationen intern in kleinere Bereiche oder visuelle Tokens. Stell dir vor: Das Foto wird in viele kleine Kacheln zerlegt. Aus ihnen entstehen Zahlenrepräsentationen, mit denen das Modell weiterrechnet.","beatIds":["vision-04-grid-overlay","vision-05-tiles-lift","vision-06-visual-tokens"]},
+    {"sceneId":"vision-photo-03","startFrame":630,"endFrame":930,"headline":"Die Frage lenkt den Fokus","icon":"focus","implementation":"NEW_BUILD","spokenText":"Dann kommt deine Frage dazu. Bei „Schlüssel“ werden die Bildinformationen wichtig, die zu Form und Umgebung des Schlüssels passen. Unwichtige Bereiche können in den Hintergrund treten.","beatIds":["vision-07-question-tokens","vision-08-attention-focus","vision-09-background-dim"]},
+    {"sceneId":"vision-photo-04","startFrame":930,"endFrame":1140,"headline":"Antwort entsteht","icon":"message","implementation":"NEW_BUILD","spokenText":"Danach erzeugt das Sprachmodell die Antwort Schritt für Schritt: „Der Schlüssel liegt neben der Tasse.“","beatIds":["vision-10-key-zoom","vision-11-answer-types","vision-12-location-arrow"]},
+    {"sceneId":"vision-photo-05","startFrame":1140,"endFrame":1500,"headline":"Klarheit entscheidet","icon":"clarity","implementation":"NEW_BUILD","spokenText":"Aber das ist keine menschliche Sicht. Kleine, unscharfe oder verdeckte Details können verloren gehen. Deshalb gilt: Je klarer das Bild und je genauer die Frage, desto leichter kann das Modell die relevante Stelle finden.","beatIds":["vision-13-blur-loss","vision-14-clear-vs-blur","vision-15-final-rule"]}
+  ]
+}
