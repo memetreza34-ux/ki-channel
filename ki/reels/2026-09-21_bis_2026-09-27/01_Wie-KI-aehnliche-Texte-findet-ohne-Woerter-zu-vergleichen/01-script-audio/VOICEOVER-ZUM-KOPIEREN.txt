@@ -1,9 +1,0 @@
-Du suchst nach einer Antwort, aber die beste Fundstelle benutzt vielleicht ganz andere Wörter. Eine semantische Suche kann sie trotzdem finden, weil sie nicht nur Wortgleichheit vergleicht.
-
-Dafür werden Texte oft in sogenannte Embeddings verwandelt. Ein Embedding ist ein Vektor, also eine Liste von Zahlen, die ein Modell aus dem Text erzeugt.
-
-Texte, die inhaltlich stärker zusammenhängen, können dadurch im Vektorraum näher beieinander liegen. Deshalb kann eine Frage zu einem Thema auch Formulierungen finden, die kaum dieselben Wörter benutzen.
-
-Bei der Suche wird auch deine Anfrage eingebettet. Das System vergleicht ihren Vektor mit gespeicherten Vektoren und ordnet Treffer nach Ähnlichkeit, zum Beispiel mit Kosinusähnlichkeit.
-
-Embeddings werden deshalb für Suche, Clustering und Empfehlungen genutzt. Wichtig: Unsere Punktwolke ist nur eine vereinfachte 2D-Darstellung. Nähe bedeutet modellierte Ähnlichkeit, nicht automatisch Wahrheit. Der Vorteil bleibt: Bedeutung kann wichtiger sein als identische Wörter.
