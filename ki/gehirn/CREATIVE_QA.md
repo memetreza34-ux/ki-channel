@@ -5,145 +5,160 @@ Ein Reel kann alle Tests bestehen und trotzdem langweilig sein. Dann ist es **ni
 
 ## 1. Hook-Gate
 
-Die ersten 1–2 Sekunden muessen bereits mindestens eines zeigen:
+Die ersten 1–2 Sekunden müssen mindestens eines zeigen:
 
-- einen sichtbaren Konflikt
-- ein ueberraschendes Ergebnis
-- eine konkrete Behauptung, die sofort aufgeloest werden will
-- einen Vorher/Nachher-Kontrast
-- eine Frage, deren Antwort nicht offensichtlich ist
+- sichtbaren Konflikt
+- überraschendes Ergebnis
+- konkrete Situation, die sofort eine Frage erzeugt
+- Vorher/Nachher-Kontrast
+- Frage, deren Antwort nicht offensichtlich ist
 
-Nicht als Einstieg verwenden:
+Nicht als Einstieg:
 
-- Begruessung
+- Begrüßung
 - Kanalname
-- "Heute erklaere ich dir ..."
-- "Du fragst eine KI etwas ..."
+- „Heute erkläre ich dir …“
+- Fachbegriff ohne konkreten Zuschaueranker
 - Kontext, der auch nach dem Hook kommen kann
 
-**Test:** Wenn die ersten zwei Sekunden entfernt werden koennten, ohne dass etwas verloren geht, ist der Hook zu schwach.
+**Test:** Wenn man zuerst erklären muss, warum der Begriff interessant ist, ist der Hook zu abstrakt.
 
-## 2. Visual-Story-Gate
+## 2. Themen-Gate
 
-Jeder bedeutungstragende Beat braucht eine sichtbare Handlung, Beziehung oder Zustandsaenderung.
+Vor dem visuellen Review prüfen:
 
-Bevorzugte Mechaniken:
+- Ist das Thema selbst interessant oder nur technisch korrekt?
+- Ist der Payoff mehr als „Begriff verstanden“?
+- Gibt es eine konkrete Alltagssituation, Produktwirkung oder sichtbare Konsequenz?
+- Würde ein Nicht-Techniker nach 2 Sekunden wissen, warum er bleiben soll?
+
+Wenn nicht: **Reel nicht durch mehr Animation retten. Thema/Angle neu bauen.**
+
+## 3. Visual-Story-Gate
+
+Jeder bedeutungstragende Beat braucht sichtbare Handlung, Beziehung oder Zustandsänderung.
+
+Bevorzugt:
 
 - Objekt reist von A nach B
-- etwas wird sortiert, ausgewaehlt oder verworfen
-- zwei Dinge kollidieren oder konkurrieren
+- etwas wird sortiert, ausgewählt oder verworfen
+- zwei Dinge konkurrieren
 - Form/Zustand verwandelt sich
-- ein Prozess umgeht oder passiert ein Gate
+- Bild/Objekt zerfällt und setzt sich neu zusammen
+- Kamera fokussiert eine relevante Stelle
+- Frage löst sichtbare Aufmerksamkeit/Fokus aus
 - Ursache erzeugt sichtbar eine Wirkung
-- Quelle/Werkzeug wird verbunden und liefert etwas zurueck
-- ein Objekt zerfaellt in Bestandteile oder setzt sich zusammen
 
-Eine Karte, Box oder Pill ist nur erlaubt, wenn **die Karte selbst semantisch das Objekt ist** — zum Beispiel UI, Dokument, Token oder Datensatz.
+Eine Karte ist nur erlaubt, wenn die Karte selbst semantisch das Objekt ist.
 
-**Verbot:** abstrakte Aussage automatisch in eine beschriftete Karte packen.
+## 4. Remotion-Illustrations-Gate
 
-## 3. Karten-Budget
+Bei Themen mit realen Dingen oder räumlicher Situation prüfen, ob das Reel mindestens eine größere **Remotion-native Illustration/Objektszene** enthält:
 
-In einem Reel duerfen nicht mehrere aufeinanderfolgende Beats nur aus
-"Karte erscheint → Text lesen → naechste Karte" bestehen.
+- SVG-/CSS-Szene
+- Objekt/Umgebung
+- pseudo-fotografische 2.5D-Illustration
+- eigene Vector-Icons
+- Clipping/Masken/Layer/Perspektive
 
-Richtwert:
+Nicht akzeptieren, wenn ein anschauliches Thema unnötig auf Karten + Labels reduziert wurde.
 
-- hoechstens etwa ein Drittel der Visual Beats darf primaer karten-/boxbasiert sein
-- mindestens die Haelfte der Beats soll objekt-, pfad-, form-, raum- oder prozessbasiert funktionieren
-- zwei direkt aufeinanderfolgende Szenen duerfen nicht dieselbe visuelle Grammatik wiederholen, ausser die Wiederholung ist Teil der Erklaerung
+## 5. Karten-Budget
 
-## 4. Tempo- und Informationsdichte
+Richtwert V2.1:
 
-Nicht hektisch schneiden. Stattdessen Leerlauf entfernen.
+- höchstens etwa ein Viertel der Visual Beats primär karten-/boxbasiert
+- mindestens die Hälfte objekt-, pfad-, form-, raum-, illustration- oder prozessbasiert
+- keine zwei langen Szenen hintereinander mit derselben Karten-Grammatik
 
-Pruefen:
+## 6. Tempo- und Motion-Dichte
 
-- der Konflikt ist spaetestens nach 2 Sekunden klar
-- innerhalb der ersten 5 Sekunden gibt es mindestens eine echte Zustandsaenderung
-- keine Szene haelt mehrere Sekunden lang nur einen fertigen statischen Zustand
-- ein langer Cue bekommt Micro-Beats, wenn sich seine Bedeutung waehrend des Satzes veraendert
-- Voiceover-Dauer wird nicht mit dekorativer Bewegung gefuellt
+Prüfen:
 
-50–60 Sekunden sind kein Ziel an sich. Wenn 42 Sekunden reichen, wird nicht auf 55 Sekunden gestreckt.
+- Konflikt spätestens nach 2 Sekunden klar
+- innerhalb der ersten 3 Sekunden echte Zustandsänderung
+- ungefähr alle 1,5–3 Sekunden eine bedeutungstragende sichtbare Veränderung
+- kein fertiger statischer Zustand länger als etwa 2,5 Sekunden ohne Grund
+- längere Szene hat normalerweise mindestens zwei echte Micro-Beats
+- Bewegung ist an Sprecherinhalt gekoppelt, nicht nur dekorativ
 
-## 5. Fakten-Gate fuer KI-Erklaerungen
+50–60 Sekunden sind kein Ziel. Wenn 42 Sekunden reichen, wird nicht auf 55 gestreckt.
+
+## 7. Fakten-Gate
 
 Vereinfachung darf das mentale Modell nicht falsch machen.
 
-Besonders pruefen:
+Besonders prüfen:
 
-- bei Sprachmodellen besser von **Tokens** als pauschal von "Woertern" sprechen
-- Wahrscheinlichkeitsverteilung nicht als "immer gewinnt Platz eins" darstellen
-- isoliertes Modell von Systemen mit Websuche, Retrieval, Datenbank oder anderen Tools unterscheiden
-- nicht pauschal behaupten, moderne KI "pruefe nie nach"
-- illustrative Zahlen, Prozentwerte, Zeiten und Rankings nicht wie Messwerte darstellen
-- Demo-Werte sichtbar als Beispiel kennzeichnen oder ganz vermeiden
+- Modellarchitekturen nicht pauschal vereinheitlichen
+- produkt-/modellspezifische Details als solche kennzeichnen
+- illustrative Zahlen nicht wie Messwerte darstellen
+- reale UI/Features bei aktuellem Produktbezug prüfen
+- „immer“, „nie“, „alle“ vermeiden, wenn nicht belegt
 
-## 6. Pattern-Interrupt-Gate
+## 8. Pattern-Interrupt-Gate
 
-Ein gutes Reel braucht nicht staendig neue Effekte, aber sichtbare Rhythmuswechsel.
+Mehrere Bildsprachen nutzen, wenn der Inhalt sie rechtfertigt:
 
-Ueber ein Reel verteilt sollen mehrere dieser Bildsprachen vorkommen, wenn der Inhalt sie rechtfertigt:
-
-- grosse Einzelobjekte
+- große Einzelobjekte/Illustration
 - Pfad/Prozess
-- Formveraenderung
+- Formveränderung
 - Vergleich/Split
 - Dokument/UI
-- raeumliche oder 3D-Metapher
-- Typografie als kurzer Akzent
+- räumliche 2.5D-/3D-Metapher
+- kurzer Typografie-Akzent
 - Diagramm nur bei echten Daten-/Gewichtsaussagen
 
-Nicht alle verwenden. Aber nicht das ganze Reel in einer einzigen Karten-Grammatik bauen.
+## 9. Text-Gate
 
-## 7. Text-Gate
-
-Sprecher = Aussage.
-Caption = Lesbarkeit.
-Animation = Erklaerung.
+Sprecher = Aussage.  
+Caption = Lesbarkeit.  
+Animation = Erklärung.  
 Header = Kapitelmarker.
 
-Wenn Animationstext nur noch einmal sagt, was Caption und Sprecher bereits sagen, entfernen oder durch sichtbare Handlung ersetzen.
+Animationstext darf nicht nur Sprecher und Caption wiederholen.
 
-## 8. Schluss-Gate
+## 10. Caption-Gate
 
-Das Ende muss die Entscheidung fuer den Zuschauer klar machen.
+Für 1080×1920 gilt der aktuelle Standard aus `CAPTION_SAFE_POSITION.md`:
 
-Beispiele:
+- Standard `bottom: 400px`
+- aktive Wortmarkierung lila
+- maximal 2 Zeilen
+- Caption darf nicht unnötig hoch in der Bildmitte sitzen
+- finaler Sync nur aus echtem Audio
 
-- was jetzt tun?
-- wann gilt die Aussage?
-- welche Grenze bleibt?
-- welche Sache soll der Zuschauer pruefen/vermeiden/nutzen?
+## 11. Schluss-Gate
 
-Kein generischer CTA notwendig.
+Das Ende muss eine klare Einordnung, Regel oder Grenze liefern. Kein generischer CTA nötig.
 
-## 9. Smartphone-Test
+## 12. Smartphone-Test
 
-Finales MP4 auf Smartphone-Groesse ansehen, nicht nur Stills pruefen.
+Finales MP4 auf Smartphone-Größe ansehen.
 
 Fragen:
 
-1. Wuerde ich nach 1 Sekunde weiterschauen?
+1. Würde ich nach 1 Sekunde weiterschauen?
 2. Ist nach 3 Sekunden klar, worum es geht?
 3. Passiert sichtbar genug, ohne hektisch zu werden?
-4. Wiederholt sich dieselbe Form-/Kartenlogik zu oft?
-5. Gibt es mindestens einen visuellen Moment, an den man sich erinnert?
-6. Versteht man die Kernmechanik auch kurz ohne Ton?
-7. Konkurrieren Header, Animation und Caption miteinander?
-8. Wirkt irgendeine Zahl wie ein echter Messwert, obwohl sie nur Demo ist?
+4. Gibt es zu viel weiße/ungenutzte Fläche?
+5. Wiederholt sich Kartenlogik?
+6. Gibt es mindestens einen erinnerbaren visuellen Moment?
+7. Versteht man die Kernmechanik kurz ohne Ton?
+8. Sitzt die Caption tief genug, ohne in UI zu geraten?
+9. Wirkt irgendeine Demo wie ein echter Messwert?
 
-Wenn bei 1, 2, 4, 6 oder 8 die Antwort schlecht ausfaellt: **nicht freigeben**.
+Wenn bei 1, 2, 5, 7 oder 9 die Antwort schlecht ausfällt: **nicht freigeben**.
 
-## 10. Reihenfolge bei Problemen
+## 13. Reihenfolge bei Problemen
 
-Wenn das Reel technisch sauber, aber langweilig ist:
+Wenn technisch sauber, aber langweilig:
 
-1. Hook neu bauen
-2. Leerlauf kuerzen
-3. kartenlastige Beats durch echte Mechaniken ersetzen
-4. visuelle Kontraste/Pattern Interrupts erhoehen
-5. erst danach neue Motion-Technik oder neue Library-Komponenten bauen
+1. Thema/Angle prüfen
+2. Hook neu bauen
+3. Leerlauf kürzen
+4. Kartenbeats durch echte Objekt-/Illustrationsmechaniken ersetzen
+5. Motion-Cues dichter an Sprecherbedeutung koppeln
+6. erst danach neue Technik bauen
 
-**Keine neue Animation Library als Ersatz fuer eine schwache Content-Idee.**
+**Keine neue Animation Library als Ersatz für eine schwache Content-Idee.**
