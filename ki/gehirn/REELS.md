@@ -108,7 +108,7 @@ Gute Hauptverben:
 
 Schwaches Hauptverb: nur „erscheint“.
 
-### Motion-Dichte V2.1
+### Motion-Dichte V2.2
 
 Für normale Erklär-Reels gilt:
 
@@ -163,7 +163,7 @@ Karten/Panels sind sinnvoll, wenn sie wirklich UI, Dokument, Datei, Nachricht, D
 
 Nicht als Standard für abstrakte Aussagen.
 
-Richtwerte V2.1:
+Richtwerte V2.2:
 
 - normalerweise höchstens **ein Viertel** der Hauptbeats primär Karten/Panel
 - nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
@@ -184,7 +184,7 @@ Richtwerte V2.1:
 - keine Partikel/Glow als Ersatz für Erklärung
 - kein permanentes Hintergrundwackeln
 
-## Text-Hierarchie
+## Text-Hierarchie V2.2
 
 ### Zwischenüberschrift + Icon
 
@@ -201,7 +201,7 @@ Richtwerte V2.1:
 
 Bei 1080 × 1920 als Standard:
 
-- `bottom: 400px`
+- `bottom: 300px`
 - horizontal ca. `104px` Sicherheitsabstand
 - bevorzugte maximale Breite ca. `820px`
 - normalerweise 4–6 Wörter pro Sinnblock
@@ -212,8 +212,18 @@ Bei 1080 × 1920 als Standard:
 
 ### Animationstext
 
-- wenige Objekt-/Zustandslabels
-- keine Satzkopie
+Standardmäßig nur, wenn er **semantisch nötig** ist:
+
+- kurze Objekt-/UI-Labels
+- Zahlen/Daten, die wirklich erklärt werden
+- Zustände, die ohne Label nicht eindeutig lesbar wären
+
+Nicht als Standard verwenden:
+
+- graue Hilfssätze
+- Meta-Texte wie „vereinfachte Darstellung“
+- Text, der nur erklärt, was die Animation bereits sichtbar macht
+- Satzkopien aus dem Sprechertext
 - keine internen Planner-/Goal-/Debug-Texte
 
 ```text
@@ -223,11 +233,13 @@ Visual = Erklärung
 Header = Kapitelmarker
 ```
 
+Wenn das Visual ohne zusätzlichen Satz verständlich ist, wird der Satz **weggelassen**.
+
 ## Caption-/Visual-Trennung
 
 Für 1080 × 1920:
 
-- Hauptvisuals nach Möglichkeit bis etwa `y≈1300–1340` abschließen
+- Hauptvisuals dürfen ungefähr bis `y≈1380–1420` reichen, solange die Caption frei bleibt
 - sichtbare Luft zur Caption anstreben
 - kein wichtiges Visual/Label hinter der Caption
 - rechts Feed-Interaktionsleiste mitdenken
@@ -293,7 +305,7 @@ Stop bei:
 - repetitiver Karten-/Panelserie
 - fehlendem sichtbaren Mechanismus
 - keinem erinnerbaren visuellen Moment
-- unnötiger Textdopplung
+- unnötiger Textdopplung oder grauen Hilfstexten
 - Smartphone-Unlesbarkeit
 - ungeerdeten Zahlen/Claims
 
@@ -321,6 +333,7 @@ Vor Freigabe:
 - Audio/Visual/Captions synchron
 - wichtige Motion-Cues an echten Sprecherstellen ausgerichtet
 - keine Caption-Kollision
+- keine unnötige vierte Textebene
 - Smoke-Frames angesehen
 - finales MP4 normal und auf Smartphone-Größe angesehen
 - technische Checks bestanden

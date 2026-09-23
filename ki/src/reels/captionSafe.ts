@@ -1,13 +1,13 @@
 export const REEL_CAPTION_SAFE = Object.freeze({
-  bottom: 400,
+  bottom: 300,
   horizontalInset: 104,
   maxWidth: 820,
   maxVisibleLines: 2,
   maxWordsPerGroup: 6,
-  lowerCriticalDeadZone: 320,
-  lowerBufferEnd: 380,
-  preferredVisualEndY: 1300,
-  preferredVisualEndYMax: 1340,
+  lowerCriticalDeadZone: 220,
+  lowerBufferEnd: 280,
+  preferredVisualEndY: 1380,
+  preferredVisualEndYMax: 1420,
 } as const);
 
 export const REEL_CAPTION_WRAPPER_STYLE = Object.freeze({

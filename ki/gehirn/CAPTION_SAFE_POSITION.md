@@ -4,71 +4,77 @@ Diese Datei definiert die kanonische Untertitelposition für vertikale Productio
 
 ## Warum die Position geändert wird
 
-Der bisherige Standard `bottom: 520px` war technisch sehr konservativ, wirkte im echten 1080×1920-Review aber sichtbar zu hoch und nahm dem Hauptvisual zu viel vertikalen Raum.
+Die realen Reel-Reviews vom 23.09.2026 zeigten zweimal dasselbe Problem: `bottom: 520px` und später `400px` wirkten noch zu hoch und zogen den Caption-Block zu stark in die Bildmitte.
 
-Nach dem Review vom 23.09.2026 wird die Caption bewusst tiefer gesetzt, ohne sie in den kritischen unteren Feed-Bereich zu drücken.
+Der neue V2.2-Standard setzt die Captions deshalb sichtbar tiefer. Der Smartphone-/Feed-Review bleibt Pflicht, weil Plattform-UI je nach App und Gerät variiert.
 
-## Kanonischer KIwerkraum-Standard
+## Kanonischer KIwerkraum-Standard V2.2
 
-Für 1080×1920 gilt ab jetzt:
+Für 1080×1920 gilt:
 
-- **Standard Caption Bottom Offset: `400px`**
+- **Standard Caption Bottom Offset: `300px`**
 - horizontaler Sicherheitsabstand: **`104px` links und rechts**
 - bevorzugte maximale Textbreite: **`820px`**
-- sichtbarer Untertitelblock typischerweise ungefähr **y=1400–1530**, abhängig von Schriftgröße und 1–2 Zeilen
-- normalerweise **4–6 Wörter pro sichtbarem Sinnblock**
+- normalerweise **4–6 Wörter pro Sinnblock**
 - maximal **2 Zeilen gleichzeitig**
-- kein Hintergrundkasten; Lesbarkeit über kontrollierten Halo/Schatten
-- aktiver Sprecherfokus weiterhin Marken-Lila
+- kein Hintergrundkasten
+- aktiver Sprecherfokus in Marken-Lila
+- finale Worttimings nur aus echtem Audio
 
-Die Werte werden im Source zentral aus `ki/src/reels/captionSafe.ts` bezogen. Neue Reels dürfen keine eigenen Caption-Werte erfinden.
+Die Werte kommen zentral aus `ki/src/reels/captionSafe.ts`. Neue Reels dürfen keine eigenen Caption-Werte erfinden.
 
-## Unterer UI-/Dead-Bereich
+## Unterer Feed-/UI-Bereich
 
-Der untere Bereich wird weiterhin geschützt:
-
-- die letzten ungefähr **320px** niemals für Untertitel oder andere kritische Informationen verwenden
-- ungefähr **320–380px vom unteren Rand** nur als Puffer behandeln
-- Untertitel standardmäßig mit `bottom: 400px` knapp oberhalb dieses Puffers halten
-- rechts zusätzlichen Abstand zur Interaktionsleiste berücksichtigen
-
-Diese Werte sind ein kanalinterner Cross-Platform-Standard. Plattform-UI kann je nach App, Gerät und Oberfläche variieren; deshalb bleibt der Smartphone-/Feed-Review Pflicht.
+- die letzten ungefähr **220px** bleiben für kritische Informationen tabu
+- ungefähr **220–280px vom unteren Rand** gelten als Puffer
+- Standard-Caption beginnt bei `bottom: 300px`
+- rechts weiterhin Abstand zur Interaktionsleiste berücksichtigen
 
 ## Beziehung zur Animation
 
-Der tiefere Caption-Standard schafft bewusst mehr Platz für große Remotion-Illustrationen und Objektanimationen.
+Der tiefere Caption-Standard soll dem Hauptvisual mehr Raum geben. Für neue Reels darf das bedeutungstragende Visual ungefähr bis `y=1380–1420` reichen, solange es den Caption-Block nicht verdeckt.
 
-Wenn ein Hauptvisual mit der Caption konkurriert:
+Wenn Visual und Caption konkurrieren:
 
-1. Visual höher oder kompakter komponieren
-2. interne Labels kürzen
-3. Fokusbereich neu setzen
-4. Visual neu bauen, wenn nötig
+1. Visual neu komponieren
+2. Objekt/Fokus verschieben
+3. unnötige Objektlabels entfernen
+4. erst danach Caption-Geometrie anfassen
 
-Nicht die Caption beliebig weiter nach unten schieben.
+## Text-Minimalismus
 
-Für neue Reels soll der bedeutungstragende Hauptinhalt nach Möglichkeit bis ungefähr `y=1300–1340` abgeschlossen sein. Danach bleibt Luft zum Caption-Bereich.
+Im Hauptbild gibt es standardmäßig nur drei Textebenen:
 
-## Source-Gate für zukünftige Reels
+1. kurze Szenenüberschrift + Icon oben
+2. zwingend nötige Objekt-/UI-Labels im Visual
+3. synchroner Sprecher-Caption unten
+
+Nicht erlaubt als Standard:
+
+- graue Hilfssätze unter dem Visual
+- Meta-Erklärungen wie „vereinfachte Darstellung“ mitten im Bild
+- Text, der nur wiederholt, was Caption oder Animation bereits erklärt
+- zusätzliche vierte Textebene nur zur Absicherung
+
+Eine fachlich notwendige Einschränkung gehört bevorzugt in den Sprechertext. Ein sichtbarer Hinweis bleibt nur dann im Visual, wenn er für die Wahrheit der Darstellung wirklich unverzichtbar ist.
+
+## Source-Gate
 
 Neue Production-Reels müssen:
 
-- `REEL_CAPTION_SAFE.bottom` aus `ki/src/reels/captionSafe.ts` verwenden oder exakt daraus abgeleitete Shared-Komponenten nutzen
+- `REEL_CAPTION_SAFE.bottom` verwenden
 - `REEL_CAPTION_SAFE.horizontalInset` respektieren
-- keine alten festen Caption-Werte wie `264`, `270`, `360`, `460`, `500` oder `520` lokal kopieren
-- bei 1080×1920 nicht unter `bottom: 360px` gehen, außer der Nutzer verlangt ausdrücklich ein anderes Layout und ein Feed-Review bestätigt es
-- nach jeder Safe-Geometrie-Änderung neu rendern und auf Smartphone-/Feed-Größe prüfen
+- keine alten lokalen Werte wie `264`, `270`, `360`, `400`, `460`, `500` oder `520` kopieren
+- keine dekorativen grauen Hilfssätze einführen
+- nach Geometrieänderungen neu rendern und auf Smartphone-/Feed-Größe prüfen
 
 ## Review-Gate
 
-Ein Reel ist nicht visuell freigegeben, wenn:
+Ein Reel ist nicht freigegeben, wenn:
 
-- Untertitel sichtbar im unteren Plattform-UI-Bereich hängen
-- Untertitel zu nah an Accountname/Beschreibung/CTA liegen
-- Caption rechts mit Like/Kommentar/Share-UI konkurriert
+- Captions wieder unnötig hoch in der Bildmitte sitzen
+- Captions mit Plattform-UI kollidieren
 - Caption und Hauptvisual konkurrieren
 - mehr als 2 Caption-Zeilen gleichzeitig sichtbar sind
-- der Caption-Block wieder unnötig hoch in die Bildmitte rutscht
+- unnötige graue Zusatztexte eine vierte Textebene bilden
 - ein alter Render nach einer Caption-Positionsänderung weiter als freigegeben gilt
-
-Nach Änderung der Caption-Position ist immer ein neuer Render plus Smartphone-/Feed-Sichttest erforderlich.

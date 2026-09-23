@@ -1,0 +1,13 @@
+{
+  "slug": "pdf-retrieval",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1560},
+  "captionZoneStartY": 1450,
+  "visualBeatCount": 15,
+  "scenes": [
+    {"sceneId":"pdf-01","startFrame":0,"endFrame":300,"headline":"Richtige PDF, falsche Stelle","icon":"document","implementation":"NEW_BUILD","spokenText":"Du lädst genau die richtige PDF hoch – und die KI antwortet trotzdem mit der falschen Stelle. Das kann passieren, obwohl die Information wirklich im Dokument steht.","beatIds":["B01","B02","B03"]},
+    {"sceneId":"pdf-02","startFrame":300,"endFrame":630,"headline":"Die PDF wird durchsuchbar","icon":"chunks","implementation":"NEW_BUILD","spokenText":"Bei Retrieval-Systemen wird eine Datei nicht einfach als ein riesiger Text behandelt. Sie kann in kleinere Abschnitte zerlegt, indexiert und für die Suche vorbereitet werden.","beatIds":["B04","B05","B06"]},
+    {"sceneId":"pdf-03","startFrame":630,"endFrame":990,"headline":"Die Frage sucht Treffer","icon":"search","implementation":"NEW_BUILD","spokenText":"Stellst du eine Frage, sucht das System nach passenden Abschnitten. Bei OpenAIs File Search werden dafür semantische und Stichwortsuche kombiniert, bevor relevante Treffer an das Modell gehen.","beatIds":["B07","B08","B09"]},
+    {"sceneId":"pdf-04","startFrame":990,"endFrame":1260,"headline":"Breite Frage, breite Suche","icon":"focus","implementation":"NEW_BUILD","spokenText":"Eine sehr breite Frage kann mehrere ähnlich passende Stellen liefern. Eine konkrete Frage mit Abschnitt, Begriff oder Zitat macht den gesuchten Bereich deutlich enger.","beatIds":["B10","B11","B12"]},
+    {"sceneId":"pdf-05","startFrame":1260,"endFrame":1560,"headline":"So fragst du besser","icon":"check","implementation":"NEW_BUILD","spokenText":"Darum gilt bei wichtigen PDFs: Nenne möglichst genau, wonach du suchst, und prüfe die gefundene Passage. Retrieval hilft beim Finden – es garantiert nicht automatisch, dass jede Antwort richtig ist.","beatIds":["B13","B14","B15"]}
+  ]
+}

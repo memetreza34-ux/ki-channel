@@ -1,0 +1,9 @@
+import type {AuthoredVisualScene} from '../../animation-library/authoredProductionGate';
+
+export const PDF_RETRIEVAL_VISUAL_PROFILES: readonly AuthoredVisualScene[] = [
+  {sceneId:'pdf-01',visualId:'pdf-wrong-passage-hook-v1',fingerprint:{primaryPrimitive:'illustration',cameraMotion:'push',depthStyle:'layered-2d',entryMechanism:'scale',medium:'remotion-native',direction:'depth-forward',visualFamily:'document-conflict',layoutFamily:'hero-pdf-passage',motionSignature:'pdf-land-correct-glow-arrow-snap-wrong'}},
+  {sceneId:'pdf-02',visualId:'pdf-chunk-index-v1',fingerprint:{primaryPrimitive:'mixed',cameraMotion:'parallax',depthStyle:'pseudo-3d',entryMechanism:'assemble',medium:'remotion-native',direction:'center-out',visualFamily:'document-processing',layoutFamily:'pages-chunks-index-field',motionSignature:'pages-fan-slice-chunks-travel-index'}},
+  {sceneId:'pdf-03',visualId:'pdf-query-retrieval-v1',fingerprint:{primaryPrimitive:'nodes',cameraMotion:'pan',depthStyle:'layered-2d',entryMechanism:'draw',medium:'remotion-native',direction:'left-to-right',visualFamily:'retrieval-search',layoutFamily:'query-signals-candidates',motionSignature:'query-launch-signals-converge-results-lift'}},
+  {sceneId:'pdf-04',visualId:'pdf-specificity-collapse-v1',fingerprint:{primaryPrimitive:'mixed',cameraMotion:'push',depthStyle:'pseudo-3d',entryMechanism:'morph',medium:'remotion-native',direction:'outside-in',visualFamily:'query-specificity',layoutFamily:'three-beams-to-one',motionSignature:'beam-split-candidates-pulse-constraints-lock-collapse'}},
+  {sceneId:'pdf-05',visualId:'pdf-verify-rule-v1',fingerprint:{primaryPrimitive:'typography',cameraMotion:'pull',depthStyle:'layered-2d',entryMechanism:'mask',medium:'remotion-native',direction:'left-to-right',visualFamily:'verification-rule',layoutFamily:'passage-magnifier-input-rule',motionSignature:'passage-zoom-magnifier-scan-check-rule-build'}}
+] as const;

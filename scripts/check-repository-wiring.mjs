@@ -149,7 +149,7 @@ requireMarkers('build-content-review-gallery.mjs', reviewGallery, ['CREATIVE_REC
 requireMarkers('verify-content-review-gallery.mjs', reviewGalleryVerifier, ['getCreativeRecipeSourceFingerprint','CONTENT_REVIEW_COUNTS','recipeCount','Creative-Recipe-Review']);
 requireMarkers('finalize-content-release.mjs', releaseFinalizer, ['check-creative-recipe-renders.mjs','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS','version: 2']);
 requireMarkers('content-release-status.mjs', releaseStatus, ['getCreativeRecipeSourceFingerprint','creativeRecipes: recipeState','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS']);
-requireMarkers('check-production-visual-contracts.mjs', productionVisualContracts, ['Root.tsx','visualProfiles.ts','assertAuthoredVisualDiversity','reelModules.length !== 10','longformModules.length !== 1']);
+requireMarkers('check-production-visual-contracts.mjs', productionVisualContracts, ['Root.tsx','visualProfiles.ts','assertAuthoredVisualDiversity','reelModules.length !== 11','longformModules.length !== 1']);
 requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV2'",'AI_APP_WORKFLOW_CHAPTERS']);
 requireMarkers('CreativeVisualsV2.tsx', longformV2, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1100','perspective:1150']);
 requireMarkers('longform visualProfiles.ts', longformProfiles, ['AI_APP_WORKFLOW_VISUAL_PROFILES','primaryPrimitive','cameraMotion','depthStyle','motionSignature']);

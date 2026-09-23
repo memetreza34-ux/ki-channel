@@ -65,7 +65,7 @@ Nicht akzeptieren, wenn ein anschauliches Thema unnötig auf Karten + Labels red
 
 ## 5. Karten-Budget
 
-Richtwert V2.1:
+Richtwert V2.2:
 
 - höchstens etwa ein Viertel der Visual Beats primär karten-/boxbasiert
 - mindestens die Hälfte objekt-, pfad-, form-, raum-, illustration- oder prozessbasiert
@@ -109,23 +109,38 @@ Mehrere Bildsprachen nutzen, wenn der Inhalt sie rechtfertigt:
 - kurzer Typografie-Akzent
 - Diagramm nur bei echten Daten-/Gewichtsaussagen
 
-## 9. Text-Gate
+## 9. Text-Gate V2.2
 
 Sprecher = Aussage.  
 Caption = Lesbarkeit.  
 Animation = Erklärung.  
 Header = Kapitelmarker.
 
-Animationstext darf nicht nur Sprecher und Caption wiederholen.
+Erlaubt sind normalerweise nur:
+
+1. kurze Überschrift + Icon oben
+2. wirklich nötige Objekt-/UI-Labels
+3. synchroner Caption unten
+
+**Nicht freigeben**, wenn zusätzlich graue Hilfssätze, Meta-Kommentare oder wiederholende Erklärungstexte im Visual stehen.
+
+Beispiele für unnötigen Text:
+
+- „vereinfachte Darstellung“ als dauerhafte vierte Textebene
+- „andere Bereiche treten zurück“, wenn genau das bereits sichtbar animiert wird
+- Satzkopien, die Caption und Sprecher wiederholen
+
+Wenn eine fachliche Einschränkung wichtig ist, gehört sie bevorzugt in den Sprechertext.
 
 ## 10. Caption-Gate
 
 Für 1080×1920 gilt der aktuelle Standard aus `CAPTION_SAFE_POSITION.md`:
 
-- Standard `bottom: 400px`
+- Standard `bottom: 300px`
 - aktive Wortmarkierung lila
 - maximal 2 Zeilen
-- Caption darf nicht unnötig hoch in der Bildmitte sitzen
+- Caption soll deutlich unter dem Hauptvisual sitzen
+- Caption darf nicht unnötig hoch in der Bildmitte stehen
 - finaler Sync nur aus echtem Audio
 
 ## 11. Schluss-Gate
@@ -146,9 +161,10 @@ Fragen:
 6. Gibt es mindestens einen erinnerbaren visuellen Moment?
 7. Versteht man die Kernmechanik kurz ohne Ton?
 8. Sitzt die Caption tief genug, ohne in UI zu geraten?
-9. Wirkt irgendeine Demo wie ein echter Messwert?
+9. Gibt es unnötige graue Zusatztexte?
+10. Wirkt irgendeine Demo wie ein echter Messwert?
 
-Wenn bei 1, 2, 5, 7 oder 9 die Antwort schlecht ausfällt: **nicht freigeben**.
+Wenn bei 1, 2, 5, 7, 9 oder 10 die Antwort schlecht ausfällt: **nicht freigeben**.
 
 ## 13. Reihenfolge bei Problemen
 
@@ -158,7 +174,8 @@ Wenn technisch sauber, aber langweilig:
 2. Hook neu bauen
 3. Leerlauf kürzen
 4. Kartenbeats durch echte Objekt-/Illustrationsmechaniken ersetzen
-5. Motion-Cues dichter an Sprecherbedeutung koppeln
-6. erst danach neue Technik bauen
+5. unnötigen Visual-Text entfernen
+6. Motion-Cues dichter an Sprecherbedeutung koppeln
+7. erst danach neue Technik bauen
 
 **Keine neue Animation Library als Ersatz für eine schwache Content-Idee.**

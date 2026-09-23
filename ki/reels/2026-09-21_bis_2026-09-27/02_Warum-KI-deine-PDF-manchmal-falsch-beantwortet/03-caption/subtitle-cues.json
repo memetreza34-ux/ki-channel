@@ -1,0 +1,15 @@
+{
+  "fps": 30,
+  "cues": [
+    {"sceneId":"pdf-01","startFrame":0,"endFrame":150,"text":"Du lädst genau die richtige PDF hoch – und die KI antwortet trotzdem mit der falschen Stelle."},
+    {"sceneId":"pdf-01","startFrame":150,"endFrame":300,"text":"Das kann passieren, obwohl die Information wirklich im Dokument steht."},
+    {"sceneId":"pdf-02","startFrame":300,"endFrame":465,"text":"Bei Retrieval-Systemen wird eine Datei nicht einfach als ein riesiger Text behandelt."},
+    {"sceneId":"pdf-02","startFrame":465,"endFrame":630,"text":"Sie kann in kleinere Abschnitte zerlegt, indexiert und für die Suche vorbereitet werden."},
+    {"sceneId":"pdf-03","startFrame":630,"endFrame":800,"text":"Stellst du eine Frage, sucht das System nach passenden Abschnitten."},
+    {"sceneId":"pdf-03","startFrame":800,"endFrame":990,"text":"Bei OpenAIs File Search werden dafür semantische und Stichwortsuche kombiniert, bevor relevante Treffer an das Modell gehen."},
+    {"sceneId":"pdf-04","startFrame":990,"endFrame":1125,"text":"Eine sehr breite Frage kann mehrere ähnlich passende Stellen liefern."},
+    {"sceneId":"pdf-04","startFrame":1125,"endFrame":1260,"text":"Eine konkrete Frage mit Abschnitt, Begriff oder Zitat macht den gesuchten Bereich deutlich enger."},
+    {"sceneId":"pdf-05","startFrame":1260,"endFrame":1410,"text":"Darum gilt bei wichtigen PDFs: Nenne möglichst genau, wonach du suchst, und prüfe die gefundene Passage."},
+    {"sceneId":"pdf-05","startFrame":1410,"endFrame":1560,"text":"Retrieval hilft beim Finden – es garantiert nicht automatisch, dass jede Antwort richtig ist."}
+  ]
+}
