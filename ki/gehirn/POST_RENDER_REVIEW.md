@@ -4,6 +4,8 @@ Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md` 
 
 Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
 
+Für Caption-Geometrie gilt ausschließlich der zentrale V2.2-Stand aus `ki/src/reels/captionSafe.ts` zusammen mit `ki/gehirn/CAPTION_SAFE_POSITION.md`. Diese Datei darf keine abweichende lokale Caption-Geometrie definieren.
+
 ## 1. Kein leerer Einstieg
 
 Der Zuschauer soll ab dem ersten Moment erkennen, dass etwas passiert.
@@ -24,21 +26,20 @@ Die Animation soll die verfügbare Fläche **nutzen**, statt wie ein kleines Des
 - Wenn ein Zuschauer Kleinsttext nicht liest, muss die Kernmechanik trotzdem verständlich bleiben.
 - Leere Fläche nicht mit Deko füllen: lieber die vorhandene sinnvolle Mechanik größer und klarer komponieren.
 
-## 3. Caption- und Feed-Sicherheit
+## 3. Caption- und Feed-Sicherheit — V2.2
 
-Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wurde anhand eines echten veröffentlichten Instagram-Feed-Screenshots des Kanals nach oben korrigiert.
+Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wurde nach realen Smartphone-/Feed-Reviews bewusst tiefer gesetzt und wird technisch zentral durch `REEL_CAPTION_SAFE` definiert.
 
-- Caption standardmäßig mit **`bottom: 520px`** platzieren.
+- Caption standardmäßig mit **`bottom: 300px`** platzieren.
 - Horizontal ungefähr **104px** Abstand links/rechts und bevorzugt maximal **820px** Caption-Breite.
-- Der sichtbare Caption-Block liegt dadurch typischerweise ungefähr bei **y≈1260–1400**.
-- Die letzten ungefähr **420 px** unten sind für Untertitel und andere kritische Informationen tabu.
-- Der Bereich ungefähr **420–500 px vom unteren Rand** ist nur Puffer, keine bevorzugte Caption-Fläche.
+- Die letzten ungefähr **220px** unten bleiben für kritische Informationen tabu.
+- Der Bereich ungefähr **220–280px vom unteren Rand** ist Puffer, keine bevorzugte Caption-Fläche.
 - Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
-- Neue bedeutungstragende Visuals sollen möglichst bis ungefähr **y≈1240–1280** abgeschlossen sein.
-- Zwischen Hauptvisual und Caption ungefähr `80–120 px` Luft anstreben.
+- Neue bedeutungstragende Visuals dürfen ungefähr bis **y≈1380–1420** reichen, solange Caption und Visual klar getrennt bleiben.
+- Zwischen Hauptvisual und Caption sichtbare Luft anstreben; bei Konflikt zuerst das Visual neu komponieren.
 - Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen; kritischer Caption-Text darf nicht an die rechte Kante gedrängt sein.
-- Wenn viel ungenutzter Weißraum entsteht, Hauptvisual vergrößern/neu komponieren — **niemals Caption nach unten verschieben**.
-- Der technische Clip-Guard um y≈1440 ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
+- Caption nicht lokal verschieben, um ein zu großes Visual zu retten. Erst Objekt/Fokus verschieben, Labels entfernen oder Visual neu bauen.
+- Der technische Clip-Guard ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
 
 ## 4. Kein langer statischer Sprecherabschnitt
 
@@ -78,7 +79,7 @@ Mindestens prüfen:
 - Smartphone-Größe / kleine Vorschau
 - Feed-Eindruck mit gedanklich reservierter Plattform-UI unten/rechts
 - Caption-Lesbarkeit und Caption-Höhe
-- Caption ungefähr bei `bottom: 520px`, nicht wieder im alten unteren Bereich
+- Caption verwendet den zentralen V2.2-Standard `bottom: 300px`
 - horizontaler Abstand zur rechten Interaktionsleiste
 - maximal 2 Caption-Zeilen
 - interne Label-Lesbarkeit
@@ -114,8 +115,8 @@ Nicht `approved`, wenn mindestens eines davon zutrifft:
 - große ungenutzte Fläche trotz kleiner Kernanimation
 - mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
 - Schluss steht sichtbar zu früh still
-- Caption liegt sichtbar zu tief im Plattform-/Feed-UI-Bereich
-- Caption wurde unter `bottom: 500px` geschoben, um Platz für Visuals zu gewinnen
+- Caption liegt sichtbar im Plattform-/Feed-UI-Bereich
+- lokale Caption-Geometrie weicht ohne ausdrücklich dokumentierte Ausnahme von `REEL_CAPTION_SAFE` ab
 - Caption oder kritischer Text liegt zu nah an der rechten Feed-Interaktionsleiste
 - Caption und Animation konkurrieren
 - mehr als 2 Caption-Zeilen stehen gleichzeitig sichtbar
