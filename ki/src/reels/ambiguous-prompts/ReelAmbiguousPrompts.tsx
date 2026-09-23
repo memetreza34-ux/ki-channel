@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {AbsoluteFill, Html5Audio, Sequence, interpolate, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Html5Audio, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {BRAND} from '../../../brand/brand';
 import {CameraStage, type CameraStageMode} from '../../animation-library/creativeMotionPrimitives';
 import {REEL_CAPTION_SAFE} from '../captionSafe';
@@ -67,13 +67,20 @@ const SceneLayer: React.FC<{scene: AmbiguousPromptScene}> = ({scene}) => {
   return <AbsoluteFill><Header scene={scene}/><div style={{position:'absolute',left:0,right:0,top:225,height:AMBIGUOUS_PROMPTS_CAPTION_ZONE_Y-225-30,overflow:'hidden',zIndex:20}}><CameraStage mode={camera} startFrame={0} endFrame={Math.min(150,scene.endFrame-scene.startFrame-1)} intensity={0.7}><Visual/></CameraStage></div></AbsoluteFill>;
 };
 
+const resolveVoiceoverSrc = (voiceoverSrc?: string): string | undefined => {
+  if (!voiceoverSrc) return undefined;
+  if (/^(https?:|data:|blob:)/i.test(voiceoverSrc)) return voiceoverSrc;
+  return staticFile(voiceoverSrc.replace(/^\/+/, ''));
+};
+
 export type ReelAmbiguousPromptsProps={voiceoverSrc?:string;showCaptions?:boolean};
 export const ReelAmbiguousPrompts:React.FC<ReelAmbiguousPromptsProps>=({voiceoverSrc,showCaptions=true})=>{
   const scenes=useMemo(()=>AMBIGUOUS_PROMPTS_SCENES,[]);
+  const resolvedVoiceoverSrc=resolveVoiceoverSrc(voiceoverSrc);
   return <AbsoluteFill style={{background:'radial-gradient(circle at 50% 35%, #FFFFFF 0%, #FAF8FC 58%, #F1EDF6 100%)',color:BRAND.ink,overflow:'hidden',fontFamily:BRAND.font}}>
     <div style={{position:'absolute',inset:0,background:'linear-gradient(rgba(110,69,201,.025) 1px, transparent 1px),linear-gradient(90deg,rgba(110,69,201,.025) 1px,transparent 1px)',backgroundSize:'72px 72px',maskImage:'linear-gradient(to bottom,transparent 0%,black 14%,black 72%,transparent 88%)'}}/>
     {scenes.map((scene)=><Sequence key={scene.sceneId} from={scene.startFrame} durationInFrames={scene.endFrame-scene.startFrame} name={`${scene.sceneId}-NEW_BUILD-V2`}><SceneLayer scene={scene}/></Sequence>)}
-    {voiceoverSrc?<Html5Audio src={voiceoverSrc}/>:null}
+    {resolvedVoiceoverSrc?<Html5Audio src={resolvedVoiceoverSrc}/>:null}
     {showCaptions?<Captions/>:null}
   </AbsoluteFill>;
 };
