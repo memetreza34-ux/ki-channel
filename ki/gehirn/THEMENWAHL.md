@@ -2,149 +2,175 @@
 
 Diese Datei entscheidet, **welche Idee überhaupt ein Reel/Video werden soll**.
 
-Ein gutes Produktionssystem darf nicht jede beliebige KI-Idee nur deshalb umsetzen, weil sie technisch machbar ist.
+Ein gutes Produktionssystem darf nicht jede technisch korrekte KI-Idee produzieren, nur weil sie erklärbar ist.
 
 ## Grundsatz
 
-> Weniger, stärkere Themen schlagen eine hohe Zahl austauschbarer Reels.
+> Weniger, stärkere Themen schlagen viele korrekte, aber abstrakte Reels.
 
-Vor dem Creative Brief wird geprüft, ob das Thema genug Relevanz, sichtbaren Mechanismus und konkreten Payoff besitzt.
+Vor dem Creative Brief wird geprüft, ob das Thema genug Relevanz, sichtbaren Mechanismus, konkrete Neugier und einen echten Zuschauer-Payoff besitzt.
 
-## 1. Eine Idee in einem Satz
+## 1. Erst konkrete Zuschauerfrage, dann Fachbegriff
 
-Jede Idee zunächst so formulieren:
+Eine Idee zuerst so formulieren:
 
-> **Der Zuschauer entdeckt/versteht/lernt X, weil Y sichtbar gezeigt wird, und kann danach Z besser einordnen/tun.**
-
-Wenn der Satz nur aus einem Oberthema besteht, ist die Idee noch nicht scharf genug.
+> **Der Zuschauer sieht/erlebt X, fragt sich Y, und versteht danach Z.**
 
 Schwach:
 
-- „ChatGPT erklären“
-- „Neue KI-Tools“
+- „Embeddings erklären“
+- „Tokenisierung erklären“
 - „Prompt Engineering“
-- „KI-News diese Woche“
+- „KI-Agenten definieren“
+- „Neue KI-Tools“
 
 Stärker:
 
-- konkreter Irrtum
-- konkrete Ursache
-- konkreter Workflow
-- konkretes Ergebnis
-- konkrete Veränderung mit Konsequenz
+- „Was passiert, wenn du einer KI ein Foto zeigst?“
+- „Warum kann eine KI auf einem unscharfen Bild den falschen Gegenstand wählen?“
+- „Warum findet eine KI manchmal die richtige Antwort mit der falschen Begründung?“
+- „Was verändert sich sichtbar, wenn du einer KI Zugriff auf Werkzeuge gibst?“
 
-## 2. Interner Themen-Score
+Der Fachbegriff darf später kommen. Er ist **nicht automatisch der Hook**.
+
+## 2. Fünf Kandidaten vor einem neuen Reel
+
+Bevor ein neuer Wochen-Slot festgelegt wird, intern mindestens **fünf Themenkandidaten** erzeugen.
+
+Für jeden Kandidaten kurz notieren:
+
+- konkrete Zuschauerfrage
+- 2-Sekunden-Hook
+- sichtbarer Kernmechanismus
+- persönlicher/praktischer Nutzen oder starke Neugier
+- mindestens drei mögliche visuelle Aktionen
+- Grounding-Risiko
+
+Dann nur die besten zwei genauer vergleichen.
+
+Kein Ordner nur deshalb, weil die erste Idee „okay“ klingt.
+
+## 3. Harte Stop-Fälle
+
+Unabhängig von einem Score: **REWORK oder DROP**, wenn eines zutrifft:
+
+- der Payoff ist nur „Jetzt kennst du den Begriff X“
+- der Hook braucht bereits Fachwörter, damit er interessant wirkt
+- ein Nicht-Techniker versteht in den ersten 2–3 Sekunden nicht, warum er weiterschauen soll
+- das Thema lässt sich hauptsächlich nur als Textkarten/Diagramme darstellen
+- es gibt keinen konkreten Alltags-, Produkt- oder Ergebnisanker
+- `Grounding = 0` bei einer faktischen Behauptung
+- kein klarer Payoff formulierbar ist
+- das Thema nur deshalb gewählt wird, weil es „KI“ enthält
+
+### Abstraktions-Warnung
+
+Begriffe wie `Embedding`, `Vektorraum`, `Tokenisierung`, `Latent Space`, `Attention`, `RAG` oder `Context Window` sind **kein Thema an sich**.
+
+Sie dürfen Teil eines Reels sein, wenn ein konkreter Zuschauerfall zuerst trägt.
+
+Beispiel:
+
+```text
+schwach: Wie Embeddings funktionieren
+stärker: Warum findet eine KI das richtige Bild, obwohl du ganz andere Wörter benutzt?
+```
+
+## 4. Interner Themen-Score
 
 Jede Dimension intern mit `0`, `1` oder `2` bewerten.
 
-> Der Score ist **nur ein Planungswerkzeug**, keine wissenschaftliche Messung und kein Zuschauerfakt.
-
 | Dimension | 0 | 1 | 2 |
 |---|---|---|---|
-| Zuschauerrelevanz | kaum erkennbar | nützlich für Teilgruppe | klarer Nutzen/Interesse |
-| Hook-Spannung | reine Erklärung | brauchbare Frage | sofortiger Konflikt/Ergebnis |
-| sichtbarer Mechanismus | fast nur Worte | teilweise visualisierbar | starke sichtbare Handlung/Transformation |
-| praktischer Payoff | kein klares Danach | Einordnung | konkrete Regel/Workflow/Entscheidung |
+| Sofort-Neugier | Begriff/Definition | brauchbare Frage | konkreter Konflikt/Ergebnis sofort verständlich |
+| Zuschauerrelevanz | kaum erkennbar | nützlich für Teilgruppe | klarer Nutzen oder breite Neugier |
+| Alltags-/Ergebnisanker | keiner | indirekt | sofort konkrete Situation/Ergebnis |
+| Visualisierbarkeit | fast nur Text/Karten | teilweise | starke sichtbare Handlung/Transformation |
+| praktischer Payoff | nur Wissen | Einordnung | klare Regel/Entscheidung/Verständnis mit Konsequenz |
 | Grounding | schwer sauber belegbar | mit Einschränkung | gut prüfbar/Primärquelle/Demo |
 | Eigenständiger Angle | austauschbar | solide | klare kanaltypische Perspektive |
-| Haltbarkeit | sofort veraltet ohne Nutzen | kurzfristig relevant | evergreen oder News mit bleibender Einordnung |
 
 ### Entscheidung
 
-- **12–14** → sehr starker Kandidat
-- **9–11** → produzieren, wenn Creative Brief die Schwäche konkret löst
-- **0–8** → normalerweise nicht produzieren; Idee enger/schärfer machen
+- **12–14** → starker Kandidat
+- **10–11** → nur produzieren, wenn die Schwäche im Creative Brief konkret gelöst wird
+- **0–9** → normalerweise REWORK/DROP
 
-### Harte Stop-Fälle
+Ein hoher Score hebt keinen harten Stop-Fall auf.
 
-Unabhängig vom Gesamtscore nicht starten, wenn:
+## 5. 2-Sekunden-Test
 
-- `Grounding = 0` bei einer faktischen Behauptung
-- `sichtbarer Mechanismus = 0` und das Format deshalb nur aus Textkarten bestehen würde
-- kein klarer Payoff formulierbar ist
-- das Thema nur deshalb gewählt wird, weil es gerade „KI“ enthält
+Vor `PRODUCE` muss jemand ohne Fachwissen den Einstieg grob verstehen können.
 
-## 3. Evergreen, Current oder Hybrid
+Testfrage:
 
-Jede Idee bekommt eine Kategorie:
+> „Wenn ich nur den Hook höre und das erste Bild sehe: Weiß ich, warum das interessant ist?“
+
+Wenn die Antwort nur mit einer Erklärung wie „Embeddings sind …“ möglich ist, ist der Hook zu abstrakt.
+
+## 6. Visual-Potential-Test
+
+Mindestens drei bedeutungstragende Aktionen müssen **vor dem Script** formulierbar sein.
+
+Beispiele:
+
+- Bild zerfällt in Kacheln
+- Frage fokussiert einen Bildbereich
+- irrelevante Bereiche dimmen aus
+- ein Objekt wird ausgewählt
+- ein Pfad blockiert/öffnet
+- zwei Ergebnisse konkurrieren
+- ein Prozess verändert sichtbar seinen Zustand
+
+„Karte erscheint“ zählt nicht als starke Aktion.
+
+## 7. Evergreen, Current oder Hybrid
 
 ### `EVERGREEN`
 
 Mechanismus/Grundlage bleibt länger relevant.
 
-Beispiele:
-
-- wie Kontext funktioniert
-- warum Modelle halluzinieren können
-- Prompt-/Workflow-Prinzipien
-
 ### `CURRENT`
 
-Wert hängt stark vom aktuellen Stand ab.
-
-Beispiele:
-
-- neues Modell
-- neue Preisstruktur
-- neue Funktion
-- aktuelles Produktlimit
-
-Pflicht: Source Ledger + Publish-Recheck.
+Wert hängt stark vom aktuellen Stand ab. Pflicht: Source Ledger + Publish-Recheck.
 
 ### `HYBRID`
 
 Aktuelles Ereignis wird genutzt, um ein länger nützliches Prinzip zu erklären.
 
-Diese Form ist oft besonders kanalstark:
+Oft kanalstark:
 
-> „Was ist neu?“ + „Was bedeutet das grundsätzlich?“
+> „Was ist neu?“ + „Was bedeutet das für dich?“
 
-## 4. Themen-Cluster statt Zufallsfeed
+## 8. Themen-Cluster statt Zufallsfeed
 
-Nicht jeden Upload isoliert wählen. Über mehrere Reels soll der Kanal seine Säulen abdecken:
+Über mehrere Reels sollen verschiedene Säulen vorkommen:
 
-1. Konzept
+1. sichtbarer KI-Mechanismus
 2. Tool/Workflow
 3. News mit Bedeutung
 4. Verbesserung/Vorher-Nachher
 5. Mythos/Grenze
 
-Nicht mathematisch gleich verteilen. Aber vermeiden, dass zehn Reels hintereinander nur Tool-News oder nur Definitionen sind.
+Nicht zehn abstrakte Grundlagen-Reels hintereinander.
 
-## 5. Wiederholung ist erlaubt — Angle nicht
+## 9. Wiederholung ist erlaubt — Angle nicht
 
-Dasselbe Oberthema darf mehrfach erscheinen, wenn der Zuschauer eine **andere Frage** beantwortet bekommt.
+Dasselbe Oberthema darf mehrfach erscheinen, wenn eine andere Zuschauerfrage beantwortet wird.
 
-Beispiel:
-
-```text
-Thema: KI-Halluzinationen
-
-Angle A: Warum klingt eine falsche Quelle so überzeugend?
-Angle B: Wann hilft Websuche wirklich dagegen?
-Angle C: Wie prüfst du eine KI-Antwort in 20 Sekunden?
-```
-
-Nicht denselben Mechanismus mit neuem Titel erneut verpacken.
-
-## 6. News-Filter
+## 10. News-Filter
 
 News nur produzieren, wenn mindestens eines gilt:
 
-- Zuschauer kann jetzt konkret etwas Neues tun
-- ein verbreitetes Tool verändert sich relevant
-- die Änderung zeigt einen größeren KI-Trend/Mechanismus
-- eine Grenze/Fähigkeit verschiebt sich nachvollziehbar
-- es gibt eine starke Vorher/Nachher-Demonstration
+- Zuschauer kann konkret etwas Neues tun
+- verbreitetes Tool verändert sich relevant
+- Änderung zeigt größeren KI-Trend/Mechanismus
+- Grenze/Fähigkeit verschiebt sich nachvollziehbar
+- starke Vorher/Nachher-Demonstration möglich
 
-Nicht produzieren nur wegen:
+Nicht wegen Modellname oder Marketing-Ankündigung allein produzieren.
 
-- Modellname geändert
-- Marketing-Ankündigung ohne praktische Auswirkung
-- kleine Feature-Liste ohne klaren Nutzen
-- viraler Behauptung ohne belastbare Quelle
-
-## 7. Tool-Reel-Filter
+## 11. Tool-Reel-Filter
 
 Kein Feature-Rundgang.
 
@@ -158,31 +184,28 @@ Problem
 → Grenze / für wen es sich lohnt
 ```
 
-Wenn reale Produktoberfläche oder Ergebnis Teil des Beweises ist, später in `VISUAL_STRATEGY.md` `REAL_CAPTURE` prüfen.
-
-## 8. Vor Produktionsstart dokumentieren
-
-Bevor `new-ki-reel.mjs` oder der Creative Brief gestartet wird, intern mindestens festhalten:
+## 12. Vor Produktionsstart dokumentieren
 
 ```text
 Arbeitstitel:
 Kategorie: EVERGREEN | CURRENT | HYBRID
-Viewer Promise:
-Warum jetzt / warum relevant:
-stärkster Hook-Ansatz:
+konkrete Zuschauerfrage:
+2-Sekunden-Hook:
+Alltags-/Ergebnisanker:
 sichtbarer Kernmechanismus:
 Payoff:
 Grounding-Risiko:
 Themen-Score:
+Harte Stop-Fälle geprüft: JA/NEIN
 Entscheidung: PRODUCE | REFINE | DROP
 ```
 
-Nur `PRODUCE` geht direkt in den V2-Produktionsprozess.
+Nur `PRODUCE` geht in den V2-Produktionsprozess.
 
-## 9. Keine Score-Manipulation
+## 13. Keine Score-Manipulation
 
 Der Score ist kein Ziel.
 
 Nicht eine schwache Idee künstlich hochbewerten, nur weil schon Arbeit investiert wurde.
 
-Wenn ein Thema aktuell wichtig ist, aber visuell schwach, kann Longform/Text ein besseres Format sein als ein Reel.
+Wenn ein Thema fachlich korrekt, aber visuell/inhaltlich zu abstrakt ist, ist es kein gutes Reel-Thema.
