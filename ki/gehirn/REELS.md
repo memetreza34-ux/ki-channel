@@ -30,20 +30,21 @@ Details:
 
 ## Länge
 
-50–60 Sekunden sind erlaubt, wenn das Thema diese Tiefe trägt. Sie sind **kein Streckziel**.
+Bevorzugt **40–55 Sekunden**, wenn das Thema es trägt. 60 Sekunden sind kein Ziel.
 
 - kein Zusatzsatz nur für Wortzahl
-- kein langsamer Hold nur für Laufzeit
-- kein künstlich hektisches Sprechen, um zu viel Inhalt unterzubringen
+- kein langer Hold nur für Laufzeit
+- kein künstlich hektisches Sprechen
 - wenn das Versprechen nach 35–45 Sekunden erfüllt ist, darf das Reel enden
 - wenn 60 Sekunden nicht reichen, Thema enger schneiden
+- Zielbereich für viele Scripts: ungefähr 105–135 gesprochene Wörter
 
 Das echte Voiceover bestimmt Phase 3. Geschätzte Cue-Zeiten sind nur Planung.
 
 ## Spannungsbogen
 
 ```text
-HOOK      Ergebnis, Konflikt, Beweis oder echte Frage
+HOOK      konkrete Situation / sichtbarer Konflikt / überraschendes Ergebnis
 EINSATZ   warum betrifft das den Zuschauer?
 MECHANIK  Ursache / Ablauf / Vergleich sichtbar machen
 AHA       klare Einordnung, Grenze oder Ergebnis
@@ -51,6 +52,8 @@ ENDE      konkrete Regel/Entscheidung; CTA nur wenn natürlich
 ```
 
 Der Hook beginnt ohne Begrüßung, Kanalname oder „Heute zeige ich …“.
+
+**Technische Begriffe gehören nicht in die ersten Sekunden, wenn ein konkretes Beispiel denselben Gedanken verständlicher macht.** Erst Situation zeigen, dann Begriff benennen.
 
 ## Vor dem Script: Creative Brief
 
@@ -71,7 +74,7 @@ Wenn Hook, Mechanismus oder Memorable Moment nicht konkret sind: **noch kein Rem
 
 ## Szenen- und Visual-Beat-Regel
 
-Eine Szene trägt einen dominanten Erklärgedanken, kann aber mehrere Micro-Beats enthalten.
+Eine Szene trägt einen dominanten Erklärgedanken, aber normalerweise **2–4 sichtbare Micro-Beats**.
 
 Jeder bedeutungstragende Beat braucht:
 
@@ -99,10 +102,40 @@ Gute Hauptverben:
 - verwirft
 - verwandelt
 - reist
+- fokussiert
+- zoomt in einen relevanten Bereich
+- setzt sich zusammen
 
 Schwaches Hauptverb: nur „erscheint“.
 
-Nicht jedes Wort muss animiert werden. Aber Bedeutungsänderungen brauchen eine bewusste sichtbare Reaktion.
+### Motion-Dichte V2.1
+
+Für normale Erklär-Reels gilt:
+
+- ungefähr alle **1,5–3 Sekunden** eine bedeutungstragende sichtbare Zustandsänderung
+- kein fertiger statischer Zustand länger als etwa **2,5 Sekunden**, außer ein bewusster Hold ist für Verständnis nötig
+- mindestens zwei echte Zustandswechsel pro längerer Szene
+- wichtige Sprecherwörter dürfen konkrete Motion-Cues auslösen
+- nicht jedes Wort animieren; nur Bedeutungsänderungen
+- Bewegung muss Ursache/Wirkung, Fokus oder Fortschritt zeigen
+
+## Remotion darf Bilder bauen
+
+`REMOTION_NATIVE` bedeutet nicht nur Boxen, Text und Diagramme.
+
+Wenn es zum Thema passt, soll Remotion selbst **bildartige Szenen** erzeugen:
+
+- SVG-/CSS-Illustrationen
+- Objekte und kleine Umgebungen
+- pseudo-fotografische Flat-/2.5D-Szenen
+- Geräte, Räume, Schreibtische, Dokumente, Personen-Silhouetten
+- eigene semantische Icons
+- Masken, Clipping, Layer, Schatten, Perspektive, Parallax
+- Objektzerlegung und Objekt-Morphs
+
+Ein externes Bild ist nicht nötig, wenn eine klar lesbare Remotion-Illustration den Gedanken besser kontrollierbar erklärt.
+
+**Icons:** bevorzugt eigene SVG-Pfade oder kontrollierte Vector-Komponenten. Keine Emoji als finale Haupticons, wenn ein sauberer Vektor möglich ist.
 
 ## Visual Strategy kommt vor Technik
 
@@ -114,64 +147,42 @@ Für jeden Beat zuerst in `06-projektdateien/visual-strategy.md` die primäre Mo
 - `EXTERNAL_STILL_REQUIRED`
 - `EXTERNAL_MOTION_REQUIRED`
 
-Erst danach:
-
-1. Mechanik entwerfen
-2. Art Direction / Shot Composition
-3. prüfen, ob vorhandene Library exakt passt
-4. bei exaktem Fit `REUSE_EXACT`
-5. sonst `NEW_BUILD` oder erforderliches reales/external Asset
+Erst danach Mechanik und Source bestimmen.
 
 **Verboten:** vorhandene Animation wählen und Inhalt passend machen.
 
 ## REUSE_EXACT
 
-Wiederverwendung ist nur erlaubt, wenn alle Punkte passen:
-
-- Mechanik
-- räumliche Beziehung
-- Zustandsänderung
-- semantische Aussage
-- notwendige Text-/Datenstruktur
-
-„Ähnlich“ reicht nicht.
+Wiederverwendung ist nur erlaubt, wenn Mechanik, räumliche Beziehung, Zustandsänderung, semantische Aussage und Text-/Datenstruktur wirklich passen.
 
 Library = Werkzeugkasten, nicht Ideengeber.
 
 ## Anti-Karten-Grammatik
 
-Karten/Panels sind sinnvoll, wenn sie wirklich etwas darstellen:
-
-- UI
-- Dokument
-- Datei
-- Nachricht
-- Datensatz
-- Token/Chip
+Karten/Panels sind sinnvoll, wenn sie wirklich UI, Dokument, Datei, Nachricht, Datensatz oder Token darstellen.
 
 Nicht als Standard für abstrakte Aussagen.
 
-Richtwerte:
+Richtwerte V2.1:
 
-- normalerweise höchstens etwa ein Drittel der Hauptbeats primär Karten/Panel
+- normalerweise höchstens **ein Viertel** der Hauptbeats primär Karten/Panel
 - nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
 - mindestens ein bewusst geplanter Hero-/Memorable-Moment
-- Diversity nicht künstlich erzwingen, wenn ein fortlaufender Prozess bewusst konsistent bleiben muss
+- mindestens die Hälfte der Beats sollte objekt-, pfad-, form-, raum-, illustration- oder prozessbasiert funktionieren
+- eine Szene aus nur Header + Karte + Caption ist kein fertiger Visual Beat
 
 ## Bewegungsqualität
 
-- eine dominante Bewegung pro Beat
+- eine dominante Bewegung pro Micro-Beat
 - maximal drei starke gleichzeitige Bewegungen
 - Startzustand sofort lesbar
 - sichtbare Ursache/Wirkung statt Dekoration
-- Endzustand braucht Hold
+- Endzustand braucht kurzen Hold
 - Hard Cut ist Standard
 - Transition nur bei echter Objekt-/Form-/Zustandskontinuität
 - Zoom nur bei echtem Fokuswechsel
 - keine Partikel/Glow als Ersatz für Erklärung
 - kein permanentes Hintergrundwackeln
-
-Motion beantwortet **was sich ändert und warum**, nicht nur „wie kann etwas hübsch reinfliegen?“.
 
 ## Text-Hierarchie
 
@@ -181,8 +192,8 @@ Motion beantwortet **was sich ändert und warum**, nicht nur „wie kann etwas h
 - oben mittig
 - semantisch passendes Icon
 - Titel/Icon in dunklem Marken-Lila `#6E45C9`
+- Header animiert kurz zum Szenenstart und bleibt danach ruhig
 - keine zweite erklärende Unterzeile
-- Header ordnet ein, er wiederholt nicht den kompletten Sprechertext
 
 ### Caption
 
@@ -190,7 +201,7 @@ Motion beantwortet **was sich ändert und warum**, nicht nur „wie kann etwas h
 
 Bei 1080 × 1920 als Standard:
 
-- `bottom: 520px`
+- `bottom: 400px`
 - horizontal ca. `104px` Sicherheitsabstand
 - bevorzugte maximale Breite ca. `820px`
 - normalerweise 4–6 Wörter pro Sinnblock
@@ -216,26 +227,14 @@ Header = Kapitelmarker
 
 Für 1080 × 1920:
 
-- Hauptvisuals nach Möglichkeit bis etwa `y≈1240–1280` abschließen
+- Hauptvisuals nach Möglichkeit bis etwa `y≈1300–1340` abschließen
 - sichtbare Luft zur Caption anstreben
-- ungefähr ab `y=1440` harter technischer Guard
-- kein wichtiges Visual/Label hinter oder unter der Caption
+- kein wichtiges Visual/Label hinter der Caption
 - rechts Feed-Interaktionsleiste mitdenken
-- wenn Visual zu tief reicht: Visual neu komponieren, nicht Caption verschieben
-
-Ein abgeschnittenes Hauptobjekt ist kein bestandener Guard, sondern Layoutfehler.
 
 ## REAL_CAPTURE
 
 Reale UI/Capture einsetzen, wenn das tatsächliche Produktverhalten selbst Teil des Beweises ist.
-
-Pflicht:
-
-- Produkt/Datum dokumentieren
-- sensible Daten entfernen
-- nur relevante Fläche zeigen
-- aktuelle UI/Feature-Aussagen im Source Ledger prüfen
-- nicht mit erfundener UI ersetzen, wenn gerade die echte Oberfläche wichtig ist
 
 ## Externe Still-/Hybrid-/Motion-Assets
 
@@ -264,35 +263,13 @@ gesprochene Phrase
 → Caption-/Wort-Timing
 ```
 
-Reihenfolge bei Timingproblemen:
-
-1. Animation/Hold/Szenenlänge anpassen
-2. natürliche Pause leicht anpassen
-3. nur wenn nötig ganze Phrase pitch-erhaltend retimen
-4. Captions danach exakt neu synchronisieren
-
-Retiming:
-
-- nicht mitten im Wort
-- keine abrupten Sprünge
-- bevorzugt `0.97x–1.03x`
-- bei echtem Bedarf bis ungefähr `0.94x–1.06x`
-- stärkere Änderung → neues Voiceover
-- nicht künstlich auf exakt 60 Sekunden zwingen
+Bei Schlüsselwörtern sollen Motion-Cues nach Möglichkeit auf dem realen Wortstart liegen.
 
 ## Fakten und Grounding
 
 `FAKTENQUELLEN.md` und `06-projektdateien/source-ledger.md` sind für V2 verbindlich.
 
-Besonders prüfen:
-
-- sichtbare Zahlen/Prozentwerte
-- Preise/Limits
-- aktuelle Modell-/Feature-Namen
-- Benchmarks/Rankings
-- reale Quellen/Paper
-- Produktverhalten
-- Aussagen, die durch „immer“, „nie“, „alle“ zu absolut werden
+Besonders prüfen: sichtbare Zahlen, aktuelle Modell-/Feature-Namen, Benchmarks, reale Quellen/Paper und absolute Aussagen.
 
 Illustrative Motion-Werte dürfen nie wie echte Messergebnisse aussehen.
 
@@ -300,22 +277,19 @@ Illustrative Motion-Werte dürfen nie wie echte Messergebnisse aussehen.
 
 Jedes Reel plant mindestens einen visuellen Höhepunkt, sofern die Idee ein Reel rechtfertigt.
 
-Nicht ausreichend:
-
-- Text wird größer
-- Glow wird stärker
-- Kamera zoomt ohne neue Aussage
+Nicht ausreichend: Text wird größer, Glow wird stärker oder Kamera zoomt ohne neue Aussage.
 
 Gut ist ein Moment, an dem die Kernidee sichtbar **passiert**.
 
 ## Creative QA
 
-Nach dem finalen Render zusätzlich zu technischen Checks `CREATIVE_QA.md` durchführen und in `06-projektdateien/creative-review.md` dokumentieren.
+Nach dem finalen Render zusätzlich zu technischen Checks `CREATIVE_QA.md` durchführen.
 
 Stop bei:
 
 - schwachem Hook
-- Leerlauf
+- abstraktem Thema ohne konkreten Zuschaueranker
+- Leerlauf / lange statische Holds
 - repetitiver Karten-/Panelserie
 - fehlendem sichtbaren Mechanismus
 - keinem erinnerbaren visuellen Moment
@@ -344,12 +318,11 @@ Vor Voiceover muss vorhanden sein:
 Vor Freigabe:
 
 - echtes Audio analysiert
-- Pflichtassets real vorhanden
 - Audio/Visual/Captions synchron
+- wichtige Motion-Cues an echten Sprecherstellen ausgerichtet
 - keine Caption-Kollision
 - Smoke-Frames angesehen
-- finales MP4 angesehen
-- Source Ledger Rechecks erledigt
+- finales MP4 normal und auf Smartphone-Größe angesehen
 - technische Checks bestanden
 - Creative Review = PASS
 
