@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "slug": "semantic-embeddings",
+  "title": "Wie KI ähnliche Texte findet, ohne Wörter zu vergleichen",
+  "language": "de-DE",
+  "publishDay": "Montag",
+  "publishDate": "2026-09-21",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1800},
+  "productionMode": "remotion-new-build",
+  "captionZoneStartY": 1440,
+  "audio": {"voiceoverRequired":true,"music":false,"sfx":false,"adaptivePhraseRetiming":true},
+  "scenes": [
+    {"sceneId":"semantic-01","startFrame":0,"endFrame":360,"headline":"Bedeutung statt Wörter","icon":"search","implementation":"NEW_BUILD","spokenText":"Du suchst nach einer Antwort, aber die beste Fundstelle benutzt vielleicht ganz andere Wörter. Eine semantische Suche kann sie trotzdem finden, weil sie nicht nur Wortgleichheit vergleicht.","beatIds":["B1","B2"]},
+    {"sceneId":"semantic-02","startFrame":360,"endFrame":690,"headline":"Text wird zum Vektor","icon":"vector","implementation":"NEW_BUILD","spokenText":"Dafür werden Texte oft in sogenannte Embeddings verwandelt. Ein Embedding ist ein Vektor, also eine Liste von Zahlen, die ein Modell aus dem Text erzeugt.","beatIds":["B3","B4"]},
+    {"sceneId":"semantic-03","startFrame":690,"endFrame":1050,"headline":"Ähnliches liegt näher","icon":"cluster","implementation":"NEW_BUILD","spokenText":"Texte, die inhaltlich stärker zusammenhängen, können dadurch im Vektorraum näher beieinander liegen. Deshalb kann eine Frage zu einem Thema auch Formulierungen finden, die kaum dieselben Wörter benutzen.","beatIds":["B5","B6","B7"]},
+    {"sceneId":"semantic-04","startFrame":1050,"endFrame":1410,"headline":"Suche vergleicht Ähnlichkeit","icon":"target","implementation":"NEW_BUILD","spokenText":"Bei der Suche wird auch deine Anfrage eingebettet. Das System vergleicht ihren Vektor mit gespeicherten Vektoren und ordnet Treffer nach Ähnlichkeit, zum Beispiel mit Kosinusähnlichkeit.","beatIds":["B8","B9","B10"]},
+    {"sceneId":"semantic-05","startFrame":1410,"endFrame":1800,"headline":"Ähnlichkeit ist nicht Wahrheit","icon":"shield","implementation":"NEW_BUILD","spokenText":"Embeddings werden deshalb für Suche, Clustering und Empfehlungen genutzt. Wichtig: Unsere Punktwolke ist nur eine vereinfachte 2D-Darstellung. Nähe bedeutet modellierte Ähnlichkeit, nicht automatisch Wahrheit. Der Vorteil bleibt: Bedeutung kann wichtiger sein als identische Wörter.","beatIds":["B11","B12"]}
+  ]
+}
