@@ -97,9 +97,9 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
-if (reelModules.length !== 9) {
+if (reelModules.length !== 10) {
   failures.push(
-    `ProductionRoot.tsx erwartet derzeit 9 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 10 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }

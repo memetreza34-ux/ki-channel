@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "format": "short-form-reel",
+  "title": "Wie KI ähnliche Texte findet, ohne Wörter zu vergleichen",
+  "slug": "semantic-embeddings",
+  "week": "2026-09-21_bis_2026-09-27",
+  "publishDay": "Montag",
+  "publishDate": "2026-09-21",
+  "preProductionRequiredArtifacts": ["idea-evaluation.md"],
+  "phase1RequiredArtifacts": [
+    "creative-brief.md",
+    "source-ledger.md",
+    "visual-strategy.md",
+    "creative-review.md",
+    "reel.json",
+    "animation-plan.md"
+  ],
+  "postPublishArtifacts": ["performance-review.md"],
+  "visualModalities": [
+    "REMOTION_NATIVE",
+    "REAL_CAPTURE",
+    "HYBRID",
+    "EXTERNAL_STILL_REQUIRED",
+    "EXTERNAL_MOTION_REQUIRED"
+  ],
+  "selectedModality": "REMOTION_NATIVE",
+  "phase2": {"voiceoverRequired": true, "externalAssetsRequired": false}
+}

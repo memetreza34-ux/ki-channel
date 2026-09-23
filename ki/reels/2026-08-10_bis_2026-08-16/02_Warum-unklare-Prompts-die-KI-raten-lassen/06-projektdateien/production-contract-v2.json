@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "format": "short-form-reel",
+  "title": "Warum unklare Prompts die KI raten lassen",
+  "slug": "ambiguous-prompts",
+  "week": "2026-08-10_bis_2026-08-16",
+  "migration": {
+    "fromLegacyPackage": true,
+    "preserveApprovedVoiceover": true,
+    "preserveAuthoredVisualBeats": true,
+    "reason": "Erstes reales End-to-End-Testreel auf den aktuellen V2-Vertrag anheben."
+  },
+  "phase1RequiredArtifacts": [
+    "creative-brief.md",
+    "source-ledger.md",
+    "visual-strategy.md",
+    "creative-review.md",
+    "reel.json",
+    "animation-plan.md"
+  ],
+  "phase2": {
+    "voiceoverRequired": true,
+    "externalAssetsRequired": false
+  },
+  "phase3": {
+    "exactWordTimingsRequired": true,
+    "scriptTranscriptExactMatchRequired": true,
+    "smokeReviewRequired": true,
+    "finalRenderReviewRequired": true
+  },
+  "visualModalities": [
+    "REMOTION_NATIVE",
+    "REAL_CAPTURE",
+    "HYBRID",
+    "EXTERNAL_STILL_REQUIRED",
+    "EXTERNAL_MOTION_REQUIRED"
+  ]
+}
