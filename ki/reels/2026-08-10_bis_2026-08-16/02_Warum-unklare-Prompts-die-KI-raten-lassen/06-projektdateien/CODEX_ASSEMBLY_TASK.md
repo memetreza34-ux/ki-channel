@@ -21,7 +21,14 @@ node scripts/sync-reel-word-timings.mjs --dir "ki/reels/2026-08-10_bis_2026-08-1
 11. alle zwölf `NEW_BUILD`-Visual-Beats semantisch erhalten; keine Library-Substitution aus Bequemlichkeit.
 12. prüfen, dass ab y=1440 keinerlei bedeutungstragende Animation sichtbar ist.
 13. `node scripts/run-remotion-readiness.mjs` sowie reel-spezifische Tests tatsächlich ausführen.
-14. Opening/Mid/End plus alle relevanten Beat-Wechsel als Smoke-Frames rendern und ansehen.
-15. finalen MP4 rendern, technisch validieren und normal + smartphone-groß ansehen/anhören.
-16. im Abschluss lokale Retiming-Stellen/Faktoren nennen oder `kein Retiming nötig` melden.
-17. `creative-review.md` und Status nur für tatsächlich erledigte Schritte aktualisieren.
+14. Für den integrierten echten Test bevorzugt den kanonischen E2E-Befehl verwenden:
+
+```bash
+node scripts/render-first-real-ki-reel.mjs all
+```
+
+   Der Befehl verweigert fehlendes Audio, führt Exact Word Sync + Readiness aus, bindet ausschließlich eine temporäre Kopie des echten Voiceovers über Remotion `staticFile()` ein, rendert Smoke-Frames und anschließend `05-export/FERTIGES-REEL.mp4`. Das Original-Audio bleibt unverändert.
+15. Opening/Mid/End plus alle relevanten Beat-Wechsel als Smoke-Frames tatsächlich ansehen; die drei automatisch gerenderten Frames sind Mindestprüfung, nicht vollständige Creative QA.
+16. finalen MP4 technisch validieren und normal + smartphone-groß ansehen/anhören.
+17. im Abschluss lokale Retiming-Stellen/Faktoren nennen oder `kein Retiming nötig` melden.
+18. `creative-review.md` und Status nur für tatsächlich erledigte Schritte aktualisieren.
