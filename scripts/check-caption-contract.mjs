@@ -120,7 +120,7 @@ if (Object.values(geometry).every((value) => Number.isFinite(value))) {
   requireText(DOC_PATHS.postRender, docs.postRender, `${geometry.horizontalInset}px`);
   requireText(DOC_PATHS.postRender, docs.postRender, `${geometry.maxWidth}px`);
 
-  requireText(DOC_PATHS.canonical, docs.canonical, `maximal **${geometry.maxVisibleLines} Zeilen**`);
+  requireText(DOC_PATHS.canonical, docs.canonical, `maximal **${geometry.maxVisibleLines} Zeilen gleichzeitig**`);
   requireText(DOC_PATHS.canonical, docs.canonical, `${geometry.maxWordsPerGroup} Wörter`);
   requireText(DOC_PATHS.postRender, docs.postRender, `maximal ${geometry.maxVisibleLines} Caption-Zeilen`);
 
