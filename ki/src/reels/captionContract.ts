@@ -1,12 +1,20 @@
 import type {Caption} from '@remotion/captions';
+import {REEL_CAPTION_SAFE} from './captionSafe';
 
 export type ReelCaption = Caption;
 
 const finite = (value: number): boolean => Number.isFinite(value);
 
+export const countReelCaptionWords = (text: string): number => (
+  text.match(/[\p{L}\p{N}]+(?:[’'_-][\p{L}\p{N}]+)*/gu)?.length ?? 0
+);
+
+const visibleLineCount = (text: string): number => text.split(/\r?\n/).length;
+
 /**
  * Validates the final Phase-3 caption timeline that is actually used for render.
- * Planning cues may be looser, but final captions must satisfy this contract.
+ * Captions are deliberately kept short: long spoken passages must be split into
+ * multiple timed groups instead of shrinking, clipping or showing 3+ lines.
  */
 export const assertReelCaptionTimeline = (
   captions: readonly ReelCaption[],
@@ -16,6 +24,18 @@ export const assertReelCaptionTimeline = (
   captions.forEach((caption, index) => {
     if (!caption.text.trim()) {
       throw new Error(`Caption ${index}: text must not be empty.`);
+    }
+    const wordCount = countReelCaptionWords(caption.text);
+    if (wordCount > REEL_CAPTION_SAFE.maxWordsPerGroup) {
+      throw new Error(
+        `Caption ${index}: ${wordCount} words exceed maxWordsPerGroup=${REEL_CAPTION_SAFE.maxWordsPerGroup}; split the cue.`,
+      );
+    }
+    const lineCount = visibleLineCount(caption.text);
+    if (lineCount > REEL_CAPTION_SAFE.maxVisibleLines) {
+      throw new Error(
+        `Caption ${index}: ${lineCount} explicit lines exceed maxVisibleLines=${REEL_CAPTION_SAFE.maxVisibleLines}; split the cue.`,
+      );
     }
     if (!finite(caption.startMs) || !finite(caption.endMs)) {
       throw new Error(`Caption ${index}: startMs/endMs must be finite.`);
