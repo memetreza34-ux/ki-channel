@@ -1,72 +1,280 @@
-# Visual Strategy — beste Bildsprache vor Technik
+# Visual Strategy — Remotion-first, Wahrheit vor Nachbau
 
-Diese Datei entscheidet **welche visuelle Form einen Sprecher-Beat am besten erklärt**.
+Diese Datei entscheidet, **welche visuelle Form einen Sprecher-Beat am besten erklärt** und wie sie anschließend umgesetzt wird.
 
-Sie steht bewusst vor Library-Auswahl, Remotion-Implementierung und Bildprompting.
+Sie steht vor Library-Auswahl, konkreter Remotion-Implementierung und externen Medienentscheidungen.
+
+Zusätzlich verbindlich: `REMOTION_VISUAL_SYSTEM.md`.
 
 ## Grundregel
 
-> Nicht „Was kann Remotion bauen?“ fragen, sondern zuerst: **„Was muss der Zuschauer sehen, damit die Aussage sofort verständlich wird?“**
+> Zuerst: **Was muss der Zuschauer sehen, damit die Aussage sofort verständlich wird?**  
+> Danach: **Wie bauen wir das hochwertig in Remotion?**
 
-Danach wird die passende Produktionsform gewählt.
+Für neue Short-Form-Reels ist Remotion die **universelle finale Composition und Render-Engine**.
 
-## 1. Visual-Modality-Router
+Das bedeutet:
 
-Für jeden bedeutungstragenden Visual Beat genau eine primäre Strategie wählen:
+- eigene Visuals möglichst nativ mit React/SVG/CSS/Shapes/Paths/Three bauen
+- reale Screenshots/Captures nur als echte Beweisquelle in Remotion einbetten
+- keine externe Bild-/Video-Generierung als normalen Standardweg
+- finale Szene, Motion, Caption und Layout immer in Remotion
 
-### `REMOTION_NATIVE`
+## 1. Zwei Ebenen unterscheiden
 
-Verwenden, wenn Präzision, Zustandslogik oder kontrollierbare Animation wichtiger ist als organische Realität.
+### A. Beweis-/Quellenebene
 
-Das umfasst ausdrücklich **mehr als Karten und Diagramme**. Remotion darf selbst bildartige Szenen bauen:
+Was braucht die Aussage als Wahrheitsträger?
+
+- kein reales Medium nötig
+- echter Screenshot
+- echter Screen-/Produkt-Capture
+- echtes offizielles Markenasset
+- ausnahmsweise externes Still/Motion-Asset
+
+### B. Ausführungsebene
+
+Die finale Ausführung ist bei neuen Reels **immer Remotion**.
+
+Auch reale Captures werden in Remotion:
+
+- geschnitten
+- gerahmt
+- gezoomt
+- maskiert
+- beschriftet
+- hervorgehoben
+- mit anderen Ebenen kombiniert
+
+## 2. Visual-Modality-Router
+
+Für jeden bedeutungstragenden Beat eine primäre Strategie wählen.
+
+### `REMOTION_NATIVE` — bevorzugter Standard
+
+Verwenden, wenn die Aussage ohne echten Produktbeweis sauber gebaut werden kann.
+
+Das umfasst ausdrücklich:
 
 - SVG-/CSS-Illustrationen
-- Objekte, Geräte und kleine Umgebungen
-- pseudo-fotografische Flat-/2.5D-Szenen
 - eigene Vector-Icons
+- Browser-/App-Mockups
+- Chat-Oberflächen
+- Code-Editoren
+- Terminal
+- GitHub-/Repo-Darstellungen
+- Diagramme und Datenvisualisierung
+- Rankings und Vergleiche
+- Geräte und kleine Umgebungen
+- pseudo-fotografische Flat-/2.5D-Szenen
 - Masken, Clipping, Perspektive und Layer
 - Objektzerlegung, Morphs, Fokusfahrten und Parallax
-- Prozessketten, Tokens, Nodes, Pfade und Vergleiche
-- UI, Code, Diagramme und Datenfluss
+- Prozessketten, Tokens, Nodes, Pfade und Netzwerke
+- @remotion/shapes und @remotion/paths
+- React Three Fiber, wenn echte Tiefe die Erklärung verbessert
 
-Wenn ein konkretes Objekt oder eine Alltagssituation die Erklärung trägt, soll zuerst geprüft werden, ob eine kontrollierbare Remotion-Illustration stärker ist als eine abstrakte Karte.
+Wenn ein konkretes Objekt, eine UI-Situation oder ein technischer Ablauf die Erklärung trägt, wird **zuerst ein nativer Remotion-Build geprüft**.
 
 ### `REAL_CAPTURE`
 
 Verwenden, wenn das **tatsächliche Produktverhalten selbst der Beweis** ist.
 
+Beispiele:
+
+- exakte neue Funktion
+- reales Modell-Ergebnis
+- echte aktuelle UI
+- reale Option/Schaltfläche
+- tatsächlicher Workflow
+
+Der Capture ersetzt nicht Remotion; er wird als Medienebene in die Remotion-Composition eingebettet.
+
 ### `HYBRID`
 
-Verwenden, wenn eine räumliche/physische Szene den Gedanken trägt, aber präzise Information darüber gelegt werden muss.
+Verwenden, wenn echter Beweis + Remotion-Erklärung zusammen stärker sind.
+
+Beispiele:
+
+- echter Screenshot + Fokusrahmen
+- echter Output + A/B-Vergleich
+- echter GitHub-Stand + animierter Dateibaum/Callouts
+- echter Benchmark + eigene erklärende Achse
 
 ### `EXTERNAL_STILL_REQUIRED`
 
-Verwenden, wenn ein statisches räumliches/organisches Motiv deutlich stärker wäre als ein Code-Nachbau.
+Nur Ausnahme.
+
+Nur wenn ein statisches Motiv nativ deutlich schlechter wäre und für die Aussage wirklich nötig ist.
 
 ### `EXTERNAL_MOTION_REQUIRED`
 
-Nur verwenden, wenn **die physische Bewegung selbst** die Erklärung trägt und ein Remotion-Nachbau unverhältnismäßig oder sichtbar schlechter wäre.
+Nur Ausnahme.
 
-## 2. Entscheidungsfragen pro Beat
+Nur wenn komplexe physische Bewegung selbst Bedeutungsträger ist und Remotion-native Umsetzung unverhältnismäßig oder sichtbar schlechter wäre.
 
-1. Ist das reale Produkt/Ergebnis selbst der Beweis? → `REAL_CAPTURE`
-2. Braucht die Aussage exakte Daten/UI/Prozesslogik oder eine kontrollierbare Illustration? → `REMOTION_NATIVE`
-3. Braucht sie räumliche/physische Anschaulichkeit plus präzise Overlays? → `HYBRID`
-4. Reicht eine hochwertige räumliche Momentaufnahme? → `EXTERNAL_STILL_REQUIRED`
-5. Ist komplexe physische Bewegung selbst unverzichtbar? → `EXTERNAL_MOTION_REQUIRED`
-6. Wenn nichts davon klar begründet ist: Beat vereinfachen statt dekoratives Asset hinzufügen.
+Auch diese Medien werden final in Remotion komponiert.
 
-## 3. Remotion ist nicht automatisch die Premium-Lösung
+## 3. Standardentscheidung für diesen Kanal
 
-Remotion ist bevorzugt für kontrollierbare Erklärgrafik **und kontrollierbare Illustration**, aber nicht aus Prinzip für jedes Hero-Motiv.
+Für neue Current-AI-Reels gilt grundsätzlich:
 
-**Beste Erklärung gewinnt.**
+```text
+REMOTION_NATIVE
+→ wenn Wahrheit keinen echten Capture verlangt
 
-## 4. Karten-/Boxen-Regel
+REAL_CAPTURE / HYBRID
+→ wenn reales Produktverhalten Beweiswert hat
 
-Karte, Pill, Panel oder Rounded Rectangle ist nur dann eine gute Hauptform, wenn sie semantisch wirklich ein Objekt darstellt: UI-Element, Dokument, Datensatz, Nachricht, Datei oder Token/Chip.
+EXTERNAL_STILL / EXTERNAL_MOTION
+→ nur begründete Ausnahme
+```
 
-Nicht erlaubt als Standardübersetzung für abstrakte Aussagen.
+Damit bleibt der Kanal **code-first und Remotion-first**, ohne echte Produktoberflächen zu fälschen.
+
+## 4. Was Remotion selbst bauen soll
+
+Nicht automatisch als externes Bild planen:
+
+- Laptop
+- Smartphone
+- Browser
+- Chat-App
+- Terminal
+- Code-Editor
+- Dokument/PDF
+- GitHub-Repository
+- Datei-/Ordnerstruktur
+- Cloud/Server/GPU/Chip
+- Datenfluss
+- Agenten-Workflow
+- KI-Modell als abstraktes System
+- Ranking
+- Vergleich
+- Preis-/Leistungsübersicht
+- Vorher/Nachher
+- Mikrofon/Audio
+- Bild-/Video-Workflow
+- Modellkarten
+- Timeline
+
+Diese Dinge werden bevorzugt als eigene Remotion-Illustration gebaut.
+
+## 5. UI-Nachbau vs. echter Screenshot
+
+Ein Remotion-UI-Nachbau ist eine **Illustration**.
+
+Er darf verwendet werden, um:
+
+- einen Workflow zu erklären
+- eine generische Chat-Interaktion zu zeigen
+- Code/Terminal logisch darzustellen
+- eine Repo-Struktur zu visualisieren
+- einen Vergleich übersichtlich zu machen
+
+Er darf **nicht** als echter Beweis für aktuelle Produktdetails ausgegeben werden.
+
+Wenn die Aussage lautet:
+
+- „So sieht es aktuell aus“
+- „Diese Option gibt es jetzt“
+- „Dieses Modell erzeugte genau diesen Output“
+
+→ echten Capture verwenden.
+
+## 6. Logos und Icons
+
+### Icons
+
+Bevorzugt direkt als eigene SVG-/Vector-Pfade.
+
+- keine Emoji als finales Haupticon
+- klare Silhouette
+- konsistente Strichstärke
+- smartphone-lesbar
+- semantisch eindeutig
+
+### Markenlogos
+
+Wenn ein echtes offizielles Logo-Asset vorhanden und redaktionell nutzbar ist, darf es in Remotion eingebettet werden.
+
+Kein komplexes Markenlogo so nachzeichnen, dass es fälschlich wie das offizielle Original wirkt.
+
+Wenn kein echtes Asset vorliegt:
+
+- Markenname als Text
+- eigener neutraler Badge
+- Kategorie-Icon
+
+## 7. Code- und GitHub-Szenen
+
+Remotion darf native Tech-Szenen bauen:
+
+- Code-Editor-Chrome
+- Zeilennummern
+- Syntaxfarben
+- Cursor
+- Diff vorher/nachher
+- Terminal-Ausgabe
+- Dateibaum
+- Build-/Testzustände
+- Repo-Header
+- Release-Badge
+- Commit-/Version-Timeline
+- README-Auszug
+- Architekturfluss
+
+Echte GitHub-Werte wie Stars, Releases oder Versionsnummern nur mit Grounding verwenden.
+
+## 8. Rankings und Vergleiche
+
+Nicht nur Karten nebeneinander stellen.
+
+Bevorzugte Remotion-Mechaniken:
+
+- gemeinsame Bewertungsachse
+- Ranking-Leiter
+- Head-to-head
+- A/B-Output
+- animierte Kategorie-Gewinner
+- Preis-/Leistungsachse
+- Stärken-/Schwächen-Matrix
+- Morph zwischen zwei Zuständen
+
+Rankings brauchen klare Kriterien und Datumsstand.
+
+## 9. Bildartige Remotion-Szenen
+
+Remotion darf wie ein Illustrationssystem eingesetzt werden.
+
+Geeignet:
+
+- große Hero-Objekte
+- 2.5D
+- Parallax
+- Layering
+- weiche Schatten
+- Perspektive
+- Masken
+- X-Ray/Cutaway
+- Exploded View
+- Morphs
+- räumliche Recomposition
+- Three bei echter Tiefenlogik
+
+Ziel: eigene animierte Tech-Bildwelt statt „PowerPoint mit Cards“.
+
+## 10. Karten-/Boxen-Regel
+
+Karte, Pill, Panel oder Rounded Rectangle nur, wenn sie semantisch wirklich ein Objekt darstellt:
+
+- UI-Element
+- Dokument
+- Datensatz
+- Nachricht
+- Datei
+- Token/Chip
+
+Nicht als Standardübersetzung für abstrakte Aussagen.
 
 Schwach:
 
@@ -80,17 +288,17 @@ Stärker:
 Aussage → Objekt/Illustration/Beziehung → sichtbare Handlung → veränderter Endzustand
 ```
 
-## 5. Diversity Contract V2.1
+## 11. Diversity Contract
 
-Ein Reel soll visuell zusammengehören, aber nicht in einer einzigen Grammatik feststecken.
+Ein Reel soll zusammengehören, aber nicht in einer einzigen Grammatik feststecken.
 
 Richtwerte:
 
 - nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
-- karten-/panelbasierte Beats normalerweise höchstens etwa **ein Viertel**
+- karten-/panelbasierte Hauptbeats normalerweise höchstens etwa ein Viertel
 - mindestens die Hälfte der Beats objekt-, pfad-, form-, raum-, illustration- oder prozessbasiert
 - mindestens ein klarer Hero-/Memorable-Moment
-- wenn das Thema reale Dinge enthält, mindestens eine große visuelle Szene statt nur Symbole/Karten prüfen
+- bei Tool-/News-Reels mindestens eine echte visuelle Veränderung oder Demo, nicht nur Logos/Text
 
 Mögliche Mechanikfamilien:
 
@@ -98,14 +306,16 @@ Mögliche Mechanikfamilien:
 - Remotion-Illustration/Umgebung
 - Prozess/Pfad
 - Transformation/Morph
-- Vergleich/Split
+- Vergleich
 - echte UI/Capture
 - Dokument/Quelle
-- räumliche 3D-/2.5D-Szene
+- räumliche 2.5D-/3D-Szene
 - Diagramm/Daten
+- Code/Terminal
+- GitHub/Repo
 - Typografie-Akzent
 
-## 6. Jede Szene braucht eine Verb-Idee
+## 12. Jede Szene braucht eine Verb-Idee
 
 Gut:
 
@@ -120,11 +330,13 @@ Gut:
 - sucht
 - verwirft
 - verwandelt
-- reist
 - fokussiert
 - setzt sich zusammen
 - klappt auf
-- wird herangezoomt
+- kompiliert
+- startet
+- rankt
+- diffed
 
 Schwach:
 
@@ -133,9 +345,7 @@ Schwach:
 - steht da
 - blendet Text ein
 
-## 7. Motion-Dichte
-
-Eine Szene darf nicht erst in den ersten 0,5 Sekunden animieren und danach mehrere Sekunden statisch bleiben.
+## 13. Motion-Dichte
 
 Planungsrichtwert:
 
@@ -144,15 +354,7 @@ Planungsrichtwert:
 - statischer Hold über 2,5 Sekunden nur mit Begründung
 - zentrale Motion-Cues später an echte Voiceover-Wörter koppeln
 
-## 8. Icons und bildartige Remotion-Szenen
-
-- finale Haupticons bevorzugt als eigene SVG-/Vector-Pfade
-- keine Emoji als Ersatz für saubere Icons
-- Illustration darf Schatten, Layer, Perspektive und kontrollierte Tiefe nutzen
-- eine Remotion-Illustration darf wie ein vereinfachtes Bild wirken, solange sie keine reale Aufnahme vortäuscht
-- Animationstext nicht zur Hauptbildsprache machen
-
-## 9. Visual Beat Sheet
+## 14. Visual Beat Sheet
 
 `06-projektdateien/visual-strategy.md` dokumentiert pro Beat:
 
@@ -167,25 +369,16 @@ sichtbare Veränderung
 Endzustand
 Modality
 Warum diese Modality
+Remotion-Build-Idee
 Mechanikfamilie
 Hero beat: JA/NEIN
 benötigter Zuschauertext
-Asset/Quelle, falls extern
+reale Quelle/Capture, falls Beweis nötig
 ```
 
 Erst danach folgt `animation-plan.md`.
 
-## 10. Real Capture und aktuelle Tool-Themen
-
-Bei Tool-Reels echte Oberfläche bevorzugen, wenn Oberfläche oder Ergebnis Teil der Aussage ist.
-
-## 11. Externe Assets
-
-Phase 1 darf Bedarf definieren, Prompt/Shot-Brief schreiben, erwarteten Dateinamen festlegen und Asset im Manifest als `MISSING_REQUIRED` markieren.
-
-Fehlt ein Pflichtasset, wird nicht stillschweigend durch generische Remotion-Karten ersetzt.
-
-## 12. Anti-Dekoration
+## 15. Anti-Dekoration
 
 Nicht als Problemlösung akzeptieren:
 
@@ -199,15 +392,19 @@ Nicht als Problemlösung akzeptieren:
 
 Motion dient Fokus, Ursache/Wirkung oder Zustandsänderung.
 
-## 13. Freigabe
+## 16. Production-Gate
 
 Vor Implementierung muss `visual-strategy.md` zeigen:
 
-- warum jede Hauptbildsprache gewählt wurde
+- was nativ in Remotion gebaut wird
+- welche Icons/Illustrationen als SVG/React entstehen
+- welche UI bewusst nur ein Nachbau ist
+- welche reale UI/Capture als Beweis nötig ist
+- warum ein externes Still/Motion-Asset wirklich unvermeidbar wäre
 - wo der Hero-Moment liegt
-- welche Beats ähnliche Grammatik verwenden
-- wie Wiederholung vermieden oder bewusst begründet wird
-- welche konkreten Remotion-Illustrationen/Objekte gebaut werden
+- wie Kartenlastigkeit vermieden wird
 - wie die Szene über ihre gesamte Dauer visuell weiterentwickelt wird
 
-Wenn die Strategie überwiegend aus „Card + Label“ besteht, obwohl das Thema sichtbar handelnde Mechanismen erlaubt: **zurück in die Planung**.
+Wenn ein Beat nur deshalb ein externes Bild verlangt, weil die Remotion-Idee noch nicht ausgearbeitet wurde: **zurück in die Planung**.
+
+Wenn die Strategie überwiegend aus „Card + Label“ besteht: **zurück in die Planung**.
