@@ -1,15 +1,37 @@
 {
   "fps": 30,
   "cues": [
-    {"sceneId":"pdf-01","startFrame":0,"endFrame":150,"text":"Du lädst genau die richtige PDF hoch – und die KI antwortet trotzdem mit der falschen Stelle."},
-    {"sceneId":"pdf-01","startFrame":150,"endFrame":300,"text":"Das kann passieren, obwohl die Information wirklich im Dokument steht."},
-    {"sceneId":"pdf-02","startFrame":300,"endFrame":465,"text":"Bei Retrieval-Systemen wird eine Datei nicht einfach als ein riesiger Text behandelt."},
-    {"sceneId":"pdf-02","startFrame":465,"endFrame":630,"text":"Sie kann in kleinere Abschnitte zerlegt, indexiert und für die Suche vorbereitet werden."},
-    {"sceneId":"pdf-03","startFrame":630,"endFrame":800,"text":"Stellst du eine Frage, sucht das System nach passenden Abschnitten."},
-    {"sceneId":"pdf-03","startFrame":800,"endFrame":990,"text":"Bei OpenAIs File Search werden dafür semantische und Stichwortsuche kombiniert, bevor relevante Treffer an das Modell gehen."},
-    {"sceneId":"pdf-04","startFrame":990,"endFrame":1125,"text":"Eine sehr breite Frage kann mehrere ähnlich passende Stellen liefern."},
-    {"sceneId":"pdf-04","startFrame":1125,"endFrame":1260,"text":"Eine konkrete Frage mit Abschnitt, Begriff oder Zitat macht den gesuchten Bereich deutlich enger."},
-    {"sceneId":"pdf-05","startFrame":1260,"endFrame":1410,"text":"Darum gilt bei wichtigen PDFs: Nenne möglichst genau, wonach du suchst, und prüfe die gefundene Passage."},
-    {"sceneId":"pdf-05","startFrame":1410,"endFrame":1560,"text":"Retrieval hilft beim Finden – es garantiert nicht automatisch, dass jede Antwort richtig ist."}
+    {"sceneId":"pdf-01","startFrame":0,"endFrame":60,"text":"Du lädst genau die richtige PDF"},
+    {"sceneId":"pdf-01","startFrame":60,"endFrame":120,"text":"hoch – und die KI antwortet"},
+    {"sceneId":"pdf-01","startFrame":120,"endFrame":175,"text":"trotzdem mit der falschen Stelle."},
+    {"sceneId":"pdf-01","startFrame":175,"endFrame":235,"text":"Das kann passieren, obwohl die"},
+    {"sceneId":"pdf-01","startFrame":235,"endFrame":300,"text":"Information wirklich im Dokument steht."},
+
+    {"sceneId":"pdf-02","startFrame":300,"endFrame":355,"text":"Bei Retrieval-Systemen wird eine"},
+    {"sceneId":"pdf-02","startFrame":355,"endFrame":410,"text":"Datei nicht einfach als"},
+    {"sceneId":"pdf-02","startFrame":410,"endFrame":465,"text":"ein riesiger Text behandelt."},
+    {"sceneId":"pdf-02","startFrame":465,"endFrame":520,"text":"Sie kann in kleinere Abschnitte"},
+    {"sceneId":"pdf-02","startFrame":520,"endFrame":575,"text":"zerlegt, indexiert und für die"},
+    {"sceneId":"pdf-02","startFrame":575,"endFrame":630,"text":"Suche vorbereitet werden."},
+
+    {"sceneId":"pdf-03","startFrame":630,"endFrame":690,"text":"Stellst du eine Frage, sucht"},
+    {"sceneId":"pdf-03","startFrame":690,"endFrame":750,"text":"das System nach passenden Abschnitten."},
+    {"sceneId":"pdf-03","startFrame":750,"endFrame":810,"text":"Bei OpenAIs File Search"},
+    {"sceneId":"pdf-03","startFrame":810,"endFrame":870,"text":"werden dafür semantische und Stichwortsuche"},
+    {"sceneId":"pdf-03","startFrame":870,"endFrame":930,"text":"kombiniert, bevor relevante Treffer"},
+    {"sceneId":"pdf-03","startFrame":930,"endFrame":990,"text":"an das Modell gehen."},
+
+    {"sceneId":"pdf-04","startFrame":990,"endFrame":1044,"text":"Eine sehr breite Frage kann"},
+    {"sceneId":"pdf-04","startFrame":1044,"endFrame":1098,"text":"mehrere ähnlich passende Stellen liefern."},
+    {"sceneId":"pdf-04","startFrame":1098,"endFrame":1152,"text":"Eine konkrete Frage mit Abschnitt,"},
+    {"sceneId":"pdf-04","startFrame":1152,"endFrame":1206,"text":"Begriff oder Zitat macht den"},
+    {"sceneId":"pdf-04","startFrame":1206,"endFrame":1260,"text":"gesuchten Bereich deutlich enger."},
+
+    {"sceneId":"pdf-05","startFrame":1260,"endFrame":1310,"text":"Darum gilt bei wichtigen PDFs:"},
+    {"sceneId":"pdf-05","startFrame":1310,"endFrame":1360,"text":"Nenne möglichst genau, wonach du suchst,"},
+    {"sceneId":"pdf-05","startFrame":1360,"endFrame":1410,"text":"und prüfe die gefundene Passage."},
+    {"sceneId":"pdf-05","startFrame":1410,"endFrame":1460,"text":"Retrieval hilft beim Finden –"},
+    {"sceneId":"pdf-05","startFrame":1460,"endFrame":1510,"text":"es garantiert nicht automatisch, dass"},
+    {"sceneId":"pdf-05","startFrame":1510,"endFrame":1560,"text":"jede Antwort richtig ist."}
   ]
 }
