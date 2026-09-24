@@ -2,303 +2,354 @@
 
 ## Positionierung
 
-Deutscher, animierter, vollständig faceless KI-Kanal mit klarem **Current-AI-Fokus**.
+Deutscher, animierter, vollständig faceless **Current-AI-Discovery-Kanal**.
 
-Der Kanal berichtet nicht primär über zeitlose KI-Grundlagen, sondern darüber, **was sich gerade in der KI-Welt verändert** und was davon für normale Nutzer, Creator, Entwickler und Interessierte wirklich wichtig ist.
+Der Kanal ist **kein allgemeiner KI-Grundlagenkanal**. Er zeigt vor allem, was sich **gerade** in der KI-Welt verändert: neue Modelle, neue Tools, wichtige Updates, starke Open-Source-Projekte, echte Vergleiche, Rankings und klare Vor-/Nachteile.
 
 **Kanalversprechen:**
 
-> Neue KIs, neue Funktionen, neue Open-Source-Projekte und wichtige KI-News schnell verstehen — mit ehrlicher Einordnung statt Hype.
+> Neue KIs und wichtige KI-Entwicklungen schnell entdecken, verstehen und einordnen — mit sichtbaren Beweisen statt Hype.
 
 **Redaktionelle Signatur:**
 
-> **Was ist neu? Was kann es wirklich? Für wen ist es interessant? Was ist besser oder schlechter als vorher?**
+> **Was ist neu? Was kann es wirklich? Wie schlägt es sich gegen Alternativen? Wo ist der Haken? Für wen lohnt es sich?**
 
-Der Zuschauer soll den Kanal öffnen können und das Gefühl haben:
+Der Zuschauer soll den Kanal öffnen und sofort das Gefühl haben:
 
-> „Hier sehe ich schnell, was gerade in KI wichtig ist und ob es für mich relevant ist.“
+> „Hier sehe ich, welche KI gerade wichtig wird und ob ich sie kennen oder nutzen sollte.“
 
-## Primäre Themenrichtung
+---
 
-Der Kanal priorisiert aktuelle Entwicklungen.
+## Harte redaktionelle Priorität
 
-### 1. Neue KI-Modelle und Releases
+Der Feed soll eindeutig aktuell wirken.
+
+### Ziel-Mix
+
+- **85–90 % CURRENT / BREAKING / HYBRID**
+- **10–15 % EVERGREEN**, nur wenn es direkt zu aktuellen Produkten, Modellen oder Entscheidungen passt
+
+Das ist keine starre Quote pro Woche. Es ist ein Qualitätsziel für den sichtbaren Feed.
+
+Wenn zwei Themen ähnlich stark sind, gewinnt grundsätzlich das **aktuellere Thema mit dem besseren sichtbaren Beweis**.
+
+---
+
+## Primäre Content-Säulen
+
+### 1. Neue KI / neues Modell
 
 Beispiele:
 
-- neues Sprachmodell erscheint
-- neues Bildmodell erscheint
-- neues Videomodell erscheint
-- neues Coding-Modell erscheint
-- neuer Agent erscheint
-- neues Voice-/Audio-Modell erscheint
+- neues Sprachmodell
+- neues Bildmodell
+- neues Videomodell
+- neues Coding-Modell
+- neuer Agent
+- neues Voice-/Audio-Modell
+- neues multimodales Modell
 
-Fragen im Video:
+Jedes Video beantwortet möglichst:
 
 - Was ist neu?
-- Was kann es?
-- Was kann es besser als vorher?
-- Wo sind die Grenzen?
-- Für wen lohnt es sich?
+- Was kann es konkret?
+- Was ist sichtbar besser oder anders?
+- Wo sind Grenzen?
+- Für wen ist es interessant?
 
-### 2. KI-News mit konkreter Bedeutung
+### 2. Wichtige KI-News / Produktupdates
 
-Nicht einfach News vorlesen.
-
-Stattdessen:
+Keine News vorlesen.
 
 ```text
 NEWS
 → WAS HAT SICH GEÄNDERT?
 → WAS KANN MAN JETZT?
-→ WER PROFITIERT DAVON?
-→ GIBT ES EINEN HAKEN?
+→ WAS IST DER SICHTBARE UNTERSCHIED?
+→ WER PROFITIERT?
+→ WAS IST DER HAKEN?
 ```
 
-Geeignet sind zum Beispiel:
+Geeignet:
 
 - große Modellupdates
 - neue Funktionen bekannter KI-Produkte
 - neue APIs
-- neue Agenten-Funktionen
-- neue Bild-/Video-/Voice-Funktionen
-- wichtige Preis-/Limit-/Zugangsänderungen
-- relevante Partnerschaften oder Produktstarts
+- Agenten-Funktionen
+- Bild-/Video-/Voice-Neuheiten
+- relevante Preis-, Limit- oder Zugangsänderungen
+- Produktstarts mit praktischer Auswirkung
 
-### 3. Neue GitHub- und Open-Source-KI-Projekte
+Nicht ausreichend:
 
-Der Kanal darf gezielt neue oder stark wachsende KI-Projekte aus GitHub/Open Source vorstellen.
+- reine Firmen-PR
+- Personalwechsel
+- Investment-News ohne Produktwirkung
+- Spekulation ohne belastbare Quelle
 
-Mögliche Fragen:
+### 3. GitHub / Open Source
+
+Gezielt neue oder schnell relevante KI-Projekte entdecken.
+
+Fragen:
 
 - Was macht das Projekt?
-- Warum reden Leute darüber?
+- Warum wird es gerade interessant?
 - Was kann man damit bauen?
 - Wie schwer ist die Nutzung?
-- Ist es eine echte Alternative zu bekannten Tools?
+- Lokal/self-hosted möglich?
+- Ist es eine echte Alternative zu einem bekannten Tool?
 - Welche Einschränkungen gibt es?
 
-Nicht jedes neue Repository ist automatisch ein Thema. Es braucht sichtbaren Nutzen, technische Relevanz oder deutliches Momentum.
+Ein neues Repository ist **nicht automatisch** ein Thema. Es braucht echten Nutzen, interessante Technik, sichtbare Demo oder klares Momentum.
 
-### 4. KI-Vergleiche und Rankings
-
-Vergleiche gehören ausdrücklich zum Kanal.
+### 4. Vergleich / A gegen B
 
 Beispiele:
 
-- beste KI für Coding
-- beste KI für Bilder
-- beste KI für Videos
-- beste KI für Recherche
-- beste KI-Agenten
+- GPT vs. Gemini vs. Claude
+- neue Coding-KI vs. bisheriger Favorit
+- neues Videomodell vs. Veo
+- Open Source vs. Closed Source
 - kostenlos vs. bezahlt
-- Modell A gegen Modell B
-- vorherige Generation gegen neue Generation
+- alte Generation vs. neue Generation
 
-Rankings müssen auf klaren Kriterien beruhen.
+Grundregel:
 
-Kein künstliches Ranking nur für Klicks.
+> gleiche Aufgabe → gleiche Bedingungen → sichtbare Ergebnisse → klare Stärken/Schwächen → Empfehlung nach Use-Case
 
-Geeignete Kriterien:
+### 5. Rankings / „Beste KIs aktuell“
 
-- Ergebnisqualität
-- Geschwindigkeit
-- Bedienung
-- Funktionsumfang
-- Preis/Leistung
-- Zuverlässigkeit
-- Einschränkungen
+Beispiele:
 
-### 5. Vorteile, Nachteile und ehrliche Einordnung
+- beste Coding-KIs aktuell
+- beste Video-KIs aktuell
+- beste Bild-KIs aktuell
+- beste Recherche-KIs aktuell
+- beste KI-Agenten aktuell
 
-Bei relevanten Tools/Modellen darf ein Video bewusst als Einordnung aufgebaut sein:
+Rankings brauchen:
+
+- klar definierte Kategorie
+- nachvollziehbare Kriterien
+- aktuelle Modellversionen
+- sichtbare oder belegbare Grundlage
+- Datumsbezug, weil Rankings schnell altern
+
+Keine künstlichen „Top 5“-Listen nur für Klicks.
+
+### 6. Vor- und Nachteile / Lohnt es sich?
 
 ```text
 DAS KANN DIE KI
 → DAS IST STARK
 → DAS IST SCHWACH
-→ DAFÜR WÜRDE ICH SIE EINSETZEN
+→ DAFÜR WÜRDE ICH SIE NUTZEN
 → DAFÜR NICHT
+→ LOHNT SICH FÜR ...
 ```
 
-### 6. Kategorien und Marktüberblick
+### 7. Aktueller Marktüberblick
 
-Gelegentlich dürfen größere Übersichten erscheinen:
+Gelegentlich größere Orientierung:
 
-- welche Arten von KI-Agenten es aktuell gibt
-- welche Bild-KIs relevant sind
-- welche Coding-KIs es gibt
-- welche Video-KIs aktuell vorne liegen
+- welche Video-KIs aktuell relevant sind
+- welche Coding-Agenten gerade vorne liegen
 - welche Modelle lokal laufen
 - welche Open-Source-Alternativen interessant sind
+- welche Voice-KIs aktuell stark sind
 
-Diese Videos sollen aktuelle Orientierung geben und keine trockenen Lexikon-Erklärungen sein.
+Marktüberblicke sind **Momentaufnahmen**, keine ewigen Wahrheiten.
 
-## Sekundäre Themen
+---
 
-Zeitlose KI-Grundlagen sind **nicht mehr die Hauptsäule**.
+## Wiederkehrende Serien / Formate
 
-Mechanismen wie Tokens, Embeddings, RAG, Attention oder Bildverarbeitung dürfen vorkommen, wenn sie helfen, eine aktuelle Meldung oder ein aktuelles Produkt zu verstehen.
+Der Kanal soll wiedererkennbare Formate haben, ohne visuell monoton zu werden.
 
-Beispiel:
+### `NEUE KI`
+
+Ein neues Modell oder Tool in 30–60 Sekunden:
 
 ```text
-schwach für diesen Kanal:
-„Wie funktionieren Embeddings?“
-
-stärker:
-„Warum kann dieses neue Suchmodell Dokumente besser finden als vorher?“
+NEU
+→ WAS KANN ES?
+→ SICHTBARE DEMO
+→ STÄRKE
+→ GRENZE
+→ FÜR WEN?
 ```
 
-Grundlagen erklären die News — sie ersetzen sie nicht.
+### `KI-UPDATE`
 
-## Ziel-Mix
+Ein wichtiges Update eines bekannten Produkts:
 
-Als redaktionelle Orientierung:
+```text
+VORHER
+→ UPDATE
+→ JETZT MÖGLICH
+→ WARUM RELEVANT?
+```
 
-- ungefähr **70–80 % CURRENT/HYBRID**
-- ungefähr **20–30 % Evergreen/Grundlagen**, wenn sie direkt nützlich sind
+### `X VS. Y`
 
-Das ist kein starres Veröffentlichungsquota, aber die Startseite des Kanals soll klar wie ein **aktueller KI-Kanal** wirken.
+Direkter Vergleich mit gleicher Aufgabe.
 
-## Was einen Inhalt kanaltypisch macht
+### `GITHUB-FUNDSTÜCK`
 
-Ein starker Beitrag erfüllt möglichst mehrere dieser Punkte:
+Ein aktuelles Open-Source-Projekt mit echter Demo und Nutzwert.
 
-- basiert auf einer aktuellen Entwicklung
-- zeigt eine neue Fähigkeit oder Veränderung
-- demonstriert ein echtes Ergebnis
-- vergleicht neue und alte Möglichkeiten
-- zeigt klare Vor- und Nachteile
-- hilft bei einer Entscheidung
-- trennt Marketingversprechen und Realität
-- nennt wichtige Grenzen
-- beantwortet schnell: „Warum sollte mich das interessieren?“
+### `TOP KIs AKTUELL`
+
+Ranking einer klaren Kategorie mit sichtbaren Kriterien und Datumsbezug.
+
+### `LOHNT SICH X?`
+
+Vor-/Nachteile und klare Nutzerempfehlung.
+
+Diese Formatnamen sind redaktionelle Kategorien. Sie müssen nicht als permanentes On-Screen-Branding erscheinen.
+
+---
+
+## Grundlagen: nur unterstützend
+
+Tokens, Embeddings, RAG, Attention, Transformer, Context Window oder ähnliche Mechanismen sind **kein bevorzugtes Hauptthema**.
+
+Sie dürfen erklärt werden, wenn sie helfen, eine aktuelle Story zu verstehen.
+
+Schwach:
+
+> „Wie funktionieren Embeddings?“
+
+Stärker:
+
+> „Warum findet dieses neue Suchmodell Dokumente besser als vorher?“
+
+Grundlagen erklären die aktuelle Entwicklung — sie ersetzen sie nicht.
+
+---
+
+## Was einen starken Beitrag ausmacht
+
+Ein starker Beitrag erfüllt möglichst mehrere Punkte:
+
+- aktuelle Entwicklung
+- neue Fähigkeit oder relevante Veränderung
+- sichtbarer Output / Demo / Vergleich
+- klare praktische Bedeutung
+- nachvollziehbare Vor- und Nachteile
+- klare Entscheidungshilfe
+- ehrliche Grenze
+- belastbare Primärquelle
+- Hook funktioniert ohne Fachwissen
 
 ## Nicht kanaltypisch als Hauptthema
 
-- reine KI-Grundlagen ohne aktuellen Anlass
-- abstrakte Mechanismen ohne Nutzen
+- reine Grundlagen ohne aktuellen Anlass
+- abstrakte Mechanismen ohne Entscheidung/Nutzen
 - generische Prompt-Tipps
 - News ohne Einordnung
-- Feature-Liste ohne Demo oder Konsequenz
-- Top-Listen ohne klare Kriterien
-- reine Firmen-/Investment-News ohne Produktbezug
-- Hype-/Angst-Thesen ohne belastbare Grundlage
+- Feature-Liste ohne Demo
+- Logos + Textkarten statt Beweis
+- Rankings ohne Kriterien
+- Firmen-/Investment-News ohne Produktwirkung
+- Gerüchte als Fakten
+- Hype-/Angst-These ohne Grundlage
+
+---
 
 ## Zielgruppe
 
-Breit deutschsprachig. Fachwissen ist keine Voraussetzung.
+Breit deutschsprachig. Fachwissen ist nicht nötig.
 
 Besonders geeignet für Menschen, die wissen wollen:
 
-- welche neuen KIs erscheinen
-- welche KI gerade besser wird
+- welche neue KI gerade erschienen ist
+- welche KI aktuell besser wird
 - welches Tool sich lohnt
-- was neue Updates praktisch verändern
+- was ein neues Update praktisch verändert
 - welche Open-Source-Projekte interessant werden
 - welches Modell für welchen Zweck geeignet ist
+- was gerade nur Marketing und was wirklich relevant ist
+
+---
 
 ## Ton
 
 - direktes „du“
 - modern, klar, schnell
 - kurze gesprochene Sätze
-- erst Ergebnis/Änderung, dann Erklärung
-- Fachbegriffe nur wenn nötig
+- Ergebnis/Änderung zuerst
+- Fachbegriff erst danach, wenn nötig
 - keine Übertreibung
 - keine Fake-Wunder
 - keine Panikmache
 - Unsicherheit klar benennen
-- bei Tests zwischen eigener Beobachtung und Herstellerangabe unterscheiden
+- eigene Beobachtung, Benchmark und Herstellerclaim sauber trennen
 
-## Content-Säulen
+---
 
-1. **Neue KI / neues Modell**  
-   Release, Fähigkeiten, Grenzen, Einordnung.
+## Aktualitätsregeln
 
-2. **KI-News / wichtiges Update**  
-   Was hat sich verändert und warum ist es relevant?
+Aktuelle Themen altern schnell.
 
-3. **GitHub / Open Source**  
-   Neue oder stark relevante KI-Projekte mit echtem Nutzen.
+### Frischefenster als Orientierung
 
-4. **Vergleich / Ranking**  
-   Modelle und Tools anhand klarer Kriterien vergleichen.
+- **BREAKING:** 0–3 Tage
+- **FRESH:** 4–14 Tage
+- **CURRENT:** 15–45 Tage
+- älter als 45 Tage nur, wenn das Thema gerade wieder relevant wird, ein Vergleich/Ranking es braucht oder ein starker neuer Angle existiert
 
-5. **Vor- und Nachteile / Kauf- oder Nutzungsentscheidung**  
-   Für wen lohnt sich welches Tool?
+Ein älteres Thema darf nicht als „neu“ verkauft werden.
 
-6. **Aktueller Marktüberblick**  
-   Welche KIs sind in einer Kategorie gerade relevant?
+### Kurz vor Veröffentlichung
 
-7. **Grundlage nur bei Bedarf**  
-   Mechanismus erklären, wenn er eine aktuelle Story verständlicher macht.
+Bei aktuellen Inhalten immer erneut prüfen:
 
-## Editoriale Muster
+- Modell-/Versionsname
+- öffentlich oder Preview/Beta?
+- tatsächliche Verfügbarkeit
+- Preis/Limits
+- wichtige Änderungen seit Recherche
+- Benchmark-/Ranking-Stand
 
-### News-/Release-Video
+---
 
-```text
-DAS IST NEU
-↓
-DAS KANN ES
-↓
-DAS IST DER SICHTBARE UNTERSCHIED
-↓
-DAS IST DER HAKEN
-↓
-FÜR WEN LOHNT ES SICH?
-```
+## Quellen- und Beweisprinzip
 
-### Vergleich
+Bei aktuellen Produkten gilt:
 
-```text
-ZWEI ODER MEHR KIs
-↓
-GLEICHE AUFGABE
-↓
-ERGEBNISSE DIREKT VERGLEICHEN
-↓
-STÄRKEN / SCHWÄCHEN
-↓
-KLARE EMPFEHLUNG NACH USE-CASE
-```
+1. offizielle Release-/Produktquelle
+2. offizielle Docs / Changelog / GitHub-Release
+3. eigener sichtbarer Test oder reale Demo, wenn möglich
+4. seriöse Sekundärquelle zur Ergänzung
+5. Community nur als Signal, nicht als alleinige Wahrheit
 
-### GitHub/Open Source
+Ein Herstellerclaim ist kein eigener Test.
 
-```text
-NEUES PROJEKT
-↓
-WAS MACHT ES?
-↓
-ECHTE DEMO / OUTPUT
-↓
-WARUM IST ES INTERESSANT?
-↓
-FÜR WEN IST ES SINNVOLL?
-```
+Wenn reales Produktverhalten Teil der Aussage ist, sind echte UI, Capture oder echter Output stärker als eine abstrakte Animation.
 
-## Recherche-Pflicht bei aktuellen Themen
+Details: `FAKTENQUELLEN.md` und `THEMENWAHL.md`.
 
-Bei `CURRENT` und `HYBRID` gilt vor der Produktion:
+---
 
-- Veröffentlichungsdatum prüfen
-- offizielle Quelle prüfen
-- Versions-/Modellname prüfen
-- Verfügbarkeit prüfen
-- Preise/Limits nur aktuell nennen
-- Demo-Aussagen von Hersteller-Marketing trennen
-- bei Vergleichen möglichst gleiche Aufgabe/Bedingungen verwenden
-- kurz vor Veröffentlichung erneut prüfen, ob sich etwas geändert hat
+## Format- und Feed-Balance
 
-Details: `FAKTENQUELLEN.md`.
+Damit der Feed nicht eintönig wird:
+
+- nicht mehrere reine Grundlagen-Reels hintereinander
+- möglichst nicht mehr als zwei Videos hintereinander zur gleichen Firma/Modellfamilie, außer bei wirklich großer Breaking-News-Lage
+- Releases, GitHub, Vergleiche, Rankings und Updates abwechseln
+- ein Ranking nicht direkt durch ein fast identisches Ranking ersetzen
+- dieselbe News nicht mehrfach mit nur leicht anderem Titel verwerten
+
+---
 
 ## Formate und Plattformen
 
 Short-Form ist das Kernformat.
 
-Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für:
+Ein Master-Reel wird plattformgerecht verpackt für:
 
 - YouTube Shorts
 - Instagram Reels
@@ -306,7 +357,9 @@ Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für
 - Facebook Reels
 - Snapchat, falls genutzt
 
-YouTube Longform wird für Themen genutzt, bei denen Vergleich, Ranking, Marktübersicht oder tiefere Einordnung mehr Raum brauchen.
+YouTube Longform wird genutzt, wenn Vergleich, Ranking, Marktüberblick oder Test mehr Tiefe rechtfertigt.
+
+---
 
 ## Visuelle Identität
 
@@ -320,22 +373,24 @@ Technische Farbquelle: `ki/brand/brand.ts`.
 - Rot nur für Risiko/Fehler/Grenze
 - faceless
 - klare Hierarchie
-- echte UI/Captures bevorzugen, wenn die neue Funktion selbst der Beweis ist
+- echte UI/Captures bevorzugen, wenn das Produktverhalten selbst der Beweis ist
 
 Kein generischer Cyberpunk-Look und keine Roboterfigur als Standard-KI-Symbol.
+
+---
 
 ## Qualitätspriorität
 
 ```text
-Aktualität + Wahrheit
-> Relevanz
-> sichtbarer Beweis / Demo
-> klare Einordnung
-> Hook
-> Verständlichkeit
-> mobile Lesbarkeit
-> Markenstil
-> dekorative Schönheit
+AKTUALITÄT + WAHRHEIT
+> RELEVANZ
+> SICHTBARER BEWEIS / DEMO
+> KLARE EINORDNUNG
+> HOOK
+> VERSTÄNDLICHKEIT
+> MOBILE LESBARKEIT
+> MARKENSTIL
+> DEKORATIVE SCHÖNHEIT
 ```
 
-Ein technisch schönes Reel über ein uninteressantes oder veraltetes Thema ist kein gutes Kanalvideo.
+Ein wunderschön produziertes Reel über ein veraltetes oder uninteressantes Thema ist kein gutes Kanalvideo.
