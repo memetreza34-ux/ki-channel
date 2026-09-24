@@ -64,7 +64,7 @@ Der Standardfeed soll hauptsächlich aus diesen Themen bestehen:
 
 Zeitlose Themen wie Tokens, Embeddings, Attention, RAG oder Transformer sind **kein bevorzugter Startpunkt**. Sie werden eingesetzt, wenn sie eine aktuelle Entwicklung erklären.
 
-Redaktionelle Orientierung: ungefähr `70–80 % CURRENT/HYBRID`, `20–30 % Evergreen/Grundlagen`.
+Redaktionelle Orientierung: ungefähr `85–90 % BREAKING/FRESH/CURRENT/HYBRID`, `10–15 % Evergreen/Grundlagen`.
 
 Bei zwei ähnlich starken Themen gewinnt normalerweise das aktuellere Thema mit dem besseren sichtbaren Beweis.
 
