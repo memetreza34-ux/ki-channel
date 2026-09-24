@@ -1,211 +1,283 @@
-# Themenwahl — nur starke Ideen in die Produktion
+# Themenwahl — Current-AI zuerst
 
-Diese Datei entscheidet, **welche Idee überhaupt ein Reel/Video werden soll**.
-
-Ein gutes Produktionssystem darf nicht jede technisch korrekte KI-Idee produzieren, nur weil sie erklärbar ist.
+Diese Datei entscheidet, **welche aktuelle KI-Entwicklung ein Reel oder Video wird**.
 
 ## Grundsatz
 
-> Weniger, stärkere Themen schlagen viele korrekte, aber abstrakte Reels.
+> Der Kanal soll vor allem zeigen, **was in KI gerade neu, besser, anders oder relevant geworden ist**.
 
-Vor dem Creative Brief wird geprüft, ob das Thema genug Relevanz, sichtbaren Mechanismus, konkrete Neugier und einen echten Zuschauer-Payoff besitzt.
+Nicht zuerst fragen: „Welchen KI-Begriff können wir erklären?“
 
-## 1. Erst konkrete Zuschauerfrage, dann Fachbegriff
+Sondern:
 
-Eine Idee zuerst so formulieren:
+> „Was ist gerade passiert, was kann man jetzt damit machen und warum sollte der Zuschauer das wissen?“
 
-> **Der Zuschauer sieht/erlebt X, fragt sich Y, und versteht danach Z.**
+## 1. Bevorzugte Themenarten
 
-Schwach:
+Priorität haben:
 
-- „Embeddings erklären“
-- „Tokenisierung erklären“
-- „Prompt Engineering“
-- „KI-Agenten definieren“
-- „Neue KI-Tools“
+1. **neue KI-Modelle / Releases**
+2. **wichtige Updates bestehender KIs**
+3. **neue Bild-, Video-, Voice-, Coding- oder Agenten-KIs**
+4. **neue relevante GitHub-/Open-Source-KI-Projekte**
+5. **KI-News mit konkreter Auswirkung**
+6. **Vergleiche zwischen aktuellen Modellen/Tools**
+7. **Rankings nach klaren Kriterien**
+8. **Vor- und Nachteile eines aktuellen Tools/Modells**
+9. **Marktüberblicke einer aktuellen KI-Kategorie**
+10. **Evergreen-Grundlagen nur, wenn sie eine aktuelle Story erklären**
 
-Stärker:
+## 2. Gute Themenbeispiele
 
-- „Was passiert, wenn du einer KI ein Foto zeigst?“
-- „Warum kann eine KI auf einem unscharfen Bild den falschen Gegenstand wählen?“
-- „Warum findet eine KI manchmal die richtige Antwort mit der falschen Begründung?“
-- „Was verändert sich sichtbar, wenn du einer KI Zugriff auf Werkzeuge gibst?“
+Stark:
 
-Der Fachbegriff darf später kommen. Er ist **nicht automatisch der Hook**.
+- „Diese neue KI baut aus einem Prompt eine komplette App — was kann sie wirklich?“
+- „Google hat ein neues Voice-Modell veröffentlicht — so klingt der Unterschied.“
+- „Dieses neue GitHub-KI-Projekt läuft lokal und ersetzt teilweise Tool X.“
+- „Modell A vs. Modell B: Welches schreibt aktuell besseren Code?“
+- „Die 5 stärksten Video-KIs aktuell — nach Qualität, Preis und Kontrolle.“
+- „Dieses Update verändert, was du mit KI-Agenten machen kannst.“
+- „Neue Bild-KI gegen den bisherigen Platz 1: sichtbar besser oder nur Marketing?“
+- „Open Source holt auf: Diese neue KI ist kostenlos lokal nutzbar.“
 
-## 2. Fünf Kandidaten vor einem neuen Reel
+Schwach als Hauptthema:
 
-Bevor ein neuer Wochen-Slot festgelegt wird, intern mindestens **fünf Themenkandidaten** erzeugen.
+- „Was sind Tokens?“
+- „Wie funktionieren Embeddings?“
+- „Was ist RAG?“
+- „Was ist ein Transformer?“
+- „5 Prompt-Tipps“ ohne aktuellen Anlass
 
-Für jeden Kandidaten kurz notieren:
+Solche Grundlagen dürfen nur helfen, eine aktuelle Entwicklung verständlicher zu machen.
 
-- konkrete Zuschauerfrage
-- 2-Sekunden-Hook
-- sichtbarer Kernmechanismus
-- persönlicher/praktischer Nutzen oder starke Neugier
-- mindestens drei mögliche visuelle Aktionen
-- Grounding-Risiko
+## 3. Current-Gate
 
-Dann nur die besten zwei genauer vergleichen.
+Bei jedem neuen Kandidaten zuerst prüfen:
 
-Kein Ordner nur deshalb, weil die erste Idee „okay“ klingt.
+- Ist das Thema **wirklich aktuell oder aktuell wieder relevant**?
+- Gibt es eine klare neue Fähigkeit, Änderung oder Verschiebung?
+- Kann der Zuschauer danach etwas besser entscheiden, ausprobieren oder einordnen?
+- Gibt es einen sichtbaren Beweis, Demo, Vergleich oder Output?
+- Gibt es belastbare Quellen?
 
-## 3. Harte Stop-Fälle
+Wenn bei einem News-Thema nur „Firma X hat Y angekündigt“ übrig bleibt, reicht das normalerweise nicht.
 
-Unabhängig von einem Score: **REWORK oder DROP**, wenn eines zutrifft:
+## 4. Aktualitätsstufen
 
-- der Payoff ist nur „Jetzt kennst du den Begriff X“
-- der Hook braucht bereits Fachwörter, damit er interessant wirkt
-- ein Nicht-Techniker versteht in den ersten 2–3 Sekunden nicht, warum er weiterschauen soll
-- das Thema lässt sich hauptsächlich nur als Textkarten/Diagramme darstellen
-- es gibt keinen konkreten Alltags-, Produkt- oder Ergebnisanker
-- `Grounding = 0` bei einer faktischen Behauptung
-- kein klarer Payoff formulierbar ist
-- das Thema nur deshalb gewählt wird, weil es „KI“ enthält
+### `BREAKING`
 
-### Abstraktions-Warnung
+Sehr neue Entwicklung mit hohem Nachrichtenwert.
 
-Begriffe wie `Embedding`, `Vektorraum`, `Tokenisierung`, `Latent Space`, `Attention`, `RAG` oder `Context Window` sind **kein Thema an sich**.
+Typisch:
 
-Sie dürfen Teil eines Reels sein, wenn ein konkreter Zuschauerfall zuerst trägt.
-
-Beispiel:
-
-```text
-schwach: Wie Embeddings funktionieren
-stärker: Warum findet eine KI das richtige Bild, obwohl du ganz andere Wörter benutzt?
-```
-
-## 4. Interner Themen-Score
-
-Jede Dimension intern mit `0`, `1` oder `2` bewerten.
-
-| Dimension | 0 | 1 | 2 |
-|---|---|---|---|
-| Sofort-Neugier | Begriff/Definition | brauchbare Frage | konkreter Konflikt/Ergebnis sofort verständlich |
-| Zuschauerrelevanz | kaum erkennbar | nützlich für Teilgruppe | klarer Nutzen oder breite Neugier |
-| Alltags-/Ergebnisanker | keiner | indirekt | sofort konkrete Situation/Ergebnis |
-| Visualisierbarkeit | fast nur Text/Karten | teilweise | starke sichtbare Handlung/Transformation |
-| praktischer Payoff | nur Wissen | Einordnung | klare Regel/Entscheidung/Verständnis mit Konsequenz |
-| Grounding | schwer sauber belegbar | mit Einschränkung | gut prüfbar/Primärquelle/Demo |
-| Eigenständiger Angle | austauschbar | solide | klare kanaltypische Perspektive |
-
-### Entscheidung
-
-- **12–14** → starker Kandidat
-- **10–11** → nur produzieren, wenn die Schwäche im Creative Brief konkret gelöst wird
-- **0–9** → normalerweise REWORK/DROP
-
-Ein hoher Score hebt keinen harten Stop-Fall auf.
-
-## 5. 2-Sekunden-Test
-
-Vor `PRODUCE` muss jemand ohne Fachwissen den Einstieg grob verstehen können.
-
-Testfrage:
-
-> „Wenn ich nur den Hook höre und das erste Bild sehe: Weiß ich, warum das interessant ist?“
-
-Wenn die Antwort nur mit einer Erklärung wie „Embeddings sind …“ möglich ist, ist der Hook zu abstrakt.
-
-## 6. Visual-Potential-Test
-
-Mindestens drei bedeutungstragende Aktionen müssen **vor dem Script** formulierbar sein.
-
-Beispiele:
-
-- Bild zerfällt in Kacheln
-- Frage fokussiert einen Bildbereich
-- irrelevante Bereiche dimmen aus
-- ein Objekt wird ausgewählt
-- ein Pfad blockiert/öffnet
-- zwei Ergebnisse konkurrieren
-- ein Prozess verändert sichtbar seinen Zustand
-
-„Karte erscheint“ zählt nicht als starke Aktion.
-
-## 7. Evergreen, Current oder Hybrid
-
-### `EVERGREEN`
-
-Mechanismus/Grundlage bleibt länger relevant.
+- neues großes Modell
+- wichtiges Produktupdate
+- bedeutender Open-Source-Release
+- neue Funktion eines großen Tools
 
 ### `CURRENT`
 
-Wert hängt stark vom aktuellen Stand ab. Pflicht: Source Ledger + Publish-Recheck.
+Aktuell relevant, auch wenn nicht am selben Tag erschienen.
+
+Typisch:
+
+- Modell ist neu genug für Test/Vergleich
+- GitHub-Projekt gewinnt sichtbar an Relevanz
+- neue Kategorie entwickelt sich schnell
 
 ### `HYBRID`
 
-Aktuelles Ereignis wird genutzt, um ein länger nützliches Prinzip zu erklären.
+Aktuelle Meldung + länger gültige Einordnung.
 
-Oft kanalstark:
+Beispiel:
 
-> „Was ist neu?“ + „Was bedeutet das für dich?“
+> „Dieses neue Modell nutzt Technik X — deshalb ist Ergebnis Y möglich.“
 
-## 8. Themen-Cluster statt Zufallsfeed
+### `EVERGREEN`
 
-Über mehrere Reels sollen verschiedene Säulen vorkommen:
+Nur ergänzend einsetzen.
 
-1. sichtbarer KI-Mechanismus
-2. Tool/Workflow
-3. News mit Bedeutung
-4. Verbesserung/Vorher-Nachher
-5. Mythos/Grenze
+## 5. Themenkandidaten finden
 
-Nicht zehn abstrakte Grundlagen-Reels hintereinander.
+Vor einem neuen Slot intern mindestens **fünf aktuelle Kandidaten** sammeln.
 
-## 9. Wiederholung ist erlaubt — Angle nicht
+Mögliche Quellenbereiche:
 
-Dasselbe Oberthema darf mehrfach erscheinen, wenn eine andere Zuschauerfrage beantwortet wird.
+- offizielle AI-Labs und Produktblogs
+- Release Notes / Changelogs
+- offizielle Modellseiten
+- GitHub-Releases und stark relevante neue Repositories
+- Hugging Face / Papers / offizielle Demos, wenn passend
+- seriöse Tech-News zur Entdeckung eines Themas
+- Community-Signale nur als Hinweis, nicht als alleinige Faktengrundlage
+
+Danach die besten zwei Kandidaten genauer vergleichen.
+
+## 6. Der 2-Sekunden-Test
+
+Der Hook muss sofort klarmachen, **was neu oder überraschend ist**.
+
+Stark:
+
+- „Diese neue KI erstellt aus einem Satz eine komplette Website.“
+- „Open Source hat gerade ein Videomodell veröffentlicht, das lokal laufen kann.“
+- „Die bisher beste Coding-KI hat einen neuen Konkurrenten.“
+
+Schwach:
+
+- „Heute sprechen wir über Modell X.“
+- „Es gibt Neuigkeiten bei Firma Y.“
+- „Was ist eigentlich ein multimodales Modell?“
+
+## 7. Sichtbarer-Beweis-Gate
+
+Ein aktuelles Thema ist besonders stark, wenn mindestens eines möglich ist:
+
+- echte UI zeigen
+- echter Output zeigen
+- Vorher/Nachher zeigen
+- Modell A/B direkt vergleichen
+- gleiche Aufgabe an mehrere KIs geben
+- Geschwindigkeit/Funktionsumfang sichtbar machen
+- GitHub-Projekt tatsächlich demonstrieren
+- Preis/Limit/Verfügbarkeit sauber gegenüberstellen
+
+Nur Logo + Textkarten + Herstellerclaims reichen nicht.
+
+## 8. Vergleichs- und Ranking-Regeln
+
+Vergleiche müssen fair sein.
+
+Vorher festlegen:
+
+- gleiche Aufgabe
+- gleiche oder vergleichbare Eingabe
+- gleiche Bewertungskriterien
+- aktuelle Modellversionen
+- Preis/Plan berücksichtigen, wenn relevant
+- eigene Beobachtung von offiziellen Benchmarks trennen
+
+Mögliche Kriterien:
+
+- Qualität
+- Geschwindigkeit
+- Bedienung
+- Kontrolle
+- Funktionsumfang
+- Zuverlässigkeit
+- Preis/Leistung
+- Zugänglichkeit
+
+Ein Ranking braucht mindestens eine begründete Bewertungslogik.
+
+## 9. GitHub-/Open-Source-Filter
+
+Ein Repository wird nur Thema, wenn mindestens zwei Punkte zutreffen:
+
+- löst ein echtes Problem
+- hat eine sichtbar interessante Demo
+- ist technisch ungewöhnlich oder besonders praktisch
+- bietet eine relevante Alternative zu einem bekannten Tool
+- zeigt starkes aktuelles Momentum
+- kann lokal/self-hosted genutzt werden und das ist für Zuschauer relevant
+- eröffnet einen neuen Workflow
+
+Nicht produzieren, nur weil ein Repository neu ist.
 
 ## 10. News-Filter
 
-News nur produzieren, wenn mindestens eines gilt:
+Eine News wird `PRODUCE`, wenn mindestens eines stark zutrifft:
 
-- Zuschauer kann konkret etwas Neues tun
-- verbreitetes Tool verändert sich relevant
-- Änderung zeigt größeren KI-Trend/Mechanismus
-- Grenze/Fähigkeit verschiebt sich nachvollziehbar
-- starke Vorher/Nachher-Demonstration möglich
+- neue Fähigkeit
+- deutliche Qualitätsverbesserung
+- wichtiger Preis-/Zugangswechsel
+- relevantes neues Modell
+- starke Open-Source-Neuheit
+- großer Workflow-Unterschied
+- klarer Gewinner/Verlierer in einem aktuellen Vergleich
+- wichtige Änderung für viele Nutzer
 
-Nicht wegen Modellname oder Marketing-Ankündigung allein produzieren.
+DROP/IGNORE, wenn:
 
-## 11. Tool-Reel-Filter
+- nur Firmen-PR ohne sichtbaren Nutzen
+- nur Investment-/Management-News ohne Produktwirkung
+- nur Modellname ohne relevante Änderung
+- reine Spekulation ohne belastbare Quelle
+- Änderung zu klein für ein eigenes Video
 
-Kein Feature-Rundgang.
+## 11. Interner Themen-Score
 
-Stärker:
+Jede Dimension mit `0`, `1` oder `2` bewerten.
 
-```text
-Problem
-→ bisheriger Weg
-→ neuer/anderer Workflow
-→ sichtbares Ergebnis
-→ Grenze / für wen es sich lohnt
-```
+| Dimension | 0 | 1 | 2 |
+|---|---|---|---|
+| Aktualität | alt/zeitlos | noch relevant | klar neue Entwicklung |
+| Nachrichtenwert | kaum Änderung | solide Neuerung | starke relevante Veränderung |
+| Zuschauerrelevanz | kaum | Teilgruppe | breite oder starke Zielgruppe |
+| sichtbarer Beweis | keiner | teilweise | starke Demo/A-B/Output |
+| praktischer Nutzen | nur Information | Einordnung | klare Entscheidung/Workflow/Nutzen |
+| Vergleichspotenzial | keines | möglich | sehr gut vergleichbar |
+| Grounding | schwach | ordentlich | offizielle/primäre Quellen gut verfügbar |
+| Hook-Potenzial | abstrakt | solide | sofort verständlicher Konflikt/Ergebnis |
 
-## 12. Vor Produktionsstart dokumentieren
+### Entscheidung
+
+- **14–16** → sehr starker Kandidat
+- **11–13** → PRODUCE, wenn Hook und Beweis stark sind
+- **8–10** → REFINE
+- **0–7** → DROP
+
+Ein hoher Score ersetzt keine belastbaren Quellen.
+
+## 12. Ziel-Mix
+
+Redaktionelle Orientierung:
+
+- **35 % neue Modelle / neue KI-Tools**
+- **20 % wichtige KI-News / Updates**
+- **15 % Vergleiche / Rankings**
+- **15 % GitHub / Open Source**
+- **10 % Vor-/Nachteile / Marktüberblicke**
+- **5 % Grundlagen**, nur wenn sinnvoll
+
+Die Zahlen sind kein starres Veröffentlichungsquota. Entscheidend ist, dass der Feed klar **aktuell** wirkt.
+
+## 13. Produktionsbrief für neue Themen
+
+Vor `PRODUCE` dokumentieren:
 
 ```text
 Arbeitstitel:
-Kategorie: EVERGREEN | CURRENT | HYBRID
-konkrete Zuschauerfrage:
+Themenart: RELEASE | NEWS | GITHUB | VERGLEICH | RANKING | EINORDNUNG | HYBRID
+Aktualitätsstufe: BREAKING | CURRENT | HYBRID | EVERGREEN
+Was ist neu?:
+Warum ist es relevant?:
 2-Sekunden-Hook:
-Alltags-/Ergebnisanker:
-sichtbarer Kernmechanismus:
-Payoff:
-Grounding-Risiko:
+Was kann sichtbar gezeigt werden?:
+Welche echte Demo / welches A-B ist möglich?:
+Für wen ist es relevant?:
+Wichtigste Vorteile:
+Wichtigste Nachteile/Grenzen:
+Primärquellen:
+Publish-Recheck nötig: JA/NEIN
 Themen-Score:
-Harte Stop-Fälle geprüft: JA/NEIN
 Entscheidung: PRODUCE | REFINE | DROP
 ```
 
-Nur `PRODUCE` geht in den V2-Produktionsprozess.
+## 14. Publish-Recheck bei aktuellen Themen
 
-## 13. Keine Score-Manipulation
+Kurz vor Veröffentlichung erneut prüfen:
 
-Der Score ist kein Ziel.
+- Modellname/Version noch korrekt?
+- Release wirklich öffentlich?
+- Verfügbarkeit korrekt?
+- Preis/Limits korrekt?
+- relevante Änderung seit Recherche?
+- Vergleich noch fair?
+- wurde aus Beta/Preview inzwischen etwas anderes?
 
-Nicht eine schwache Idee künstlich hochbewerten, nur weil schon Arbeit investiert wurde.
+Bei `BREAKING`, `CURRENT` und `HYBRID` ist dieser Recheck Pflicht.
 
-Wenn ein Thema fachlich korrekt, aber visuell/inhaltlich zu abstrakt ist, ist es kein gutes Reel-Thema.
+## 15. Leitregel
+
+> Wenn zwei Themen ähnlich stark sind, gewinnt normalerweise das **aktuellere Thema mit dem besseren sichtbaren Beweis**.
