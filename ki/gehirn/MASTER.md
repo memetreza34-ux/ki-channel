@@ -13,14 +13,15 @@ Diese Datei verbindet Identität, Themenwahl, Story, Fakten, Reel-Logik, Visuals
 7. `FAKTENQUELLEN.md` — Claim-Klassifikation, Quellen und Recheck-Regeln
 8. `REELS.md` — Reel-Struktur, Text-Hierarchie, Visual Beats
 9. `VISUAL_STRATEGY.md` — Wahl der besten Bildsprache pro Beat
-10. `../BILDSTIL.md` — Qualitätsregeln, wenn externe Still-/Hybrid-Assets gewählt wurden
-11. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
-12. `CREATIVE_QA.md` — Zuschauer-/Retention-Gate nach dem Render
-13. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
-14. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
-15. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
-16. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
-17. named reel/longform package — konkrete Inhalte
+10. `REMOTION_VISUAL_SYSTEM.md` — Remotion als universelle finale Composition und code-first Visual-System
+11. `../BILDSTIL.md` — Qualitätsregeln, wenn externe Still-/Hybrid-Assets gewählt wurden
+12. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
+13. `CREATIVE_QA.md` — Zuschauer-/Retention-Gate nach dem Render
+14. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
+15. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
+16. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
+17. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
+18. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
@@ -42,7 +43,11 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 - Vergleich nur mit klaren Kriterien
 - Grundlagen nur dann als Hauptteil, wenn sie eine aktuelle Story verständlicher machen
 - echter sichtbarer Mechanismus oder echtes Produktverhalten vor beschrifteter Karte
-- beste Bildsprache vor bevorzugtem Tool
+- **Remotion ist die universelle finale Composition- und Render-Ebene**
+- eigene Erklärvisuals bevorzugt code-first mit React/SVG/CSS/Shapes/Paths/Three bauen
+- echte Screenshots/Captures nur als Wahrheits-/Beweisebene in Remotion einbetten
+- kein UI-Nachbau darf als realer Screenshot ausgegeben werden
+- beste Bildsprache vor dekorativem Asset
 - ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
 - Short-Form endet, sobald das Versprechen erfüllt ist; 50–60 Sekunden sind erlaubt, aber kein Streckziel
 - YouTube Longform ist eigenständig und wird nie bloß aus einem Reel aufgeblasen
@@ -81,11 +86,9 @@ FINALER SPRECHERTEXT
 ↓
 VISUAL BEATS
 ↓
-VISUAL MODALITY PRO BEAT
+VISUAL STRATEGY / BEWEISQUELLE
 ↓
-MECHANIK / SHOT / ART DIRECTION
-↓
-ERST JETZT: Library / Remotion / Asset-Prompts / Capture
+REMOTION-BUILD / SHOT / ART DIRECTION
 ↓
 SOURCE
 ↓
@@ -107,12 +110,11 @@ CREATIVE REVIEW
 2. Was ist die gemeinte Aussage hinter den Worten?
 3. In welche bedeutungstragenden Visual Beats zerfällt die Stelle?
 4. Was muss der Zuschauer bei jedem Beat sichtbar sehen?
-5. Welches Verb beschreibt die Hauptaktion? (z. B. wählt, prüft, zerfällt, verbindet)
-6. Welche Bildsprache erklärt den Beat am besten?
-   REMOTION_NATIVE | REAL_CAPTURE | HYBRID | EXTERNAL_STILL_REQUIRED | EXTERNAL_MOTION_REQUIRED
-7. Welcher konkrete Mechanismus trägt diese Bildsprache?
+5. Welches Verb beschreibt die Hauptaktion?
+6. Braucht die Aussage einen echten Beweis-Capture oder reicht ein nativer Remotion-Build?
+7. Welche Remotion-Mechanik erklärt den Beat am besten?
 8. Gibt es bereits etwas mit EXAKTEM semantischem Fit?
-9. Wenn nein: NEW_BUILD bzw. neues benötigtes Asset/Capture statt Kompromiss-Reuse.
+9. Wenn nein: NEW_BUILD statt Kompromiss-Reuse.
 10. Welche wenigen Labels sind wirklich nötig?
 11. Endet alles oberhalb der Caption-Zone und bleibt smartphone-lesbar?
 ```
@@ -154,15 +156,7 @@ Keine scheinpräzisen Demo-Werte als Fakten. Details: `FAKTENQUELLEN.md`.
 
 ## Visual Beat Contract
 
-Jede bedeutungstragende Sprecherstelle erhält eine bewusste visuelle Reaktion. Die passende Einheit kann sein:
-
-- Wort
-- Phrase
-- Halbsatz
-- Satz
-- zusammenhängende Satzgruppe
-
-Nicht jedes Wort muss animiert werden. Aber wenn sich Bedeutung, Ursache, Vergleich oder Zustand ändert, muss die visuelle Entscheidung diesen Wechsel tragen.
+Jede bedeutungstragende Sprecherstelle erhält eine bewusste visuelle Reaktion.
 
 Für jeden Beat dokumentiert `06-projektdateien/visual-strategy.md` mindestens:
 
@@ -174,29 +168,45 @@ Sprecherstelle
 → Startzustand
 → sichtbare Veränderung
 → Endzustand
-→ Visual Modality
+→ Beweisquelle nötig? JA/NEIN
+→ Remotion-Build-Idee
 → Mechanikfamilie
 → Hero beat JA/NEIN
-→ Asset/Capture, falls nötig
+→ echter Capture/Asset, falls Beweis nötig
 ```
 
 Erst danach entsteht `animation-plan.md`.
 
-## Visual Modality Contract
+## Remotion Composition Contract
 
-Es gibt **keine automatische Maximum-Remotion-Regel mehr**.
+Für neue Short-Form-Reels gilt:
 
-Die beste Erklärung gewinnt:
+> **Jeder finale Frame wird in Remotion komponiert und gerendert.**
 
-- `REMOTION_NATIVE` — exakte UI, Daten, Prozesse, technische Mechanismen
-- `REAL_CAPTURE` — tatsächliches Produktverhalten ist der Beweis
-- `HYBRID` — räumliches/physisches Hero-Motiv plus präzise Remotion-Schichten
-- `EXTERNAL_STILL_REQUIRED` — komplexe räumliche/organische Momentaufnahme
-- `EXTERNAL_MOTION_REQUIRED` — komplexe physische Bewegung ist selbst Bedeutungsträger
+Standard:
 
-Remotion ist nicht automatisch premium. Externe Assets sind nicht automatisch abwechslungsreicher. Jede Wahl braucht eine semantische Begründung.
+- `REMOTION_NATIVE` für konstruierte Erklärvisuals
+- `REAL_CAPTURE` nur als echte Beweisquelle, anschließend in Remotion eingebettet
+- `HYBRID` für echten Capture + Remotion-Overlays
+- externe Stills/Motion nur begründete Ausnahme
 
-Details: `VISUAL_STRATEGY.md`.
+Remotion-native umfasst ausdrücklich:
+
+- Illustrationen
+- SVG-Icons
+- UI-Mockups
+- Browser/App-Szenen
+- Code/Terminal
+- GitHub-/Repo-Szenen
+- Rankings/Vergleiche
+- Diagramme/Daten
+- Geräte/Objekte
+- 2.5D
+- Three bei echter Tiefenlogik
+
+Ein UI-Nachbau ist eine Illustration. Wenn reales Produktverhalten eine Behauptung belegt, muss ein echter Capture verwendet werden.
+
+Details: `VISUAL_STRATEGY.md` und `REMOTION_VISUAL_SYSTEM.md`.
 
 ## Diversity Contract
 
@@ -205,9 +215,9 @@ Ein Reel darf eine konsistente Identität haben, aber nicht in monotone Karten-G
 Richtwerte:
 
 - nicht mehr als zwei aufeinanderfolgende Beats mit derselben Hauptgrammatik
-- karten-/panelbasierte Hauptbeats normalerweise höchstens etwa ein Drittel
+- karten-/panelbasierte Hauptbeats normalerweise höchstens etwa ein Viertel
+- mindestens die Hälfte objekt-, pfad-, form-, raum-, code-, illustration- oder prozessbasiert
 - mindestens ein bewusst geplanter visueller Höhepunkt
-- unterschiedliche Mechanikfamilien nur dort einsetzen, wo die Aussage sie trägt
 - Wiederholung ist erlaubt, wenn sie Teil desselben fortlaufenden Prozesses ist
 
 Eine Karte ist semantisch sinnvoll bei UI, Dokument, Datensatz, Nachricht, Datei oder Token. Sie ist **kein Standardcontainer für abstrakte Aussagen**.
@@ -225,7 +235,7 @@ Gesprochene Bedeutung
 = Beat-Timing
 ```
 
-Phase 3 passt zuerst Animation, Holds und Szenengrenzen an die echte Stimme an. Wenn eine einzelne Phrase danach noch unnatürlich zur geplanten Erklärung passt, darf lokal pitch-erhaltend leicht retimed werden.
+Phase 3 passt zuerst Animation, Holds und Szenengrenzen an die echte Stimme an.
 
 Dabei gilt:
 
@@ -248,7 +258,7 @@ ZWISCHENÜBERSCHRIFT + ICON
 
 HAUPTVISUAL
 = individuelle sichtbare Erklärung
-= kann Remotion, Real Capture, Hybrid oder externes Asset sein
+= primär Remotion-native oder echter Capture in Remotion
 = kritische Inhalte enden vollständig oberhalb der Caption-Zone
 
 ANIMATIONSTEXT
@@ -264,15 +274,15 @@ Interne Regie-, `goal`-, Debug- und Planner-Texte sind niemals Zuschauertext.
 
 ## Visual Hierarchy Longform
 
-- Kapitelmarker kurz und sparsam statt permanenter großer Titel
+- Kapitelmarker kurz und sparsam
 - UI, Captures, Diagramme und Illustrationen groß genug für 16:9/Laptop/TV
 - keine dauerhaft eingebrannten Volltext-Untertitel als Standard
 - Animationstext nur für Objekt, Zustand, echte UI oder kurze Orientierung
 - kein Transcript als Design-Ersatz
-- pro Kapitel klare Zustandsentwicklung, aber keine Dauerbewegung ohne Erklärfunktion
+- pro Kapitel klare Zustandsentwicklung
 - End-Hold vor Kapitelwechsel
 
-Auch Longform wählt die Bildsprache nach Inhalt, nicht automatisch `REMOTION_NATIVE_MAXIMUM`.
+Auch Longform wird final in Remotion komponiert.
 
 ## Harte Reel-Caption-Zone
 
@@ -283,19 +293,14 @@ Bei vertikalem 1080 × 1920 Short-Form gilt:
 - keine Karte, Linie, Node, Partikel, Illustration oder Animationsbeschriftung hinter oder unter den Untertiteln
 - Hauptvisual höher, kleiner oder neu komponieren, wenn es nicht passt
 - Untertitel nicht nach unten verdrängen
-- technischer Clip-Guard ist nur letzte Sicherung; sichtbares Abschneiden bleibt Review-Fehler
-
-Diese spezifische Zone gilt nicht als Longform-Layoutregel.
 
 ## Externe Assets und Captures
 
-Das Repository darf Bedarf, Prompt, Shot-Brief, Dateiname und Manifest definieren. Es darf fehlende Medien **nicht vortäuschen**.
+Das Repository darf Bedarf, Quelle, Dateiname und Manifest definieren. Es darf fehlende Medien **nicht vortäuschen**.
 
-Phase 1 darf ein Pflichtasset als `MISSING_REQUIRED` markieren.
+Ein echter Capture bleibt erforderlich, wenn die aktuelle Produktoberfläche oder das echte Ergebnis Teil des Beweises ist.
 
-Phase 3 darf nur tatsächlich vorhandene Dateien verwenden. Fehlt ein Pflichtasset oder Capture, wird nicht stillschweigend durch generische Karten ersetzt.
-
-Für Still-/Hybrid-Assets gilt `../BILDSTIL.md`.
+Externe generierte Bilder/Videos sind kein Standardweg für neue Reels. Vor einer solchen Ausnahme muss dokumentiert sein, warum der Remotion-native Build sichtbar schlechter oder fachlich ungeeignet wäre.
 
 ## Markenakzent
 
@@ -307,8 +312,6 @@ Für Still-/Hybrid-Assets gilt `../BILDSTIL.md`.
 - Grün: Vorteil/Lösung
 - Rot: Risiko/Fehler/Grenze
 - Blau: seltene Info-/Tech-Semantik
-
-Lila wird gezielt akzentuiert, nicht flächig als Ersatz für Hierarchie.
 
 ## Qualitätsregel
 
@@ -327,6 +330,8 @@ Pflicht:
 - keine erfundenen Fakten
 - keine zufällige Reuse-Animation
 - keine monotone Kartenserie aus Bequemlichkeit
+- kein Fake-Capture
+- keine gefälschten Logos
 - formatgerechte Lesbarkeit
 - aktueller Render gehört exakt zum geprüften Source-Stand
 
@@ -347,35 +352,33 @@ Ein technisch fehlerfreies Reel wird nicht freigegeben, wenn:
 
 ## Publishing-Modell
 
-Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master, solange keine technisch notwendige Anpassung erforderlich ist.
+Short-Form wird einmal unter `ki/reels/` produziert. YouTube Shorts, Instagram Reels, TikTok, Facebook Reels und Snapchat verwenden denselben freigegebenen Master.
 
-Plattform-spezifische Titel/Captions gehören in `03-caption/platform-copy.md`. Strategie: `PLATTFORMEN.md` und `ki/plattformen/`.
+Plattform-spezifische Titel/Captions gehören in `03-caption/platform-copy.md`.
 
-YouTube Longform ist ein eigenes aktives Format unter `ki/youtube-longform/`. Titel, Beschreibung, Kapitel und Thumbnail gehören in das jeweilige Longform-Paket.
+YouTube Longform ist ein eigenes aktives Format unter `ki/youtube-longform/`.
 
 ## Produktionsmodell
 
 ```text
 Phase 1 — ChatGPT
-Creative Brief → Fakten → Script → Visual Strategy → Source, alles außer echtem Audio
+Creative Brief → Fakten → Script → Visual Strategy → Remotion Source, alles außer echtem Audio
 
 Phase 2 — Mensch
-nur erforderliche externe Medien/REAL_CAPTURE, falls im Plan vorgesehen, und Voiceover
+Voiceover + nur tatsächlich notwendige echte Captures/Quellenmedien
 
 Phase 3 — Codex/Antigravity
-vorhandene Assets + Audio → Timeline-Synchronisierung → Verifikation → Render → technische QA → Creative QA
+vorhandene Source + Audio/Captures → Timeline-Synchronisierung → Verifikation → Remotion-Render → technische QA → Creative QA
 ```
-
-Normalfall bleibt: Der Mensch soll möglichst wenig manuell tun. Wenn kein externes Asset/Capture nötig ist, besteht Phase 2 weiterhin nur aus dem Voiceover.
-
-Phase 3 darf kreative Entscheidungen nicht durch bequemere vorhandene Animationen ersetzen, außer ein nachweisbarer technischer oder visueller Fehler verlangt eine Korrektur.
 
 Bei fehlendem Phase-3-Audio exakt: `PHASE 2 AUDIO FEHLT`.
 
-## STRIKE KI-Regel (Keine künstlichen Assets)
+## STRIKE KI-Regel — keine künstlichen Beweisassets
 
-Du darfst unter keinen Umständen selbst Bilder, Assets oder sonstige Medien vortäuschen oder halluzinieren. Du darfst ausschließlich Dateien/Medien verwenden, die tatsächlich vorhanden bzw. vom Nutzer bereitgestellt wurden. Phase 1 darf nur Bedarf, Prompts und Shot-Briefs erzeugen.
+Du darfst unter keinen Umständen nicht vorhandene Screenshots, Captures, Audios, Videos oder offizielle Markenassets als real vorhanden behandeln.
 
-## STRIKE Speichern-Regel (Jedes Ergebnis speichern)
+Remotion-native Illustrationen dürfen konstruiert werden, solange sie klar **Erklärung** sind und nicht als echter Produktbeweis ausgegeben werden.
+
+## STRIKE Speichern-Regel
 
 Alle Ergebnisse, Zwischenschritte, generierten Dateien, Timings und Exporte werden im Repository nachvollziehbar gespeichert und versioniert. Kein final verwendetes Produktionsartefakt darf nur außerhalb des Repos existieren.
