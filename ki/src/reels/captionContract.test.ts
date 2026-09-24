@@ -3,6 +3,7 @@ import type {ReelCaption} from './captionContract';
 import {
   assertReelCaptionTimeline,
   captionMsToFrame,
+  countReelCaptionWords,
   findCaptionAtMs,
 } from './captionContract';
 
@@ -36,6 +37,22 @@ describe('captionContract', () => {
     expect(() => assertReelCaptionTimeline([
       {...captions[0], endMs: 0},
     ])).toThrow(/endMs must be greater/);
+  });
+
+  it('rejects caption groups with more than six words', () => {
+    expect(() => assertReelCaptionTimeline([
+      {...captions[0], text: 'eins zwei drei vier fünf sechs sieben'},
+    ])).toThrow(/exceed maxWordsPerGroup=6/);
+  });
+
+  it('rejects more than two explicit caption lines', () => {
+    expect(() => assertReelCaptionTimeline([
+      {...captions[0], text: 'eins zwei\ndrei vier\nfünf sechs'},
+    ])).toThrow(/exceed maxVisibleLines=2/);
+  });
+
+  it('counts hyphenated words as one caption word', () => {
+    expect(countReelCaptionWords('Retrieval-Systeme finden passende Stellen')).toBe(4);
   });
 
   it('rejects an unsorted timeline', () => {
