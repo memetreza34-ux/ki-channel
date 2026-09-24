@@ -1,45 +1,72 @@
 # 🧠 KI-Channel — MASTER-GEHIRN
 
-Diese Datei verbindet Identität, Story, Fakten, Reel-Logik, Visualstrategie, Bildstil, Plattformen und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
+Diese Datei verbindet Identität, Themenwahl, Story, Fakten, Reel-Logik, Visualstrategie, Bildstil, Plattformen und Produktionsablauf zu einem einzigen Entscheidungsrahmen.
 
 ## Autoritative Quellen
 
 1. `REPO-STATE.md` — Repository-Wahrheit und Branch
 2. `AGENTS.md` / `ki/AGENTS.md` — technische und strukturelle Regeln
 3. **diese Datei** — kanalweite Entscheidungslogik
-4. `KANAL.md` — Identität, Zielgruppe, Ton
-5. `STORY_RETENTION.md` — Themen-/Hook-/Story-Gate vor Script und Code
-6. `FAKTENQUELLEN.md` — Claim-Klassifikation, Quellen und Recheck-Regeln
-7. `REELS.md` — Reel-Struktur, Text-Hierarchie, Visual Beats
-8. `VISUAL_STRATEGY.md` — Wahl der besten Bildsprache pro Beat
-9. `../BILDSTIL.md` — Qualitätsregeln, wenn externe Still-/Hybrid-Assets gewählt wurden
-10. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
-11. `CREATIVE_QA.md` — Zuschauer-/Retention-Gate nach dem Render
-12. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
-13. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
-14. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
-15. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
-16. named reel/longform package — konkrete Inhalte
+4. `KANAL.md` — Identität, Zielgruppe, Ton und Current-AI-Positionierung
+5. `THEMENWAHL.md` — aktuelle Releases, News, GitHub/Open Source, Vergleiche und Rankings
+6. `STORY_RETENTION.md` — Hook-/Story-Gate vor Script und Code
+7. `FAKTENQUELLEN.md` — Claim-Klassifikation, Quellen und Recheck-Regeln
+8. `REELS.md` — Reel-Struktur, Text-Hierarchie, Visual Beats
+9. `VISUAL_STRATEGY.md` — Wahl der besten Bildsprache pro Beat
+10. `../BILDSTIL.md` — Qualitätsregeln, wenn externe Still-/Hybrid-Assets gewählt wurden
+11. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
+12. `CREATIVE_QA.md` — Zuschauer-/Retention-Gate nach dem Render
+13. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
+14. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
+15. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
+16. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
+17. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
 ## Kernziel
 
-> Komplexe KI so erklären, dass ein normaler deutschsprachiger Zuschauer den Mechanismus schnell versteht — visuell stark, sachlich geerdet, unterhaltsam genug zum Weitersehen und ohne Hype-Lärm.
+> Aktuelle KI-Entwicklungen für einen normalen deutschsprachigen Zuschauer schnell verständlich und sichtbar einordnen — neue Modelle, neue Funktionen, relevante KI-News, GitHub/Open-Source-Neuheiten, Vergleiche und Rankings; sachlich geerdet und ohne Hype-Lärm.
 
 ## Kanalprinzipien
 
 - deutsch
 - vollständig faceless
+- **Current-AI vor zeitloser Grundlagen-Erklärung**
+- neue Fähigkeit/Änderung vor abstraktem Fachbegriff
+- sichtbarer Beweis/Demo vor Herstellerclaim
 - Bedeutung vor Effekt
 - Verständlichkeit vor technischer Selbstdarstellung
 - Nutzen/Aha vor Feature-Liste
 - Wahrheit vor Reichweitenversprechen
-- echter sichtbarer Mechanismus vor beschrifteter Karte
+- Vergleich nur mit klaren Kriterien
+- Grundlagen nur dann als Hauptteil, wenn sie eine aktuelle Story verständlicher machen
+- echter sichtbarer Mechanismus oder echtes Produktverhalten vor beschrifteter Karte
 - beste Bildsprache vor bevorzugtem Tool
 - ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
 - Short-Form endet, sobald das Versprechen erfüllt ist; 50–60 Sekunden sind erlaubt, aber kein Streckziel
 - YouTube Longform ist eigenständig und wird nie bloß aus einem Reel aufgeblasen
+
+## Editoriales Current-AI-Gate
+
+Vor Story und Script wird zuerst `THEMENWAHL.md` angewendet.
+
+Der Standardfeed soll hauptsächlich aus diesen Themen bestehen:
+
+- neue KI-Modelle und Releases
+- wichtige Updates bestehender KIs
+- KI-News mit konkreter Auswirkung
+- neue relevante GitHub-/Open-Source-Projekte
+- Modell-/Tool-Vergleiche
+- Rankings nach klaren Kriterien
+- Vor-/Nachteile und Nutzungsempfehlungen
+- aktuelle Marktüberblicke
+
+Zeitlose Themen wie Tokens, Embeddings, Attention, RAG oder Transformer sind **kein bevorzugter Startpunkt**. Sie werden eingesetzt, wenn sie eine aktuelle Entwicklung erklären.
+
+Redaktionelle Orientierung: ungefähr `70–80 % CURRENT/HYBRID`, `20–30 % Evergreen/Grundlagen`.
+
+Bei zwei ähnlich starken Themen gewinnt normalerweise das aktuellere Thema mit dem besseren sichtbaren Beweis.
 
 ## Produktionsreihenfolge — niemals überspringen
 
