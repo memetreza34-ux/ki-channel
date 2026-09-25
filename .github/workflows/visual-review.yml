@@ -46,10 +46,16 @@ jobs:
       - name: Render GPT-5.6 visual contact sheet
         run: node scripts/render-visual-contact-sheet.mjs --preset=gpt56
 
-      - name: Upload visual review artifact
+      - name: Print visual review metrics
+        run: cat ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/visual-review.json
+
+      - name: Upload visual review artifact when storage is available
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: gpt56-remotion-visual-review
-          path: ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/
+          path: |
+            ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/contact-sheet.jpg
+            ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/visual-review.json
           if-no-files-found: error
