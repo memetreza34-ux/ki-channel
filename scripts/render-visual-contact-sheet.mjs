@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {spawn} from 'node:child_process';
-import {mkdir, readFile, writeFile} from 'node:fs/promises';
+import {mkdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 import {
@@ -139,5 +139,13 @@ await writeFile(
 
 console.log(`\nVISUAL CONTACT SHEET: ${sheetFile}`);
 console.log(`VISUAL REVIEW REPORT: ${reportFile}`);
-console.log(`Warnings: ${allWarnings.length}`);
+console.log('\nFrame metrics:');
+for (const report of reports) {
+  console.log(`- frame ${report.frame}: white=${report.whiteRatio}, edges=${report.edgeDensity}, warnings=${report.warnings.join(',') || 'none'}`);
+}
+console.log('\nSample-to-sample motion metrics:');
+for (const report of pairReports) {
+  console.log(`- ${report.fromFrame}->${report.toFrame}: diff=${report.meanAbsoluteRgbDifference}, warnings=${report.warnings.join(',') || 'none'}`);
+}
+console.log(`\nWarnings: ${allWarnings.length}`);
 console.log('These metrics are review signals, not an automatic creative PASS. Open the contact sheet and inspect it.');
