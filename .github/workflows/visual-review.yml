@@ -1,0 +1,55 @@
+name: Remotion Visual Review
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ki/src/visual-system/**'
+      - 'ki/src/reels/gpt-5-6-chatgpt/**'
+      - 'scripts/render-visual-contact-sheet.mjs'
+      - 'scripts/visual-contact-metrics.mjs'
+      - 'scripts/visual-review-presets.mjs'
+      - 'scripts/__tests__/visual-contact-metrics.test.mjs'
+      - '.github/workflows/visual-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: remotion-visual-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_INSTALL_FLAGS: '--package-lock=false --legacy-peer-deps --no-audit --no-fund'
+
+jobs:
+  gpt56-contact-sheet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install canonical workspaces
+        run: npm install $NPM_INSTALL_FLAGS
+
+      - name: Verify visual metrics
+        run: node --test scripts/__tests__/visual-contact-metrics.test.mjs
+
+      - name: Render GPT-5.6 visual contact sheet
+        run: node scripts/render-visual-contact-sheet.mjs --preset=gpt56
+
+      - name: Upload visual review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt56-remotion-visual-review
+          path: ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/
+          if-no-files-found: error
