@@ -97,7 +97,6 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
-// Anti-regression reference only: the obsolete guard was `reelModules.length !== 12`; the active production count is 13.
 if (reelModules.length !== 13) {
   failures.push(
     `ProductionRoot.tsx erwartet derzeit 13 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
