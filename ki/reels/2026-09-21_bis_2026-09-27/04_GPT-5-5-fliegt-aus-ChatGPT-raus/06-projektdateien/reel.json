@@ -1,0 +1,15 @@
+{
+  "slug": "gpt-5-5-retirement",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1080},
+  "captionZoneStartY": 1380,
+  "visualBeatCount": 12,
+  "publishRecheckRequired": true,
+  "scenes": [
+    {"sceneId":"gpt55-01","startFrame":0,"endFrame":180,"headline":"GPT-5.5: Deadline 14. Oktober","icon":"calendar","implementation":"NEW_BUILD","spokenText":"Wenn du irgendwo noch GPT-5.5 fest eingestellt hast, solltest du vor dem 14. Oktober umstellen.","beatIds":["B01","B02"]},
+    {"sceneId":"gpt55-02","startFrame":180,"endFrame":360,"headline":"Hier fliegt GPT-5.5 raus","icon":"lock","implementation":"NEW_BUILD","spokenText":"OpenAI entfernt GPT-5.5 dann aus ChatGPT, ChatGPT Work und Codex – auf allen Plänen.","beatIds":["B03","B04"]},
+    {"sceneId":"gpt55-03","startFrame":360,"endFrame":540,"headline":"Die API ist die Ausnahme","icon":"code","implementation":"NEW_BUILD","spokenText":"Die wichtige Ausnahme: Diese Abschaltung gilt ausdrücklich nicht für die OpenAI API.","beatIds":["B05","B06"]},
+    {"sceneId":"gpt55-04","startFrame":540,"endFrame":720,"headline":"Codex: Wechsel auf GPT-5.6 Sol","icon":"terminal","implementation":"NEW_BUILD","spokenText":"Für Codex mit ChatGPT-Login sagt OpenAI: Wechsle von GPT-5.5 auf GPT-5.6 Sol.","beatIds":["B07","B08"]},
+    {"sceneId":"gpt55-05","startFrame":720,"endFrame":900,"headline":"Diese Stellen solltest du prüfen","icon":"search","implementation":"NEW_BUILD","spokenText":"Prüf deshalb Workspace-Defaults, gespeicherte Modell-Einstellungen, Agents, geplante Tasks und Scripts, die noch GPT-5.5 auswählen.","beatIds":["B09","B10"]},
+    {"sceneId":"gpt55-06","startFrame":900,"endFrame":1080,"headline":"14. Oktober: Das gilt","icon":"workflow","implementation":"NEW_BUILD","spokenText":"Merke dir den 14. Oktober: ChatGPT, Work und Codex verlieren GPT-5.5 – die API ist von dieser Abschaltung nicht betroffen.","beatIds":["B11","B12"]}
+  ]
+}
