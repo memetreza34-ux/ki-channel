@@ -1,26 +1,25 @@
 # PHASE STATUS
 
 ## Phase 1 — ChatGPT
-**FERTIG**
+**Status:** FERTIG
 
 Vorhanden:
 - Creative Brief
 - verifizierter Source Ledger
 - finaler deutscher Sprechertext
-- Visual Strategy
-- 12 Visual Beats
+- Visual Strategy mit 12 Visual Beats
 - Caption-Cues
 - Platform Copy
 - Asset Manifest
 - Production Contract V2
-- reel.json
+- `reel.json`
 - Animation Plan
 - ausführbare Remotion-Source
 - Visual Profiles + Scene-Richness-Manifest + Contract-Test
 - Production Composition `KI-Gpt55Retirement`
 
 ## Phase 2 — Mensch
-**PHASE 2 AUDIO FEHLT**
+**Status:** PHASE 2 AUDIO FEHLT
 
 Benötigt:
 - echtes Voiceover auf Basis von `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
@@ -28,7 +27,7 @@ Benötigt:
 Keine Real-Captures oder externen Bildassets sind für die aktuelle Visual Strategy erforderlich.
 
 ## Phase 3 — Codex / Antigravity
-**WARTET AUF PHASE 2**
+**Status:** WARTET AUF PHASE 2
 
 Danach:
 1. echtes Audio integrieren
