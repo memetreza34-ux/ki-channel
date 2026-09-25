@@ -2,116 +2,327 @@
 
 ## Positionierung
 
-Deutscher, animierter, vollständig faceless KI-Kanal für Konzepte, Tools, praktische Workflows, relevante News und ehrliche Einordnung.
+Deutscher, animierter, vollständig faceless KI-Kanal mit klarem **Current-AI-Fokus**.
+
+Der Kanal berichtet nicht primär über zeitlose KI-Grundlagen, sondern darüber, **was sich gerade in der KI-Welt verändert** und was davon für normale Nutzer, Creator, Entwickler und Interessierte wirklich wichtig ist.
 
 **Kanalversprechen:**
 
-> KI verständlich, praktisch und visuell klar machen — ohne Hype-Lärm.
+> Neue KIs, neue Funktionen, neue Open-Source-Projekte und wichtige KI-News schnell verstehen — mit ehrlicher Einordnung statt Hype.
 
 **Redaktionelle Signatur:**
 
-> Unsichtbare KI-Vorgänge werden als konkrete visuelle Geschichten sichtbar: **Was passiert? Warum passiert es? Was bedeutet das für dich? Wo liegt die Grenze?**
+> **Was ist neu? Was kann es wirklich? Für wen ist es interessant? Was ist besser oder schlechter als vorher?**
 
-Der Kanal soll nicht wie eine Sammlung beliebiger KI-News oder Tool-Listen wirken. Auch bei unterschiedlichen Themen bleibt diese Denkweise wiedererkennbar.
+Der Zuschauer soll den Kanal öffnen können und das Gefühl haben:
+
+> „Hier sehe ich schnell, was gerade in KI wichtig ist und ob es für mich relevant ist.“
+
+## Primäre Themenrichtung
+
+Der Kanal priorisiert aktuelle Entwicklungen.
+
+### 1. Neue KI-Modelle und Releases
+
+Beispiele:
+
+- neues Sprachmodell
+- neues Bildmodell
+- neues Videomodell
+- neues Coding-Modell
+- neuer Agent
+- neues Voice-/Audio-Modell
+
+Fragen im Video:
+
+- Was ist neu?
+- Was kann es?
+- Was kann es besser als vorher?
+- Wo sind die Grenzen?
+- Für wen lohnt es sich?
+
+### 2. KI-News mit konkreter Bedeutung
+
+Nicht einfach News vorlesen.
+
+```text
+NEWS
+→ WAS HAT SICH GEÄNDERT?
+→ WAS KANN MAN JETZT?
+→ WER PROFITIERT DAVON?
+→ GIBT ES EINEN HAKEN?
+```
+
+Geeignet:
+
+- große Modellupdates
+- neue Funktionen bekannter KI-Produkte
+- neue APIs
+- neue Agenten-Funktionen
+- neue Bild-/Video-/Voice-Funktionen
+- wichtige Preis-/Limit-/Zugangsänderungen
+- relevante Produktstarts
+
+### 3. Neue GitHub- und Open-Source-KI-Projekte
+
+Der Kanal darf gezielt neue oder stark wachsende KI-Projekte aus GitHub/Open Source vorstellen.
+
+Mögliche Fragen:
+
+- Was macht das Projekt?
+- Warum reden Leute darüber?
+- Was kann man damit bauen?
+- Wie schwer ist die Nutzung?
+- Ist es eine echte Alternative zu bekannten Tools?
+- Welche Einschränkungen gibt es?
+
+Nicht jedes neue Repository ist automatisch ein Thema. Es braucht sichtbaren Nutzen, technische Relevanz oder deutliches Momentum.
+
+### 4. KI-Vergleiche und Rankings
+
+Vergleiche gehören ausdrücklich zum Kanal.
+
+Beispiele:
+
+- beste KI für Coding
+- beste KI für Bilder
+- beste KI für Videos
+- beste KI für Recherche
+- beste KI-Agenten
+- kostenlos vs. bezahlt
+- Modell A gegen Modell B
+- vorherige Generation gegen neue Generation
+
+Rankings müssen auf klaren Kriterien beruhen.
+
+Geeignete Kriterien:
+
+- Ergebnisqualität
+- Geschwindigkeit
+- Bedienung
+- Funktionsumfang
+- Preis/Leistung
+- Zuverlässigkeit
+- Einschränkungen
+
+### 5. Vorteile, Nachteile und ehrliche Einordnung
+
+```text
+DAS KANN DIE KI
+→ DAS IST STARK
+→ DAS IST SCHWACH
+→ DAFÜR WÜRDE ICH SIE EINSETZEN
+→ DAFÜR NICHT
+```
+
+### 6. Kategorien und Marktüberblick
+
+Gelegentlich dürfen größere Übersichten erscheinen:
+
+- welche KI-Agenten aktuell relevant sind
+- welche Bild-KIs vorne liegen
+- welche Coding-KIs relevant sind
+- welche Video-KIs aktuell stark sind
+- welche Modelle lokal laufen
+- welche Open-Source-Alternativen interessant sind
+
+Diese Videos sollen aktuelle Orientierung geben und keine trockenen Lexikon-Erklärungen sein.
+
+## Sekundäre Themen
+
+Zeitlose KI-Grundlagen sind **nicht mehr die Hauptsäule**.
+
+Mechanismen wie Tokens, Embeddings, RAG, Attention oder Bildverarbeitung dürfen vorkommen, wenn sie helfen, eine aktuelle Meldung oder ein aktuelles Produkt zu verstehen.
+
+```text
+schwach:
+„Wie funktionieren Embeddings?“
+
+stärker:
+„Warum kann dieses neue Suchmodell Dokumente besser finden als vorher?“
+```
+
+Grundlagen erklären die News — sie ersetzen sie nicht.
+
+## Ziel-Mix
+
+Redaktionelle Orientierung:
+
+- **85–90 % BREAKING/FRESH/CURRENT/HYBRID**
+- **10–15 % Evergreen/Grundlagen**
+
+Die Startseite des Kanals soll klar wie ein **aktueller KI-Discovery-Kanal** wirken.
+
+## Wiederkehrende Formate
+
+- `NEUE KI`
+- `KI-UPDATE`
+- `X VS. Y`
+- `GITHUB-FUNDSTÜCK`
+- `TOP KIs AKTUELL`
+- `LOHNT SICH X?`
+
+Die Formate geben Orientierung, aber kein Video darf wie eine starre Vorlage wirken.
 
 ## Was einen Inhalt kanaltypisch macht
 
-Ein starker Beitrag erfüllt möglichst mehrere dieser Punkte:
+Ein starker Beitrag erfüllt möglichst mehrere Punkte:
 
-- macht einen normalerweise unsichtbaren Mechanismus sichtbar
-- löst einen verbreiteten Irrtum auf
-- zeigt einen konkreten Vorher/Nachher-Unterschied
-- demonstriert einen echten Workflow oder ein echtes Ergebnis
-- erklärt bei News nicht nur **was neu ist**, sondern **warum es relevant ist**
-- trennt Fähigkeit, Marketingversprechen und tatsächliche Grenze
-- endet mit einer klaren praktischen Einordnung
+- basiert auf einer aktuellen Entwicklung
+- zeigt eine neue Fähigkeit oder Veränderung
+- demonstriert ein echtes Ergebnis
+- vergleicht neue und alte Möglichkeiten
+- zeigt klare Vor- und Nachteile
+- hilft bei einer Entscheidung
+- trennt Marketingversprechen und Realität
+- nennt wichtige Grenzen
+- beantwortet schnell: „Warum sollte mich das interessieren?“
 
-Nicht kanaltypisch als alleinige Idee:
+## Nicht kanaltypisch als Hauptthema
 
-- bloße „Top 5 KI-Tools“-Liste ohne klaren Use-Case
-- News vorlesen ohne Bedeutung
-- Feature-Liste ohne Demonstration
-- generische Motivation über KI
-- Hype-/Angst-These ohne belastbare Erklärung
-- austauschbare Prompt-Tipps ohne sichtbaren Effekt
+- reine KI-Grundlagen ohne aktuellen Anlass
+- abstrakte Mechanismen ohne Nutzen
+- generische Prompt-Tipps
+- News ohne Einordnung
+- Feature-Liste ohne Demo oder Konsequenz
+- Top-Listen ohne klare Kriterien
+- reine Firmen-/Investment-News ohne Produktbezug
+- Hype-/Angst-Thesen ohne belastbare Grundlage
 
 ## Zielgruppe
 
 Breit deutschsprachig. Fachwissen ist keine Voraussetzung.
 
-Der Zuschauer soll nach jedem Inhalt mindestens eines mitnehmen:
+Besonders geeignet für Menschen, die wissen wollen:
 
-- einen klaren Aha-Moment
-- einen praktischen Nutzen
-- eine bessere Einordnung
-- ein korrektes mentales Modell
-
-Ideal ist die Kombination aus **Aha + praktische Konsequenz**.
+- welche neuen KIs erscheinen
+- welche KI gerade besser wird
+- welches Tool sich lohnt
+- was neue Updates praktisch verändern
+- welche Open-Source-Projekte interessant werden
+- welches Modell für welchen Zweck geeignet ist
 
 ## Ton
 
 - direktes „du“
-- modern, klar, kompetent
+- modern, klar, schnell
 - kurze gesprochene Sätze
-- Fachbegriffe nur, wenn sie das Verständnis verbessern; dann knapp erklären
-- keine Überheblichkeit
+- erst Ergebnis/Änderung, dann Erklärung
+- Fachbegriffe nur wenn nötig
+- keine Übertreibung
 - keine Fake-Wunder
 - keine Panikmache
-- Unsicherheit/Limit klar benennen, wenn relevant
-- keine künstliche Dramatik, wenn der Fakt selbst nicht dramatisch ist
+- Unsicherheit klar benennen
+- bei Tests zwischen eigener Beobachtung und Herstellerangabe unterscheiden
 
 ## Content-Säulen
 
-1. **KI-Konzepte sichtbar erklärt**  
-   Mechanismen, Modelle, Grenzen, Begriffe.
+1. **Neue KI / neues Modell** — Release, Fähigkeiten, Grenzen, Einordnung.
+2. **KI-News / wichtiges Update** — Was hat sich verändert und warum ist es relevant?
+3. **GitHub / Open Source** — neue relevante KI-Projekte mit echtem Nutzen.
+4. **Vergleich / Ranking** — Modelle und Tools anhand klarer Kriterien vergleichen.
+5. **Vor- und Nachteile / Nutzungsentscheidung** — für wen lohnt sich welches Tool?
+6. **Aktueller Marktüberblick** — welche KIs sind in einer Kategorie gerade relevant?
+7. **Grundlage nur bei Bedarf** — Mechanismus nur erklären, wenn er eine aktuelle Story verständlicher macht.
 
-2. **Tool + konkreter Use-Case**  
-   Kein Feature-Rundgang, sondern ein Problem → Workflow → Ergebnis.
+## Editoriale Muster
 
-3. **News mit Bedeutung**  
-   Was hat sich geändert? Für wen ist es relevant? Was kann man jetzt tatsächlich anders tun?
-
-4. **Prompt-/Workflow-Verbesserung**  
-   Vorher/Nachher sichtbar machen; nicht nur Regeln aufzählen.
-
-5. **Mythos / Grenze / ehrliche Einordnung**  
-   Übertreibung, Missverständnis oder scheinbar einfache Aussage sauber auseinandernehmen.
-
-## Editoriales Muster
-
-Nicht jedes Video muss dieselbe Struktur haben. Aber die stärksten Themen lassen sich häufig auf diese Logik reduzieren:
+### News-/Release-Video
 
 ```text
-ETWAS ÜBERRASCHT / FUNKTIONIERT / SCHEITERT
+DAS IST NEU
 ↓
-WARUM?
+DAS KANN ES
 ↓
-UNSICHTBARER MECHANISMUS WIRD SICHTBAR
+DAS IST DER SICHTBARE UNTERSCHIED
 ↓
-PRAKTISCHE KONSEQUENZ
+DAS IST DER HAKEN
 ↓
-GRENZE / REGEL / ENTSCHEIDUNG
+FÜR WEN LOHNT ES SICH?
 ```
 
-Das ist die inhaltliche Handschrift. Die visuelle Umsetzung darf jedes Mal anders sein.
+### Vergleich
 
-## Formate und Plattformen
+```text
+ZWEI ODER MEHR KIs
+↓
+GLEICHE AUFGABE
+↓
+ERGEBNISSE DIREKT VERGLEICHEN
+↓
+STÄRKEN / SCHWÄCHEN
+↓
+KLARE EMPFEHLUNG NACH USE-CASE
+```
 
-Short-Form ist das aktuelle Kernformat. Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für:
+### GitHub/Open Source
 
-- YouTube Shorts
-- Instagram Reels
-- TikTok
-- Facebook Reels
-- Snapchat, falls genutzt
+```text
+NEUES PROJEKT
+↓
+WAS MACHT ES?
+↓
+ECHTE DEMO / OUTPUT
+↓
+WARUM IST ES INTERESSANT?
+↓
+FÜR WEN IST ES SINNVOLL?
+```
 
-Die Plattform ist **nicht** die Quelle der inhaltlichen Wahrheit. Das Produktionspaket unter `ki/reels/` bleibt kanonisch; Titel, Captions und Cover dürfen plattformspezifisch sein.
+## Recherche-Pflicht bei aktuellen Themen
 
-YouTube Longform ist ein separates Format und wird nur aufgebaut, wenn ein Thema echte zusätzliche Tiefe rechtfertigt.
+Bei `BREAKING`, `FRESH`, `CURRENT` und `HYBRID` gilt vor der Produktion:
 
-Details: `PLATTFORMEN.md` und `../plattformen/`.
+- Veröffentlichungsdatum prüfen
+- offizielle Quelle prüfen
+- Versions-/Modellname prüfen
+- Verfügbarkeit prüfen
+- Preise/Limits nur aktuell nennen
+- Demo-Aussagen von Hersteller-Marketing trennen
+- bei Vergleichen möglichst gleiche Aufgabe/Bedingungen verwenden
+- kurz vor Veröffentlichung erneut prüfen, ob sich etwas geändert hat
 
-## Visuelle Identität
+Details: `FAKTENQUELLEN.md`.
+
+## Visuelle Identität — Remotion-first
+
+Der Kanal soll visuell wie ein **eigener animierter Tech-Kanal** wirken, nicht wie eine Sammlung externer KI-Bilder oder Screenshot-Slides.
+
+### Grundsatz
+
+> **Jeder finale Frame wird in Remotion komponiert und gerendert.**
+
+Eigene erklärende Visuals werden bevorzugt direkt in Remotion gebaut:
+
+- SVG-/CSS-Illustrationen
+- eigene Icons
+- Browser-/App-Mockups
+- Code-Editoren und Terminal
+- GitHub-/Repo-Szenen
+- Rankings und Vergleiche
+- Diagramme und Daten
+- Geräte/Objekte
+- 2.5D
+- Shapes/Paths
+- Three bei echter Tiefenlogik
+
+### Echte Captures
+
+Wenn reales Produktverhalten selbst der Beweis ist, wird ein echter Screenshot/Capture verwendet und **in Remotion eingebettet**.
+
+Ein Remotion-UI-Nachbau ist eine Illustration und darf nie als echter Screenshot ausgegeben werden.
+
+### Logos
+
+- eigene generische Icons direkt als SVG/Vector bauen
+- offizielle Logos nur als echtes vorhandenes Markenasset verwenden
+- komplexe Markenlogos nicht so nachzeichnen, dass sie als offizielles Original wirken
+
+### Kein externer Bildgenerator als Standard
+
+Neue Short-Form-Reels sollen nicht automatisch externe Bilder oder Videos erzeugen lassen.
+
+Erst Remotion-native prüfen. Externe Still-/Motion-Medien sind nur begründete Ausnahme.
 
 Technische Farbquelle: `ki/brand/brand.ts`.
 
@@ -121,39 +332,42 @@ Technische Farbquelle: `ki/brand/brand.ts`.
 - `#6E45C9` dunkles Lila für Tiefe
 - Grün nur für Vorteil/Lösung
 - Rot nur für Risiko/Fehler/Grenze
-- klare Hierarchie und ausreichend Ruhe
-- faceless, keine erkennbaren Gesichter
+- faceless
+- klare Hierarchie
 
-Kein Cyberpunk, keine dunkle Neon-Technikwelt und keine Roboterfigur als generisches KI-Symbol.
+Kein generischer Cyberpunk-Look und keine Roboterfigur als Standard-KI-Symbol.
 
-**Wichtig:** visuelle Identität bedeutet nicht, jede Szene gleich aufzubauen. Wiedererkennbare Farbe/Typografie dürfen mit sehr unterschiedlichen Mechaniken, Captures, räumlichen Metaphern und Hybrid-Szenen kombiniert werden.
+Details: `VISUAL_STRATEGY.md` und `REMOTION_VISUAL_SYSTEM.md`.
 
-## Inhaltliche Wahrheit
+## Formate und Plattformen
 
-- Zahlen nur mit echter Grundlage oder klar als Illustration kennzeichnen
-- keine Demo-Werte als Fakten
-- aktuelle Produkt-/Preis-/News-Aussagen vor Veröffentlichung prüfen
-- reale Quelle nur zeigen, wenn sie tatsächlich geprüft wurde
-- Animation muss die gesprochene Aussage tragen
-- bei schwacher Library-Passung lieber New-Build als falsche Reuse
-- reale UI bevorzugen, wenn echtes Produktverhalten Teil des Beweises ist
-- Plattformtitel/Thumbnail dürfen niemals mehr versprechen als der Inhalt liefert
+Short-Form ist das Kernformat.
 
-Details: `FAKTENQUELLEN.md`.
+Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für:
+
+- YouTube Shorts
+- Instagram Reels
+- TikTok
+- Facebook Reels
+- Snapchat, falls genutzt
+
+YouTube Longform wird für Themen genutzt, bei denen Vergleich, Ranking, Marktübersicht oder tiefere Einordnung mehr Raum brauchen.
+
+Details: `PLATTFORMEN.md` und `../plattformen/`.
 
 ## Qualitätspriorität
 
 ```text
-Wahrheit
-> Bedeutung
-> Hook / Relevanz
+Aktualität + Wahrheit
+> Relevanz
+> sichtbarer Beweis / Demo
+> klare Einordnung
+> Hook
 > Verständlichkeit
-> sichtbarer Mechanismus
+> starke Remotion-Bildsprache
 > mobile Lesbarkeit
 > Markenstil
 > dekorative Schönheit
 ```
 
-Eine hübsche Szene darf nie eine schwache oder falsche Erklärung kaschieren.
-
-Details: `MASTER.md`, `STORY_RETENTION.md`, `REELS.md`, `VISUAL_STRATEGY.md`, `PLATTFORMEN.md`, `PRODUKTIONSABLAUF.md`, `../BILDSTIL.md`.
+Ein technisch schönes Reel über ein uninteressantes oder veraltetes Thema ist kein gutes Kanalvideo. Ein hübscher UI-Nachbau ist ebenfalls kein Beweis für reales Produktverhalten.

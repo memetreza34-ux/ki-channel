@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-22
+**Status:** 2026-09-24
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -8,7 +8,7 @@ Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- o
 
 `main` ist der einzige kanonische Produktionsstand.
 
-Andere `feature/*`, `fix/*`, `codex/*` und `backup/*` Branches sind Historie, Sicherungen oder frühere Arbeitsstände. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
+Andere `feature/*`, `fix/*`, `strategy/*`, `codex/*` und `backup/*` Branches sind Arbeitsstände, Historie oder Sicherungen. Sie dürfen nicht als aktuelle Wahrheit verwendet werden, außer der Nutzer nennt einen solchen Branch ausdrücklich.
 
 Neue normale Änderungen starten von `main` auf einem Arbeitsbranch. `main` wird nicht direkt verändert, außer der Nutzer verlangt ausdrücklich Repository-Stabilisierung/Kanonisierung oder arbeitet bewusst am kanonischen Produktionssystem.
 
@@ -21,10 +21,12 @@ Bei KI-Kanal-Arbeit gilt:
 3. `ki/AGENTS.md`
 4. `ki/gehirn/MASTER.md`
 5. danach die passende Domäne:
+   - Kanal/Themen → `ki/gehirn/KANAL.md` + `ki/gehirn/THEMENWAHL.md`
    - Reel-Arbeit → `ki/reels/AGENTS.md`
    - Story/Hook → `ki/gehirn/STORY_RETENTION.md`
    - Fakten/Quellen → `ki/gehirn/FAKTENQUELLEN.md`
    - Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
+   - Remotion-Visualbau → `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`
    - Remotion-Implementierung/Render → `ki/skills/remotion-production-orchestration/SKILL.md` + `ki/gehirn/WERKZEUGE.md`
    - Creative Review → `ki/gehirn/CREATIVE_QA.md`
    - YouTube Longform → `ki/youtube-longform/AGENTS.md`
@@ -41,7 +43,7 @@ Für ausführbaren Source gelten zusätzlich die nächstliegenden Source-Verträ
 
 ## 3. Kanonische Short-Form-Produktionsstruktur
 
-Planung, Audio, reale Assets/Captures und Export eines Reels liegen ausschließlich hier:
+Planung, Audio, reale Captures/Quellenmedien und Export eines Reels liegen ausschließlich hier:
 
 ```text
 ki/reels/YYYY-MM-DD_bis_YYYY-MM-DD/NN_Reel-Titel/
@@ -110,7 +112,8 @@ Aktueller Formatstandard:
 - 30 FPS
 - 16:9
 - finale Laufzeit nach echtem Voiceover typischerweise 5:00–6:00 Minuten, wenn das Thema diese Länge trägt
-- Bildsprache nach Inhalt wählen, nicht automatisch Remotion maximieren
+- finale visuelle Composition in Remotion
+- echte Captures/Quellenmedien bei Bedarf als Layer in Remotion
 - Thumbnail als eigene Composition
 
 Aktives erstes Video:
@@ -157,11 +160,11 @@ Creative Brief / Story
 → finaler Sprechertext
 → Visual Beats
 → Visual Strategy
-→ Animation-/Shot-Plan
-→ Asset-/Capture-Entscheidung
+→ Remotion-Build-/Shot-Plan
+→ Beweis-/Capture-Entscheidung
 → Captions/Packaging
 → reel.json
-→ ausführbare Source + Composition
+→ ausführbare Remotion-Source + Composition
 ```
 
 Phase 1 beginnt ausdrücklich **nicht** mit Remotion-Code.
@@ -172,17 +175,17 @@ Immer:
 
 - echtes Voiceover erzeugen und in `01-script-audio/` ablegen
 
-Nur wenn Phase 1 es ausdrücklich als Pflicht geplant hat:
+Nur wenn Phase 1 es ausdrücklich als echten Beweis geplant hat:
 
 - REAL_CAPTURE aufnehmen
-- externes Still-/Hybrid-/Motion-Asset bereitstellen
+- offizielles/reales Quellenasset bereitstellen
 
-Wenn kein externes Medium nötig ist, bleibt Phase 2 weiterhin Voiceover-only.
+Wenn kein echtes Quellenmedium nötig ist, bleibt Phase 2 Voiceover-only.
 
 ### Phase 3 — Codex / Antigravity
 
 ```text
-reale Medien prüfen
+echte Medien prüfen
 → Audio analysieren
 → semantische Timeline synchronisieren
 → Remotion-Readiness
@@ -200,7 +203,7 @@ Für neue generische Phase-3-Reels gilt `remotion-production-builder`; der final
 
 Fehlt Audio in Phase 3: exakt `PHASE 2 AUDIO FEHLT`.
 
-Fehlt ein als Pflicht markiertes reales Asset/Capture, wird es nicht durch eine generische Karte oder Fake-Datei ersetzt.
+Fehlt ein als Pflicht markierter echter Capture, wird er nicht durch erfundene UI oder Fake-Datei ersetzt.
 
 ## 7. Kanonische kreative Entscheidungsreihenfolge
 
@@ -214,20 +217,25 @@ Für Short-Form gilt:
 5. Welche Visual Beats entstehen aus der Bedeutung?
 6. Was muss der Zuschauer bei jedem Beat sehen?
 7. Welches Hauptverb beschreibt die sichtbare Handlung?
-8. Welche Visual Modality erklärt es am besten?
-9. Welcher Mechanismus/Shot setzt diese Modality um?
-10. Erst jetzt vorhandene Library/Remotion-Technik prüfen.
+8. Braucht die Aussage eine echte Beweisquelle oder reicht ein nativer Remotion-Build?
+9. Welche Remotion-Mechanik erklärt es am besten?
+10. Erst jetzt vorhandene Library/Technik prüfen.
 ```
 
-Verbindliche Modalities:
+### Quellen-/Beweisebene
 
-- `REMOTION_NATIVE`
-- `REAL_CAPTURE`
-- `HYBRID`
-- `EXTERNAL_STILL_REQUIRED`
-- `EXTERNAL_MOTION_REQUIRED`
+Die Wahrheit entscheidet:
 
-**Keine Modality ist pauschal Default oder Premium. Beste Erklärung gewinnt.**
+- `REMOTION_NATIVE` — bevorzugt, wenn kein realer Produktbeweis nötig ist
+- `REAL_CAPTURE` — wenn tatsächliches Produktverhalten selbst der Beweis ist
+- `HYBRID` — echter Capture + Remotion-Erklärung
+- externe Still-/Motion-Medien — nur begründete Ausnahme
+
+### Ausführungsebene
+
+**Jeder finale Reel-Frame wird in Remotion komponiert und gerendert.**
+
+Ein REAL_CAPTURE bleibt echtes Quellenmaterial, wird aber als Layer in Remotion verwendet. Ein UI-Nachbau ist nur Illustration und darf nicht als echter Screenshot ausgegeben werden.
 
 ## 8. Remotion-Produktionswahrheit
 
@@ -240,6 +248,20 @@ Für echte Production-Compositions:
 - alle `remotion`- und `@remotion/*`-Pakete bleiben auf exakt derselben Version.
 - neue APIs aus Dokumentation/Skills werden gegen die im Repo installierte Version geprüft.
 - Render-Timing ist framebasiert; kein CSS-Animationstiming und kein `Math.random()` im Production-Render.
+
+Remotion ist für neue Inhalte nicht nur Animationsebene, sondern auch das code-first Visual-System für:
+
+- Illustrationen
+- SVG-Icons
+- UI-Mockups
+- Code/Terminal
+- GitHub-/Repo-Szenen
+- Diagramme
+- Rankings/Vergleiche
+- Geräte/Objekte
+- 2.5D
+- Shapes/Paths
+- Three, wenn echte Tiefenlogik nötig ist
 
 Vor dem ersten echten Produktions-Test und vor relevanten Remotion-Releases:
 
@@ -273,11 +295,12 @@ Sie sind kein Standardcontainer für abstrakte Aussagen.
 
 Richtwerte für neue Reels:
 
-- Karten-/Panel-Hauptbeats normalerweise höchstens ungefähr ein Drittel
+- Karten-/Panel-Hauptbeats normalerweise höchstens ungefähr ein Viertel
 - nicht mehr als zwei gleiche Hauptgrammatiken direkt hintereinander, sofern nicht bewusst derselbe Prozess fortgesetzt wird
-- reale Tool-UI prüfen, wenn reales Produktverhalten selbst der Beweis ist
+- mindestens die Hälfte der Beats objekt-, pfad-, form-, raum-, code-, illustration- oder prozessbasiert
+- reale Tool-UI verwenden, wenn reales Produktverhalten selbst der Beweis ist
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/REELS.md`, `ki/gehirn/VISUAL_STRATEGY.md`, `ki/BILDSTIL.md`.
+Details: `ki/gehirn/MASTER.md`, `ki/gehirn/VISUAL_STRATEGY.md`, `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`, `ki/gehirn/REELS.md`.
 
 ## 10. Story-/Retention-Qualität
 
@@ -347,6 +370,8 @@ Creative QA umfasst:
 - Memorable Moment
 - Smartphone-Eindruck
 - Wirkung sichtbarer Zahlen/Claims
+- kein Fake-Capture
+- keine gefälschten Markenassets
 
 Verbindlich:
 
@@ -365,4 +390,4 @@ CI ersetzt keinen visuellen oder akustischen Human-/Agent-Review des finalen Vid
 
 Nur tatsächlich ausgeführte Tests, Typechecks, Renders und Reviews dürfen als bestanden gemeldet werden.
 
-Fehlende externe Medien, Audio oder Lockfiles niemals halluzinieren.
+Fehlende reale Medien, Audio oder Lockfiles niemals halluzinieren.

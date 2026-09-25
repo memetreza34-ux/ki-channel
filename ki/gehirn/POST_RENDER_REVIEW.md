@@ -1,6 +1,6 @@
 # Post-Render Review — verbindliche Reel-Qualität
 
-Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
+Diese Datei ergänzt `ki/gehirn/REELS.md`, `ki/gehirn/CAPTION_SAFE_POSITION.md`, `ki/gehirn/REMOTION_VISUAL_SYSTEM.md` und `ki/reels/AGENTS.md` für **jede** finale Reel-Runde.
 
 Ein sauberer Source-Code reicht nicht. Ein Reel ist erst visuell freigabefähig, wenn der tatsächlich gerenderte MP4 auf normaler Geschwindigkeit und auf Smartphone-/Feed-Größe geprüft wurde.
 
@@ -26,9 +26,41 @@ Die Animation soll die verfügbare Fläche **nutzen**, statt wie ein kleines Des
 - Wenn ein Zuschauer Kleinsttext nicht liest, muss die Kernmechanik trotzdem verständlich bleiben.
 - Leere Fläche nicht mit Deko füllen: lieber die vorhandene sinnvolle Mechanik größer und klarer komponieren.
 
-## 3. Caption- und Feed-Sicherheit — V2.2
+## 3. Remotion-Visualqualität
 
-Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wurde nach realen Smartphone-/Feed-Reviews bewusst tiefer gesetzt und wird technisch zentral durch `REEL_CAPTION_SAFE` definiert.
+Der finale Master wird vollständig in Remotion komponiert.
+
+Prüfen:
+
+- eigene Illustrationen/Icons/UI-Mockups wirken wie bewusste Gestaltung statt Platzhalter
+- große Hero-Visuals statt überwiegend kleiner Cards
+- Code-/Terminal-/GitHub-Szenen sind auf Smartphone lesbar
+- Ranking-/Vergleichsmechanik ist sofort verständlich
+- externe Medien wirken eingebettet und choreografiert, nicht wie lose Slides
+- Bewegung erklärt Bedeutung statt nur Deko zu erzeugen
+
+Warnsignal:
+
+> Das Video könnte fast genauso als statische Präsentation funktionieren.
+
+Dann fehlt meist eine echte Remotion-Mechanik.
+
+## 4. Echte Beweise vs. UI-Nachbau
+
+Ein Remotion-UI-Nachbau ist eine **Illustration**.
+
+Nicht freigeben, wenn:
+
+- ein UI-Mockup wie ein echter Screenshot dargestellt wird
+- eine erfundene Option/Schaltfläche als real erscheint
+- ein erfundener Modell-Output als echter Test wirkt
+- ein nachgebautes Logo wie ein offizielles Original ausgegeben wird
+
+Wenn reales Produktverhalten die Behauptung trägt, muss der reale Capture/Output im Render sichtbar eingebettet sein.
+
+## 5. Caption- und Feed-Sicherheit — V2.2
+
+Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktuelle Geometrie wird technisch zentral durch `REEL_CAPTION_SAFE` definiert.
 
 - Caption standardmäßig mit **`bottom: 300px`** platzieren.
 - Horizontal ungefähr **104px** Abstand links/rechts und bevorzugt maximal **820px** Caption-Breite.
@@ -37,11 +69,11 @@ Für 1080 × 1920 ist `ki/gehirn/CAPTION_SAFE_POSITION.md` verbindlich. Die aktu
 - Caption-Fenster normalerweise 4–6 Wörter, maximal 2 Zeilen.
 - Neue bedeutungstragende Visuals dürfen ungefähr bis **y≈1380–1420** reichen, solange Caption und Visual klar getrennt bleiben.
 - Zwischen Hauptvisual und Caption sichtbare Luft anstreben; bei Konflikt zuerst das Visual neu komponieren.
-- Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen; kritischer Caption-Text darf nicht an die rechte Kante gedrängt sein.
-- Caption nicht lokal verschieben, um ein zu großes Visual zu retten. Erst Objekt/Fokus verschieben, Labels entfernen oder Visual neu bauen.
+- Rechte Like-/Kommentar-/Share-UI im Feed gedanklich mitprüfen.
+- Caption nicht lokal verschieben, um ein zu großes Visual zu retten.
 - Der technische Clip-Guard ist nur letzte Sicherung; die reale sichtbare Kollision entscheidet.
 
-## 4. Kein langer statischer Sprecherabschnitt
+## 6. Kein langer statischer Sprecherabschnitt
 
 Wenn sich die Bedeutung ändert, muss sich auch der sichtbare Zustand ändern.
 
@@ -51,7 +83,7 @@ Wenn sich die Bedeutung ändert, muss sich auch der sichtbare Zustand ändern.
 - Nicht künstlich ständig wackeln lassen. Bewegung muss Bedeutung erklären.
 - End-Hold ist erlaubt, aber erst wenn die inhaltliche Aussage wirklich abgeschlossen ist.
 
-## 5. Schluss muss bis zur letzten Aussage tragen
+## 7. Schluss muss bis zur letzten Aussage tragen
 
 Die letzte Szene darf nicht früh „fertig aussehen“, während noch mehrere Sätze gesprochen werden.
 
@@ -66,7 +98,19 @@ finale Aussage → klarer Endzustand + kurzer Hold
 
 Falls die Schlussanimation bereits lange vor dem Voiceover-Ende im Endzustand steht, zusätzliche **semantische** Micro-Beats bauen oder die Progression neu verteilen.
 
-## 6. Pflicht-Review nach jedem neuen Render
+## 8. Current-AI-Recheck
+
+Bei `BREAKING`, `FRESH`, `CURRENT` und `HYBRID` kurz vor Freigabe erneut prüfen:
+
+- Modell-/Produktname korrekt
+- Version korrekt
+- Feature wirklich verfügbar
+- Preis/Limit/Plan aktuell
+- Preview/Beta-Status korrekt
+- Ranking-/Vergleichsstand datiert
+- verwendete echte Captures noch zum behaupteten Produktstand passend
+
+## 9. Pflicht-Review nach jedem neuen Render
 
 Mindestens prüfen:
 
@@ -83,12 +127,14 @@ Mindestens prüfen:
 - horizontaler Abstand zur rechten Interaktionsleiste
 - maximal 2 Caption-Zeilen
 - interne Label-Lesbarkeit
+- Code-/Terminal-Lesbarkeit
 - Animation/Caption-Abstand
 - leere Flächen
 - statische Phasen
 - finalen End-Hold
+- UI-Nachbau vs. echter Capture korrekt erkennbar
 
-## 7. Post-Render-Korrekturschleife
+## 10. Post-Render-Korrekturschleife
 
 Wenn der Render einen echten visuellen Fehler zeigt:
 
@@ -103,24 +149,31 @@ Render ansehen
 
 Ein alter Render darf **nicht** als visuelle Freigabe für eine danach geänderte Source verwendet werden.
 
-Das gilt ausdrücklich auch für reine Caption-Positionsänderungen. Nach einer Änderung von `bottom`, horizontalem Inset, Caption-Größe, Zeilenlogik oder Safe-Zone sind frühere Render-/Review-Häkchen nicht mehr gültig.
+Das gilt ausdrücklich auch für reine Caption-Positionsänderungen.
 
-## 8. Freigabe-Gate
+## 11. Freigabe-Gate
 
 Nicht `approved`, wenn mindestens eines davon zutrifft:
 
 - erster Moment wirkt leer/unbeabsichtigt
 - Hauptvisual zu klein für Smartphone
 - wichtige interne Labels zu klein
+- Code/Terminal unlesbar
 - große ungenutzte Fläche trotz kleiner Kernanimation
+- monotone Kartenserie
+- kein klarer Hero-/Memorable-Moment
 - mehrere Sekunden neue Sprecherbedeutung ohne sichtbare Reaktion
 - Schluss steht sichtbar zu früh still
+- UI-Nachbau wirkt wie echter Beweis
+- erfundener Output wirkt real
+- Fake-Logo/gefälschtes Markenasset
 - Caption liegt sichtbar im Plattform-/Feed-UI-Bereich
-- lokale Caption-Geometrie weicht ohne ausdrücklich dokumentierte Ausnahme von `REEL_CAPTION_SAFE` ab
+- lokale Caption-Geometrie weicht ohne dokumentierte Ausnahme von `REEL_CAPTION_SAFE` ab
 - Caption oder kritischer Text liegt zu nah an der rechten Feed-Interaktionsleiste
 - Caption und Animation konkurrieren
 - mehr als 2 Caption-Zeilen stehen gleichzeitig sichtbar
 - wichtiger Inhalt wird vom Clip-Guard abgeschnitten
+- aktueller Claim wurde nicht rechecked
 - neuer Source-Stand wurde nach letzter visueller Prüfung verändert
 
 Ziel ist nicht maximale Bewegung, sondern **maximale visuelle Erklärung pro sinnvoller Bewegung bei sicher lesbarer Caption**.

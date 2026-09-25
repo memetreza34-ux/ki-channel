@@ -10,11 +10,12 @@ Zusätzlich je nach Aufgabe:
 - Story/Hook → `ki/gehirn/STORY_RETENTION.md`
 - Fakten/Quellen → `ki/gehirn/FAKTENQUELLEN.md`
 - Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
+- Remotion-Visualsystem → `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`
 - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
 
 ## Mission
 
-Dieses Repository produziert hochwertige deutsche faceless KI-Erklärinhalte. Agenten arbeiten als Produktionsingenieure **und** Creative-Systeme: starke Story, saubere Fakten, passende Bildsprache, präzise Ausführung und ehrliche QA.
+Dieses Repository produziert hochwertige deutsche faceless KI-Inhalte. Agenten arbeiten als Produktionsingenieure **und** Creative-Systeme: starke Story, saubere Fakten, passende Bildsprache, präzise Remotion-Ausführung und ehrliche QA.
 
 Technische Perfektion allein ist kein Erfolg, wenn das Ergebnis langsam, repetitiv oder visuell schwach ist.
 
@@ -41,11 +42,11 @@ Creative Brief
 → finaler Sprechertext
 → Visual Beats
 → Visual Strategy
-→ Animation-/Shot-Plan
-→ Asset-/Capture-Entscheidung
+→ Remotion-Build-/Shot-Plan
+→ Beweis-/Capture-Entscheidung
 → Captions/Plattform-Copy
 → reel.json
-→ ausführbare Source + Composition
+→ ausführbare Remotion-Source + Composition
 ```
 
 V2-Pflichtartefakte unter `06-projektdateien/`:
@@ -68,10 +69,10 @@ Immer:
 - echtes Voiceover aus dem freigegebenen Fließtext
 - bevorzugt `voiceover.wav`, alternativ `voiceover.mp3`
 
-Nur wenn Phase 1 es ausdrücklich verlangt zusätzlich:
+Nur wenn Phase 1 es ausdrücklich als echten Beweis verlangt zusätzlich:
 
 - REAL_CAPTURE
-- externes Still-/Hybrid-/Motion-Asset
+- offizielles/reales Quellenasset
 
 Keine Planungs- oder Source-Dateien in Phase 2 ändern.
 
@@ -81,9 +82,9 @@ Phase 3 beginnt erst mit echtem Audio und allen erforderlichen realen Pflichtmed
 
 Der Agent:
 
-- verwendet vorhandene Phase-1-Source
-- prüft Pflichtassets/Captures
-- integriert Audio/Medien
+- verwendet vorhandene Phase-1-Source und die darin gebaute Remotion-Komposition
+- prüft echte Pflicht-Captures/Quellenassets
+- integriert Audio/Medien in Remotion
 - misst reale Dauer und Sprechpausen
 - synchronisiert Visual Beats und Captions
 - führt Struktur-, TypeScript- und fokussierte Tests aus
@@ -94,7 +95,7 @@ Der Agent:
 
 Fehlt Audio: `PHASE 2 AUDIO FEHLT`.
 
-Fehlt ein als Pflicht markiertes reales Asset/Capture: nicht durch generische Grafik vortäuschen.
+Fehlt ein als Pflicht markierter echter Capture: nicht durch erfundene UI oder generische Grafik vortäuschen.
 
 ## Autoritative Reel-Dateien V2
 
@@ -113,7 +114,7 @@ Wenn vorhanden, gelten innerhalb des Reels in dieser Reihenfolge:
 11. `03-caption/subtitle-cues.json`
 12. `03-caption/platform-copy.md`
 13. `02-bilder/asset-manifest.json`
-14. externe Asset-/Shot-Briefs
+14. echte Capture-/Quellen-Briefs
 15. `06-projektdateien/creative-review.md`
 
 Widersprüche nicht still auflösen. Höher priorisierte Quelle erhalten und Konflikt an der Ursache korrigieren.
@@ -152,23 +153,44 @@ Aktuell prüfen insbesondere:
 
 Keine Demo-Zahl als Fakt darstellen. Keine erfundene real wirkende Quelle.
 
-## Visual Strategy — kein Tool-Default
+## Visual Strategy — Remotion ist die Ausführungsebene
 
-`ki/gehirn/VISUAL_STRATEGY.md` entscheidet vor der technischen Implementierung.
+`ki/gehirn/VISUAL_STRATEGY.md` entscheidet vor der technischen Implementierung. `ki/gehirn/REMOTION_VISUAL_SYSTEM.md` definiert den Bauweg.
 
-Primäre Modalities:
+**Verbindlich:** Jeder finale Reel-Frame wird in Remotion komponiert und gerendert.
 
-- `REMOTION_NATIVE`
-- `REAL_CAPTURE`
-- `HYBRID`
-- `EXTERNAL_STILL_REQUIRED`
-- `EXTERNAL_MOTION_REQUIRED`
+Für die Beweis-/Quellenebene bleibt die Wahrheit entscheidend:
 
-**Keine davon ist automatisch Default oder Premium. Beste Erklärung gewinnt.**
+- `REMOTION_NATIVE` — bevorzugter Standard für konstruierte Erklärvisuals
+- `REAL_CAPTURE` — wenn reales Produktverhalten selbst der Beweis ist; anschließend in Remotion einbetten
+- `HYBRID` — echter Capture + Remotion-Overlays
+- externe Still-/Motion-Medien — nur begründete Ausnahme
 
-Erst nach Modality und Mechanik die Library prüfen.
+Das ist kein Freibrief für Fake-UI. Ein Remotion-Nachbau ist eine Illustration. Wenn exakte aktuelle UI oder reales Ergebnis eine Behauptung belegt, echten Capture verwenden.
 
-`REUSE_EXACT` nur bei exaktem semantischem Fit. Sonst `NEW_BUILD` oder das begründete reale/externe Medium.
+Erst nach Story, Visual Strategy und Beweisentscheidung die Library prüfen.
+
+`REUSE_EXACT` nur bei exaktem semantischem Fit. Sonst `NEW_BUILD`.
+
+## Remotion-native Baupflicht
+
+Bevor ein externes generiertes Bild/Video geplant wird, aktiv prüfen, ob die Szene hochwertig nativ gebaut werden kann.
+
+Remotion-native umfasst ausdrücklich:
+
+- SVG-/CSS-Illustrationen
+- Icons
+- Browser/App-Mockups
+- Code/Terminal
+- GitHub-/Repo-Szenen
+- Diagramme
+- Rankings/Vergleiche
+- Geräte/Objekte
+- 2.5D
+- Shapes/Paths
+- Three bei echter Tiefenlogik
+
+Externe Bild-/Video-Generierung ist für neue Short-Form-Reels **nicht der Standardweg**.
 
 ## Anti-Karten-Grammatik
 
@@ -179,8 +201,9 @@ Nicht als Standardcontainer für abstrakte Aussagen.
 Neue Reels sollen normalerweise:
 
 - nicht mehr als zwei gleiche Hauptgrammatiken direkt hintereinander haben, sofern nicht derselbe Prozess bewusst fortgesetzt wird
-- Karten-/Panelbeats auf ungefähr ein Drittel oder weniger begrenzen, wenn andere Mechaniken sinnvoll sind
+- Karten-/Panelbeats auf ungefähr ein Viertel oder weniger begrenzen, wenn andere Mechaniken sinnvoll sind
 - mindestens einen Hero-/Memorable-Moment planen
+- mindestens die Hälfte der Visual Beats objekt-, pfad-, code-, raum-, form-, illustration- oder prozessbasiert bauen
 
 ## Remotion-Regeln
 
@@ -191,7 +214,7 @@ Neue Reels sollen normalerweise:
 - direkte Frame-Seeks müssen funktionieren
 - Hard Cut ist Standard; Übergang nur bei echter semantischer Kontinuität
 - eine dominante erklärende Bewegung pro Beat, maximal drei starke Bewegungen gleichzeitig
-- Zeitachsen grundsätzlich über kanalweite Easing-Helfer statt mechanisch lineare Motion; lineare Progression nur, wenn sie semantisch wirklich linear ist (z. B. echte kontinuierliche Progressanzeige)
+- Zeitachsen grundsätzlich über kanalweite Easing-Helfer statt mechanisch lineare Motion; lineare Progression nur, wenn sie semantisch wirklich linear ist
 - Gruppen sinnvoll staffeln statt alles gleichzeitig einzublenden
 - Bewegungsgeschwindigkeit an Distanz/Objektgewicht anpassen
 - keine vollständige Library-Animation mehrfach im selben Reel nur aus Bequemlichkeit
@@ -209,20 +232,14 @@ Interne `goal`, `communicationGoal`, Debug- oder Regietexte niemals sichtbar mac
 
 Sprechertext nicht gleichzeitig als langen Header und Animationstext duplizieren.
 
-## Externe Bilder/Medien
+## Logos, UI und echte Beweise
 
-`ki/BILDSTIL.md` gilt **nachdem** `VISUAL_STRATEGY.md` ein externes Still-/Hybrid-Asset begründet hat.
-
-Generierte/externe Bilder enthalten standardmäßig:
-
-- keine Überschrift
-- keine Untertitel
-- keine Wasserzeichen
-- keine langen Texte
-
-Präzise UI, Zahlen, Labels, Pfeile und Zustände möglichst als kontrollierte Remotion-Ebene.
-
-Das Repository darf fehlende Medien nicht vortäuschen. Phase 1 darf nur Bedarf, Prompt/Shot-Brief und Dateinamen definieren.
+- eigene generische Icons bevorzugt als SVG/Vector bauen
+- offizielles Logo nur als echtes vorhandenes Asset verwenden, wenn redaktionell passend
+- komplexes Markenlogo nicht so nachbauen, dass es als offizielles Original wirkt
+- generische UI darf als Illustration in Remotion gebaut werden
+- echte aktuelle Produkt-UI als Beweis → REAL_CAPTURE
+- reale Resultate/Outputs niemals erfinden
 
 ## Publishing-Regel
 
@@ -254,10 +271,12 @@ Creative QA:
 - Tempo/Leerlauf
 - visuelle Wiederholung
 - Kartenlastigkeit
-- sichtbarer Mechanismus
+- sichtbaren Mechanismus
 - Memorable Moment
 - Smartphone-Eindruck
 - Faktenwirkung sichtbarer Zahlen/Claims
+- kein Fake-Capture
+- keine gefälschten Logos
 
 Verbindlich:
 
@@ -280,6 +299,8 @@ Bei Blocker nennen:
 
 Keine Fehler mit `any`, `@ts-ignore`, deaktivierten Tests, Fake-Assets, Fake-Berichten oder geschwächten Validatoren verstecken.
 
-## STRIKE KI-Regel — keine künstlichen Assets
+## STRIKE KI-Regel — keine künstlichen Beweisassets
 
-Du darfst keine nicht vorhandenen Bilder, Audios, Videos oder Captures als real vorhanden behandeln. Verwende ausschließlich tatsächliche Dateien/Medien. Phase 1 darf Prompts/Shot-Briefs und Asset-Bedarf planen, aber keine Medienexistenz halluzinieren.
+Du darfst keine nicht vorhandenen Screenshots, Audios, Videos, Captures oder offiziellen Markenassets als real vorhanden behandeln.
+
+Remotion-native Illustrationen und UI-Mockups dürfen konstruiert werden, solange sie klar Erklärung sind und nicht als echter Produktbeweis ausgegeben werden.
