@@ -82,7 +82,7 @@ Phase 3 beginnt erst mit echtem Audio und allen erforderlichen realen Pflichtmed
 
 Der Agent:
 
-- verwendet vorhandene Phase-1-Remotion-Source
+- verwendet vorhandene Phase-1-Source und die darin gebaute Remotion-Komposition
 - prüft echte Pflicht-Captures/Quellenassets
 - integriert Audio/Medien in Remotion
 - misst reale Dauer und Sprechpausen
