@@ -7,6 +7,8 @@ on:
     paths:
       - 'ki/src/visual-system/**'
       - 'ki/src/reels/gpt-5-6-chatgpt/**'
+      - 'ki/src/reels/gpt-5-5-retirement/**'
+      - 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/**'
       - 'scripts/render-visual-contact-sheet.mjs'
       - 'scripts/visual-contact-metrics.mjs'
       - 'scripts/visual-review-presets.mjs'
@@ -25,7 +27,19 @@ env:
   NPM_INSTALL_FLAGS: '--package-lock=false --legacy-peer-deps --no-audit --no-fund'
 
 jobs:
-  gpt56-contact-sheet:
+  contact-sheet:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: gpt56
+            label: GPT-5.6
+            report: ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/visual-review.json
+            sheet: ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/contact-sheet.jpg
+          - preset: gpt55
+            label: GPT-5.5 retirement
+            report: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/visual-review.json
+            sheet: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/contact-sheet.jpg
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -43,19 +57,19 @@ jobs:
       - name: Verify visual metrics
         run: node --test scripts/__tests__/visual-contact-metrics.test.mjs
 
-      - name: Render GPT-5.6 visual contact sheet
-        run: node scripts/render-visual-contact-sheet.mjs --preset=gpt56
+      - name: Render ${{ matrix.label }} visual contact sheet
+        run: node scripts/render-visual-contact-sheet.mjs --preset=${{ matrix.preset }}
 
       - name: Print visual review metrics
-        run: cat ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/visual-review.json
+        run: cat '${{ matrix.report }}'
 
       - name: Upload visual review artifact when storage is available
         if: always()
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: gpt56-remotion-visual-review
+          name: ${{ matrix.preset }}-remotion-visual-review
           path: |
-            ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/contact-sheet.jpg
-            ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review/visual-review.json
+            ${{ matrix.sheet }}
+            ${{ matrix.report }}
           if-no-files-found: error
