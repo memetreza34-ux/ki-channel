@@ -1,7 +1,9 @@
 import reelJson from '../../../reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/03-caption/subtitle-cues.json';
 import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {assertSceneRichness} from '../../visual-system/sceneRichness';
 import {REEL_CAPTION_SAFE} from '../captionSafe';
+import {GPT56_SCENE_RICHNESS} from './richness';
 import {GPT56_VISUAL_PROFILES} from './visualProfiles';
 
 export type Gpt56Scene={sceneId:string;startFrame:number;endFrame:number;headline:string;icon:string;implementation:'NEW_BUILD';spokenText:string;beatIds:readonly string[]};
@@ -46,8 +48,16 @@ export const assertGpt56Contract=():void=>{
   }
   const planned=GPT56_SCENES.map((scene)=>scene.sceneId).join('|');
   const profiled=GPT56_VISUAL_PROFILES.map((profile)=>profile.sceneId).join('|');
+  const rich=GPT56_SCENE_RICHNESS.map((scene)=>scene.sceneId).join('|');
   if(planned!==profiled)throw new Error('visual profiles must cover scene order');
+  if(planned!==rich)throw new Error('scene richness manifest must cover scene order');
   assertAuthoredVisualDiversity(GPT56_VISUAL_PROFILES);
+  assertSceneRichness(GPT56_SCENE_RICHNESS,{
+    requireBrandAnchorInHook:true,
+    minBrandCoverageRatio:0.7,
+    minAverageSupportElements:4,
+    minAverageMicroBeats:3.5,
+  });
 };
 
 assertGpt56Contract();
