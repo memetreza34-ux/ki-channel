@@ -1,2 +1,2 @@
-export {ReelGpt56ChatGPTV2 as ReelGpt56ChatGPT} from './ReelGpt56ChatGPTV2';
+export {ReelGpt56ChatGPTV3 as ReelGpt56ChatGPT} from './ReelGpt56ChatGPTV3';
 export {GPT56_COMPOSITION_ID,GPT56_DURATION_IN_FRAMES,GPT56_FPS,GPT56_HEIGHT,GPT56_WIDTH} from './contract';
