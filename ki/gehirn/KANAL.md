@@ -353,6 +353,8 @@ Ein Reel wird einmal produziert und anschließend plattformgerecht verpackt für
 
 YouTube Longform wird für Themen genutzt, bei denen Vergleich, Ranking, Marktübersicht oder tiefere Einordnung mehr Raum brauchen.
 
+Details: `PLATTFORMEN.md` und `../plattformen/`.
+
 ## Qualitätspriorität
 
 ```text
