@@ -4,7 +4,7 @@
   "cues": [
     {"sceneId":"gpt56-01","startFrame":0,"endFrame":42,"text":"Dein ChatGPT bekommt bald"},
     {"sceneId":"gpt56-01","startFrame":42,"endFrame":84,"text":"einen Modellwechsel: GPT-5.5 fliegt"},
-    {"sceneId":"gpt56-01","startFrame":84,"endFrame":126,"text":"am 14. Oktober raus"},
+    {"sceneId":"gpt56-01","startFrame":84,"endFrame":126,"text":"am 14. Oktober raus –"},
     {"sceneId":"gpt56-01","startFrame":126,"endFrame":168,"text":"und GPT-5.6 ist je nach"},
     {"sceneId":"gpt56-01","startFrame":168,"endFrame":210,"text":"Tarif nicht einmal dasselbe Modell."},
 
@@ -24,7 +24,7 @@
     {"sceneId":"gpt56-04","startFrame":770,"endFrame":840,"text":"viel ChatGPT nachdenken soll."},
 
     {"sceneId":"gpt56-05","startFrame":840,"endFrame":910,"text":"Die Stufen heißen Instant,"},
-    {"sceneId":"gpt56-05","startFrame":910,"endFrame":980,"text":"Medium, High und"},
+    {"sceneId":"gpt56-05","startFrame":910,"endFrame":980,"text":"Medium, High und –"},
     {"sceneId":"gpt56-05","startFrame":980,"endFrame":1050,"text":"bei manchen Plänen Extra High."},
 
     {"sceneId":"gpt56-06","startFrame":1050,"endFrame":1102,"text":"Plus bekommt Medium und High."},
@@ -34,7 +34,7 @@
 
     {"sceneId":"gpt56-07","startFrame":1260,"endFrame":1302,"text":"Wenn ChatGPT bei jemand anderem"},
     {"sceneId":"gpt56-07","startFrame":1302,"endFrame":1344,"text":"also besser wirkt, frag"},
-    {"sceneId":"gpt56-07","startFrame":1344,"endFrame":1386,"text":"nicht nur nach dem Prompt"},
+    {"sceneId":"gpt56-07","startFrame":1344,"endFrame":1386,"text":"nicht nur nach dem Prompt –"},
     {"sceneId":"gpt56-07","startFrame":1386,"endFrame":1428,"text":"frag zuerst nach Modell"},
     {"sceneId":"gpt56-07","startFrame":1428,"endFrame":1470,"text":"und Denkstufe."}
   ]
