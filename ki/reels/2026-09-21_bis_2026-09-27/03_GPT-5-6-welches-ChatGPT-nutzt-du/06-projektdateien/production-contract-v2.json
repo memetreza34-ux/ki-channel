@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "format": "short-form",
+  "slug": "gpt-5-6-chatgpt",
+  "title": "GPT-5.6: Welches ChatGPT nutzt du wirklich?",
+  "week": "2026-09-21_bis_2026-09-27",
+  "visualModalities": ["REMOTION_NATIVE"],
+  "externalAssetsRequired": false,
+  "realCaptureRequired": false,
+  "audioRequired": true,
+  "publishRecheckRequired": true,
+  "currentTopic": true
+}

@@ -1,0 +1,41 @@
+{
+  "fps": 30,
+  "timingStatus": "PLANNING_ONLY_UNTIL_REAL_AUDIO",
+  "cues": [
+    {"sceneId":"gpt56-01","startFrame":0,"endFrame":42,"text":"Dein ChatGPT bekommt bald"},
+    {"sceneId":"gpt56-01","startFrame":42,"endFrame":84,"text":"einen Modellwechsel: GPT-5.5 fliegt"},
+    {"sceneId":"gpt56-01","startFrame":84,"endFrame":126,"text":"am 14. Oktober raus"},
+    {"sceneId":"gpt56-01","startFrame":126,"endFrame":168,"text":"und GPT-5.6 ist je nach"},
+    {"sceneId":"gpt56-01","startFrame":168,"endFrame":210,"text":"Tarif nicht einmal dasselbe Modell."},
+
+    {"sceneId":"gpt56-02","startFrame":210,"endFrame":262,"text":"Für Free und Go wird"},
+    {"sceneId":"gpt56-02","startFrame":262,"endFrame":314,"text":"GPT-5.6 Luna zum Standard."},
+    {"sceneId":"gpt56-02","startFrame":314,"endFrame":367,"text":"Luna ist innerhalb der Familie"},
+    {"sceneId":"gpt56-02","startFrame":367,"endFrame":420,"text":"die schnellste und günstigste Variante."},
+
+    {"sceneId":"gpt56-03","startFrame":420,"endFrame":462,"text":"Auf berechtigten Bezahlplänen kommt"},
+    {"sceneId":"gpt56-03","startFrame":462,"endFrame":504,"text":"GPT-5.6 Sol zum Einsatz."},
+    {"sceneId":"gpt56-03","startFrame":504,"endFrame":546,"text":"Sol ist für komplexere Aufgaben"},
+    {"sceneId":"gpt56-03","startFrame":546,"endFrame":588,"text":"wie Coding, Recherche und"},
+    {"sceneId":"gpt56-03","startFrame":588,"endFrame":630,"text":"längere Workflows gedacht."},
+
+    {"sceneId":"gpt56-04","startFrame":630,"endFrame":700,"text":"Und du kannst je"},
+    {"sceneId":"gpt56-04","startFrame":700,"endFrame":770,"text":"nach Tarif einstellen, wie"},
+    {"sceneId":"gpt56-04","startFrame":770,"endFrame":840,"text":"viel ChatGPT nachdenken soll."},
+
+    {"sceneId":"gpt56-05","startFrame":840,"endFrame":910,"text":"Die Stufen heißen Instant,"},
+    {"sceneId":"gpt56-05","startFrame":910,"endFrame":980,"text":"Medium, High und"},
+    {"sceneId":"gpt56-05","startFrame":980,"endFrame":1050,"text":"bei manchen Plänen Extra High."},
+
+    {"sceneId":"gpt56-06","startFrame":1050,"endFrame":1102,"text":"Plus bekommt Medium und High."},
+    {"sceneId":"gpt56-06","startFrame":1102,"endFrame":1154,"text":"Extra High und die Pro-Stufe"},
+    {"sceneId":"gpt56-06","startFrame":1154,"endFrame":1207,"text":"gibt es bei Pro,"},
+    {"sceneId":"gpt56-06","startFrame":1207,"endFrame":1260,"text":"Business und Enterprise."},
+
+    {"sceneId":"gpt56-07","startFrame":1260,"endFrame":1302,"text":"Wenn ChatGPT bei jemand anderem"},
+    {"sceneId":"gpt56-07","startFrame":1302,"endFrame":1344,"text":"also besser wirkt, frag"},
+    {"sceneId":"gpt56-07","startFrame":1344,"endFrame":1386,"text":"nicht nur nach dem Prompt"},
+    {"sceneId":"gpt56-07","startFrame":1386,"endFrame":1428,"text":"frag zuerst nach Modell"},
+    {"sceneId":"gpt56-07","startFrame":1428,"endFrame":1470,"text":"und Denkstufe."}
+  ]
+}
