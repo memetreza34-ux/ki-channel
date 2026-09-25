@@ -17,7 +17,7 @@ import {LongformAIAppWorkflow,AI_APP_WORKFLOW_COMPOSITION_ID,AI_APP_WORKFLOW_DUR
 
 export const ProductionRoot:React.FC=()=> (
   <>
-    <Folder name="Production-Reels">
+    <Folder name="KI-Production-Reels">
       <Composition id={ANTIGRAVITY_CONTEXT_OVERLOAD_COMPOSITION_ID} component={ReelAntigravityContextOverload} durationInFrames={ANTIGRAVITY_CONTEXT_OVERLOAD_DURATION_IN_FRAMES} fps={ANTIGRAVITY_CONTEXT_OVERLOAD_FPS} width={ANTIGRAVITY_CONTEXT_OVERLOAD_WIDTH} height={ANTIGRAVITY_CONTEXT_OVERLOAD_HEIGHT}/>
       <Composition id={AI_HALLUCINATIONS_COMPOSITION_ID} component={ReelAiHallucinations} durationInFrames={AI_HALLUCINATIONS_DURATION_IN_FRAMES} fps={AI_HALLUCINATIONS_FPS} width={AI_HALLUCINATIONS_WIDTH} height={AI_HALLUCINATIONS_HEIGHT}/>
       <Composition id={AMBIGUOUS_PROMPTS_COMPOSITION_ID} component={ReelAmbiguousPrompts} durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES} fps={AMBIGUOUS_PROMPTS_FPS} width={AMBIGUOUS_PROMPTS_WIDTH} height={AMBIGUOUS_PROMPTS_HEIGHT}/>
