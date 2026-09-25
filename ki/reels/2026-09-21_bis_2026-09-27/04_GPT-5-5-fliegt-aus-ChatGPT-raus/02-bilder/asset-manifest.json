@@ -1,23 +1,8 @@
 {
-  "version": 2,
-  "primaryVisualModality": "REMOTION_NATIVE",
-  "requiredExternalAssets": [],
+  "externalAssetsRequired": false,
   "realCaptureRequired": false,
-  "brandAnchors": [
-    {
-      "id": "chatgpt",
-      "officialAssetRequired": false,
-      "implementation": "BrandAnchor product-name + neutral category icon",
-      "note": "Kein OpenAI/ChatGPT-Logo nachzeichnen. Ein offizielles Logo darf erst verwendet werden, wenn die unveränderte Originaldatei real im Repo liegt."
-    }
-  ],
-  "remotionNativeElements": [
-    "deadline gate",
-    "GPT-5.5 model token",
-    "ChatGPT / Work / Codex route shutdown",
-    "API exception lane",
-    "Codex terminal migration",
-    "configuration audit scanner",
-    "final verdict lanes"
-  ]
+  "primaryVisualModality": "REMOTION_NATIVE",
+  "assets": [],
+  "brandPolicy": "ChatGPT/OpenAI product names may be shown with the repository BrandAnchor and neutral category icon. No unofficial logo recreation.",
+  "policy": "REMOTION_NATIVE_ONLY_UNLESS_PHASE3_ADDS_VERIFIED_CAPTURE"
 }
