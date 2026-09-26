@@ -72,8 +72,9 @@ Sprecherstelle
 → Primary Remotion capability
 → ergänzende Capabilities
 → konkrete Beat-Source-Datei
+→ eindeutiger REMOTION_BEAT Marker
 → Source-Build
-→ CI prüft Implementierungsbeleg in genau dieser Datei
+→ CI prüft Implementierungsbeleg nur in diesem Beat-Abschnitt
 ```
 
 Die Frage ist nicht: **Welche Komponente ist schon bequem vorhanden?**
@@ -92,11 +93,28 @@ Die Frage ist: **Welche Remotion-Mechanik erklärt diesen Beat sichtbar am beste
 8. Jeder Beat führt `sourceFile`. Dieser Pfad muss zusätzlich in `sourceFiles` stehen.
 9. Erlaubt sind ausschließlich `.ts`/`.tsx`-Dateien unter `ki/src/reels/`.
 10. Absolute Pfade, URLs, `..`-Traversal und Longform-/fremde Source-Verzeichnisse sind nicht als Capability-Nachweis erlaubt.
-11. Capability-Nachweise werden nicht mehr reelweit zusammengeworfen, sondern gegen die dem Beat zugeordnete Source-Datei geprüft.
+11. Capability-Nachweise werden nicht reelweit zusammengeworfen, sondern gegen die dem Beat zugeordnete Source-Datei geprüft.
+12. Vor der konkreten Beat-Implementierung steht exakt `// REMOTION_BEAT: <beatId>`. Der Checker wertet nur den Abschnitt bis zum nächsten `REMOTION_BEAT`-Marker aus.
 
 ## Source-Nachweis
 
-Der Checker liest die `sourceFiles` aus dem Manifest. Für jeden Beat prüft er nur die dort unter `sourceFile` genannte Reel-Source.
+Der Checker liest die `sourceFiles` aus dem Manifest. Für jeden Beat prüft er nur die dort unter `sourceFile` genannte Reel-Source und darin nur den markierten Beat-Abschnitt.
+
+Beispiel:
+
+```tsx
+// REMOTION_BEAT: speed
+export const SpeedBeat = () => {
+  return <AnimatedDataPath {...props} />;
+};
+
+// REMOTION_BEAT: code
+export const CodeBeat = () => {
+  return <TerminalMock {...props} />;
+};
+```
+
+Damit kann eine Path-Animation im `speed`-Abschnitt nicht versehentlich den `code`-Beat oder einen späteren Beat als `paths` freischalten.
 
 Beispiele gültiger konkreter Usage-Marker:
 
@@ -115,7 +133,7 @@ Beispiele gültiger konkreter Usage-Marker:
 | `noise` | `noise2D(`, `noise3D(` |
 | `real-capture` | `<Video`, `<Img`, `<OffthreadVideo`, `staticFile(` |
 
-Ein bloßer Import gilt bewusst nicht als Nachweis. Die Mechanik muss in der zugeordneten Beat-Source tatsächlich verwendet werden.
+Ein bloßer Import gilt bewusst nicht als Nachweis. Die Mechanik muss im markierten Beat-Abschnitt tatsächlich verwendet werden.
 
 Für Three gilt weiter die kanalweite Remotion-Regel: Production-Motion wird über `useCurrentFrame()`/Remotion-Timeline gesteuert. Ein unabhängiger R3F-`useFrame()`-Ticker zählt bewusst **nicht** als gültiger Capability-Nachweis.
 
@@ -204,6 +222,7 @@ Nicht erlaubt:
 
 - Capability nur im Manifest nennen, aber im Source nicht verwenden
 - Capability irgendwo anders im Reel verwenden und damit einen Beat ohne echte Nutzung freischalten
+- `REMOTION_BEAT`-Marker setzen, aber die deklarierte Mechanik erst in einem anderen Beat-Abschnitt verwenden
 - fremde oder außerhalb des Repos liegende Dateien als Source-Nachweis referenzieren
 - Three nur als Dekoration einsetzen, wenn 2D die Aussage klarer erklärt
 - Motion Blur über schwache Motion legen
