@@ -19,11 +19,15 @@ const steps = [
   ['node', ['--check', 'scripts/render-first-real-ki-reel.mjs'], 'First real reel render script syntax'],
   ['node', ['--check', 'scripts/render-visual-contact-sheet.mjs'], 'Visual contact-sheet script syntax'],
   ['node', ['--check', 'scripts/check-visual-quality-v3.mjs'], 'Visual Quality V3 script syntax'],
+  ['node', ['--check', 'scripts/check-remotion-capabilities.mjs'], 'Remotion capability gate script syntax'],
+  ['node', ['--check', 'scripts/remotion-capability-contract.mjs'], 'Remotion capability contract syntax'],
   ['node', ['--test', 'scripts/__tests__/reel-word-sync.test.mjs'], 'Exact word-sync unit tests'],
   ['node', ['--test', 'scripts/__tests__/visual-contact-metrics.test.mjs'], 'Visual contact-sheet metric tests'],
   ['node', ['--test', 'scripts/__tests__/visual-quality-v3-contract.test.mjs'], 'Visual Quality V3 contract tests'],
+  ['node', ['--test', 'scripts/__tests__/remotion-capability-contract.test.mjs'], 'Remotion capability contract tests'],
   ['node', ['scripts/check-caption-contract.mjs'], 'Canonical caption geometry contract'],
   ['node', ['scripts/check-visual-quality-v3.mjs'], 'Visual Quality V3 future-reel gate'],
+  ['node', ['scripts/check-remotion-capabilities.mjs'], 'Remotion capability implementation gate'],
   ['node', ['scripts/verify-remotion-integration.mjs'], 'Remotion integration'],
   ['npx', ['--no-install', 'remotion', 'versions'], 'Remotion package versions'],
   ['npm', ['run', 'repo:verify'], 'Repository verify'],
@@ -36,10 +40,11 @@ try {
   console.log('\nREMOTION READINESS: PASS');
   console.log('Caption geometry contract: PASS');
   console.log('Visual Quality V3 future-reel gate: PASS');
+  console.log('Remotion capability implementation gate: PASS');
   console.log('Exact Word Sync tooling: PASS');
   console.log('Visual contact-sheet tooling: PASS');
   console.log('First real reel E2E command: PASS');
-  console.log('Naechster Schritt: V3-Reels muessen Hook, Hero-Groesse, Icons/Illustrationen, Shot-Archetypen und Creative Score >=8/10 nachweisen.');
+  console.log('Naechster Schritt: neue V3-Reels muessen nicht nur starke Visuals planen, sondern die gewaehlten Remotion-Capabilities im Source nachweisbar implementieren.');
 } catch (error) {
   console.error('\nREMOTION READINESS: FAIL');
   console.error(error instanceof Error ? error.message : String(error));
