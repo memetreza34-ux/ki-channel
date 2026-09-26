@@ -46,18 +46,18 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
 };
 
 export const CAPABILITY_SOURCE_EVIDENCE = {
-  paths:['@remotion/paths','AnimatedDataPath','evolvePath','getPointAtLength'],
-  shapes:['@remotion/shapes','ShapeSignal','<Circle','<Triangle'],
-  three:['@remotion/three','ThreeCanvas','@react-three/fiber'],
-  'depth-2.5d':['DepthStage','perspective:','translate3d('],
-  'kinetic-typography':['KineticType','KineticNumber','data-remotion-capability="kinetic-typography"'],
-  'terminal-code':['TerminalMock','CodeDiff','CodeEditor'],
-  'data-visualization':['recharts','BenchmarkAxis','DataChart','LineChart','BarChart'],
-  'object-transformation':['ObjectTransformation','ObjectMorph','data-remotion-capability="object-transformation"'],
-  'motion-blur':['@remotion/motion-blur','CameraMotionBlur','Trail'],
-  transitions:['@remotion/transitions','TransitionSeries'],
-  noise:['@remotion/noise','noise2D','noise3D'],
-  'real-capture':['OffthreadVideo','<Video','<Img','staticFile('],
+  paths:['<AnimatedDataPath','evolvePath(','getPointAtLength('],
+  shapes:['<ShapeSignal','<Circle','<Triangle','makeCircle(','makeTriangle('],
+  three:['<ThreeCanvas','useThree(','useFrame('],
+  'depth-2.5d':['<DepthStage','perspective:','translate3d('],
+  'kinetic-typography':['<KineticType','<KineticNumber','data-remotion-capability="kinetic-typography"'],
+  'terminal-code':['<TerminalMock','<CodeDiff','<CodeEditor'],
+  'data-visualization':['<BenchmarkAxis','<DataChart','<LineChart','<BarChart','<AreaChart'],
+  'object-transformation':['<ObjectTransformation','<ObjectMorph','data-remotion-capability="object-transformation"'],
+  'motion-blur':['<CameraMotionBlur','<Trail'],
+  transitions:['<TransitionSeries'],
+  noise:['noise2D(','noise3D('],
+  'real-capture':['<OffthreadVideo','<Video','<Img','staticFile('],
 };
 
 export const findMissingCapabilityEvidence = (manifest,sourceText) => {
