@@ -1,3 +1,5 @@
+import ts from 'typescript';
+
 export const REMOTION_CAPABILITIES = [
   'react-svg-css','paths','shapes','three','depth-2.5d','kinetic-typography','terminal-code','data-visualization','object-transformation','motion-blur','transitions','noise','real-capture',
 ];
@@ -67,19 +69,19 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
   return failures;
 };
 
-export const CAPABILITY_SOURCE_EVIDENCE = {
-  paths:['<AnimatedDataPath','evolvePath(','getPointAtLength('],
-  shapes:['<ShapeSignal','<Circle','<Triangle','makeCircle(','makeTriangle('],
-  three:['<ThreeCanvas','<mesh','<group','<perspectiveCamera'],
-  'depth-2.5d':['<DepthStage','perspective:','translate3d('],
-  'kinetic-typography':['<KineticType','<KineticNumber','data-remotion-capability="kinetic-typography"'],
-  'terminal-code':['<TerminalMock','<CodeDiff','<CodeEditor'],
-  'data-visualization':['<BenchmarkAxis','<DataChart','<LineChart','<BarChart','<AreaChart'],
-  'object-transformation':['<ObjectTransformation','<ObjectMorph','data-remotion-capability="object-transformation"'],
-  'motion-blur':['<CameraMotionBlur','<Trail'],
-  transitions:['<TransitionSeries'],
-  noise:['noise2D(','noise3D('],
-  'real-capture':['<OffthreadVideo','<Video','<Img','staticFile('],
+const CAPABILITY_AST_EVIDENCE = {
+  paths:{jsx:['AnimatedDataPath'],calls:['evolvePath','getPointAtLength']},
+  shapes:{jsx:['ShapeSignal','Circle','Triangle'],calls:['makeCircle','makeTriangle']},
+  three:{jsx:['ThreeCanvas','mesh','group','perspectiveCamera'],calls:[]},
+  'depth-2.5d':{jsx:['DepthStage'],calls:[],features:['perspective','translate3d']},
+  'kinetic-typography':{jsx:['KineticType','KineticNumber'],calls:[]},
+  'terminal-code':{jsx:['TerminalMock','CodeDiff','CodeEditor'],calls:[]},
+  'data-visualization':{jsx:['BenchmarkAxis','DataChart','LineChart','BarChart','AreaChart'],calls:[]},
+  'object-transformation':{jsx:['ObjectTransformation','ObjectMorph'],calls:[]},
+  'motion-blur':{jsx:['CameraMotionBlur','Trail'],calls:[]},
+  transitions:{jsx:['TransitionSeries'],calls:[]},
+  noise:{jsx:[],calls:['noise2D','noise3D']},
+  'real-capture':{jsx:['OffthreadVideo','Video','Img'],calls:[]},
 };
 
 const getBeatSourceSlice = (sourceText,beatId) => {
@@ -88,6 +90,43 @@ const getBeatSourceSlice = (sourceText,beatId) => {
   if (start<0) return null;
   const next=sourceText.indexOf('// REMOTION_BEAT:',start+marker.length);
   return sourceText.slice(start,next<0?sourceText.length:next);
+};
+
+const tailName=(text)=>String(text).split('.').at(-1)??String(text);
+
+const collectExecutableEvidence = (sourceText) => {
+  const source=ts.createSourceFile('capability-beat.tsx',sourceText,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
+  const jsx=new Set();
+  const calls=new Set();
+  const features=new Set();
+
+  const visit=(node)=>{
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) jsx.add(tailName(node.tagName.getText(source)));
+    if (ts.isCallExpression(node)) calls.add(tailName(node.expression.getText(source)));
+    if (ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) {
+      const name=node.name?.getText(source)?.replace(/^['"]|['"]$/g,'');
+      if (name==='perspective') features.add('perspective');
+    }
+    if (ts.isStringLiteralLike(node) && node.text.includes('translate3d(')) features.add('translate3d');
+    if (ts.isTemplateExpression(node) && node.getText(source).includes('translate3d(')) features.add('translate3d');
+    ts.forEachChild(node,visit);
+  };
+  visit(source);
+  return {jsx,calls,features};
+};
+
+const hasCapabilityEvidence=(capability,evidence)=>{
+  const expected=CAPABILITY_AST_EVIDENCE[capability];
+  if (!expected) return true;
+  return (expected.jsx??[]).some((name)=>evidence.jsx.has(name)) ||
+    (expected.calls??[]).some((name)=>evidence.calls.has(name)) ||
+    (expected.features??[]).some((name)=>evidence.features.has(name));
+};
+
+const expectedEvidenceLabel=(capability)=>{
+  const expected=CAPABILITY_AST_EVIDENCE[capability];
+  if (!expected) return 'none';
+  return [...(expected.jsx??[]).map((name)=>`JSX:${name}`),...(expected.calls??[]).map((name)=>`call:${name}`),...(expected.features??[]).map((name)=>`feature:${name}`)].join(', ');
 };
 
 export const findMissingCapabilityEvidence = (manifest,sourceByFile) => {
@@ -101,11 +140,10 @@ export const findMissingCapabilityEvidence = (manifest,sourceByFile) => {
       failures.push(`${beat.beatId}: missing source marker "${beatSourceMarker(beat.beatId)}" in ${beat.sourceFile}.`);
       continue;
     }
+    const evidence=collectExecutableEvidence(beatSource);
     for (const capability of beat.capabilities??[]) {
-      const tokens=CAPABILITY_SOURCE_EVIDENCE[capability];
-      if (!tokens) continue;
-      if (!tokens.some((token)=>beatSource.includes(token))) {
-        failures.push(`${beat.beatId}/${capability}: no implementation evidence found inside the beat source section in ${beat.sourceFile} (expected one of: ${tokens.join(', ')})`);
+      if (!hasCapabilityEvidence(capability,evidence)) {
+        failures.push(`${beat.beatId}/${capability}: no executable AST evidence found inside the beat source section in ${beat.sourceFile} (expected one of: ${expectedEvidenceLabel(capability)})`);
       }
     }
   }
