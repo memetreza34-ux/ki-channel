@@ -1,0 +1,72 @@
+export const REMOTION_CAPABILITIES = [
+  'react-svg-css','paths','shapes','three','depth-2.5d','kinetic-typography','terminal-code','data-visualization','object-transformation','motion-blur','transitions','noise','real-capture',
+];
+
+const capabilities = new Set(REMOTION_CAPABILITIES);
+const advanced = new Set(REMOTION_CAPABILITIES.filter((capability)=>capability!=='react-svg-css'));
+
+export const validateRemotionCapabilityManifest = (manifest,{label='remotion-capabilities-v1.json'}={}) => {
+  const failures=[];
+  if (!manifest || typeof manifest!=='object') return [`${label}: manifest must be an object.`];
+  if (manifest.version!==1) failures.push(`${label}: version must be 1.`);
+  if (!Array.isArray(manifest.sourceFiles) || manifest.sourceFiles.length===0) failures.push(`${label}: sourceFiles must contain at least one reel source file.`);
+  if (!Array.isArray(manifest.beats) || manifest.beats.length<4) return [...failures,`${label}: beats must contain at least four beats.`];
+
+  const ids=new Set(); let advancedBeats=0; let heroBeats=0;
+  for (const [index,beat] of manifest.beats.entries()) {
+    const prefix=`${label}: beats[${index}]`;
+    if (!beat || typeof beat!=='object') {failures.push(`${prefix} must be an object.`);continue;}
+    if (typeof beat.beatId!=='string' || !beat.beatId.trim()) failures.push(`${prefix}.beatId must be a non-empty string.`);
+    else if (ids.has(beat.beatId)) failures.push(`${prefix}: duplicate beatId ${beat.beatId}.`); else ids.add(beat.beatId);
+    if (!capabilities.has(beat.primaryCapability)) failures.push(`${prefix}.primaryCapability is invalid: ${beat.primaryCapability}`);
+    if (!Array.isArray(beat.capabilities) || beat.capabilities.length===0) failures.push(`${prefix}.capabilities must be a non-empty array.`);
+    else {
+      for (const capability of beat.capabilities) if (!capabilities.has(capability)) failures.push(`${prefix}.capabilities contains invalid value ${capability}.`);
+      if (!beat.capabilities.includes(beat.primaryCapability)) failures.push(`${prefix}.capabilities must include primaryCapability.`);
+    }
+    if (typeof beat.rationale!=='string' || beat.rationale.trim().length<20) failures.push(`${prefix}.rationale must explain why this Remotion mechanism is the best visual explanation.`);
+    if (beat.primaryPrimitive==='card' && !(typeof beat.semanticCardReason==='string' && beat.semanticCardReason.trim())) failures.push(`${prefix}: abstract card default is forbidden; semanticCardReason is required.`);
+    if (advanced.has(beat.primaryCapability)) advancedBeats+=1;
+    if (beat.isHero===true) heroBeats+=1;
+    if (beat.isHook===true && !advanced.has(beat.primaryCapability)) failures.push(`${prefix}: hook cannot use plain react-svg-css as its primary capability.`);
+  }
+
+  if (heroBeats<1) failures.push(`${label}: at least one beat must be marked isHero=true.`);
+  if (advancedBeats/manifest.beats.length<0.5) failures.push(`${label}: at least 50% of beats must use an advanced Remotion capability as primaryCapability.`);
+  const uniquePrimary=new Set(manifest.beats.map((beat)=>beat?.primaryCapability).filter(Boolean)).size;
+  if (uniquePrimary<Math.min(3,manifest.beats.length)) failures.push(`${label}: at least three different primary capabilities are required.`);
+
+  for (let index=2;index<manifest.beats.length;index+=1) {
+    const a=manifest.beats[index-2],b=manifest.beats[index-1],c=manifest.beats[index];
+    if (a?.primaryCapability===b?.primaryCapability && b?.primaryCapability===c?.primaryCapability && !b?.continuationOfPrevious && !c?.continuationOfPrevious) {
+      failures.push(`${label}: ${a.beatId}, ${b.beatId}, ${c.beatId} repeat ${c.primaryCapability} three times without continuationOfPrevious.`);
+    }
+  }
+  return failures;
+};
+
+export const CAPABILITY_SOURCE_EVIDENCE = {
+  paths:['@remotion/paths','AnimatedDataPath','evolvePath','getPointAtLength'],
+  shapes:['@remotion/shapes','ShapeSignal','<Circle','<Triangle'],
+  three:['@remotion/three','ThreeCanvas','@react-three/fiber'],
+  'depth-2.5d':['DepthStage','perspective:','translate3d('],
+  'kinetic-typography':['KineticType','KineticNumber','data-remotion-capability="kinetic-typography"'],
+  'terminal-code':['TerminalMock','CodeDiff','CodeEditor'],
+  'data-visualization':['recharts','BenchmarkAxis','DataChart','LineChart','BarChart'],
+  'object-transformation':['ObjectTransformation','ObjectMorph','data-remotion-capability="object-transformation"'],
+  'motion-blur':['@remotion/motion-blur','CameraMotionBlur','Trail'],
+  transitions:['@remotion/transitions','TransitionSeries'],
+  noise:['@remotion/noise','noise2D','noise3D'],
+  'real-capture':['OffthreadVideo','<Video','<Img','staticFile('],
+};
+
+export const findMissingCapabilityEvidence = (manifest,sourceText) => {
+  const failures=[];
+  const declared=new Set((manifest?.beats??[]).flatMap((beat)=>beat?.capabilities??[]));
+  for (const capability of declared) {
+    const tokens=CAPABILITY_SOURCE_EVIDENCE[capability];
+    if (!tokens) continue;
+    if (!tokens.some((token)=>sourceText.includes(token))) failures.push(`${capability}: no implementation evidence found in declared sourceFiles (expected one of: ${tokens.join(', ')})`);
+  }
+  return failures;
+};
