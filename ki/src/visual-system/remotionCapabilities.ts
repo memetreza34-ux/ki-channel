@@ -31,8 +31,16 @@ export const ADVANCED_REMOTION_CAPABILITIES = [
   'real-capture',
 ] as const satisfies readonly RemotionCapability[];
 
+export const isSafeRemotionReelSourceFile = (sourceFile: string): boolean => {
+  const normalized = sourceFile.replaceAll('\\', '/');
+  if (!normalized || normalized.startsWith('/') || normalized.includes('://')) return false;
+  if (normalized.split('/').includes('..')) return false;
+  return normalized.startsWith('ki/src/reels/') && /\.(?:ts|tsx)$/.test(normalized);
+};
+
 export type RemotionCapabilityBeat = {
   beatId: string;
+  sourceFile: string;
   isHook?: boolean;
   isHero?: boolean;
   continuationOfPrevious?: boolean;
@@ -45,6 +53,7 @@ export type RemotionCapabilityBeat = {
 
 export type RemotionCapabilityPlan = {
   version: 1;
+  sourceFiles: readonly string[];
   beats: readonly RemotionCapabilityBeat[];
 };
 
@@ -52,7 +61,17 @@ const advanced = new Set<RemotionCapability>(ADVANCED_REMOTION_CAPABILITIES);
 
 export const assertRemotionCapabilityPlan = (plan: RemotionCapabilityPlan): void => {
   if (plan.version !== 1) throw new Error('Remotion capability plan version must be 1');
+  if (plan.sourceFiles.length < 1) throw new Error('Remotion capability plan needs at least one reel source file');
   if (plan.beats.length < 4) throw new Error('Remotion capability plan needs at least four beats');
+
+  const sourceFiles = new Set<string>();
+  for (const sourceFile of plan.sourceFiles) {
+    if (!isSafeRemotionReelSourceFile(sourceFile)) {
+      throw new Error(`unsafe Remotion capability source file: ${sourceFile}`);
+    }
+    if (sourceFiles.has(sourceFile)) throw new Error(`duplicate Remotion capability source file: ${sourceFile}`);
+    sourceFiles.add(sourceFile);
+  }
 
   const ids = new Set<string>();
   let advancedBeats = 0;
@@ -63,6 +82,9 @@ export const assertRemotionCapabilityPlan = (plan: RemotionCapabilityPlan): void
     if (ids.has(beat.beatId)) throw new Error(`duplicate Remotion capability beat: ${beat.beatId}`);
     ids.add(beat.beatId);
 
+    if (!isSafeRemotionReelSourceFile(beat.sourceFile) || !sourceFiles.has(beat.sourceFile)) {
+      throw new Error(`beat ${beat.beatId}: sourceFile must be a declared .ts/.tsx file below ki/src/reels/`);
+    }
     if (!beat.capabilities.includes(beat.primaryCapability)) {
       throw new Error(`beat ${beat.beatId}: capabilities must include primaryCapability ${beat.primaryCapability}`);
     }
