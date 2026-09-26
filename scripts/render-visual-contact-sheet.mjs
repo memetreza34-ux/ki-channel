@@ -8,48 +8,35 @@ import {
   classifyFramePair,
   classifyVisualFrame,
   edgeDensity,
+  luminanceStdDev,
   meanAbsoluteRgbDifference,
+  meanChroma,
   whitePixelRatio,
 } from './visual-contact-metrics.mjs';
 import {getVisualReviewPreset} from './visual-review-presets.mjs';
 
-const args = new Map(
-  process.argv.slice(2).map((entry) => {
-    const [key, ...rest] = entry.replace(/^--/, '').split('=');
-    return [key, rest.join('=') || 'true'];
-  }),
-);
+const args = new Map(process.argv.slice(2).map((entry) => {
+  const [key, ...rest] = entry.replace(/^--/, '').split('=');
+  return [key, rest.join('=') || 'true'];
+}));
 
 const presetName = args.get('preset');
 const preset = presetName ? getVisualReviewPreset(presetName) : null;
 const compositionId = args.get('composition') ?? preset?.compositionId;
 const framesRaw = args.get('frames');
-const frames = framesRaw
-  ? framesRaw.split(',').map((value) => Number(value.trim())).filter(Number.isInteger)
-  : preset?.frames;
+const frames = framesRaw ? framesRaw.split(',').map((value) => Number(value.trim())).filter(Number.isInteger) : preset?.frames;
 const outputDir = path.resolve(args.get('output') ?? preset?.outputDir ?? `out/visual-review/${compositionId ?? 'unknown'}`);
 const entryPoint = path.resolve('ki/src/production-entry.tsx');
 
-if (!compositionId) {
-  throw new Error('missing --composition=<id> or --preset=<name>');
-}
-if (!frames || frames.length < 2) {
-  throw new Error('visual review needs at least two sample frames');
-}
+if (!compositionId) throw new Error('missing --composition=<id> or --preset=<name>');
+if (!frames || frames.length < 2) throw new Error('visual review needs at least two sample frames');
 
 const run = (command, commandArgs, label) => new Promise((resolvePromise, reject) => {
   console.log(`\n=== ${label} ===`);
   console.log(`$ ${command} ${commandArgs.join(' ')}`);
-  const child = spawn(command, commandArgs, {
-    stdio: 'inherit',
-    shell: process.platform === 'win32',
-    env: process.env,
-  });
+  const child = spawn(command, commandArgs, {stdio: 'inherit', shell: process.platform === 'win32', env: process.env});
   child.on('error', reject);
-  child.on('exit', (code, signal) => {
-    if (code === 0) resolvePromise();
-    else reject(new Error(`${label} failed (code=${code ?? 'null'}, signal=${signal ?? 'none'})`));
-  });
+  child.on('exit', (code, signal) => code === 0 ? resolvePromise() : reject(new Error(`${label} failed (code=${code ?? 'null'}, signal=${signal ?? 'none'})`)));
 });
 
 await mkdir(outputDir, {recursive: true});
@@ -59,11 +46,7 @@ await mkdir(frameDir, {recursive: true});
 const frameFiles = [];
 for (const frame of frames) {
   const file = path.join(frameDir, `frame-${String(frame).padStart(4, '0')}.png`);
-  await run(
-    'npx',
-    ['--no-install', 'remotion', 'still', entryPoint, compositionId, file, `--frame=${frame}`, '--overwrite'],
-    `Visual review frame ${frame}`,
-  );
+  await run('npx', ['--no-install', 'remotion', 'still', entryPoint, compositionId, file, `--frame=${frame}`, '--overwrite'], `Visual review frame ${frame}`);
   frameFiles.push({frame, file});
 }
 
@@ -92,38 +75,41 @@ for (let index = 0; index < frameFiles.length; index += 1) {
   const labelSvg = Buffer.from(`<svg width="${THUMB_W}" height="${LABEL_H}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#171421"/><text x="18" y="34" fill="#ffffff" font-size="22" font-family="Arial, sans-serif" font-weight="700">Frame ${frame}</text></svg>`);
   composites.push({input: labelSvg, left, top: top + THUMB_H});
 
+  const metadata = await sharp(file).metadata();
+  const sourceWidth = metadata.width ?? 1080;
+  const sourceHeight = metadata.height ?? 1920;
+  const analysisHeight = Math.min(sourceHeight, Math.round(sourceWidth * 4 / 3));
   const normalized = await sharp(file)
-    .resize(135, 240, {fit: 'cover'})
+    .extract({left: 0, top: 0, width: sourceWidth, height: analysisHeight})
+    .resize(135, Math.max(1, Math.round(135 * analysisHeight / sourceWidth)), {fit: 'fill'})
     .removeAlpha()
     .raw()
     .toBuffer({resolveWithObject: true});
   normalizedBuffers.push(normalized.data);
   const whiteRatio = whitePixelRatio(normalized.data, normalized.info.channels);
   const edgeRatio = edgeDensity(normalized.data, normalized.info.width, normalized.info.height, normalized.info.channels);
+  const luminanceDeviation = luminanceStdDev(normalized.data, normalized.info.channels);
+  const chroma = meanChroma(normalized.data, normalized.info.channels);
   reports.push({
     frame,
+    analysisCropHeight: analysisHeight,
     whiteRatio: Number(whiteRatio.toFixed(4)),
     edgeDensity: Number(edgeRatio.toFixed(4)),
-    warnings: classifyVisualFrame({whiteRatio, edgeRatio}),
+    luminanceStdDev: Number(luminanceDeviation.toFixed(2)),
+    meanChroma: Number(chroma.toFixed(2)),
+    warnings: classifyVisualFrame({whiteRatio, edgeRatio, luminanceDeviation, chroma}),
   });
 }
 
 const pairReports = [];
 for (let index = 1; index < normalizedBuffers.length; index += 1) {
+  if (normalizedBuffers[index - 1].length !== normalizedBuffers[index].length) continue;
   const difference = meanAbsoluteRgbDifference(normalizedBuffers[index - 1], normalizedBuffers[index], 3);
-  pairReports.push({
-    fromFrame: frames[index - 1],
-    toFrame: frames[index],
-    meanAbsoluteRgbDifference: Number(difference.toFixed(3)),
-    warnings: classifyFramePair(difference),
-  });
+  pairReports.push({fromFrame: frames[index - 1], toFrame: frames[index], meanAbsoluteRgbDifference: Number(difference.toFixed(3)), warnings: classifyFramePair(difference)});
 }
 
 const sheetFile = path.join(outputDir, 'contact-sheet.jpg');
-await sharp({create: {width: sheetWidth, height: sheetHeight, channels: 3, background: '#f2eff8'}})
-  .composite(composites)
-  .jpeg({quality: 90})
-  .toFile(sheetFile);
+await sharp({create: {width: sheetWidth, height: sheetHeight, channels: 3, background: '#f2eff8'}}).composite(composites).jpeg({quality: 90}).toFile(sheetFile);
 
 const allWarnings = [
   ...reports.flatMap((entry) => entry.warnings.map((warning) => ({type: warning, frame: entry.frame}))),
@@ -131,21 +117,13 @@ const allWarnings = [
 ];
 
 const reportFile = path.join(outputDir, 'visual-review.json');
-await writeFile(
-  reportFile,
-  `${JSON.stringify({compositionId, frames, sheetFile, frameReports: reports, pairReports, warnings: allWarnings}, null, 2)}\n`,
-  'utf8',
-);
+await writeFile(reportFile, `${JSON.stringify({compositionId, frames, sheetFile, frameReports: reports, pairReports, warnings: allWarnings}, null, 2)}\n`, 'utf8');
 
 console.log(`\nVISUAL CONTACT SHEET: ${sheetFile}`);
 console.log(`VISUAL REVIEW REPORT: ${reportFile}`);
-console.log('\nFrame metrics:');
-for (const report of reports) {
-  console.log(`- frame ${report.frame}: white=${report.whiteRatio}, edges=${report.edgeDensity}, warnings=${report.warnings.join(',') || 'none'}`);
-}
+console.log('\nFrame metrics (main visual area only; caption/platform-safe bottom is excluded):');
+for (const report of reports) console.log(`- frame ${report.frame}: cropH=${report.analysisCropHeight}, white=${report.whiteRatio}, edges=${report.edgeDensity}, contrast=${report.luminanceStdDev}, chroma=${report.meanChroma}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log('\nSample-to-sample motion metrics:');
-for (const report of pairReports) {
-  console.log(`- ${report.fromFrame}->${report.toFrame}: diff=${report.meanAbsoluteRgbDifference}, warnings=${report.warnings.join(',') || 'none'}`);
-}
+for (const report of pairReports) console.log(`- ${report.fromFrame}->${report.toFrame}: diff=${report.meanAbsoluteRgbDifference}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log(`\nWarnings: ${allWarnings.length}`);
-console.log('These metrics are review signals, not an automatic creative PASS. Open the contact sheet and inspect it.');
+console.log('Metrics are review signals, not an automatic creative PASS. Open the contact sheet and inspect hook strength, hero scale, icon/illustration use, archetype variety and contrast.');
