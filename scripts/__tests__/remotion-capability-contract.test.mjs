@@ -81,6 +81,18 @@ test('a capability elsewhere in the same file cannot satisfy another beat',()=>{
   assert.ok(failures.some((failure)=>failure.startsWith('flow/motion-blur:')));
 });
 
+test('comments cannot fake executable capability evidence',()=>{
+  const brokenSources=new Map(validSources);
+  brokenSources.set('ki/src/reels/example/Flow.tsx',`// REMOTION_BEAT: flow
+// <AnimatedDataPath path="M0 0 L100 0" />
+// <Trail layers={4}><div /></Trail>
+const placeholder = 'evolvePath( fake )';
+<div>still only a placeholder</div>`);
+  const failures=findMissingCapabilityEvidence(valid,brokenSources);
+  assert.ok(failures.some((failure)=>failure.startsWith('flow/paths:')));
+  assert.ok(failures.some((failure)=>failure.startsWith('flow/motion-blur:')));
+});
+
 test('missing beat marker is rejected even when the capability exists in the file',()=>{
   const brokenSources=new Map(validSources);
   brokenSources.set('ki/src/reels/example/Code.tsx','<TerminalMock x={0} y={0} lines={["npm test"]} />');
