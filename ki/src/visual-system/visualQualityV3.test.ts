@@ -16,6 +16,6 @@ const good: VisualQualityV3Contract = {
 describe('Visual Quality V3', () => {
   it('accepts a visually strong multi-archetype plan', () => expect(() => assertVisualQualityV3(good)).not.toThrow());
   it('rejects a tiny weak hook', () => expect(() => assertVisualQualityV3({...good, hook: {...good.hook, heroAreaRatio: .12}})).toThrow(/hook hero/));
-  it('rejects repeated shot archetypes', () => expect(() => assertVisualQualityV3({...good, scenes: [good.scenes[0], {...good.scenes[1], archetype:'hero-impact'}]})).toThrow(/repeat shot archetype/));
+  it('rejects repeated shot archetypes', () => expect(() => assertVisualQualityV3({...good, scenes: [good.scenes[0], {...good.scenes[1], archetype:'hero-impact'}, good.scenes[2], good.scenes[3]]})).toThrow(/repeat shot archetype/));
   it('rejects scenes that count tiny decoration instead of semantic visuals', () => expect(() => assertVisualQualityV3({...good, scenes: [{...good.scenes[0], semanticIconCount:0, illustrationCount:1}, ...good.scenes.slice(1)]})).toThrow(/semantic icons\/illustrations/));
 });
