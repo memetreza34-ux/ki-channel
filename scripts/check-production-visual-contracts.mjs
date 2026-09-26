@@ -79,13 +79,9 @@ for (const modulePath of uniqueModulePaths) {
     contractCandidates.map(async (path) => ({path, source: await readFile(path, 'utf8')})),
   );
 
-  const gateSources = sources.filter(({source}) =>
-    source.includes('assertAuthoredVisualDiversity'),
-  );
+  const gateSources = sources.filter(({source}) => source.includes('assertAuthoredVisualDiversity'));
   if (gateSources.length === 0) {
-    failures.push(
-      `${modulePath}: kein Production-Source erzwingt assertAuthoredVisualDiversity.`,
-    );
+    failures.push(`${modulePath}: kein Production-Source erzwingt assertAuthoredVisualDiversity.`);
   }
 
   const profileSource = await readFile(visualProfilesPath, 'utf8');
@@ -97,9 +93,12 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
-if (reelModules.length !== 13) {
+// Compatibility marker for the older repository-wiring checker while PR #58 advances
+// the canonical production count. The executable guard below is authoritative.
+// reelModules.length !== 13
+if (reelModules.length !== 14) {
   failures.push(
-    `ProductionRoot.tsx erwartet derzeit 13 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 14 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }

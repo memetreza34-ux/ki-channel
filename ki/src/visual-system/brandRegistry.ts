@@ -1,4 +1,4 @@
-export type BrandAnchorId = 'chatgpt' | 'github' | 'generic-ai';
+export type BrandAnchorId = 'chatgpt' | 'github' | 'claude' | 'generic-ai';
 
 export type BrandAnchorDefinition = {
   id: BrandAnchorId;
@@ -25,6 +25,14 @@ export const BRAND_ANCHORS: Readonly<Record<BrandAnchorId, BrandAnchorDefinition
     officialAssetPath: null,
     markKind: 'generic-category-icon',
     ownershipNote: 'GitHub is a trademark of GitHub, Inc. Use an official provided asset only when it is stored unmodified in the repository.',
+  },
+  claude: {
+    id: 'claude',
+    label: 'Claude',
+    categoryIcon: 'sparkles',
+    officialAssetPath: null,
+    markKind: 'generic-category-icon',
+    ownershipNote: 'Claude is a trademark of Anthropic. This neutral badge uses a channel-owned category icon, not an imitation of the official Anthropic or Claude logo.',
   },
   'generic-ai': {
     id: 'generic-ai',

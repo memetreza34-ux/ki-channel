@@ -1,0 +1,16 @@
+{
+  "slug": "claude-opus-5-5",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1260},
+  "captionZoneStartY": 1380,
+  "visualBeatCount": 14,
+  "publishRecheckRequired": true,
+  "scenes": [
+    {"sceneId":"claude55-01","startFrame":0,"endFrame":180,"headline":"OPUS 5.5: 40 % WENIGER KOSTEN","icon":"zap","implementation":"NEW_BUILD","spokenText":"Anthropic hat gerade ein neues Claude-Spitzenmodell veröffentlicht – und der eigentliche Hammer sind 40 Prozent weniger Kosten als bei Opus 5.","beatIds":["B01","B02"]},
+    {"sceneId":"claude55-02","startFrame":180,"endFrame":360,"headline":"FAST FABLE-NIVEAU","icon":"cpu","implementation":"NEW_BUILD","spokenText":"Claude Opus 5.5 soll auf den meisten Aufgaben ungefähr das Niveau von Fable 5.1 erreichen.","beatIds":["B03","B04"]},
+    {"sceneId":"claude55-03","startFrame":360,"endFrame":540,"headline":"DIE NEUEN TOKENPREISE","icon":"code","implementation":"NEW_BUILD","spokenText":"Die Tokenpreise sinken ebenfalls: vier Dollar pro Million Input-Tokens und zwanzig Dollar pro Million Output-Tokens.","beatIds":["B05","B06"]},
+    {"sceneId":"claude55-04","startFrame":540,"endFrame":720,"headline":"MEHR ALS 30 % SCHNELLER","icon":"gauge","implementation":"NEW_BUILD","spokenText":"Anthropic sagt außerdem, dass Opus 5.5 mehr als 30 Prozent schneller ausgibt als Opus 5.","beatIds":["B07","B08"]},
+    {"sceneId":"claude55-05","startFrame":720,"endFrame":900,"headline":"FÜR GROSSE CODING-JOBS","icon":"terminal","implementation":"NEW_BUILD","spokenText":"Für lange Coding-Jobs ist das spannend: Anthropic positioniert das Modell besonders für große Migrationen, Audits und agentische Workflows.","beatIds":["B09","B10"]},
+    {"sceneId":"claude55-06","startFrame":900,"endFrame":1080,"headline":"BENCHMARKS RICHTIG EINORDNEN","icon":"search","implementation":"NEW_BUILD","spokenText":"Aber die starken Benchmarkwerte stammen überwiegend aus Anthropics eigenen Tests und Partner-Evaluationen. Das ist wichtig für die Einordnung.","beatIds":["B11","B12"]},
+    {"sceneId":"claude55-07","startFrame":1080,"endFrame":1260,"headline":"DAS IST DER DEAL","icon":"workflow","implementation":"NEW_BUILD","spokenText":"Kurz gesagt: Opus 5.5 soll weniger kosten, schneller arbeiten und fast Fable-Niveau liefern. Für Coding-Nutzer ist das ein sehr interessantes Update.","beatIds":["B13","B14"]}
+  ]
+}

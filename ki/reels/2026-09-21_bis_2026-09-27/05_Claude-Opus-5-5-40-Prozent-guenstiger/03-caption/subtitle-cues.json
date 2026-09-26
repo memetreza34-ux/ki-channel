@@ -1,0 +1,32 @@
+{
+  "fps": 30,
+  "cues": [
+    {"sceneId":"claude55-01","startFrame":0,"endFrame":36,"text":"Anthropic hat gerade ein neues"},
+    {"sceneId":"claude55-01","startFrame":36,"endFrame":72,"text":"Claude-Spitzenmodell veröffentlicht – und der"},
+    {"sceneId":"claude55-01","startFrame":72,"endFrame":108,"text":"eigentliche Hammer sind 40 Prozent"},
+    {"sceneId":"claude55-01","startFrame":108,"endFrame":144,"text":"weniger Kosten als bei Opus"},
+    {"sceneId":"claude55-01","startFrame":144,"endFrame":180,"text":"5."},
+    {"sceneId":"claude55-02","startFrame":180,"endFrame":240,"text":"Claude Opus 5.5 soll auf"},
+    {"sceneId":"claude55-02","startFrame":240,"endFrame":300,"text":"den meisten Aufgaben ungefähr das"},
+    {"sceneId":"claude55-02","startFrame":300,"endFrame":360,"text":"Niveau von Fable 5.1 erreichen."},
+    {"sceneId":"claude55-03","startFrame":360,"endFrame":420,"text":"Die Tokenpreise sinken ebenfalls: vier"},
+    {"sceneId":"claude55-03","startFrame":420,"endFrame":480,"text":"Dollar pro Million Input-Tokens und"},
+    {"sceneId":"claude55-03","startFrame":480,"endFrame":540,"text":"zwanzig Dollar pro Million Output-Tokens."},
+    {"sceneId":"claude55-04","startFrame":540,"endFrame":600,"text":"Anthropic sagt außerdem, dass Opus"},
+    {"sceneId":"claude55-04","startFrame":600,"endFrame":660,"text":"5.5 mehr als 30 Prozent"},
+    {"sceneId":"claude55-04","startFrame":660,"endFrame":720,"text":"schneller ausgibt als Opus 5."},
+    {"sceneId":"claude55-05","startFrame":720,"endFrame":765,"text":"Für lange Coding-Jobs ist das"},
+    {"sceneId":"claude55-05","startFrame":765,"endFrame":810,"text":"spannend: Anthropic positioniert das Modell"},
+    {"sceneId":"claude55-05","startFrame":810,"endFrame":855,"text":"besonders für große Migrationen, Audits"},
+    {"sceneId":"claude55-05","startFrame":855,"endFrame":900,"text":"und agentische Workflows."},
+    {"sceneId":"claude55-06","startFrame":900,"endFrame":945,"text":"Aber die starken Benchmarkwerte stammen"},
+    {"sceneId":"claude55-06","startFrame":945,"endFrame":990,"text":"überwiegend aus Anthropics eigenen Tests"},
+    {"sceneId":"claude55-06","startFrame":990,"endFrame":1035,"text":"und Partner-Evaluationen. Das ist wichtig"},
+    {"sceneId":"claude55-06","startFrame":1035,"endFrame":1080,"text":"für die Einordnung."},
+    {"sceneId":"claude55-07","startFrame":1080,"endFrame":1116,"text":"Kurz gesagt: Opus 5.5 soll"},
+    {"sceneId":"claude55-07","startFrame":1116,"endFrame":1152,"text":"weniger kosten, schneller arbeiten und"},
+    {"sceneId":"claude55-07","startFrame":1152,"endFrame":1188,"text":"fast Fable-Niveau liefern. Für Coding-Nutzer"},
+    {"sceneId":"claude55-07","startFrame":1188,"endFrame":1224,"text":"ist das ein sehr interessantes"},
+    {"sceneId":"claude55-07","startFrame":1224,"endFrame":1260,"text":"Update."}
+  ]
+}
