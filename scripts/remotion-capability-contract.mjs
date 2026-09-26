@@ -14,6 +14,8 @@ export const isSafeReelSourceFile = (sourceFile) => {
   return /\.(?:ts|tsx)$/.test(normalized);
 };
 
+export const beatSourceMarker = (beatId) => `// REMOTION_BEAT: ${beatId}`;
+
 export const validateRemotionCapabilityManifest = (manifest,{label='remotion-capabilities-v1.json'}={}) => {
   const failures=[];
   if (!manifest || typeof manifest!=='object') return [`${label}: manifest must be an object.`];
@@ -80,17 +82,30 @@ export const CAPABILITY_SOURCE_EVIDENCE = {
   'real-capture':['<OffthreadVideo','<Video','<Img','staticFile('],
 };
 
+const getBeatSourceSlice = (sourceText,beatId) => {
+  const marker=beatSourceMarker(beatId);
+  const start=sourceText.indexOf(marker);
+  if (start<0) return null;
+  const next=sourceText.indexOf('// REMOTION_BEAT:',start+marker.length);
+  return sourceText.slice(start,next<0?sourceText.length:next);
+};
+
 export const findMissingCapabilityEvidence = (manifest,sourceByFile) => {
   const failures=[];
   const sources=sourceByFile instanceof Map?sourceByFile:new Map(Object.entries(sourceByFile??{}));
   for (const beat of manifest?.beats??[]) {
-    if (!beat || typeof beat!=='object' || !isSafeReelSourceFile(beat.sourceFile)) continue;
+    if (!beat || typeof beat!=='object' || !isSafeReelSourceFile(beat.sourceFile) || !beat.beatId) continue;
     const sourceText=sources.get(beat.sourceFile)??'';
+    const beatSource=getBeatSourceSlice(sourceText,beat.beatId);
+    if (beatSource===null) {
+      failures.push(`${beat.beatId}: missing source marker "${beatSourceMarker(beat.beatId)}" in ${beat.sourceFile}.`);
+      continue;
+    }
     for (const capability of beat.capabilities??[]) {
       const tokens=CAPABILITY_SOURCE_EVIDENCE[capability];
       if (!tokens) continue;
-      if (!tokens.some((token)=>sourceText.includes(token))) {
-        failures.push(`${beat.beatId}/${capability}: no implementation evidence found in ${beat.sourceFile} (expected one of: ${tokens.join(', ')})`);
+      if (!tokens.some((token)=>beatSource.includes(token))) {
+        failures.push(`${beat.beatId}/${capability}: no implementation evidence found inside the beat source section in ${beat.sourceFile} (expected one of: ${tokens.join(', ')})`);
       }
     }
   }
