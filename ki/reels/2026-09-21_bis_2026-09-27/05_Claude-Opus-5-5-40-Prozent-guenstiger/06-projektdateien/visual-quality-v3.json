@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "sourceQualityContract": "ki/src/reels/claude-opus-5-5/visualQuality.ts",
+  "hook": {"heroAreaRatio":0.38,"semanticVisualAnchors":4,"brandAnchorAreaRatio":0.06,"stateChangesFirstSecond":3,"stateChangesFirst3Seconds":5,"contrast":"strong","conflictVisible":true,"keyMessageVisible":true},
+  "scenes": [
+    {"sceneId":"claude55-01","archetype":"hero-impact","heroAreaRatio":0.38,"semanticIconCount":3,"illustrationCount":2,"supportElementCount":8,"distinctShapeFamilies":5,"meaningfulStateChanges":5,"microBeats":5,"motionDistancePx":240,"depthLayers":4,"contrast":"strong","cameraMotion":"push"},
+    {"sceneId":"claude55-02","archetype":"split-comparison","heroAreaRatio":0.30,"semanticIconCount":2,"illustrationCount":2,"supportElementCount":6,"distinctShapeFamilies":4,"meaningfulStateChanges":4,"microBeats":4,"motionDistancePx":130,"depthLayers":3,"contrast":"balanced","cameraMotion":"pan"},
+    {"sceneId":"claude55-03","archetype":"object-transformation","heroAreaRatio":0.32,"semanticIconCount":2,"illustrationCount":2,"supportElementCount":7,"distinctShapeFamilies":5,"meaningfulStateChanges":5,"microBeats":4,"motionDistancePx":160,"depthLayers":3,"contrast":"strong","cameraMotion":"push"},
+    {"sceneId":"claude55-04","archetype":"network-flow","heroAreaRatio":0.28,"semanticIconCount":2,"illustrationCount":2,"supportElementCount":7,"distinctShapeFamilies":4,"meaningfulStateChanges":5,"microBeats":5,"motionDistancePx":220,"depthLayers":4,"contrast":"strong","cameraMotion":"parallax"},
+    {"sceneId":"claude55-05","archetype":"terminal-code","heroAreaRatio":0.34,"semanticIconCount":3,"illustrationCount":2,"supportElementCount":7,"distinctShapeFamilies":4,"meaningfulStateChanges":4,"microBeats":4,"motionDistancePx":110,"depthLayers":3,"contrast":"strong","cameraMotion":"push"},
+    {"sceneId":"claude55-06","archetype":"zoom-detail","heroAreaRatio":0.27,"semanticIconCount":3,"illustrationCount":1,"supportElementCount":6,"distinctShapeFamilies":4,"meaningfulStateChanges":4,"microBeats":4,"motionDistancePx":100,"depthLayers":3,"contrast":"balanced","cameraMotion":"pull"},
+    {"sceneId":"claude55-07","archetype":"final-verdict","heroAreaRatio":0.36,"semanticIconCount":4,"illustrationCount":2,"supportElementCount":8,"distinctShapeFamilies":5,"meaningfulStateChanges":5,"microBeats":5,"motionDistancePx":180,"depthLayers":4,"contrast":"strong","cameraMotion":"pull"}
+  ],
+  "targetScores": {"hook":9,"visualVariety":9,"motion":9,"iconIllustrationUse":9,"readability":9,"overall":9}
+}
