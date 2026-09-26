@@ -6,7 +6,10 @@ import {futureReelNeedsV3,validateVisualQualityV3Manifest} from './visual-qualit
 const root=resolve('.'); const reelsRoot=resolve('ki/reels'); const failures=[]; const display=(p)=>relative(root,p)||'.';
 const exists=async(p)=>{try{await access(p);return true}catch{return false}};
 const read=async(p)=>{try{return await readFile(p,'utf8')}catch{return ''}};
-const phase1Finished=(text)=>/## Phase 1[^\n]*\n[\s\S]*?\*\*Status:\*\*\s*FERTIG/i.test(text) || /Phase 1[^\n]*\*\*FERTIG\*\*/i.test(text);
+const phase1Finished=(text)=>{
+  const block=text.match(/## Phase 1[^\n]*\n([\s\S]*?)(?=\n## Phase 2|$)/i)?.[0]??'';
+  return /\*\*Status:\*\*\s*FERTIG\b/i.test(block) || /\*\*FERTIG(?:\s*\/[^*]+)?\*\*/i.test(block);
+};
 
 for (const week of await readdir(reelsRoot,{withFileTypes:true})) {
   if (!week.isDirectory() || !/^\d{4}-\d{2}-\d{2}_bis_/.test(week.name)) continue;
@@ -18,7 +21,10 @@ for (const week of await readdir(reelsRoot,{withFileTypes:true})) {
     if (!phase1Finished(phase)) continue;
 
     const manifestPath=resolve(project,'visual-quality-v3.json');
-    if (!(await exists(manifestPath))) {failures.push(`${display(manifestPath)} fehlt. Neue Phase-1-Reels ab Reel 05 / Woche 2026-09-28 benötigen Visual Quality V3.`);continue;}
+    if (!(await exists(manifestPath))) {
+      failures.push(`${display(manifestPath)} fehlt. Neue Phase-1-Reels ab Reel 05 / Woche 2026-09-28 benötigen Visual Quality V3. Siehe ki/gehirn/VISUAL_QUALITY_V3.md.`);
+      continue;
+    }
     let manifest;
     try{manifest=JSON.parse(await read(manifestPath));}catch(error){failures.push(`${display(manifestPath)} ist ungültiges JSON: ${error instanceof Error?error.message:String(error)}`);continue;}
     failures.push(...validateVisualQualityV3Manifest(manifest,{label:display(manifestPath)}));
@@ -34,9 +40,10 @@ for (const week of await readdir(reelsRoot,{withFileTypes:true})) {
       }
     }
 
-    const review=await read(resolve(project,'creative-review.md'));
+    const reviewPath=resolve(project,'creative-review.md');
+    const review=await read(reviewPath);
     for (const marker of ['Hook score','Visual Variety score','Motion score','Icon/Illustration score','Readability score','Overall score']) {
-      if (!review.includes(marker)) failures.push(`${display(resolve(project,'creative-review.md'))}: V3-Scorecard fehlt Marker "${marker}".`);
+      if (!review.includes(marker)) failures.push(`${display(reviewPath)}: V3-Scorecard fehlt Marker "${marker}".`);
     }
   }
 }
