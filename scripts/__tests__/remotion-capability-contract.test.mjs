@@ -28,7 +28,14 @@ test('source evidence is required for declared capabilities',()=>{
   assert.ok(failures.some((failure)=>failure.startsWith('object-transformation:')));
 });
 
-test('source evidence recognizes shared high-level primitives',()=>{
-  const source=`import {AnimatedDataPath,KineticType,ObjectTransformation,ShapeSignal} from './AdvancedMotionKit';\nimport {TerminalMock} from './SemanticVisualKit';\nimport {Trail} from '@remotion/motion-blur';`;
+test('source evidence recognizes concrete high-level primitive usage',()=>{
+  const source=`
+    <ObjectTransformation fromLabel="A" toLabel="B" x={0} y={0} />
+    <KineticType text="40%" x={0} y={0} />
+    <AnimatedDataPath path="M0 0 L100 0" x={0} y={0} width={100} height={20} />
+    <Trail layers={4}><div /></Trail>
+    <TerminalMock x={0} y={0} lines={['npm test']} />
+    <ShapeSignal x={0} y={0} />
+  `;
   assert.deepEqual(findMissingCapabilityEvidence(valid,source),[]);
 });
