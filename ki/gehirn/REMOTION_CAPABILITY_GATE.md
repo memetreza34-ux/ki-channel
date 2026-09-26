@@ -104,7 +104,7 @@ Beispiele gültiger konkreter Usage-Marker:
 |---|---|
 | `paths` | `<AnimatedDataPath`, `evolvePath(`, `getPointAtLength(` |
 | `shapes` | `<ShapeSignal`, `<Circle`, `<Triangle`, `makeCircle(`, `makeTriangle(` |
-| `three` | `<ThreeCanvas`, `useThree(`, `useFrame(` |
+| `three` | `<ThreeCanvas`, `<mesh`, `<group`, `<perspectiveCamera` |
 | `depth-2.5d` | `<DepthStage`, echte `perspective:`-/`translate3d(`-Logik |
 | `kinetic-typography` | `<KineticType`, `<KineticNumber` |
 | `terminal-code` | `<TerminalMock`, `<CodeDiff`, `<CodeEditor` |
@@ -116,6 +116,8 @@ Beispiele gültiger konkreter Usage-Marker:
 | `real-capture` | `<Video`, `<Img`, `<OffthreadVideo`, `staticFile(` |
 
 Ein bloßer Import gilt bewusst nicht als Nachweis. Die Mechanik muss in der zugeordneten Beat-Source tatsächlich verwendet werden.
+
+Für Three gilt weiter die kanalweite Remotion-Regel: Production-Motion wird über `useCurrentFrame()`/Remotion-Timeline gesteuert. Ein unabhängiger R3F-`useFrame()`-Ticker zählt bewusst **nicht** als gültiger Capability-Nachweis.
 
 ## High-Level-Visuals
 
