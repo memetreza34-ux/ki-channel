@@ -75,7 +75,16 @@ for (let index = 0; index < frameFiles.length; index += 1) {
   const labelSvg = Buffer.from(`<svg width="${THUMB_W}" height="${LABEL_H}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#171421"/><text x="18" y="34" fill="#ffffff" font-size="22" font-family="Arial, sans-serif" font-weight="700">Frame ${frame}</text></svg>`);
   composites.push({input: labelSvg, left, top: top + THUMB_H});
 
-  const normalized = await sharp(file).resize(135, 240, {fit: 'cover'}).removeAlpha().raw().toBuffer({resolveWithObject: true});
+  const metadata = await sharp(file).metadata();
+  const sourceWidth = metadata.width ?? 1080;
+  const sourceHeight = metadata.height ?? 1920;
+  const analysisHeight = Math.min(sourceHeight, Math.round(sourceWidth * 4 / 3));
+  const normalized = await sharp(file)
+    .extract({left: 0, top: 0, width: sourceWidth, height: analysisHeight})
+    .resize(135, Math.max(1, Math.round(135 * analysisHeight / sourceWidth)), {fit: 'fill'})
+    .removeAlpha()
+    .raw()
+    .toBuffer({resolveWithObject: true});
   normalizedBuffers.push(normalized.data);
   const whiteRatio = whitePixelRatio(normalized.data, normalized.info.channels);
   const edgeRatio = edgeDensity(normalized.data, normalized.info.width, normalized.info.height, normalized.info.channels);
@@ -83,6 +92,7 @@ for (let index = 0; index < frameFiles.length; index += 1) {
   const chroma = meanChroma(normalized.data, normalized.info.channels);
   reports.push({
     frame,
+    analysisCropHeight: analysisHeight,
     whiteRatio: Number(whiteRatio.toFixed(4)),
     edgeDensity: Number(edgeRatio.toFixed(4)),
     luminanceStdDev: Number(luminanceDeviation.toFixed(2)),
@@ -93,6 +103,7 @@ for (let index = 0; index < frameFiles.length; index += 1) {
 
 const pairReports = [];
 for (let index = 1; index < normalizedBuffers.length; index += 1) {
+  if (normalizedBuffers[index - 1].length !== normalizedBuffers[index].length) continue;
   const difference = meanAbsoluteRgbDifference(normalizedBuffers[index - 1], normalizedBuffers[index], 3);
   pairReports.push({fromFrame: frames[index - 1], toFrame: frames[index], meanAbsoluteRgbDifference: Number(difference.toFixed(3)), warnings: classifyFramePair(difference)});
 }
@@ -110,8 +121,8 @@ await writeFile(reportFile, `${JSON.stringify({compositionId, frames, sheetFile,
 
 console.log(`\nVISUAL CONTACT SHEET: ${sheetFile}`);
 console.log(`VISUAL REVIEW REPORT: ${reportFile}`);
-console.log('\nFrame metrics:');
-for (const report of reports) console.log(`- frame ${report.frame}: white=${report.whiteRatio}, edges=${report.edgeDensity}, contrast=${report.luminanceStdDev}, chroma=${report.meanChroma}, warnings=${report.warnings.join(',') || 'none'}`);
+console.log('\nFrame metrics (main visual area only; caption/platform-safe bottom is excluded):');
+for (const report of reports) console.log(`- frame ${report.frame}: cropH=${report.analysisCropHeight}, white=${report.whiteRatio}, edges=${report.edgeDensity}, contrast=${report.luminanceStdDev}, chroma=${report.meanChroma}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log('\nSample-to-sample motion metrics:');
 for (const report of pairReports) console.log(`- ${report.fromFrame}->${report.toFrame}: diff=${report.meanAbsoluteRgbDifference}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log(`\nWarnings: ${allWarnings.length}`);
