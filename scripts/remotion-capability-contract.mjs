@@ -5,11 +5,29 @@ export const REMOTION_CAPABILITIES = [
 const capabilities = new Set(REMOTION_CAPABILITIES);
 const advanced = new Set(REMOTION_CAPABILITIES.filter((capability)=>capability!=='react-svg-css'));
 
+export const isSafeReelSourceFile = (sourceFile) => {
+  if (typeof sourceFile!=='string' || !sourceFile.trim()) return false;
+  const normalized=sourceFile.replaceAll('\\','/');
+  if (normalized.startsWith('/') || normalized.includes('://')) return false;
+  if (normalized.split('/').includes('..')) return false;
+  if (!normalized.startsWith('ki/src/reels/')) return false;
+  return /\.(?:ts|tsx)$/.test(normalized);
+};
+
 export const validateRemotionCapabilityManifest = (manifest,{label='remotion-capabilities-v1.json'}={}) => {
   const failures=[];
   if (!manifest || typeof manifest!=='object') return [`${label}: manifest must be an object.`];
   if (manifest.version!==1) failures.push(`${label}: version must be 1.`);
-  if (!Array.isArray(manifest.sourceFiles) || manifest.sourceFiles.length===0) failures.push(`${label}: sourceFiles must contain at least one reel source file.`);
+
+  const sourceFiles=Array.isArray(manifest.sourceFiles)?manifest.sourceFiles:[];
+  if (sourceFiles.length===0) failures.push(`${label}: sourceFiles must contain at least one reel source file.`);
+  const uniqueSourceFiles=new Set();
+  for (const [index,sourceFile] of sourceFiles.entries()) {
+    if (!isSafeReelSourceFile(sourceFile)) failures.push(`${label}: sourceFiles[${index}] must be a .ts/.tsx file below ki/src/reels/ without path traversal.`);
+    else if (uniqueSourceFiles.has(sourceFile)) failures.push(`${label}: duplicate sourceFile ${sourceFile}.`);
+    else uniqueSourceFiles.add(sourceFile);
+  }
+
   if (!Array.isArray(manifest.beats) || manifest.beats.length<4) return [...failures,`${label}: beats must contain at least four beats.`];
 
   const ids=new Set(); let advancedBeats=0; let heroBeats=0;
@@ -24,6 +42,8 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
       for (const capability of beat.capabilities) if (!capabilities.has(capability)) failures.push(`${prefix}.capabilities contains invalid value ${capability}.`);
       if (!beat.capabilities.includes(beat.primaryCapability)) failures.push(`${prefix}.capabilities must include primaryCapability.`);
     }
+    if (!isSafeReelSourceFile(beat.sourceFile)) failures.push(`${prefix}.sourceFile must be a safe .ts/.tsx file below ki/src/reels/.`);
+    else if (!sourceFiles.includes(beat.sourceFile)) failures.push(`${prefix}.sourceFile must also be listed in manifest.sourceFiles.`);
     if (typeof beat.rationale!=='string' || beat.rationale.trim().length<20) failures.push(`${prefix}.rationale must explain why this Remotion mechanism is the best visual explanation.`);
     if (beat.primaryPrimitive==='card' && !(typeof beat.semanticCardReason==='string' && beat.semanticCardReason.trim())) failures.push(`${prefix}: abstract card default is forbidden; semanticCardReason is required.`);
     if (advanced.has(beat.primaryCapability)) advancedBeats+=1;
@@ -60,13 +80,19 @@ export const CAPABILITY_SOURCE_EVIDENCE = {
   'real-capture':['<OffthreadVideo','<Video','<Img','staticFile('],
 };
 
-export const findMissingCapabilityEvidence = (manifest,sourceText) => {
+export const findMissingCapabilityEvidence = (manifest,sourceByFile) => {
   const failures=[];
-  const declared=new Set((manifest?.beats??[]).flatMap((beat)=>beat?.capabilities??[]));
-  for (const capability of declared) {
-    const tokens=CAPABILITY_SOURCE_EVIDENCE[capability];
-    if (!tokens) continue;
-    if (!tokens.some((token)=>sourceText.includes(token))) failures.push(`${capability}: no implementation evidence found in declared sourceFiles (expected one of: ${tokens.join(', ')})`);
+  const sources=sourceByFile instanceof Map?sourceByFile:new Map(Object.entries(sourceByFile??{}));
+  for (const beat of manifest?.beats??[]) {
+    if (!beat || typeof beat!=='object' || !isSafeReelSourceFile(beat.sourceFile)) continue;
+    const sourceText=sources.get(beat.sourceFile)??'';
+    for (const capability of beat.capabilities??[]) {
+      const tokens=CAPABILITY_SOURCE_EVIDENCE[capability];
+      if (!tokens) continue;
+      if (!tokens.some((token)=>sourceText.includes(token))) {
+        failures.push(`${beat.beatId}/${capability}: no implementation evidence found in ${beat.sourceFile} (expected one of: ${tokens.join(', ')})`);
+      }
+    }
   }
   return failures;
 };
