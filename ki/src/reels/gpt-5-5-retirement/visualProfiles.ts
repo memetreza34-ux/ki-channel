@@ -1,0 +1,10 @@
+import type {AuthoredVisualScene} from '../../animation-library/authoredProductionGate';
+
+export const GPT55_VISUAL_PROFILES: readonly AuthoredVisualScene[] = [
+  {sceneId:'gpt55-01',visualId:'gpt55-deadline-gate-v1',fingerprint:{primaryPrimitive:'object',cameraMotion:'push',depthStyle:'pseudo-3d',entryMechanism:'assemble',medium:'remotion-native',direction:'center-out',visualFamily:'deadline-migration',layoutFamily:'track-gate-token',motionSignature:'token-rush-gate-build-gate-slam'}},
+  {sceneId:'gpt55-02',visualId:'gpt55-product-shutdown-v1',fingerprint:{primaryPrimitive:'nodes',cameraMotion:'pull',depthStyle:'layered-2d',entryMechanism:'draw',medium:'remotion-native',direction:'outside-in',visualFamily:'product-routing',layoutFamily:'hub-three-spokes',motionSignature:'routes-draw-nodes-lock-sequence'}},
+  {sceneId:'gpt55-03',visualId:'gpt55-api-exception-v1',fingerprint:{primaryPrimitive:'path',cameraMotion:'pan',depthStyle:'pseudo-3d',entryMechanism:'slide',medium:'remotion-native',direction:'left-to-right',visualFamily:'exception-lanes',layoutFamily:'dual-lane-barrier',motionSignature:'upper-stop-lower-pass-green-confirm'}},
+  {sceneId:'gpt55-04',visualId:'gpt55-codex-migration-v1',fingerprint:{primaryPrimitive:'ui',cameraMotion:'push',depthStyle:'pseudo-3d',entryMechanism:'assemble',medium:'remotion-native',direction:'right-to-left',visualFamily:'terminal-migration',layoutFamily:'terminal-model-slot',motionSignature:'old-chip-eject-arrow-new-chip-dock'}},
+  {sceneId:'gpt55-05',visualId:'gpt55-config-audit-v1',fingerprint:{primaryPrimitive:'mixed',cameraMotion:'pan',depthStyle:'layered-2d',entryMechanism:'draw',medium:'remotion-native',direction:'top-to-bottom',visualFamily:'configuration-audit',layoutFamily:'audit-tree-scanner',motionSignature:'tree-build-scan-hit-check'}},
+  {sceneId:'gpt55-06',visualId:'gpt55-final-verdict-v1',fingerprint:{primaryPrimitive:'chart',cameraMotion:'pull',depthStyle:'pseudo-3d',entryMechanism:'assemble',medium:'remotion-native',direction:'center-out',visualFamily:'retirement-verdict',layoutFamily:'deadline-four-lanes',motionSignature:'deadline-rise-three-close-api-pass-sol-dock'}}
+] as const;

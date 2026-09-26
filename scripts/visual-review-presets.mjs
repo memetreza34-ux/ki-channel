@@ -4,6 +4,11 @@ export const VISUAL_REVIEW_PRESETS = Object.freeze({
     frames: [36, 150, 270, 390, 520, 610, 700, 815, 910, 1010, 1125, 1230, 1340, 1440],
     outputDir: 'ki/reels/2026-09-21_bis_2026-09-27/03_GPT-5-6-welches-ChatGPT-nutzt-du/05-export/visual-review',
   },
+  gpt55: {
+    compositionId: 'KI-Gpt55Retirement',
+    frames: [30, 120, 210, 330, 390, 510, 570, 690, 750, 870, 930, 1050],
+    outputDir: 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review',
+  },
 });
 
 export const getVisualReviewPreset = (name) => {

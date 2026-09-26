@@ -1,0 +1,30 @@
+{
+  "fps": 30,
+  "timingStatus": "PLANNING_ONLY_UNTIL_REAL_AUDIO",
+  "cues": [
+    {"sceneId":"gpt55-01","startFrame":0,"endFrame":60,"text":"Wenn du irgendwo noch GPT-5.5"},
+    {"sceneId":"gpt55-01","startFrame":60,"endFrame":120,"text":"fest eingestellt hast, solltest du"},
+    {"sceneId":"gpt55-01","startFrame":120,"endFrame":180,"text":"vor dem 14. Oktober umstellen."},
+
+    {"sceneId":"gpt55-02","startFrame":180,"endFrame":240,"text":"OpenAI entfernt GPT-5.5 dann"},
+    {"sceneId":"gpt55-02","startFrame":240,"endFrame":300,"text":"aus ChatGPT, ChatGPT Work"},
+    {"sceneId":"gpt55-02","startFrame":300,"endFrame":360,"text":"und Codex – auf allen Plänen."},
+
+    {"sceneId":"gpt55-03","startFrame":360,"endFrame":420,"text":"Die wichtige Ausnahme: Diese Abschaltung"},
+    {"sceneId":"gpt55-03","startFrame":420,"endFrame":480,"text":"gilt ausdrücklich nicht für"},
+    {"sceneId":"gpt55-03","startFrame":480,"endFrame":540,"text":"die OpenAI API."},
+
+    {"sceneId":"gpt55-04","startFrame":540,"endFrame":600,"text":"Für Codex mit ChatGPT-Login"},
+    {"sceneId":"gpt55-04","startFrame":600,"endFrame":660,"text":"sagt OpenAI: Wechsle von GPT-5.5"},
+    {"sceneId":"gpt55-04","startFrame":660,"endFrame":720,"text":"auf GPT-5.6 Sol."},
+
+    {"sceneId":"gpt55-05","startFrame":720,"endFrame":780,"text":"Prüf deshalb Workspace-Defaults, gespeicherte Modell-Einstellungen,"},
+    {"sceneId":"gpt55-05","startFrame":780,"endFrame":840,"text":"Agents, geplante Tasks und Scripts,"},
+    {"sceneId":"gpt55-05","startFrame":840,"endFrame":900,"text":"die noch GPT-5.5 auswählen."},
+
+    {"sceneId":"gpt55-06","startFrame":900,"endFrame":945,"text":"Merke dir den 14. Oktober:"},
+    {"sceneId":"gpt55-06","startFrame":945,"endFrame":990,"text":"ChatGPT, Work und Codex"},
+    {"sceneId":"gpt55-06","startFrame":990,"endFrame":1035,"text":"verlieren GPT-5.5 – die API"},
+    {"sceneId":"gpt55-06","startFrame":1035,"endFrame":1080,"text":"ist von dieser Abschaltung nicht betroffen."}
+  ]
+}
