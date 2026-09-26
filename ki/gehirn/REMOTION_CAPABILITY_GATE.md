@@ -39,6 +39,8 @@ und Bestandteil von:
 node scripts/run-remotion-readiness.mjs
 ```
 
+Neue Reel-Pakete werden bereits durch `scripts/new-ki-reel.mjs` mit einem leeren, absichtlich noch nicht freigabefähigen Capability-Manifest angelegt. Vor `Phase 1 = FERTIG` muss es vollständig ausgefüllt sein.
+
 ## Capability-Palette
 
 Erlaubte Werte:
@@ -69,8 +71,9 @@ Sprecherstelle
 → beste visuelle Mechanik
 → Primary Remotion capability
 → ergänzende Capabilities
+→ konkrete Beat-Source-Datei
 → Source-Build
-→ CI prüft Implementierungsbeleg
+→ CI prüft Implementierungsbeleg in genau dieser Datei
 ```
 
 Die Frage ist nicht: **Welche Komponente ist schon bequem vorhanden?**
@@ -86,27 +89,33 @@ Die Frage ist: **Welche Remotion-Mechanik erklärt diesen Beat sichtbar am beste
 5. Drei gleiche Primary Capabilities hintereinander sind nur bei einem echten fortlaufenden Prozess mit `continuationOfPrevious: true` erlaubt.
 6. `card` als Primary Primitive ist nur erlaubt, wenn die Karte selbst semantisch UI, Dokument, Nachricht, Datei, Datensatz oder Token ist. Dann ist `semanticCardReason` Pflicht.
 7. Eine Capability im JSON zählt nicht als Nutzung. Der Source muss einen echten Implementierungsbeleg enthalten.
+8. Jeder Beat führt `sourceFile`. Dieser Pfad muss zusätzlich in `sourceFiles` stehen.
+9. Erlaubt sind ausschließlich `.ts`/`.tsx`-Dateien unter `ki/src/reels/`.
+10. Absolute Pfade, URLs, `..`-Traversal und Longform-/fremde Source-Verzeichnisse sind nicht als Capability-Nachweis erlaubt.
+11. Capability-Nachweise werden nicht mehr reelweit zusammengeworfen, sondern gegen die dem Beat zugeordnete Source-Datei geprüft.
 
 ## Source-Nachweis
 
-Der Checker liest alle `sourceFiles` aus dem Manifest und sucht echte Implementierungsmarker.
+Der Checker liest die `sourceFiles` aus dem Manifest. Für jeden Beat prüft er nur die dort unter `sourceFile` genannte Reel-Source.
 
-Beispiele:
+Beispiele gültiger konkreter Usage-Marker:
 
 | Capability | gültige Source-Indizien |
 |---|---|
-| `paths` | `@remotion/paths`, `AnimatedDataPath`, `evolvePath`, `getPointAtLength` |
-| `shapes` | `@remotion/shapes`, `ShapeSignal`, `Circle`, `Triangle` |
-| `three` | `@remotion/three`, `ThreeCanvas`, `@react-three/fiber` |
-| `depth-2.5d` | `DepthStage`, echte Perspective/translate3d-Logik |
-| `kinetic-typography` | `KineticType`, `KineticNumber` |
-| `terminal-code` | `TerminalMock`, `CodeDiff`, `CodeEditor` |
-| `data-visualization` | `recharts`, `BenchmarkAxis`, Chart-Komponenten |
-| `object-transformation` | `ObjectTransformation`, `ObjectMorph` |
-| `motion-blur` | `@remotion/motion-blur`, `CameraMotionBlur`, `Trail` |
-| `transitions` | `@remotion/transitions`, `TransitionSeries` |
-| `noise` | `@remotion/noise`, `noise2D`, `noise3D` |
-| `real-capture` | echte Media-Einbettung über `Video`, `Img`, `OffthreadVideo`, `staticFile` |
+| `paths` | `<AnimatedDataPath`, `evolvePath(`, `getPointAtLength(` |
+| `shapes` | `<ShapeSignal`, `<Circle`, `<Triangle`, `makeCircle(`, `makeTriangle(` |
+| `three` | `<ThreeCanvas`, `useThree(`, `useFrame(` |
+| `depth-2.5d` | `<DepthStage`, echte `perspective:`-/`translate3d(`-Logik |
+| `kinetic-typography` | `<KineticType`, `<KineticNumber` |
+| `terminal-code` | `<TerminalMock`, `<CodeDiff`, `<CodeEditor` |
+| `data-visualization` | `<BenchmarkAxis`, `<DataChart`, `<LineChart`, `<BarChart`, `<AreaChart` |
+| `object-transformation` | `<ObjectTransformation`, `<ObjectMorph` |
+| `motion-blur` | `<CameraMotionBlur`, `<Trail` |
+| `transitions` | `<TransitionSeries` |
+| `noise` | `noise2D(`, `noise3D(` |
+| `real-capture` | `<Video`, `<Img`, `<OffthreadVideo`, `staticFile(` |
+
+Ein bloßer Import gilt bewusst nicht als Nachweis. Die Mechanik muss in der zugeordneten Beat-Source tatsächlich verwendet werden.
 
 ## High-Level-Visuals
 
@@ -132,11 +141,15 @@ Diese Komponenten sind Startpunkte, keine Pflichtästhetik. Wenn eine Szene eine
 {
   "version": 1,
   "sourceFiles": [
-    "ki/src/reels/example/Reel.tsx"
+    "ki/src/reels/example/Hook.tsx",
+    "ki/src/reels/example/Speed.tsx",
+    "ki/src/reels/example/Code.tsx",
+    "ki/src/reels/example/Verdict.tsx"
   ],
   "beats": [
     {
       "beatId": "hook",
+      "sourceFile": "ki/src/reels/example/Hook.tsx",
       "isHook": true,
       "isHero": true,
       "primaryCapability": "object-transformation",
@@ -146,6 +159,7 @@ Diese Komponenten sind Startpunkte, keine Pflichtästhetik. Wenn eine Szene eine
     },
     {
       "beatId": "speed",
+      "sourceFile": "ki/src/reels/example/Speed.tsx",
       "primaryCapability": "paths",
       "capabilities": ["paths", "motion-blur"],
       "primaryPrimitive": "path",
@@ -153,6 +167,7 @@ Diese Komponenten sind Startpunkte, keine Pflichtästhetik. Wenn eine Szene eine
     },
     {
       "beatId": "code",
+      "sourceFile": "ki/src/reels/example/Code.tsx",
       "primaryCapability": "terminal-code",
       "capabilities": ["terminal-code", "kinetic-typography"],
       "primaryPrimitive": "code",
@@ -160,6 +175,7 @@ Diese Komponenten sind Startpunkte, keine Pflichtästhetik. Wenn eine Szene eine
     },
     {
       "beatId": "verdict",
+      "sourceFile": "ki/src/reels/example/Verdict.tsx",
       "primaryCapability": "shapes",
       "capabilities": ["shapes", "kinetic-typography"],
       "primaryPrimitive": "shape",
@@ -178,13 +194,15 @@ Primary Remotion capability
 Capability rationale
 ```
 
-Am besten als zusätzliche Spalten im Beat Sheet.
+Der kanonische Reel-Generator legt diese Spalten automatisch im Beat Sheet an.
 
 ## Anti-Missbrauch
 
 Nicht erlaubt:
 
 - Capability nur im Manifest nennen, aber im Source nicht verwenden
+- Capability irgendwo anders im Reel verwenden und damit einen Beat ohne echte Nutzung freischalten
+- fremde oder außerhalb des Repos liegende Dateien als Source-Nachweis referenzieren
 - Three nur als Dekoration einsetzen, wenn 2D die Aussage klarer erklärt
 - Motion Blur über schwache Motion legen
 - Transitions als Effekt-Sammlung
