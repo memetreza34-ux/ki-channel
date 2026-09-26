@@ -2,13 +2,13 @@ name: Remotion Visual Review
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
     paths:
       - 'ki/src/visual-system/**'
       - 'ki/src/reels/gpt-5-6-chatgpt/**'
       - 'ki/src/reels/gpt-5-5-retirement/**'
-      - 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/**'
+      - 'ki/src/reels/claude-opus-5-5/**'
+      - 'ki/reels/2026-09-21_bis_2026-09-27/05_Claude-Opus-5-5-40-Prozent-guenstiger/**'
       - 'scripts/render-visual-contact-sheet.mjs'
       - 'scripts/visual-contact-metrics.mjs'
       - 'scripts/visual-review-presets.mjs'
@@ -40,29 +40,27 @@ jobs:
             label: GPT-5.5 retirement
             report: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/visual-review.json
             sheet: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/contact-sheet.jpg
+          - preset: claude55
+            label: Claude Opus 5.5
+            report: ki/reels/2026-09-21_bis_2026-09-27/05_Claude-Opus-5-5-40-Prozent-guenstiger/05-export/visual-review/visual-review.json
+            sheet: ki/reels/2026-09-21_bis_2026-09-27/05_Claude-Opus-5-5-40-Prozent-guenstiger/05-export/visual-review/contact-sheet.jpg
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install canonical workspaces
         run: npm install $NPM_INSTALL_FLAGS
-
       - name: Verify visual metrics
         run: node --test scripts/__tests__/visual-contact-metrics.test.mjs
-
       - name: Render ${{ matrix.label }} visual contact sheet
         run: node scripts/render-visual-contact-sheet.mjs --preset=${{ matrix.preset }}
-
       - name: Print visual review metrics
         run: cat '${{ matrix.report }}'
-
       - name: Upload visual review artifact when storage is available
         if: always()
         continue-on-error: true
