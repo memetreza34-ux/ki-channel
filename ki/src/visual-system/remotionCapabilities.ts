@@ -32,7 +32,7 @@ export const ADVANCED_REMOTION_CAPABILITIES = [
 ] as const satisfies readonly RemotionCapability[];
 
 export const isSafeRemotionReelSourceFile = (sourceFile: string): boolean => {
-  const normalized = sourceFile.replaceAll('\\', '/');
+  const normalized = sourceFile.replace(/\\/g, '/');
   if (!normalized || normalized.startsWith('/') || normalized.includes('://')) return false;
   if (normalized.split('/').includes('..')) return false;
   return normalized.startsWith('ki/src/reels/') && /\.(?:ts|tsx)$/.test(normalized);
