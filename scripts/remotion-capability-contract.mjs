@@ -68,7 +68,7 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
 export const CAPABILITY_SOURCE_EVIDENCE = {
   paths:['<AnimatedDataPath','evolvePath(','getPointAtLength('],
   shapes:['<ShapeSignal','<Circle','<Triangle','makeCircle(','makeTriangle('],
-  three:['<ThreeCanvas','useThree(','useFrame('],
+  three:['<ThreeCanvas','<mesh','<group','<perspectiveCamera'],
   'depth-2.5d':['<DepthStage','perspective:','translate3d('],
   'kinetic-typography':['<KineticType','<KineticNumber','data-remotion-capability="kinetic-typography"'],
   'terminal-code':['<TerminalMock','<CodeDiff','<CodeEditor'],
