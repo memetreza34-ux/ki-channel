@@ -19,10 +19,10 @@ const valid={
 };
 
 const validSources=new Map([
-  ['ki/src/reels/example/Hook.tsx','<ObjectTransformation fromLabel="A" toLabel="B" x={0} y={0} /><KineticType text="40%" x={0} y={0} />'],
-  ['ki/src/reels/example/Flow.tsx','<AnimatedDataPath path="M0 0 L100 0" x={0} y={0} width={100} height={20} /><Trail layers={4}><div /></Trail>'],
-  ['ki/src/reels/example/Code.tsx','<TerminalMock x={0} y={0} lines={["npm test"]} />'],
-  ['ki/src/reels/example/End.tsx','<ShapeSignal x={0} y={0} /><KineticType text="DONE" x={0} y={0} />'],
+  ['ki/src/reels/example/Hook.tsx','// REMOTION_BEAT: hook\n<ObjectTransformation fromLabel="A" toLabel="B" x={0} y={0} /><KineticType text="40%" x={0} y={0} />'],
+  ['ki/src/reels/example/Flow.tsx','// REMOTION_BEAT: flow\n<AnimatedDataPath path="M0 0 L100 0" x={0} y={0} width={100} height={20} /><Trail layers={4}><div /></Trail>'],
+  ['ki/src/reels/example/Code.tsx','// REMOTION_BEAT: code\n<TerminalMock x={0} y={0} lines={["npm test"]} />'],
+  ['ki/src/reels/example/End.tsx','// REMOTION_BEAT: end\n<ShapeSignal x={0} y={0} /><KineticType text="DONE" x={0} y={0} />'],
 ]);
 
 test('valid capability manifest passes',()=>{
@@ -49,13 +49,43 @@ test('every beat source must be explicitly declared',()=>{
   assert.match(validateRemotionCapabilityManifest(broken).join('\n'),/must also be listed/);
 });
 
-test('source evidence is checked in the source file assigned to the beat',()=>{
+test('source evidence is checked in the source section assigned to the beat',()=>{
   const brokenSources=new Map(validSources);
-  brokenSources.set('ki/src/reels/example/Flow.tsx','const x = 1;');
+  brokenSources.set('ki/src/reels/example/Flow.tsx','// REMOTION_BEAT: flow\nconst x = 1;');
   const failures=findMissingCapabilityEvidence(valid,brokenSources);
   assert.ok(failures.some((failure)=>failure.startsWith('flow/paths:')));
   assert.ok(failures.some((failure)=>failure.startsWith('flow/motion-blur:')));
   assert.ok(!failures.some((failure)=>failure.startsWith('hook/')));
+});
+
+test('a capability elsewhere in the same file cannot satisfy another beat',()=>{
+  const sameFile='ki/src/reels/example/Reel.tsx';
+  const manifest={
+    ...valid,
+    sourceFiles:[sameFile],
+    beats:valid.beats.map((beat)=>({...beat,sourceFile:sameFile})),
+  };
+  const source=`
+// REMOTION_BEAT: hook
+<ObjectTransformation fromLabel="A" toLabel="B" x={0} y={0} /><KineticType text="40%" x={0} y={0} />
+// REMOTION_BEAT: flow
+<div>no path here</div>
+// REMOTION_BEAT: code
+<TerminalMock x={0} y={0} lines={["npm test"]} />
+// REMOTION_BEAT: end
+<ShapeSignal x={0} y={0} /><KineticType text="DONE" x={0} y={0} />
+<AnimatedDataPath path="M0 0 L100 0" x={0} y={0} width={100} height={20} /><Trail layers={4}><div /></Trail>
+`;
+  const failures=findMissingCapabilityEvidence(manifest,new Map([[sameFile,source]]));
+  assert.ok(failures.some((failure)=>failure.startsWith('flow/paths:')));
+  assert.ok(failures.some((failure)=>failure.startsWith('flow/motion-blur:')));
+});
+
+test('missing beat marker is rejected even when the capability exists in the file',()=>{
+  const brokenSources=new Map(validSources);
+  brokenSources.set('ki/src/reels/example/Code.tsx','<TerminalMock x={0} y={0} lines={["npm test"]} />');
+  const failures=findMissingCapabilityEvidence(valid,brokenSources);
+  assert.ok(failures.some((failure)=>failure.startsWith('code: missing source marker')));
 });
 
 test('source evidence recognizes concrete high-level primitive usage per beat',()=>{
