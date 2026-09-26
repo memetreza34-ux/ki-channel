@@ -13,6 +13,8 @@
     "src/motion-system/**/*.ts",
     "src/motion-system/**/*.tsx",
     "src/motion-system/**/*.json",
+    "src/visual-system/**/*.ts",
+    "src/visual-system/**/*.tsx",
     "src/reels/**/*.ts",
     "src/reels/**/*.tsx",
     "src/longform/**/*.ts",
