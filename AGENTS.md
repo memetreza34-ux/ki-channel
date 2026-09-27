@@ -10,6 +10,7 @@ Zusätzlich je nach Aufgabe:
 - Story/Hook → `ki/gehirn/STORY_RETENTION.md`
 - Fakten/Quellen → `ki/gehirn/FAKTENQUELLEN.md`
 - Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
+- neue Reels ab Woche 2026-09-28 → `ki/gehirn/VISUAL_QUALITY_V4.md`
 - Remotion-Visualsystem → `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`
 - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
 
@@ -42,6 +43,7 @@ Creative Brief
 → finaler Sprechertext
 → Visual Beats
 → Visual Strategy
+→ Visual Quality V4 Story-/Hero-Vertrag
 → Remotion-Build-/Shot-Plan
 → Beweis-/Capture-Entscheidung
 → Captions/Plattform-Copy
@@ -57,6 +59,8 @@ V2-Pflichtartefakte unter `06-projektdateien/`:
 - `visual-strategy.md`
 - `creative-review.md`
 - `PHASE-STATUS.md`
+- für neue Reels ab Woche 2026-09-28: `visual-quality-v4.json`
+- `remotion-capabilities-v1.json`
 
 Fehlendes Voiceover-Audio ist in Phase 1 normal und kein Grund, die Code-Grundlage aufzuschieben.
 
@@ -89,8 +93,9 @@ Der Agent:
 - synchronisiert Visual Beats und Captions
 - führt Struktur-, TypeScript- und fokussierte Tests aus
 - rendert/prüft Smoke-Frames
+- führt bei V4-Reels den scene-local Render-Review aus
 - rendert finales MP4
-- prüft technisch **und** kreativ
+- prüft technisch, automatisch visuell **und** menschlich kreativ
 - dokumentiert `creative-review.md`
 
 Fehlt Audio: `PHASE 2 AUDIO FEHLT`.
@@ -108,14 +113,15 @@ Wenn vorhanden, gelten innerhalb des Reels in dieser Reihenfolge:
 5. `01-script-audio/voiceover.md`
 6. `01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt`
 7. `06-projektdateien/visual-strategy.md`
-8. `06-projektdateien/reel.json`
-9. `06-projektdateien/scene-plan.md`, falls vorhanden
-10. `06-projektdateien/animation-plan.md`
-11. `03-caption/subtitle-cues.json`
-12. `03-caption/platform-copy.md`
-13. `02-bilder/asset-manifest.json`
-14. echte Capture-/Quellen-Briefs
-15. `06-projektdateien/creative-review.md`
+8. `06-projektdateien/visual-quality-v4.json`, falls V4-Reel
+9. `06-projektdateien/reel.json`
+10. `06-projektdateien/scene-plan.md`, falls vorhanden
+11. `06-projektdateien/animation-plan.md`
+12. `03-caption/subtitle-cues.json`
+13. `03-caption/platform-copy.md`
+14. `02-bilder/asset-manifest.json`
+15. echte Capture-/Quellen-Briefs
+16. `06-projektdateien/creative-review.md`
 
 Widersprüche nicht still auflösen. Höher priorisierte Quelle erhalten und Konflikt an der Ursache korrigieren.
 
@@ -155,9 +161,19 @@ Keine Demo-Zahl als Fakt darstellen. Keine erfundene real wirkende Quelle.
 
 ## Visual Strategy — Remotion ist die Ausführungsebene
 
-`ki/gehirn/VISUAL_STRATEGY.md` entscheidet vor der technischen Implementierung. `ki/gehirn/REMOTION_VISUAL_SYSTEM.md` definiert den Bauweg.
+`ki/gehirn/VISUAL_STRATEGY.md` entscheidet vor der technischen Implementierung. `ki/gehirn/VISUAL_QUALITY_V4.md` macht die Visual-Story für neue Reels maschinenprüfbar. `ki/gehirn/REMOTION_VISUAL_SYSTEM.md` definiert danach den Bauweg.
 
 **Verbindlich:** Jeder finale Reel-Frame wird in Remotion komponiert und gerendert.
+
+Für neue V4-Reels gilt pro Szene vor Capability-Auswahl zwingend:
+
+```text
+Startzustand
+→ sichtbare Veränderung
+→ Endzustand / Payoff
+```
+
+Zusätzlich braucht der Hero eine konkrete semantische Bedeutung und mindestens zwei Recognition Cues. Eine große abstrakte Form oder ein bloß animiertes Rechteck erfüllt den Hero-Vertrag nicht, wenn ein konkretes Gerät/Objekt gemeint ist.
 
 Für die Beweis-/Quellenebene bleibt die Wahrheit entscheidend:
 
@@ -218,6 +234,8 @@ Neue Reels sollen normalerweise:
 - Gruppen sinnvoll staffeln statt alles gleichzeitig einzublenden
 - Bewegungsgeschwindigkeit an Distanz/Objektgewicht anpassen
 - keine vollständige Library-Animation mehrfach im selben Reel nur aus Bequemlichkeit
+- Hook-Hero bei V4 bereits in Frame 0 sichtbar; kein Fade-from-empty als Einstieg
+- unbegründeter statischer Hold bei V4 maximal ungefähr 2,5 Sekunden
 
 Motion-Grundlagen liegen unter `.claude/skills/` und `ki/gehirn/BEWEGUNG.md`.
 
@@ -255,6 +273,14 @@ Zeitabhängige Plattformlimits/Monetarisierungsregeln bei konkreter Veröffentli
 
 ## QA-Regel
 
+V4 trennt drei Freigaben strikt:
+
+```text
+Technical status
+Automated Visual status
+Human Creative status
+```
+
 Technische QA:
 
 - Strukturvertrag
@@ -265,6 +291,15 @@ Technische QA:
 - Render-Validierung
 - Safe Zones
 
+Automated Visual QA bei V4:
+
+- Frame 0 / Hook-Start
+- scene-local Samples bei ungefähr 5/33/66/92%
+- Start-End-Visualänderung
+- statische Holds
+- ausgewaschene/unterbaute Frames
+- tatsächlicher Visual-Footprint
+
 Creative QA:
 
 - Hook
@@ -272,6 +307,7 @@ Creative QA:
 - visuelle Wiederholung
 - Kartenlastigkeit
 - sichtbaren Mechanismus
+- semantische Erkennbarkeit des Hero
 - Memorable Moment
 - Smartphone-Eindruck
 - Faktenwirkung sichtbarer Zahlen/Claims
@@ -280,11 +316,12 @@ Creative QA:
 
 Verbindlich:
 
+- `ki/gehirn/VISUAL_QUALITY_V4.md` für neue Reels ab Woche 2026-09-28
 - `ki/gehirn/POST_RENDER_REVIEW.md`
 - `ki/gehirn/CREATIVE_QA.md`
 - V2: `06-projektdateien/creative-review.md` = PASS
 
-Ein technisch gültiges MP4 ist nicht automatisch freigegeben.
+**Automated Visual PASS ist niemals Human Creative PASS.** Ein technisch gültiges MP4 oder ein grüner CI-Lauf ist nicht automatisch freigegeben.
 
 ## Wahrheitspflicht
 
