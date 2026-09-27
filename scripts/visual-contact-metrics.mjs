@@ -69,6 +69,48 @@ export const meanChroma = (buffer, channels = 4) => {
   return pixels === 0 ? 0 : total / pixels;
 };
 
+export const activeVisualCellRatio = (buffer, width, height, channels = 4, {columns = 6, rows = 8} = {}) => {
+  if (!Buffer.isBuffer(buffer) || width <= 1 || height <= 1) return 0;
+  const stride = Math.max(3, channels);
+  const luminanceAt = (x, y) => {
+    const index = (y * width + x) * stride;
+    return 0.2126 * buffer[index] + 0.7152 * buffer[index + 1] + 0.0722 * buffer[index + 2];
+  };
+  let active = 0;
+  let cells = 0;
+  for (let row = 0; row < rows; row += 1) {
+    const y0 = Math.floor(row * height / rows);
+    const y1 = Math.max(y0 + 1, Math.floor((row + 1) * height / rows));
+    for (let column = 0; column < columns; column += 1) {
+      const x0 = Math.floor(column * width / columns);
+      const x1 = Math.max(x0 + 1, Math.floor((column + 1) * width / columns));
+      let min = 255;
+      let max = 0;
+      let localEdges = 0;
+      let comparisons = 0;
+      for (let y = y0; y < y1; y += 2) {
+        for (let x = x0; x < x1; x += 2) {
+          const current = luminanceAt(x, y);
+          min = Math.min(min, current);
+          max = Math.max(max, current);
+          if (x + 2 < x1) {
+            comparisons += 1;
+            if (Math.abs(current - luminanceAt(x + 2, y)) >= 26) localEdges += 1;
+          }
+          if (y + 2 < y1) {
+            comparisons += 1;
+            if (Math.abs(current - luminanceAt(x, y + 2)) >= 26) localEdges += 1;
+          }
+        }
+      }
+      const localEdgeRatio = comparisons === 0 ? 0 : localEdges / comparisons;
+      if ((max - min) >= 30 || localEdgeRatio >= 0.045) active += 1;
+      cells += 1;
+    }
+  }
+  return cells === 0 ? 0 : active / cells;
+};
+
 export const classifyVisualFrame = ({whiteRatio, edgeRatio, luminanceDeviation, chroma}) => {
   const warnings = [];
   if (whiteRatio > 0.9) warnings.push('VERY_HIGH_WHITESPACE');
@@ -78,6 +120,13 @@ export const classifyVisualFrame = ({whiteRatio, edgeRatio, luminanceDeviation, 
   if (Number.isFinite(luminanceDeviation) && luminanceDeviation < 24 && whiteRatio > 0.58) warnings.push('LOW_CONTRAST_WASHED_OUT');
   if (Number.isFinite(chroma) && chroma < 10 && whiteRatio > 0.68) warnings.push('VERY_LOW_COLOR_SEPARATION');
   return warnings;
+};
+
+export const classifyVisualFrameV4 = ({whiteRatio, edgeRatio, luminanceDeviation, chroma, activeCellRatio}) => {
+  const warnings = classifyVisualFrame({whiteRatio, edgeRatio, luminanceDeviation, chroma});
+  if (activeCellRatio < 0.08 && edgeRatio < 0.012) warnings.push('EMPTY_OR_UNDERBUILT_FRAME');
+  else if (activeCellRatio < 0.16 && edgeRatio < 0.02) warnings.push('SMALL_VISUAL_FOOTPRINT');
+  return [...new Set(warnings)];
 };
 
 export const classifyFramePair = (difference) => {
