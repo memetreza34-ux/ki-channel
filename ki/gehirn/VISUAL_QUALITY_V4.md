@@ -121,12 +121,16 @@ Stillness ist erlaubt, wenn sie Bedeutung trägt. Sie ist nicht erlaubt, um fehl
 
 V3 sammelte repräsentative globale Frames. V4 prüft zusätzlich jede einzelne Szene lokal.
 
-Standard-Samples pro Szene:
+Standard-Samples pro Szene liegen ungefähr bei:
 
-- ca. 5%
-- ca. 33%
-- ca. 66%
-- ca. 92%
+- 4%
+- 22%
+- 40%
+- 58%
+- 76%
+- 95%
+
+Sechs Samples halten die blinden Intervalle klein genug, damit mehrsekündige Holds wesentlich schwerer zwischen Prüfframes verschwinden.
 
 Hook zusätzlich:
 
