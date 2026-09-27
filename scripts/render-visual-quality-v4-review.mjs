@@ -46,7 +46,9 @@ const run = (command, commandArgs, label) => new Promise((resolvePromise, reject
 const clampFrame = (value) => Math.max(0, Math.round(value));
 const uniqueSorted = (values) => [...new Set(values.map(clampFrame))].sort((a, b) => a - b);
 const earlyHookFrames = uniqueSorted([0, manifest.fps * 0.2, manifest.fps * 0.5, manifest.fps]);
-const sceneProgresses = [0.05, 0.33, 0.66, 0.92];
+// Six local samples keep the largest blind interval near ~20% of a scene,
+// making multi-second holds much harder to hide between review frames.
+const sceneProgresses = [0.04, 0.22, 0.4, 0.58, 0.76, 0.95];
 const sceneFrameMap = new Map();
 for (const scene of manifest.scenes) {
   const last = Math.max(0, scene.durationFrames - 1);
