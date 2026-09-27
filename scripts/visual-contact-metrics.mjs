@@ -72,10 +72,15 @@ export const meanChroma = (buffer, channels = 4) => {
 export const activeVisualCellRatio = (buffer, width, height, channels = 4, {columns = 6, rows = 8} = {}) => {
   if (!Buffer.isBuffer(buffer) || width <= 1 || height <= 1) return 0;
   const stride = Math.max(3, channels);
-  const luminanceAt = (x, y) => {
+  const rgbAt = (x, y) => {
     const index = (y * width + x) * stride;
-    return 0.2126 * buffer[index] + 0.7152 * buffer[index + 1] + 0.0722 * buffer[index + 2];
+    return [buffer[index], buffer[index + 1], buffer[index + 2]];
   };
+  const luminance = (rgb) => 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  const corners = [rgbAt(0, 0), rgbAt(width - 1, 0), rgbAt(0, height - 1), rgbAt(width - 1, height - 1)];
+  const background = [0, 1, 2].map((channel) => corners.reduce((sum, rgb) => sum + rgb[channel], 0) / corners.length);
+  const colorDistance = (rgb) => Math.sqrt((rgb[0] - background[0]) ** 2 + (rgb[1] - background[1]) ** 2 + (rgb[2] - background[2]) ** 2);
+
   let active = 0;
   let cells = 0;
   for (let row = 0; row < rows; row += 1) {
@@ -84,27 +89,35 @@ export const activeVisualCellRatio = (buffer, width, height, channels = 4, {colu
     for (let column = 0; column < columns; column += 1) {
       const x0 = Math.floor(column * width / columns);
       const x1 = Math.max(x0 + 1, Math.floor((column + 1) * width / columns));
-      let min = 255;
-      let max = 0;
+      let minLuma = 255;
+      let maxLuma = 0;
       let localEdges = 0;
       let comparisons = 0;
+      let sumR = 0;
+      let sumG = 0;
+      let sumB = 0;
+      let samples = 0;
       for (let y = y0; y < y1; y += 2) {
         for (let x = x0; x < x1; x += 2) {
-          const current = luminanceAt(x, y);
-          min = Math.min(min, current);
-          max = Math.max(max, current);
+          const rgb = rgbAt(x, y);
+          const current = luminance(rgb);
+          minLuma = Math.min(minLuma, current);
+          maxLuma = Math.max(maxLuma, current);
+          sumR += rgb[0]; sumG += rgb[1]; sumB += rgb[2]; samples += 1;
           if (x + 2 < x1) {
             comparisons += 1;
-            if (Math.abs(current - luminanceAt(x + 2, y)) >= 26) localEdges += 1;
+            if (Math.abs(current - luminance(rgbAt(x + 2, y))) >= 26) localEdges += 1;
           }
           if (y + 2 < y1) {
             comparisons += 1;
-            if (Math.abs(current - luminanceAt(x, y + 2)) >= 26) localEdges += 1;
+            if (Math.abs(current - luminance(rgbAt(x, y + 2))) >= 26) localEdges += 1;
           }
         }
       }
       const localEdgeRatio = comparisons === 0 ? 0 : localEdges / comparisons;
-      if ((max - min) >= 30 || localEdgeRatio >= 0.045) active += 1;
+      const meanRgb = samples === 0 ? background : [sumR / samples, sumG / samples, sumB / samples];
+      const differsFromBackground = colorDistance(meanRgb) >= 34;
+      if (differsFromBackground || (maxLuma - minLuma) >= 30 || localEdgeRatio >= 0.045) active += 1;
       cells += 1;
     }
   }
@@ -124,7 +137,7 @@ export const classifyVisualFrame = ({whiteRatio, edgeRatio, luminanceDeviation, 
 
 export const classifyVisualFrameV4 = ({whiteRatio, edgeRatio, luminanceDeviation, chroma, activeCellRatio}) => {
   const warnings = classifyVisualFrame({whiteRatio, edgeRatio, luminanceDeviation, chroma});
-  if (activeCellRatio < 0.08 && edgeRatio < 0.012) warnings.push('EMPTY_OR_UNDERBUILT_FRAME');
+  if ((activeCellRatio < 0.08 && edgeRatio < 0.012) || (edgeRatio < 0.006 && luminanceDeviation < 18)) warnings.push('EMPTY_OR_UNDERBUILT_FRAME');
   else if (activeCellRatio < 0.16 && edgeRatio < 0.02) warnings.push('SMALL_VISUAL_FOOTPRINT');
   return [...new Set(warnings)];
 };
