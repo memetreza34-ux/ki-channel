@@ -322,6 +322,17 @@ Die Outputs liegen unter:
 └── frames/
 ```
 
+### CI-Infrastrukturfehler nicht mit Codefehler verwechseln
+
+Wenn ein GitHub-Actions-Job bereits vor dem ersten Step endet (`steps: []`) und keine Logs erzeugt, ist das **kein verwertbares Code-Testresultat**.
+
+Dann gilt:
+
+1. einmal neu ausführen oder durch einen sachlich sinnvollen kleinen Commit neu triggern,
+2. erst bei tatsächlich gestarteten Steps das Ergebnis als PASS/FAIL bewerten,
+3. einen V4-System-PR nicht allein aufgrund eines `steps: []`-Runs mergen,
+4. aber einen solchen Infrastrukturfehler auch nicht als Visual-/Code-Failure dokumentieren.
+
 ---
 
 ## 10. Was V4 konkret verhindern soll
