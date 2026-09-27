@@ -337,7 +337,7 @@ Mindestens formatbezogen prüfen:
 - keine ungrounded Werte
 - Source Ledger Rechecks
 - Visual-Safe-Zones über echte Smoke-Frames
-- V4: Frame 0 + scene-local Samples bei ungefähr 5/33/66/92%
+- V4: Frame 0 + mehrere scene-local Samples über die gesamte Szene; exakte Positionen stehen in `VISUAL_QUALITY_V4.md`
 - V4: tatsächliche Start-End-Änderung, Visual-Footprint, Kontrast und statische Holds
 - Diversity-/Fingerprint-Warnungen
 - Production-Root-/Entry-Isolation
