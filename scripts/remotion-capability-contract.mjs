@@ -1,7 +1,7 @@
 import ts from 'typescript';
 
 export const REMOTION_CAPABILITIES = [
-  'react-svg-css','paths','shapes','three','depth-2.5d','kinetic-typography','terminal-code','data-visualization','object-transformation','motion-blur','transitions','noise','real-capture',
+  'react-svg-css','paths','shapes','three','depth-2.5d','kinetic-typography','terminal-code','data-visualization','object-transformation','motion-blur','transitions','noise','real-capture','lottie','rive',
 ];
 
 const capabilities = new Set(REMOTION_CAPABILITIES);
@@ -81,7 +81,9 @@ const CAPABILITY_AST_EVIDENCE = {
   'motion-blur':{jsx:['CameraMotionBlur','Trail'],calls:[]},
   transitions:{jsx:['TransitionSeries'],calls:[]},
   noise:{jsx:[],calls:['noise2D','noise3D']},
-  'real-capture':{jsx:['OffthreadVideo','Video','Img'],calls:[]},
+  'real-capture':{jsx:['OffthreadVideo','Video','Img','CanvasImage'],calls:[]},
+  lottie:{jsx:['Lottie'],calls:[]},
+  rive:{jsx:['RemotionRiveCanvas'],calls:[]},
 };
 
 const getBeatSourceSlice = (sourceText,beatId) => {
