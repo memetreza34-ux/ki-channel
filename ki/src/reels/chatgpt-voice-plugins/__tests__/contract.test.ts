@@ -11,7 +11,7 @@ describe('ChatGPT Voice plugins reel contract',()=>{
     for(let i=1;i<VOICE_PLUGIN_SCENES.length;i+=1){
       expect(VOICE_PLUGIN_SCENES[i].from).toBe(VOICE_PLUGIN_SCENES[i-1].from+VOICE_PLUGIN_SCENES[i-1].duration);
     }
-    const last=VOICE_PLUGIN_SCENES.at(-1)!;
+    const last=VOICE_PLUGIN_SCENES[VOICE_PLUGIN_SCENES.length-1];
     expect(last.from+last.duration).toBe(VOICE_PLUGINS_DURATION_IN_FRAMES);
   });
 
