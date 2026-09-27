@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import {access,readdir,readFile} from 'node:fs/promises';
 import {isAbsolute,resolve,relative} from 'node:path';
-import {futureReelNeedsV3} from './visual-quality-v3-contract.mjs';
 import {findMissingCapabilityEvidence,isSafeReelSourceFile,validateRemotionCapabilityManifest} from './remotion-capability-contract.mjs';
 
 const root=resolve('.');
@@ -16,11 +15,22 @@ const phase1Finished=(text)=>{
   return /\*\*Status:\*\*\s*FERTIG\b/i.test(block) || /\*\*FERTIG(?:\s*\/[^*]+)?\*\*/i.test(block);
 };
 
+// Capability enforcement has its own permanent threshold. Do not couple it to
+// the active Visual Quality generation (V3/V4), otherwise a visual-contract
+// handoff could silently disable real Remotion usage checks for future reels.
+const futureReelNeedsCapabilityGate=(weekName,reelName)=>{
+  const weekStart=String(weekName).slice(0,10);
+  if (weekStart>'2026-09-21') return true;
+  if (weekStart<'2026-09-21') return false;
+  const index=Number(String(reelName).match(/^(\d{2})_/)?.[1]??0);
+  return index>=5;
+};
+
 for (const week of await readdir(reelsRoot,{withFileTypes:true})) {
   if (!week.isDirectory() || !/^\d{4}-\d{2}-\d{2}_bis_/.test(week.name)) continue;
   const weekRoot=resolve(reelsRoot,week.name);
   for (const reel of await readdir(weekRoot,{withFileTypes:true})) {
-    if (!reel.isDirectory() || !/^\d{2}_.+/.test(reel.name) || !futureReelNeedsV3(week.name,reel.name)) continue;
+    if (!reel.isDirectory() || !/^\d{2}_.+/.test(reel.name) || !futureReelNeedsCapabilityGate(week.name,reel.name)) continue;
     const project=resolve(weekRoot,reel.name,'06-projektdateien');
     const phase=await read(resolve(project,'PHASE-STATUS.md'));
     if (!phase1Finished(phase)) continue;
