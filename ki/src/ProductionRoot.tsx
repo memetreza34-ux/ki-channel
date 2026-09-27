@@ -57,6 +57,14 @@ import {
   ReelGpt55Retirement,
 } from './reels/gpt-5-5-retirement';
 import {
+  VOICE_PLUGINS_COMPOSITION_ID,
+  VOICE_PLUGINS_DURATION_IN_FRAMES,
+  VOICE_PLUGINS_FPS,
+  VOICE_PLUGINS_HEIGHT,
+  VOICE_PLUGINS_WIDTH,
+  ReelChatGPTVoicePlugins,
+} from './reels/chatgpt-voice-plugins';
+import {
   AI_AGENTS_COMPOSITION_ID,
   AI_AGENTS_DURATION_IN_FRAMES,
   AI_AGENTS_FPS,
@@ -125,6 +133,7 @@ export const ProductionRoot: React.FC = () => (
       <Composition id={PDF_RETRIEVAL_COMPOSITION_ID} component={ReelPdfRetrieval} defaultProps={{showCaptions: true}} durationInFrames={PDF_RETRIEVAL_DURATION_IN_FRAMES} fps={PDF_RETRIEVAL_FPS} width={PDF_RETRIEVAL_WIDTH} height={PDF_RETRIEVAL_HEIGHT}/>
       <Composition id={GPT56_COMPOSITION_ID} component={ReelGpt56ChatGPT} defaultProps={{showCaptions: true}} durationInFrames={GPT56_DURATION_IN_FRAMES} fps={GPT56_FPS} width={GPT56_WIDTH} height={GPT56_HEIGHT}/>
       <Composition id={GPT55_COMPOSITION_ID} component={ReelGpt55Retirement} defaultProps={{showCaptions: true}} durationInFrames={GPT55_DURATION_IN_FRAMES} fps={GPT55_FPS} width={GPT55_WIDTH} height={GPT55_HEIGHT}/>
+      <Composition id={VOICE_PLUGINS_COMPOSITION_ID} component={ReelChatGPTVoicePlugins} defaultProps={{showCaptions: true}} durationInFrames={VOICE_PLUGINS_DURATION_IN_FRAMES} fps={VOICE_PLUGINS_FPS} width={VOICE_PLUGINS_WIDTH} height={VOICE_PLUGINS_HEIGHT}/>
       <Composition id={AI_AGENTS_COMPOSITION_ID} component={ReelAIAgents} defaultProps={{showCaptions: true}} durationInFrames={AI_AGENTS_DURATION_IN_FRAMES} fps={AI_AGENTS_FPS} width={AI_AGENTS_WIDTH} height={AI_AGENTS_HEIGHT}/>
       <Composition id={AI_APP_COMPOSITION_ID} component={ReelAIAppPrototype} defaultProps={{showCaptions: true}} durationInFrames={AI_APP_DURATION_IN_FRAMES} fps={AI_APP_FPS} width={AI_APP_WIDTH} height={AI_APP_HEIGHT}/>
       <Composition id={AI_PRODUCT_AD_COMPOSITION_ID} component={ReelAIProductAd} defaultProps={{showCaptions: true}} durationInFrames={AI_PRODUCT_AD_DURATION_IN_FRAMES} fps={AI_PRODUCT_AD_FPS} width={AI_PRODUCT_AD_WIDTH} height={AI_PRODUCT_AD_HEIGHT}/>
