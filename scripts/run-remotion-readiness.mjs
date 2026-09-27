@@ -23,6 +23,7 @@ const steps = [
   ['node', ['--check', 'scripts/check-remotion-capabilities.mjs'], 'Remotion capability gate script syntax'],
   ['node', ['--check', 'scripts/remotion-capability-contract.mjs'], 'Remotion capability contract syntax'],
   ['node', ['--test', 'scripts/__tests__/new-ki-reel-capability-template.test.mjs'], 'New reel V3/capability wiring tests'],
+  ['node', ['--test', 'scripts/__tests__/remotion-skill-matrix.test.mjs'], 'Remotion skill/package/capability matrix tests'],
   ['node', ['--test', 'scripts/__tests__/reel-word-sync.test.mjs'], 'Exact word-sync unit tests'],
   ['node', ['--test', 'scripts/__tests__/visual-contact-metrics.test.mjs'], 'Visual contact-sheet metric tests'],
   ['node', ['--test', 'scripts/__tests__/visual-quality-v3-contract.test.mjs'], 'Visual Quality V3 contract tests'],
@@ -41,6 +42,7 @@ try {
   for (const [command, args, label] of steps) await run(command, args, label);
   console.log('\nREMOTION READINESS: PASS');
   console.log('New reel V3/capability template wiring: PASS');
+  console.log('Remotion skill/package/capability matrix: PASS');
   console.log('Caption geometry contract: PASS');
   console.log('Visual Quality V3 future-reel gate: PASS');
   console.log('Remotion capability implementation gate: PASS');
