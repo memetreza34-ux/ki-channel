@@ -29,6 +29,7 @@ const steps = [
   ['node', ['--check', 'scripts/remotion-capability-contract.mjs'], 'Remotion capability contract syntax'],
   ['node', ['--test', 'scripts/__tests__/new-ki-reel-capability-template.test.mjs'], 'New reel V4/capability wiring tests'],
   ['node', ['--test', 'scripts/__tests__/remotion-skill-matrix.test.mjs'], 'Remotion skill/package/capability matrix tests'],
+  ['node', ['--test', 'scripts/__tests__/remotion-capability-threshold.test.mjs'], 'Remotion capability V3/V4 threshold regression test'],
   ['node', ['--test', 'scripts/__tests__/reel-word-sync.test.mjs'], 'Exact word-sync unit tests'],
   ['node', ['--test', 'scripts/__tests__/visual-contact-metrics.test.mjs'], 'Visual contact-sheet metric tests'],
   ['node', ['--test', 'scripts/__tests__/visual-contact-metrics-v4.test.mjs'], 'Visual Quality V4 footprint metric tests'],
@@ -52,6 +53,7 @@ try {
   console.log('\nREMOTION READINESS: PASS');
   console.log('New reel V4/capability template wiring: PASS');
   console.log('Remotion skill/package/capability matrix: PASS');
+  console.log('Remotion capability threshold across V3/V4: PASS');
   console.log('Caption geometry contract: PASS');
   console.log('Visual Quality V3 legacy gate: PASS');
   console.log('Visual Quality V4 story/semantic gate: PASS');
