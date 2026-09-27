@@ -103,3 +103,29 @@ test('missing beat marker is rejected even when the capability exists in the fil
 test('source evidence recognizes concrete high-level primitive usage per beat',()=>{
   assert.deepEqual(findMissingCapabilityEvidence(valid,validSources),[]);
 });
+
+test('Lottie is accepted only with executable Lottie JSX in the beat section',()=>{
+  const manifest={
+    ...valid,
+    beats:valid.beats.map((beat,index)=>index===3?{...beat,primaryCapability:'lottie',capabilities:['lottie'],primaryPrimitive:'animation',rationale:'A real authored Lottie asset is the semantic hero motion for this beat and is intentionally embedded in Remotion.'}:beat),
+  };
+  const sources=new Map(validSources);
+  sources.set('ki/src/reels/example/End.tsx','// REMOTION_BEAT: end\n<Lottie animationData={animationData} />');
+  assert.deepEqual(findMissingCapabilityEvidence(manifest,sources),[]);
+
+  sources.set('ki/src/reels/example/End.tsx','// REMOTION_BEAT: end\nconst note = "<Lottie />";');
+  assert.ok(findMissingCapabilityEvidence(manifest,sources).some((failure)=>failure.startsWith('end/lottie:')));
+});
+
+test('Rive is accepted only with executable RemotionRiveCanvas JSX in the beat section',()=>{
+  const manifest={
+    ...valid,
+    beats:valid.beats.map((beat,index)=>index===3?{...beat,primaryCapability:'rive',capabilities:['rive'],primaryPrimitive:'animation',rationale:'A real authored Rive asset carries the state-machine animation for this beat and is rendered through Remotion.'}:beat),
+  };
+  const sources=new Map(validSources);
+  sources.set('ki/src/reels/example/End.tsx','// REMOTION_BEAT: end\n<RemotionRiveCanvas src={riveAsset} />');
+  assert.deepEqual(findMissingCapabilityEvidence(manifest,sources),[]);
+
+  sources.set('ki/src/reels/example/End.tsx','// REMOTION_BEAT: end\n// <RemotionRiveCanvas src={riveAsset} />\n<div />');
+  assert.ok(findMissingCapabilityEvidence(manifest,sources).some((failure)=>failure.startsWith('end/rive:')));
+});
