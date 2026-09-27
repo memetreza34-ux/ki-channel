@@ -24,6 +24,18 @@ describe('assertRemotionCapabilityPlan', () => {
     expect(() => assertRemotionCapabilityPlan(validPlan)).not.toThrow();
   });
 
+  it('accepts Lottie and Rive as explicit visual capabilities', () => {
+    const plan: RemotionCapabilityPlan = {
+      ...validPlan,
+      beats: validPlan.beats.map((beat,index)=>{
+        if (index===2) return {...beat,primaryCapability:'lottie',capabilities:['lottie'],primaryPrimitive:'animation',rationale:'A real authored Lottie animation is the semantic motion object for this beat and is rendered directly in Remotion.'};
+        if (index===3) return {...beat,primaryCapability:'rive',capabilities:['rive'],primaryPrimitive:'animation',rationale:'A real Rive state animation is the semantic motion object for this beat and is rendered directly in Remotion.'};
+        return beat;
+      }),
+    };
+    expect(() => assertRemotionCapabilityPlan(plan)).not.toThrow();
+  });
+
   it('rejects an abstract card without semantic reason', () => {
     const broken: RemotionCapabilityPlan = {
       ...validPlan,
