@@ -294,7 +294,7 @@ Technische QA:
 Automated Visual QA bei V4:
 
 - Frame 0 / Hook-Start
-- scene-local Samples bei ungefähr 5/33/66/92%
+- mehrere scene-local Samples über die gesamte Szene; exakte kanonische Positionen stehen in `ki/gehirn/VISUAL_QUALITY_V4.md` und im Renderer
 - Start-End-Visualänderung
 - statische Holds
 - ausgewaschene/unterbaute Frames
