@@ -224,6 +224,34 @@ Kurzfassung:
 - Hook darf nicht nur `react-svg-css` sein
 - mindestens ein Hero-/Memorable-Beat
 
+### Visual Fingerprint
+
+Capability-Vielfalt allein reicht nicht. Zusätzlich bleibt der **Visual Fingerprint** pro Beat relevant.
+
+Mindestens betrachten:
+
+```text
+primaryPrimitive
+cameraMotion
+depthStyle
+entryMechanism
+medium
+direction
+visualFamily
+layoutFamily
+motionSignature
+```
+
+Nicht ausreichend:
+
+```text
+Card + locked + flat + slide
+Card + locked + flat + fade-slide
+Card + locked + flat + scale-slide
+```
+
+Verschiedene `animationId` oder verschiedene Capability-Namen machen eine Szene nicht automatisch visuell verschieden. Die wahrnehmbare Grammatik muss sich sinnvoll unterscheiden.
+
 ---
 
 ## 7. Markup-Regeln aus dem Remotion-Skill
