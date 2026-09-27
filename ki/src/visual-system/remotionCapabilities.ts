@@ -12,10 +12,20 @@ export const REMOTION_CAPABILITIES = [
   'transitions',
   'noise',
   'real-capture',
+  'lottie',
+  'rive',
 ] as const;
 
 export type RemotionCapability = (typeof REMOTION_CAPABILITIES)[number];
 
+/**
+ * Capabilities that may count toward the "advanced visual" quota.
+ *
+ * Utility/workflow skills such as captions, Studio, rendering, docs, multimedia
+ * metadata, upgrades and SaaS architecture deliberately do not live here: they
+ * are useful Remotion skills, but they are not a semantic visual mechanism for a
+ * beat and therefore must never inflate the visual-quality score.
+ */
 export const ADVANCED_REMOTION_CAPABILITIES = [
   'paths',
   'shapes',
@@ -29,6 +39,8 @@ export const ADVANCED_REMOTION_CAPABILITIES = [
   'transitions',
   'noise',
   'real-capture',
+  'lottie',
+  'rive',
 ] as const satisfies readonly RemotionCapability[];
 
 export const isSafeRemotionReelSourceFile = (sourceFile: string): boolean => {
@@ -46,7 +58,7 @@ export type RemotionCapabilityBeat = {
   continuationOfPrevious?: boolean;
   primaryCapability: RemotionCapability;
   capabilities: readonly RemotionCapability[];
-  primaryPrimitive: 'object' | 'path' | 'shape' | 'space' | 'code' | 'chart' | 'capture' | 'typography' | 'ui' | 'card';
+  primaryPrimitive: 'object' | 'path' | 'shape' | 'space' | 'code' | 'chart' | 'capture' | 'typography' | 'ui' | 'animation' | 'card';
   rationale: string;
   semanticCardReason?: string;
 };
