@@ -1,6 +1,8 @@
-# Visual Quality V3 — Pflicht für neue KI-Reels
+# Visual Quality V3 — Legacy-Gate für ältere KI-Reels
 
-Ab **Reel 05 der Woche 2026-09-21** und für alle späteren Wochen gilt zusätzlich zum V2-Produktionsvertrag dieses Gate.
+> **Ab Woche 2026-09-28 gilt für neue Reels `VISUAL_QUALITY_V4.md`.** V3 bleibt für ältere Reels erhalten und wird nicht rückwirkend entfernt.
+
+Ab **Reel 05 der Woche 2026-09-21** bis einschließlich Woche **2026-09-21_bis_2026-09-27** gilt zusätzlich zum V2-Produktionsvertrag dieses Gate.
 
 Ziel: Ein Reel darf nicht mehr technisch grün sein und trotzdem wie eine leere Präsentation wirken.
 
@@ -81,7 +83,7 @@ Der Editorial-Light-Look bleibt, aber nicht alles darf Pastell sein.
 
 ## 6. Visual Quality Manifest
 
-Jedes neue Phase-1-fertige Reel braucht:
+Jedes V3-Reel braucht:
 
 `06-projektdateien/visual-quality-v3.json`
 
