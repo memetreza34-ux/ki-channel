@@ -43,6 +43,7 @@ export const validateVisualQualityV3Manifest=(manifest,{label='visual-quality-v3
 
 export const futureReelNeedsV3=(weekName,reelName)=>{
   const weekStart=String(weekName).slice(0,10);
+  if (weekStart>='2026-09-28') return false;
   if (weekStart>'2026-09-21') return true;
   if (weekStart<'2026-09-21') return false;
   const index=Number(String(reelName).match(/^(\d{2})_/)?.[1]??0);

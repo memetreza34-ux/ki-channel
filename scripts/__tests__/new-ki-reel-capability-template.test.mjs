@@ -12,7 +12,7 @@ const generator=resolve(repoRoot,'scripts','new-ki-reel.mjs');
 
 const read=async(path)=>readFile(path,'utf8');
 
-test('new reel generator wires Visual Quality V3 and Remotion Capability Gate by default',async()=>{
+test('new reel generator wires Visual Quality V4 and Remotion Capability Gate by default',async()=>{
   const cwd=await mkdtemp(resolve(tmpdir(),'ki-reel-generator-'));
   try {
     const result=spawnSync(process.execPath,[generator,'Capability Wiring Test','2026-09-28'],{
@@ -25,12 +25,15 @@ test('new reel generator wires Visual Quality V3 and Remotion Capability Gate by
     const project=resolve(reelRoot,'06-projektdateien');
 
     const contract=JSON.parse(await read(resolve(project,'production-contract-v2.json')));
-    assert.ok(contract.phase1RequiredArtifacts.includes('visual-quality-v3.json'));
+    assert.ok(contract.phase1RequiredArtifacts.includes('visual-quality-v4.json'));
+    assert.ok(!contract.phase1RequiredArtifacts.includes('visual-quality-v3.json'));
     assert.ok(contract.phase1RequiredArtifacts.includes('remotion-capabilities-v1.json'));
 
-    const visualQuality=JSON.parse(await read(resolve(project,'visual-quality-v3.json')));
-    assert.equal(visualQuality.version,3);
+    const visualQuality=JSON.parse(await read(resolve(project,'visual-quality-v4.json')));
+    assert.equal(visualQuality.version,4);
+    assert.equal(visualQuality.fps,30);
     assert.equal(visualQuality.sourceQualityContract,'ki/src/reels/Capability-Wiring-Test/visualQuality.ts');
+    assert.equal(visualQuality.hook.firstFrameHeroVisible,false);
     assert.deepEqual(visualQuality.scenes,[]);
 
     const capabilities=JSON.parse(await read(resolve(project,'remotion-capabilities-v1.json')));
@@ -39,17 +42,22 @@ test('new reel generator wires Visual Quality V3 and Remotion Capability Gate by
     assert.deepEqual(capabilities.beats,[]);
 
     const strategy=await read(resolve(project,'visual-strategy.md'));
+    for (const marker of ['Start state','Visible change','End state','Visual verb','Recognition cues','Hero meaning','Payoff']) {
+      assert.match(strategy,new RegExp(marker));
+    }
     assert.match(strategy,/Primary Remotion capability/);
     assert.match(strategy,/Capability rationale/);
+    assert.match(strategy,/VISUAL_QUALITY_V4\.md/);
     assert.match(strategy,/REMOTION_CAPABILITY_GATE\.md/);
 
     const review=await read(resolve(project,'creative-review.md'));
-    for (const marker of ['Hook score','Visual Variety score','Motion score','Icon\/Illustration score','Readability score','Overall score']) {
+    for (const marker of ['Technical status','Automated Visual status','Human Creative status','Semantic Clarity score','Story Motion score','Overall score']) {
       assert.match(review,new RegExp(marker));
     }
 
     const phase=await read(resolve(project,'PHASE-STATUS.md'));
-    assert.match(phase,/visual-quality-v3\.json/);
+    assert.match(phase,/visual-quality-v4\.json/);
+    assert.match(phase,/scene-local V4 Visual Review/);
     assert.match(phase,/remotion-capabilities-v1\.json/);
   } finally {
     await rm(cwd,{recursive:true,force:true});

@@ -10,4 +10,8 @@ const good={version:3,sourceQualityContract:'ki/src/reels/example/visualQuality.
 
 test('strong V3 manifest passes',()=>assert.deepEqual(validateVisualQualityV3Manifest(good),[]));
 test('weak hook is blocked',()=>assert.ok(validateVisualQualityV3Manifest({...good,hook:{...good.hook,heroAreaRatio:.1}}).some((e)=>e.includes('hook.heroAreaRatio'))));
-test('future reels in current week start at slot 05',()=>{assert.equal(futureReelNeedsV3('2026-09-21_bis_2026-09-27','04_old'),false);assert.equal(futureReelNeedsV3('2026-09-21_bis_2026-09-27','05_new'),true);assert.equal(futureReelNeedsV3('2026-09-28_bis_2026-10-04','01_new'),true)});
+test('V3 remains only for legacy threshold before V4 week',()=>{
+  assert.equal(futureReelNeedsV3('2026-09-21_bis_2026-09-27','04_old'),false);
+  assert.equal(futureReelNeedsV3('2026-09-21_bis_2026-09-27','05_new'),true);
+  assert.equal(futureReelNeedsV3('2026-09-28_bis_2026-10-04','01_v4'),false);
+});

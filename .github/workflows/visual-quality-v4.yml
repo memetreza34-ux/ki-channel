@@ -1,0 +1,77 @@
+name: Visual Quality V4 Scene Review
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ki/src/reels/**'
+      - 'ki/src/visual-system/**'
+      - 'ki/reels/**'
+      - 'scripts/render-visual-quality-v4-review.mjs'
+      - 'scripts/run-changed-v4-visual-reviews.mjs'
+      - 'scripts/visual-quality-v4-contract.mjs'
+      - 'scripts/visual-quality-v4-review-contract.mjs'
+      - 'scripts/visual-contact-metrics.mjs'
+      - 'scripts/__tests__/visual-quality-v4-*.test.mjs'
+      - 'scripts/__tests__/visual-contact-metrics-v4.test.mjs'
+      - '.github/workflows/visual-quality-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-quality-v4-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_INSTALL_FLAGS: '--package-lock=false --legacy-peer-deps --no-audit --no-fund'
+
+jobs:
+  scene-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install canonical workspaces
+        run: npm install $NPM_INSTALL_FLAGS
+
+      - name: Verify V4 contracts and metrics
+        run: |
+          node --test scripts/__tests__/visual-quality-v4-contract.test.mjs
+          node --test scripts/__tests__/visual-quality-v4-review-contract.test.mjs
+          node --test scripts/__tests__/visual-contact-metrics-v4.test.mjs
+          node scripts/check-visual-quality-v4.mjs
+
+      - name: Determine changed files
+        if: github.event_name == 'pull_request'
+        run: git diff --name-only '${{ github.event.pull_request.base.sha }}' HEAD > /tmp/v4-changed-files.txt
+
+      - name: Render changed V4 reels and fail on severe visual warnings
+        if: github.event_name == 'pull_request'
+        run: node scripts/run-changed-v4-visual-reviews.mjs --changed-files=/tmp/v4-changed-files.txt --fail-on-severe=true
+
+      - name: Render all V4 reels on manual run
+        if: github.event_name == 'workflow_dispatch'
+        run: node scripts/run-changed-v4-visual-reviews.mjs --fail-on-severe=true
+
+      - name: Upload V4 contact sheets when storage is available
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-quality-v4-scene-review
+          path: |
+            ki/reels/**/05-export/visual-review-v4/contact-sheet-v4.jpg
+            ki/reels/**/05-export/visual-review-v4/visual-review-v4.json
+          if-no-files-found: ignore
