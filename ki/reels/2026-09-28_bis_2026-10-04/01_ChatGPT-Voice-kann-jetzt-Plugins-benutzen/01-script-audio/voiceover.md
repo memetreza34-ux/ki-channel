@@ -1,0 +1,17 @@
+# Voiceover — ChatGPT Voice kann jetzt Plugins benutzen
+
+**Status:** FINALER WORTLAUT — Phase 2 Audio fehlt
+
+ChatGPT Voice kann jetzt während des Gesprächs Plugins benutzen – und damit wird aus Sprechen plötzlich ein echter Arbeitsablauf.
+
+Du kannst in Voice auf Web, iOS und Android die Plugins und verbundenen Apps verwenden, die für dein Konto verfügbar sind.
+
+Statt nur zu antworten, kann die Unterhaltung dadurch Informationen aus Apps holen oder unterstützte Aktionen anstoßen.
+
+In ChatGPT Work geht es noch weiter: Per Stimme kannst du Dokumente, Präsentationen und Tabellen erstellen, verbundene Apps nutzen oder im Browser arbeiten lassen.
+
+Und wenn du den Voice-Call beendest, kann eine unfertige Work-Aufgabe anschließend als Text weiterlaufen.
+
+Wichtig: Berechtigungen, bestehende Verbindungen und Nutzungsgrenzen gelten weiterhin.
+
+Kurz gesagt: Voice ist nicht mehr nur Spracheingabe – es wird zur Steuerungsebene für echte ChatGPT-Workflows.

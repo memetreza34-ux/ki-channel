@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "fps": 30,
+  "timingStatus": "PLANNED_BEFORE_REAL_AUDIO",
+  "cues": [
+    {"id":"c01","startFrame":0,"endFrame":75,"text":"ChatGPT Voice kann jetzt"},
+    {"id":"c02","startFrame":75,"endFrame":150,"text":"während Gesprächen Plugins benutzen"},
+    {"id":"c03","startFrame":150,"endFrame":210,"text":"Sprechen wird zum Workflow"},
+    {"id":"c04","startFrame":210,"endFrame":285,"text":"Auf Web, iOS und Android"},
+    {"id":"c05","startFrame":285,"endFrame":360,"text":"nutzt Voice verfügbare Plugins"},
+    {"id":"c06","startFrame":360,"endFrame":420,"text":"und verbundene Apps"},
+    {"id":"c07","startFrame":420,"endFrame":510,"text":"Apps können Informationen liefern"},
+    {"id":"c08","startFrame":510,"endFrame":630,"text":"oder unterstützte Aktionen anstoßen"},
+    {"id":"c09","startFrame":630,"endFrame":720,"text":"In Work geht mehr"},
+    {"id":"c10","startFrame":720,"endFrame":780,"text":"Dokumente, Präsentationen und Tabellen"},
+    {"id":"c11","startFrame":780,"endFrame":840,"text":"Apps oder Browser nutzen"},
+    {"id":"c12","startFrame":840,"endFrame":930,"text":"Voice-Call beendet?"},
+    {"id":"c13","startFrame":930,"endFrame":1050,"text":"Die Aufgabe kann weiterlaufen"},
+    {"id":"c14","startFrame":1050,"endFrame":1140,"text":"Berechtigungen bleiben bestehen"},
+    {"id":"c15","startFrame":1140,"endFrame":1260,"text":"genau wie Nutzungsgrenzen"},
+    {"id":"c16","startFrame":1260,"endFrame":1365,"text":"Voice ist nicht nur Eingabe"},
+    {"id":"c17","startFrame":1365,"endFrame":1470,"text":"sondern Workflow-Steuerung"}
+  ]
+}

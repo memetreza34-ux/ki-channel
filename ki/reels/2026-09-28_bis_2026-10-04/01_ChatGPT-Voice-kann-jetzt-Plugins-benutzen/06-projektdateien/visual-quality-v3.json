@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "sourceQualityContract": "ki/src/reels/chatgpt-voice-plugins/visualQuality.ts",
+  "hook": {"heroAreaRatio":0.42,"semanticVisualAnchors":5,"brandAnchorAreaRatio":0.06,"stateChangesFirstSecond":3,"stateChangesFirst3Seconds":6,"contrast":"strong","conflictVisible":true,"keyMessageVisible":true},
+  "scenes": [
+    {"sceneId":"voice-01","archetype":"hero-impact","heroAreaRatio":0.42,"semanticIconCount":3,"illustrationCount":2,"supportElementCount":8,"distinctShapeFamilies":5,"meaningfulStateChanges":6,"microBeats":4,"motionDistancePx":340,"depthLayers":3,"contrast":"strong","cameraMotion":"push"},
+    {"sceneId":"voice-02","archetype":"device-scene","heroAreaRatio":0.44,"semanticIconCount":3,"illustrationCount":3,"supportElementCount":6,"distinctShapeFamilies":4,"meaningfulStateChanges":4,"microBeats":3,"motionDistancePx":210,"depthLayers":4,"contrast":"strong","cameraMotion":"orbit"},
+    {"sceneId":"voice-03","archetype":"network-flow","heroAreaRatio":0.36,"semanticIconCount":5,"illustrationCount":2,"supportElementCount":10,"distinctShapeFamilies":4,"meaningfulStateChanges":5,"microBeats":4,"motionDistancePx":420,"depthLayers":3,"contrast":"strong","cameraMotion":"pan"},
+    {"sceneId":"voice-04","archetype":"object-transformation","heroAreaRatio":0.38,"semanticIconCount":3,"illustrationCount":3,"supportElementCount":7,"distinctShapeFamilies":5,"meaningfulStateChanges":5,"microBeats":4,"motionDistancePx":260,"depthLayers":4,"contrast":"balanced","cameraMotion":"depth"},
+    {"sceneId":"voice-05","archetype":"timeline-deadline","heroAreaRatio":0.34,"semanticIconCount":2,"illustrationCount":3,"supportElementCount":8,"distinctShapeFamilies":4,"meaningfulStateChanges":5,"microBeats":4,"motionDistancePx":520,"depthLayers":3,"contrast":"strong","cameraMotion":"pan"},
+    {"sceneId":"voice-06","archetype":"zoom-detail","heroAreaRatio":0.34,"semanticIconCount":3,"illustrationCount":3,"supportElementCount":9,"distinctShapeFamilies":5,"meaningfulStateChanges":4,"microBeats":3,"motionDistancePx":180,"depthLayers":3,"contrast":"balanced","cameraMotion":"pull"},
+    {"sceneId":"voice-07","archetype":"final-verdict","heroAreaRatio":0.46,"semanticIconCount":3,"illustrationCount":2,"supportElementCount":7,"distinctShapeFamilies":4,"meaningfulStateChanges":5,"microBeats":3,"motionDistancePx":300,"depthLayers":3,"contrast":"strong","cameraMotion":"push"}
+  ],
+  "targetScores": {"hook":9,"visualVariety":9,"motion":9,"iconIllustrationUse":8.5,"readability":9,"overall":9}
+}

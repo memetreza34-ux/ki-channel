@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "sourceFiles": ["ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx"],
+  "beats": [
+    {"beatId":"voice-01-hook","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","isHook":true,"isHero":true,"primaryCapability":"kinetic-typography","capabilities":["kinetic-typography","shapes"],"primaryPrimitive":"typography","rationale":"Large kinetic type and a transforming voice signal make the new Voice-to-workflow state legible before the narration finishes."},
+    {"beatId":"voice-02-devices","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","primaryCapability":"three","capabilities":["three"],"primaryPrimitive":"space","rationale":"Three actual spatial device objects communicate web, iOS and Android availability without reverting to three flat information cards."},
+    {"beatId":"voice-03-plugins","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","primaryCapability":"paths","capabilities":["paths","shapes"],"primaryPrimitive":"path","rationale":"Directed animated routes and endpoint signals explain how a Voice request reaches available plugins and connected apps."},
+    {"beatId":"voice-04-work","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","primaryCapability":"object-transformation","capabilities":["object-transformation","depth-2.5d"],"primaryPrimitive":"object","rationale":"The spoken command visibly changes into work artifacts in depth, showing creation as an object transformation rather than a feature list."},
+    {"beatId":"voice-05-continue","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","isHero":true,"primaryCapability":"paths","capabilities":["paths","kinetic-typography"],"primaryPrimitive":"path","rationale":"One uninterrupted route survives the closing voice call and becomes a text task, making continuity visible as a single moving process."},
+    {"beatId":"voice-06-limits","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","primaryCapability":"shapes","capabilities":["shapes","kinetic-typography"],"primaryPrimitive":"shape","rationale":"Concentric constraints and lock signals turn permissions and usage limits into visible boundaries instead of another warning panel."},
+    {"beatId":"voice-07-verdict","sourceFile":"ki/src/reels/chatgpt-voice-plugins/ReelChatGPTVoicePlugins.tsx","isHero":true,"primaryCapability":"kinetic-typography","capabilities":["kinetic-typography","shapes"],"primaryPrimitive":"typography","rationale":"The final conclusion is the memorable object itself: large type assembles around a workflow hub while supporting shapes resolve the story."}
+  ]
+}
