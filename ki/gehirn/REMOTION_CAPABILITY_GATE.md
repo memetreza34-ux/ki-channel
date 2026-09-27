@@ -2,6 +2,14 @@
 
 **Status:** verbindlich für neue Visual-Quality-V3-Reels nach Phase 1.
 
+Die vollständige Remotion-Skill-/Paket-/Capability-Landkarte steht in:
+
+```text
+ki/gehirn/REMOTION_ANIMATION_CAPABILITIES.md
+```
+
+Diese Datei behandelt nur den **harten Beat-Source-Gate**. Agent-Skills wie Render, Studio, Captions, Docs, Multimedia, Maps, SaaS oder Upgrade sind wichtig, zählen aber nicht automatisch als visuelle Beat-Capability.
+
 ## Warum dieses Gate existiert
 
 Das Repository besitzt viele Remotion-Fähigkeiten, aber ein Reel darf nicht mehr allein deshalb als visuell stark gelten, weil es viele Elemente, Icons oder unterschiedliche Layouts enthält.
@@ -58,8 +66,12 @@ Erlaubte Werte:
 - `transitions`
 - `noise`
 - `real-capture`
+- `lottie`
+- `rive`
 
 Nicht jede Capability muss in jedem Reel vorkommen. Die Auswahl folgt der Aussage.
+
+`lottie` und `rive` sind nur erlaubt, wenn ein echtes passendes Asset vorhanden ist. Sie sind keine Ausrede, um individuelle Remotion-Szenen durch beliebige Fremdanimationen zu ersetzen.
 
 ## Entscheidungsreihenfolge pro Beat
 
@@ -95,6 +107,8 @@ Die Frage ist: **Welche Remotion-Mechanik erklärt diesen Beat sichtbar am beste
 10. Absolute Pfade, URLs, `..`-Traversal und Longform-/fremde Source-Verzeichnisse sind nicht als Capability-Nachweis erlaubt.
 11. Capability-Nachweise werden nicht reelweit zusammengeworfen, sondern gegen die dem Beat zugeordnete Source-Datei geprüft.
 12. Vor der konkreten Beat-Implementierung steht exakt `// REMOTION_BEAT: <beatId>`. Der Checker wertet nur den Abschnitt bis zum nächsten `REMOTION_BEAT`-Marker aus.
+13. Kommentare, Strings und bloße Imports sind kein gültiger Source-Nachweis.
+14. Lottie/Rive zählen nur bei ausführbarem JSX im zugeordneten Beat-Abschnitt.
 
 ## Source-Nachweis
 
@@ -116,22 +130,24 @@ export const CodeBeat = () => {
 
 Damit kann eine Path-Animation im `speed`-Abschnitt nicht versehentlich den `code`-Beat oder einen späteren Beat als `paths` freischalten.
 
-Beispiele gültiger konkreter Usage-Marker:
+### AST-Evidence
 
-| Capability | gültige Source-Indizien |
+| Capability | gültige ausführbare Source-Evidence |
 |---|---|
-| `paths` | `<AnimatedDataPath`, `evolvePath(`, `getPointAtLength(` |
-| `shapes` | `<ShapeSignal`, `<Circle`, `<Triangle`, `makeCircle(`, `makeTriangle(` |
-| `three` | `<ThreeCanvas`, `<mesh`, `<group`, `<perspectiveCamera` |
-| `depth-2.5d` | `<DepthStage`, echte `perspective:`-/`translate3d(`-Logik |
-| `kinetic-typography` | `<KineticType`, `<KineticNumber` |
-| `terminal-code` | `<TerminalMock`, `<CodeDiff`, `<CodeEditor` |
-| `data-visualization` | `<BenchmarkAxis`, `<DataChart`, `<LineChart`, `<BarChart`, `<AreaChart` |
-| `object-transformation` | `<ObjectTransformation`, `<ObjectMorph` |
-| `motion-blur` | `<CameraMotionBlur`, `<Trail` |
-| `transitions` | `<TransitionSeries` |
-| `noise` | `noise2D(`, `noise3D(` |
-| `real-capture` | `<Video`, `<Img`, `<OffthreadVideo`, `staticFile(` |
+| `paths` | JSX `AnimatedDataPath` oder Calls wie `evolvePath()` / `getPointAtLength()` |
+| `shapes` | JSX `ShapeSignal`, `Circle`, `Triangle` oder Shape-Calls |
+| `three` | JSX `ThreeCanvas`, `mesh`, `group`, `perspectiveCamera` |
+| `depth-2.5d` | `DepthStage` oder echte `perspective`-/`translate3d`-Logik |
+| `kinetic-typography` | JSX `KineticType` / `KineticNumber` |
+| `terminal-code` | JSX `TerminalMock`, `CodeDiff`, `CodeEditor` |
+| `data-visualization` | JSX `BenchmarkAxis`, `DataChart`, `LineChart`, `BarChart`, `AreaChart` |
+| `object-transformation` | JSX `ObjectTransformation` / `ObjectMorph` |
+| `motion-blur` | JSX `CameraMotionBlur` / `Trail` |
+| `transitions` | JSX `TransitionSeries` |
+| `noise` | Calls `noise2D()` / `noise3D()` |
+| `real-capture` | JSX `Video`, `Img`, `OffthreadVideo`, `CanvasImage` |
+| `lottie` | JSX `Lottie` |
+| `rive` | JSX `RemotionRiveCanvas` |
 
 Ein bloßer Import gilt bewusst nicht als Nachweis. Die Mechanik muss im markierten Beat-Abschnitt tatsächlich verwendet werden.
 
@@ -152,6 +168,8 @@ Aktuell:
 - `DepthStage` — kontrollierte 2.5D-Perspektive/Parallax
 - `ShapeSignal` — echte `@remotion/shapes`-Geometrie
 - `ObjectTransformation` — sichtbarer Objektzustandswechsel statt Vorher/Nachher-Cards
+
+Lottie/Rive werden bewusst **nicht** durch Fake-Placeholder-Wrapper simuliert. Wenn sie eingesetzt werden, muss das reale Asset vorhanden sein und direkt über die echte Remotion-Integration gerendert werden.
 
 Diese Komponenten sind Startpunkte, keine Pflichtästhetik. Wenn eine Szene eine bessere individuelle Lösung braucht: `NEW_BUILD`.
 
@@ -223,6 +241,7 @@ Nicht erlaubt:
 - Capability nur im Manifest nennen, aber im Source nicht verwenden
 - Capability irgendwo anders im Reel verwenden und damit einen Beat ohne echte Nutzung freischalten
 - `REMOTION_BEAT`-Marker setzen, aber die deklarierte Mechanik erst in einem anderen Beat-Abschnitt verwenden
+- Kommentar/String mit `<Lottie>` oder `<RemotionRiveCanvas>` als Fake-Nachweis
 - fremde oder außerhalb des Repos liegende Dateien als Source-Nachweis referenzieren
 - Three nur als Dekoration einsetzen, wenn 2D die Aussage klarer erklärt
 - Motion Blur über schwache Motion legen
