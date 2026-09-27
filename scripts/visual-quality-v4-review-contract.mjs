@@ -10,9 +10,10 @@ export const SEVERE_V4_WARNINGS = new Set([
 
 export const evaluateHookReview = ({frame0, earlyPairDifferences = []}) => {
   const warnings = [];
-  if (!frame0 || ((frame0.activeCellRatio ?? 0) < 0.08 && (frame0.edgeDensity ?? 0) < 0.012)) {
-    warnings.push('EMPTY_HOOK_START');
-  }
+  const tinyFootprint = !frame0 || ((frame0.activeCellRatio ?? 0) < 0.08 && (frame0.edgeDensity ?? 0) < 0.012);
+  const smoothEmpty = !frame0 || ((frame0.edgeDensity ?? 0) < 0.006 && (frame0.luminanceStdDev ?? 0) < 18);
+  if (tinyFootprint || smoothEmpty || frame0?.warnings?.includes('EMPTY_OR_UNDERBUILT_FRAME')) warnings.push('EMPTY_HOOK_START');
+
   const meaningfulChanges = earlyPairDifferences.filter((value) => value >= 7).length;
   if (earlyPairDifferences.length >= 2 && meaningfulChanges < 2) warnings.push('HOOK_TOO_STATIC_FIRST_SECOND');
   return warnings;
