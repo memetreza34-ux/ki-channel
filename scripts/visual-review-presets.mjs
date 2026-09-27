@@ -9,6 +9,11 @@ export const VISUAL_REVIEW_PRESETS = Object.freeze({
     frames: [30, 120, 210, 330, 390, 510, 570, 690, 750, 870, 930, 1050],
     outputDir: 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review',
   },
+  voiceplugins: {
+    compositionId: 'KI-ChatGPTVoicePlugins',
+    frames: [24, 120, 240, 330, 450, 540, 660, 750, 870, 960, 1080, 1170, 1290, 1380],
+    outputDir: 'ki/reels/2026-09-28_bis_2026-10-04/01_ChatGPT-Voice-kann-jetzt-Plugins-benutzen/05-export/visual-review',
+  },
 });
 
 export const getVisualReviewPreset = (name) => {

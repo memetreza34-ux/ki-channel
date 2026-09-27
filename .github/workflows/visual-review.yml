@@ -8,7 +8,9 @@ on:
       - 'ki/src/visual-system/**'
       - 'ki/src/reels/gpt-5-6-chatgpt/**'
       - 'ki/src/reels/gpt-5-5-retirement/**'
+      - 'ki/src/reels/chatgpt-voice-plugins/**'
       - 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/**'
+      - 'ki/reels/2026-09-28_bis_2026-10-04/01_ChatGPT-Voice-kann-jetzt-Plugins-benutzen/**'
       - 'scripts/render-visual-contact-sheet.mjs'
       - 'scripts/visual-contact-metrics.mjs'
       - 'scripts/visual-review-presets.mjs'
@@ -40,6 +42,10 @@ jobs:
             label: GPT-5.5 retirement
             report: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/visual-review.json
             sheet: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/contact-sheet.jpg
+          - preset: voiceplugins
+            label: ChatGPT Voice plugins
+            report: ki/reels/2026-09-28_bis_2026-10-04/01_ChatGPT-Voice-kann-jetzt-Plugins-benutzen/05-export/visual-review/visual-review.json
+            sheet: ki/reels/2026-09-28_bis_2026-10-04/01_ChatGPT-Voice-kann-jetzt-Plugins-benutzen/05-export/visual-review/contact-sheet.jpg
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

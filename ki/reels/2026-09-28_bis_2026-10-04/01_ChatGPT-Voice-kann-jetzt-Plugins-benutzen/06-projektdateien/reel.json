@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "compositionId": "KI-ChatGPTVoicePlugins",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "durationInFrames": 1470,
+  "timingStatus": "PLANNED_BEFORE_REAL_AUDIO",
+  "scenes": [
+    {"id":"voice-01","from":0,"duration":210,"headline":"VOICE KANN JETZT MEHR"},
+    {"id":"voice-02","from":210,"duration":210,"headline":"WEB · iOS · ANDROID"},
+    {"id":"voice-03","from":420,"duration":210,"headline":"VOICE TRIFFT DEINE TOOLS"},
+    {"id":"voice-04","from":630,"duration":210,"headline":"IN WORK WIRD ES PRAKTISCH"},
+    {"id":"voice-05","from":840,"duration":210,"headline":"DER TASK LÄUFT WEITER"},
+    {"id":"voice-06","from":1050,"duration":210,"headline":"DEINE GRENZEN BLEIBEN"},
+    {"id":"voice-07","from":1260,"duration":210,"headline":"VOICE WIRD ZUR STEUERUNG"}
+  ]
+}
