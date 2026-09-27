@@ -12,6 +12,7 @@ Für jede KI-Aufgabe zuerst `ki/gehirn/MASTER.md` lesen. Danach je nach Aufgabe 
 - `FAKTENQUELLEN.md` — Claims, Quellen, Recheck
 - `REELS.md` — Short-Form-Struktur und Text-Hierarchie
 - `VISUAL_STRATEGY.md` — visuelle Idee und Beweisquelle pro Beat
+- `VISUAL_QUALITY_V4.md` — ab Woche 2026-09-28 maschinenprüfbarer Story-/Hero-/Motion-Vertrag + scene-local Render-QA
 - `REMOTION_VISUAL_SYSTEM.md` — Remotion als vollständiges code-first Visual-System
 - `CREATIVE_QA.md` — finaler Zuschauer-Review
 - `PLATTFORMEN.md` — Publishing
@@ -65,8 +66,8 @@ ki/src/reels/<planning-package>/
 - `02-bilder/` — reale Captures/Quellenassets, Shot-Briefs, Asset-Manifest
 - `03-caption/` — Subtitle-Cues, Wort-Timestamps, Plattform-Copy
 - `04-pdf/` — optionale PDF-Quellen/Exports
-- `05-export/` — Smoke-Frames, Review-Renders, finale MP4
-- `06-projektdateien/` — V2-Contract, Creative Brief, Source Ledger, Visual Strategy, reel.json, Pläne, Creative Review, Status
+- `05-export/` — Smoke-Frames, scene-local Visual-Reviews, Review-Renders, finale MP4
+- `06-projektdateien/` — V2-Contract, Creative Brief, Source Ledger, Visual Strategy, Visual Quality V4, reel.json, Pläne, Creative Review, Status
 
 Ausführbarer TS/TSX-Code ausschließlich:
 
@@ -84,6 +85,8 @@ Neue Reels führen mindestens:
 - `creative-brief.md`
 - `source-ledger.md`
 - `visual-strategy.md`
+- `visual-quality-v4.json` ab Woche 2026-09-28
+- `remotion-capabilities-v1.json`
 - `creative-review.md`
 - `PHASE-STATUS.md`
 
@@ -95,13 +98,15 @@ Story
 → Sprechertext
 → Visual Beats
 → Visual Strategy
-→ Remotion-Build-Idee
+→ Visual Quality V4 Story/Hero Contract
+→ Remotion-Build-Idee + Capability-Auswahl
 → Source
 → Voiceover / reale Pflicht-Captures
 → Timeline
 → Remotion-Render
 → technische QA
-→ Creative QA
+→ scene-local Automated Visual QA
+→ Human Creative QA
 ```
 
 Direkt vom Thema in Remotion-Code springen ist ein Prozessfehler.
@@ -117,6 +122,8 @@ Vor Audio bereits vollständig planen und Code-Grundlage bauen:
 - finaler Sprechertext
 - Visual Beats
 - Visual Strategy pro Beat
+- bei V4 pro Szene `Start → sichtbare Veränderung → Ergebnis`
+- semantischer Hero + Recognition Cues
 - Remotion-Build-/Shot-Plan
 - echte Beweis-/Capture-Entscheidung
 - Captions/Plattform-Copy Basis
@@ -138,6 +145,8 @@ Phase 2 verändert keine Planungs-/Source-Dateien.
 
 Vorhandenen Remotion-Source verwenden, Audio/Captures integrieren, reale Timeline synchronisieren, prüfen und rendern.
 
+Bei V4-Reels zusätzlich den scene-local Render-Review ausführen. Ein automatischer Visual-PASS ist keine menschliche kreative Freigabe.
+
 Wenn ein Agent in Phase 3 Source aus Bequemlichkeit komplett neu erfindet, ist das ein Prozessfehler.
 
 Wenn Audio fehlt: `PHASE 2 AUDIO FEHLT`.
@@ -158,6 +167,30 @@ Für neue Reels gilt zweistufig:
 **Jeder finale Reel-Frame wird in Remotion komponiert und gerendert.**
 
 Auch REAL_CAPTURE/HYBRID werden in Remotion integriert. Ein UI-Nachbau ist eine Illustration und darf nicht als realer Screenshot ausgegeben werden.
+
+### Visual Quality V4 — Semantik vor Capability
+
+Ab Woche 2026-09-28 gilt vor der Remotion-Capability-Auswahl:
+
+```text
+1. Start state
+2. Visible change
+3. End state / Payoff
+4. Hero meaning
+5. Recognition cues
+6. Visual verb
+7. erst dann Remotion capability
+```
+
+Nicht ausreichend:
+
+- ein Objekt blendet nur ein
+- abstraktes Rechteck steht stellvertretend für ein konkretes Gerät
+- Szene hat eine starke Intro-Animation und danach mehrere Sekunden fast keinen Wandel
+- große weiße Fläche ersetzt eine nicht ausgearbeitete Bildidee
+- eine technische Capability ist vorhanden, aber die visuelle Aussage bleibt unklar
+
+Hook-Hero muss bei V4 bereits in Frame 0 sichtbar sein. Unbegründete statische Holds sind auf ungefähr 2,5 Sekunden begrenzt.
 
 ### Remotion-native Baupflicht
 
@@ -304,6 +337,8 @@ Mindestens formatbezogen prüfen:
 - keine ungrounded Werte
 - Source Ledger Rechecks
 - Visual-Safe-Zones über echte Smoke-Frames
+- V4: Frame 0 + scene-local Samples bei ungefähr 5/33/66/92%
+- V4: tatsächliche Start-End-Änderung, Visual-Footprint, Kontrast und statische Holds
 - Diversity-/Fingerprint-Warnungen
 - Production-Root-/Entry-Isolation
 - finaler Render gehört exakt zum aktuellen Source-Stand
@@ -313,8 +348,9 @@ Ein bestandenes Unit-Test-Set ersetzt **niemals** visuelle Prüfung.
 
 Final zusätzlich:
 
+- `VISUAL_QUALITY_V4.md` für neue Reels
 - `POST_RENDER_REVIEW.md`
 - `CREATIVE_QA.md`
 - `creative-review.md` = PASS
 
-Technisch bestanden + kreativ langweilig = nicht fertig.
+**Technical PASS + Automated Visual PASS ≠ Human Creative PASS.** Technisch bestanden + kreativ langweilig = nicht fertig.
