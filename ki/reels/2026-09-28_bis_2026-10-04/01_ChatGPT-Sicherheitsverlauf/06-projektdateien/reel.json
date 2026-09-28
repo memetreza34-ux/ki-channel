@@ -1,0 +1,13 @@
+{
+  "slug": "chatgpt-security-history",
+  "title": "ChatGPT-Sicherheitsverlauf",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":720},
+  "captionZoneStartY": 1280,
+  "visualBeatCount": 4,
+  "scenes": [
+    {"sceneId":"security-01","startFrame":0,"endFrame":180,"headline":"FREMDER LOGIN?","icon":"lock","implementation":"NEW_BUILD","spokenText":"Jemand loggt sich in dein ChatGPT ein – jetzt kannst du es im Sicherheitsverlauf sehen.","beatIds":["security-hook"]},
+    {"sceneId":"security-02","startFrame":180,"endFrame":360,"headline":"SICHERHEITSVERLAUF","icon":"history","implementation":"NEW_BUILD","spokenText":"Dort stehen Anmeldungen, Abmeldungen und Änderungen an MFA oder Passkeys.","beatIds":["history-flow"]},
+    {"sceneId":"security-03","startFrame":360,"endFrame":540,"headline":"WAS STEHT DRIN?","icon":"device","implementation":"NEW_BUILD","spokenText":"Zu Ereignissen können Zeit, Gerät und ein ungefährer Ort angezeigt werden.","beatIds":["detail-device"]},
+    {"sceneId":"security-04","startFrame":540,"endFrame":720,"headline":"PRÜFEN & SICHERN","icon":"shield","implementation":"NEW_BUILD","spokenText":"Kommt dir etwas fremd vor, prüfst du den Eintrag und kannst dein Konto schneller absichern.","beatIds":["secure-action"]}
+  ]
+}
