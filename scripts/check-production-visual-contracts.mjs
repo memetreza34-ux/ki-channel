@@ -36,6 +36,9 @@ if (!studioRootSource.includes("from './ProductionRoot'")) {
 if (!studioRootSource.includes("from './motion-system/MotionPreviewRoot'")) {
   failures.push('Root.tsx muss MotionPreviewRoot nur als Studio-/Preview-Erweiterung einbinden.');
 }
+if (!studioRootSource.includes("from './art-direction/ArtDirectionPreviewRoot'")) {
+  failures.push('Root.tsx muss das Art-Direction Lab ausschließlich als Studio-/Preview-Erweiterung einbinden.');
+}
 if (/from\s+['"]\.\/(?:reels|longform)\//.test(studioRootSource)) {
   failures.push('Root.tsx darf keine Production-Reels/Longform direkt importieren; diese Liste gehört ausschließlich in ProductionRoot.tsx.');
 }
@@ -45,8 +48,16 @@ if (!productionEntrySource.includes("from './ProductionRoot'")) {
 if (!productionEntrySource.includes('registerRoot(ProductionRoot)')) {
   failures.push('production-entry.tsx registriert ProductionRoot nicht.');
 }
-if (productionEntrySource.includes('MotionPreviewRoot') || productionEntrySource.includes('motion-system/')) {
-  failures.push('production-entry.tsx darf keinerlei Legacy-/Preview-Motion-System importieren.');
+if (
+  productionEntrySource.includes('MotionPreviewRoot') ||
+  productionEntrySource.includes('motion-system/') ||
+  productionEntrySource.includes('ArtDirectionPreviewRoot') ||
+  productionEntrySource.includes('art-direction/')
+) {
+  failures.push('production-entry.tsx darf keinerlei Motion-/Art-Direction-Preview-System importieren.');
+}
+if (productionRootSource.includes('ArtDirectionPreviewRoot') || productionRootSource.includes('art-direction/')) {
+  failures.push('ProductionRoot.tsx darf das Art-Direction Lab nicht registrieren; es ist nur für Studio-Kalibrierung gedacht.');
 }
 
 const registeredModulePaths = [
@@ -117,5 +128,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts und einen aktiven Authored-Diversity-Gate; Studio- und Production-Entry sind getrennt und Production bleibt ohne optionales Phase-2-Audio bundelbar.`,
+  `Production-Visual-Contract-Gate bestanden: ${reelModules.length} Short-Form + ${longformModules.length} Longform Module besitzen visualProfiles.ts und einen aktiven Authored-Diversity-Gate; Art-Direction-/Motion-Labs bleiben Studio-only und Production bleibt ohne optionales Phase-2-Audio bundelbar.`,
 );
