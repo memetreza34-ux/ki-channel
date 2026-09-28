@@ -1,0 +1,11 @@
+# Voiceover — ChatGPT-Sicherheitsverlauf
+
+**Status:** FINALER WORTLAUT / Audio fehlt
+
+Jemand loggt sich in dein ChatGPT ein – jetzt kannst du es im Sicherheitsverlauf sehen.
+
+Dort stehen Anmeldungen, Abmeldungen und Änderungen an MFA oder Passkeys.
+
+Zu Ereignissen können Zeit, Gerät und ein ungefährer Ort angezeigt werden.
+
+Kommt dir etwas fremd vor, prüfst du den Eintrag und kannst dein Konto schneller absichern.

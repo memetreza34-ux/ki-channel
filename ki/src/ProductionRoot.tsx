@@ -105,6 +105,14 @@ import {
   ReelGitHubRepository,
 } from './reels/github-repository-basics';
 import {
+  CHATGPT_SECURITY_COMPOSITION_ID,
+  CHATGPT_SECURITY_DURATION_IN_FRAMES,
+  CHATGPT_SECURITY_FPS,
+  CHATGPT_SECURITY_HEIGHT,
+  CHATGPT_SECURITY_WIDTH,
+  ReelChatGPTSecurityHistory,
+} from './reels/chatgpt-security-history';
+import {
   AI_APP_WORKFLOW_COMPOSITION_ID,
   AI_APP_WORKFLOW_DURATION_IN_FRAMES,
   AI_APP_WORKFLOW_FPS,
@@ -131,6 +139,7 @@ export const ProductionRoot: React.FC = () => (
       <Composition id={WHY_AI_COMPOSITION_ID} component={ReelWhyAIReadsDifferently} defaultProps={{}} durationInFrames={WHY_AI_DURATION_IN_FRAMES} fps={WHY_AI_FPS} width={WHY_AI_WIDTH} height={WHY_AI_HEIGHT}/>
       <Composition id={AI_SKETCH_WEBSITE_COMPOSITION_ID} component={ReelAISketchWebsite} defaultProps={{showCaptions: true}} durationInFrames={AI_SKETCH_WEBSITE_DURATION_IN_FRAMES} fps={AI_SKETCH_WEBSITE_FPS} width={AI_SKETCH_WEBSITE_WIDTH} height={AI_SKETCH_WEBSITE_HEIGHT}/>
       <Composition id={GITHUB_REPOSITORY_COMPOSITION_ID} component={ReelGitHubRepository} defaultProps={{showCaptions: true}} durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} fps={GITHUB_REPOSITORY_FPS} width={GITHUB_REPOSITORY_WIDTH} height={GITHUB_REPOSITORY_HEIGHT}/>
+      <Composition id={CHATGPT_SECURITY_COMPOSITION_ID} component={ReelChatGPTSecurityHistory} defaultProps={{showCaptions: true}} durationInFrames={CHATGPT_SECURITY_DURATION_IN_FRAMES} fps={CHATGPT_SECURITY_FPS} width={CHATGPT_SECURITY_WIDTH} height={CHATGPT_SECURITY_HEIGHT}/>
     </Folder>
     <Folder name="KI-YouTube-Longform">
       <Composition id={AI_APP_WORKFLOW_COMPOSITION_ID} component={LongformAIAppWorkflow} defaultProps={{}} durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>

@@ -1,0 +1,70 @@
+{
+  "version": 4,
+  "compositionId": "KI-ChatGPTSecurityHistory",
+  "fps": 30,
+  "sourceQualityContract": "ki/src/reels/chatgpt-security-history/visualQuality.ts",
+  "hook": {
+    "sceneId": "security-01",
+    "firstFrameHeroVisible": true,
+    "keyMessageByFrame": 14,
+    "firstMajorChangeByFrame": 24,
+    "heroAreaRatio": 0.30,
+    "semanticVisualAnchors": 3,
+    "recognitionCues": ["sichtbarer Geräte-Rahmen", "Account-Schutzring", "rotes Fremd-Login-Signal"],
+    "contrast": "strong",
+    "conflictVisible": true,
+    "keyMessageVisible": true,
+    "visualVerb": "kollidiert"
+  },
+  "scenes": [
+    {
+      "sceneId": "security-01",
+      "archetype": "hero-impact",
+      "startFrame": 0,
+      "durationFrames": 180,
+      "story": {"startState":"Ein unbekanntes Gerät steht sichtbar vor dem geschützten ChatGPT-Konto.","visibleChange":"Das rote Login-Signal schlägt in den Schutzring ein und wird als Ereignis eingefangen.","endState":"Der Fremd-Login ist als konkretes Sicherheitsereignis markiert.","visualVerb":"kollidiert"},
+      "hero": {"semanticType":"account-security-collision","meaning":"Ein fremder Login trifft sichtbar auf den Kontoschutz und wird nachvollziehbar.","screenAreaTarget":0.32,"recognitionCues":[{"id":"device-frame","description":"klarer Smartphone-Rahmen mit Displayfläche"},{"id":"shield-ring","description":"großer Account-Schutzring mit Schlosskern"},{"id":"risk-pulse","description":"rotes Fremd-Login-Signal als Konflikt"}]},
+      "meaningfulStateChanges": 4,
+      "microBeats": 3,
+      "contrast": "strong",
+      "motionPlan": {"entry":"Gerät und Schutzring sind bereits in Frame 0 sichtbar.","development":"Warnsignal beschleunigt, kollidiert und zieht eine protokollierte Spur.","payoff":"Der Login steht als klar markiertes Sicherheitsereignis fest.","payoffAtProgress":0.78,"maxStaticHoldFrames":42,"intentionalStillness":false}
+    },
+    {
+      "sceneId": "security-02",
+      "archetype": "timeline-deadline",
+      "startFrame": 180,
+      "durationFrames": 180,
+      "story": {"startState":"Der erste Login-Punkt steht links als Ausgangsereignis.","visibleChange":"Eine Linie zeichnet nacheinander Login, Logout und MFA-Änderung zusammen.","endState":"Die Ereignisse liegen als zusammenhängender Sicherheitsverlauf vor.","visualVerb":"verbindet"},
+      "hero": {"semanticType":"security-event-timeline","meaning":"Der Verlauf ordnet einzelne Kontoereignisse zeitlich und nachvollziehbar.","screenAreaTarget":0.42,"recognitionCues":[{"id":"timeline-rail","description":"klarer horizontaler Ereignispfad"},{"id":"event-nodes","description":"unterschiedliche Login-, Logout- und MFA-Knoten"}]},
+      "meaningfulStateChanges": 4,
+      "microBeats": 3,
+      "contrast": "strong",
+      "motionPlan": {"entry":"Erster Ereignisknoten ist sofort lesbar.","development":"Der Pfad zeichnet sich über drei verschiedene Sicherheitsereignisse.","payoff":"Der komplette Verlauf hält kurz als lesbare Chronologie.","payoffAtProgress":0.8,"maxStaticHoldFrames":45,"intentionalStillness":false}
+    },
+    {
+      "sceneId": "security-03",
+      "archetype": "device-scene",
+      "startFrame": 360,
+      "durationFrames": 180,
+      "story": {"startState":"Ein klar erkennbares Smartphone zeigt ein neutrales Sicherheitsereignis.","visibleChange":"Drei räumliche Detail-Layer für Zeit, Gerät und ungefähren Ort klappen auseinander.","endState":"Die möglichen Kontextdetails sind getrennt und verständlich angeordnet.","visualVerb":"entfaltet"},
+      "hero": {"semanticType":"smartphone-browser-security-event","meaning":"Ein Ereignis kann zusätzliche Kontextdetails tragen, ohne eine echte Produktoberfläche vorzutäuschen.","screenAreaTarget":0.38,"recognitionCues":[{"id":"phone-shell","description":"Smartphone-Rahmen mit Notch und Displayfläche"},{"id":"browser-chrome","description":"sichtbare Browser-Top-Bar innerhalb des Displays"},{"id":"detail-layers","description":"separate Ebenen für Zeit, Gerät und Ort"}]},
+      "meaningfulStateChanges": 4,
+      "microBeats": 3,
+      "contrast": "medium",
+      "motionPlan": {"entry":"Smartphone steht groß und klar erkennbar im Zentrum.","development":"Detail-Layer lösen sich vom Display und staffeln sich in Tiefe.","payoff":"Zeit, Gerät und ungefährer Ort sind als getrennte Kontexte lesbar.","payoffAtProgress":0.76,"maxStaticHoldFrames":48,"intentionalStillness":false}
+    },
+    {
+      "sceneId": "security-04",
+      "archetype": "permission-gate",
+      "startFrame": 540,
+      "durationFrames": 180,
+      "story": {"startState":"Ein roter unbekannter Eintrag steht vor einem Sicherheits-Gate.","visibleChange":"Der Eintrag durchläuft die Prüfung und transformiert seinen Zustand.","endState":"Die klare Aktion PRÜFEN & SICHERN dominiert als letzter Zustand.","visualVerb":"prüft"},
+      "hero": {"semanticType":"security-action-gate","meaning":"Ein auffälliger Eintrag führt nicht zu Panik, sondern zu einer konkreten Prüfen-und-Sichern-Aktion.","screenAreaTarget":0.4,"recognitionCues":[{"id":"shield-gate","description":"großes Schutz-Gate mit Schlosskern"},{"id":"state-transform","description":"sichtbarer Wechsel von UNBEKANNT zu PRÜFEN & SICHERN"}]},
+      "meaningfulStateChanges": 4,
+      "microBeats": 3,
+      "contrast": "strong",
+      "motionPlan": {"entry":"Roter Risiko-Zustand und Shield-Gate stehen bereits sichtbar.","development":"Prüfstrahl passiert das Gate und löst den Zustandswechsel aus.","payoff":"PRÜFEN & SICHERN füllt die Hauptfläche als klarer Abschluss.","payoffAtProgress":0.82,"maxStaticHoldFrames":44,"intentionalStillness":false}
+    }
+  ],
+  "targetScores": {"hook":9,"semanticClarity":9,"storyMotion":9,"visualVariety":9,"readability":9,"overall":9}
+}

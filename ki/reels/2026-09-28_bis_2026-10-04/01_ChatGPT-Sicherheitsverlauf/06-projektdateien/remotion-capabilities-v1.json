@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "sourceFiles": ["ki/src/reels/chatgpt-security-history/ReelChatGPTSecurityHistory.tsx"],
+  "beats": [
+    {"beatId":"security-hook","sourceFile":"ki/src/reels/chatgpt-security-history/ReelChatGPTSecurityHistory.tsx","primaryCapability":"kinetic-typography","capabilities":["kinetic-typography"],"rationale":"Kinetic Type verstärkt den sichtbaren Login-Konflikt, während der semantische Geräte-/Shield-Hero bereits in Frame 0 steht.","primaryPrimitive":"object","isHero":true,"isHook":true},
+    {"beatId":"history-flow","sourceFile":"ki/src/reels/chatgpt-security-history/ReelChatGPTSecurityHistory.tsx","primaryCapability":"paths","capabilities":["paths"],"rationale":"Ein animierter Datenpfad erklärt die chronologische Verbindung der Sicherheitsereignisse direkter als Karten oder statische Labels.","primaryPrimitive":"path","isHero":false,"isHook":false},
+    {"beatId":"detail-device","sourceFile":"ki/src/reels/chatgpt-security-history/ReelChatGPTSecurityHistory.tsx","primaryCapability":"depth-2.5d","capabilities":["depth-2.5d"],"rationale":"2.5D staffelt Zeit, Gerät und Ort räumlich um ein erkennbares Smartphone, ohne eine echte ChatGPT-Oberfläche zu imitieren.","primaryPrimitive":"ui","isHero":true,"isHook":false},
+    {"beatId":"secure-action","sourceFile":"ki/src/reels/chatgpt-security-history/ReelChatGPTSecurityHistory.tsx","primaryCapability":"object-transformation","capabilities":["object-transformation"],"rationale":"Die Objekttransformation macht den Zustandswechsel vom unbekannten Risiko zur konkreten Sicherheitsaktion selbst zum visuellen Payoff.","primaryPrimitive":"object","isHero":true,"isHook":false}
+  ]
+}
