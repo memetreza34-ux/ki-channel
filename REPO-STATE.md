@@ -1,6 +1,6 @@
 # KI-Channel — kanonischer Repository-Stand
 
-**Status:** 2026-09-24
+**Status:** 2026-09-28
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
@@ -25,6 +25,7 @@ Bei KI-Kanal-Arbeit gilt:
    - Reel-Arbeit → `ki/reels/AGENTS.md`
    - Story/Hook → `ki/gehirn/STORY_RETENTION.md`
    - Fakten/Quellen → `ki/gehirn/FAKTENQUELLEN.md`
+   - **Kanal-Bildwelt / Art Direction → `ki/gehirn/ART_DIRECTION.md`**
    - Visual-Auswahl → `ki/gehirn/VISUAL_STRATEGY.md`
    - Remotion-Visualbau → `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`
    - Remotion-Implementierung/Render → `ki/skills/remotion-production-orchestration/SKILL.md` + `ki/gehirn/WERKZEUGE.md`
@@ -79,8 +80,15 @@ angelegt und führen mindestens:
 06-projektdateien/creative-brief.md
 06-projektdateien/source-ledger.md
 06-projektdateien/visual-strategy.md
+06-projektdateien/art-direction-calibration.json
 06-projektdateien/creative-review.md
 06-projektdateien/PHASE-STATUS.md
+```
+
+Falls der Generator die Kalibrierdatei noch nicht erzeugt, einmalig:
+
+```bash
+node scripts/init-art-direction-calibration.mjs "ki/reels/<Woche>/<Reel>"
 ```
 
 Legacy-Reels ohne `production-contract-v2.json` bleiben erhalten und lesbar. Sie sind keine Vorlage für neue Produktionslogik.
@@ -158,16 +166,21 @@ YouTube Longform ist separat und wird nicht automatisch aus Reels erzeugt.
 Creative Brief / Story
 → Fakten & Quellen
 → finaler Sprechertext
-→ Visual Beats
-→ Visual Strategy
-→ Remotion-Build-/Shot-Plan
+→ Art Direction Fit
+→ Visual Beats / Visual Strategy
+→ nur 3 Kalibrier-Szenen: Hook + Mechanism + Payoff
+→ Human Creative APPROVED
+→ Visual Quality V4
+→ Remotion-Capability-Auswahl
+→ restlicher Source + Composition
 → Beweis-/Capture-Entscheidung
 → Captions/Packaging
 → reel.json
-→ ausführbare Remotion-Source + Composition
 ```
 
 Phase 1 beginnt ausdrücklich **nicht** mit Remotion-Code.
+
+**Vollproduktion ist gesperrt**, solange `art-direction-calibration.json` nicht ausdrücklich menschlich auf `APPROVED` steht und `fullReelBuildAllowed=true` ist. Automatisches CI darf diese Freigabe nie selbst setzen.
 
 ### Phase 2 — Mensch
 
@@ -215,11 +228,11 @@ Für Short-Form gilt:
 3. Welche Claims müssen geprüft werden?
 4. Was sagt der Sprecher tatsächlich?
 5. Welche Visual Beats entstehen aus der Bedeutung?
-6. Was muss der Zuschauer bei jedem Beat sehen?
-7. Welches Hauptverb beschreibt die sichtbare Handlung?
-8. Braucht die Aussage eine echte Beweisquelle oder reicht ein nativer Remotion-Build?
-9. Welche Remotion-Mechanik erklärt es am besten?
-10. Erst jetzt vorhandene Library/Technik prüfen.
+6. Welche physische Metapher / welches Hero-Objekt trägt die Aussage?
+7. Welche Material- und Kamerasprache aus ART_DIRECTION.md passt?
+8. Welche sichtbare Handlung verändert den Zustand?
+9. Braucht die Aussage eine echte Beweisquelle oder reicht ein nativer Remotion-Build?
+10. Erst jetzt passende Remotion-Capability/Library prüfen.
 ```
 
 ### Quellen-/Beweisebene
@@ -243,8 +256,8 @@ Für echte Production-Compositions:
 
 - `ki/src/ProductionRoot.tsx` ist die kanonische Production-Registrierung.
 - `ki/src/production-entry.tsx` registriert ausschließlich `ProductionRoot`.
-- `ki/src/index.ts` / `ki/src/Root.tsx` dienen Studio/Preview und dürfen `MotionPreviewRoot` enthalten.
-- `MotionPreviewRoot` darf niemals in den echten Production-Entry gelangen.
+- `ki/src/index.ts` / `ki/src/Root.tsx` dienen Studio/Preview und dürfen `MotionPreviewRoot` sowie das **Art-Direction Lab** enthalten.
+- Art-Direction-Lab und `MotionPreviewRoot` dürfen niemals in den echten Production-Entry gelangen.
 - alle `remotion`- und `@remotion/*`-Pakete bleiben auf exakt derselben Version.
 - neue APIs aus Dokumentation/Skills werden gegen die im Repo installierte Version geprüft.
 - Render-Timing ist framebasiert; kein CSS-Animationstiming und kein `Math.random()` im Production-Render.
@@ -274,18 +287,30 @@ node scripts/run-remotion-readiness.mjs
 
 ## 9. Verbindliche visuelle Identität
 
+Kanalwelt: **`physical-ai-editorial-v1`** aus `ki/gehirn/ART_DIRECTION.md`.
+
 - Short-Form standardmäßig 1080 × 1920 / 30 FPS
 - Longform aktuell 1920 × 1080 / 30 FPS
-- heller editorialer Grundlook
-- dunkle Schrift
-- Marken-Lila `#B98CFF` als primärer Fokus-Akzent
-- dunkles Lila `#6E45C9` für Tiefe/Kontrast
+- hochwertige physische Editorial-Welt statt generischer Remotion-/Dashboard-Ästhetik
+- warmes Off-White, Graphit, Papier, Acrylic, Glas, Metall, Ceramic
+- Marken-Lila `#B98CFF` / `#6E45C9` primär als Energie-/Informationsakzent, nicht als komplette Welt
 - faceless, keine erkennbaren Gesichter
-- keine Cyberpunk-/Neon-Standardästhetik
+- **keine Cyberpunk-/Neon-Standardästhetik**
+- **keine Floating-Pill-Clouds oder HUD-/Dashboard-Grammatik als Standard**
 - Sprechertext, Caption, Header und Visual haben getrennte Aufgaben
 - keine erfundenen Zahlen oder real wirkenden Fake-Quellen
 - keine monotone Karten-/Panelserie aus Bequemlichkeit
 - mindestens ein geplanter visueller Höhepunkt pro Reel, sofern die Idee ein Reel rechtfertigt
+
+Normale physische Szene als Richtwert:
+
+```text
+1 Hero
++ 0–3 Support-Objekte
++ 0–2 kurze Visual-Labels
++ höchstens 1 UI-Panel, wenn UI wirklich semantisch nötig ist
++ Purple-Flächenziel normalerweise <= 18%
+```
 
 ### Karten-/Panel-Regel
 
@@ -300,7 +325,7 @@ Richtwerte für neue Reels:
 - mindestens die Hälfte der Beats objekt-, pfad-, form-, raum-, code-, illustration- oder prozessbasiert
 - reale Tool-UI verwenden, wenn reales Produktverhalten selbst der Beweis ist
 
-Details: `ki/gehirn/MASTER.md`, `ki/gehirn/VISUAL_STRATEGY.md`, `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`, `ki/gehirn/REELS.md`.
+Details: `ki/gehirn/ART_DIRECTION.md`, `ki/gehirn/MASTER.md`, `ki/gehirn/VISUAL_STRATEGY.md`, `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`, `ki/gehirn/REELS.md`.
 
 ## 10. Story-/Retention-Qualität
 
@@ -362,10 +387,13 @@ Technische QA umfasst u. a.:
 
 Creative QA umfasst:
 
+- Art-Direction-Fit
+- Hero-Dominanz
+- Material-/Kamera-Kohärenz
 - Hook
 - Tempo/Leerlauf
 - visuelle Wiederholung
-- Kartenlastigkeit
+- Karten-/Panel-/Pill-Dichte
 - sichtbaren Mechanismus
 - Memorable Moment
 - Smartphone-Eindruck
@@ -375,6 +403,7 @@ Creative QA umfasst:
 
 Verbindlich:
 
+- `ki/gehirn/ART_DIRECTION.md`
 - `ki/gehirn/POST_RENDER_REVIEW.md`
 - `ki/gehirn/CREATIVE_QA.md`
 - bei V2-Reels `06-projektdateien/creative-review.md`
