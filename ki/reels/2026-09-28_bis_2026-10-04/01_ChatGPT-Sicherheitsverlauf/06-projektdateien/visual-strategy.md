@@ -10,12 +10,42 @@
 **Bewusst vermiedene Wiederholung:** keine Kartenserie; vier verschiedene Archetypen und vier verschiedene Primary Remotion Capabilities.
 
 ## Scene Story Contract
-| Scene | Start state | Visible change | End state | Visual verb | Hero meaning | Recognition cues | Payoff |
-|---|---|---|---|---|---|---|---|
-| security-01 | unbekanntes Gerät steht bereits sichtbar vor dem Account-Schutz | Gerät schlägt ein, Warnsignal zieht zum Verlauf | Risiko wird als protokollierbares Ereignis markiert | kollidiert | fremder Login wird sichtbar statt abstrakt | Geräte-Rahmen + Shield/Account-Ring | Sicherheitskonflikt sofort verstanden |
-| security-02 | erster Login-Punkt ist sichtbar | Pfad zeichnet Login → Logout → MFA-Änderung | Sicherheitsereignisse bilden eine lesbare Timeline | verbindet | Verlauf ordnet einzelne Sicherheitsereignisse | Zeitachse + Ereignis-Symbole | Feature-Mechanismus wird sichtbar |
-| security-03 | Smartphone/Browser ist klar erkennbar | Detail-Layer klappt räumlich auf und trennt Zeit, Gerät, Ort | drei mögliche Detailtypen sind räumlich sortiert | entfaltet | einzelne Ereignisse können Kontextdetails tragen | Phone-Rahmen/Notch + Browser-Chrome | Details ohne Fake-UI erklärt |
-| security-04 | roter unbekannter Eintrag steht vor einem Gate | Eintrag wird geprüft und transformiert | klare Aktion „PRÜFEN & SICHERN“ dominiert | prüft | auffälliges Ereignis führt zur Sicherheitsaktion | Shield-Gate + Zustandswechsel rot→lila | konkreter nächster Schritt |
+
+### security-01
+- **Start state:** unbekanntes Gerät steht bereits sichtbar vor dem Account-Schutz
+- **Visible change:** Gerät schlägt ein, Warnsignal zieht zum Verlauf
+- **End state:** Risiko wird als protokollierbares Ereignis markiert
+- **Visual verb:** kollidiert
+- **Hero meaning:** fremder Login wird sichtbar statt abstrakt
+- **Recognition cues:** Geräte-Rahmen + Shield/Account-Ring + rotes Risikosignal
+- **Payoff:** Sicherheitskonflikt sofort verstanden
+
+### security-02
+- **Start state:** erster Login-Punkt ist sichtbar
+- **Visible change:** Pfad zeichnet Login → Logout → MFA-Änderung
+- **End state:** Sicherheitsereignisse bilden eine lesbare Timeline
+- **Visual verb:** verbindet
+- **Hero meaning:** Verlauf ordnet einzelne Sicherheitsereignisse
+- **Recognition cues:** Zeitachse + Ereignis-Symbole
+- **Payoff:** Feature-Mechanismus wird sichtbar
+
+### security-03
+- **Start state:** Smartphone/Browser ist klar erkennbar
+- **Visible change:** Detail-Layer klappt räumlich auf und trennt Zeit, Gerät, Ort
+- **End state:** drei mögliche Detailtypen sind räumlich sortiert
+- **Visual verb:** entfaltet
+- **Hero meaning:** einzelne Ereignisse können Kontextdetails tragen
+- **Recognition cues:** Phone-Rahmen/Notch + Browser-Chrome + Detail-Layer
+- **Payoff:** Details ohne Fake-UI erklärt
+
+### security-04
+- **Start state:** roter unbekannter Eintrag steht vor einem Gate
+- **Visible change:** Eintrag wird geprüft und transformiert
+- **End state:** klare Aktion „PRÜFEN & SICHERN“ dominiert
+- **Visual verb:** prüft
+- **Hero meaning:** auffälliges Ereignis führt zur Sicherheitsaktion
+- **Recognition cues:** Shield-Gate + Zustandswechsel rot→lila
+- **Payoff:** konkreter nächster Schritt
 
 ## Beat Sheet
 | Beat | Sprecherstelle | Bedeutung | Zuschauer muss sehen | Hauptverb | Start → Veränderung → Ende | Modality | Mechanikfamilie | Primary Remotion capability | Capability rationale | Hero | Asset/Capture |
