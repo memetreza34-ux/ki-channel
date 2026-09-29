@@ -128,6 +128,8 @@ Zulässig sind zwei technische Wege:
 
 Diese technische Diversity-Prüfung ergänzt die V2-Visual-Strategy; sie ersetzt sie nicht.
 
+**Wichtig:** Ein authored Visual Manifest beschreibt die beabsichtigte Bildsprache. Es ist **kein Render-Beweis**. `cameraMotion: parallax`, `entryMechanism: mask` oder `depthStyle: pseudo-3d` gelten kreativ erst dann als umgesetzt, wenn Source und gerenderte Frames diese Wirkung tatsächlich zeigen.
+
 ### Für planbasierte Reels
 
 - konkrete Szenenausgabe standardmäßig über `ProductionSceneRuntimeRenderer`
@@ -179,17 +181,80 @@ Wenn `visual-strategy.md` beispielsweise `REAL_CAPTURE` oder `HYBRID` verlangt, 
 Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und `ki/src/reels/captionSafe.ts` verbindlich.
 
 - neue Reel-Sources verwenden `REEL_CAPTION_SAFE` bzw. `REEL_CAPTION_WRAPPER_STYLE`
-- Standard: `bottom: 520px`
+- Standard: `bottom: 300px`
 - horizontaler Sicherheitsabstand: `104px`
 - bevorzugte maximale Caption-Breite: `820px`
 - normalerweise 4–6 Wörter pro sichtbarem Sinnblock, maximal 2 Zeilen
-- letzte ungefähr 420px unten nicht für kritische Information
-- Bereich 420–500px nur als Puffer
-- bedeutungstragende Hauptvisuals möglichst bis ungefähr `y≈1240–1280` abschließen
-- keine Altwerte als neue Caption-Position hart codieren
+- letzte ungefähr 220px unten nicht für kritische Information
+- Bereich 220–280px nur als Puffer
+- bedeutungstragende Hauptvisuals dürfen ungefähr bis `y≈1380–1420` reichen, solange sie nicht mit Caption/UI konkurrieren
+- keine Altwerte wie `400`, `460`, `500` oder `520` als neue Caption-Position hart codieren
 - wenn Platz fehlt, Visual ändern; Caption nicht Richtung Plattform-UI drücken
 
 Eine Caption-Positionsänderung verlangt neuen Render + Smartphone-/Feed-Review.
+
+## Motion-Choreography ist Pflicht
+
+Zwischen Animation Plan und TSX liegt bei Production-Reels eine verbindliche Choreography-Entscheidung:
+
+```text
+Visual Strategy
+→ Animation Plan
+→ Motion Choreography
+→ Remotion Source
+→ Draft Render
+→ Visual Review
+→ Revision
+```
+
+Pro bedeutungstragendem Beat festlegen:
+
+- dominante Aktion
+- Start / Peak / Settle / Hold
+- Easing-Familie
+- Stagger-/Wave-Logik bei Gruppen
+- Kamera- oder Tiefenreaktion, wenn semantisch nötig
+- Follow-through bei gekoppelten Layern
+- Kontinuität zum vorherigen/nächsten Beat
+- optionaler SFX-Cue, wenn er die physische Wirkung unterstützt
+
+Für wiederverwendbare Choreography-Bausteine `ki/src/motion/choreography.ts` und `ki/src/motion/easing.ts` verwenden.
+
+### Kurze Objektbewegung, längere Gruppenentwicklung
+
+Ein einzelnes Objekt soll normalerweise in der vorhandenen Micro/Standard/Hero-Dauerskala reagieren. Eine Gruppe darf über mehrere Sekunden lebendig bleiben, **indem kurze Einzelbewegungen gestaffelt starten**. Nicht 20 Elemente vier Sekunden lang gemeinsam interpolieren.
+
+Beispiel:
+
+```text
+Tile 1: 18 Frames Bewegung
+Tile 2: +3 Frames Startversatz
+Tile 3: +6 Frames Startversatz
+...
+Gesamtgruppe: deutlich länger sichtbar in Entwicklung
+Einzelobjekt: trotzdem schnell und gewichtet
+```
+
+### Kein lokales Universal-Easing
+
+Production-Reels dürfen nicht aus Bequemlichkeit eine lokale `ease()`-Funktion mit einer einzigen Kurve für fast alle Bewegungen definieren. `enter`, `enterEmphasis`, `move`, `exit` und andere zentrale Kurven werden nach Bewegungsbedeutung gewählt.
+
+### Gruppen niemals blind gleichzeitig
+
+Listen, Tiles, Nodes, Tokens, Pfade und ähnliche Gruppen benötigen eine bewusste Reihenfolge, wenn sie als mehrere Ereignisse gelesen werden sollen. Erlaubt sind z. B.:
+
+- center-out
+- edge-in
+- left-to-right
+- cause-to-effect
+- relevance-first
+- radial
+
+Gleichzeitigkeit ist nur korrekt, wenn die Aussage tatsächlich Gleichzeitigkeit meint.
+
+### Objektkontinuität vor Transition-Effekt
+
+Wenn zwei Beats dasselbe semantische Objekt zeigen, soll bevorzugt dessen Position/Form/Zustand weitergeführt werden. Erst wenn echte Kontinuität nicht sinnvoll ist, Hard Cut oder begründeter Übergang. Ein dekorativer Wipe ersetzt keine Shared-Object-Continuity.
 
 ## Motion-Regeln
 
