@@ -6,6 +6,7 @@ const heroComponents=new Set([
   'ImpactShake',
   'AliveHold',
   'DirectionalBlur',
+  'SampledMotionBlur',
 ]);
 const animatedAssetComponents=new Set(['Lottie','RemotionRiveCanvas']);
 const customMotionCalls=new Set([
