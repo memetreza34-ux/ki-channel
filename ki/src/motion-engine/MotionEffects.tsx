@@ -1,4 +1,5 @@
 import React from 'react';
+import {CameraMotionBlur} from '@remotion/motion-blur';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {dampedOscillation, segmentProgress} from './motionMath';
 
@@ -96,6 +97,27 @@ export const AliveHold: React.FC<React.PropsWithChildren<{
   );
 };
 
+/**
+ * Real temporal sampling through @remotion/motion-blur. Use around fast,
+ * frame-driven hero motion where speed should read as speed rather than as
+ * a sequence of sharp teleports. Keep samples moderate for render cost.
+ */
+export const SampledMotionBlur: React.FC<React.PropsWithChildren<{
+  shutterAngle?: number;
+  samples?: number;
+}>> = ({shutterAngle = 120, samples = 5, children}) => (
+  <div data-motion-engine="sampled-motion-blur" style={{position: 'absolute', inset: 0}}>
+    <CameraMotionBlur shutterAngle={shutterAngle} samples={samples}>
+      {children}
+    </CameraMotionBlur>
+  </div>
+);
+
+/**
+ * Directional stylization that can be combined with SampledMotionBlur.
+ * This is not a replacement for temporal sampling; it adds stretch/skew so
+ * very fast motion has a readable direction.
+ */
 export const DirectionalBlur: React.FC<React.PropsWithChildren<{
   startFrame: number;
   peakFrame: number;
