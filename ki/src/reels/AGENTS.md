@@ -117,25 +117,37 @@ Andere Animation-ID oder anderes Label macht eine Szene nicht automatisch passen
 
 Ohne exakten Fit: `NEW_BUILD` innerhalb der gewählten Modality.
 
-## Verbindlicher Creative-Director-/Diversity-Pfad
+### NEW_BUILD bedeutet wirklich neu
 
-Production-Reels dürfen die zentrale Anti-Wiederholungslogik nicht umgehen.
+Für einen Hero-Beat bedeutet `NEW_BUILD` standardmäßig **reel-spezifischer TSX-Source** oder eine bewusst passende Komposition aus `ki/src/motion-engine/`.
 
-Zulässig sind zwei technische Wege:
+`NEW_BUILD` bedeutet ausdrücklich **nicht**:
 
-1. planbasiert über `planReelAnimationsFromText` / `prepareReelAnimationProduction`, wobei ProductionPlan, Implementierungsbrief und Visual Fingerprint bis in die Umsetzung getragen werden
-2. bewusst handgeschriebene Reel-Szene mit explizitem authored Visual Manifest und `assertAuthoredVisualDiversity(...)`
+> eines von wenigen generischen Recipe-Layouts wählen und nur Labels austauschen.
 
-Diese technische Diversity-Prüfung ergänzt die V2-Visual-Strategy; sie ersetzt sie nicht.
+`CreativeRecipeRuntime` bleibt als Utility-/Scaffold-System erlaubt, aber es ist **kein automatischer Hero-Default** und kein Qualitätsbeweis.
+
+## Creative-Director-/Diversity-Pfad
+
+Production-Reels müssen Wiederholung bewusst behandeln, aber **Diversity ist keine Quote**.
+
+Zulässig sind:
+
+1. planbasierte Vorbereitung über `planReelAnimationsFromText` / `prepareReelAnimationProduction`
+2. bewusst handgeschriebene Reel-Szenen mit authored Visual Manifest
+3. reel-spezifische Hero-Szenen auf Basis der Motion Engine V1
+
+Die zentrale Library darf Vorschläge liefern. Sie darf die Szene nicht auf eine generische Grammatik reduzieren.
 
 ### Für planbasierte Reels
 
-- konkrete Szenenausgabe standardmäßig über `ProductionSceneRuntimeRenderer`
 - `REUSE_EXACT`/Library-Szenen über registrierte content-aware Prototypes
-- `NEW_BUILD` startet über den im BuildSpec vorgesehenen `CreativeRecipeRuntime`, sofern die gewählte Modality Remotion-native ist
-- `creativeRecipeId` und `runtimeMechanisms` sind technische Ausgangsgrammatik, keine kreative Entscheidung vor Story/Visual Strategy
-- ein lokales `visualByScene`-Mapping ersetzt den zentralen Renderer nur bei bewusst handgeschriebener Ausnahme mit authored Visual Manifest
-- generischer Recipe-Runtime ist Implementierungs-Scaffold, keine automatische Release-Freigabe
+- `NEW_BUILD` erzeugt für Hero-Beats bevorzugt reel-spezifischen Source bzw. Motion-Engine-Choreografie
+- `CreativeRecipeRuntime` ist nur Scaffold/Utility, wenn sein Mechanismus tatsächlich passt
+- `creativeRecipeId` und `runtimeMechanisms` sind technische Hinweise, keine kreative Pflicht
+- ein lokales `visualByScene`-Mapping ist für bewusst handgeschriebene Hero-Szenen ausdrücklich zulässig
+- gleiche Mechanik darf wiederkehren, wenn sie zur Kanalgrammatik und Aussage passt
+- es gibt **keine Pflicht**, eine bestimmte Anzahl verschiedener Capabilities, Archetypen oder Primärprimitives zu verbrauchen
 
 ### Für handgeschriebene Szenen
 
@@ -155,14 +167,19 @@ Pro Szene mindestens festhalten:
 
 Blockierend bzw. stark zu prüfen:
 
-- vollständiges Visual zweimal im selben Reel
-- gleiche Layout-Familie direkt hintereinander ohne semantische Begründung
-- gleiche Motion-Signature direkt hintereinander ohne Grund
-- Visual-Fingerprint-Ähnlichkeit über Hard-Limit
-- zu geringe Hauptprimitive-Vielfalt bei längeren Reels
+- vollständiges Visual zweimal ohne semantischen Grund
 - Card-Dominanz trotz besserer Mechanik
+- gleiche Szene nur mit anderem Text recycelt
+- Hero-Motion besteht nur aus Fade/Slide/Scale-In und anschließendem langen Stillstand
+- Kamera bewegt sich nur dekorativ ohne Reaktion auf die Handlung
 
-Drei Szenen mit gleicher Hauptprimitive, statischer Kamera oder flacher Tiefe sind mindestens ein Review-Warnsignal.
+Nicht blockierend allein:
+
+- wiederholte Hauptprimitive
+- wiederholter Archetyp
+- nur zwei passende Remotion-Capabilities im ganzen Reel
+
+Kohärenz ist wichtiger als künstlich erzwungene Vielfalt.
 
 Die alte `ki/src/motion-system/`-Welt darf für Preview/Legacy bestehen, ist aber kein alternativer Produktionsweg zum Umgehen aktueller Contracts.
 
@@ -191,7 +208,55 @@ Für 1080 × 1920 Production-Reels sind `ki/gehirn/CAPTION_SAFE_POSITION.md` und
 
 Eine Caption-Positionsänderung verlangt neuen Render + Smartphone-/Feed-Review.
 
-## Motion-Regeln
+## Motion Engine V1 — Hero-Regel
+
+`ki/gehirn/MOTION_ENGINE.md` ist für neue Hero-Szenen verbindlich.
+
+Hero-Motion soll einen lesbaren Bewegungsbogen besitzen:
+
+```text
+Anticipation
+→ Acceleration / Travel
+→ Impact oder Reveal
+→ Overshoot / Follow-through
+→ Settle
+→ Alive Hold
+```
+
+Nicht jede Szene braucht alle sechs Phasen, aber ein Hero darf nicht nur aus `opacity + translate + scale` bestehen.
+
+Bevorzugte Bausteine:
+
+- `CinematicCameraRig`
+- `ChoreographedObject`
+- `ImpactShake`
+- `AliveHold`
+- `DirectionalBlur`
+- oder gleichwertige reel-spezifische framebasierte Choreografie
+
+### Kamera
+
+Kamera darf aktiv choreografiert werden:
+
+- push-in / pull-back
+- track-left / track-right
+- push-through
+- whip-left / whip-right
+- impact-push
+- controlled orbit
+
+Kamera reagiert auf die Handlung oder erklärt Raum. Permanenter Drift ist kein Ersatz für Motion Direction.
+
+### Geschwindigkeit
+
+Schnelle Bewegung muss lesbar sein, z. B. durch:
+
+- Motion Blur / Directional Blur
+- Stretch/Squash
+- Follow-Camera / Whip
+- klare Trajectory
+
+## Allgemeine Motion-Regeln
 
 - deterministisch
 - kein `Math.random()` im Render
@@ -199,10 +264,10 @@ Eine Caption-Positionsänderung verlangt neuen Render + Smartphone-/Feed-Review.
 - direkte Frame-Seeks müssen funktionieren
 - Hard Cut ist Standard
 - Transition nur bei echter semantischer Kontinuität
-- eine dominante Bewegung pro Beat, maximal drei starke gleichzeitige Bewegungen
+- eine dominante Bewegung pro Beat; mehrere Bewegungen nur choreografiert und hierarchisch
 - Easing passend zur Bewegung; lineare Progression nur bei semantisch linearer Bewegung
 - Gruppen nicht blind gleichzeitig einblenden
-- Endzustand ausreichend halten
+- Endzustand ausreichend halten, aber nicht tot stehen lassen
 - keine Partikel/Glow/Kamerafahrt als Ersatz für fehlende Erklärung
 
 ## Qualitätsregeln

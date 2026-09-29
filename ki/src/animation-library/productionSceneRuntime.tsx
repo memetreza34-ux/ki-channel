@@ -13,12 +13,25 @@ import {
 } from './prototypes/registry';
 import type {PrototypeRenderProps} from './prototypes/PrototypeContentContext';
 
+export type AuthoredNewBuildRuntime = {
+  component: ComponentType<any>;
+  renderProps?: Record<string, unknown>;
+};
+
 export type ProductionSceneRuntimeInput = {
   scenePlan: ProductionSceneAnimationPlan;
   spokenText: string;
   title?: string;
   labels?: Record<string, string>;
   values?: Record<string, string | number>;
+  /**
+   * Final NEW_BUILD scenes must provide a reel-specific authored component.
+   * This keeps the generic CreativeRecipeRuntime as a planning/scaffold tool,
+   * not as the silent release default for hero animation.
+   */
+  authoredNewBuild?: AuthoredNewBuildRuntime;
+  /** Preview/testing escape hatch only. Never use this as the final hero path. */
+  allowRecipeScaffold?: boolean;
 };
 
 export type LibraryAnimationRuntimeInput = {
@@ -41,10 +54,11 @@ export type LibraryProductionSceneRuntime = {
 
 export type NewBuildProductionSceneRuntime = {
   source: 'new-build';
+  runtimeMode: 'authored' | 'recipe-scaffold';
   sceneId: string;
   animationId: string;
-  component: typeof CreativeRecipeRuntime;
-  renderProps: React.ComponentProps<typeof CreativeRecipeRuntime>;
+  component: ComponentType<any>;
+  renderProps: Record<string, unknown>;
 };
 
 export type ProductionSceneRuntime =
@@ -140,6 +154,8 @@ const buildLibraryRuntime = ({
 
 const buildNewBuildRuntime = ({
   scenePlan,
+  authoredNewBuild,
+  allowRecipeScaffold = false,
 }: ProductionSceneRuntimeInput): NewBuildProductionSceneRuntime => {
   if (!scenePlan.buildSpec) {
     throw new Error(
@@ -151,8 +167,28 @@ const buildNewBuildRuntime = ({
       `new-build production scene ${scenePlan.sceneId} has mismatched runtime id ${scenePlan.buildSpec.animationId}`,
     );
   }
+
+  if (authoredNewBuild) {
+    return {
+      source: 'new-build',
+      runtimeMode: 'authored',
+      sceneId: scenePlan.sceneId,
+      animationId: scenePlan.animationId,
+      component: authoredNewBuild.component,
+      renderProps: authoredNewBuild.renderProps ?? {},
+    };
+  }
+
+  if (!allowRecipeScaffold) {
+    throw new Error(
+      `new-build production scene ${scenePlan.sceneId} requires authoredNewBuild for final production. ` +
+      'CreativeRecipeRuntime is scaffold-only; pass allowRecipeScaffold=true only for preview/testing.',
+    );
+  }
+
   return {
     source: 'new-build',
+    runtimeMode: 'recipe-scaffold',
     sceneId: scenePlan.sceneId,
     animationId: scenePlan.animationId,
     component: CreativeRecipeRuntime,

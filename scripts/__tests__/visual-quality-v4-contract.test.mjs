@@ -108,6 +108,21 @@ test('V4 allows limited intentional stillness only with a reason', () => {
   assert.deepEqual(validateVisualQualityV4Manifest(manifest), []);
 });
 
+test('V4 does not force four archetypes or arbitrary micro-beat quotas', () => {
+  const manifest = validManifest();
+  manifest.scenes = [
+    scene('scene-01', 'hero-impact', 0),
+    scene('scene-02', 'hero-impact', 150),
+  ];
+  manifest.scenes[0].meaningfulStateChanges = 1;
+  manifest.scenes[0].microBeats = 0;
+  manifest.scenes[1].meaningfulStateChanges = 1;
+  manifest.scenes[1].microBeats = 0;
+  manifest.hook.semanticVisualAnchors = 1;
+  manifest.hook.conflictVisible = false;
+  assert.deepEqual(validateVisualQualityV4Manifest(manifest), []);
+});
+
 test('V4 starts with week 2026-09-28 while V3 remains legacy', () => {
   assert.equal(futureReelNeedsV4('2026-09-21_bis_2026-09-27'), false);
   assert.equal(futureReelNeedsV4('2026-09-28_bis_2026-10-04'), true);

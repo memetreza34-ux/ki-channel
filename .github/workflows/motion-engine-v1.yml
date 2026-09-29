@@ -1,0 +1,68 @@
+name: Motion Engine V1 Review
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ki/src/motion-engine/**'
+      - 'ki/gehirn/MOTION_ENGINE.md'
+      - 'ki/src/reels/AGENTS.md'
+      - 'scripts/check-motion-engine.mjs'
+      - 'scripts/check-hero-motion-quality.mjs'
+      - 'scripts/motion-engine-source-contract.mjs'
+      - 'scripts/remotion-capability-contract.mjs'
+      - 'scripts/visual-quality-v4-contract.mjs'
+      - 'scripts/run-remotion-readiness.mjs'
+      - '.github/workflows/motion-engine-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: motion-engine-v1-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render-motion-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install canonical workspaces
+        run: npm install --package-lock=false --legacy-peer-deps --no-audit --no-fund
+
+      - name: Validate Motion Engine contracts
+        run: |
+          node --test scripts/__tests__/motion-engine-contract.test.mjs
+          node --test scripts/__tests__/motion-engine-source-contract.test.mjs
+          node --test scripts/__tests__/motion-engine-behavior.test.mjs
+          node scripts/check-motion-engine.mjs
+          node scripts/check-hero-motion-quality.mjs
+          npm run typecheck:motion
+
+      - name: Render Motion Engine review stills
+        run: |
+          mkdir -p out/motion-engine-v1
+          npx --no-install remotion still ki/src/index.ts KI-MotionEngine-V1 out/motion-engine-v1/01-impact.png --frame=62
+          npx --no-install remotion still ki/src/index.ts KI-MotionEngine-V1 out/motion-engine-v1/02-routing.png --frame=245
+          npx --no-install remotion still ki/src/index.ts KI-MotionEngine-V1 out/motion-engine-v1/03-push-through.png --frame=390
+
+      - name: Render Motion Engine review video
+        run: npx --no-install remotion render ki/src/index.ts KI-MotionEngine-V1 out/motion-engine-v1/motion-engine-v1.mp4 --scale=0.5
+
+      - name: Upload review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-engine-v1-review
+          path: out/motion-engine-v1/
+          if-no-files-found: warn
