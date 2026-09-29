@@ -1,7 +1,7 @@
 import React from 'react';
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 
-export type CameraEasingPreset = 'cinematic' | 'snappy' | 'linear';
+export type CameraEasingPreset = 'cinematic' | 'snappy' | 'smooth' | 'linear';
 
 export type WorldCameraKeyframe = {
   frame: number;
@@ -10,6 +10,7 @@ export type WorldCameraKeyframe = {
   zoom: number;
   rotation?: number;
   z?: number;
+  easing?: CameraEasingPreset;
 };
 
 export type WorldCameraRigProps = React.PropsWithChildren<{
@@ -26,6 +27,7 @@ export type WorldCameraRigProps = React.PropsWithChildren<{
 const easingMap: Record<CameraEasingPreset, (value: number) => number> = {
   cinematic: Easing.bezier(0.22, 0.61, 0.36, 1),
   snappy: Easing.bezier(0.16, 1, 0.3, 1),
+  smooth: Easing.inOut(Easing.cubic),
   linear: Easing.linear,
 };
 
@@ -42,7 +44,7 @@ const poseAtFrame = (
   frame: number,
   keyframes: readonly WorldCameraKeyframe[],
   easing: CameraEasingPreset,
-): Required<Omit<WorldCameraKeyframe, 'frame'>> => {
+): Required<Omit<WorldCameraKeyframe, 'frame' | 'easing'>> => {
   assertTimeline(keyframes);
   const first = keyframes[0];
   const last = keyframes[keyframes.length - 1];
@@ -69,7 +71,8 @@ const poseAtFrame = (
   while (index < keyframes.length - 1 && keyframes[index + 1].frame <= frame) index += 1;
   const from = keyframes[index];
   const to = keyframes[index + 1];
-  const options = {easing: easingMap[easing]};
+  const segmentEasing = to.easing ?? from.easing ?? easing;
+  const options = {easing: easingMap[segmentEasing]};
   return {
     focusX: interpolate(frame, [from.frame, to.frame], [from.focusX, to.focusX], options),
     focusY: interpolate(frame, [from.frame, to.frame], [from.focusY, to.focusY], options),
@@ -129,3 +132,19 @@ export const WorldCameraRig: React.FC<WorldCameraRigProps> = ({
 };
 
 export const resolveWorldCameraPose = poseAtFrame;
+
+export const cameraHold = (
+  frame: number,
+  pose: Omit<WorldCameraKeyframe, 'frame'>,
+): WorldCameraKeyframe => ({frame, ...pose});
+
+export const extendCameraHold = (
+  keyframes: readonly WorldCameraKeyframe[],
+  frames: number,
+): WorldCameraKeyframe[] => {
+  if (keyframes.length === 0) throw new Error('extendCameraHold requires at least one keyframe');
+  if (frames <= 0) return [...keyframes];
+  const last = keyframes[keyframes.length - 1];
+  const {frame: _frame, ...rest} = last;
+  return [...keyframes, {frame: last.frame + frames, ...rest}];
+};
