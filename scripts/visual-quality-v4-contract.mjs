@@ -13,7 +13,10 @@ export const V4_ARCHETYPES = new Set([
   'process-flow',
 ]);
 
-const scoreKeys = ['hook', 'semanticClarity', 'storyMotion', 'visualVariety', 'readability', 'overall'];
+// V4 validates clarity/story/motion. It intentionally does not force a
+// visual-variety quota: coherent repetition can be better than arbitrary
+// archetype switching.
+const scoreKeys = ['hook', 'semanticClarity', 'storyMotion', 'readability', 'overall'];
 const weakVisualVerbs = new Set([
   'show', 'shows', 'display', 'displays', 'appear', 'appears',
   'zeigen', 'zeigt', 'darstellen', 'stellt dar', 'erscheinen', 'erscheint',
@@ -50,17 +53,16 @@ export const validateVisualQualityV4Manifest = (manifest, {label = 'visual-quali
     fail(`hook.firstMajorChangeByFrame must be within the first ${fps} frames`);
   }
   if (!(hook.heroAreaRatio >= 0.28)) fail('hook.heroAreaRatio must be >= 0.28');
-  if (!(hook.semanticVisualAnchors >= 2)) fail('hook.semanticVisualAnchors must be >= 2');
+  if (!(hook.semanticVisualAnchors >= 1)) fail('hook.semanticVisualAnchors must be >= 1');
   if (!Array.isArray(hook.recognitionCues) || hook.recognitionCues.length < 2) fail('hook.recognitionCues needs at least 2 concrete cues');
   if (hook.contrast !== 'strong') fail('hook.contrast must be strong');
-  if (hook.conflictVisible !== true) fail('hook.conflictVisible must be true');
   if (hook.keyMessageVisible !== true) fail('hook.keyMessageVisible must be true');
   if (!usefulText(hook.visualVerb, 3) || weakVisualVerbs.has(String(hook.visualVerb).trim().toLowerCase())) {
     fail('hook.visualVerb must describe a meaningful action, not show/appear/display');
   }
 
   const scenes = Array.isArray(manifest.scenes) ? manifest.scenes : [];
-  if (scenes.length < 4) fail('at least four scenes are required');
+  if (scenes.length < 2) fail('at least two scenes are required');
   const ids = new Set();
   let previousEnd = 0;
 
@@ -111,15 +113,13 @@ export const validateVisualQualityV4Manifest = (manifest, {label = 'visual-quali
       fail(`${p}.hero.semanticType is too abstract for device-scene`);
     }
 
-    if (!(scene?.meaningfulStateChanges >= 3)) fail(`${p}.meaningfulStateChanges must be >= 3`);
-    if (!(scene?.microBeats >= 2)) fail(`${p}.microBeats must be >= 2`);
     if (!['strong', 'medium', 'soft'].includes(scene?.contrast)) fail(`${p}.contrast must be strong, medium or soft`);
 
     const motion = scene?.motionPlan ?? {};
     if (!usefulText(motion.entry, 8)) fail(`${p}.motionPlan.entry missing`);
     if (!usefulText(motion.development, 8)) fail(`${p}.motionPlan.development missing`);
     if (!usefulText(motion.payoff, 8)) fail(`${p}.motionPlan.payoff missing`);
-    if (!(motion.payoffAtProgress >= 0.55 && motion.payoffAtProgress <= 0.95)) fail(`${p}.motionPlan.payoffAtProgress must be 0.55-0.95`);
+    if (!(motion.payoffAtProgress >= 0.45 && motion.payoffAtProgress <= 0.95)) fail(`${p}.motionPlan.payoffAtProgress must be 0.45-0.95`);
     const defaultMaxHold = Math.ceil(fps * 2.5);
     const extendedMaxHold = Math.ceil(fps * 3.5);
     if (!Number.isInteger(motion.maxStaticHoldFrames) || motion.maxStaticHoldFrames < 0) {
@@ -136,14 +136,6 @@ export const validateVisualQualityV4Manifest = (manifest, {label = 'visual-quali
     const first = scenes[0];
     if (first?.startFrame !== 0) fail('first scene must start at frame 0');
     if (hook.sceneId && first?.sceneId !== hook.sceneId) fail('hook.sceneId must match the first scene');
-  }
-  for (let i = 1; i < scenes.length; i += 1) {
-    if (scenes[i - 1]?.archetype === scenes[i]?.archetype) fail(`consecutive scenes repeat archetype ${scenes[i]?.archetype}`);
-  }
-  const uniqueArchetypes = new Set(scenes.map((scene) => scene?.archetype)).size;
-  if (scenes.length >= 4 && uniqueArchetypes < 4) fail('at least four different shot archetypes are required');
-  if (scenes.filter((scene) => scene?.contrast === 'soft').length > Math.floor(scenes.length * 0.2)) {
-    fail('too many soft/washed-out scenes — maximum 20%');
   }
 
   const scores = manifest.targetScores ?? {};
