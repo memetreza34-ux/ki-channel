@@ -16,9 +16,6 @@ const run = (command, args, label) => new Promise((resolve, reject) => {
 
 const steps = [
   ['node', ['--check', 'scripts/new-ki-reel.mjs'], 'New reel generator syntax'],
-  ['node', ['--check', 'scripts/init-art-direction-calibration.mjs'], 'Art-direction calibration initializer syntax'],
-  ['node', ['--check', 'scripts/check-channel-art-direction.mjs'], 'Channel art-direction gate syntax'],
-  ['node', ['--check', 'scripts/channel-art-direction-contract.mjs'], 'Channel art-direction contract syntax'],
   ['node', ['--check', 'scripts/sync-reel-word-timings.mjs'], 'Exact word-sync script syntax'],
   ['node', ['--check', 'scripts/render-first-real-ki-reel.mjs'], 'First real reel render script syntax'],
   ['node', ['--check', 'scripts/render-visual-contact-sheet.mjs'], 'Visual contact-sheet script syntax'],
@@ -30,7 +27,6 @@ const steps = [
   ['node', ['--check', 'scripts/visual-quality-v4-review-contract.mjs'], 'Visual Quality V4 review-contract syntax'],
   ['node', ['--check', 'scripts/check-remotion-capabilities.mjs'], 'Remotion capability gate script syntax'],
   ['node', ['--check', 'scripts/remotion-capability-contract.mjs'], 'Remotion capability contract syntax'],
-  ['node', ['--test', 'scripts/__tests__/channel-art-direction-contract.test.mjs'], 'Channel art-direction contract tests'],
   ['node', ['--test', 'scripts/__tests__/new-ki-reel-capability-template.test.mjs'], 'New reel V4/capability wiring tests'],
   ['node', ['--test', 'scripts/__tests__/remotion-skill-matrix.test.mjs'], 'Remotion skill/package/capability matrix tests'],
   ['node', ['--test', 'scripts/__tests__/remotion-capability-threshold.test.mjs'], 'Remotion capability V3/V4 threshold regression test'],
@@ -42,7 +38,6 @@ const steps = [
   ['node', ['--test', 'scripts/__tests__/visual-quality-v4-review-contract.test.mjs'], 'Visual Quality V4 rendered-review tests'],
   ['node', ['--test', 'scripts/__tests__/remotion-capability-contract.test.mjs'], 'Remotion capability contract tests'],
   ['node', ['scripts/check-caption-contract.mjs'], 'Canonical caption geometry contract'],
-  ['node', ['scripts/check-channel-art-direction.mjs'], 'Channel Physical AI art-direction calibration gate'],
   ['node', ['scripts/check-visual-quality-v3.mjs'], 'Visual Quality V3 legacy reel gate'],
   ['node', ['scripts/check-visual-quality-v4.mjs'], 'Visual Quality V4 future-reel gate'],
   ['node', ['scripts/check-remotion-capabilities.mjs'], 'Remotion capability implementation gate'],
@@ -56,7 +51,6 @@ const steps = [
 try {
   for (const [command, args, label] of steps) await run(command, args, label);
   console.log('\nREMOTION READINESS: PASS');
-  console.log('Channel Physical AI art direction + calibration gate: PASS');
   console.log('New reel V4/capability template wiring: PASS');
   console.log('Remotion skill/package/capability matrix: PASS');
   console.log('Remotion capability threshold across V3/V4: PASS');
@@ -68,7 +62,7 @@ try {
   console.log('Exact Word Sync tooling: PASS');
   console.log('Legacy visual contact-sheet tooling: PASS');
   console.log('First real reel E2E command: PASS');
-  console.log('Naechster Schritt: vor Vollproduktion zuerst Hook + Mechanism + Payoff in der Physical-AI-Welt kalibrieren und menschlich freigeben; erst danach V4/Capabilities auf das komplette Reel anwenden.');
+  console.log('Naechster Schritt: neue Reels ab Woche 2026-09-28 muessen Frame 0, Start→Veraenderung→Ergebnis, semantische Heroes, begrenzte Holds und scene-local Render-QA nachweisen.');
 } catch (error) {
   console.error('\nREMOTION READINESS: FAIL');
   console.error(error instanceof Error ? error.message : String(error));
