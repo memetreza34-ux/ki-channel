@@ -9,6 +9,13 @@ test('hero contract accepts authored Motion Engine choreography',()=>{
   assert.deepEqual(validateHeroMotionSource(source),[]);
 });
 
+test('hero contract accepts layered parallax plus masked kinetic type',()=>{
+  const source=`
+    const Hero=()=> <ParallaxStage startFrame={0} endFrame={80}><ParallaxLayer depth={.8}><MaskedKineticText lines={["VOICE","WORKFLOW"]} startFrame={0} /></ParallaxLayer></ParallaxStage>;
+  `;
+  assert.deepEqual(validateHeroMotionSource(source),[]);
+});
+
 test('hero contract accepts reel-specific frame-driven choreography',()=>{
   const source=`
     import {interpolate,spring,useCurrentFrame} from 'remotion';
