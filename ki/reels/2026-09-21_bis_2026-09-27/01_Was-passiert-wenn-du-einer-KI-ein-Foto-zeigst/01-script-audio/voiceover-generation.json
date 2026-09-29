@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-09-29",
+  "provider": "AI Voice Generator",
+  "voiceStyle": "clear",
+  "status": "generated_external_pending_local_asset",
+  "sourceTranscript": "VOICEOVER-ZUM-KOPIEREN.txt",
+  "contextId": "27b498a86f604e3b94a45420be2e0862",
+  "preferredLocalFilename": "voiceover.mp3",
+  "fallbackLocalFilename": "voiceover.wav",
+  "transcriptPolicy": "exact-approved-wording",
+  "notes": "The full voiceover was generated successfully. Audio binaries remain local/gitignored per ki/public/ASSETS.md and are not committed to GitHub."
+}
