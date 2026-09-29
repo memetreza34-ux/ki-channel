@@ -2,7 +2,9 @@ import ts from 'typescript';
 
 const heroComponents=new Set([
   'CinematicCameraRig',
+  'WorldCameraRig',
   'ChoreographedObject',
+  'KeyframedMotion',
   'ImpactShake',
   'AliveHold',
   'DirectionalBlur',
@@ -51,7 +53,7 @@ export const validateHeroMotionSource=(sourceText,{label='hero source'}={})=>{
   const usesAnimatedAsset=[...animatedAssetComponents].some((name)=>evidence.jsx.has(name));
   const customCalls=[...customMotionCalls].filter((name)=>evidence.calls.has(name));
   const hasFrame=evidence.calls.has('useCurrentFrame');
-  const phaseWords=/anticipat|impact|settle|overshoot|follow.?through|travel|reveal|push-through|whip-|impact-push|camera|trajectory|bezier|parallax|mask/i.test(sourceText);
+  const phaseWords=/anticipat|impact|settle|overshoot|follow.?through|travel|reveal|push-through|whip-|impact-push|camera|trajectory|bezier|parallax|mask|continuous.?world|keyframe|multi.?state/i.test(sourceText);
   const transformSignals=evidence.strings.filter((value)=>/translate3d|rotate[XYZ]?\(|scale[XYZ]?\(|blur\(|clip-path|clipPath/i.test(value)).length;
 
   const engineChoreography=usedEngine.length>=2;
