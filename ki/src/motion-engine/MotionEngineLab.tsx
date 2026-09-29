@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {CinematicCameraRig} from './CinematicCameraRig';
 import {ChoreographedObject} from './ChoreographedObject';
-import {AliveHold, DirectionalBlur, ImpactShake} from './MotionEffects';
+import {AliveHold, DirectionalBlur, ImpactShake, SampledMotionBlur} from './MotionEffects';
 import {SceneMotionOrchestrator} from './SceneMotionOrchestrator';
 
 const ink = '#111116';
@@ -62,20 +62,22 @@ const ImpactScene: React.FC = () => {
           <div style={{position: 'absolute', left: 520, top: 760, transform: 'translate(-50%,-50%)'}}>
             <ModelCore active={activate > 0.35} />
           </div>
-          <DirectionalBlur startFrame={18} peakFrame={48} endFrame={65} maxBlur={9}>
-            <ChoreographedObject
-              path={[[80, 920], [220, 720], [330, 610], [430, 735]]}
-              anticipationStart={0}
-              launchFrame={18}
-              impactFrame={62}
-              settleFrame={92}
-              endFrame={149}
-              faceVelocity
-              impactScale={1.14}
-            >
-              <DataTile label="PROMPT" />
-            </ChoreographedObject>
-          </DirectionalBlur>
+          <SampledMotionBlur shutterAngle={130} samples={5}>
+            <DirectionalBlur startFrame={18} peakFrame={48} endFrame={65} maxBlur={7}>
+              <ChoreographedObject
+                path={[[80, 920], [220, 720], [330, 610], [430, 735]]}
+                anticipationStart={0}
+                launchFrame={18}
+                impactFrame={62}
+                settleFrame={92}
+                endFrame={149}
+                faceVelocity
+                impactScale={1.14}
+              >
+                <DataTile label="PROMPT" />
+              </ChoreographedObject>
+            </DirectionalBlur>
+          </SampledMotionBlur>
           <div style={{position: 'absolute', left: 120, right: 120, top: 250, fontSize: 86, fontWeight: 950, lineHeight: .92, letterSpacing: -4, color: ink}}>
             EIN IMPACT.<br />KEIN FADE-IN.
           </div>
@@ -96,18 +98,20 @@ const RoutingScene: React.FC = () => {
           <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="34" strokeLinecap="round" />
           <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke={violet} strokeWidth="10" strokeLinecap="round" strokeDasharray="1500" strokeDashoffset={1500 * (1 - route)} />
         </svg>
-        <ChoreographedObject
-          path={[[100, 1040], [330, 560], [710, 980], [980, 650]]}
-          anticipationStart={2}
-          launchFrame={25}
-          impactFrame={112}
-          settleFrame={132}
-          endFrame={149}
-          baseScale={0.82}
-          aliveAmplitude={1.5}
-        >
-          <DataTile label="DATEN" />
-        </ChoreographedObject>
+        <SampledMotionBlur shutterAngle={100} samples={4}>
+          <ChoreographedObject
+            path={[[100, 1040], [330, 560], [710, 980], [980, 650]]}
+            anticipationStart={2}
+            launchFrame={25}
+            impactFrame={112}
+            settleFrame={132}
+            endFrame={149}
+            baseScale={0.82}
+            aliveAmplitude={1.5}
+          >
+            <DataTile label="DATEN" />
+          </ChoreographedObject>
+        </SampledMotionBlur>
         <AliveHold startFrame={118} amplitudeX={5} amplitudeY={4} rotateAmplitude={0.5}>
           <div style={{position: 'absolute', left: 710, top: 905}}><DataTile label="OUTPUT" tone="green" /></div>
         </AliveHold>
