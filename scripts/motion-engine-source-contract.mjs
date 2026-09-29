@@ -7,6 +7,9 @@ const heroComponents=new Set([
   'AliveHold',
   'DirectionalBlur',
   'SampledMotionBlur',
+  'ParallaxStage',
+  'ParallaxLayer',
+  'MaskedKineticText',
 ]);
 const animatedAssetComponents=new Set(['Lottie','RemotionRiveCanvas']);
 const customMotionCalls=new Set([
@@ -48,15 +51,15 @@ export const validateHeroMotionSource=(sourceText,{label='hero source'}={})=>{
   const usesAnimatedAsset=[...animatedAssetComponents].some((name)=>evidence.jsx.has(name));
   const customCalls=[...customMotionCalls].filter((name)=>evidence.calls.has(name));
   const hasFrame=evidence.calls.has('useCurrentFrame');
-  const phaseWords=/anticipat|impact|settle|overshoot|follow.?through|travel|reveal|push-through|whip-|impact-push|camera|trajectory|bezier/i.test(sourceText);
-  const transformSignals=evidence.strings.filter((value)=>/translate3d|rotate[XYZ]?\(|scale[XYZ]?\(|blur\(/i.test(value)).length;
+  const phaseWords=/anticipat|impact|settle|overshoot|follow.?through|travel|reveal|push-through|whip-|impact-push|camera|trajectory|bezier|parallax|mask/i.test(sourceText);
+  const transformSignals=evidence.strings.filter((value)=>/translate3d|rotate[XYZ]?\(|scale[XYZ]?\(|blur\(|clip-path|clipPath/i.test(value)).length;
 
   const engineChoreography=usedEngine.length>=2;
   const customChoreography=hasFrame && phaseWords && customCalls.length>=2 && transformSignals>=1;
 
   if (!engineChoreography && !customChoreography && !usesAnimatedAsset) {
     failures.push(
-      `${label}: hero motion is utility-only. Use at least two Motion Engine primitives, an authored frame-driven choreography (phase + multiple timing mechanisms + transform), or a real Lottie/Rive animation asset.`,
+      `${label}: hero motion is utility-only. Use at least two Motion Engine primitives, an authored frame-driven choreography (phase + multiple timing mechanisms + transform/mask), or a real Lottie/Rive animation asset.`,
     );
   }
 
