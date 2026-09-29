@@ -1,10 +1,11 @@
 import React from 'react';
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 
-export type MotionEasingPreset = 'cinematic' | 'snappy' | 'smooth' | 'linear';
+export type MotionEasingPreset = 'cinematic' | 'snappy' | 'smooth' | 'linear' | 'heavy';
 
 export type MotionState = {
   frame: number;
+  easing?: MotionEasingPreset;
   x?: number;
   y?: number;
   z?: number;
@@ -32,6 +33,7 @@ const easingMap: Record<MotionEasingPreset, (value: number) => number> = {
   cinematic: Easing.bezier(0.22, 0.61, 0.36, 1),
   snappy: Easing.bezier(0.16, 1, 0.3, 1),
   smooth: Easing.inOut(Easing.cubic),
+  heavy: Easing.bezier(0.34, 0.72, 0.24, 1),
   linear: Easing.linear,
 };
 
@@ -53,7 +55,8 @@ const numericKeys = [
 
 type NumericKey = (typeof numericKeys)[number];
 
-type ResolvedMotionState = Required<Omit<MotionState, 'frame'>>;
+type ResolvedMotionState = Required<Omit<MotionState, 'frame' | 'easing'>>;
+type MaterializedMotionState = MotionState & ResolvedMotionState;
 
 const defaults: ResolvedMotionState = {
   x: 0,
@@ -86,7 +89,7 @@ const resolveValue = (
   previous: ResolvedMotionState,
 ): number => state[key] ?? previous[key];
 
-const materializeStates = (states: readonly MotionState[]): Array<MotionState & ResolvedMotionState> => {
+const materializeStates = (states: readonly MotionState[]): MaterializedMotionState[] => {
   assertStates(states);
   let previous = {...defaults};
   return states.map((state) => {
@@ -112,7 +115,8 @@ export const resolveMotionState = (
   while (index < resolved.length - 1 && resolved[index + 1].frame <= frame) index += 1;
   const from = resolved[index];
   const to = resolved[index + 1];
-  const options = {easing: easingMap[easing]};
+  const segmentEasing = to.easing ?? from.easing ?? easing;
+  const options = {easing: easingMap[segmentEasing]};
 
   return numericKeys.reduce((acc, key) => {
     acc[key] = interpolate(frame, [from.frame, to.frame], [from[key], to[key]], options);
@@ -151,3 +155,14 @@ export const KeyframedMotion: React.FC<KeyframedMotionProps> = ({
 };
 
 export const holdState = (frame: number, state: Omit<MotionState, 'frame'>): MotionState => ({frame, ...state});
+
+export const extendHold = (
+  states: readonly MotionState[],
+  frames: number,
+): MotionState[] => {
+  if (states.length === 0) throw new Error('extendHold requires at least one state');
+  if (frames <= 0) return [...states];
+  const last = states[states.length - 1];
+  const {frame: _frame, ...rest} = last;
+  return [...states, {frame: last.frame + frames, ...rest}];
+};
