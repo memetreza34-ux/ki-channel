@@ -71,7 +71,7 @@ const CAPABILITY_AST_EVIDENCE = {
   'terminal-code':{jsx:['TerminalMock','CodeDiff','CodeEditor'],calls:[]},
   'data-visualization':{jsx:['BenchmarkAxis','DataChart','LineChart','BarChart','AreaChart'],calls:[]},
   'object-transformation':{jsx:['ObjectTransformation','ObjectMorph'],calls:[]},
-  'motion-blur':{jsx:['CameraMotionBlur','Trail'],calls:[]},
+  'motion-blur':{jsx:['CameraMotionBlur','Trail','SampledMotionBlur'],calls:[]},
   transitions:{jsx:['TransitionSeries'],calls:[]},
   noise:{jsx:[],calls:['noise2D','noise3D']},
   'real-capture':{jsx:['OffthreadVideo','Video','Img','CanvasImage'],calls:[]},
