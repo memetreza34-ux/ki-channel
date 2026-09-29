@@ -13,6 +13,24 @@ const brain = createInitialCreativeBrainState({
   now: '2026-09-20T08:00:00.000Z',
 });
 
+const makeNewBuildPlan = () => planProductionReelAnimations({
+  reelId: 'runtime-new-build-reel',
+  reelIndex: 71,
+  entries: ANIMATION_LIBRARY_ENTRIES,
+  brain,
+  maximumNewAnimationRatio: 1,
+  scenes: [
+    {
+      sceneId: 'new-scene',
+      spokenText: 'Private Daten wandern durch mehrere Vertrauenszonen.',
+      semanticTags: ['security', 'privacy', 'data', 'trust-zone'],
+      preferredVisualFamilies: ['security-privacy'],
+      preferredEnergy: 'dynamic',
+      mustBeNew: true,
+    },
+  ],
+});
+
 describe('canonical production scene runtime', () => {
   it('resolves a reusable scene through the registered content-aware prototype', () => {
     const plan = planProductionReelAnimations({
@@ -65,37 +83,50 @@ describe('canonical production scene runtime', () => {
     expect(runtime.renderProps.content?.labels?.shellIcon).toBe('SEARCH');
   });
 
-  it('resolves a new-build scene through the canonical creative recipe runtime', () => {
-    const plan = planProductionReelAnimations({
-      reelId: 'runtime-new-build-reel',
-      reelIndex: 71,
-      entries: ANIMATION_LIBRARY_ENTRIES,
-      brain,
-      maximumNewAnimationRatio: 1,
-      scenes: [
-        {
-          sceneId: 'new-scene',
-          spokenText: 'Private Daten wandern durch mehrere Vertrauenszonen.',
-          semanticTags: ['security', 'privacy', 'data', 'trust-zone'],
-          preferredVisualFamilies: ['security-privacy'],
-          preferredEnergy: 'dynamic',
-          mustBeNew: true,
-        },
-      ],
-    });
-    const scenePlan = plan.scenes[0];
+  it('blocks implicit CreativeRecipeRuntime for final new-build scenes', () => {
+    const scenePlan = makeNewBuildPlan().scenes[0];
     expect(scenePlan.source).toBe('new-build');
 
+    expect(() => buildProductionSceneRuntime({
+      scenePlan,
+      spokenText: 'Private Daten wandern durch mehrere Vertrauenszonen.',
+    })).toThrow(/requires authoredNewBuild/);
+  });
+
+  it('uses an authored reel-specific component for final new-build scenes', () => {
+    const scenePlan = makeNewBuildPlan().scenes[0];
+    const AuthoredScene = () => null;
     const runtime = buildProductionSceneRuntime({
       scenePlan,
       spokenText: 'Private Daten wandern durch mehrere Vertrauenszonen.',
+      authoredNewBuild: {
+        component: AuthoredScene,
+        renderProps: {sceneId: 'new-scene'},
+      },
     });
 
     expect(runtime.source).toBe('new-build');
     if (runtime.source !== 'new-build') throw new Error('expected new-build runtime');
+    expect(runtime.runtimeMode).toBe('authored');
+    expect(runtime.component).toBe(AuthoredScene);
+    expect(runtime.renderProps.sceneId).toBe('new-scene');
+  });
+
+  it('keeps CreativeRecipeRuntime available only as an explicit preview scaffold', () => {
+    const scenePlan = makeNewBuildPlan().scenes[0];
+    const runtime = buildProductionSceneRuntime({
+      scenePlan,
+      spokenText: 'Private Daten wandern durch mehrere Vertrauenszonen.',
+      allowRecipeScaffold: true,
+    });
+
+    expect(runtime.source).toBe('new-build');
+    if (runtime.source !== 'new-build') throw new Error('expected new-build runtime');
+    expect(runtime.runtimeMode).toBe('recipe-scaffold');
     expect(runtime.component).toBe(CreativeRecipeRuntime);
-    expect(runtime.renderProps.spec.animationId).toBe(scenePlan.animationId);
-    expect(runtime.renderProps.spec.runtimeMechanisms.length).toBeGreaterThanOrEqual(3);
+    const scaffoldProps = runtime.renderProps as {spec: {animationId: string; runtimeMechanisms: string[]}};
+    expect(scaffoldProps.spec.animationId).toBe(scenePlan.animationId);
+    expect(scaffoldProps.spec.runtimeMechanisms.length).toBeGreaterThanOrEqual(3);
   });
 
   it('rejects scenes without spoken meaning', () => {
