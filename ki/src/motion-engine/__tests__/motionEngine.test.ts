@@ -1,8 +1,8 @@
 import {describe,expect,it} from 'vitest';
-import {resolveMotionState} from '../KeyframedMotion';
+import {extendHold, resolveMotionState} from '../KeyframedMotion';
 import {bezierPoint,bezierTangentAngle,cinematicPhase,dampedOscillation} from '../motionMath';
 import {assertMotionBeatContract} from '../SceneMotionOrchestrator';
-import {resolveWorldCameraPose} from '../WorldCameraRig';
+import {extendCameraHold, resolveWorldCameraPose} from '../WorldCameraRig';
 
 describe('motionMath',()=>{
   it('keeps bezier endpoints exact',()=>{
@@ -31,7 +31,7 @@ describe('continuous world camera',()=>{
   const keys=[
     {frame:0,focusX:100,focusY:200,zoom:1},
     {frame:30,focusX:100,focusY:200,zoom:1},
-    {frame:60,focusX:900,focusY:600,zoom:.7},
+    {frame:60,focusX:900,focusY:600,zoom:.7,easing:'snappy' as const},
   ] as const;
 
   it('keeps repeated keyframes as an intentional hold',()=>{
@@ -44,14 +44,20 @@ describe('continuous world camera',()=>{
     expect(pose.focusX).toBeLessThan(900);
     expect(pose.zoom).toBeLessThan(1);
   });
+
+  it('can extend the last camera pose into a clean editor hold',()=>{
+    const extended=extendCameraHold(keys,24);
+    expect(extended.at(-1)?.frame).toBe(84);
+    expect(extended.at(-1)?.focusX).toBe(900);
+  });
 });
 
 describe('multi-state motion',()=>{
   const states=[
     {frame:0,x:0,y:0,scale:1,opacity:0},
-    {frame:20,x:100,y:40,scale:1.2,opacity:1},
+    {frame:20,x:100,y:40,scale:1.2,opacity:1,easing:'snappy' as const},
     {frame:40,x:100,y:40,scale:1.2,opacity:1},
-    {frame:70,x:300,y:120,scale:.8,rotateY:35,opacity:1},
+    {frame:70,x:300,y:120,scale:.8,rotateY:35,opacity:1,easing:'smooth' as const},
   ] as const;
 
   it('preserves omitted values and explicit holds across states',()=>{
@@ -61,10 +67,16 @@ describe('multi-state motion',()=>{
     expect(held.opacity).toBe(1);
   });
 
-  it('supports later 3D state transitions',()=>{
-    const moving=resolveMotionState(55,states,'smooth');
+  it('supports later 3D state transitions with per-segment easing',()=>{
+    const moving=resolveMotionState(55,states,'cinematic');
     expect(moving.x).toBeGreaterThan(100);
     expect(moving.rotateY).toBeGreaterThan(0);
+  });
+
+  it('extends a final state without rebuilding the full state list',()=>{
+    const extended=extendHold(states,30);
+    expect(extended.at(-1)?.frame).toBe(100);
+    expect(extended.at(-1)?.rotateY).toBe(35);
   });
 });
 
