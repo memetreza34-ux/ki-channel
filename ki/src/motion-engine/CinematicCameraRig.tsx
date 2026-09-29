@@ -48,61 +48,71 @@ export const CinematicCameraRig: React.FC<CinematicCameraRigProps> = ({
 
   switch (move) {
     case 'push-in':
-      scale = interpolate(t, [0, 1], [0.91, 1.075]);
-      y = interpolate(t, [0, 1], [38, -14]);
+      scale = interpolate(t, [0, 0.82, 1], [0.90, 1.07, 1.045]);
+      y = interpolate(t, [0, 1], [52, -18]);
       break;
     case 'pull-back':
-      scale = interpolate(t, [0, 1], [1.12, 0.94]);
-      y = interpolate(t, [0, 1], [-24, 18]);
+      scale = interpolate(t, [0, 0.82, 1], [1.16, 0.93, 0.96]);
+      y = interpolate(t, [0, 1], [-32, 22]);
       break;
     case 'track-left':
-      x = interpolate(t, [0, 1], [120, -90]) * intensity;
-      scale = 1.035;
+      x = interpolate(t, [0, 0.86, 1], [150, -100, -82]) * intensity;
+      y = Math.sin(t * Math.PI) * -18 * intensity;
+      scale = 1.045;
       break;
     case 'track-right':
-      x = interpolate(t, [0, 1], [-120, 90]) * intensity;
-      scale = 1.035;
+      x = interpolate(t, [0, 0.86, 1], [-150, 100, 82]) * intensity;
+      y = Math.sin(t * Math.PI) * -18 * intensity;
+      scale = 1.045;
       break;
     case 'push-through':
-      scale = interpolate(t, [0, 0.72, 1], [0.82, 1.14, 1.38]);
-      z = interpolate(t, [0, 1], [-120, 180]);
-      y = interpolate(t, [0, 1], [65, -38]);
+      scale = interpolate(t, [0, 0.45, 0.82, 1], [0.80, 1.02, 1.48, 1.86]);
+      z = interpolate(t, [0, 0.6, 1], [-160, 80, 360]);
+      y = interpolate(t, [0, 0.7, 1], [80, -18, -68]);
       break;
     case 'whip-left': {
       const fast = segmentProgress(frame, startFrame, Math.min(endFrame, startFrame + 12));
-      x = interpolate(fast, [0, 1], [0, -360]) * intensity;
-      rotateZ = interpolate(fast, [0, 0.55, 1], [0, -2.8, 0]);
-      scale = interpolate(fast, [0, 0.55, 1], [1, 1.08, 1.02]);
+      x = interpolate(fast, [0, 0.82, 1], [0, -410, -360]) * intensity;
+      rotateZ = interpolate(fast, [0, 0.55, 1], [0, -3.6, -0.4]);
+      scale = interpolate(fast, [0, 0.55, 1], [1, 1.10, 1.025]);
       break;
     }
     case 'whip-right': {
       const fast = segmentProgress(frame, startFrame, Math.min(endFrame, startFrame + 12));
-      x = interpolate(fast, [0, 1], [0, 360]) * intensity;
-      rotateZ = interpolate(fast, [0, 0.55, 1], [0, 2.8, 0]);
-      scale = interpolate(fast, [0, 0.55, 1], [1, 1.08, 1.02]);
+      x = interpolate(fast, [0, 0.82, 1], [0, 410, 360]) * intensity;
+      rotateZ = interpolate(fast, [0, 0.55, 1], [0, 3.6, 0.4]);
+      scale = interpolate(fast, [0, 0.55, 1], [1, 1.10, 1.025]);
       break;
     }
     case 'impact-push': {
       const impact = impactFrame ?? Math.round(startFrame + (endFrame - startFrame) * 0.5);
       const pre = segmentProgress(frame, startFrame, impact);
       const settle = segmentProgress(frame, impact, endFrame);
-      scale = interpolate(pre, [0, 1], [0.93, 1.08]) + interpolate(settle, [0, 1], [0.05, -0.01]);
+      if (frame <= impact) {
+        scale = interpolate(pre, [0, 0.82, 1], [0.94, 1.055, 1.105]);
+        y = interpolate(pre, [0, 1], [36, -16]);
+      } else {
+        scale = interpolate(settle, [0, 0.7, 1], [1.105, 1.015, 1.025]);
+        y = interpolate(settle, [0, 0.75, 1], [-16, 4, 0]);
+      }
       const shakeX = dampedOscillation({frame, startFrame: impact, amplitude: 26 * intensity, decay: 0.15, frequency: 1.2});
       const shakeY = dampedOscillation({frame, startFrame: impact + 1, amplitude: 16 * intensity, decay: 0.17, frequency: 1.55});
       x = shakeX;
-      y = interpolate(pre, [0, 1], [32, -18]) + shakeY;
+      y += shakeY;
       rotateZ = dampedOscillation({frame, startFrame: impact, amplitude: 1.4 * intensity, decay: 0.17, frequency: 1.35});
       break;
     }
     case 'orbit-left':
-      rotateY = interpolate(t, [0, 1], [13, -11]) * intensity;
-      x = interpolate(t, [0, 1], [55, -42]) * intensity;
-      scale = 1.04;
+      rotateY = interpolate(t, [0, 0.84, 1], [15, -12, -9]) * intensity;
+      x = interpolate(t, [0, 0.84, 1], [68, -50, -38]) * intensity;
+      y = Math.sin(t * Math.PI) * -16 * intensity;
+      scale = 1.045;
       break;
     case 'orbit-right':
-      rotateY = interpolate(t, [0, 1], [-13, 11]) * intensity;
-      x = interpolate(t, [0, 1], [-55, 42]) * intensity;
-      scale = 1.04;
+      rotateY = interpolate(t, [0, 0.84, 1], [-15, 12, 9]) * intensity;
+      x = interpolate(t, [0, 0.84, 1], [-68, 50, 38]) * intensity;
+      y = Math.sin(t * Math.PI) * -16 * intensity;
+      scale = 1.045;
       break;
     case 'locked':
       break;
@@ -124,7 +134,7 @@ export const CinematicCameraRig: React.FC<CinematicCameraRigProps> = ({
       <div
         style={{
           position: 'absolute',
-          inset: '-8%',
+          inset: '-10%',
           transformStyle: 'preserve-3d',
           transform: `translate3d(${x}px, ${y}px, ${z}px) scale(${scale}) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`,
           transformOrigin: origin,
