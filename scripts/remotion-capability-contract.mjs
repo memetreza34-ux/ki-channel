@@ -5,7 +5,6 @@ export const REMOTION_CAPABILITIES = [
 ];
 
 const capabilities = new Set(REMOTION_CAPABILITIES);
-const advanced = new Set(REMOTION_CAPABILITIES.filter((capability)=>capability!=='react-svg-css'));
 
 export const isSafeReelSourceFile = (sourceFile) => {
   if (typeof sourceFile!=='string' || !sourceFile.trim()) return false;
@@ -18,6 +17,11 @@ export const isSafeReelSourceFile = (sourceFile) => {
 
 export const beatSourceMarker = (beatId) => `// REMOTION_BEAT: ${beatId}`;
 
+/**
+ * Capability validation is a truth/evidence gate, not a creative quota.
+ * It must never force a reel to use N different capabilities, an arbitrary
+ * percentage of "advanced" mechanisms, or visual variety for its own sake.
+ */
 export const validateRemotionCapabilityManifest = (manifest,{label='remotion-capabilities-v1.json'}={}) => {
   const failures=[];
   if (!manifest || typeof manifest!=='object') return [`${label}: manifest must be an object.`];
@@ -32,9 +36,10 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
     else uniqueSourceFiles.add(sourceFile);
   }
 
-  if (!Array.isArray(manifest.beats) || manifest.beats.length<4) return [...failures,`${label}: beats must contain at least four beats.`];
+  if (!Array.isArray(manifest.beats) || manifest.beats.length<1) return [...failures,`${label}: beats must contain at least one authored beat.`];
 
-  const ids=new Set(); let advancedBeats=0; let heroBeats=0;
+  const ids=new Set();
+  let heroBeats=0;
   for (const [index,beat] of manifest.beats.entries()) {
     const prefix=`${label}: beats[${index}]`;
     if (!beat || typeof beat!=='object') {failures.push(`${prefix} must be an object.`);continue;}
@@ -50,22 +55,10 @@ export const validateRemotionCapabilityManifest = (manifest,{label='remotion-cap
     else if (!sourceFiles.includes(beat.sourceFile)) failures.push(`${prefix}.sourceFile must also be listed in manifest.sourceFiles.`);
     if (typeof beat.rationale!=='string' || beat.rationale.trim().length<20) failures.push(`${prefix}.rationale must explain why this Remotion mechanism is the best visual explanation.`);
     if (beat.primaryPrimitive==='card' && !(typeof beat.semanticCardReason==='string' && beat.semanticCardReason.trim())) failures.push(`${prefix}: abstract card default is forbidden; semanticCardReason is required.`);
-    if (advanced.has(beat.primaryCapability)) advancedBeats+=1;
     if (beat.isHero===true) heroBeats+=1;
-    if (beat.isHook===true && !advanced.has(beat.primaryCapability)) failures.push(`${prefix}: hook cannot use plain react-svg-css as its primary capability.`);
   }
 
   if (heroBeats<1) failures.push(`${label}: at least one beat must be marked isHero=true.`);
-  if (advancedBeats/manifest.beats.length<0.5) failures.push(`${label}: at least 50% of beats must use an advanced Remotion capability as primaryCapability.`);
-  const uniquePrimary=new Set(manifest.beats.map((beat)=>beat?.primaryCapability).filter(Boolean)).size;
-  if (uniquePrimary<Math.min(3,manifest.beats.length)) failures.push(`${label}: at least three different primary capabilities are required.`);
-
-  for (let index=2;index<manifest.beats.length;index+=1) {
-    const a=manifest.beats[index-2],b=manifest.beats[index-1],c=manifest.beats[index];
-    if (a?.primaryCapability===b?.primaryCapability && b?.primaryCapability===c?.primaryCapability && !b?.continuationOfPrevious && !c?.continuationOfPrevious) {
-      failures.push(`${label}: ${a.beatId}, ${b.beatId}, ${c.beatId} repeat ${c.primaryCapability} three times without continuationOfPrevious.`);
-    }
-  }
   return failures;
 };
 
@@ -86,7 +79,7 @@ const CAPABILITY_AST_EVIDENCE = {
   rive:{jsx:['RemotionRiveCanvas'],calls:[]},
 };
 
-const getBeatSourceSlice = (sourceText,beatId) => {
+export const getBeatSourceSlice = (sourceText,beatId) => {
   const marker=beatSourceMarker(beatId);
   const start=sourceText.indexOf(marker);
   if (start<0) return null;
@@ -96,7 +89,7 @@ const getBeatSourceSlice = (sourceText,beatId) => {
 
 const tailName=(text)=>String(text).split('.').at(-1)??String(text);
 
-const collectExecutableEvidence = (sourceText) => {
+export const collectExecutableEvidence = (sourceText) => {
   const source=ts.createSourceFile('capability-beat.tsx',sourceText,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
   const jsx=new Set();
   const calls=new Set();
