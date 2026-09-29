@@ -3,6 +3,8 @@ import {AbsoluteFill, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {CinematicCameraRig} from './CinematicCameraRig';
 import {ChoreographedObject} from './ChoreographedObject';
 import {AliveHold, DirectionalBlur, ImpactShake, SampledMotionBlur} from './MotionEffects';
+import {MaskedKineticText} from './MaskedKineticText';
+import {ParallaxLayer, ParallaxStage} from './ParallaxStage';
 import {SceneMotionOrchestrator} from './SceneMotionOrchestrator';
 
 const ink = '#111116';
@@ -57,65 +59,126 @@ const ImpactScene: React.FC = () => {
   const activate = interpolate(frame, [60, 86], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{background: paper, fontFamily: 'Inter, Arial, sans-serif'}}>
-      <ImpactShake impactFrame={62} amplitude={24}>
-        <CinematicCameraRig move="impact-push" startFrame={0} impactFrame={62} endFrame={118} intensity={1.05}>
-          <div style={{position: 'absolute', left: 520, top: 760, transform: 'translate(-50%,-50%)'}}>
-            <ModelCore active={activate > 0.35} />
-          </div>
-          <SampledMotionBlur shutterAngle={130} samples={5}>
-            <DirectionalBlur startFrame={18} peakFrame={48} endFrame={65} maxBlur={7}>
-              <ChoreographedObject
-                path={[[80, 920], [220, 720], [330, 610], [430, 735]]}
-                anticipationStart={0}
-                launchFrame={18}
-                impactFrame={62}
-                settleFrame={92}
-                endFrame={149}
-                faceVelocity
-                impactScale={1.14}
-              >
-                <DataTile label="PROMPT" />
-              </ChoreographedObject>
-            </DirectionalBlur>
-          </SampledMotionBlur>
-          <div style={{position: 'absolute', left: 120, right: 120, top: 250, fontSize: 86, fontWeight: 950, lineHeight: .92, letterSpacing: -4, color: ink}}>
-            EIN IMPACT.<br />KEIN FADE-IN.
-          </div>
-        </CinematicCameraRig>
-      </ImpactShake>
+      <ParallaxStage startFrame={0} endFrame={145} driftX={34} driftY={18} rotateY={2.4} rotateX={1.2}>
+        <ParallaxLayer depth={-0.28} z={-180} blur={1.8}>
+          <div style={{position: 'absolute', left: -120, top: 1080, width: 520, height: 520, borderRadius: '50%', background: 'rgba(110,69,201,.07)'}} />
+          <div style={{position: 'absolute', right: -160, top: 520, width: 620, height: 620, borderRadius: '50%', border: '2px solid rgba(17,17,22,.06)'}} />
+        </ParallaxLayer>
+        <ImpactShake impactFrame={62} amplitude={24}>
+          <CinematicCameraRig move="impact-push" startFrame={0} impactFrame={62} endFrame={118} intensity={1.05}>
+            <ParallaxLayer depth={0.3} z={20}>
+              <MaskedKineticText
+                lines={['EIN IMPACT.', 'KEIN FADE-IN.']}
+                startFrame={0}
+                lineStaggerFrames={5}
+                x={120}
+                y={245}
+                width={820}
+                fontSize={86}
+                color={ink}
+              />
+            </ParallaxLayer>
+            <ParallaxLayer depth={0.72} z={90}>
+              <div style={{position: 'absolute', left: 520, top: 760, transform: 'translate(-50%,-50%)'}}>
+                <ModelCore active={activate > 0.35} />
+              </div>
+            </ParallaxLayer>
+            <ParallaxLayer depth={1.05} z={180}>
+              <SampledMotionBlur shutterAngle={130} samples={5}>
+                <DirectionalBlur startFrame={18} peakFrame={48} endFrame={65} maxBlur={7}>
+                  <ChoreographedObject
+                    path={[[80, 920], [220, 720], [330, 610], [430, 735]]}
+                    anticipationStart={0}
+                    launchFrame={18}
+                    impactFrame={62}
+                    settleFrame={92}
+                    endFrame={149}
+                    faceVelocity
+                    impactScale={1.14}
+                    velocityStretch={1.25}
+                    zStart={-40}
+                    zEnd={130}
+                  >
+                    <DataTile label="PROMPT" />
+                  </ChoreographedObject>
+                </DirectionalBlur>
+              </SampledMotionBlur>
+            </ParallaxLayer>
+          </CinematicCameraRig>
+        </ImpactShake>
+      </ParallaxStage>
     </AbsoluteFill>
   );
 };
+
+const routingPath = [[100, 1040], [330, 560], [710, 980], [980, 650]] as const;
 
 const RoutingScene: React.FC = () => {
   const frame = useCurrentFrame();
   const route = interpolate(frame, [25, 115], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{background: '#15131A', fontFamily: 'Inter, Arial, sans-serif', overflow: 'hidden'}}>
-      <CinematicCameraRig move="orbit-right" startFrame={0} endFrame={145} intensity={1.2}>
-        <div style={{position: 'absolute', left: 110, top: 250, color: '#F8F5F0', fontSize: 72, fontWeight: 950, letterSpacing: -3}}>KAMERA FOLGT DEM PROZESS</div>
-        <svg viewBox="0 0 1080 1200" style={{position: 'absolute', left: 0, top: 390, width: 1080, height: 1200}}>
-          <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="34" strokeLinecap="round" />
-          <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke={violet} strokeWidth="10" strokeLinecap="round" strokeDasharray="1500" strokeDashoffset={1500 * (1 - route)} />
-        </svg>
-        <SampledMotionBlur shutterAngle={100} samples={4}>
-          <ChoreographedObject
-            path={[[100, 1040], [330, 560], [710, 980], [980, 650]]}
-            anticipationStart={2}
-            launchFrame={25}
-            impactFrame={112}
-            settleFrame={132}
-            endFrame={149}
-            baseScale={0.82}
-            aliveAmplitude={1.5}
-          >
-            <DataTile label="DATEN" />
-          </ChoreographedObject>
-        </SampledMotionBlur>
-        <AliveHold startFrame={118} amplitudeX={5} amplitudeY={4} rotateAmplitude={0.5}>
-          <div style={{position: 'absolute', left: 710, top: 905}}><DataTile label="OUTPUT" tone="green" /></div>
-        </AliveHold>
-      </CinematicCameraRig>
+      <ParallaxStage startFrame={0} endFrame={145} driftX={24} driftY={14} rotateY={2.2}>
+        <ParallaxLayer depth={-0.35} z={-160} blur={2.2} opacity={0.75}>
+          <div style={{position: 'absolute', left: 80, top: 450, width: 900, height: 900, borderRadius: '50%', border: '1px solid rgba(185,140,255,.15)'}} />
+        </ParallaxLayer>
+        <CinematicCameraRig
+          move="push-in"
+          startFrame={0}
+          endFrame={145}
+          intensity={1.05}
+          followPath={routingPath}
+          followStartFrame={25}
+          followEndFrame={112}
+          followStrength={0.34}
+          followAnchor={[540, 900]}
+        >
+          <ParallaxLayer depth={0.24} z={10}>
+            <MaskedKineticText
+              lines={['KAMERA FOLGT', 'DEM PROZESS']}
+              startFrame={0}
+              x={110}
+              y={240}
+              width={840}
+              fontSize={72}
+              color="#F8F5F0"
+              letterSpacingStart={-6}
+              letterSpacingEnd={-3}
+            />
+          </ParallaxLayer>
+          <ParallaxLayer depth={0.58} z={70}>
+            <svg viewBox="0 0 1080 1200" style={{position: 'absolute', left: 0, top: 390, width: 1080, height: 1200}}>
+              <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="34" strokeLinecap="round" />
+              <path d="M100 650 C260 310 460 970 650 570 S890 420 1030 260" fill="none" stroke={violet} strokeWidth="10" strokeLinecap="round" strokeDasharray="1500" strokeDashoffset={1500 * (1 - route)} />
+            </svg>
+          </ParallaxLayer>
+          <ParallaxLayer depth={1.05} z={180}>
+            <SampledMotionBlur shutterAngle={100} samples={4}>
+              <ChoreographedObject
+                path={routingPath}
+                anticipationStart={2}
+                launchFrame={25}
+                impactFrame={112}
+                settleFrame={132}
+                endFrame={149}
+                baseScale={0.82}
+                aliveAmplitude={1.5}
+                faceVelocity
+                velocityStretch={1.15}
+                zStart={-30}
+                zEnd={160}
+              >
+                <DataTile label="DATEN" />
+              </ChoreographedObject>
+            </SampledMotionBlur>
+          </ParallaxLayer>
+          <ParallaxLayer depth={0.85} z={130}>
+            <AliveHold startFrame={118} amplitudeX={5} amplitudeY={4} rotateAmplitude={0.5}>
+              <div style={{position: 'absolute', left: 710, top: 905}}><DataTile label="OUTPUT" tone="green" /></div>
+            </AliveHold>
+          </ParallaxLayer>
+        </CinematicCameraRig>
+      </ParallaxStage>
     </AbsoluteFill>
   );
 };
@@ -123,18 +186,38 @@ const RoutingScene: React.FC = () => {
 const PushThroughScene: React.FC = () => {
   const frame = useCurrentFrame();
   const reveal = interpolate(frame, [72, 126], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const aperture = interpolate(frame, [58, 116, 142], [0.72, 1.18, 1.34], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{background: '#0F0E13', fontFamily: 'Inter, Arial, sans-serif', overflow: 'hidden'}}>
-      <CinematicCameraRig move="push-through" startFrame={0} endFrame={132} intensity={1.2}>
-        <div style={{position: 'absolute', left: 540, top: 760, width: 600, height: 600, marginLeft: -300, marginTop: -300, borderRadius: '50%', border: '70px solid #403A46', boxShadow: 'inset 0 0 0 4px rgba(255,255,255,.06),0 60px 150px rgba(0,0,0,.55)'}} />
-        <div style={{position: 'absolute', left: 540, top: 760, width: 310, height: 310, marginLeft: -155, marginTop: -155, borderRadius: '50%', border: `34px solid ${purple}`, opacity: .95}} />
-        <div style={{position: 'absolute', left: 110, top: 230, width: 840, fontSize: 78, fontWeight: 950, color: '#F8F5F0', letterSpacing: -3.6, lineHeight: .94}}>PUSH-THROUGH<br />STATT SLIDE-WECHSEL</div>
-        <div style={{position: 'absolute', left: 650, top: 820, width: 300, opacity: reveal}}>
-          <AliveHold startFrame={82} amplitudeX={3} amplitudeY={5} rotateAmplitude={0.3}>
-            <DataTile label="NEUE SZENE" tone="green" />
-          </AliveHold>
-        </div>
-      </CinematicCameraRig>
+      <ParallaxStage startFrame={0} endFrame={145} driftX={18} driftY={12} rotateY={1.8}>
+        <ParallaxLayer depth={-0.4} z={-220} blur={2.5}>
+          <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 45%,rgba(110,69,201,.15),transparent 52%)'}} />
+        </ParallaxLayer>
+        <CinematicCameraRig move="push-through" startFrame={0} endFrame={132} intensity={1.28}>
+          <ParallaxLayer depth={0.2} z={0}>
+            <MaskedKineticText
+              lines={['PUSH-THROUGH', 'STATT SLIDE-WECHSEL']}
+              startFrame={0}
+              x={110}
+              y={225}
+              width={850}
+              fontSize={76}
+              color="#F8F5F0"
+            />
+          </ParallaxLayer>
+          <ParallaxLayer depth={0.72} z={110}>
+            <div style={{position: 'absolute', left: 540, top: 760, width: 600, height: 600, marginLeft: -300, marginTop: -300, borderRadius: '50%', border: '70px solid #403A46', boxShadow: 'inset 0 0 0 4px rgba(255,255,255,.06),0 60px 150px rgba(0,0,0,.55)', transform: `scale(${aperture})`}} />
+            <div style={{position: 'absolute', left: 540, top: 760, width: 310, height: 310, marginLeft: -155, marginTop: -155, borderRadius: '50%', border: `34px solid ${purple}`, opacity: .95, transform: `scale(${aperture})`}} />
+          </ParallaxLayer>
+          <ParallaxLayer depth={1.08} z={210}>
+            <div style={{position: 'absolute', left: 650, top: 820, width: 300, opacity: reveal, transform: `translate3d(${(1 - reveal) * 80}px,${(1 - reveal) * 42}px,0) scale(${0.84 + reveal * 0.16})`}}>
+              <AliveHold startFrame={82} amplitudeX={3} amplitudeY={5} rotateAmplitude={0.3}>
+                <DataTile label="NEUE SZENE" tone="green" />
+              </AliveHold>
+            </div>
+          </ParallaxLayer>
+        </CinematicCameraRig>
+      </ParallaxStage>
     </AbsoluteFill>
   );
 };
