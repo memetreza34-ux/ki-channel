@@ -19,7 +19,9 @@ Phase 0 und Phase 1 sind fertig vorbereitet. Phase 2 benötigt nur das echte Voi
 - REMOTION_NATIVE
 - große SVG-/CSS-Illustrationen statt Kartenserie
 - Überschrift + eigenes Vector-Icon pro Szene
-- Untertitel unten bei kanonisch `bottom: 400px`
+- Untertitel über zentralen V2.2-Standard `REEL_CAPTION_SAFE` (`bottom: 300px`)
 - aktives Wort in Marken-Lila
+- Motion-Choreography: kurze Objektbewegungen + gestaffelte Gruppenentwicklung
+- Hero-Beat verwendet echte Bildfragmente und CSS-2.5D statt farbiger Platzhalter
 
 Aktueller Status: `06-projektdateien/PHASE-STATUS.md`.
