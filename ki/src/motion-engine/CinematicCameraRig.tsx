@@ -1,6 +1,8 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {dampedOscillation, segmentProgress} from './motionMath';
+import {bezierPoint, dampedOscillation, segmentProgress} from './motionMath';
+
+type CameraPoint = readonly [number, number];
 
 export type CinematicCameraMove =
   | 'locked'
@@ -23,6 +25,11 @@ export type CinematicCameraRigProps = React.PropsWithChildren<{
   impactFrame?: number;
   perspective?: number;
   origin?: string;
+  followPath?: readonly [CameraPoint, CameraPoint, CameraPoint, CameraPoint];
+  followStartFrame?: number;
+  followEndFrame?: number;
+  followStrength?: number;
+  followAnchor?: readonly [number, number];
   style?: React.CSSProperties;
 }>;
 
@@ -34,6 +41,11 @@ export const CinematicCameraRig: React.FC<CinematicCameraRigProps> = ({
   impactFrame,
   perspective = 1200,
   origin = '50% 48%',
+  followPath,
+  followStartFrame,
+  followEndFrame,
+  followStrength = 0.62,
+  followAnchor = [540, 940],
   style,
   children,
 }) => {
@@ -118,10 +130,29 @@ export const CinematicCameraRig: React.FC<CinematicCameraRigProps> = ({
       break;
   }
 
+  if (followPath) {
+    const followT = segmentProgress(
+      frame,
+      followStartFrame ?? startFrame,
+      followEndFrame ?? endFrame,
+    );
+    const point = bezierPoint(
+      followT,
+      followPath[0],
+      followPath[1],
+      followPath[2],
+      followPath[3],
+    );
+    const followEase = Math.sin(Math.min(1, followT) * Math.PI * 0.5);
+    x += (followAnchor[0] - point.x) * followStrength * followEase;
+    y += (followAnchor[1] - point.y) * followStrength * followEase;
+  }
+
   return (
     <div
       data-motion-engine="camera-rig"
       data-camera-move={move}
+      data-camera-follow={followPath ? 'path' : 'none'}
       style={{
         position: 'absolute',
         inset: 0,
