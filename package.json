@@ -143,7 +143,7 @@
     "roughjs": "4.6.6",
     "sharp": "^0.33.5",
     "three": "^0.171.0",
-    "zod": "4.3.6"
+    "zod": "4.5.4"
   },
   "devDependencies": {
     "@remotion/install-whisper-cpp": "4.0.529",
