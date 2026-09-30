@@ -30,6 +30,7 @@ const PIPELINE =
 
 const PIPELINE_LENGTH = getLength(PIPELINE);
 const STATION = makeCircle({radius: 17});
+const PIPELINE_START = {x: 90, y: 470};
 
 const STATIONS = [
   {at: 0.0, label: 'ANFRAGE'},
@@ -46,8 +47,8 @@ export const PathTravelDemo: React.FC = () => {
   const {strokeDasharray, strokeDashoffset} = evolvePath(draw, PIPELINE);
 
   const at = Math.max(0.0001, travel) * PIPELINE_LENGTH;
-  const point = getPointAtLength(PIPELINE, at);
-  const tangent = getTangentAtLength(PIPELINE, at);
+  const point = getPointAtLength(PIPELINE, at) ?? PIPELINE_START;
+  const tangent = getTangentAtLength(PIPELINE, at) ?? {x: 1, y: 0};
   const angle = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
 
   return (
@@ -81,10 +82,8 @@ export const PathTravelDemo: React.FC = () => {
               10 + staggerDelay(index, 7),
               32 + staggerDelay(index, 7),
             );
-            const stationPoint = getPointAtLength(
-              PIPELINE,
-              station.at * PIPELINE_LENGTH,
-            );
+            const stationPoint =
+              getPointAtLength(PIPELINE, station.at * PIPELINE_LENGTH) ?? PIPELINE_START;
             const passed = travel >= station.at - 0.02;
             return (
               <g key={station.label} opacity={reveal}>
