@@ -407,7 +407,7 @@ const Buehne: React.FC<{szene: ReelSzene}> = ({szene}) => {
     const ring = 'M 540 620 m -150 0 a 150 150 0 1 1 300 0 a 150 150 0 1 1 -300 0';
     const laenge = getLength(ring);
     const fahrt = easedProgress(frame, 8, 92, 'move');
-    const punkt = getPointAtLength(ring, fahrt * laenge);
+    const punkt = getPointAtLength(ring, fahrt * laenge) ?? {x: 390, y: 620};
     const kreis = makeCircle({radius: 16});
     return (
       <svg width="1080" height="1920">
