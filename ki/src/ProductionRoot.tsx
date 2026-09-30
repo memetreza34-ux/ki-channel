@@ -17,6 +17,14 @@ import {
   ReelHallucinations,
 } from './reels/ai-hallucinations';
 import {
+  ARITHMETIC_COMPOSITION_ID,
+  ARITHMETIC_DURATION_IN_FRAMES,
+  ARITHMETIC_FPS,
+  ARITHMETIC_HEIGHT,
+  ARITHMETIC_WIDTH,
+  ReelAIArithmeticReasoning,
+} from './reels/ai-arithmetic-reasoning';
+import {
   AMBIGUOUS_PROMPTS_COMPOSITION_ID,
   AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES,
   AMBIGUOUS_PROMPTS_FPS,
@@ -120,6 +128,7 @@ export const ProductionRoot: React.FC = () => (
     <Folder name="KI-Production-Reels">
       <Composition id={CONTEXT_OVERLOAD_COMPOSITION_ID} component={ReelContextOverload} defaultProps={{showCaptions: true, showDebugTimeline: false}} durationInFrames={CONTEXT_OVERLOAD_DURATION_IN_FRAMES} fps={CONTEXT_OVERLOAD_FPS} width={CONTEXT_OVERLOAD_WIDTH} height={CONTEXT_OVERLOAD_HEIGHT}/>
       <Composition id={HALLUCINATION_COMPOSITION_ID} component={ReelHallucinations} defaultProps={{showCaptions: true}} durationInFrames={HALLUCINATION_DURATION_IN_FRAMES} fps={HALLUCINATION_FPS} width={HALLUCINATION_WIDTH} height={HALLUCINATION_HEIGHT}/>
+      <Composition id={ARITHMETIC_COMPOSITION_ID} component={ReelAIArithmeticReasoning} defaultProps={{showCaptions: true}} durationInFrames={ARITHMETIC_DURATION_IN_FRAMES} fps={ARITHMETIC_FPS} width={ARITHMETIC_WIDTH} height={ARITHMETIC_HEIGHT}/>
       <Composition id={AMBIGUOUS_PROMPTS_COMPOSITION_ID} component={ReelAmbiguousPrompts} defaultProps={{showCaptions: true}} durationInFrames={AMBIGUOUS_PROMPTS_DURATION_IN_FRAMES} fps={AMBIGUOUS_PROMPTS_FPS} width={AMBIGUOUS_PROMPTS_WIDTH} height={AMBIGUOUS_PROMPTS_HEIGHT}/>
       <Composition id={VISION_PHOTO_COMPOSITION_ID} component={ReelVisionPhotoUnderstanding} defaultProps={{showCaptions: true}} durationInFrames={VISION_PHOTO_DURATION_IN_FRAMES} fps={VISION_PHOTO_FPS} width={VISION_PHOTO_WIDTH} height={VISION_PHOTO_HEIGHT}/>
       <Composition id={PDF_RETRIEVAL_COMPOSITION_ID} component={ReelPdfRetrieval} defaultProps={{showCaptions: true}} durationInFrames={PDF_RETRIEVAL_DURATION_IN_FRAMES} fps={PDF_RETRIEVAL_FPS} width={PDF_RETRIEVAL_WIDTH} height={PDF_RETRIEVAL_HEIGHT}/>
