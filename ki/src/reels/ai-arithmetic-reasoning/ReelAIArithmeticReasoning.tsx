@@ -103,6 +103,7 @@ const Caption: React.FC<{text: string; duration: number}> = ({text, duration}) =
   const exit = easedProgress(frame, Math.max(14, duration - 10), Math.max(15, duration - 2), 'exit');
   return (
     <div
+      data-arithmetic-caption="true"
       style={{
         position: 'absolute',
         left: REEL_CAPTION_SAFE.horizontalInset,
