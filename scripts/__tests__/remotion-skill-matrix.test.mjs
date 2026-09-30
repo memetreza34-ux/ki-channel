@@ -21,6 +21,7 @@ const skills = [
 const documentedPackages = [
   '@remotion/captions',
   '@remotion/cli',
+  '@remotion/effects',
   '@remotion/google-fonts',
   '@remotion/layout-utils',
   '@remotion/light-leaks',
@@ -71,8 +72,14 @@ test('deprecated light leaks cannot silently become a recommended new-production
   assert.ok(!REMOTION_CAPABILITIES.includes('light-leaks'));
 });
 
+test('effects stay documented as support and cannot silently become a primary capability',()=>{
+  assert.ok(doc.includes('@remotion/effects'));
+  assert.ok(doc.includes('Effects zählen **vorerst nicht als eigene Primary Beat-Capability**'));
+  assert.ok(!REMOTION_CAPABILITIES.includes('effects'));
+});
+
 test('skill version and repo runtime version are explicitly separated',()=>{
-  assert.match(doc,/Repo-Runtime:\*\* Remotion `4\.0\.488`/);
+  assert.match(doc,/Repo-Runtime:\*\* Remotion `4\.0\.529`/);
   assert.match(doc,/Agent-Skills:\*\* Stand `4\.0\.506`/);
   assert.match(doc,/Skill-Version und installierte Repo-Paketversion sind zwei verschiedene Dinge/);
 });
