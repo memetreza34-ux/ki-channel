@@ -48,16 +48,44 @@ Sprecherbedeutung
 → sichtbare Idee
 → Remotion-native Illustration/UI/Objekt
 → Motion-Choreografie
+→ bei Bedarf gezielte Motion-Reference-Suche
 → optional echte Beweisquelle einbetten
 → Caption
 → finaler Remotion-Render
+```
+
+### Motion-Reference-Suche
+
+Wenn die visuelle Mechanik bereits feststeht, darf der Agent gezielt externe Open-Source-Referenzen konsultieren. Verbindliche Quellen, Lizenzstatus und Runtime-Regeln stehen in:
+
+```text
+ki/gehirn/MOTION_REFERENCES.md
+ki/src/motion/referenceCatalog.ts
+```
+
+Die Suche kommt **nach** Visual Strategy und Motion Choreography. Eine Referenz liefert Implementierungswissen, nicht Story, Bildwelt oder Hook.
+
+Erlaubt:
+
+```text
+Mechanik = center-out tile breakup
+→ passende Referenz suchen
+→ Bewegungsprinzip verstehen
+→ mit eigener Geometrie, eigenem Timing und eigener Bildwelt bauen
+```
+
+Nicht erlaubt:
+
+```text
+coole Template-Animation finden
+→ Inhalt daran anpassen
 ```
 
 ### Bevorzugte Produktionsarten
 
 1. `REMOTION_NATIVE`
    - Standard für konstruierte Visuals.
-   - React, SVG, CSS, @remotion/shapes, @remotion/paths, Masken, Layer, 2.5D, Three.
+   - React, SVG, CSS, @remotion/shapes, @remotion/paths, @remotion/effects als Support, Masken, Layer, 2.5D, Three.
 
 2. `REAL_CAPTURE`
    - Nur wenn tatsächliches Produktverhalten selbst eine Behauptung belegt.
@@ -118,6 +146,7 @@ Mögliche Techniken:
 - Depth Blur
 - pseudo-3D
 - React Three Fiber, wenn echte Tiefe nötig ist
+- `@remotion/effects` als bedeutungsgebundener Support-Layer
 - große Hero-Objekte statt kleiner Karten
 - gezielte Kamera-Pushes
 - X-Ray-/Cutaway-Looks
@@ -125,6 +154,20 @@ Mögliche Techniken:
 - Morphs und Recomposition
 
 Die Szene darf hochwertig und bildhaft sein, aber keine echte Aufnahme vortäuschen.
+
+### Effects-Regel
+
+Effects dürfen nur eine bereits verständliche Mechanik verstärken, zum Beispiel Fokus/Blur, kontrollierte Distortion, LUT-/Farbzustand oder echtes Pattern/Tile-Verhalten.
+
+Nicht zulässig:
+
+```text
+statische schwache Szene
++ Blur/Glow/Distortion
+= angeblich hochwertiges Motion Design
+```
+
+Effects sind Finish und Zustandsdarstellung, kein Ersatz für Choreography.
 
 ## Icons
 
@@ -243,6 +286,8 @@ Geeignet:
 
 Nicht verwenden, nur weil 3D spektakulärer wirkt.
 
+Aktuell bleibt der Stack bewusst bei `three`, `@react-three/fiber` und `@remotion/three`. `@react-three/drei` oder `@react-three/postprocessing` werden erst dann ergänzt, wenn eine konkrete Hero-Szene den Zusatznutzen fachlich begründet.
+
 ## Real-Capture-Regel
 
 Ein echter Capture bleibt erforderlich, wenn die Aussage lautet oder impliziert:
@@ -276,6 +321,7 @@ Auch bei 100 % Remotion verboten:
 - unlesbarer Mini-Code
 - falsche UI als scheinbar realer Beweis
 - gefälschte Logos oder Markenassets
+- fremde Template-Bildsprache unverändert übernehmen
 
 ## Zielbild
 
@@ -300,5 +346,11 @@ Vor Freigabe der Visual Strategy muss beantwortet sein:
 - Welche externen Medien sind wirklich unvermeidbar?
 - Wie bleibt jede Szene auch ohne externe Bildgenerierung visuell stark?
 - Wo liegt der Hero-Moment?
+
+Nach festgelegter Visual Strategy und Choreography zusätzlich:
+
+- Gibt es für eine schwierige Mechanik eine passende Referenz in `MOTION_REFERENCES.md`?
+- Wird nur die Mechanik übernommen statt des fremden Skins?
+- Ist der Lizenzstatus vor Source-Reuse geklärt?
 
 Wenn ein Beat nur deshalb externes Bildmaterial verlangt, weil die Remotion-Idee noch nicht ausgearbeitet wurde: **zurück in die Visual Strategy**.

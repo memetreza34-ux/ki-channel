@@ -117,6 +117,7 @@
     "@react-three/fiber": "^8.17.10",
     "@remotion/captions": "4.0.529",
     "@remotion/cli": "4.0.529",
+    "@remotion/effects": "4.0.529",
     "@remotion/google-fonts": "4.0.529",
     "@remotion/layout-utils": "4.0.529",
     "@remotion/light-leaks": "4.0.529",
