@@ -12,13 +12,55 @@
 
 ## Scene Story Contract
 
-| Scene | Start state | Visible change | End state | Visual verb | Hero meaning | Recognition cues | Payoff |
-|---|---|---|---|---|---|---|---|
-| arithmetic-01 | Riesige Gleichung `47 × 18 = 836` steht bereits vollständig im Frame. | `836` kippt rot, letzte Ziffer schlägt aus der Gleichung und eine Bruchlinie trennt „klingt sicher“ von „ist falsch“. | Falsche Zahl ist als Problem physisch isoliert. | fractures | sprachliche Sicherheit ist kein Rechenbeweis | Multiplikationszeichen; rotes falsches Resultat; Bruchlinie | Konflikt sofort verstanden |
-| arithmetic-02 | Gleichung bleibt als gemeinsames Objekt erhalten. | Zeichen lösen sich nacheinander in Token und Kandidatenbalken auf; Pfad führt von Kontext zu nächstem Token. | Zuschauer sieht Textvorhersage statt Taschenrechnerlogik. | decomposes | Modell erzeugt nächste Tokens | Token-Chips; Kandidatenachse; Pfadpfeil | Mechanismus sichtbar |
-| arithmetic-03 | Mehrere Rechenschritte sind zunächst grün verbunden. | Ein Zwischenergebnis kippt rot; roter Fehler läuft cause-to-effect durch alle abhängigen Knoten. | Ganze abhängige Route ist sichtbar kontaminiert. | cascades | ein falscher Schritt kann Folgefehler erzeugen | Rechenschritte; roter Pfad; Endergebnis | Fehlerfortpflanzung sichtbar |
-| arithmetic-04 | Derselbe Input steht links vor einer Weggabelung. | Route wechselt in ein Calculator-/Code-Terminal; Berechnung wird dort ausgeführt und Ergebnis kehrt zurück. | Tool-Ergebnis sitzt als klar getrennte, grüne Ausgabe im Flow. | routes | Werkzeug übernimmt deterministische Rechnung | Terminalprompt; Calculator-Symbol; Rückgabepfad | Tool-Trennung verstanden |
-| arithmetic-05 | Falsches und geprüftes Ergebnis stehen kurz nebeneinander. | Falsche Zahl wird ausgestrichen; `846` rastet in die ursprüngliche Gleichung und bekommt Prüfsiegel. | Konkrete Prüfregel bleibt groß stehen. | locks | wichtige Zahlen aktiv verifizieren | grünes Resultat; Check; Wörter `RECHNUNG PRÜFEN` | klare Handlungsregel |
+### arithmetic-01
+- **Start state:** Riesige Gleichung `47 × 18 = 836` steht bereits vollständig im Frame.
+- **Visible change:** `836` kippt rot, letzte Ziffer schlägt aus der Gleichung und eine Bruchlinie trennt „klingt sicher“ von „ist falsch“.
+- **End state:** Falsche Zahl ist als Problem physisch isoliert.
+- **Visual verb:** fractures
+- **Hero meaning:** sprachliche Sicherheit ist kein Rechenbeweis.
+- **Recognition cues:** Multiplikationszeichen; rotes falsches Resultat; Bruchlinie.
+- **Payoff:** Konflikt sofort verstanden.
+- **Modality:** REMOTION_NATIVE
+
+### arithmetic-02
+- **Start state:** Gleichung bleibt als gemeinsames Objekt erhalten.
+- **Visible change:** Zeichen lösen sich nacheinander in Token und Kandidatenbalken auf; Pfad führt von Kontext zu nächstem Token.
+- **End state:** Zuschauer sieht Textvorhersage statt Taschenrechnerlogik.
+- **Visual verb:** decomposes
+- **Hero meaning:** Modell erzeugt nächste Tokens.
+- **Recognition cues:** Token-Chips; Kandidatenachse; Pfadpfeil.
+- **Payoff:** Mechanismus sichtbar.
+- **Modality:** REMOTION_NATIVE
+
+### arithmetic-03
+- **Start state:** Mehrere Rechenschritte sind zunächst grün verbunden.
+- **Visible change:** Ein Zwischenergebnis kippt rot; roter Fehler läuft cause-to-effect durch alle abhängigen Knoten.
+- **End state:** Ganze abhängige Route ist sichtbar kontaminiert.
+- **Visual verb:** cascades
+- **Hero meaning:** ein falscher Schritt kann Folgefehler erzeugen.
+- **Recognition cues:** Rechenschritte; roter Pfad; Endergebnis.
+- **Payoff:** Fehlerfortpflanzung sichtbar.
+- **Modality:** REMOTION_NATIVE
+
+### arithmetic-04
+- **Start state:** Derselbe Input steht links vor einer Weggabelung.
+- **Visible change:** Route wechselt in ein Calculator-/Code-Terminal; Berechnung wird dort ausgeführt und Ergebnis kehrt zurück.
+- **End state:** Tool-Ergebnis sitzt als klar getrennte, grüne Ausgabe im Flow.
+- **Visual verb:** routes
+- **Hero meaning:** Werkzeug übernimmt deterministische Rechnung.
+- **Recognition cues:** Terminalprompt; Calculator-Symbol; Rückgabepfad.
+- **Payoff:** Tool-Trennung verstanden.
+- **Modality:** REMOTION_NATIVE
+
+### arithmetic-05
+- **Start state:** Falsches und geprüftes Ergebnis stehen kurz nebeneinander.
+- **Visible change:** Falsche Zahl wird ausgestrichen; `846` rastet in die ursprüngliche Gleichung und bekommt Prüfsiegel.
+- **End state:** Konkrete Prüfregel bleibt groß stehen.
+- **Visual verb:** locks
+- **Hero meaning:** wichtige Zahlen aktiv verifizieren.
+- **Recognition cues:** grünes Resultat; Check; Wörter `RECHNUNG PRÜFEN`.
+- **Payoff:** klare Handlungsregel.
+- **Modality:** REMOTION_NATIVE
 
 ## Beat Sheet
 
