@@ -66,7 +66,7 @@ export const NextWordScene: React.FC = () => {
   const schluss = easedProgress(frame, 196, 220);
 
   const {strokeDasharray, strokeDashoffset} = evolvePath(spurZeichnen, SPUR);
-  const gewinnerZiel = getPointAtLength(SPUR, SPUR_LAENGE);
+  const gewinnerZiel = getPointAtLength(SPUR, SPUR_LAENGE) ?? {x: 970, y: 560};
 
   return (
     <AbsoluteFill style={{background: FARBE.grund, fontFamily: 'Arial, Helvetica, sans-serif'}}>
