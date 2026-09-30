@@ -1,0 +1,21 @@
+{
+  "fps": 30,
+  "timingStatus": "PLANNING_ONLY_UNTIL_REAL_AUDIO",
+  "cues": [
+    {"sceneId":"arithmetic-01","startFrame":0,"endFrame":78,"text":"Eine KI kann einen perfekten Satz schreiben"},
+    {"sceneId":"arithmetic-01","startFrame":78,"endFrame":142,"text":"und bei einer Rechnung trotzdem danebenliegen."},
+    {"sceneId":"arithmetic-01","startFrame":142,"endFrame":210,"text":"Ein reines Sprachmodell ist kein Taschenrechner."},
+    {"sceneId":"arithmetic-02","startFrame":210,"endFrame":305,"text":"Es erzeugt Text Schritt für Schritt"},
+    {"sceneId":"arithmetic-02","startFrame":305,"endFrame":405,"text":"und wählt wahrscheinliche nächste Tokens."},
+    {"sceneId":"arithmetic-02","startFrame":405,"endFrame":500,"text":"Auch Zahlen werden als Tokens verarbeitet."},
+    {"sceneId":"arithmetic-03","startFrame":500,"endFrame":585,"text":"Bei mehrstufigen Rechnungen reicht"},
+    {"sceneId":"arithmetic-03","startFrame":585,"endFrame":665,"text":"ein falscher Zwischenschritt."},
+    {"sceneId":"arithmetic-03","startFrame":665,"endFrame":780,"text":"Der Fehler kann sich durch die Antwort ziehen."},
+    {"sceneId":"arithmetic-04","startFrame":780,"endFrame":870,"text":"KI-Systeme können Rechentools oder Code verwenden."},
+    {"sceneId":"arithmetic-04","startFrame":870,"endFrame":950,"text":"Das Werkzeug übernimmt die Berechnung"},
+    {"sceneId":"arithmetic-04","startFrame":950,"endFrame":1030,"text":"und das Sprachmodell erklärt das Ergebnis."},
+    {"sceneId":"arithmetic-05","startFrame":1030,"endFrame":1110,"text":"Für wichtige Zahlen gilt:"},
+    {"sceneId":"arithmetic-05","startFrame":1110,"endFrame":1185,"text":"Nicht die Formulierung prüfen — die Rechnung prüfen."},
+    {"sceneId":"arithmetic-05","startFrame":1185,"endFrame":1260,"text":"Rechner oder Rechentool benutzen."}
+  ]
+}
