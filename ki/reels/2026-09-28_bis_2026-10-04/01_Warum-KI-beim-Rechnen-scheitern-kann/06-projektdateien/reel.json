@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "slug": "ai-arithmetic-reasoning",
+  "title": "Warum KI beim Rechnen scheitern kann",
+  "format": {"width":1080,"height":1920,"fps":30,"durationInFrames":1260},
+  "captionZoneStartY": 1380,
+  "visualBeatCount": 8,
+  "externalAssetsRequired": false,
+  "scenes": [
+    {"sceneId":"arithmetic-01","startFrame":0,"endFrame":210,"headline":"Perfekter Satz. Falsche Rechnung.","implementation":"NEW_BUILD","spokenText":"Eine KI kann einen perfekten Satz schreiben und bei einer Rechnung trotzdem danebenliegen. Der Grund: Ein reines Sprachmodell arbeitet nicht wie ein Taschenrechner.","beatIds":["math-01-wrong-answer","math-02-equation-fracture"]},
+    {"sceneId":"arithmetic-02","startFrame":210,"endFrame":500,"headline":"Text entsteht Token für Token","implementation":"NEW_BUILD","spokenText":"Es erzeugt Text Schritt für Schritt und wählt dabei wahrscheinliche nächste Tokens. Auch Zahlen werden als Tokens verarbeitet.","beatIds":["math-03-token-stream","math-04-probability-shift"]},
+    {"sceneId":"arithmetic-03","startFrame":500,"endFrame":780,"headline":"Ein Fehler reicht","implementation":"NEW_BUILD","spokenText":"Bei mehrstufigen Rechnungen reicht ein falscher Zwischenschritt: Der Fehler kann sich durch die restliche Antwort ziehen, obwohl sie überzeugend klingt.","beatIds":["math-05-error-cascade"]},
+    {"sceneId":"arithmetic-04","startFrame":780,"endFrame":1030,"headline":"Werkzeug statt Raten","implementation":"NEW_BUILD","spokenText":"Deshalb können KI-Systeme Rechentools oder Code verwenden. Dann übernimmt das Werkzeug die eigentliche Berechnung, und das Sprachmodell erklärt das Ergebnis.","beatIds":["math-06-tool-route","math-07-verified-answer"]},
+    {"sceneId":"arithmetic-05","startFrame":1030,"endFrame":1260,"headline":"Rechnung prüfen","implementation":"NEW_BUILD","spokenText":"Für wichtige Zahlen gilt: Nicht die Formulierung prüfen – die Rechnung prüfen. Bei Geld, Messwerten oder Prozenten: Rechner oder Rechentool benutzen.","beatIds":["math-08-final-rule"]}
+  ]
+}

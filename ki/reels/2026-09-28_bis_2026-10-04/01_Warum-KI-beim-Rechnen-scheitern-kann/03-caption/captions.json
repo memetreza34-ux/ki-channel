@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "timing": "PHASE_1_PLACEHOLDER_RETIME_WITH_REAL_AUDIO",
+  "cues": [
+    {"startFrame":0,"endFrame":210,"text":"Sprachmodell ≠ Taschenrechner"},
+    {"startFrame":210,"endFrame":500,"text":"Es wählt wahrscheinliche nächste Tokens"},
+    {"startFrame":500,"endFrame":780,"text":"Ein Fehler kann sich weiterziehen"},
+    {"startFrame":780,"endFrame":1030,"text":"Rechentool übernimmt die Berechnung"},
+    {"startFrame":1030,"endFrame":1260,"text":"Wichtige Zahlen: Rechnung prüfen"}
+  ]
+}

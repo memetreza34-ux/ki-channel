@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "sourceFiles": ["ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx"],
+  "beats": [
+    {"beatId":"math-01-wrong-answer","primaryCapability":"kinetic-typography","capabilities":["kinetic-typography"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"The changing number is itself the semantic hero and must move as weighted typography, not as a card.","primaryPrimitive":"typography","isHook":true,"isHero":true},
+    {"beatId":"math-02-equation-fracture","primaryCapability":"object-transformation","capabilities":["object-transformation"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"The equation physically changing state communicates the distinction more directly than explanatory labels."},
+    {"beatId":"math-03-token-stream","primaryCapability":"paths","capabilities":["paths"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"A single directed path makes token order and progression visible without a panel sequence.","isHero":true},
+    {"beatId":"math-04-probability-shift","primaryCapability":"data-visualization","capabilities":["data-visualization"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"A shared candidate axis shows relative next-token choices more honestly than separate decorative cards."},
+    {"beatId":"math-05-error-cascade","primaryCapability":"paths","capabilities":["paths","object-transformation"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"The causal error must visibly travel through dependent steps and alter their state in order.","isHero":true},
+    {"beatId":"math-06-tool-route","primaryCapability":"terminal-code","capabilities":["terminal-code","paths"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"The calculator terminal is the actual semantic tool and the path proves that computation was routed elsewhere.","isHero":true},
+    {"beatId":"math-07-verified-answer","primaryCapability":"object-transformation","capabilities":["object-transformation"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"Returning the computed value into the original equation preserves object continuity and closes the mechanism."},
+    {"beatId":"math-08-final-rule","primaryCapability":"kinetic-typography","capabilities":["kinetic-typography"],"sourceFile":"ki/src/reels/ai-arithmetic-reasoning/ReelAIArithmeticReasoning.tsx","rationale":"The final action rule should assemble as the final semantic object rather than sit inside another information card.","isHero":true}
+  ]
+}
