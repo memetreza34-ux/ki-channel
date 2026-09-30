@@ -1,7 +1,7 @@
 # Remotion Skills & Capabilities — kanonische Technik-Policy
 
 **Status:** verbindlich für neue Remotion-Arbeit im KI-Kanal  
-**Repo-Runtime:** Remotion `4.0.488`  
+**Repo-Runtime:** Remotion `4.0.529`  
 **Remotion Agent-Skills:** Stand `4.0.506`  
 **Wichtig:** Skill-Version und installierte Repo-Paketversion sind zwei verschiedene Dinge.
 
@@ -42,6 +42,7 @@ Ein **Runtime-Paket** ist eine echte Dependency in `package.json`, zum Beispiel:
 
 - `@remotion/paths`
 - `@remotion/shapes`
+- `@remotion/effects`
 - `@remotion/three`
 - `@remotion/lottie`
 - `@remotion/rive`
@@ -61,7 +62,7 @@ Beispiele:
 
 ### Utility / Workflow
 
-Utilities wie Captions, Fonts, Studio, Render-CLI oder Media-Metadaten sind wichtig, dürfen aber **nicht** künstlich als „Advanced Visual“ gezählt werden.
+Utilities wie Captions, Fonts, Studio, Render-CLI, Media-Metadaten oder reine Finish-Effekte sind wichtig, dürfen aber **nicht** künstlich als „Advanced Visual“ gezählt werden.
 
 ---
 
@@ -102,13 +103,13 @@ Der Skill-Router ersetzt **nicht** die Repo-Contracts. Beide gelten gleichzeitig
 
 ### Aktuelle Repo-Runtime
 
-Das Repository verwendet Remotion `4.0.488` und hält die meisten `@remotion/*`-Pakete exakt auf derselben Version.
+Das Repository verwendet Remotion `4.0.529` und hält alle installierten `remotion`-/`@remotion/*`-Pakete exakt auf demselben Stand.
 
 ### Aktuelle Agent-Skills
 
-Die verfügbaren Remotion Agent-Skills sind neuer (`4.0.506`). Deshalb gilt:
+Die aktuell eingebundenen Remotion Agent-Skills stehen auf `4.0.506`. Deshalb gilt:
 
-> Eine API aus einem aktuellen Skill darf nicht blind als in `4.0.488` verfügbar angenommen werden.
+> Skill-Dokumentation und Repo-Runtime sind getrennte Wahrheiten. Bei einer API-Frage muss die aktuelle Remotion-Dokumentation gegen die tatsächlich installierte Runtime geprüft werden.
 
 Vor Nutzung einer neuen/unsicheren API:
 
@@ -117,7 +118,7 @@ Vor Nutzung einer neuen/unsicheren API:
 3. Typecheck laufen lassen,
 4. Still/Smoke-Render prüfen.
 
-Kein stilles Runtime-Upgrade nur deshalb, weil ein Skill neuer ist.
+Kein stilles Runtime-Upgrade nur deshalb, weil eine externe Referenz oder ein Skill eine neuere API zeigt.
 
 ---
 
@@ -125,27 +126,40 @@ Kein stilles Runtime-Upgrade nur deshalb, weil ein Skill neuer ist.
 
 | Paket / Stack | Status | Zweck im Kanal |
 |---|---|---|
-| `remotion` | installiert `4.0.488` | Timeline, Frames, Composition, Sequencing |
-| `@remotion/cli` | installiert `4.0.488` | Studio / Still / Render |
-| `@remotion/paths` | installiert `4.0.488` | Pfad-Reveal, Route, Datenfluss |
-| `@remotion/shapes` | installiert `4.0.488` | native geometrische Formen |
-| `@remotion/three` | installiert `4.0.488` | Three/R3F in Remotion |
+| `remotion` | installiert `4.0.529` | Timeline, Frames, Composition, Sequencing |
+| `@remotion/cli` | installiert `4.0.529` | Studio / Still / Render |
+| `@remotion/paths` | installiert `4.0.529` | Pfad-Reveal, Route, Datenfluss |
+| `@remotion/shapes` | installiert `4.0.529` | native geometrische Formen |
+| `@remotion/effects` | installiert `4.0.529` | kontrollierte Canvas-/Shape-/Media-Effekte als Support-Layer |
+| `@remotion/three` | installiert `4.0.529` | Three/R3F in Remotion |
 | `three` + `@react-three/fiber` | installiert | echte 3D-Szenen |
-| `@remotion/motion-blur` | installiert `4.0.488` | Trail / kontrollierter Motion Blur |
-| `@remotion/transitions` | installiert `4.0.488` | semantische Scene-Transitions |
-| `@remotion/noise` | installiert `4.0.488` | deterministische Noise-Felder |
-| `@remotion/lottie` | installiert `4.0.488` | echte Lottie-Assets |
-| `@remotion/rive` | installiert `4.0.488` | echte `.riv`-Assets |
+| `@remotion/motion-blur` | installiert `4.0.529` | Trail / kontrollierter Motion Blur |
+| `@remotion/transitions` | installiert `4.0.529` | semantische Scene-Transitions |
+| `@remotion/noise` | installiert `4.0.529` | deterministische Noise-Felder |
+| `@remotion/lottie` | installiert `4.0.529` | echte Lottie-Assets |
+| `@remotion/rive` | installiert `4.0.529` | echte `.riv`-Assets |
 | `@rive-app/canvas-advanced` | installiert | Rive Runtime |
-| `@remotion/captions` | installiert `4.0.488` | Caption-Daten / Caption-Helfer |
-| `@remotion/media-utils` | installiert `4.0.488` | Media-Hilfsfunktionen |
-| `@remotion/layout-utils` | installiert `4.0.488` | Layout-/Textmessung |
-| `@remotion/google-fonts` | installiert `4.0.488` | deterministisches Font Loading |
+| `@remotion/captions` | installiert `4.0.529` | Caption-Daten / Caption-Helfer |
+| `@remotion/media-utils` | installiert `4.0.529` | Media-Hilfsfunktionen |
+| `@remotion/layout-utils` | installiert `4.0.529` | Layout-/Textmessung |
+| `@remotion/google-fonts` | installiert `4.0.529` | deterministisches Font Loading |
 | `@remotion/light-leaks` | installiert, **deprecated für neue Produktion** | Legacy only |
 | `recharts` | installiert | Datenvisualisierung wenn semantisch passend |
 | `lucide-react` | installiert | Support-Icons, nicht automatisch Hauptvisual |
 | `roughjs` / `rough-notation` | installiert | sparsame Annotation / hand-drawn Semantik |
 | `gsap` | installiert | kein unabhängiger Wall-Clock-Production-Ticker |
+
+### Effects sind Support, keine Qualitätsabkürzung
+
+`@remotion/effects` ist explizit verfügbar. Typische sinnvolle Nutzung:
+
+- Blur/Fokus als Bedeutungswechsel
+- Color-/LUT-Zustand
+- Distortion bei tatsächlichem Informationsverlust/-wechsel
+- Pattern/Tile, wenn die Wiederholung selbst Teil der Erklärung ist
+- kontrollierte Media-/Shape-Veredelung
+
+Effects zählen **vorerst nicht als eigene Primary Beat-Capability**. Ein Effekt darf eine bereits verständliche Mechanik unterstützen, aber keine fehlende Story, schwache Komposition oder statische Card-Szene kaschieren.
 
 ### Nicht automatisch als „voll eingebaut“ behandeln
 
@@ -154,6 +168,7 @@ Folgende Skill-Bereiche können zusätzliche Dependencies / Infrastruktur verlan
 - `remotion-multimedia` → Mediabunny ist nicht automatisch Teil unseres aktuellen Runtime-Stacks
 - `remotion-maps` → Mapbox / MapLibre / MapTiler / Cesium usw. nur bei echter Geo-Story hinzufügen
 - `remotion-saas` → Player/Lambda/Server-Rendering-Infrastruktur ist kein normaler Reel-Dependency-Block
+- `@react-three/drei` / `@react-three/postprocessing` → nur per kontrolliertem Dependency-PR für eine konkrete Hero-Szene
 
 On-demand heißt: **Skill nutzbar, Runtime-Erweiterung kontrolliert hinzufügen, testen und dokumentieren.**
 
@@ -161,7 +176,7 @@ On-demand heißt: **Skill nutzbar, Runtime-Erweiterung kontrolliert hinzufügen,
 
 ## 5. Beat-Capabilities — im Source wirklich nachweisbar
 
-Diese Werte sind für neue V3-Reels in `06-projektdateien/remotion-capabilities-v1.json` erlaubt:
+Diese Werte sind für neue V3/V4-Reels in `06-projektdateien/remotion-capabilities-v1.json` erlaubt:
 
 | Capability | Typische Anwendung | Darf Primary sein? | Source-Gate |
 |---|---|---:|---|
@@ -196,6 +211,7 @@ Diese Dinge sind wichtig, aber kein Beweis für visuelle Stärke:
 - Interactivity-Authoring
 - SaaS-Architektur
 - Multimedia-Metadaten
+- `@remotion/effects` allein
 
 Sie dürfen nicht benutzt werden, um die `>=50 % Advanced Primary Capabilities` künstlich zu erfüllen.
 
@@ -281,6 +297,10 @@ Vor einer Kartenserie immer prüfen:
 Kann ein Weg, Netzwerk, Fluss, Morph oder Formzustand die Aussage direkter zeigen?
 ```
 
+### Effects
+
+Effects nur nach der Mechanik wählen. Ein Shape-/Media-Effekt darf Fokus, Verlust, Materialzustand oder Übergang sichtbar machen, aber nicht die Aussage ersetzen. Bei experimentellen APIs aktuelle Doku + Runtime-Version prüfen.
+
 ### Motion Blur
 
 Nur als Finish einer klaren Bewegung. Motion Blur ersetzt keine gute Bewegung.
@@ -299,7 +319,7 @@ Transition nur bei:
 
 ---
 
-## 8. Lottie und Rive — jetzt echte Gate-Capabilities
+## 8. Lottie und Rive — echte Gate-Capabilities
 
 ### Lottie
 
@@ -369,7 +389,7 @@ Der `remotion-interactivity` Skill ist sinnvoll, wenn Elemente im Studio auswäh
 
 Das kann Struktur verbessern, ist aber **keine eigene visuelle Qualitäts-Capability**.
 
-Wenn eine Interactivity-API aus dem neueren Skill verwendet werden soll, zuerst prüfen, ob sie in unserer Runtime `4.0.488` tatsächlich verfügbar ist.
+Wenn eine Interactivity-API aus einem Skill verwendet werden soll, zuerst prüfen, ob sie in unserer Runtime `4.0.529` tatsächlich verfügbar ist.
 
 ---
 
@@ -486,6 +506,10 @@ Priorität:
 - `.riv` vorhanden + exakt passend → `rive`
 - kein passendes Asset → nativer Build, nicht Asset-Suche aus Bequemlichkeit
 
+### Externe Motion-Referenz
+
+Wenn die Mechanik klar ist, darf `ki/gehirn/MOTION_REFERENCES.md` konsultiert werden. Die Referenzsuche kommt **nach** Visual Strategy und Choreography. Sie liefert Implementierungswissen, nicht die Story oder Bildwelt.
+
 ---
 
 ## 15. Phase-Integration
@@ -497,10 +521,12 @@ Vor Source:
 1. Story / Claims / VO abschließen
 2. Visual Beats definieren
 3. pro Beat beste Mechanik wählen
-4. passenden Remotion-Skill anwenden
-5. `remotion-capabilities-v1.json` ausfüllen
-6. Source mit `REMOTION_BEAT`-Markern bauen
-7. Visual Quality + Capability Gates bestehen
+4. Motion Choreography festlegen
+5. bei Bedarf Motion Reference Search durchführen
+6. passenden Remotion-Skill anwenden
+7. `remotion-capabilities-v1.json` ausfüllen
+8. Source mit `REMOTION_BEAT`-Markern bauen
+9. Visual Quality + Capability Gates bestehen
 
 ### Phase 2
 
@@ -554,4 +580,6 @@ Bei neuen Remotion-Skills, neuen APIs oder Dependency-Upgrades:
 6. Full Remotion Readiness laufen lassen
 7. erst nach grüner CI mergen
 
-Diese Datei ist die **kanonische technische Remotion-Landkarte des KI-Kanals**. `REMOTION_CAPABILITY_GATE.md` definiert die harte Source-Prüfung; `REMOTION_VISUAL_SYSTEM.md` definiert die visuelle Produktionslogik.
+Externe Motion-Referenzen werden getrennt in `MOTION_REFERENCES.md` und `ki/src/motion/referenceCatalog.ts` gepflegt. Eine neue Referenz ist keine neue Runtime-Dependency.
+
+Diese Datei ist die **kanonische technische Remotion-Landkarte des KI-Kanals**. `REMOTION_CAPABILITY_GATE.md` definiert die harte Source-Prüfung; `REMOTION_VISUAL_SYSTEM.md` definiert die visuelle Produktionslogik; `MOTION_REFERENCES.md` definiert kontrollierte externe Mechanik-Recherche.
