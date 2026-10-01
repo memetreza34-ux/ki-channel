@@ -34,6 +34,7 @@ const windowed = (
 
 const SceneOneOverlay: React.FC<{frame: number}> = ({frame}) => {
   const impact = windowed(frame, 1, 12, 18, 34);
+  const secondImpact = windowed(frame, 8, 15, 16, 27);
   const fractureField = windowed(frame, 34, 62, 78, 102);
   const mathTakeover = windowed(frame, 82, 118, 126, 154);
   const verdictLock = windowed(frame, 126, 158, 166, 196);
@@ -44,6 +45,11 @@ const SceneOneOverlay: React.FC<{frame: number}> = ({frame}) => {
       <g opacity={impact}>
         <rect x={0} y={315} width={1080} height={610} fill={COLORS.redSoft} opacity={0.38} />
         <path d="M 120 390 L 965 900" stroke={COLORS.red} strokeWidth={34} strokeLinecap="round" opacity={0.32} />
+      </g>
+
+      <g opacity={secondImpact}>
+        <rect x={0} y={260} width={1080} height={760} fill={COLORS.accent} opacity={0.28} />
+        <circle cx={810} cy={690} r={300} fill={COLORS.white} opacity={0.16} />
       </g>
 
       <g opacity={fractureField}>
@@ -113,13 +119,13 @@ const SceneThreeOverlay: React.FC<{frame: number}> = ({frame}) => {
 
   return (
     <svg width="1080" height="1500" style={{position: 'absolute', inset: 0}}>
-      <rect x={55} y={395} width={325 * first} height={790} rx={62} fill={COLORS.red} opacity={0.2 * first} />
-      <rect x={377} y={395} width={326 * second} height={790} fill={COLORS.redField} opacity={0.23 * second} />
-      <rect x={700} y={395} width={325 * third} height={790} rx={62} fill={COLORS.red} opacity={0.26 * third} />
+      <rect x={55} y={395} width={325 * first} height={790} rx={62} fill={COLORS.green} opacity={0.2 * first} />
+      <rect x={377} y={395} width={326 * second} height={790} fill={COLORS.redSoft} opacity={0.46 * second} />
+      <rect x={700} y={395} width={325 * third} height={790} rx={62} fill={COLORS.red} opacity={0.42 * third} />
 
       <g opacity={consequence}>
-        <rect x={55} y={1045} width={970} height={220} rx={48} fill={COLORS.red} opacity={0.36} />
-        <path d="M 150 1148 L 930 1148" stroke={COLORS.white} strokeWidth={22} strokeLinecap="round" opacity={0.7} />
+        <rect x={55} y={1045} width={970} height={220} rx={48} fill={COLORS.red} opacity={0.42} />
+        <path d="M 150 1148 L 930 1148" stroke={COLORS.white} strokeWidth={22} strokeLinecap="round" opacity={0.76} />
       </g>
 
       <rect
@@ -128,7 +134,7 @@ const SceneThreeOverlay: React.FC<{frame: number}> = ({frame}) => {
         width={1080}
         height={760}
         fill={COLORS.redSoft}
-        opacity={0.1 * settle}
+        opacity={0.12 * settle}
       />
     </svg>
   );
@@ -168,6 +174,7 @@ const SceneFourOverlay: React.FC<{frame: number}> = ({frame}) => {
 const SceneFiveOverlay: React.FC<{frame: number}> = ({frame}) => {
   const compare = easedProgress(frame, 0, 22, 'enterEmphasis');
   const greenTakeover = easedProgress(frame, 34, 74, 'move');
+  const decisionSweep = easedProgress(frame, 22, 60, 'enterEmphasis');
   const verdict = windowed(frame, 82, 122, 132, 156);
   const categories = windowed(frame, 134, 172, 180, 202);
   const finish = easedProgress(frame, 178, 226, 'move');
@@ -175,22 +182,24 @@ const SceneFiveOverlay: React.FC<{frame: number}> = ({frame}) => {
   return (
     <svg width="1080" height="1500" style={{position: 'absolute', inset: 0}}>
       <g opacity={compare}>
-        <rect x={0} y={320} width={540 * (1 - greenTakeover)} height={560} fill={COLORS.redSoft} opacity={0.42} />
-        <rect x={540 - 540 * greenTakeover} y={320} width={540 + 540 * greenTakeover} height={560} fill={COLORS.greenSoft} opacity={0.42} />
+        <rect x={0} y={320} width={540 * (1 - greenTakeover)} height={560} fill={COLORS.red} opacity={0.28} />
+        <rect x={540 - 540 * greenTakeover} y={320} width={540 + 540 * greenTakeover} height={560} fill={COLORS.green} opacity={0.28} />
       </g>
 
+      <rect x={0} y={300} width={1080 * decisionSweep} height={650} fill={COLORS.green} opacity={0.28 * decisionSweep} />
+
       <g opacity={verdict}>
-        <rect x={55} y={760} width={970} height={390} rx={68} fill={COLORS.accentSoft} opacity={0.3} />
-        <circle cx={900} cy={955} r={190 * verdict} fill={COLORS.green} opacity={0.12} />
+        <rect x={55} y={760} width={970} height={390} rx={68} fill={COLORS.accent} opacity={0.22} />
+        <circle cx={900} cy={955} r={190 * verdict} fill={COLORS.green} opacity={0.18} />
       </g>
 
       <g opacity={categories}>
-        <rect x={0} y={1080} width={360} height={300} fill={COLORS.greenSoft} opacity={0.4} />
-        <rect x={360} y={1080} width={360} height={300} fill={COLORS.accentSoft} opacity={0.4} />
-        <rect x={720} y={1080} width={360} height={300} fill={COLORS.redSoft} opacity={0.4} />
+        <rect x={0} y={1080} width={360} height={300} fill={COLORS.green} opacity={0.34} />
+        <rect x={360} y={1080} width={360} height={300} fill={COLORS.accent} opacity={0.3} />
+        <rect x={720} y={1080} width={360} height={300} fill={COLORS.red} opacity={0.3} />
       </g>
 
-      <rect x={0} y={1210 - finish * 90} width={1080 * finish} height={190} fill={COLORS.green} opacity={0.26 * finish} />
+      <rect x={0} y={1210 - finish * 90} width={1080 * finish} height={190} fill={COLORS.green} opacity={0.3 * finish} />
     </svg>
   );
 };
