@@ -1,0 +1,57 @@
+{
+  "version": 4,
+  "compositionId": "KI-Reel-AI-Arithmetic-Reasoning",
+  "fps": 30,
+  "sourceQualityContract": "ki/src/reels/ai-arithmetic-reasoning/visualQuality.ts",
+  "hook": {
+    "sceneId": "arithmetic-01",
+    "firstFrameHeroVisible": true,
+    "keyMessageByFrame": 0,
+    "firstMajorChangeByFrame": 12,
+    "heroAreaRatio": 0.46,
+    "semanticVisualAnchors": 3,
+    "recognitionCues": ["large multiplication equation","red wrong result digit","correctness conflict label"],
+    "contrast": "strong",
+    "conflictVisible": true,
+    "keyMessageVisible": true,
+    "visualVerb": "fractures"
+  },
+  "scenes": [
+    {
+      "sceneId":"arithmetic-01","archetype":"hero-impact","startFrame":0,"durationFrames":210,
+      "story":{"startState":"A huge multiplication equation with a plausible wrong answer already dominates frame zero.","visibleChange":"The answer digit snaps red, separates from the equation and a fracture line splits fluent appearance from correctness.","endState":"The wrong numeric result is isolated as the visual conflict.","visualVerb":"fractures"},
+      "hero":{"semanticType":"arithmetic equation","meaning":"A fluent-looking answer can still contain a wrong calculation.","screenAreaTarget":0.46,"recognitionCues":[{"id":"equation","description":"large 47 × 18 equation"},{"id":"wrong-result","description":"red 836 result with unstable final digit"},{"id":"fracture","description":"visible break through the equation"}]},
+      "meaningfulStateChanges":4,"microBeats":3,"contrast":"strong",
+      "motionPlan":{"entry":"Hero equation is already present at frame zero; no fade from empty.","development":"Wrong digit snaps, shifts and fractures the equation in short weighted moves.","payoff":"Wrong result remains isolated while the rest of the equation recedes.","payoffAtProgress":0.72,"maxStaticHoldFrames":32}
+    },
+    {
+      "sceneId":"arithmetic-02","archetype":"process-flow","startFrame":210,"durationFrames":290,
+      "story":{"startState":"The equation persists as the shared object entering the mechanism explanation.","visibleChange":"Characters break into staggered tokens, travel along a path and feed a shared candidate axis.","endState":"A token winner exits the candidate distribution and rejoins the stream.","visualVerb":"decomposes"},
+      "hero":{"semanticType":"token prediction flow","meaning":"The language model advances through likely next-token choices.","screenAreaTarget":0.38,"recognitionCues":[{"id":"tokens","description":"separate text and number token blocks"},{"id":"path","description":"single directional prediction path"},{"id":"candidates","description":"shared candidate bars with one winner"}]},
+      "meaningfulStateChanges":5,"microBeats":4,"contrast":"medium",
+      "motionPlan":{"entry":"Shared equation compresses into the token rail without a decorative transition.","development":"Tokens stagger left-to-right while candidate bars grow in a short wave.","payoff":"Winning token locks into the outgoing stream and the camera follows it forward.","payoffAtProgress":0.74,"maxStaticHoldFrames":42}
+    },
+    {
+      "sceneId":"arithmetic-03","archetype":"network-flow","startFrame":500,"durationFrames":280,
+      "story":{"startState":"A green multi-step arithmetic dependency path is intact and readable.","visibleChange":"One intermediate result flips red and a red error pulse travels through every dependent step.","endState":"The complete downstream branch and final result are visibly contaminated by that one error.","visualVerb":"cascades"},
+      "hero":{"semanticType":"arithmetic dependency path","meaning":"One wrong intermediate calculation can propagate to dependent steps.","screenAreaTarget":0.44,"recognitionCues":[{"id":"steps","description":"three explicit arithmetic steps"},{"id":"error-pulse","description":"red pulse moving along dependency path"},{"id":"final","description":"final answer changes after the cascade"}]},
+      "meaningfulStateChanges":5,"microBeats":4,"contrast":"strong",
+      "motionPlan":{"entry":"All steps are visible and initially green so the later failure has a baseline.","development":"A single node flips, then short staggered path segments carry the error cause-to-effect.","payoff":"Final answer turns red only after the visible causal chain reaches it.","payoffAtProgress":0.78,"maxStaticHoldFrames":38}
+    },
+    {
+      "sceneId":"arithmetic-04","archetype":"terminal-code","startFrame":780,"durationFrames":250,
+      "story":{"startState":"The arithmetic input waits before a split route: language path or tool path.","visibleChange":"The active route bends into a calculator terminal, executes the multiplication and sends the result back.","endState":"The green tool result returns as a separate verified calculation output.","visualVerb":"routes"},
+      "hero":{"semanticType":"calculator terminal tool","meaning":"A tool can perform the calculation while the language model handles explanation and routing.","screenAreaTarget":0.40,"recognitionCues":[{"id":"terminal","description":"code-style calculator terminal with expression"},{"id":"tool-route","description":"visible arrow route into and out of the tool"},{"id":"return","description":"green 846 result returning to the model"}]},
+      "meaningfulStateChanges":5,"microBeats":3,"contrast":"strong",
+      "motionPlan":{"entry":"Input object holds while the route bifurcates toward the tool.","development":"Path draws into terminal, expression types, result snaps in, then return path activates.","payoff":"846 exits terminal as a distinct green object and reconnects to the equation.","payoffAtProgress":0.76,"maxStaticHoldFrames":34}
+    },
+    {
+      "sceneId":"arithmetic-05","archetype":"final-verdict","startFrame":1030,"durationFrames":230,
+      "story":{"startState":"Wrong 836 and tool-verified 846 briefly occupy the same comparison space.","visibleChange":"836 is crossed out, 846 snaps into the original equation and the final rule assembles word by word.","endState":"The verified equation and RECHNUNG PRÜFEN rule remain as the final verdict.","visualVerb":"locks"},
+      "hero":{"semanticType":"verified arithmetic verdict","meaning":"Important numbers should be checked by calculation, not trusted because prose sounds fluent.","screenAreaTarget":0.42,"recognitionCues":[{"id":"verified-number","description":"green 846 locked into equation"},{"id":"check","description":"large verification check mark"},{"id":"rule","description":"RECHNUNG PRÜFEN verdict text"}]},
+      "meaningfulStateChanges":4,"microBeats":3,"contrast":"strong",
+      "motionPlan":{"entry":"Both competing results enter already readable for an immediate comparison.","development":"Wrong value exits, correct value locks in and verdict words stagger with controlled emphasis.","payoff":"Check mark lands after the rule so the reel ends on a concrete action.","payoffAtProgress":0.73,"maxStaticHoldFrames":44}
+    }
+  ],
+  "targetScores":{"hook":9,"semanticClarity":9,"storyMotion":9,"visualVariety":9,"readability":9,"overall":9}
+}

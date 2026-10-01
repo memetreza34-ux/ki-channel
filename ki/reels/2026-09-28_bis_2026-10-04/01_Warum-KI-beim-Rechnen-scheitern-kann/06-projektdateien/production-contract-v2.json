@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "format": "short-form-reel",
+  "title": "Warum KI beim Rechnen scheitern kann",
+  "slug": "ai-arithmetic-reasoning",
+  "week": "2026-09-28_bis_2026-10-04",
+  "preProductionRequiredArtifacts": ["idea-evaluation.md"],
+  "phase1RequiredArtifacts": ["creative-brief.md","source-ledger.md","visual-strategy.md","visual-quality-v4.json","remotion-capabilities-v1.json","creative-review.md","reel.json","animation-plan.md"],
+  "postPublishArtifacts": ["performance-review.md"],
+  "visualModalities": ["REMOTION_NATIVE","REAL_CAPTURE","HYBRID","EXTERNAL_STILL_REQUIRED","EXTERNAL_MOTION_REQUIRED"]
+}

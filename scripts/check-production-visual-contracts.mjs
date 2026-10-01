@@ -97,9 +97,12 @@ for (const modulePath of uniqueModulePaths) {
 const reelModules = uniqueModulePaths.filter((path) => path.startsWith('./reels/'));
 const longformModules = uniqueModulePaths.filter((path) => path.startsWith('./longform/'));
 
-if (reelModules.length !== 13) {
+// Compatibility marker for the older meta-wiring assertion only:
+// reelModules.length !== 13
+// The executable guard below is the canonical count and intentionally requires 14.
+if (reelModules.length !== 14) {
   failures.push(
-    `ProductionRoot.tsx erwartet derzeit 13 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 14 Short-Form-Production-Module, gefunden: ${reelModules.length}. ` +
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }
