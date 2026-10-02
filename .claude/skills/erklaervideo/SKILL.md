@@ -10,12 +10,12 @@ Zuerst `studio/CLAUDE.md` lesen – dort stehen Ablauf, Gestaltungsregeln und al
 ## Kurzablauf
 
 1. Briefing klären (Thema, Kernaussage, Format, Länge, Plattform).
-2. `npm run neu -- <slug> [format]` → `skript.md` füllen, Fakten mit Quelle + Datum.
+2. `npm run neu -- <slug> [format]` (Erklärvideo) oder `npm run neu -- <slug> --vorlage=werbung` (Werbeclip in 9:16/1:1/4:5) → `skript.md` füllen, Fakten mit Quelle + Datum.
 3. Szenen planen: pro Szene *Start → Veränderung → Ergebnis*, ein Blickfang, passende Bausteine.
 4. Szene bauen → `npm run look -- <ID> --range=a-b --count=6` → Bilder ansehen → verbessern. Wiederholen.
 5. Gesamtvideo: `npm run look -- <ID> --count=18`, Checkliste unten, optional Agent `video-kritiker`.
-6. Mit Voiceover: `npm run untertitel -- <slug>`, Szenen auf Wortzeiten legen, `VOICEOVER` setzen.
-7. `npm run render -- <ID>` → MP4 an Arman schicken (SendUserFile).
+6. Mit Voiceover (spricht Arman selbst): `npm run untertitel -- <slug>`, Szenen auf Wortzeiten legen, `VOICEOVER` setzen. Musik nur, wenn Arman eine Datei liefert (`MUSIK`).
+7. `npm run render -- <ID>` (bei Werbung jedes Format) → MP4 an Arman schicken (SendUserFile). Cover/Thumbnail: `npm run still`.
 
 ## Checkliste vor dem Abgeben (an den Bildern prüfen, nicht am Code)
 

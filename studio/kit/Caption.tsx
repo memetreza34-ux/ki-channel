@@ -1,19 +1,18 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {createTikTokStyleCaptions, type Caption as WordCaption} from '@remotion/captions';
+import {useLayout} from './layout';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT, SAFE} from './theme';
+import {COLORS, FONT} from './theme';
 
 export type {WordCaption};
 
 const useCaptionBox = () => {
-  const {width, height} = useVideoConfig();
-  const vertical = height > width;
-  const safe = vertical ? SAFE.vertical : width === height ? SAFE.square : SAFE.landscape;
+  const {safe, isTall} = useLayout();
   return {
     bottom: safe.captionBottom,
-    side: vertical ? 104 : safe.side,
-    fontSize: vertical ? 54 : 46,
+    side: isTall ? 104 : safe.side,
+    fontSize: isTall ? 54 : 46,
   };
 };
 

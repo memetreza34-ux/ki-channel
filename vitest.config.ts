@@ -9,6 +9,7 @@ export default defineConfig({
       'core/**/*.{test,spec}.{ts,tsx}',
       'ki/**/*.{test,spec}.{ts,tsx}',
       'scripts/**/*.{test,spec}.{ts,tsx}',
+      'studio/**/*.{test,spec}.{ts,tsx}',
     ],
     exclude: [
       '**/node_modules/**',

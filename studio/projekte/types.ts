@@ -7,7 +7,11 @@ export type Project = {
   // Remotion-Compositions akzeptieren beliebige Props-Typen.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: React.ComponentType<any>;
-  format: FormatName;
+  /**
+   * Ein Format oder mehrere. Bei mehreren heißt die erste Composition wie `id`,
+   * die weiteren `<id>-<format>` (z. B. "Werbung-Demo-square").
+   */
+  format: FormatName | FormatName[];
   durationInFrames: number;
   fps?: number;
 };

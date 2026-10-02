@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {useLayout} from './layout';
 import {EASE, progress} from './motion';
-import {SAFE} from './theme';
 
 type SafeAreaProps = {
   children: React.ReactNode;
@@ -14,8 +14,7 @@ type SafeAreaProps = {
 
 /** Bühne innerhalb der sicheren Zone des aktuellen Formats. */
 export const SafeArea: React.FC<SafeAreaProps> = ({children, justify = 'center', align = 'center', gap = 40, style}) => {
-  const {width, height} = useVideoConfig();
-  const safe = height > width ? SAFE.vertical : width === height ? SAFE.square : SAFE.landscape;
+  const {safe} = useLayout();
   return (
     <AbsoluteFill
       style={{
@@ -142,21 +141,55 @@ export const Cursor: React.FC<CursorProps> = ({path, clicks = [], size = 64}) =>
   );
 };
 
-const SFX_FILES = {
+/** Alle Sounds: Kenney.nl, CC0. Anhören: Composition `Sound-Katalog` in `npm run studio`. */
+export const SFX_FILES = {
+  // Klicks & Bedienung
   click: 'click-ui.ogg',
+  tap: 'tap.ogg',
   key: 'click-key.ogg',
   typing: 'keyboard-loop-texture.ogg',
+  hover: 'hover.ogg',
+  toggle: 'toggle.ogg',
+  // Erscheinen & Bewegung
   pop: 'pop-soft.ogg',
+  blip: 'blip.ogg',
   whoosh: 'whoosh-soft.ogg',
   whooshFast: 'whoosh-digital.ogg',
-  success: 'chime-success.ogg',
-  notify: 'chime-notification.ogg',
+  swipe: 'swipe.ogg',
+  swipeOut: 'swipe-out.ogg',
+  slideIn: 'slide-in.ogg',
+  swoosh: 'swoosh.ogg',
+  // Treffer & Gewicht
   impact: 'impact-soft.ogg',
-  riser: 'riser-tension.ogg',
-  glitch: 'glitch-blip.ogg',
+  thud: 'thud.ogg',
+  punch: 'punch.ogg',
+  punchHeavy: 'punch-heavy.ogg',
+  boom: 'boom.ogg',
+  tink: 'tink.ogg',
+  bell: 'bell.ogg',
+  // Ergebnis & Rückmeldung
+  success: 'chime-success.ogg',
+  successBig: 'success-big.ogg',
+  notify: 'chime-notification.ogg',
+  ding: 'ding.ogg',
+  chime: 'chime.ogg',
+  levelUp: 'level-up.ogg',
+  question: 'question.ogg',
   error: 'error-buzz.ogg',
-  think: 'ai-thinking-pulse.ogg',
+  wrong: 'wrong.ogg',
+  // Spannung & Technik
+  riser: 'riser-tension.ogg',
+  riseShort: 'rise-short.ogg',
+  fall: 'fall.ogg',
   reveal: 'reveal-swell.ogg',
+  glitch: 'glitch-blip.ogg',
+  think: 'ai-thinking-pulse.ogg',
+  computing: 'computing.ogg',
+  energy: 'energy.ogg',
+  // Kurze Jingles (Endkarte, Logo)
+  jingleSteel: 'jingle-steel.ogg',
+  jinglePizzi: 'jingle-pizzi.ogg',
+  jingleHit: 'jingle-hit.ogg',
 } as const;
 
 export type SfxName = keyof typeof SFX_FILES;

@@ -61,6 +61,8 @@ export const SAFE = {
 
 export const FONT = {
   sans: 'Inter, system-ui, sans-serif',
+  /** Schmale Plakatschrift für Werbe-Knaller, Sticker, große Zahlen. Nur Großbuchstaben wirken gut. */
+  display: '"Bebas Neue", Inter, sans-serif',
   mono: '"JetBrains Mono", ui-monospace, monospace',
 } as const;
 

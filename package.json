@@ -14,6 +14,7 @@
     "studio": "remotion studio studio/index.ts --public-dir=studio/public",
     "look": "node studio/scripts/look.mjs",
     "render": "node studio/scripts/render.mjs",
+    "still": "node studio/scripts/still.mjs",
     "neu": "node studio/scripts/neu.mjs",
     "untertitel": "node studio/scripts/untertitel.mjs",
     "studio:check": "tsc -p studio/tsconfig.json",

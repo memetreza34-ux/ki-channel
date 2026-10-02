@@ -6,6 +6,7 @@ const FACES: Array<[family: string, file: string, weight: string]> = [
   ['Inter', 'fonts/Inter-700.woff2', '700'],
   ['Inter', 'fonts/Inter-800.woff2', '800'],
   ['Inter', 'fonts/Inter-900.woff2', '900'],
+  ['Bebas Neue', 'fonts/BebasNeue-400.woff2', '400'],
   ['JetBrains Mono', 'fonts/JetBrainsMono-500.woff2', '500'],
   ['JetBrains Mono', 'fonts/JetBrainsMono-700.woff2', '700'],
 ];
