@@ -1,5 +1,10 @@
 # KI-Channel — Agent Operating Contract
 
+## Zwei Bereiche (ab 2026-10-02)
+
+- **`studio/`** — Standard für alle neuen Videos (Erklärvideos, Reels, YouTube, Werbung). Eigener, schlanker Vertrag: `studio/CLAUDE.md`. Die Regeln weiter unten (3-Phasen-Modell, V4-Prüfsystem, Reel-Ordnerstruktur) gelten dort **nicht**.
+- **`ki/`** — bestehende Reels und ihr Prüfsystem. Alles ab „Start here“ gilt für diesen Bereich.
+
 ## Start here
 
 Vor jeder Arbeit zuerst `REPO-STATE.md` lesen. Bei Dateien unter `ki/` danach `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.

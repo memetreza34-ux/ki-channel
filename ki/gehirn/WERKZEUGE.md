@@ -6,7 +6,16 @@ Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionss
 
 > Erst starke Idee wählen. Dann Story und Bedeutung entscheiden. Danach Fakten sichern. Danach Bildsprache wählen. Erst dann Technik und Motion. Nach Veröffentlichung aus echten Daten lernen.
 
-## Reel bauen — in dieser Reihenfolge
+## Neue Videos im Studio (seit 2026-10-02)
+
+Neue Produktionen laufen über `studio/` (Vertrag: `studio/CLAUDE.md`), nicht über die Tabelle unten.
+
+| Schritt | Werkzeug | Wofür genau |
+|---|---|---|
+| Video von Idee bis MP4 | `erklaervideo` | Projekt anlegen, Szenen bauen, per `npm run look` als Bilder prüfen, Untertitel, Render |
+| Sichtprüfung | `video-kritiker` (`.claude/agents/`) | unabhängige, strenge Prüfung des Kontaktbogens vor der Abgabe |
+
+## Reel bauen (Bereich `ki/`) — in dieser Reihenfolge
 
 | # | Schritt | Werkzeug | Wofür genau |
 |---|---|---|---|

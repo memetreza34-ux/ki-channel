@@ -1,0 +1,32 @@
+---
+name: erklaervideo
+description: Produziert ein Video im Studio dieses Repos – Erklärvideo, Reel/Short/TikTok, YouTube-Video oder Werbung – von der Idee bis zum MP4 mit Remotion. Verwenden, sobald Arman ein Video, Reel, Short, eine Animation, Werbung oder eine Szene haben will oder ein bestehendes Studio-Video verbessern möchte ("mach ein Video über …", "Reel zu …", "Werbung für …", "die Animation sieht schlecht aus", "Voiceover liegt drin").
+---
+
+# Erklärvideo produzieren
+
+Zuerst `studio/CLAUDE.md` lesen – dort stehen Ablauf, Gestaltungsregeln und alle Bausteine.
+
+## Kurzablauf
+
+1. Briefing klären (Thema, Kernaussage, Format, Länge, Plattform).
+2. `npm run neu -- <slug> [format]` → `skript.md` füllen, Fakten mit Quelle + Datum.
+3. Szenen planen: pro Szene *Start → Veränderung → Ergebnis*, ein Blickfang, passende Bausteine.
+4. Szene bauen → `npm run look -- <ID> --range=a-b --count=6` → Bilder ansehen → verbessern. Wiederholen.
+5. Gesamtvideo: `npm run look -- <ID> --count=18`, Checkliste unten, optional Agent `video-kritiker`.
+6. Mit Voiceover: `npm run untertitel -- <slug>`, Szenen auf Wortzeiten legen, `VOICEOVER` setzen.
+7. `npm run render -- <ID>` → MP4 an Arman schicken (SendUserFile).
+
+## Checkliste vor dem Abgeben (an den Bildern prüfen, nicht am Code)
+
+- [ ] Frame 0 zeigt den Hook.
+- [ ] Jede Szene: Was ändert sich sichtbar? Steht am Ende ein klares Ergebnis?
+- [ ] Nichts überlappt ungewollt, nichts ist abgeschnitten, nichts steht in den Randzonen.
+- [ ] Alles fürs Handy lesbar (Labels ≥ 40 px im Hochformat).
+- [ ] Keine großen leeren Flächen, aber auch kein Gedränge.
+- [ ] Kein Satz doppelt (Überschrift ≠ Untertitel ≠ Label).
+- [ ] Keine erfundenen Zahlen; Beispielwerte als „Beispiel“ markiert.
+- [ ] Gruppen erscheinen gestaffelt, Bewegungen haben Kurven, keine Deko-Bewegung.
+- [ ] Sound leise und nur an echten Ereignissen.
+
+Arman bekommt am Ende: Video, kurze Liste was gemacht wurde, offene Punkte.

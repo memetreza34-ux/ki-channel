@@ -11,6 +11,12 @@
     "ki"
   ],
   "scripts": {
+    "studio": "remotion studio studio/index.ts --public-dir=studio/public",
+    "look": "node studio/scripts/look.mjs",
+    "render": "node studio/scripts/render.mjs",
+    "neu": "node studio/scripts/neu.mjs",
+    "untertitel": "node studio/scripts/untertitel.mjs",
+    "studio:check": "tsc -p studio/tsconfig.json",
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
     "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run",
@@ -135,6 +141,7 @@
     "culori": "^4.0.2",
     "gsap": "3.15.0",
     "lottie-web": "^5.13.0",
+    "lucide": "^0.460.0",
     "lucide-react": "^0.460.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -143,6 +150,7 @@
     "rough-notation": "0.5.1",
     "roughjs": "4.6.6",
     "sharp": "^0.33.5",
+    "simple-icons": "^16.33.0",
     "three": "^0.171.0",
     "zod": "4.5.4"
   },
