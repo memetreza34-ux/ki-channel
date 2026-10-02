@@ -3,7 +3,7 @@ import {Check, X} from 'lucide';
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Icon} from './Icon';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT, SHADOW} from './theme';
+import {useTheme} from './themes';
 
 type ChecklistProps = {
   items: string[];
@@ -18,9 +18,10 @@ type ChecklistProps = {
 
 /** Liste, deren Punkte nacheinander abgehakt werden. */
 export const Checklist: React.FC<ChecklistProps> = ({items, delay = 0, step = 12, size = 50, tone = 'good', width = 860}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const strong = tone === 'good' ? COLORS.good : COLORS.bad;
+  const strong = tone === 'good' ? t.c.good : t.c.bad;
   return (
     <div style={{width, display: 'flex', flexDirection: 'column', gap: size * 0.55}}>
       {items.map((item, i) => {
@@ -40,19 +41,19 @@ export const Checklist: React.FC<ChecklistProps> = ({items, delay = 0, step = 12
                 justifyContent: 'center',
                 flexShrink: 0,
                 transform: `scale(${Math.max(0, s)})`,
-                boxShadow: SHADOW.soft,
+                boxShadow: t.shadow.soft,
               }}
             >
               <Icon icon={tone === 'good' ? Check : X} size={size * 0.85} color="#FFFFFF" strokeWidth={3.2} delay={at + 4} duration={12} />
             </div>
             <div
               style={{
-                fontFamily: FONT.sans,
+                fontFamily: t.font.body,
                 fontWeight: 700,
                 fontSize: size,
                 lineHeight: 1.2,
                 letterSpacing: '-0.02em',
-                color: COLORS.ink,
+                color: t.c.ink,
                 opacity: text,
                 transform: `translateX(${(1 - text) * -24}px)`,
               }}
@@ -78,6 +79,7 @@ type StepsProps = {
 
 /** Nummerierte Schritte, durch eine wachsende Linie verbunden. */
 export const Steps: React.FC<StepsProps> = ({steps, delay = 0, step = 16, active, size = 48, width = 860}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const dot = size * 1.5;
@@ -94,7 +96,7 @@ export const Steps: React.FC<StepsProps> = ({steps, delay = 0, step = 16, active
           width: 8,
           height: (rowHeight + rowGap) * (steps.length - 1) * line,
           borderRadius: 4,
-          background: COLORS.accent,
+          background: t.c.accent,
         }}
       />
       {steps.map((st, i) => {
@@ -110,10 +112,10 @@ export const Steps: React.FC<StepsProps> = ({steps, delay = 0, step = 16, active
                 width: dot,
                 height: dot,
                 borderRadius: '50%',
-                background: isActive ? COLORS.accentDeep : COLORS.surface,
-                border: `4px solid ${dim < 1 ? COLORS.accent : COLORS.accentDeep}`,
-                color: isActive ? '#FFFFFF' : dim < 1 ? COLORS.accent : COLORS.accentDeep,
-                fontFamily: FONT.sans,
+                background: isActive ? t.c.accentDeep : t.c.surface,
+                border: `4px solid ${dim < 1 ? t.c.accent : t.c.accentDeep}`,
+                color: isActive ? t.c.onAccent : dim < 1 ? t.c.accent : t.c.accentDeep,
+                fontFamily: t.font.body,
                 fontWeight: 900,
                 fontSize: size * 0.8,
                 display: 'flex',
@@ -121,15 +123,15 @@ export const Steps: React.FC<StepsProps> = ({steps, delay = 0, step = 16, active
                 justifyContent: 'center',
                 flexShrink: 0,
                 transform: `scale(${Math.max(0, s) * (isActive ? 1.08 : 1)})`,
-                boxShadow: SHADOW.soft,
+                boxShadow: t.shadow.soft,
               }}
             >
               {i + 1}
             </div>
             <div style={{opacity: text * dim, transform: `translateY(${(1 - text) * 16}px)`, paddingTop: dot * 0.12}}>
-              <div style={{fontFamily: FONT.sans, fontWeight: 800, fontSize: size, letterSpacing: '-0.025em', color: COLORS.ink}}>{st.title}</div>
+              <div style={{fontFamily: t.font.body, fontWeight: 800, fontSize: size, letterSpacing: '-0.025em', color: t.c.ink}}>{st.title}</div>
               {st.text ? (
-                <div style={{fontFamily: FONT.sans, fontWeight: 600, fontSize: size * 0.68, color: COLORS.inkSoft, marginTop: size * 0.15, lineHeight: 1.3}}>{st.text}</div>
+                <div style={{fontFamily: t.font.body, fontWeight: 600, fontSize: size * 0.68, color: t.c.inkSoft, marginTop: size * 0.15, lineHeight: 1.3}}>{st.text}</div>
               ) : null}
             </div>
           </div>
@@ -153,6 +155,7 @@ type BeforeAfterProps = {
 
 /** Vorher/Nachher: eine Trennlinie wischt vom alten zum neuen Zustand. */
 export const BeforeAfter: React.FC<BeforeAfterProps> = ({before, after, width, height, at = 20, duration = 30, labels = ['Vorher', 'Nachher'], radius = 36}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const p = progress(frame, at, duration, 'inOut');
   const x = width * (1 - p);
@@ -166,7 +169,7 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({before, after, width, h
         borderRadius: 999,
         background: tone,
         color: '#FFFFFF',
-        fontFamily: FONT.sans,
+        fontFamily: t.font.body,
         fontWeight: 800,
         fontSize: 30,
         opacity: visible,
@@ -176,11 +179,11 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({before, after, width, h
     </div>
   );
   return (
-    <div style={{position: 'relative', width, height, borderRadius: radius, overflow: 'hidden', boxShadow: SHADOW.lift, background: COLORS.surface}}>
+    <div style={{position: 'relative', width, height, borderRadius: radius, overflow: 'hidden', boxShadow: t.shadow.lift, background: t.c.surface}}>
       <div style={{position: 'absolute', inset: 0}}>{before}</div>
       <div style={{position: 'absolute', inset: 0, clipPath: `inset(0 0 0 ${x}px)`}}>{after}</div>
-      {label(labels[0], 'left', 1 - clamp01(p * 1.4), COLORS.bad)}
-      {label(labels[1], 'right', clamp01((p - 0.3) * 2), COLORS.good)}
+      {label(labels[0], 'left', 1 - clamp01(p * 1.4), t.c.bad)}
+      {label(labels[1], 'right', clamp01((p - 0.3) * 2), t.c.good)}
       {p > 0 && p < 1 ? (
         <div style={{position: 'absolute', top: 0, bottom: 0, left: x - 4, width: 8, background: '#FFFFFF', boxShadow: '0 0 24px rgba(40,24,80,0.35)'}}>
           <div
@@ -194,7 +197,7 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({before, after, width, h
               marginTop: -32,
               borderRadius: '50%',
               background: '#FFFFFF',
-              boxShadow: SHADOW.lift,
+              boxShadow: t.shadow.lift,
             }}
           />
         </div>
@@ -231,6 +234,7 @@ type ScreenFocusProps = {
  * gerade wichtige Stelle und dunkelt den Rest ab.
  */
 export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentWidth, contentHeight, keys, children, radius = 32}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const sorted = keys.length > 0 ? [...keys].sort((a, b) => a.at - b.at) : [{at: 0, x: 0, y: 0, w: contentWidth, h: contentHeight}];
   let a = sorted[0];
@@ -241,15 +245,15 @@ export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentW
       b = sorted[i + 1] ?? sorted[i];
     }
   }
-  const t = b === a ? 0 : progress(frame, b.at - Math.min(24, b.at - a.at), Math.min(24, b.at - a.at), 'inOut');
-  const r = {x: mix(a.x, b.x, t), y: mix(a.y, b.y, t), w: mix(a.w, b.w, t), h: mix(a.h, b.h, t)};
-  const hl = mix(a.highlight ? 1 : 0, b.highlight ? 1 : 0, t);
+  const k = b === a ? 0 : progress(frame, b.at - Math.min(24, b.at - a.at), Math.min(24, b.at - a.at), 'inOut');
+  const r = {x: mix(a.x, b.x, k), y: mix(a.y, b.y, k), w: mix(a.w, b.w, k), h: mix(a.h, b.h, k)};
+  const hl = mix(a.highlight ? 1 : 0, b.highlight ? 1 : 0, k);
   const pad = 1 + 0.25 * hl;
   const zoom = Math.min(width / (r.w * pad), height / (r.h * pad));
   const tx = width / 2 - (r.x + r.w / 2) * zoom;
   const ty = height / 2 - (r.y + r.h / 2) * zoom;
   return (
-    <div style={{position: 'relative', width, height, overflow: 'hidden', borderRadius: radius, background: COLORS.dark, boxShadow: SHADOW.lift}}>
+    <div style={{position: 'relative', width, height, overflow: 'hidden', borderRadius: radius, background: t.c.dark, boxShadow: t.shadow.lift}}>
       <div style={{position: 'absolute', left: 0, top: 0, width: contentWidth, height: contentHeight, transformOrigin: '0 0', transform: `translate(${tx}px, ${ty}px) scale(${zoom})`}}>
         {children}
         <div
@@ -260,7 +264,7 @@ export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentW
             width: r.w,
             height: r.h,
             borderRadius: 14 / zoom,
-            border: `${5 / zoom}px solid ${COLORS.accent}`,
+            border: `${5 / zoom}px solid ${t.c.accent}`,
             boxShadow: `0 0 0 ${4000 / zoom}px rgba(15,10,28,${0.5 * hl})`,
             opacity: interpolate(hl, [0, 0.2, 1], [0, 1, 1]),
           }}

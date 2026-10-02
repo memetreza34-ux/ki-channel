@@ -1,7 +1,7 @@
 import React from 'react';
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {clamp01, mix, pop} from './motion';
-import {COLORS, FONT, SHADOW} from './theme';
+import {useTheme} from './themes';
 
 const useEnter = (delay: number) => {
   const frame = useCurrentFrame();
@@ -25,7 +25,9 @@ type PhoneMockupProps = {
 };
 
 /** Smartphone im neutralen Look (kein echtes Markengerät). */
-export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, delay = 0, screen = COLORS.bg, title, style}) => {
+export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, delay = 0, screen: screenProp, title, style}) => {
+  const t = useTheme();
+  const screen = screenProp ?? t.c.bg;
   const enter = useEnter(delay);
   const height = width * 2.05;
   const bezel = width * 0.035;
@@ -36,9 +38,9 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, 
         width,
         height,
         borderRadius: radius,
-        background: COLORS.dark,
+        background: t.c.dark,
         padding: bezel,
-        boxShadow: `${SHADOW.lift}, inset 0 0 0 3px ${COLORS.darkLine}`,
+        boxShadow: `${t.shadow.lift}, inset 0 0 0 3px ${t.c.darkLine}`,
         ...enter,
         ...style,
       }}
@@ -64,7 +66,7 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, 
             height: width * 0.085,
             transform: 'translateX(-50%)',
             borderRadius: 999,
-            background: COLORS.dark,
+            background: t.c.dark,
             zIndex: 2,
           }}
         />
@@ -76,10 +78,10 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, 
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: `0 ${width * 0.09}px`,
-            fontFamily: FONT.sans,
+            fontFamily: t.font.body,
             fontSize: width * 0.042,
             fontWeight: 700,
-            color: COLORS.ink,
+            color: t.c.ink,
           }}
         >
           <span>9:41</span>
@@ -91,11 +93,11 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({children, width = 640, 
               flexShrink: 0,
               padding: `${width * 0.02}px 0 ${width * 0.035}px`,
               textAlign: 'center',
-              fontFamily: FONT.sans,
+              fontFamily: t.font.body,
               fontSize: width * 0.048,
               fontWeight: 800,
-              color: COLORS.ink,
-              borderBottom: `2px solid ${COLORS.line}`,
+              color: t.c.ink,
+              borderBottom: `2px solid ${t.c.line}`,
             }}
           >
             {title}
@@ -118,6 +120,7 @@ type BrowserMockupProps = {
 
 /** Neutrales Browserfenster mit Adresszeile. */
 export const BrowserMockup: React.FC<BrowserMockupProps> = ({children, width = 920, height = 640, url = 'beispiel.de', delay = 0, style}) => {
+  const t = useTheme();
   const enter = useEnter(delay);
   const bar = 72;
   return (
@@ -126,12 +129,12 @@ export const BrowserMockup: React.FC<BrowserMockupProps> = ({children, width = 9
         width,
         height,
         borderRadius: 32,
-        background: COLORS.surface,
-        boxShadow: SHADOW.lift,
+        background: t.c.surface,
+        boxShadow: t.shadow.lift,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        border: `2px solid ${COLORS.line}`,
+        border: `2px solid ${t.c.line}`,
         ...enter,
         ...style,
       }}
@@ -144,8 +147,8 @@ export const BrowserMockup: React.FC<BrowserMockupProps> = ({children, width = 9
           alignItems: 'center',
           gap: 14,
           padding: '0 26px',
-          background: '#F1EEF6',
-          borderBottom: `2px solid ${COLORS.line}`,
+          background: t.c.bg,
+          borderBottom: `2px solid ${t.c.line}`,
         }}
       >
         {['#FF6159', '#FFBD2E', '#28C941'].map((c) => (
@@ -157,14 +160,14 @@ export const BrowserMockup: React.FC<BrowserMockupProps> = ({children, width = 9
             marginLeft: 18,
             height: 42,
             borderRadius: 999,
-            background: COLORS.surface,
+            background: t.c.surface,
             display: 'flex',
             alignItems: 'center',
             padding: '0 22px',
-            fontFamily: FONT.sans,
+            fontFamily: t.font.body,
             fontSize: 24,
             fontWeight: 600,
-            color: COLORS.inkSoft,
+            color: t.c.inkSoft,
           }}
         >
           {url}
@@ -204,6 +207,7 @@ export const TerminalMockup: React.FC<TerminalMockupProps> = ({
   fontSize = 34,
   style,
 }) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const enter = useEnter(delay);
   const visible = lines.filter((l) => frame >= l.at);
@@ -214,8 +218,8 @@ export const TerminalMockup: React.FC<TerminalMockupProps> = ({
         width,
         height,
         borderRadius: 30,
-        background: COLORS.dark,
-        boxShadow: SHADOW.lift,
+        background: t.c.dark,
+        boxShadow: t.shadow.lift,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -231,8 +235,8 @@ export const TerminalMockup: React.FC<TerminalMockupProps> = ({
           alignItems: 'center',
           gap: 12,
           padding: '0 24px',
-          background: COLORS.darkSoft,
-          fontFamily: FONT.sans,
+          background: t.c.darkSoft,
+          fontFamily: t.font.body,
           fontSize: 22,
           fontWeight: 700,
           color: '#8D86A0',
@@ -246,7 +250,7 @@ export const TerminalMockup: React.FC<TerminalMockupProps> = ({
       <div
         style={{
           padding: '28px 34px',
-          fontFamily: FONT.mono,
+          fontFamily: t.font.mono,
           fontSize,
           fontWeight: 500,
           lineHeight: 1.55,
@@ -264,10 +268,10 @@ export const TerminalMockup: React.FC<TerminalMockupProps> = ({
           const isLast = line === last;
           return (
             <div key={i} style={{color: LINE_COLORS[kind], whiteSpace: 'pre-wrap'}}>
-              {kind === 'cmd' ? <span style={{color: COLORS.accent}}>$ </span> : null}
+              {kind === 'cmd' ? <span style={{color: t.c.accent}}>$ </span> : null}
               {line.text.slice(0, chars)}
               {isLast && kind === 'cmd' ? (
-                <span style={{opacity: Math.floor(frame / 15) % 2 === 0 || chars < line.text.length ? 1 : 0, color: COLORS.accent}}>▍</span>
+                <span style={{opacity: Math.floor(frame / 15) % 2 === 0 || chars < line.text.length ? 1 : 0, color: t.c.accent}}>▍</span>
               ) : null}
             </div>
           );

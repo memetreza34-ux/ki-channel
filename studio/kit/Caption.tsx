@@ -3,7 +3,7 @@ import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {createTikTokStyleCaptions, type Caption as WordCaption} from '@remotion/captions';
 import {useLayout} from './layout';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT} from './theme';
+import {useTheme, type Theme} from './themes';
 
 export type {WordCaption};
 
@@ -16,18 +16,19 @@ const useCaptionBox = () => {
   };
 };
 
-const boxStyle = (fontSize: number): React.CSSProperties => ({
-  fontFamily: FONT.sans,
+const boxStyle = (t: Theme, fontSize: number): React.CSSProperties => ({
+  fontFamily: t.font.body,
   fontSize,
   fontWeight: 800,
   lineHeight: 1.18,
   letterSpacing: '-0.015em',
-  color: COLORS.ink,
+  color: t.c.ink,
   textAlign: 'center',
-  background: 'rgba(255,255,255,0.94)',
-  borderRadius: 28,
+  background: t.c.surface,
+  borderRadius: 28 * t.radius,
   padding: '18px 30px 20px',
-  boxShadow: '0 10px 30px rgba(40,24,80,0.10)',
+  boxShadow: t.shadow.soft,
+  border: t.border ?? undefined,
 });
 
 type CaptionProps = {
@@ -39,6 +40,7 @@ type CaptionProps = {
 
 /** Untertitel als ganzer Satzblock (ohne Wort-Timing). */
 export const Caption: React.FC<CaptionProps> = ({text, delay = 0, duration}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const box = useCaptionBox();
   const enter = progress(frame, delay, 10, 'out');
@@ -51,7 +53,7 @@ export const Caption: React.FC<CaptionProps> = ({text, delay = 0, duration}) => 
           maxWidth: `calc(100% - ${box.side * 2}px)`,
           opacity: enter * (1 - exit),
           transform: `translateY(${(1 - enter) * 14}px)`,
-          ...boxStyle(box.fontSize),
+          ...boxStyle(t, box.fontSize),
         }}
       >
         {text}
@@ -69,7 +71,9 @@ type CaptionTrackProps = {
 };
 
 /** Wortgenaue Untertitel zum Voiceover: aktuelles Wort wird farbig. */
-export const CaptionTrack: React.FC<CaptionTrackProps> = ({captions, pageMs = 1100, highlightColor = COLORS.accentDeep}) => {
+export const CaptionTrack: React.FC<CaptionTrackProps> = ({captions, pageMs = 1100, highlightColor: highlightProp}) => {
+  const t = useTheme();
+  const highlightColor = highlightProp ?? t.c.accentDeep;
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const box = useCaptionBox();
@@ -92,7 +96,7 @@ export const CaptionTrack: React.FC<CaptionTrackProps> = ({captions, pageMs = 11
           whiteSpace: 'pre-wrap',
           opacity: clamp01(s * 2),
           transform: `scale(${mix(0.92, 1, s)})`,
-          ...boxStyle(box.fontSize),
+          ...boxStyle(t, box.fontSize),
         }}
       >
         {page.tokens.map((token) => {

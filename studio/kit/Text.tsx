@@ -1,15 +1,17 @@
 import React from 'react';
-import type {IconNode} from 'lucide';
+import {fitText} from '@remotion/layout-utils';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
-import {Icon, type Tone} from './Icon';
+import {Icon, toneColors, type IconRef, type Tone} from './Icon';
+import {useLayout} from './layout';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT} from './theme';
+import {useTheme} from './themes';
 
 const normalize = (word: string) => word.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 
 type HeadlineProps = {
   text: string;
   size?: number;
+  /** Ohne Angabe: Schriftstärke des Designs. */
   weight?: number;
   color?: string;
   /** Wörter, die farbig hervorgehoben werden (ohne Satzzeichen, Groß/klein egal). */
@@ -29,10 +31,10 @@ type HeadlineProps = {
 export const Headline: React.FC<HeadlineProps> = ({
   text,
   size = 96,
-  weight = 800,
-  color = COLORS.ink,
+  weight,
+  color,
   highlight = [],
-  highlightColor = COLORS.accentDeep,
+  highlightColor,
   marker = false,
   delay = 0,
   step = 3,
@@ -41,17 +43,35 @@ export const Headline: React.FC<HeadlineProps> = ({
   style,
 }) => {
   const frame = useCurrentFrame();
+  const t = useTheme();
+  const {width, safe} = useLayout();
   const wanted = new Set(highlight.map(normalize));
   const words = text.split(' ');
+  const hot = highlightColor ?? t.c.accentDeep;
+  // Lange deutsche Wörter ("Wahrscheinlichkeiten") dürfen nie aus dem Bild laufen:
+  // Schrift so weit verkleinern, dass das längste Wort in die verfügbare Breite passt.
+  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '');
+  const available = (maxWidth ?? width - safe.side * 2) * 0.98;
+  const fitted = fitText({
+    text: longest,
+    withinWidth: available,
+    fontFamily: t.font.heading,
+    fontWeight: weight ?? t.font.headingWeight,
+    letterSpacing: t.font.headingTracking,
+    textTransform: t.font.headingCase === 'uppercase' ? 'uppercase' : undefined,
+    validateFontIsLoaded: false,
+  }).fontSize;
+  const fontSize = Math.min(size, fitted);
   return (
     <div
       style={{
-        fontFamily: FONT.sans,
-        fontSize: size,
-        fontWeight: weight,
+        fontFamily: t.font.heading,
+        fontSize,
+        fontWeight: weight ?? t.font.headingWeight,
         lineHeight: 1.08,
-        letterSpacing: '-0.035em',
-        color,
+        letterSpacing: t.font.headingTracking,
+        textTransform: t.font.headingCase === 'uppercase' ? 'uppercase' : undefined,
+        color: color ?? t.c.ink,
         textAlign: align,
         maxWidth,
         ...style,
@@ -78,7 +98,7 @@ export const Headline: React.FC<HeadlineProps> = ({
                   display: 'inline-block',
                   position: 'relative',
                   transform: `translateY(${(1 - p) * 105}%)`,
-                  color: isHot ? highlightColor : undefined,
+                  color: isHot ? hot : undefined,
                 }}
               >
                 {isHot && marker ? (
@@ -90,8 +110,8 @@ export const Headline: React.FC<HeadlineProps> = ({
                       bottom: '0.06em',
                       height: '0.34em',
                       borderRadius: '0.08em',
-                      background: COLORS.accent,
-                      opacity: 0.42,
+                      background: t.c.accent,
+                      opacity: 0.45,
                       transform: `scaleX(${m})`,
                       transformOrigin: 'left center',
                       zIndex: -1,
@@ -121,27 +141,19 @@ type BodyTextProps = {
 };
 
 /** Ruhiger Fließtext: blendet als Block weich ein. */
-export const BodyText: React.FC<BodyTextProps> = ({
-  text,
-  size = 44,
-  color = COLORS.inkSoft,
-  delay = 0,
-  align = 'left',
-  maxWidth,
-  weight = 600,
-  style,
-}) => {
+export const BodyText: React.FC<BodyTextProps> = ({text, size = 44, color, delay = 0, align = 'left', maxWidth, weight = 600, style}) => {
   const frame = useCurrentFrame();
+  const t = useTheme();
   const p = progress(frame, delay, 16, 'soft');
   return (
     <div
       style={{
-        fontFamily: FONT.sans,
+        fontFamily: t.font.body,
         fontSize: size,
         fontWeight: weight,
         lineHeight: 1.3,
         letterSpacing: '-0.01em',
-        color,
+        color: color ?? t.c.inkSoft,
         textAlign: align,
         maxWidth,
         opacity: p,
@@ -154,20 +166,9 @@ export const BodyText: React.FC<BodyTextProps> = ({
   );
 };
 
-const PILL_TONES: Record<Tone, [string, string]> = {
-  accent: [COLORS.accentTint, COLORS.accentDeep],
-  good: [COLORS.goodTint, COLORS.good],
-  bad: [COLORS.badTint, COLORS.bad],
-  warn: [COLORS.warnTint, '#A8650F'],
-  info: [COLORS.infoTint, COLORS.info],
-  white: [COLORS.surface, COLORS.ink],
-  dark: [COLORS.darkSoft, '#FFFFFF'],
-  solid: [COLORS.accentDeep, '#FFFFFF'],
-};
-
 type PillProps = {
   children: React.ReactNode;
-  icon?: IconNode;
+  icon?: IconRef;
   tone?: Tone;
   delay?: number;
   size?: number;
@@ -178,8 +179,9 @@ type PillProps = {
 export const Pill: React.FC<PillProps> = ({children, icon, tone = 'accent', delay = 0, size = 34, style}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const t = useTheme();
   const s = pop(frame, fps, delay, 'snappy');
-  const [bg, fg] = PILL_TONES[tone];
+  const [bg, fg] = toneColors(t, tone);
   return (
     <div
       style={{
@@ -190,7 +192,8 @@ export const Pill: React.FC<PillProps> = ({children, icon, tone = 'accent', dela
         borderRadius: 999,
         background: bg,
         color: fg,
-        fontFamily: FONT.sans,
+        border: t.border ?? undefined,
+        fontFamily: t.font.body,
         fontSize: size,
         fontWeight: 800,
         letterSpacing: '-0.01em',
@@ -214,8 +217,9 @@ type MarkerProps = {
 };
 
 /** Leuchtmarker, der von links unter beliebigen Inhalt streicht. */
-export const Marker: React.FC<MarkerProps> = ({children, delay = 0, color = COLORS.accent, duration = 16}) => {
+export const Marker: React.FC<MarkerProps> = ({children, delay = 0, color, duration = 16}) => {
   const frame = useCurrentFrame();
+  const t = useTheme();
   const p = progress(frame, delay, duration, 'out');
   return (
     <span style={{position: 'relative', display: 'inline-block'}}>
@@ -227,7 +231,7 @@ export const Marker: React.FC<MarkerProps> = ({children, delay = 0, color = COLO
           bottom: '0.04em',
           height: '0.4em',
           borderRadius: '0.1em',
-          background: color,
+          background: color ?? t.c.accent,
           opacity: 0.45,
           transform: `scaleX(${p})`,
           transformOrigin: 'left center',

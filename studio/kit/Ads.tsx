@@ -4,7 +4,7 @@ import {makeStar} from '@remotion/shapes';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {useLayout} from './layout';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT, SHADOW} from './theme';
+import {useTheme} from './themes';
 
 export type PunchWord = {
   text: string;
@@ -32,6 +32,7 @@ type PunchTextProps = {
  * Mit `stack` bauen sich die Wörter zu einer Zeile pro Wort auf.
  */
 export const PunchText: React.FC<PunchTextProps> = ({words, size = 220, stack = false, font = 'display', align = 'center', maxWidth, style}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const {width, safe} = useLayout();
@@ -48,7 +49,7 @@ export const PunchText: React.FC<PunchTextProps> = ({words, size = 220, stack = 
         const fitted = fitText({
           text: w.text,
           withinWidth: limit - padX * 2,
-          fontFamily: isDisplay ? FONT.display : FONT.sans,
+          fontFamily: isDisplay ? t.font.display : t.font.body,
           fontWeight: isDisplay ? 400 : 900,
           letterSpacing: isDisplay ? '0.01em' : '-0.045em',
           textTransform: isDisplay ? 'uppercase' : undefined,
@@ -59,13 +60,13 @@ export const PunchText: React.FC<PunchTextProps> = ({words, size = 220, stack = 
           <div
             key={`${w.text}-${w.at}`}
             style={{
-              fontFamily: isDisplay ? FONT.display : FONT.sans,
+              fontFamily: isDisplay ? t.font.display : t.font.body,
               fontSize,
               fontWeight: isDisplay ? 400 : 900,
               lineHeight: isDisplay ? 0.92 : 1.02,
               letterSpacing: isDisplay ? '0.01em' : '-0.045em',
               textTransform: isDisplay ? 'uppercase' : undefined,
-              color: w.bg ? '#FFFFFF' : (w.color ?? COLORS.ink),
+              color: w.bg ? t.c.onAccent : (w.color ?? t.c.ink),
               background: w.bg,
               padding: w.bg ? `${fontSize * 0.04}px ${padX}px ${fontSize * 0.01}px` : undefined,
               borderRadius: w.bg ? fontSize * 0.08 : undefined,
@@ -101,13 +102,15 @@ export const Sticker: React.FC<StickerProps> = ({
   text,
   sub,
   size = 260,
-  color = COLORS.accentDeep,
+  color: colorProp,
   textColor = '#FFFFFF',
   delay = 0,
   rotate = -10,
   shape = 'burst',
   style,
 }) => {
+  const t = useTheme();
+  const color = colorProp ?? t.c.accentDeep;
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const s = pop(frame, fps, delay, 'bouncy');
@@ -145,8 +148,8 @@ export const Sticker: React.FC<StickerProps> = ({
           textAlign: 'center',
         }}
       >
-        <div style={{fontFamily: FONT.display, fontSize: size * (text.length > 6 ? 0.2 : 0.27), lineHeight: 0.9, textTransform: 'uppercase'}}>{text}</div>
-        {sub ? <div style={{fontFamily: FONT.sans, fontWeight: 800, fontSize: size * 0.075, marginTop: size * 0.03}}>{sub}</div> : null}
+        <div style={{fontFamily: t.font.display, fontSize: size * (text.length > 6 ? 0.2 : 0.27), lineHeight: 0.9, textTransform: 'uppercase'}}>{text}</div>
+        {sub ? <div style={{fontFamily: t.font.body, fontWeight: 800, fontSize: size * 0.075, marginTop: size * 0.03}}>{sub}</div> : null}
       </div>
     </div>
   );
@@ -169,6 +172,7 @@ type EndCardProps = {
 
 /** Abspann / Werbe-Endkarte mit pulsierendem Handlungsknopf. */
 export const EndCard: React.FC<EndCardProps> = ({title, name, handle, button = 'Folgen', logo, delay = 0, size = 1}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const logoIn = pop(frame, fps, delay, 'snappy');
@@ -185,18 +189,18 @@ export const EndCard: React.FC<EndCardProps> = ({title, name, handle, button = '
       {logo ? <div style={{transform: `scale(${Math.max(0, logoIn)})`, opacity: clamp01(logoIn * 2)}}>{logo}</div> : null}
       {name ? (
         <div style={{opacity: nameIn, transform: `translateY(${(1 - nameIn) * 20}px)`}}>
-          <div style={{fontFamily: FONT.sans, fontWeight: 900, fontSize: 64 * size, letterSpacing: '-0.03em', color: COLORS.ink}}>{name}</div>
-          {handle ? <div style={{fontFamily: FONT.sans, fontWeight: 700, fontSize: 38 * size, color: COLORS.inkSoft, marginTop: 6 * size}}>{handle}</div> : null}
+          <div style={{fontFamily: t.font.body, fontWeight: 900, fontSize: 64 * size, letterSpacing: '-0.03em', color: t.c.ink}}>{name}</div>
+          {handle ? <div style={{fontFamily: t.font.body, fontWeight: 700, fontSize: 38 * size, color: t.c.inkSoft, marginTop: 6 * size}}>{handle}</div> : null}
         </div>
       ) : null}
       <div
         style={{
-          fontFamily: FONT.sans,
+          fontFamily: t.font.body,
           fontWeight: 800,
           fontSize: 76 * size,
           lineHeight: 1.08,
           letterSpacing: '-0.035em',
-          color: COLORS.ink,
+          color: t.c.ink,
           maxWidth: 900 * size,
           opacity: titleIn,
           transform: `translateY(${(1 - titleIn) * 24}px)`,
@@ -211,7 +215,7 @@ export const EndCard: React.FC<EndCardProps> = ({title, name, handle, button = '
               position: 'absolute',
               inset: 0,
               borderRadius: 999,
-              border: `${6 * size}px solid ${COLORS.accent}`,
+              border: `${6 * size}px solid ${t.c.accent}`,
               transform: `scale(${1 + ring * 0.35})`,
               opacity: 1 - ring,
             }}
@@ -221,13 +225,14 @@ export const EndCard: React.FC<EndCardProps> = ({title, name, handle, button = '
           style={{
             padding: `${26 * size}px ${72 * size}px`,
             borderRadius: 999,
-            background: COLORS.accentDeep,
-            color: '#FFFFFF',
-            fontFamily: FONT.sans,
+            background: t.c.accentDeep,
+            color: t.c.onAccent,
+            border: t.border ?? undefined,
+            fontFamily: t.font.body,
             fontWeight: 900,
             fontSize: 48 * size,
             letterSpacing: '-0.02em',
-            boxShadow: SHADOW.lift,
+            boxShadow: t.shadow.lift,
           }}
         >
           {button}

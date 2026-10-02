@@ -28,9 +28,19 @@ Neue Sounds (unser Name ← Kenney-Paket/Datei):
 
 Die vollständigen sechs Pakete (mit `License.txt`) liegen lokal in `studio/assets-roh/kenney/` (nicht im Git) – zum Austauschen einzelner Sounds.
 
-Icons und Logos kommen nicht als Dateien, sondern aus npm-Paketen:
+| `fonts/SpaceGrotesk-*`, `ArchivoBlack-400`, `Fraunces-*`, `Caveat-*`, `Nunito-*` | npm `@fontsource/*` 5.x, Latin-Subset (Designs nacht/pop/papier/pastell) | SIL Open Font License 1.1 |
+| `lottie/emoji/*.json` (41) | Google Noto Emoji Animation, fonts.gstatic.com/s/e/notoemoji/latest/<code>/lottie.json, mit Armans Freigabe am 2026-10-02 geladen | **CC BY 4.0 – Namensnennung nötig:** „Animierte Emojis: Google Noto, CC BY 4.0“ in die Videobeschreibung |
+| `lottie/ui/*.json` (79) | npm `react-useanimations` 2.10 (`lib/<name>/<name>.json`) | MIT |
 
-- `lucide` – ISC-Lizenz
-- `simple-icons` – CC0 für die SVG-Daten; die Marken selbst gehören ihren Inhabern. Logos nur redaktionell verwenden (Produkt wird genannt/erklärt), nie verändert oder als eigenes Zeichen.
+Icons und Logos kommen nicht als Dateien, sondern aus npm-Paketen (werden beim Rendern nur bei Bedarf geladen):
+
+- `lucide` – ISC
+- `@iconify-json/ph` (Phosphor) – MIT
+- `@iconify-json/tabler` – MIT
+- `@iconify-json/fluent-emoji-flat` (Microsoft Fluent Emoji) – MIT
+- `@iconify-json/logos` (SVG Logos) – CC0 für die SVG-Daten
+- `simple-icons` – CC0 für die SVG-Daten
+
+Bei allen Firmenlogos gehören die Marken ihren Inhabern: nur redaktionell verwenden (Produkt wird genannt/erklärt), nie verändert oder als eigenes Zeichen.
 
 Projekt-Audio (`projekte/<slug>/voiceover.*`) bleibt lokal und wird nicht committet.

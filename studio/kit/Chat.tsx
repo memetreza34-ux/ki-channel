@@ -3,12 +3,14 @@ import {Sparkles} from 'lucide';
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Icon} from './Icon';
 import {clamp01, mix, pop} from './motion';
-import {COLORS, FONT, SHADOW} from './theme';
+import {useTheme} from './themes';
 
 type TypingDotsProps = {color?: string; size?: number};
 
 /** Drei hüpfende Punkte ("KI schreibt …"). */
-export const TypingDots: React.FC<TypingDotsProps> = ({color = COLORS.inkFaint, size = 18}) => {
+export const TypingDots: React.FC<TypingDotsProps> = ({color: colorProp, size = 18}) => {
+  const t = useTheme();
+  const color = colorProp ?? t.c.inkFaint;
   const frame = useCurrentFrame();
   return (
     <div style={{display: 'flex', gap: size * 0.6, alignItems: 'center', height: size * 2}}>
@@ -50,9 +52,11 @@ export const StreamText: React.FC<StreamTextProps> = ({
   start = 0,
   duration = 0,
   caret = true,
-  caretColor = COLORS.accentDeep,
+  caretColor: caretProp,
   reserve = false,
 }) => {
+  const t = useTheme();
+  const caretColor = caretProp ?? t.c.accentDeep;
   const frame = useCurrentFrame();
   const words = text.split(' ');
   // Gleichmäßiger Token-Takt: lineare Zeitachse ist hier semantisch korrekt.
@@ -113,6 +117,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
   size = 44,
   avatar = true,
 }) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const s = pop(frame, fps, delay, 'snappy');
@@ -128,11 +133,11 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
         borderRadius: size * 0.85,
         borderBottomRightRadius: isUser ? size * 0.22 : size * 0.85,
         borderBottomLeftRadius: isUser ? size * 0.85 : size * 0.22,
-        background: isUser ? COLORS.accentDeep : COLORS.surface,
-        color: isUser ? '#FFFFFF' : COLORS.ink,
-        border: isUser ? undefined : `2px solid ${COLORS.line}`,
-        boxShadow: SHADOW.soft,
-        fontFamily: FONT.sans,
+        background: isUser ? t.c.accentDeep : t.c.surface,
+        color: isUser ? t.c.onAccent : t.c.ink,
+        border: t.border ?? (isUser ? undefined : `2px solid ${t.c.line}`),
+        boxShadow: t.shadow.soft,
+        fontFamily: t.font.body,
         fontSize: size,
         fontWeight: 600,
         lineHeight: 1.32,
@@ -162,14 +167,14 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
             width: size * 1.6,
             height: size * 1.6,
             borderRadius: '50%',
-            background: COLORS.accentTint,
+            background: t.c.accentTint,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
           }}
         >
-          <Icon icon={Sparkles} size={size * 0.9} color={COLORS.accentDeep} animate="pop" delay={delay} />
+          <Icon icon={Sparkles} size={size * 0.9} color={t.c.accentDeep} animate="pop" delay={delay} />
         </div>
       ) : null}
       {bubble}

@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {evolvePath, getLength, getPointAtLength, getTangentAtLength} from '@remotion/paths';
 import {progress} from './motion';
-import {COLORS} from './theme';
+import {useTheme} from './themes';
 
 type Point = [x: number, y: number];
 
@@ -29,7 +29,7 @@ export const Arrow: React.FC<ArrowProps> = ({
   to,
   bend = 0.18,
   inset = 0,
-  color = COLORS.accentDeep,
+  color: colorProp,
   width = 8,
   delay = 0,
   duration = 22,
@@ -37,6 +37,8 @@ export const Arrow: React.FC<ArrowProps> = ({
   flow = false,
   dashed = false,
 }) => {
+  const t = useTheme();
+  const color = colorProp ?? t.c.accentDeep;
   const frame = useCurrentFrame();
   const {width: W, height: H} = useVideoConfig();
 

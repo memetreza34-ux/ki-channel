@@ -7,7 +7,11 @@ description: Produziert ein Video im Studio dieses Repos – Erklärvideo, Reel/
 
 Zuerst `studio/CLAUDE.md` lesen – dort stehen Ablauf, Gestaltungsregeln und alle Bausteine.
 
-## Kurzablauf
+## Erst prüfen: reicht der Ersteller?
+
+Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen (Titel, Aussage, Liste, Schritte, Vergleich, Zahl, Chat, Icons, Tokens, Ende) zuerst den Ersteller nehmen: JSON nach `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei> --nur-bilder` ansehen → verbessern → `npm run erstellen -- <datei>`. Design passend wählen (`editorial` ist Marke). Icons: `npm run icons -- <wort> --bild`.
+
+## Kurzablauf (eigenes Projekt)
 
 1. Briefing klären (Thema, Kernaussage, Format, Länge, Plattform).
 2. `npm run neu -- <slug> [format]` (Erklärvideo) oder `npm run neu -- <slug> --vorlage=werbung` (Werbeclip in 9:16/1:1/4:5) → `skript.md` füllen, Fakten mit Quelle + Datum.

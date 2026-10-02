@@ -1,6 +1,8 @@
 import type {Project} from './types';
 import {projekt as kitKatalog} from './kit-katalog/Video';
+import {projekt as designKatalog} from './kit-katalog/DesignKatalog';
 import {projekt as kitKatalogErklaeren} from './kit-katalog/ErklaerKatalog';
+import {emojiKatalog, uiKatalog} from './kit-katalog/LottieKatalog';
 import {projekt as soundKatalog} from './kit-katalog/SoundKatalog';
 import {projekt as soAntwortetKi} from './so-antwortet-ki/Video';
 import {projekt as werbungDemo} from './werbung-demo/Video';
@@ -8,7 +10,10 @@ import {projekt as werbungDemo} from './werbung-demo/Video';
 
 export const PROJEKTE: Project[] = [
   kitKatalog,
+  designKatalog,
   kitKatalogErklaeren,
+  emojiKatalog,
+  uiKatalog,
   soundKatalog,
   soAntwortetKi,
   werbungDemo,

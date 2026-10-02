@@ -5,7 +5,14 @@ Hier entstehen alle neuen Videos: Erklärvideos, Reels/Shorts/TikToks, YouTube-V
 
 Mit Arman auf Deutsch, kurz und klar.
 
-## Ablauf
+## Zwei Wege
+
+- **Ersteller (schnell):** Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen. Eine JSON-Datei nach dem Muster in `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei.json> --nur-bilder` ansehen → `npm run erstellen -- <datei.json>` rendert alle Formate aus `"formate"`. Arman kann dasselbe in `npm run studio` über das Formular der Compositions `Spot` / `Erklaerer` (Ordner „Ersteller“) machen. Szenentypen: `titel aussage liste schritte vergleich zahl chat icons tokens ende` (Felder: `studio/ersteller/schema.ts`).
+- **Eigenes Projekt (frei):** Wenn die Standard-Szenen nicht reichen (eigene Mechanik, Kamerafahrten, Mockups, Screenshots) → Ablauf unten.
+
+Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in einem eigenen Projekt bauen.
+
+## Ablauf (eigenes Projekt)
 
 1. **Briefing klären:** Thema, Kernaussage in einem Satz, Format, Länge, Plattform. Fehlt etwas Wichtiges → fragen, sonst sinnvoll annehmen und sagen.
 2. **Projekt anlegen:** `npm run neu -- <slug> [vertical|landscape|square|portrait]` für Erklärvideos, `npm run neu -- <slug> --vorlage=werbung` für Werbeclips (gleich in 9:16, 1:1 und 4:5). Dann `skript.md` füllen (Hook, Sprechertext, Szenen, Fakten mit Quelle).
@@ -28,17 +35,34 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 - **Kontinuität vor Effekt:** dasselbe Objekt über Szenen weiterführen (z. B. Kamera zoomt ins Handy → nächste Szene startet im Zoom). Sonst harter Schnitt.
 - **Text-Rollen:** Überschrift (3–7 Wörter) ordnet ein · Untertitel = gesprochener Text · Labels kurz · nie denselben Satz zweimal im Bild.
 - **Ton:** Soundeffekte leise (0,3–0,5) und nur an echten Ereignissen (Klick, Ankunft, Ergebnis).
-- **Look:** hell, dunkle Schrift, Lila-Akzent (`COLORS`), faceless.
+- **Look:** Markenstandard ist das Design `editorial` (hell, dunkle Schrift, Lila). Andere Designs, wenn Arman sie will oder das Format es verlangt (z. B. `pop` für laute Werbung). Faceless.
+
+## Designs
+
+`<ThemeProvider theme="…">` um das Video (der Ersteller hat dafür das Feld `design`). Alle Bausteine übernehmen Farben, Schriften, Rundungen, Schatten und Hintergrund.
+
+| Design | Look | Gut für |
+|---|---|---|
+| `editorial` | hell, Lila, Inter | Markenstandard, Erklärvideos |
+| `nacht` | dunkel, Neon-Lila/Cyan, Space Grotesk, Raster | Tech, Tools, News |
+| `pop` | Creme/Gelb/Rot, Archivo Black, schwarze Ränder, harte Schatten | laute Werbung, Hooks |
+| `pastell` | rosa/mint, Nunito, sehr rund | freundlich, Einsteiger |
+| `minimal` | weiß, schwarz, rot, eckig | seriös, Zahlen, Fakten |
+| `papier` | Notizbuch, Fraunces + Caveat, Linien | Lernen, Schritt-für-Schritt |
+
+Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, nicht `COLORS` (das ist nur `editorial`).
+
 
 ## Kit (`studio/kit`, Import aus `'../../kit'`)
 
 | Baustein | Wofür |
 |---|---|
-| `Background` | Bühne: Grundfarbe, treibende Farbwolken, Punktraster (`light`/`dark`/`accent`) |
+| `Background` | Bühne im Stil des Designs (`variant="accent"` für Endkarten) |
 | `SafeArea` | Inhalt automatisch in die sichere Zone des Formats setzen |
 | `Headline`, `BodyText`, `Pill`, `Marker` | Überschrift Wort für Wort mit Highlight/Marker, Fließtext, Kapitel-Label, Leuchtmarker |
 | `Caption` / `CaptionTrack` | Untertitel als Satz / wortgenau zum Voiceover (`untertitel.json`) |
-| `Icon`, `IconBadge`, `BrandLogo` | Icons zeichnen sich, Icon auf Kachel, Firmenlogos |
+| `Icon`, `IconBadge`, `BrandLogo` | Icons zeichnen sich / poppen / öffnen sich (`animate`), danach Dauerbewegung (`loop`: float, pulse, wiggle, spin, bounce); Icon auf Kachel; Firmenlogos |
+| `Lottie` | animierte Emojis (`emoji/rakete`) und UI-Icons (`ui/checkmark`, einfärbbar mit `color="accent"`) |
 | `Arrow` | gezeichneter Pfeil zwischen zwei Punkten, optional Datenfluss (`flow`) |
 | `ChatBubble`, `StreamText`, `TypingDots` | KI-Chat: Tipp-Punkte, Antwort Wort für Wort |
 | `PhoneMockup`, `BrowserMockup`, `TerminalMockup` | Geräte/Fenster (neutral, kein echtes Markengerät) |
@@ -57,14 +81,15 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 | `useLayout` | Maße/sichere Zone des aktuellen Formats; `u` skaliert Größen für andere Formate mit |
 | `progress`, `pop`, `visible`, `stagger`, `mix` | Zeitachsen-Helfer (`kit/motion.ts`) |
 
-- **Icons:** `import {Brain} from 'lucide'` (≈1.500 Stück, Namen auf lucide.dev/icons) → `<Icon icon={Brain} />` / `<IconBadge icon={Brain} />`. Achtung: Namen wie `Phone`, `Terminal`, `Camera` gibt es auch als Icon – die Mockups heißen deshalb `PhoneMockup` usw.
-- **Logos:** `import {siClaude, siGooglegemini} from 'simple-icons'` → `<BrandLogo logo={siClaude} tile />`. OpenAI/ChatGPT und Microsoft sind dort **nicht** enthalten → Namen als Text oder `Pill`, Logo nie nachzeichnen.
-- **Schriften:** `FONT.sans` (Inter) für alles, `FONT.display` (Bebas Neue, nur Großbuchstaben) für Werbe-Knaller/Sticker, `FONT.mono` (JetBrains Mono) für Code.
+- **Icons (≈ 22.000):** als Name `"set:name"` → `<Icon icon="ph:robot-duotone" />`. Sammlungen: `lucide` (1.700, Linien), `ph` Phosphor (9.000, Stile `-thin -light -bold -fill -duotone`), `tabler` (6.200, Linien, zeichnen sich), `logos` (2.200 farbige Firmenlogos inkl. `logos:openai-icon`, `logos:microsoft-icon`, `logos:claude-icon`, `logos:google-gemini`), `fluent-emoji-flat` (3.200 bunte Emoji-Illustrationen). Suchen: `npm run icons -- <englisches wort> --bild` (Bild unter `studio/out/icon-suche/`). Lucide geht auch als Import (`import {Brain} from 'lucide'`).
+- **Lottie:** `npm run icons -- --lottie` listet alle; ansehen in `Lottie-Katalog-Emoji` / `Lottie-Katalog-UI`. **Pflicht bei `emoji/…`:** In die Plattform-Beschreibung „Animierte Emojis: Google Noto, CC BY 4.0“ schreiben.
+- **Logos:** Firmenlogos nur redaktionell (das Produkt wird genannt/erklärt), nie verändern oder nachzeichnen. `simple-icons` (`<BrandLogo logo={siClaude} tile />`) oder `logos:`-Icons.
+- **Schriften:** kommen aus dem Design (`useTheme().font.body / heading / display / mono`). Überschriften (`Headline`) und Knaller (`PunchText`) verkleinern sich automatisch, wenn ein langes Wort sonst aus dem Bild liefe.
 - **Sounds nach Zweck:** Klick/Bedienung `click tap key typing hover toggle` · Erscheinen `pop blip whoosh whooshFast swipe swipeOut slideIn swoosh` · Gewicht `impact thud punch punchHeavy boom tink bell` · Ergebnis `success successBig notify ding chime levelUp question error wrong` · Spannung/Technik `riser riseShort fall reveal glitch think computing energy` · Jingles `jingleSteel jinglePizzi jingleHit`. Arman hat sie noch nicht alle gehört – unpassende Sounds aus `studio/assets-roh/kenney/` (lokal, alle 6 Kenney-Pakete) ersetzen.
 - **Mehrere Formate:** `format: ['vertical', 'square', 'portrait']` im Projekt. Dann Layout mit `SafeArea` und `useLayout().u` bauen statt mit festen Pixelpositionen.
 - **Weitere Remotion-Pakete** sind installiert: `@remotion/transitions`, `paths`, `shapes`, `noise`, `layout-utils` (Text einpassen), `motion-blur`, `three`, `lottie`, `captions`.
 - **Neuer Baustein:** erst im Projekt bauen. Wird er ein zweites Mal gebraucht → ins Kit verschieben und im `Kit-Katalog` zeigen (`npm run look -- Kit-Katalog`).
-- Referenzen (so soll es mindestens aussehen): `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `So-Antwortet-KI` (Erklärvideo), `Werbung-Demo` (Werbeclip in 3 Formaten).
+- Referenzen (so soll es mindestens aussehen): `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `So-Antwortet-KI` (Erklärvideo), `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
 
 ## Werbeclips
 
@@ -75,7 +100,7 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 ## Wahrheit & Medien
 
 - Keine erfundenen Zahlen oder Fakten. Beispielwerte sichtbar als „Beispiel“ kennzeichnen.
-- Keine KI-generierten Bilder, Videos oder Stimmen ohne Armans ausdrückliche Freigabe für genau dieses Video. Erlaubt ohne Rückfrage: Code-Grafik (React/SVG), lucide, simple-icons, die Kenney-CC0-Sounds in `public/sfx`, Dateien von Arman.
+- Keine KI-generierten Bilder, Videos oder Stimmen ohne Armans ausdrückliche Freigabe für genau dieses Video. Erlaubt ohne Rückfrage: Code-Grafik (React/SVG), alle Icon-Sammlungen oben, die Lottie-Dateien in `public/lottie` (bei `emoji/` mit Namensnennung), die Kenney-CC0-Sounds in `public/sfx`, Dateien von Arman. Neue Downloads nur nach Rückfrage (Datei, Quelle, Größe, Lizenz).
 - Nachgebaute App-Oberflächen sind Illustration – nie als echten Screenshot ausgeben.
 - Nur melden, was wirklich passiert ist: gebaut ≠ gerendert ≠ angesehen ≠ freigegeben.
 
@@ -83,6 +108,7 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 
 - Composition-ID = Projektname in `projekte/<slug>/Video.tsx` (`projekt.id`), registriert in `projekte/index.ts`.
 - Deterministisch rendern: kein `Math.random()`, keine Netzwerkaufrufe im Video, Assets nur über `staticFile()` aus `studio/public`.
-- `npm run studio` startet Remotion Studio zum Durchklicken. `npm run studio:check` = Typecheck.
+- `npm run studio` startet Remotion Studio zum Durchklicken. `npm run studio:check` = Typecheck. `npx vitest run studio` = Tests (Musik, Szenen, Formate, Ersteller-Beispiele).
+- `look`, `render`, `still` nehmen auch `--props=<datei.json>` und `--format=<format>` (für `Spot`/`Erklaerer`).
 - Renders (`studio/out`), Audio und `whisper.cpp/` bleiben lokal (gitignored).
 - Git: Arbeitsbranch, kein Push/Merge nach `main` ohne Armans OK.

@@ -1,10 +1,12 @@
 import './fonts';
 
 export * from './theme';
+export {ThemeProvider, useTheme, useRadius, THEMES, THEME_NAMES, type Theme, type ThemeName} from './themes';
 export * from './motion';
 export {useLayout, formatOf} from './layout';
 export {Background} from './Background';
-export {Icon, IconBadge, BrandLogo, type IconNode, type SimpleIcon, type Tone} from './Icon';
+export {Icon, IconBadge, BrandLogo, ICON_SETS, isColorIcon, toneColors, type IconNode, type IconRef, type IconLoop, type SimpleIcon, type Tone} from './Icon';
+export {Lottie} from './Lottie';
 export {Headline, BodyText, Pill, Marker} from './Text';
 export {Caption, CaptionTrack, type WordCaption} from './Caption';
 export {Counter, BarList, TokenChips} from './Data';

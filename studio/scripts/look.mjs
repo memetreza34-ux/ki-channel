@@ -6,6 +6,7 @@
  *   npm run look -- So-Antwortet-KI                  12 Bilder über das ganze Video
  *   npm run look -- So-Antwortet-KI --count=8 --range=220-340   nur eine Szene
  *   npm run look -- So-Antwortet-KI --frames=0,45,90 einzelne Frames
+ *   npm run look -- Spot --props=studio/ersteller/beispiele/spot-kanal-pop.json --format=square
  *
  * Ergebnis: studio/out/<ID>/look/sheet.jpg (+ Einzelbilder daneben)
  */
@@ -13,7 +14,7 @@ import {renderStill, selectComposition} from '@remotion/renderer';
 import {execFileSync} from 'node:child_process';
 import {mkdirSync, rmSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {bundleStudio, OUT, parseArgs, parseRange} from './lib.mjs';
+import {bundleStudio, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const id = rest[0];
@@ -23,7 +24,8 @@ if (!id) {
 }
 
 const serveUrl = await bundleStudio();
-const composition = await selectComposition({serveUrl, id});
+const inputProps = loadInputProps(flags);
+const composition = await selectComposition({serveUrl, id, inputProps});
 const total = composition.durationInFrames;
 const [from, to] = parseRange(flags.range, total);
 const count = Number(flags.count ?? 12);
@@ -31,7 +33,8 @@ const frames = flags.frames
   ? String(flags.frames).split(',').map(Number)
   : Array.from({length: count}, (_, i) => Math.round(from + ((to - from) * (i + 0.5)) / count));
 
-const dir = resolve(OUT, id, 'look');
+const folder = flags.props ? `${id}_${String(flags.props).split('/').pop().replace('.json', '')}${flags.format ? `-${flags.format}` : ''}` : id;
+const dir = resolve(OUT, folder, 'look');
 rmSync(dir, {recursive: true, force: true});
 mkdirSync(dir, {recursive: true});
 
@@ -40,7 +43,7 @@ const labelled = [];
 for (const frame of frames) {
   const raw = resolve(dir, `raw-${String(frame).padStart(5, '0')}.jpg`);
   const out = resolve(dir, `frame-${String(frame).padStart(5, '0')}.jpg`);
-  await renderStill({serveUrl, composition, frame, output: raw, imageFormat: 'jpeg', jpegQuality: 88, scale});
+  await renderStill({serveUrl, composition, inputProps, frame, output: raw, imageFormat: 'jpeg', jpegQuality: 88, scale});
   const label = `${frame}  ·  ${(frame / composition.fps).toFixed(1)}s`;
   execFileSync('ffmpeg', [
     '-loglevel', 'error', '-y', '-i', raw,

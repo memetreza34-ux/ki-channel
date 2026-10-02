@@ -1,7 +1,7 @@
 import React from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {clamp01, mix, pop, progress} from './motion';
-import {COLORS, FONT, PASTEL_INK, PASTELS, RADIUS, SHADOW} from './theme';
+import {useTheme} from './themes';
 
 type CounterProps = {
   to: number;
@@ -27,10 +27,12 @@ export const Counter: React.FC<CounterProps> = ({
   prefix = '',
   suffix = '',
   size = 160,
-  color = COLORS.ink,
+  color: colorProp,
   weight = 900,
   style,
 }) => {
+  const t = useTheme();
+  const color = colorProp ?? t.c.ink;
   const frame = useCurrentFrame();
   const value = mix(from, to, progress(frame, delay, duration, 'out'));
   const text = value.toLocaleString('de-DE', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
@@ -41,7 +43,7 @@ export const Counter: React.FC<CounterProps> = ({
         display: 'inline-block',
         opacity: appear,
         transform: `translateY(${(1 - appear) * 20}px)`,
-        fontFamily: FONT.sans,
+        fontFamily: t.font.body,
         fontSize: size,
         fontWeight: weight,
         letterSpacing: '-0.04em',
@@ -87,6 +89,7 @@ export const BarList: React.FC<BarListProps> = ({
   labelWidth = 220,
   rowHeight = 92,
 }) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const top = max ?? Math.max(...items.map((i) => i.value));
@@ -100,7 +103,7 @@ export const BarList: React.FC<BarListProps> = ({
         const appear = progress(frame, delay + i * step, 10, 'soft');
         const isWinner = highlight?.index === i;
         const dim = highlight && !isWinner ? mix(1, 0.38, clamp01(h)) : 1;
-        const fill = isWinner ? COLORS.accentDeep : COLORS.accent;
+        const fill = isWinner ? t.c.accentDeep : t.c.accent;
         return (
           <div
             key={item.label}
@@ -117,10 +120,10 @@ export const BarList: React.FC<BarListProps> = ({
             <div
               style={{
                 width: labelWidth,
-                fontFamily: FONT.sans,
+                fontFamily: t.font.body,
                 fontSize: rowHeight * 0.46,
                 fontWeight: 800,
-                color: COLORS.ink,
+                color: t.c.ink,
                 letterSpacing: '-0.02em',
                 textAlign: 'right',
               }}
@@ -132,9 +135,9 @@ export const BarList: React.FC<BarListProps> = ({
                 width: trackWidth,
                 height: rowHeight * 0.62,
                 borderRadius: 999,
-                background: COLORS.line,
+                background: t.c.line,
                 overflow: 'hidden',
-                boxShadow: isWinner && h > 0 ? `0 0 0 ${6 * clamp01(h)}px ${COLORS.accent}55` : undefined,
+                boxShadow: isWinner && h > 0 ? `0 0 0 ${6 * clamp01(h)}px ${t.c.accent}55` : undefined,
               }}
             >
               <div
@@ -150,10 +153,10 @@ export const BarList: React.FC<BarListProps> = ({
               <div
                 style={{
                   width: 150,
-                  fontFamily: FONT.sans,
+                  fontFamily: t.font.body,
                   fontSize: rowHeight * 0.42,
                   fontWeight: 800,
-                  color: isWinner ? COLORS.accentDeep : COLORS.inkSoft,
+                  color: isWinner ? t.c.accentDeep : t.c.inkSoft,
                   fontVariantNumeric: 'tabular-nums',
                 }}
               >
@@ -177,26 +180,27 @@ type TokenChipsProps = {
 
 /** Text, zerlegt in farbige Token-Bausteine, die nacheinander einrasten. */
 export const TokenChips: React.FC<TokenChipsProps> = ({tokens, delay = 0, step = 5, size = 64, maxWidth = 900}) => {
+  const t = useTheme();
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   return (
     <div style={{display: 'flex', flexWrap: 'wrap', gap: size * 0.28, maxWidth, justifyContent: 'center'}}>
       {tokens.map((token, i) => {
         const s = pop(frame, fps, delay + i * step, 'snappy');
-        const c = i % PASTELS.length;
+        const c = i % t.pastels.length;
         return (
           <div
             key={i}
             style={{
               padding: `${size * 0.22}px ${size * 0.36}px`,
-              borderRadius: RADIUS.md,
-              background: PASTELS[c],
-              border: `3px solid ${PASTEL_INK[c]}33`,
-              boxShadow: SHADOW.soft,
-              fontFamily: FONT.mono,
+              borderRadius: 24 * t.radius,
+              background: t.pastels[c],
+              border: `3px solid ${t.pastelInk[c]}33`,
+              boxShadow: t.shadow.soft,
+              fontFamily: t.font.mono,
               fontSize: size,
               fontWeight: 700,
-              color: PASTEL_INK[c],
+              color: t.pastelInk[c],
               letterSpacing: '-0.02em',
               transform: `translateY(${(1 - s) * 40}px) scale(${mix(0.6, 1, s)})`,
               opacity: clamp01(s * 2),

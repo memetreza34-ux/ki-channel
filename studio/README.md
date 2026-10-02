@@ -7,6 +7,18 @@ Sag Claude einfach, was du willst, z. B.:
 
 Claude baut das Video, schaut sich die Bilder selbst an, verbessert sie und schickt dir das Ergebnis.
 
+## Selbst erstellen (ohne Code)
+
+1. `npm run studio` starten – öffnet sich im Browser.
+2. Links im Ordner **Ersteller** auf **Spot** (8-Sekunden-Werbespot) oder **Erklaerer** (Erklärvideo aus Szenen) klicken.
+3. Rechts im Formular Texte, **Design** (editorial, nacht, pop, pastell, minimal, papier), **Format** und Icons eintragen – die Vorschau ändert sich sofort.
+4. **Save** speichert, **Render** macht das Video.
+
+Ideen holen: Ordner **Beispiele** (fertige Spots/Erklärvideos in verschiedenen Designs) und **Design-Katalog** (alle Designs nebeneinander).
+Icons finden: `npm run icons -- rocket --bild` (englische Wörter), Lottie-Animationen: **Lottie-Katalog-Emoji** / **Lottie-Katalog-UI**.
+
+⚠️ Wenn du animierte Emojis (`emoji/…`) nutzt, muss in die Videobeschreibung: **„Animierte Emojis: Google Noto, CC BY 4.0“**.
+
 ## Was du selbst machst
 
 1. **Voiceover aufnehmen** und speichern als
@@ -39,6 +51,11 @@ Legt ein neues Erklärvideo an (Hochformat). Mit `landscape` am Ende für YouTub
 npm run neu -- meine-werbung --vorlage=werbung
 ```
 Legt einen Werbeclip an – gleich in 9:16, 1:1 und 4:5.
+
+```bash
+npm run erstellen -- studio/ersteller/beispiele/spot-kanal-pop.json
+```
+Macht aus einer Beschreibungsdatei fertige Videos in allen darin genannten Formaten.
 
 ```bash
 npm run still -- So-Antwortet-KI --frame=90
