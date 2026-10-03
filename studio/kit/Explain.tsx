@@ -1,6 +1,6 @@
 import React from 'react';
 import {Check, X} from 'lucide';
-import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Img, interpolate, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Icon} from './Icon';
 import {clamp01, mix, pop, progress} from './motion';
 import {useTheme} from './themes';
@@ -225,7 +225,10 @@ type ScreenFocusProps = {
   contentWidth: number;
   contentHeight: number;
   keys: FocusKey[];
-  children: React.ReactNode;
+  /** Inhalt (Mockup o. Ä.) – oder stattdessen `src`. */
+  children?: React.ReactNode;
+  /** Screenshot oder Bildschirmaufnahme in studio/public (z. B. "projekte/x/aufnahme.mp4"). */
+  src?: string;
   radius?: number;
 };
 
@@ -233,7 +236,7 @@ type ScreenFocusProps = {
  * Zoomt in einen Screenshot, eine Bildschirmaufnahme oder ein Mockup auf die
  * gerade wichtige Stelle und dunkelt den Rest ab.
  */
-export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentWidth, contentHeight, keys, children, radius = 32}) => {
+export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentWidth, contentHeight, keys, children, src, radius = 32}) => {
   const t = useTheme();
   const frame = useCurrentFrame();
   const sorted = keys.length > 0 ? [...keys].sort((a, b) => a.at - b.at) : [{at: 0, x: 0, y: 0, w: contentWidth, h: contentHeight}];
@@ -255,7 +258,15 @@ export const ScreenFocus: React.FC<ScreenFocusProps> = ({width, height, contentW
   return (
     <div style={{position: 'relative', width, height, overflow: 'hidden', borderRadius: radius, background: t.c.dark, boxShadow: t.shadow.lift}}>
       <div style={{position: 'absolute', left: 0, top: 0, width: contentWidth, height: contentHeight, transformOrigin: '0 0', transform: `translate(${tx}px, ${ty}px) scale(${zoom})`}}>
-        {children}
+        {src ? (
+          /\.(mp4|mov|webm|m4v)$/i.test(src) ? (
+            <OffthreadVideo src={staticFile(src)} muted style={{width: contentWidth, height: contentHeight}} />
+          ) : (
+            <Img src={staticFile(src)} style={{width: contentWidth, height: contentHeight}} />
+          )
+        ) : (
+          children
+        )}
         <div
           style={{
             position: 'absolute',

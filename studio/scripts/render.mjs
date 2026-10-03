@@ -8,7 +8,7 @@
 import {renderMedia, selectComposition} from '@remotion/renderer';
 import {mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {bundleStudio, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
+import {bundleStudio, CHROMIUM, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const id = rest[0];
@@ -19,7 +19,7 @@ if (!id) {
 
 const serveUrl = await bundleStudio();
 const inputProps = loadInputProps(flags);
-const composition = await selectComposition({serveUrl, id, inputProps});
+const composition = await selectComposition({serveUrl, id, inputProps, chromiumOptions: CHROMIUM});
 const frameRange = flags.range ? parseRange(flags.range, composition.durationInFrames) : null;
 mkdirSync(OUT, {recursive: true});
 const outputLocation = resolve(OUT, frameRange ? `${id}_${frameRange[0]}-${frameRange[1]}.mp4` : `${id}.mp4`);
@@ -28,6 +28,7 @@ let last = -1;
 await renderMedia({
   serveUrl,
   composition,
+  chromiumOptions: CHROMIUM,
   inputProps,
   codec: 'h264',
   crf: 18,

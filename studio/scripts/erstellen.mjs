@@ -14,7 +14,7 @@ import {renderMedia, renderStill, selectComposition} from '@remotion/renderer';
 import {execFileSync} from 'node:child_process';
 import {mkdirSync, readFileSync, rmSync} from 'node:fs';
 import {basename, resolve} from 'node:path';
-import {bundleStudio, OUT, parseArgs} from './lib.mjs';
+import {bundleStudio, CHROMIUM, OUT, parseArgs} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const file = rest[0];
@@ -40,7 +40,7 @@ mkdirSync(OUT, {recursive: true});
 
 for (const format of formate) {
   const inputProps = {...props, format};
-  const composition = await selectComposition({serveUrl, id, inputProps});
+  const composition = await selectComposition({serveUrl, id, inputProps, chromiumOptions: CHROMIUM});
   if (flags['nur-bilder']) {
     const dir = resolve(OUT, `${name}-${format}`, 'look');
     rmSync(dir, {recursive: true, force: true});
@@ -50,7 +50,7 @@ for (const format of formate) {
     for (let i = 0; i < n; i++) {
       const frame = Math.round(((composition.durationInFrames - 1) * (i + 0.5)) / n);
       const out = resolve(dir, `frame-${String(frame).padStart(5, '0')}.jpg`);
-      await renderStill({serveUrl, composition, inputProps, frame, output: out, imageFormat: 'jpeg', jpegQuality: 85, scale: 0.4});
+      await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output: out, imageFormat: 'jpeg', jpegQuality: 85, scale: 0.4});
       files.push(out);
     }
     const sheet = resolve(dir, 'sheet.jpg');
@@ -60,6 +60,6 @@ for (const format of formate) {
     continue;
   }
   const outputLocation = resolve(OUT, `${name}-${format}.mp4`);
-  await renderMedia({serveUrl, composition, inputProps, codec: 'h264', crf: 18, jpegQuality: 92, outputLocation});
+  await renderMedia({serveUrl, composition, inputProps, chromiumOptions: CHROMIUM, codec: 'h264', crf: 18, jpegQuality: 92, outputLocation});
   console.log(`${format}: ${outputLocation} (${(composition.durationInFrames / composition.fps).toFixed(1)} s)`);
 }

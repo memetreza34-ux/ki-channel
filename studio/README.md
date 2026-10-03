@@ -14,7 +14,8 @@ Claude baut das Video, schaut sich die Bilder selbst an, verbessert sie und schi
 3. Rechts im Formular Texte, **Design** (editorial, nacht, pop, pastell, minimal, papier), **Format** und Icons eintragen – die Vorschau ändert sich sofort.
 4. **Save** speichert, **Render** macht das Video.
 
-Ideen holen: Ordner **Beispiele** (fertige Spots/Erklärvideos in verschiedenen Designs) und **Design-Katalog** (alle Designs nebeneinander).
+Ideen holen: Ordner **Beispiele** (fertige Spots/Erklärvideos in verschiedenen Designs) und **Kataloge** (Designs, Effekte, Medien, Icons, Lottie, Sounds).
+Änderungen im Formular werden automatisch gespeichert.
 Icons finden: `npm run icons -- rocket --bild` (englische Wörter), Lottie-Animationen: **Lottie-Katalog-Emoji** / **Lottie-Katalog-UI**.
 
 ⚠️ Wenn du animierte Emojis (`emoji/…`) nutzt, muss in die Videobeschreibung: **„Animierte Emojis: Google Noto, CC BY 4.0“**.
@@ -27,6 +28,10 @@ Icons finden: `npm run icons -- rocket --bild` (englische Wörter), Lottie-Anima
    `studio/public/projekte/<projektname>/musik.mp3` – sie wird unter deiner Stimme automatisch leiser.
 3. Claude sagen: „Voiceover liegt drin.“ – Untertitel und Timing macht Claude.
 4. Fertiges Video anschauen: `studio/out/<Name>.mp4`
+
+**Echte Clips (B-Roll):** Einmalig einen kostenlosen Pixabay-Key besorgen (siehe unten), dann sag mir einfach, welche Bilder du dir wünschst („Serverraum“, „Hände auf Tastatur“) – ich suche, zeige dir Vorschauen und lade nur die ausgewählten Clips.
+
+**Bildschirmaufnahmen:** Wenn es um ein bestimmtes KI-Tool geht, nimm es mit **Cmd + Shift + 5** auf und leg die Datei in `studio/public/projekte/<projektname>/`. Ich zoome dann auf die wichtigen Stellen.
 
 **Sounds anhören:** `npm run studio` → links „Sound-Katalog“ anklicken → abspielen. Wenn dir ein Sound nicht gefällt, sag einfach den Namen.
 
@@ -61,6 +66,16 @@ Macht aus einer Beschreibungsdatei fertige Videos in allen darin genannten Forma
 npm run still -- So-Antwortet-KI --frame=90
 ```
 Speichert ein Einzelbild als PNG, z. B. als Thumbnail oder Cover.
+
+## Pixabay-Key einrichten (einmalig, kostenlos)
+
+1. Auf https://pixabay.com ein Konto anlegen und einloggen.
+2. https://pixabay.com/api/docs/ öffnen – dort steht dein persönlicher Key.
+3. Im Projektordner (`Ki-Chanell`) eine Datei `.env` anlegen mit genau dieser Zeile:
+   ```
+   PIXABAY_KEY=dein-key
+   ```
+   Die Datei bleibt auf deinem Mac und wird nicht auf GitHub hochgeladen.
 
 ## Formate
 

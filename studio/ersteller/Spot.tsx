@@ -4,6 +4,7 @@ import {
   Background,
   Checklist,
   EndCard,
+  Footage,
   Headline,
   PunchText,
   SafeArea,
@@ -16,7 +17,7 @@ import {
   useTheme,
   type SceneItem,
 } from '../kit';
-import {Held, Medien, sizeOf, useScale} from './gemeinsam';
+import {EffektEbene, Held, Medien, sizeOf, useScale} from './gemeinsam';
 import type {SpotProps} from './schema';
 
 /**
@@ -29,16 +30,17 @@ const HELD = 102;
 const ENDE = 84;
 const UEBERGANG = 12;
 
-const Hook: React.FC<{woerter: string[]; sounds: boolean}> = ({woerter, sounds}) => {
+const Hook: React.FC<{woerter: string[]; sounds: boolean; video?: string}> = ({woerter, sounds, video}) => {
   const u = useScale();
   const t = useTheme();
   const step = Math.floor((HOOK - 18) / woerter.length);
   return (
     <AbsoluteFill>
+      {video ? <Footage src={video} dim={0.15} tint={0.15} /> : null}
       <SafeArea>
         <PunchText
           size={220 * u}
-          words={woerter.map((text, i) => ({text, at: i * step, bg: i === woerter.length - 1 ? t.c.accentDeep : undefined}))}
+          words={woerter.map((text, i) => ({text, at: i === 0 ? -6 : i * step, bg: i === woerter.length - 1 || video ? t.c.accentDeep : undefined}))}
         />
       </SafeArea>
       {sounds ? woerter.map((_, i) => <Sfx key={i} name={i === woerter.length - 1 ? 'punchHeavy' : 'punch'} at={i * step} volume={0.5} />) : null}
@@ -49,7 +51,7 @@ const Hook: React.FC<{woerter: string[]; sounds: boolean}> = ({woerter, sounds})
 const HeldSzene: React.FC<{p: SpotProps}> = ({p}) => {
   const u = useScale();
   const {isWide, width, safe} = useLayout();
-  const held = <Held icon={p.held.icon} lottie={p.held.lottie} size={(isWide ? 300 : 260) * u} delay={2} />;
+  const held = <Held icon={p.held.icon} lottie={p.held.lottie} objekt3d={p.held.objekt3d} size={(isWide ? 300 : 260) * u} delay={2} />;
   const text = (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: isWide ? 'flex-start' : 'center', gap: 40 * u}}>
       <Headline text={p.held.titel} size={96 * u} align={isWide ? 'left' : 'center'} highlight={p.held.hervorheben} marker delay={6} maxWidth={isWide ? 900 : undefined} />
@@ -58,6 +60,7 @@ const HeldSzene: React.FC<{p: SpotProps}> = ({p}) => {
   );
   return (
     <AbsoluteFill>
+      <EffektEbene effekt={p.held.effekt} />
       <SafeArea gap={48 * u} style={isWide ? {flexDirection: 'row'} : undefined}>
         {held}
         {text}
@@ -92,7 +95,7 @@ const Ende: React.FC<{p: SpotProps}> = ({p}) => {
 };
 
 const szenen = (p: SpotProps): SceneItem[] => [
-  {name: 'Hook', duration: HOOK, content: <Hook woerter={p.hook} sounds={p.sounds} />},
+  {name: 'Hook', duration: HOOK, content: <Hook woerter={p.hook} sounds={p.sounds} video={p.hookVideo} />},
   {name: 'Held', duration: HELD, content: <HeldSzene p={p} />, transition: 'slide-up', transitionFrames: UEBERGANG},
   {name: 'Ende', duration: ENDE, content: <Ende p={p} />, transition: 'zoom', transitionFrames: UEBERGANG},
 ];

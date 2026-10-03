@@ -12,6 +12,9 @@ import {z} from 'zod';
 export const designSchema = z.enum(['editorial', 'nacht', 'pop', 'pastell', 'minimal', 'papier']);
 export const formatSchema = z.enum(['vertical', 'square', 'portrait', 'landscape']);
 export const uebergangSchema = z.enum(['cut', 'fade', 'slide-up', 'slide-left', 'wipe', 'zoom']);
+/** Atmosphäre-Ebene hinter einer Szene. */
+export const effektSchema = z.enum(['keiner', 'strahlen', 'partikel', 'meteore', 'raster', 'konfetti']);
+export const form3dSchema = z.enum(['wuerfel', 'kugel', 'ring', 'chip']);
 
 const medien = {
   /** Pfad in studio/public, z. B. "projekte/mein-spot/voiceover.mp3". */
@@ -34,7 +37,12 @@ export const spotSchema = z.object({
     icon: z.string(),
     /** Statt Icon eine Lottie-Animation (optional). */
     lottie: z.string().optional(),
+    /** Statt Icon ein 3D-Objekt (optional). */
+    objekt3d: form3dSchema.optional(),
+    effekt: effektSchema.optional(),
   }),
+  /** Video/Foto (Pfad in studio/public) als Hintergrund des Hooks, abgedunkelt. */
+  hookVideo: z.string().optional(),
   /** Bis zu drei Nutzen, werden abgehakt. */
   punkte: z.array(z.string()).max(3),
   sticker: z.string().optional(),
@@ -53,6 +61,8 @@ const basis = {
   sekunden: z.number().min(1).max(30),
   /** Untertitel/Sprechertext dieser Szene (ohne wortgenaue Wortzeiten). */
   untertitel: z.string().optional(),
+  /** Atmosphäre hinter der Szene. */
+  effekt: effektSchema.optional(),
 };
 
 export const szeneSchema = z.discriminatedUnion('typ', [
@@ -63,6 +73,7 @@ export const szeneSchema = z.discriminatedUnion('typ', [
     hervorheben: z.array(z.string()).optional(),
     icon: z.string().optional(),
     lottie: z.string().optional(),
+    objekt3d: form3dSchema.optional(),
     ...basis,
   }),
   z.object({
@@ -102,6 +113,43 @@ export const szeneSchema = z.discriminatedUnion('typ', [
   }),
   z.object({typ: z.literal('tokens'), titel: z.string(), tokens: z.array(z.string()), ...basis}),
   z.object({typ: z.literal('ende'), titel: z.string(), knopf: z.string().optional(), ...basis}),
+  z.object({
+    typ: z.literal('code'),
+    titel: z.string().optional(),
+    datei: z.string().optional(),
+    zeilen: z.array(z.string()),
+    ausgabe: z.string().optional(),
+    ...basis,
+  }),
+  z.object({typ: z.literal('orbit'), titel: z.string(), mitte: z.string(), icons: z.array(z.string()).min(3).max(8), ...basis}),
+  z.object({typ: z.literal('mindmap'), titel: z.string().optional(), mitte: z.string(), aeste: z.array(z.object({text: z.string(), icon: z.string().optional()})).min(2).max(6), ...basis}),
+  z.object({typ: z.literal('ablauf'), titel: z.string(), stationen: z.array(z.object({text: z.string(), icon: z.string()})).min(2).max(4), ...basis}),
+  z.object({typ: z.literal('woerter'), davor: z.string(), woerter: z.array(z.string()).min(2), danach: z.string().optional(), ...basis}),
+  z.object({
+    typ: z.literal('meldungen'),
+    titel: z.string().optional(),
+    meldungen: z.array(z.object({titel: z.string(), text: z.string(), icon: z.string().optional()})).min(1).max(4),
+    ...basis,
+  }),
+  z.object({
+    typ: z.literal('broll'),
+    /** Video/Foto in studio/public, z. B. "projekte/x/broll/123.mp4". */
+    datei: z.string(),
+    titel: z.string().optional(),
+    hervorheben: z.array(z.string()).optional(),
+    ...basis,
+  }),
+  z.object({
+    typ: z.literal('bildschirm'),
+    /** Screenshot oder Bildschirmaufnahme in studio/public. */
+    datei: z.string(),
+    breite: z.number(),
+    hoehe: z.number(),
+    titel: z.string().optional(),
+    /** Stelle, auf die gezoomt wird (Pixel im Original). */
+    fokus: z.object({x: z.number(), y: z.number(), w: z.number(), h: z.number()}).optional(),
+    ...basis,
+  }),
 ]);
 
 export type Szene = z.infer<typeof szeneSchema>;

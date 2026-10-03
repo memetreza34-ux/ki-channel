@@ -3,6 +3,8 @@ import {projekt as kitKatalog} from './kit-katalog/Video';
 import {projekt as designKatalog} from './kit-katalog/DesignKatalog';
 import {projekt as kitKatalogErklaeren} from './kit-katalog/ErklaerKatalog';
 import {emojiKatalog, uiKatalog} from './kit-katalog/LottieKatalog';
+import {effekte2Hell, effekte2Pop, effekteDunkel, effekteHell} from './kit-katalog/EffekteKatalog';
+import {medienHell, medienNacht} from './kit-katalog/MedienKatalog';
 import {projekt as soundKatalog} from './kit-katalog/SoundKatalog';
 import {projekt as soAntwortetKi} from './so-antwortet-ki/Video';
 import {projekt as werbungDemo} from './werbung-demo/Video';
@@ -14,6 +16,12 @@ export const PROJEKTE: Project[] = [
   kitKatalogErklaeren,
   emojiKatalog,
   uiKatalog,
+  effekteHell,
+  effekteDunkel,
+  effekte2Hell,
+  effekte2Pop,
+  medienHell,
+  medienNacht,
   soundKatalog,
   soAntwortetKi,
   werbungDemo,

@@ -32,6 +32,10 @@ Die vollständigen sechs Pakete (mit `License.txt`) liegen lokal in `studio/asse
 | `lottie/emoji/*.json` (41) | Google Noto Emoji Animation, fonts.gstatic.com/s/e/notoemoji/latest/<code>/lottie.json, mit Armans Freigabe am 2026-10-02 geladen | **CC BY 4.0 – Namensnennung nötig:** „Animierte Emojis: Google Noto, CC BY 4.0“ in die Videobeschreibung |
 | `lottie/ui/*.json` (79) | npm `react-useanimations` 2.10 (`lib/<name>/<name>.json`) | MIT |
 
+| `beispiel/standbild.jpg` | eigener Render (Composition `Design-Katalog`) – Testbild für Footage/ScreenFocus | eigenes Material |
+| `beispiel/illustration-test.svg` | selbst gezeichnet im unDraw-Farbschema – Test für `Illustration` | eigenes Material |
+| `projekte/<slug>/broll/*` | Pixabay über `npm run broll` – Quelle je Datei in `studio/projekte/<slug>/quellen.md` | Pixabay Content License (frei, ohne Namensnennung) |
+
 Icons und Logos kommen nicht als Dateien, sondern aus npm-Paketen (werden beim Rendern nur bei Bedarf geladen):
 
 - `lucide` – ISC

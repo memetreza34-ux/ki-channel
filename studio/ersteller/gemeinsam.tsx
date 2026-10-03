@@ -1,7 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Audio, cancelRender, continueRender, delayRender, staticFile} from 'remotion';
-import {CaptionTrack, FORMATS, FPS, Icon, Lottie, Music, useLayout, type WordCaption} from '../kit';
-import type {formatSchema} from './schema';
+import {
+  CaptionTrack,
+  Confetti,
+  FORMATS,
+  FPS,
+  Icon,
+  LightRays,
+  Lottie,
+  Meteors,
+  Music,
+  Objekt3D,
+  Particles,
+  PerspectiveGrid,
+  useLayout,
+  type Form3D,
+  type WordCaption,
+} from '../kit';
+import type {effektSchema, formatSchema} from './schema';
 import type {z} from 'zod';
 
 /** Größenfaktor: Hochformat etwas größer, Querformat deutlich größer (viel Breite). */
@@ -13,11 +29,30 @@ export const useScale = () => {
 /** Maße für calculateMetadata aus dem gewählten Format. */
 export const sizeOf = (format: z.infer<typeof formatSchema>) => ({...FORMATS[format], fps: FPS});
 
-/** Held einer Szene: Lottie hat Vorrang vor Icon. */
-export const Held: React.FC<{icon?: string; lottie?: string; size: number; delay?: number}> = ({icon, lottie, size, delay = 0}) => {
+/** Held einer Szene: 3D vor Lottie vor Icon. */
+export const Held: React.FC<{icon?: string; lottie?: string; objekt3d?: Form3D; size: number; delay?: number}> = ({icon, lottie, objekt3d, size, delay = 0}) => {
+  if (objekt3d) return <Objekt3D form={objekt3d} size={size * 1.3} delay={delay} />;
   if (lottie) return <Lottie name={lottie} size={size} delay={delay} loop />;
   if (icon) return <Icon icon={icon} size={size} delay={delay} animate={icon.startsWith('fluent') || icon.startsWith('logos') ? 'pop' : 'draw'} duration={26} loop="float" />;
   return null;
+};
+
+/** Atmosphäre hinter einer Szene. */
+export const EffektEbene: React.FC<{effekt?: z.infer<typeof effektSchema>}> = ({effekt}) => {
+  switch (effekt) {
+    case 'strahlen':
+      return <LightRays />;
+    case 'partikel':
+      return <Particles />;
+    case 'meteore':
+      return <Meteors />;
+    case 'raster':
+      return <PerspectiveGrid />;
+    case 'konfetti':
+      return <Confetti at={8} />;
+    default:
+      return null;
+  }
 };
 
 /** Lädt Wort-Timings aus studio/public (für Untertitel und Musik-Absenkung). */

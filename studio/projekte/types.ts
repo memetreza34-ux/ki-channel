@@ -14,4 +14,6 @@ export type Project = {
   format: FormatName | FormatName[];
   durationInFrames: number;
   fps?: number;
+  /** Ordner in Remotion Studio (Standard: "Projekte"). */
+  ordner?: string;
 };

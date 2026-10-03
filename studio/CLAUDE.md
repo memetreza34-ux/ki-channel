@@ -7,7 +7,7 @@ Mit Arman auf Deutsch, kurz und klar.
 
 ## Zwei Wege
 
-- **Ersteller (schnell):** Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen. Eine JSON-Datei nach dem Muster in `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei.json> --nur-bilder` ansehen → `npm run erstellen -- <datei.json>` rendert alle Formate aus `"formate"`. Arman kann dasselbe in `npm run studio` über das Formular der Compositions `Spot` / `Erklaerer` (Ordner „Ersteller“) machen. Szenentypen: `titel aussage liste schritte vergleich zahl chat icons tokens ende` (Felder: `studio/ersteller/schema.ts`).
+- **Ersteller (schnell):** Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen. Eine JSON-Datei nach dem Muster in `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei.json> --nur-bilder` ansehen → `npm run erstellen -- <datei.json>` rendert alle Formate aus `"formate"`. Arman kann dasselbe in `npm run studio` über das Formular der Compositions `Spot` / `Erklaerer` (Ordner „Ersteller“) machen. Szenentypen: `titel aussage liste schritte vergleich zahl chat icons tokens code orbit mindmap ablauf woerter meldungen broll bildschirm ende` (Felder: `studio/ersteller/schema.ts`). Jede Szene kann `effekt` haben: `strahlen partikel meteore raster konfetti`. Titel/Held können statt Icon ein `objekt3d` (`wuerfel kugel ring chip`) zeigen.
 - **Eigenes Projekt (frei):** Wenn die Standard-Szenen nicht reichen (eigene Mechanik, Kamerafahrten, Mockups, Screenshots) → Ablauf unten.
 
 Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in einem eigenen Projekt bauen.
@@ -78,6 +78,13 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 | `Music` | Hintergrundmusik mit Ein-/Ausblenden und automatischem Absenken unter der Stimme |
 | `CameraRig`, `Cursor` | Kamerafahrt (Zoom/Schwenk), Mauszeiger mit Klick |
 | `Sfx` | Sound an einem Frame, 41 Stück (Liste in `SFX_FILES`, anhören: Composition `Sound-Katalog`) |
+| `LightRays`, `Particles`, `Meteors`, `PerspectiveGrid`, `Confetti`, `Ripple` | Atmosphäre: Lichtstrahlen (Enthüllung), schwebende Punkte, Sternschnuppen, 3D-Boden, Konfetti-Knall, Wellenringe („KI denkt“) |
+| `Scramble`, `WordRotate` | Text entschlüsselt sich · „KI für Texte/Bilder/Code“ mit wechselndem Wort |
+| `CodeWindow`, `FileTree`, `Notifications` | Code tippt sich (+/− Diff, Ausgabe) · Ordnerstruktur · Handy-Benachrichtigungen stapeln sich |
+| `IconOrbit`, `Mindmap`, `Flow` | Icons kreisen um eine Mitte · Mitte mit Ästen · Ablauf aus Icon-Stationen mit Pfeilen |
+| `Footage` | B-Roll: Video/Foto mit Ken-Burns, Einfärbung, Abdunkeln, Vignette, optional gerahmt |
+| `Illustration` | SVG (z. B. unDraw) – Akzentfarbe wird zur Designfarbe |
+| `Objekt3D` | drehendes 3D-Objekt in Designfarben (`wuerfel kugel ring chip`) |
 | `useLayout` | Maße/sichere Zone des aktuellen Formats; `u` skaliert Größen für andere Formate mit |
 | `progress`, `pop`, `visible`, `stagger`, `mix` | Zeitachsen-Helfer (`kit/motion.ts`) |
 
@@ -87,9 +94,13 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 - **Schriften:** kommen aus dem Design (`useTheme().font.body / heading / display / mono`). Überschriften (`Headline`) und Knaller (`PunchText`) verkleinern sich automatisch, wenn ein langes Wort sonst aus dem Bild liefe.
 - **Sounds nach Zweck:** Klick/Bedienung `click tap key typing hover toggle` · Erscheinen `pop blip whoosh whooshFast swipe swipeOut slideIn swoosh` · Gewicht `impact thud punch punchHeavy boom tink bell` · Ergebnis `success successBig notify ding chime levelUp question error wrong` · Spannung/Technik `riser riseShort fall reveal glitch think computing energy` · Jingles `jingleSteel jinglePizzi jingleHit`. Arman hat sie noch nicht alle gehört – unpassende Sounds aus `studio/assets-roh/kenney/` (lokal, alle 6 Kenney-Pakete) ersetzen.
 - **Mehrere Formate:** `format: ['vertical', 'square', 'portrait']` im Projekt. Dann Layout mit `SafeArea` und `useLayout().u` bauen statt mit festen Pixelpositionen.
+- **B-Roll:** `npm run broll -- "<englischer begriff>" --bild` sucht bei Pixabay (Key in `.env` als `PIXABAY_KEY`), Vorschau unter `studio/out/broll/`. Laden nur, was ins Video kommt: `npm run broll -- --laden=<id> --projekt=<slug>` → Datei in `studio/public/projekte/<slug>/broll/`, Quelle automatisch in `studio/projekte/<slug>/quellen.md`. Faceless: Clips ohne erkennbare Gesichter wählen (Hände, Bildschirme, Orte, Objekte).
+- **Bildschirmaufnahmen/Screenshots** (die beste B-Roll für KI-News): Arman nimmt auf, Datei nach `studio/public/projekte/<slug>/`; im Video `ScreenFocus src=…` (oder Ersteller-Szene `bildschirm`) mit Zoom auf die wichtige Stelle.
+- **Illustrationen:** einzeln von unDraw (Farbe #6c63ff lassen) nach `studio/public/illustrationen/`; `<Illustration src=… />` färbt sie passend ein. Keine Massen-Downloads (unDraw-Lizenz).
+- **3D** braucht GPU-Rendering: alle Skripte und `npm run studio` nutzen `--gl=angle`. Bei eigenen Render-Befehlen daran denken.
 - **Weitere Remotion-Pakete** sind installiert: `@remotion/transitions`, `paths`, `shapes`, `noise`, `layout-utils` (Text einpassen), `motion-blur`, `three`, `lottie`, `captions`.
 - **Neuer Baustein:** erst im Projekt bauen. Wird er ein zweites Mal gebraucht → ins Kit verschieben und im `Kit-Katalog` zeigen (`npm run look -- Kit-Katalog`).
-- Referenzen (so soll es mindestens aussehen): `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `So-Antwortet-KI` (Erklärvideo), `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
+- Referenzen (so soll es mindestens aussehen): `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `Effekte-Katalog-1/-2`, `Medien-Katalog`, `So-Antwortet-KI` (Erklärvideo), `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
 
 ## Werbeclips
 
@@ -110,5 +121,6 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 - Deterministisch rendern: kein `Math.random()`, keine Netzwerkaufrufe im Video, Assets nur über `staticFile()` aus `studio/public`.
 - `npm run studio` startet Remotion Studio zum Durchklicken. `npm run studio:check` = Typecheck. `npx vitest run studio` = Tests (Musik, Szenen, Formate, Ersteller-Beispiele).
 - `look`, `render`, `still` nehmen auch `--props=<datei.json>` und `--format=<format>` (für `Spot`/`Erklaerer`).
+- Einstieg: `studio/studio-entry.ts` → `studio/StudioRoot.tsx` (diese Benennung braucht Remotion Studio, um Formular-Änderungen speichern zu können – nicht umbenennen). Änderungen im Studio-Formular von `Spot`/`Erklaerer` landen automatisch in `StudioRoot.tsx`.
 - Renders (`studio/out`), Audio und `whisper.cpp/` bleiben lokal (gitignored).
 - Git: Arbeitsbranch, kein Push/Merge nach `main` ohne Armans OK.

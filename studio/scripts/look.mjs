@@ -14,7 +14,7 @@ import {renderStill, selectComposition} from '@remotion/renderer';
 import {execFileSync} from 'node:child_process';
 import {mkdirSync, rmSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {bundleStudio, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
+import {bundleStudio, CHROMIUM, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const id = rest[0];
@@ -25,7 +25,7 @@ if (!id) {
 
 const serveUrl = await bundleStudio();
 const inputProps = loadInputProps(flags);
-const composition = await selectComposition({serveUrl, id, inputProps});
+const composition = await selectComposition({serveUrl, id, inputProps, chromiumOptions: CHROMIUM});
 const total = composition.durationInFrames;
 const [from, to] = parseRange(flags.range, total);
 const count = Number(flags.count ?? 12);
@@ -43,7 +43,7 @@ const labelled = [];
 for (const frame of frames) {
   const raw = resolve(dir, `raw-${String(frame).padStart(5, '0')}.jpg`);
   const out = resolve(dir, `frame-${String(frame).padStart(5, '0')}.jpg`);
-  await renderStill({serveUrl, composition, inputProps, frame, output: raw, imageFormat: 'jpeg', jpegQuality: 88, scale});
+  await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output: raw, imageFormat: 'jpeg', jpegQuality: 88, scale});
   const label = `${frame}  ·  ${(frame / composition.fps).toFixed(1)}s`;
   execFileSync('ffmpeg', [
     '-loglevel', 'error', '-y', '-i', raw,

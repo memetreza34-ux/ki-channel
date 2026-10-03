@@ -64,4 +64,5 @@ export const projekt: Project = {
   component: SoundKatalog,
   format: 'landscape',
   durationInFrames: NAMES.length * EACH,
+  ordner: 'Kataloge',
 };

@@ -9,7 +9,7 @@ Zuerst `studio/CLAUDE.md` lesen – dort stehen Ablauf, Gestaltungsregeln und al
 
 ## Erst prüfen: reicht der Ersteller?
 
-Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen (Titel, Aussage, Liste, Schritte, Vergleich, Zahl, Chat, Icons, Tokens, Ende) zuerst den Ersteller nehmen: JSON nach `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei> --nur-bilder` ansehen → verbessern → `npm run erstellen -- <datei>`. Design passend wählen (`editorial` ist Marke). Icons: `npm run icons -- <wort> --bild`.
+Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen (Titel, Aussage, Liste, Schritte, Vergleich, Zahl, Chat, Icons, Tokens, Code, Orbit, Mindmap, Ablauf, Wörter, Meldungen, B-Roll, Bildschirm, Ende – jeweils mit optionalem Effekt und 3D-Held) zuerst den Ersteller nehmen: JSON nach `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei> --nur-bilder` ansehen → verbessern → `npm run erstellen -- <datei>`. Design passend wählen (`editorial` ist Marke). Icons: `npm run icons -- <wort> --bild`.
 
 ## Kurzablauf (eigenes Projekt)
 

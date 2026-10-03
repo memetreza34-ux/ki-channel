@@ -11,12 +11,13 @@
     "ki"
   ],
   "scripts": {
-    "studio": "remotion studio studio/index.ts --public-dir=studio/public",
+    "studio": "remotion studio studio/studio-entry.ts --public-dir=studio/public --gl=angle",
     "look": "node studio/scripts/look.mjs",
     "render": "node studio/scripts/render.mjs",
     "still": "node studio/scripts/still.mjs",
     "erstellen": "node studio/scripts/erstellen.mjs",
     "icons": "node studio/scripts/icons.mjs",
+    "broll": "node studio/scripts/broll.mjs",
     "neu": "node studio/scripts/neu.mjs",
     "untertitel": "node studio/scripts/untertitel.mjs",
     "studio:check": "tsc -p studio/tsconfig.json",

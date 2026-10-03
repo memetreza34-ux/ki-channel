@@ -28,5 +28,5 @@ const EmojiKatalog: React.FC = () => (
 );
 const UiKatalog: React.FC = () => <Raster namen={LOTTIE_UI} ordner="ui" spalten={14} titel="Lottie: ui/… (MIT, einfärbbar: color=&quot;accent&quot;)" />;
 
-export const emojiKatalog: Project = {id: 'Lottie-Katalog-Emoji', component: EmojiKatalog, format: 'landscape', durationInFrames: 120};
-export const uiKatalog: Project = {id: 'Lottie-Katalog-UI', component: UiKatalog, format: 'landscape', durationInFrames: 120};
+export const emojiKatalog: Project = {id: 'Lottie-Katalog-Emoji', component: EmojiKatalog, format: 'landscape', durationInFrames: 120, ordner: 'Kataloge'};
+export const uiKatalog: Project = {id: 'Lottie-Katalog-UI', component: UiKatalog, format: 'landscape', durationInFrames: 120, ordner: 'Kataloge'};

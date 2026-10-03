@@ -7,13 +7,21 @@ import {
   Caption,
   ChatBubble,
   Checklist,
+  CodeWindow,
   Counter,
   Donut,
   EndCard,
+  Flow,
+  Footage,
   FPS,
   Headline,
   IconBadge,
+  IconOrbit,
+  Mindmap,
+  Notifications,
   Pill,
+  ScreenFocus,
+  WordRotate,
   SafeArea,
   Scenes,
   scenesDuration,
@@ -25,7 +33,7 @@ import {
   useTheme,
   type SceneItem,
 } from '../kit';
-import {Held, Medien, sizeOf, useScale} from './gemeinsam';
+import {EffektEbene, Held, Medien, sizeOf, useScale} from './gemeinsam';
 import type {ErklaererProps, Szene} from './schema';
 
 /**
@@ -62,15 +70,17 @@ const Panel: React.FC<{text: string; gut: boolean}> = ({text, gut}) => {
 
 const SzeneInhalt: React.FC<{s: Szene; ctx: Ctx}> = ({s, ctx}) => {
   const u = useScale();
-  const {isWide, width} = useLayout();
+  const {isWide, width, height, safe} = useLayout();
   const t = useTheme();
   const snd = ctx.sounds;
+  /** Platz in der Höhe für Hauptinhalt (ohne Überschrift und Untertitel). */
+  const freiHoehe = (mitTitel: boolean) => height - safe.top - safe.bottom - (mitTitel ? 150 * u : 0) - (s.untertitel ? 120 : 0);
   const inner = (() => {
     switch (s.typ) {
       case 'titel':
         return (
           <SafeArea gap={44 * u} style={isWide ? {flexDirection: 'row'} : undefined}>
-            <Held icon={s.icon} lottie={s.lottie} size={(isWide ? 320 : 300) * u} delay={4} />
+            <Held icon={s.icon} lottie={s.lottie} objekt3d={s.objekt3d} size={(isWide ? 320 : 300) * u} delay={4} />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: isWide ? 'flex-start' : 'center', gap: 28 * u}}>
               {s.kicker ? (
                 <Pill size={34 * u} delay={-6}>
@@ -184,6 +194,96 @@ const SzeneInhalt: React.FC<{s: Szene; ctx: Ctx}> = ({s, ctx}) => {
             {snd ? <Sfx name="glitch" at={16} volume={0.3} /> : null}
           </SafeArea>
         );
+      case 'code':
+        return (
+          <SafeArea gap={44 * u}>
+            {s.titel ? <Titel titel={s.titel} /> : null}
+            <CodeWindow title={s.datei ?? 'code'} lines={s.zeilen} output={s.ausgabe} delay={10} width={Math.min(width - 120, 980 * u)} fontSize={34 * u} />
+            {snd ? <Sfx name="typing" at={18} volume={0.25} /> : null}
+          </SafeArea>
+        );
+      case 'orbit':
+        return (
+          <SafeArea gap={40 * u}>
+            <Titel titel={s.titel} />
+            {(() => {
+              const box = Math.min(760 * u, freiHoehe(true));
+              const iconSize = box * 0.17;
+              return <IconOrbit icons={s.icons} radius={(box - iconSize) / 2} iconSize={iconSize} center={<IconBadge icon={s.mitte} size={box * 0.28} tone="solid" shape="circle" />} delay={8} />;
+            })()}
+            {snd ? <Sfx name="whoosh" at={8} volume={0.3} /> : null}
+          </SafeArea>
+        );
+      case 'mindmap': {
+        const size = Math.min(width - 120, 900 * u);
+        const mh = Math.min(size * (isWide ? 0.62 : 0.95), freiHoehe(Boolean(s.titel)));
+        return (
+          <SafeArea gap={30 * u}>
+            {s.titel ? <Titel titel={s.titel} /> : null}
+            <Mindmap center={s.mitte} nodes={s.aeste} width={size} height={mh} size={40 * u} delay={8} />
+            {snd ? s.aeste.slice(0, 4).map((_, i) => <Sfx key={i} name="pop" at={26 + i * 8} volume={0.3} />) : null}
+          </SafeArea>
+        );
+      }
+      case 'ablauf':
+        return (
+          <SafeArea gap={60 * u}>
+            <Titel titel={s.titel} />
+            <Flow steps={s.stationen} direction={isWide || s.stationen.length <= 3 ? 'row' : 'column'} size={(s.stationen.length <= 3 ? 170 : 150) * u} delay={14} step={16} />
+            {snd ? s.stationen.map((_, i) => <Sfx key={i} name="blip" at={14 + i * 16} volume={0.3} />) : null}
+          </SafeArea>
+        );
+      case 'woerter': {
+        const per = Math.max(18, Math.floor((s.sekunden * FPS - 20) / s.woerter.length));
+        return (
+          <SafeArea>
+            <WordRotate prefix={s.davor} words={s.woerter} suffix={s.danach} per={per} size={110 * u} delay={4} />
+            {snd ? s.woerter.map((_, i) => <Sfx key={i} name="swipe" at={4 + i * per} volume={0.25} />) : null}
+          </SafeArea>
+        );
+      }
+      case 'meldungen': {
+        const step = Math.max(16, Math.floor((s.sekunden * FPS - 40) / s.meldungen.length));
+        return (
+          <SafeArea gap={48 * u}>
+            {s.titel ? <Titel titel={s.titel} /> : null}
+            <Notifications width={Math.min(width - 120, 880 * u)} size={38 * u} items={s.meldungen.map((m, i) => ({...m, at: 12 + i * step}))} />
+            {snd ? s.meldungen.map((_, i) => <Sfx key={i} name="notify" at={12 + i * step} volume={0.3} />) : null}
+          </SafeArea>
+        );
+      }
+      case 'broll':
+        return (
+          <AbsoluteFill>
+            <Footage src={s.datei} dim={s.titel ? 0.35 : 0} vignette />
+            {s.titel ? (
+              <SafeArea>
+                <Headline text={s.titel} size={104 * u} align="center" color="#FFFFFF" highlight={s.hervorheben ?? []} highlightColor={t.c.accent} delay={8} />
+              </SafeArea>
+            ) : null}
+          </AbsoluteFill>
+        );
+      case 'bildschirm': {
+        const w = Math.min(width - 100, isWide ? 1500 : 980, (freiHoehe(Boolean(s.titel)) * s.breite) / s.hoehe);
+        const h = (w * s.hoehe) / s.breite;
+        const ende = s.sekunden * FPS;
+        return (
+          <SafeArea gap={36 * u}>
+            {s.titel ? <Titel titel={s.titel} /> : null}
+            <ScreenFocus
+              src={s.datei}
+              width={w}
+              height={h}
+              contentWidth={s.breite}
+              contentHeight={s.hoehe}
+              keys={[
+                {at: 0, x: 0, y: 0, w: s.breite, h: s.hoehe},
+                ...(s.fokus ? [{at: Math.round(ende * 0.35), ...s.fokus, highlight: true}] : []),
+              ]}
+            />
+          </SafeArea>
+        );
+      }
       case 'ende':
         return (
           <AbsoluteFill>
@@ -198,6 +298,7 @@ const SzeneInhalt: React.FC<{s: Szene; ctx: Ctx}> = ({s, ctx}) => {
   })();
   return (
     <AbsoluteFill>
+      <EffektEbene effekt={s.effekt} />
       {inner}
       {s.untertitel && !ctx.ohneUntertitel ? <Caption text={s.untertitel} delay={2} /> : null}
     </AbsoluteFill>

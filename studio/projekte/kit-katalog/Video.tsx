@@ -119,4 +119,5 @@ export const projekt: Project = {
   component: Katalog,
   format: 'landscape',
   durationInFrames: 150,
+  ordner: 'Kataloge',
 };

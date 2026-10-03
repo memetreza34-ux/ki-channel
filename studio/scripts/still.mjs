@@ -9,7 +9,7 @@
 import {renderStill, selectComposition} from '@remotion/renderer';
 import {mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {bundleStudio, loadInputProps, OUT, parseArgs} from './lib.mjs';
+import {bundleStudio, CHROMIUM, loadInputProps, OUT, parseArgs} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const id = rest[0];
@@ -20,9 +20,9 @@ if (!id) {
 const frame = Number(flags.frame ?? 0);
 const serveUrl = await bundleStudio();
 const inputProps = loadInputProps(flags);
-const composition = await selectComposition({serveUrl, id, inputProps});
+const composition = await selectComposition({serveUrl, id, inputProps, chromiumOptions: CHROMIUM});
 const dir = resolve(OUT, id);
 mkdirSync(dir, {recursive: true});
 const output = resolve(dir, `still-${frame}.png`);
-await renderStill({serveUrl, composition, inputProps, frame, output, imageFormat: 'png'});
+await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output, imageFormat: 'png'});
 console.log(`Bild: ${output}`);

@@ -14,7 +14,7 @@ import {renderStill, selectComposition} from '@remotion/renderer';
 import {mkdirSync, readdirSync, writeFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
-import {bundleStudio, OUT, parseArgs, STUDIO} from './lib.mjs';
+import {bundleStudio, CHROMIUM, OUT, parseArgs, STUDIO} from './lib.mjs';
 
 const require = createRequire(import.meta.url);
 const {flags, rest} = parseArgs(process.argv.slice(2));
@@ -67,6 +67,6 @@ if (flags.bild && found.length > 0) {
   const composition = await selectComposition({serveUrl, id: 'Icon-Suche', inputProps});
   mkdirSync(resolve(OUT, 'icon-suche'), {recursive: true});
   const output = resolve(OUT, 'icon-suche', `${query}.jpg`);
-  await renderStill({serveUrl, composition, inputProps, frame: 0, output, imageFormat: 'jpeg', jpegQuality: 90});
+  await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame: 0, output, imageFormat: 'jpeg', jpegQuality: 90});
   console.log(`\nBild: ${output}`);
 }

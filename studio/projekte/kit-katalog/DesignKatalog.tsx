@@ -69,4 +69,5 @@ export const projekt: Project = {
   component: DesignKatalog,
   format: 'landscape',
   durationInFrames: 120,
+  ordner: 'Kataloge',
 };

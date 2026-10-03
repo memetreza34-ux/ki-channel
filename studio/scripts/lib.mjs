@@ -6,6 +6,9 @@ export const ROOT = resolve(import.meta.dirname, '..', '..');
 export const STUDIO = resolve(ROOT, 'studio');
 export const OUT = resolve(STUDIO, 'out');
 
+/** GPU-Rendering (nötig für 3D/WebGL, auf dem Mac auch schneller). */
+export const CHROMIUM = {gl: 'angle'};
+
 /** Liest `--name=wert` und freie Argumente. */
 export const parseArgs = (argv) => {
   const flags = {};
@@ -21,7 +24,7 @@ export const parseArgs = (argv) => {
 export const bundleStudio = async () => {
   process.stdout.write('Bundle wird gebaut … ');
   const serveUrl = await bundle({
-    entryPoint: resolve(STUDIO, 'index.ts'),
+    entryPoint: resolve(STUDIO, 'studio-entry.ts'),
     publicDir: resolve(STUDIO, 'public'),
   });
   console.log('fertig');

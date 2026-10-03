@@ -41,7 +41,7 @@ const Hook: React.FC = () => {
         <PunchText
           size={210 * u}
           words={[
-            {text: 'Wort eins', at: 0},
+            {text: 'Wort eins', at: -6},
             {text: 'Wort zwei', at: 20},
             {text: 'Die Lösung.', at: 40, bg: COLORS.accentDeep},
           ]}
