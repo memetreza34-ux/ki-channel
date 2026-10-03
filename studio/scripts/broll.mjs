@@ -71,7 +71,9 @@ const search = async (query) => {
 
 const describe = (hit) => {
   if (fotos) return {id: hit.id, size: `${hit.imageWidth}×${hit.imageHeight}`, dauer: '', tags: hit.tags, user: hit.user, page: hit.pageURL, thumb: hit.previewURL, file: hit.largeImageURL, ext: 'jpg'};
-  const v = hit.videos?.large?.url ? hit.videos.large : hit.videos?.medium;
+  // Größte Version nehmen, die es wirklich gibt (Pixabay meldet manchmal leere "large"-Einträge).
+  const order = flags.groesse === 'medium' ? ['medium', 'small', 'large', 'tiny'] : ['large', 'medium', 'small', 'tiny'];
+  const v = order.map((k) => hit.videos?.[k]).find((x) => x?.url && x.width > 0);
   return {
     id: hit.id,
     size: `${v?.width}×${v?.height}`,
@@ -80,7 +82,7 @@ const describe = (hit) => {
     user: hit.user,
     page: hit.pageURL,
     thumb: hit.videos?.medium?.thumbnail ?? hit.videos?.tiny?.thumbnail ?? null,
-    file: flags.groesse === 'medium' ? hit.videos?.medium?.url : v?.url,
+    file: v?.url,
     ext: 'mp4',
   };
 };
