@@ -1,0 +1,3 @@
+Illustrationen (z. B. von unDraw) hier ablegen – einzeln pro Video, keine Massen-Downloads.
+unDraw: https://undraw.co → Farbe auf #6c63ff lassen → SVG laden → hier speichern.
+Im Video: <Illustration src="illustrationen/<datei>.svg" width={700} /> (Farbe passt sich dem Design an).

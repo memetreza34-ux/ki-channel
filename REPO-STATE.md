@@ -4,6 +4,10 @@
 
 Diese Datei ist der Einstiegspunkt für jeden neuen Chat, Codex-, Antigravity- oder anderen Coding-Agenten.
 
+## 0. Neue Videos: `studio/` (seit 2026-10-02)
+
+Neue Produktionen laufen über `studio/` mit eigenem Vertrag `studio/CLAUDE.md`: Projekt anlegen (`npm run neu`), Szene für Szene bauen und per `npm run look` als Bilder prüfen, Voiceover-Untertitel per `npm run untertitel`, Render per `npm run render`. Die Abschnitte unten beschreiben den Bereich `ki/` (bestehende Reels) und gelten für `studio/` nicht.
+
 ## 1. Kanonischer Branch
 
 `main` ist der einzige kanonische Produktionsstand.

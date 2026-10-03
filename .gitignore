@@ -41,3 +41,6 @@ __pycache__/
 
 # Claude Code worktree sessions (local, not project data)
 .claude/worktrees/
+
+# ---- Rohe Asset-Pakete (lokal, Auswahl liegt in studio/public) ----
+studio/assets-roh/

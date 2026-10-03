@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Selbst gezeichnete Test-Illustration im unDraw-Farbschema (#6c63ff wird ersetzt). -->
+  <ellipse cx="200" cy="270" rx="150" ry="14" fill="#e6e6e6"/>
+  <rect x="90" y="70" width="220" height="150" rx="16" fill="#3f3d56"/>
+  <rect x="104" y="84" width="192" height="112" rx="8" fill="#ffffff"/>
+  <rect x="120" y="102" width="90" height="12" rx="6" fill="#6c63ff"/>
+  <rect x="120" y="124" width="150" height="10" rx="5" fill="#e6e6e6"/>
+  <rect x="120" y="142" width="120" height="10" rx="5" fill="#e6e6e6"/>
+  <circle cx="262" cy="170" r="16" fill="#6c63ff"/>
+  <rect x="170" y="220" width="60" height="30" fill="#3f3d56"/>
+  <rect x="140" y="248" width="120" height="10" rx="5" fill="#3f3d56"/>
+</svg>

@@ -1,0 +1,18 @@
+{
+  "vorlage": "erklaerer",
+  "formate": ["vertical", "landscape"],
+  "design": "nacht",
+  "format": "vertical",
+  "uebergang": "zoom",
+  "sounds": true,
+  "szenen": [
+    {"typ": "titel", "kicker": "KI-Werkzeuge", "titel": "Was kann KI heute?", "hervorheben": ["heute?"], "objekt3d": "chip", "effekt": "raster", "sekunden": 3.5, "untertitel": "Was kann KI eigentlich heute schon?"},
+    {"typ": "woerter", "davor": "KI hilft bei", "woerter": ["Texten", "Bildern", "Code", "Recherche"], "sekunden": 4, "effekt": "partikel", "untertitel": "Texte, Bilder, Code, Recherche."},
+    {"typ": "orbit", "titel": "Viele Anbieter", "mitte": "ph:robot-duotone", "icons": ["logos:openai-icon", "logos:claude-icon", "logos:google-gemini", "logos:mistral-ai-icon", "logos:perplexity-icon", "logos:meta-icon"], "sekunden": 4, "untertitel": "Es gibt viele Anbieter – und sie unterscheiden sich."},
+    {"typ": "ablauf", "titel": "So nutzt du sie", "stationen": [{"text": "Fragen", "icon": "ph:chat-circle-dots-duotone"}, {"text": "Prüfen", "icon": "ph:magnifying-glass-duotone"}, {"text": "Nutzen", "icon": "ph:check-circle-duotone"}], "sekunden": 4, "untertitel": "Fragen, Ergebnis prüfen, dann nutzen."},
+    {"typ": "code", "titel": "Auch für Code", "datei": "beispiel.py", "zeilen": ["# Text kürzen lassen", "zusammenfassung = ki.kuerze(text)", "print(zusammenfassung)"], "ausgabe": "Kurzfassung erstellt (Beispiel)", "sekunden": 5, "untertitel": "Auch beim Programmieren hilft KI."},
+    {"typ": "meldungen", "titel": "Agenten erledigen Aufgaben", "meldungen": [{"titel": "KI-Agent", "text": "Termin vorgeschlagen", "icon": "ph:calendar-check-fill"}, {"titel": "KI-Agent", "text": "E-Mail-Entwurf fertig", "icon": "ph:envelope-simple-fill"}], "sekunden": 4, "untertitel": "Agenten können sogar kleine Aufgaben übernehmen."},
+    {"typ": "bildschirm", "titel": "Immer selbst nachsehen", "datei": "beispiel/standbild.jpg", "breite": 1920, "hoehe": 1080, "fokus": {"x": 1280, "y": 0, "w": 640, "h": 540}, "sekunden": 4, "untertitel": "Wichtig: das Ergebnis immer selbst prüfen."},
+    {"typ": "ende", "titel": "Mehr KI, einfach erklärt.", "knopf": "Folgen", "effekt": "konfetti", "sekunden": 3}
+  ]
+}
