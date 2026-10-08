@@ -43,15 +43,20 @@ jobs:
         run: npm run claude:motion:proof:check
       - name: Render real 15-second MP4
         run: npm run claude:motion:proof:video
+      - name: Upload real MP4 immediately
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-motion-proof-15s-video
+          path: out/claude-motion-proof/motion-proof.mp4
+          if-no-files-found: error
       - name: Render 16:9 visual contact sheet
         run: npm run claude:motion:proof:review
-      - name: Upload proof video and contact sheet
+      - name: Upload proof contact sheet
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: claude-motion-proof-15s
+          name: claude-motion-proof-15s-review
           path: |
-            out/claude-motion-proof/motion-proof.mp4
             out/claude-motion-proof/contact-sheet.jpg
             out/claude-motion-proof/visual-review.json
           if-no-files-found: warn
