@@ -110,3 +110,10 @@ Bebas Neue ist keine neue Longform-Display-Vorgabe.
 - Visual Profiles, TypeScript, Tests, Smoke-Frames, Contact Sheet, Thumbnail und finalen Render getrennt prüfen
 - automatisches Diversity-Gate ersetzt keine visuelle Prüfung echter Frames
 - TypeScript/Test/Render/Review nur behaupten, wenn tatsächlich ausgeführt
+
+
+## Bestehende Produktions-Guards bleiben verbindlich
+
+- **Card-/Panel-/AppWindow-/Chip-Grammatiken** dürfen nicht zum Default mehrerer Kapitel werden. Sie sind nur zulässig, wenn die dargestellte Information tatsächlich diese Objektform besitzt.
+- Gemeinsame Library-/Creative-Recipe-Runtime verwenden, wenn ein Kapitel eine passende Recipe nutzt; **keine lokale Kopie der gesamten Meaning→Props-Pipeline bauen**.
+- `scripts/check-production-visual-contracts.mjs` bleibt der verbindliche technische Guard für registrierte Production-Visuals und die Studio-/Production-Entry-Trennung.
