@@ -42,6 +42,17 @@ Das Repository hat Skills, Agenten und Regeln für unterschiedliche Produktionss
 
 Schritt 17 ist kein Release-Gate. Er verbessert zukünftige Themen-, Hook- und Visual-Entscheidungen anhand realer Kanal-Daten.
 
+## YouTube Longform mit Claude Code (Opus 5.5)
+
+Für neue YouTube-Produktionen ist **Claude Code** der aktive Coding-/Motion-Agent; `CLAUDE.md` ist sein Root-Einstieg. Das Remotion-Plugin ist ein optionaler externer Setup-Schritt des Operators und nicht durch das Repo installiert.
+
+| Produktionsschritt | Claude-Skill | Ergebnis |
+|---|---|---|
+| Nach Story/Visual Strategy, **vor** TypeScript | `motion-director` | Shot Contract, Hero, Kamera, Objekt-Transformation, Keyframes, Übergänge |
+| Nach einem tatsächlichen Frame-/MP4-Render, **vor** Creative-Freigabe | `creative-critic` | konkrete Fehler mit Zeit-/Frameangabe, Fix-Anweisung und neue Render-Runde |
+
+Der unabhängige `remotion-release-reviewer` bleibt bei Veröffentlichung zusätzlich erforderlich. Der neue 15-Sekunden-Test verwendet `ki/gehirn/CLAUDE_MOTION_BENCHMARK.md`. Ein automatischer PASS ist keine human Creative-Freigabe.
+
 ## Offizielle Remotion-Skills
 
 Die Remotion Agent Skills sind kein Ersatz für die Repo-Verträge. Sie werden durch `remotion-production-orchestration` passend zur Aufgabe geroutet.
