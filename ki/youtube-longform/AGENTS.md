@@ -4,12 +4,41 @@ Gilt für Produktionspakete unter `ki/youtube-longform/`.
 
 ## Format
 
-- eigenständiges Content-Format, niemals künstlich aus einem Reel verlängern
-- aktuelle typische Zielzeit: **5:00–6:00 Minuten**, wenn das Thema diese Tiefe trägt
-- Standardformat: **1920×1080, 30 FPS, 16:9**
-- deutsch, faceless, heller editorialer KI-Look
+- **primäres Videoformat des KI-Kanals**
+- eigenständiges Content-Format; niemals künstlich aus einem Reel verlängern
+- typische Zielzeit: **5:00–6:00 Minuten**, wenn das Thema diese Tiefe trägt
+- Standard: **1920×1080, 30 FPS, 16:9**
+- deutsch, faceless
+- visuelle Identität: **Cinematic Editorial Tech**
+- verbindlich: `ki/gehirn/YOUTUBE_VISUAL_LANGUAGE.md`
 - Story, Fakten und Bildsprache werden vor Technik entschieden
-- externe Medien nur real verwenden; fehlende Assets nicht vortäuschen
+
+## 100-%-Remotion-Composition
+
+Jeder finale Frame wird in Remotion komponiert und gerendert.
+
+Remotion ist für Longform:
+
+- Illustration
+- Motion Design
+- UI-/Code-/Terminal-Bühne
+- Datenvisualisierung
+- 2D/2.5D/optional 3D
+- Compositing echter Captures
+- Audio-/Caption-/Timeline-Ebene
+- finaler Render
+
+Echte Screenshots, Screen-Captures, offizielle Assets oder reale Outputs dürfen als **Beweis-Layer** eingebettet werden. Sie ersetzen nicht die Remotion-Composition.
+
+Nicht als normaler Produktionsweg:
+
+- After Effects
+- Premiere als visuelle Haupt-Assembly
+- Canva-Video
+- externe Bild-/Videogenerierung nur zur Dekoration
+- fremde Templates als fertige Bildwelt
+
+Wenn reales Produktverhalten Beweis ist, wird es nicht als Fake-UI nachgebaut.
 
 ## Paketstruktur
 
@@ -32,22 +61,46 @@ ki/src/longform/<slug>/
 
 ## Kreative Reihenfolge
 
-Auch Longform folgt dem Grundprinzip aus `ki/gehirn/MASTER.md`:
-
 ```text
 Viewer Promise
 → Hook / Kapitelbogen
 → Fakten / Quellen
 → Sprechertext
 → Kapitel + Visual Beats
-→ Visual Modality / Shot Strategy
-→ erst dann Remotion / Captures / Assets
+→ Visual Strategy
+→ Visual Family + sichtbarer Start-/Endzustand
+→ Remotion Build / Shot / Art Direction
 → Source
 → Voiceover
-→ Timeline / Render / Review
+→ Timeline
+→ Render
+→ technische QA
+→ Creative Review
 ```
 
-Ein Longform-Video braucht mehr Tiefe als ein Reel, aber keine künstliche Länge.
+Direkt von Thema zu Animation/Library springen ist verboten.
+
+## Visual Families
+
+Jeder zentrale Beat soll primär einer der fünf Familien aus `YOUTUBE_VISUAL_LANGUAGE.md` folgen:
+
+- `HERO_OBJECT`
+- `PROCESS_SYSTEM`
+- `PRODUCT_EVIDENCE`
+- `COMPARISON_DATA`
+- `KINETIC_TYPE`
+
+Die Familie beschreibt die Erklärlogik, nicht eine starre Vorlage.
+
+## Approved Production Subset
+
+Vor Nutzung der großen Core-/Animation-Library gilt:
+
+`ki/gehirn/APPROVED_KI_VISUALS.md`
+
+Die große Library bleibt verfügbar, aber normale Produktion wählt zuerst aus dem kleineren Approved-Subset.
+
+Wenn nichts semantisch exakt passt: `NEW_BUILD`.
 
 ## 3 Phasen
 
@@ -55,15 +108,17 @@ Ein Longform-Video braucht mehr Tiefe als ein Reel, aber keine künstliche Läng
 
 Komplette Grundlage außer echten Medien:
 
-- klares Video-Versprechen
+- Video-Versprechen
 - Hook und Kapitelbogen
 - Fakten-/Quellenprüfung
 - finaler Sprechertext
 - Kapitel und Visual Beats
-- Visual-Strategie pro Kapitel/Beat
+- Visual-Familie pro Beat
+- Startzustand → sichtbare Veränderung → Endzustand
+- Remotion-Build-/Shot-Plan
+- Beweis-/Capture-Entscheidungen
 - Thumbnail-Konzept
 - YouTube-Metadaten
-- Asset-/Capture-Entscheidungen
 - ausführbarer Source + Composition
 - technische Checks, soweit ohne echtes Voiceover möglich
 - Phase-3-Handoff
@@ -72,118 +127,136 @@ Komplette Grundlage außer echten Medien:
 
 Immer:
 
-- freigegebenen Sprechertext vertonen und als `voiceover.wav` oder `voiceover.mp3` in `01-script-audio/` ablegen
+- freigegebenen Sprechertext als `voiceover.wav` oder `voiceover.mp3` in `01-script-audio/` ablegen
 
-Nur wenn Phase 1 es ausdrücklich verlangt:
+Nur wenn Phase 1 echten Produktbeweis verlangt:
 
 - REAL_CAPTURE
-- reales/external Still-/Hybrid-/Motion-Asset
+- offizielles/reales Quellenasset
 
-### Phase 3 — Codex / Antigravity
+Externe generierte Still-/Motion-Assets sind kein normaler Longform-Pfad.
+
+### Phase 3 — Claude Code (Opus 5.5)
+
+Claude Code ist der neue Standardagent für neue Longform-Produktionen. Antigravity und Codex bleiben nur als historische Referenzen in älteren Paketen. Vor Source und bei Render-Iteration die Skills `/motion-director` und `/creative-critic` aus `.claude/skills/` verwenden. `CLAUDE.md` ist der Einstieg. Ein Plugin/Modell wird durch Repo-Dokumentation allein nicht installiert oder gestartet.
 
 - reale Medien prüfen
 - Audio messen/analysieren und integrieren
 - Kapitel/Visual Beats an reale Stimme anpassen
-- Tests/TypeScript ausführen
+- TypeScript/Tests ausführen
 - Smoke-Frames prüfen
-- Thumbnail rendern und in kleiner Darstellung prüfen
+- Contact-Sheet/visuelle Kapitelprüfung
+- Thumbnail rendern und klein prüfen
 - finalen Master rendern
 - normal, verkleinert und akustisch prüfen
 - Fakten-Rechecks für aktuelle Claims durchführen
+- Creative Review durchführen
 
-Fehlt Audio, exakt stoppen mit:
+Fehlt Audio:
 
 `PHASE 2 AUDIO FEHLT`
 
-## Visual Strategy — kein Remotion-Zwang
+## Visual Strategy
 
-Für jedes Kapitel/Visual Beat wird die beste Bildsprache gewählt.
+Standard:
 
-Mögliche Modalities:
+- `REMOTION_NATIVE` für konstruierte Erklärvisuals
+- `REAL_CAPTURE` wenn echtes Produktverhalten die Behauptung trägt
+- `HYBRID` für echten Beweis + Remotion-Erklärung
 
-- `REMOTION_NATIVE`
-- `REAL_CAPTURE`
-- `HYBRID`
-- `EXTERNAL_STILL_REQUIRED`
-- `EXTERNAL_MOTION_REQUIRED`
+`EXTERNAL_STILL_REQUIRED` und `EXTERNAL_MOTION_REQUIRED` sind für neue Longform-Produktion keine normalen Modalities mehr. Eine Ausnahme muss konkret begründen, warum Remotion-native + realer Capture die Aussage sichtbar schlechter erklären würden.
 
-Remotion bleibt stark für:
+## Bildsprache
 
-- Prozesse
-- UI
-- Daten
-- Code
-- kontrollierte technische Visualisierung
+Verbindlich:
 
-REAL_CAPTURE ist stärker, wenn tatsächliches Tool-/Produktverhalten selbst der Beweis ist.
+- große Hero-Objekte vor kleinen Cards
+- Grid nur bei echter technischer/koordinierter Bedeutung
+- Nodes/Kreise nur bei Beziehungs-/Netzlogik
+- Rounded Cards nur wenn sie semantisch ein echtes UI-/Dokument-/Datenobjekt darstellen
+- helle Editorial-Basis
+- gezielte Dark-Reset-/Hero-Szenen
+- lila Akzent kontrolliert statt flächig
+- Inter als KI-Display-/Body-Standard
+- Code in Monospace
+- `Signal Thread` als optionales semantisches Markenmotiv
 
-Hybrid/externes Asset ist korrekt, wenn Raum, Material, physische Metapher oder organische Szene die Aussage deutlich besser trägt.
+## Motion
 
-Beste Erklärung gewinnt; keine Modality ist pauschaler Default.
+Kanonische Runtime:
+
+- `ki/src/motion/easing.ts`
+- `ki/src/motion/choreography.ts`
+
+Grundregel:
+
+```text
+Startzustand
+→ sichtbare Veränderung
+→ Endzustand
+```
+
+Zusätzlich:
+
+- Hero / Support / Texture
+- Hard Cut Standard
+- Objektkontinuität vor ständig neuen Slides
+- keine Idle-Motion gegen Langeweile
+- keine Effekte als Ersatz für Story-Motion
+- eine dominante Kamerabewegung pro Beat
+- Voiceover bestimmt Rhythmus
+- große visuelle Resets über ein längeres Video verteilen
 
 ## Visual-Rhythmus
 
-Longform braucht weniger Dauerbewegung als Reels. Trotzdem darf neue Sprecherbedeutung nicht minutenlang auf demselben Zustand liegen.
+Longform braucht keine Dauerbewegung, aber Sprecherbedeutung darf nicht über lange Strecken auf demselben Bildzustand liegen.
 
-- pro Kapitel ein klarer visueller Mechanismus oder eine klare visuelle Frage
-- innerhalb eines Kapitels mehrere bedeutungsgetriebene Zustände
-- keine Deko-Motion als Füller
-- lesbarer End-Hold vor Kapitelwechsel
-- Hard Cuts als Standard; Übergänge nur bei echter visueller Kontinuität
+- pro Kapitel eine klare visuelle Frage oder Mechanik
+- mehrere bedeutungsgetriebene Zustände pro längerer Passage
+- lesbarer End-Hold vor wichtigen Wechseln
 - UI/Diagramme/Captures groß genug für Laptop/TV
-- Karten-/Panel-/Dashboard-Grammatik nicht als Standard für mehrere Kapitel
-- mindestens mehrere bewusst geplante visuelle Höhepunkte über das ganze Video verteilt
+- keine drei Kapitel hintereinander mit gleicher Panel-/Dashboard-Grammatik
+- mehrere geplante visuelle Höhepunkte über das ganze Video
 
 ## Text
 
 - keine dauerhaft eingebrannten Volltext-Untertitel als Standard
-- Kapitelüberschrift kurz und sparsam
-- Animationstext nur als kurze Objekt-/Zustandslabels
-- vollständige Untertiteldatei kann in Phase 3 aus finalem Audio erzeugt werden
-- interne Planner-/Goal-/Debug-Texte niemals sichtbar
-- Sprechertext nicht als Design-Ersatz mehrfach im Bild wiederholen
+- Kapitelmarker kurz
+- Animationstext nur als Objekt-/Zustandslabel oder gezielter Hero-Satz
+- Transcript nicht als Design-Ersatz im Bild wiederholen
+- Planner-/Debug-Texte niemals sichtbar
 
 ## Fakten / Quellen
 
-Die Prinzipien aus `ki/gehirn/FAKTENQUELLEN.md` gelten auch für Longform.
+`ki/gehirn/FAKTENQUELLEN.md` gilt vollständig.
 
-Aktuelle Aussagen über:
-
-- Modelle
-- Tools
-- Preise
-- Limits
-- Benchmarks
-- Rankings
-- Releases
-
-werden vor Veröffentlichung erneut geprüft, wenn sie zeitabhängig sind.
+Aktuelle Aussagen über Modelle, Tools, Preise, Limits, Benchmarks, Rankings und Releases werden vor Veröffentlichung erneut geprüft.
 
 ## Thumbnail
 
-`ki/plattformen/youtube/THUMBNAILS.md` ist verbindlich.
+`ki/plattformen/youtube/THUMBNAILS.md` bleibt verbindlich.
 
-Das Thumbnail wird nach seiner **Kommunikationsidee** entschieden, nicht nach dem Tool:
+Das Thumbnail wird ebenfalls in Remotion komponiert. Echter Capture/Output darf als Beweis-Layer dienen.
 
-- Remotion/SVG/CSS, wenn kontrollierte grafische Komposition die stärkste Lösung ist
-- REAL_CAPTURE, wenn reales Produkt/Resultat entscheidend ist
-- Hybrid/externes Motiv, wenn räumliche/physische Bildwirkung klar stärker ist
-
-Thumbnail-Titel und Video-Titel ergänzen sich; kein unnötiges Doppelversprechen.
+Video-Titel und Thumbnail ergänzen sich statt denselben Satz zu duplizieren.
 
 ## Freigabe
 
 Nicht fertig nur weil Render funktioniert.
 
-Vor Freigabe prüfen:
+Prüfen:
 
 - Versprechen eingelöst
-- Kapitelbogen trägt ohne Leerlauf
-- Visuals erklären statt dekorieren
-- keine monotone UI-/Card-Grammatik
+- Kapitelbogen trägt
+- Bildwelt wirkt wie aus einem System
+- keine Template-Sammlung
+- keine Card-/Dashboard-Monotonie
+- keine generische Neon-/Roboter-KI-Ästhetik
+- Motion erklärt Zustandsänderung
+- Hero-Momente sind wirklich visuell stärker
 - aktuelle Claims korrekt
-- Thumbnail in kleiner Darstellung verständlich
+- Thumbnail in klein verständlich
 - Audio natürlich
 - finaler Render gehört zum aktuellen Source-Stand
 
-Tests, Render, Thumbnail-Export, Audio-Sync oder visuelle Freigabe nur als erledigt markieren, wenn sie tatsächlich ausgeführt wurden.
+Tests, Render, Audio-Sync oder Creative Review nur als erledigt markieren, wenn sie tatsächlich ausgeführt wurden.

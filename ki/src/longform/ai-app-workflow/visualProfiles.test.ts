@@ -9,8 +9,8 @@ const productionSource = readFileSync(
   resolve('ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx'),
   'utf8',
 );
-const v2Source = readFileSync(
-  resolve('ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx'),
+const v3Source = readFileSync(
+  resolve('ki/src/longform/ai-app-workflow/CreativeVisualsV3.tsx'),
   'utf8',
 );
 
@@ -29,13 +29,14 @@ describe('AI app workflow longform visual diversity', () => {
     expect(result.uniqueMotionCount).toBe(8);
   });
 
-  it('keeps production wired to V2 instead of the legacy card-heavy layer', () => {
-    expect(productionSource).toContain("from './CreativeVisualsV2'");
+  it('keeps production wired to cinematic V3 instead of legacy visual layers', () => {
+    expect(productionSource).toContain("from './CreativeVisualsV3'");
     expect(productionSource).not.toContain("from './Visuals'");
-    expect(v2Source).not.toContain('const card:React.CSSProperties');
-    expect(v2Source).not.toContain('const AppWindow');
-    expect(v2Source).not.toContain('const Chip');
-    expect(v2Source).toContain('perspective:1100');
-    expect(v2Source).toContain('perspective:1150');
+    expect(productionSource).not.toContain("from './CreativeVisualsV2'");
+    expect(v3Source).not.toContain('const card:React.CSSProperties');
+    expect(v3Source).not.toContain('const AppWindow');
+    expect(v3Source).not.toContain('const Chip');
+    expect(v3Source).toContain('perspective:1300');
+    expect(v3Source).toContain('darkSurface');
   });
 });

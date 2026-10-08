@@ -121,6 +121,12 @@ import {
   AI_APP_WORKFLOW_WIDTH,
   LongformAIAppWorkflow,
   ThumbnailAIAppWorkflow,
+  ClaudeMotionProof,
+  CLAUDE_MOTION_PROOF_ID,
+  CLAUDE_MOTION_PROOF_FRAMES,
+  CLAUDE_MOTION_PROOF_FPS,
+  CLAUDE_MOTION_PROOF_WIDTH,
+  CLAUDE_MOTION_PROOF_HEIGHT,
 } from './longform/ai-app-workflow';
 
 export const ProductionRoot: React.FC = () => (
@@ -142,6 +148,7 @@ export const ProductionRoot: React.FC = () => (
       <Composition id={GITHUB_REPOSITORY_COMPOSITION_ID} component={ReelGitHubRepository} defaultProps={{showCaptions: true}} durationInFrames={GITHUB_REPOSITORY_DURATION_IN_FRAMES} fps={GITHUB_REPOSITORY_FPS} width={GITHUB_REPOSITORY_WIDTH} height={GITHUB_REPOSITORY_HEIGHT}/>
     </Folder>
     <Folder name="KI-YouTube-Longform">
+      <Composition id={CLAUDE_MOTION_PROOF_ID} component={ClaudeMotionProof} defaultProps={{}} durationInFrames={CLAUDE_MOTION_PROOF_FRAMES} fps={CLAUDE_MOTION_PROOF_FPS} width={CLAUDE_MOTION_PROOF_WIDTH} height={CLAUDE_MOTION_PROOF_HEIGHT}/>
       <Composition id={AI_APP_WORKFLOW_COMPOSITION_ID} component={LongformAIAppWorkflow} defaultProps={{}} durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
       <Composition id={AI_APP_WORKFLOW_THUMBNAIL_ID} component={ThumbnailAIAppWorkflow} defaultProps={{}} durationInFrames={1} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
     </Folder>

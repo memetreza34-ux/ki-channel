@@ -80,7 +80,9 @@ Nur wenn Phase 1 es ausdrücklich als echten Beweis verlangt zusätzlich:
 
 Keine Planungs- oder Source-Dateien in Phase 2 ändern.
 
-### Phase 3 — Codex / Antigravity
+### Phase 3 — Claude Code / Opus 5.5 (YouTube-Standard)
+
+Für neue YouTube-Longform gilt `CLAUDE.md` mit den Skills `.claude/skills/motion-director` und `.claude/skills/creative-critic`. Bestehende Codex-/Antigravity-Reel-Historie bleibt nur als Legacy kompatibel.
 
 Phase 3 beginnt erst mit echtem Audio und allen erforderlichen realen Pflichtmedien.
 

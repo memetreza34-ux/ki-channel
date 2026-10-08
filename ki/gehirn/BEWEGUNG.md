@@ -6,6 +6,8 @@ Verbindliche Motion-Regeln für den Kanal. Abgeleitet aus `KANAL.md`, `VISUAL_ST
 
 > Die **Bewegungssprache** soll wiedererkennbar sein. Die **visuelle Idee** darf und soll je nach Inhalt unterschiedlich sein.
 
+**Runtime-Wahrheit:** `ki/src/motion/easing.ts` und `ki/src/motion/choreography.ts`. Werte aus Skills, Core-Helfern oder externen Referenzen sind Beratung/Quelle, aber dürfen die KI-Runtime nicht stillschweigend überschreiben.
+
 Wiederverwenden:
 
 - Easing-Charakter

@@ -29,7 +29,7 @@ Bei KI-Kanal-Arbeit gilt:
    - Remotion-Visualbau → `ki/gehirn/REMOTION_VISUAL_SYSTEM.md`
    - Remotion-Implementierung/Render → `ki/skills/remotion-production-orchestration/SKILL.md` + `ki/gehirn/WERKZEUGE.md`
    - Creative Review → `ki/gehirn/CREATIVE_QA.md`
-   - YouTube Longform → `ki/youtube-longform/AGENTS.md`
+   - YouTube Longform → `ki/youtube-longform/AGENTS.md` + `ki/gehirn/YOUTUBE_VISUAL_LANGUAGE.md` + `ki/gehirn/APPROVED_KI_VISUALS.md`
    - Plattform/Publishing → `ki/gehirn/PLATTFORMEN.md` + `ki/plattformen/AGENTS.md`
 6. das ausdrücklich genannte Reel/Longform-Video/Format und dessen nächstes `AGENTS.md`
 7. erst danach konkrete Pläne, Source- oder Plattformdateien
@@ -112,9 +112,11 @@ Aktueller Formatstandard:
 - 30 FPS
 - 16:9
 - finale Laufzeit nach echtem Voiceover typischerweise 5:00–6:00 Minuten, wenn das Thema diese Länge trägt
-- finale visuelle Composition in Remotion
-- echte Captures/Quellenmedien bei Bedarf als Layer in Remotion
-- Thumbnail als eigene Composition
+- **YouTube Longform ist das primäre Videoformat des KI-Kanals**
+- finale visuelle Composition vollständig in Remotion
+- Cinematic Editorial Tech nach `ki/gehirn/YOUTUBE_VISUAL_LANGUAGE.md`
+- echte Captures/Quellenmedien nur als Beweis-Layer in Remotion
+- Thumbnail als eigene Remotion-Composition
 
 Aktives erstes Video:
 

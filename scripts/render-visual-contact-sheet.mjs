@@ -26,6 +26,8 @@ const compositionId = args.get('composition') ?? preset?.compositionId;
 const framesRaw = args.get('frames');
 const frames = framesRaw ? framesRaw.split(',').map((value) => Number(value.trim())).filter(Number.isInteger) : preset?.frames;
 const outputDir = path.resolve(args.get('output') ?? preset?.outputDir ?? `out/visual-review/${compositionId ?? 'unknown'}`);
+const layout = args.get('layout') ?? preset?.layout ?? 'portrait';
+const isLandscape = layout === 'landscape';
 const entryPoint = path.resolve('ki/src/production-entry.tsx');
 
 if (!compositionId) throw new Error('missing --composition=<id> or --preset=<name>');
@@ -50,11 +52,11 @@ for (const frame of frames) {
   frameFiles.push({frame, file});
 }
 
-const THUMB_W = 270;
-const THUMB_H = 480;
-const LABEL_H = 52;
+const THUMB_W = isLandscape ? 480 : 270;
+const THUMB_H = isLandscape ? 270 : 480;
+const LABEL_H = isLandscape ? 44 : 52;
 const GAP = 18;
-const COLS = frames.length <= 8 ? 2 : 3;
+const COLS = isLandscape ? (frames.length <= 8 ? 2 : 4) : (frames.length <= 8 ? 2 : 3);
 const ROWS = Math.ceil(frameFiles.length / COLS);
 const sheetWidth = GAP + COLS * (THUMB_W + GAP);
 const sheetHeight = GAP + ROWS * (THUMB_H + LABEL_H + GAP);
@@ -78,7 +80,7 @@ for (let index = 0; index < frameFiles.length; index += 1) {
   const metadata = await sharp(file).metadata();
   const sourceWidth = metadata.width ?? 1080;
   const sourceHeight = metadata.height ?? 1920;
-  const analysisHeight = Math.min(sourceHeight, Math.round(sourceWidth * 4 / 3));
+  const analysisHeight = isLandscape ? sourceHeight : Math.min(sourceHeight, Math.round(sourceWidth * 4 / 3));
   const normalized = await sharp(file)
     .extract({left: 0, top: 0, width: sourceWidth, height: analysisHeight})
     .resize(135, Math.max(1, Math.round(135 * analysisHeight / sourceWidth)), {fit: 'fill'})
@@ -117,13 +119,13 @@ const allWarnings = [
 ];
 
 const reportFile = path.join(outputDir, 'visual-review.json');
-await writeFile(reportFile, `${JSON.stringify({compositionId, frames, sheetFile, frameReports: reports, pairReports, warnings: allWarnings}, null, 2)}\n`, 'utf8');
+await writeFile(reportFile, `${JSON.stringify({compositionId, layout, frames, sheetFile, frameReports: reports, pairReports, warnings: allWarnings}, null, 2)}\n`, 'utf8');
 
 console.log(`\nVISUAL CONTACT SHEET: ${sheetFile}`);
 console.log(`VISUAL REVIEW REPORT: ${reportFile}`);
-console.log('\nFrame metrics (main visual area only; caption/platform-safe bottom is excluded):');
+console.log(isLandscape ? '\nFrame metrics (full 16:9 frame):' : '\nFrame metrics (main visual area only; caption/platform-safe bottom is excluded):');
 for (const report of reports) console.log(`- frame ${report.frame}: cropH=${report.analysisCropHeight}, white=${report.whiteRatio}, edges=${report.edgeDensity}, contrast=${report.luminanceStdDev}, chroma=${report.meanChroma}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log('\nSample-to-sample motion metrics:');
 for (const report of pairReports) console.log(`- ${report.fromFrame}->${report.toFrame}: diff=${report.meanAbsoluteRgbDifference}, warnings=${report.warnings.join(',') || 'none'}`);
 console.log(`\nWarnings: ${allWarnings.length}`);
-console.log('Metrics are review signals, not an automatic creative PASS. Open the contact sheet and inspect hook strength, hero scale, icon/illustration use, archetype variety and contrast.');
+console.log('Metrics are review signals, not an automatic creative PASS. Open the contact sheet and inspect hook strength, hero scale, visual-family variety, chapter resets, readability and contrast.');

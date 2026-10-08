@@ -18,10 +18,12 @@ Diese Datei verbindet Identität, Themenwahl, Story, Fakten, Reel-Logik, Visuals
 12. `BEWEGUNG.md` — Bewegungssprache: Kurven, Takt, Hierarchie, Zurückhaltung
 13. `CREATIVE_QA.md` — Zuschauer-/Retention-Gate nach dem Render
 14. `../youtube-longform/AGENTS.md` — aktiver YouTube-Longform-Produktionsvertrag
-15. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
-16. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
-17. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
-18. named reel/longform package — konkrete Inhalte
+15. `YOUTUBE_VISUAL_LANGUAGE.md` — kanonische Longform-Bildsprache und Motion Direction
+16. `APPROVED_KI_VISUALS.md` — kleiner freigegebener Production-Baukasten
+17. `PLATTFORMEN.md` — Publishing und Plattform-Packaging
+18. `PRODUKTIONSABLAUF.md` — Phase 1/2/3
+19. `WERKZEUGE.md` — welcher Skill und welcher Agent in welchem Schritt
+20. named reel/longform package — konkrete Inhalte
 
 Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 
@@ -50,7 +52,9 @@ Wenn zwei ältere Dokumente kollidieren, gilt diese Reihenfolge. Nicht raten.
 - beste Bildsprache vor dekorativem Asset
 - ein kanonischer Content-Master; Plattformen sind Packaging, keine zweite Produktionswahrheit
 - Short-Form endet, sobald das Versprechen erfüllt ist; 50–60 Sekunden sind erlaubt, aber kein Streckziel
+- **YouTube Longform ist das primäre Videoformat des Kanals**; Short-Form bleibt eigenständig und ergänzend
 - YouTube Longform ist eigenständig und wird nie bloß aus einem Reel aufgeblasen
+- Longform folgt `Cinematic Editorial Tech` statt generischer Dashboard-, Neon- oder Template-Ästhetik
 
 ## Editoriales Current-AI-Gate
 

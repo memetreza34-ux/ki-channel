@@ -1,0 +1,62 @@
+name: Claude Motion Proof 15s
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'CLAUDE.md'
+      - '.claude/skills/motion-director/**'
+      - '.claude/skills/creative-critic/**'
+      - 'ki/src/longform/ai-app-workflow/motionProof/**'
+      - 'ki/src/longform/ai-app-workflow/index.ts'
+      - 'ki/src/ProductionRoot.tsx'
+      - 'ki/gehirn/CLAUDE_MOTION_BENCHMARK.md'
+      - 'scripts/visual-review-presets.mjs'
+      - 'scripts/__tests__/claude-motion-proof.test.mjs'
+      - 'package.json'
+      - '.github/workflows/claude-motion-proof.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: claude-motion-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_INSTALL_FLAGS: '--package-lock=false --legacy-peer-deps --no-audit --no-fund'
+
+jobs:
+  motion-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install canonical workspaces
+        run: npm install $NPM_INSTALL_FLAGS
+      - name: Contract and TypeScript
+        run: npm run claude:motion:proof:check
+      - name: Render real 15-second MP4
+        run: npm run claude:motion:proof:video
+      - name: Upload real MP4 immediately
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-motion-proof-15s-video
+          path: out/claude-motion-proof/motion-proof.mp4
+          if-no-files-found: error
+      - name: Render 16:9 visual contact sheet
+        run: npm run claude:motion:proof:review
+      - name: Upload proof contact sheet
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-motion-proof-15s-review
+          path: |
+            out/claude-motion-proof/contact-sheet.jpg
+            out/claude-motion-proof/visual-review.json
+          if-no-files-found: warn

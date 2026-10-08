@@ -86,7 +86,7 @@ const releaseFinalizer = await readText('scripts/finalize-content-release.mjs');
 const releaseStatus = await readText('scripts/content-release-status.mjs');
 const productionVisualContracts = await readText('scripts/check-production-visual-contracts.mjs');
 const longformProduction = await readText('ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx');
-const longformV2 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx');
+const longformV3 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV3.tsx');
 const longformProfiles = await readText('ki/src/longform/ai-app-workflow/visualProfiles.ts');
 const motionTsconfig = await readText('ki/tsconfig.motion.json');
 
@@ -131,7 +131,7 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vite
 requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','### Phase 1 — ChatGPT','### Phase 2 — Mensch','### Phase 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
 requireMarkers('README.md', rootReadme, ['REPO-STATE.md','plattformen/','YouTube Shorts','platform-copy.md']);
 requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
-requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','verwendet vorhandene Phase-1-Source','platform-copy.md']);
+requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Claude Code / Opus 5.5','VOICEOVER-ZUM-KOPIEREN.txt','verwendet vorhandene Phase-1-Source','platform-copy.md']);
 requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Immer echtes Voiceover.','REMOTION_ANIMATION_CAPABILITIES.md']);
 requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Script-/Plan-only Paket ist nicht Phase-1-fertig.']);
 requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-/Diversity-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
@@ -150,8 +150,8 @@ requireMarkers('verify-content-review-gallery.mjs', reviewGalleryVerifier, ['get
 requireMarkers('finalize-content-release.mjs', releaseFinalizer, ['check-creative-recipe-renders.mjs','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS','version: 2']);
 requireMarkers('content-release-status.mjs', releaseStatus, ['getCreativeRecipeSourceFingerprint','creativeRecipes: recipeState','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS']);
 requireMarkers('check-production-visual-contracts.mjs', productionVisualContracts, ['Root.tsx','visualProfiles.ts','assertAuthoredVisualDiversity','reelModules.length !== 13','longformModules.length !== 1']);
-requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV2'",'AI_APP_WORKFLOW_CHAPTERS']);
-requireMarkers('CreativeVisualsV2.tsx', longformV2, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1100','perspective:1150']);
+requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV3'",'AI_APP_WORKFLOW_CHAPTERS']);
+requireMarkers('CreativeVisualsV3.tsx', longformV3, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1300','darkSurface']);
 requireMarkers('longform visualProfiles.ts', longformProfiles, ['AI_APP_WORKFLOW_VISUAL_PROFILES','primaryPrimitive','cameraMotion','depthStyle','motionSignature']);
 forbidMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './Visuals'"]);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
