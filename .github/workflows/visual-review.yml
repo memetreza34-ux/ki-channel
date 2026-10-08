@@ -8,6 +8,10 @@ on:
       - 'ki/src/visual-system/**'
       - 'ki/src/reels/gpt-5-6-chatgpt/**'
       - 'ki/src/reels/gpt-5-5-retirement/**'
+      - 'ki/src/longform/**'
+      - 'ki/youtube-longform/**'
+      - 'ki/gehirn/YOUTUBE_VISUAL_LANGUAGE.md'
+      - 'ki/gehirn/APPROVED_KI_VISUALS.md'
       - 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/**'
       - 'scripts/render-visual-contact-sheet.mjs'
       - 'scripts/visual-contact-metrics.mjs'
@@ -40,6 +44,10 @@ jobs:
             label: GPT-5.5 retirement
             report: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/visual-review.json
             sheet: ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review/contact-sheet.jpg
+          - preset: aiAppLongform
+            label: AI App Workflow Longform
+            report: ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/05-export/visual-review/visual-review.json
+            sheet: ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/05-export/visual-review/contact-sheet.jpg
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
