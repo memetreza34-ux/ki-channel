@@ -136,7 +136,9 @@ Nur wenn Phase 1 echten Produktbeweis verlangt:
 
 Externe generierte Still-/Motion-Assets sind kein normaler Longform-Pfad.
 
-### Phase 3 — Codex / Antigravity
+### Phase 3 — Claude Code (Opus 5.5)
+
+Claude Code ist der neue Standardagent für neue Longform-Produktionen. Antigravity und Codex bleiben nur als historische Referenzen in älteren Paketen. Vor Source und bei Render-Iteration die Skills `/motion-director` und `/creative-critic` aus `.claude/skills/` verwenden. `CLAUDE.md` ist der Einstieg. Ein Plugin/Modell wird durch Repo-Dokumentation allein nicht installiert oder gestartet.
 
 - reale Medien prüfen
 - Audio messen/analysieren und integrieren
