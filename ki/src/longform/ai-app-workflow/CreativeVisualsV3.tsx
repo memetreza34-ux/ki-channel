@@ -182,8 +182,17 @@ export const ScopeVisual:React.FC=()=>{
       <HeroLabel>Aus fünf Ideen wird<br/><span style={{color:C.purple}}>eine klare Aufgabe.</span></HeroLabel>
     </div>
 
+    <div style={{
+      position:'absolute',right:90,top:80,width:430,height:210,borderRadius:44,
+      background:'linear-gradient(145deg,rgba(255,255,255,.94),rgba(238,230,255,.96))',
+      border:'2px solid rgba(110,69,201,.18)',boxShadow:'0 24px 70px rgba(20,22,33,.08)',
+      opacity:enter*(1-.8*prune),padding:'28px 32px',boxSizing:'border-box',
+    }}>
+      <Kicker>Ausgangslage</Kicker>
+      <div style={{marginTop:12,fontFamily:FONT.display,fontSize:74,fontWeight:900,letterSpacing:-4,color:C.purple}}>5 IDEEN</div>
+    </div>
     <svg viewBox="0 0 1760 880" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
-      <path d="M390 220 L1370 220 L1115 700 L645 700 Z" fill="rgba(110,69,201,.045)" stroke="rgba(110,69,201,.18)" strokeWidth="4" opacity={enter}/>
+      <path d="M390 220 L1370 220 L1115 700 L645 700 Z" fill="rgba(110,69,201,.085)" stroke="rgba(110,69,201,.24)" strokeWidth="6" opacity={enter}/>
       <path d="M645 700 H1115" stroke={C.purple} strokeWidth="14" strokeLinecap="round" strokeDasharray="470" strokeDashoffset={470*(1-lock)}/>
       <path d="M880 260 V620" stroke="rgba(110,69,201,.16)" strokeWidth="3" strokeDasharray="12 16" opacity={flood}/>
     </svg>
@@ -261,15 +270,15 @@ export const FlowVisual:React.FC=()=>{
       <circle cx={x} cy={y} r="34" fill={C.purpleLight} stroke="#fff" strokeWidth="10" opacity={establish}/>
     </svg>
     <div style={{
-      position:'absolute',left:interpolate(transform,[0,1],[1240,1260]),top:500,width:340,height:220,borderRadius:42,
-      background:transform>.45?'linear-gradient(145deg,#ECF7F1,#FFFFFF)':'#fff',
+      position:'absolute',left:interpolate(transform,[0,1],[1190,1210]),top:470,width:470,height:300,borderRadius:48,
+      background:transform>.45?'linear-gradient(145deg,#DDF5E8,#FFFFFF)':'#fff',
       border:`2px solid ${transform>.45?C.success+'55':'rgba(110,69,201,.16)'}`,
       boxShadow:'0 26px 70px rgba(20,22,33,.10)',
       opacity:transform,scale:.78+.22*transform,
       padding:'32px 34px',boxSizing:'border-box',
     }}>
       <Kicker>Zustand</Kicker>
-      <div style={{marginTop:16,fontFamily:FONT.display,fontSize:38,fontWeight:850,color:transform>.55?C.success:C.ink}}>gespeichert</div>
+      <div style={{marginTop:16,fontFamily:FONT.display,fontSize:52,fontWeight:880,letterSpacing:-2,color:transform>.55?C.success:C.ink}}>gespeichert</div>
       <div style={{marginTop:26,height:7,borderRadius:999,background:'rgba(30,131,92,.12)'}}>
         <div style={{height:'100%',width:`${finish*100}%`,borderRadius:999,background:C.success}}/>
       </div>
@@ -294,6 +303,21 @@ export const RepoVisual:React.FC=()=>{
     <div style={{position:'absolute',right:75,top:92,width:560,opacity:reveal}}>
       <Kicker>Repository</Kicker>
       <HeroLabel>Der Code bekommt<br/><span style={{color:C.purple}}>Gedächtnis.</span></HeroLabel>
+    </div>
+    <div style={{
+      position:'absolute',left:110,top:175,width:700,height:430,borderRadius:58,
+      background:'linear-gradient(145deg,#FFFFFF,#EEE7FF)',
+      border:'2px solid rgba(110,69,201,.22)',
+      boxShadow:'0 34px 90px rgba(20,22,33,.11)',
+      opacity:reveal*(1-.88*depth),
+      scale:1-.08*depth,
+      display:'grid',placeItems:'center',
+    }}>
+      <div style={{textAlign:'center'}}>
+        <Kicker>Projekt</Kicker>
+        <div style={{marginTop:14,fontFamily:FONT.code,fontSize:72,fontWeight:820,letterSpacing:-3,color:C.ink}}>repo/</div>
+        <div style={{marginTop:18,fontFamily:FONT.body,fontSize:22,fontWeight:750,color:C.mutedInk}}>Struktur, Dateien, Historie</div>
+      </div>
     </div>
     <div style={{
       position:'absolute',left:80,top:95,width:840,height:680,
@@ -375,15 +399,16 @@ export const BuildVisual:React.FC=()=>{
     </svg>
     <div style={{
       position:'absolute',right:88,top:240,width:500,height:500,borderRadius:96,
-      background:verify>.5?'linear-gradient(145deg,#1E835C,#2D9F73)':'linear-gradient(145deg,#6E45C9,#9270E0)',
-      boxShadow:`0 40px 100px rgba(78,49,145,${.15+.12*build})`,
-      display:'grid',placeItems:'center',opacity:build,
-      translate:`0px ${px((1-build)*85)}`,scale:.76+.24*build,
+      background:verify>.5?'linear-gradient(145deg,#1E835C,#2D9F73)':build>.45?'linear-gradient(145deg,#6E45C9,#9270E0)':'linear-gradient(145deg,#FFFFFF,#F0E8FF)',
+      border:build<.45?'3px solid rgba(110,69,201,.22)':'3px solid transparent',
+      boxShadow:`0 40px 100px rgba(78,49,145,${.10+.17*build})`,
+      display:'grid',placeItems:'center',opacity:.48+.52*Math.max(brief,build),
+      translate:`0px ${px((1-build)*28)}`,scale:.92+.08*build,
     }}>
       <div style={{textAlign:'center',width:360}}>
-        <Kicker dark>Build</Kicker>
-        <div style={{marginTop:20,fontFamily:FONT.display,fontSize:64,fontWeight:900,letterSpacing:-3,color:'#fff'}}>
-          {verify>.62?'BESTANDEN':'BAUEN'}
+        <Kicker dark={build>.45}>Build</Kicker>
+        <div style={{marginTop:20,fontFamily:FONT.display,fontSize:64,fontWeight:900,letterSpacing:-3,color:build>.45?'#fff':C.purple}}>
+          {verify>.62?'BESTANDEN':build>.45?'BAUEN':'ZIEL'}
         </div>
         <div style={{marginTop:34,height:9,borderRadius:999,background:'rgba(255,255,255,.18)'}}>
           <div style={{height:'100%',width:`${Math.round(Math.max(build,verify)*100)}%`,borderRadius:999,background:'#fff'}}/>
@@ -426,7 +451,19 @@ export const TestVisual:React.FC=()=>{
           scale:.78+.22*detect,
         }}/>
       </div>
-      <div style={{position:'absolute',right:80,top:178,width:210,height:84,borderRadius:25,background:C.purple}}/>
+      <div style={{
+        position:'absolute',left:0,right:0,bottom:0,height:verify>.45?250:190,
+        background:verify>.45?'linear-gradient(180deg,rgba(30,131,92,0),rgba(30,131,92,.20))':'linear-gradient(180deg,rgba(217,92,106,0),rgba(217,92,106,.18))',
+        opacity:.85,
+      }}/>
+      <div style={{
+        position:'absolute',right:66,top:154,width:270,height:118,borderRadius:30,
+        background:verify>.45?C.success:C.error,
+        boxShadow:verify>.45?'0 18px 50px rgba(30,131,92,.22)':'0 18px 50px rgba(217,92,106,.20)',
+      }}/>
+      <div style={{position:'absolute',right:96,top:191,fontFamily:FONT.body,fontSize:19,fontWeight:850,color:'#fff'}}>
+        {verify>.45?'VERIFIZIERT':'FEHLER'}
+      </div>
       <div style={{position:'absolute',right:80,top:300,width:210,height:20,borderRadius:999,background:'rgba(20,22,33,.09)'}}/>
       <div style={{position:'absolute',right:80,top:344,width:160,height:20,borderRadius:999,background:'rgba(20,22,33,.07)'}}/>
       <div style={{
@@ -435,8 +472,8 @@ export const TestVisual:React.FC=()=>{
         borderLeft:'2px solid rgba(61,139,255,.45)',opacity:scan,
       }}/>
       <div style={{
-        position:'absolute',left:0,right:0,bottom:0,height:verify*180,
-        background:'linear-gradient(180deg,rgba(30,131,92,0),rgba(30,131,92,.12))',
+        position:'absolute',left:0,top:76,width:`${Math.round(Math.max(detect,verify)*100)}%`,height:8,
+        background:verify>.45?C.success:C.error,opacity:.7,
       }}/>
     </div>
     <div style={{position:'absolute',left:88,bottom:94,display:'flex',gap:14,opacity:detect}}>
@@ -460,9 +497,14 @@ export const BranchVisual:React.FC=()=>{
       <Kicker>Experimentieren</Kicker>
       <HeroLabel>Main bleibt stabil,<br/>während <span style={{color:C.purple}}>du testest.</span></HeroLabel>
     </div>
-    <div style={{position:'absolute',left:530,right:80,top:190,height:520,perspective:1200}}>
+    <div style={{
+      position:'absolute',left:500,right:55,top:165,height:565,perspective:1200,
+      borderRadius:70,
+      background:split>.55?'linear-gradient(145deg,rgba(238,230,255,.72),rgba(255,255,255,.78))':'linear-gradient(145deg,rgba(255,255,255,.72),rgba(61,139,255,.055))',
+      border:'1px solid rgba(110,69,201,.10)',
+    }}>
       <div style={{
-        position:'absolute',left:80,right:80,top:80,height:150,borderRadius:60,
+        position:'absolute',left:60,right:60,top:70,height:180,borderRadius:60,
         background:'linear-gradient(90deg,#FFFFFF,#F0F2F7)',
         border:'2px solid rgba(20,22,33,.10)',boxShadow:'0 30px 70px rgba(20,22,33,.09)',
         rotate:`x ${6-3*split}deg`,
@@ -471,7 +513,7 @@ export const BranchVisual:React.FC=()=>{
         <div style={{position:'absolute',right:45,top:49}}><MiniPill tone="green">geschützt</MiniPill></div>
       </div>
       <div style={{
-        position:'absolute',left:130,right:40,top:270,height:164,borderRadius:62,
+        position:'absolute',left:105,right:20,top:300,height:190,borderRadius:62,
         background:'linear-gradient(90deg,#EEE6FF,#FCFAFF)',
         border:'2px solid rgba(110,69,201,.28)',boxShadow:'0 34px 80px rgba(78,49,145,.13)',
         opacity:split,
@@ -514,13 +556,18 @@ export const FinishVisual:React.FC=()=>{
   ];
   return <div style={{position:'absolute',inset:'-128px -80px -60px -80px',background:`radial-gradient(circle at 50% 48%,#242038 0%,${C.darkSurface} 58%,#0B0C12 100%)`,overflow:'hidden'}}>
     <SoftField x={960} y={540} size={1000} color="rgba(185,140,255,.50)" opacity={.25}/>
-    <div style={{position:'absolute',left:115,top:220,width:570,opacity:enter}}>
+    <div style={{position:'absolute',left:115,top:330,width:590,opacity:enter*(1-.82*gather)}}>
       <Kicker dark>Finale</Kicker>
       <HeroLabel dark>Fertig heißt nicht:<br/><span style={{color:C.purpleLight}}>„es läuft“.</span></HeroLabel>
       <div style={{marginTop:25,fontFamily:FONT.body,fontSize:27,lineHeight:1.35,fontWeight:650,color:'rgba(245,247,251,.62)'}}>
         Fertig heißt: nachvollziehbar überprüft.
       </div>
     </div>
+    <div style={{
+      position:'absolute',right:100,top:260,
+      fontFamily:FONT.display,fontSize:154,fontWeight:920,letterSpacing:-8,
+      color:'rgba(245,247,251,.92)',opacity:enter*(1-gather),scale:.92+.08*enter,
+    }}>FERTIG?</div>
     <svg viewBox="0 0 1920 1080" style={{position:'absolute',inset:0,width:'100%',height:'100%'}}>
       {items.map((item,index)=>{
         const show=p(frame,40+index*45,190+index*45);
