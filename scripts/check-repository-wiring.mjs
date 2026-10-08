@@ -131,7 +131,7 @@ if (vitest.includes("'channels/**/*.{test,spec}.{ts,tsx}'")) failures.push('vite
 requireMarkers('REPO-STATE.md', repoState, ['`main` ist der einzige kanonische Produktionsstand','### Phase 1 — ChatGPT','### Phase 2 — Mensch','### Phase 3 — Codex / Antigravity','ki/plattformen/','03-caption/platform-copy.md']);
 requireMarkers('README.md', rootReadme, ['REPO-STATE.md','plattformen/','YouTube Shorts','platform-copy.md']);
 requireMarkers('ki/README.md', kiReadme, ['kanonischer Einstieg','gehirn/MASTER.md','plattformen/youtube/','Short-Form ist format-first']);
-requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Codex / Antigravity','VOICEOVER-ZUM-KOPIEREN.txt','verwendet vorhandene Phase-1-Source','platform-copy.md']);
+requireMarkers('AGENTS.md', agents, ['Phase 1 — ChatGPT','Phase 2 — Mensch','Phase 3 — Claude Code / Opus 5.5','VOICEOVER-ZUM-KOPIEREN.txt','verwendet vorhandene Phase-1-Source','platform-copy.md']);
 requireMarkers('ki/AGENTS.md', kiAgents, ['ki/gehirn/MASTER.md','PLATTFORMEN.md','01-script-audio/','02-bilder/','06-projektdateien/','Immer echtes Voiceover.','REMOTION_ANIMATION_CAPABILITIES.md']);
 requireMarkers('ki/reels/AGENTS.md', reelAgents, ['PHASE-STATUS.md','VOICEOVER-ZUM-KOPIEREN.txt','image-prompts.md','platform-copy.md','Ein Script-/Plan-only Paket ist nicht Phase-1-fertig.']);
 requireMarkers('ki/src/reels/AGENTS.md', sourceReelAgents, ['Verbindlicher Creative-Director-/Diversity-Pfad','assertAuthoredVisualDiversity','ProductionSceneRuntimeRenderer','CreativeRecipeRuntime','primaryPrimitive','motionSignature','kein alternativer Produktionsweg']);
