@@ -86,7 +86,7 @@ const releaseFinalizer = await readText('scripts/finalize-content-release.mjs');
 const releaseStatus = await readText('scripts/content-release-status.mjs');
 const productionVisualContracts = await readText('scripts/check-production-visual-contracts.mjs');
 const longformProduction = await readText('ki/src/longform/ai-app-workflow/LongformAIAppWorkflow.tsx');
-const longformV2 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV2.tsx');
+const longformV3 = await readText('ki/src/longform/ai-app-workflow/CreativeVisualsV3.tsx');
 const longformProfiles = await readText('ki/src/longform/ai-app-workflow/visualProfiles.ts');
 const motionTsconfig = await readText('ki/tsconfig.motion.json');
 
@@ -150,8 +150,8 @@ requireMarkers('verify-content-review-gallery.mjs', reviewGalleryVerifier, ['get
 requireMarkers('finalize-content-release.mjs', releaseFinalizer, ['check-creative-recipe-renders.mjs','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS','version: 2']);
 requireMarkers('content-release-status.mjs', releaseStatus, ['getCreativeRecipeSourceFingerprint','creativeRecipes: recipeState','creativeRecipeReviewVerified','CONTENT_REVIEW_COUNTS']);
 requireMarkers('check-production-visual-contracts.mjs', productionVisualContracts, ['Root.tsx','visualProfiles.ts','assertAuthoredVisualDiversity','reelModules.length !== 13','longformModules.length !== 1']);
-requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV2'",'AI_APP_WORKFLOW_CHAPTERS']);
-requireMarkers('CreativeVisualsV2.tsx', longformV2, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1100','perspective:1150']);
+requireMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './CreativeVisualsV3'",'AI_APP_WORKFLOW_CHAPTERS']);
+requireMarkers('CreativeVisualsV3.tsx', longformV3, ['HookVisual','ScopeVisual','FlowVisual','RepoVisual','BuildVisual','TestVisual','BranchVisual','FinishVisual','perspective:1300','darkSurface']);
 requireMarkers('longform visualProfiles.ts', longformProfiles, ['AI_APP_WORKFLOW_VISUAL_PROFILES','primaryPrimitive','cameraMotion','depthStyle','motionSignature']);
 forbidMarkers('LongformAIAppWorkflow.tsx', longformProduction, ["from './Visuals'"]);
 requireMarkers('ki/plattformen/AGENTS.md', platformAgents, ['Keine zweite Produktionswahrheit','ki/reels/','youtube/README.md']);
