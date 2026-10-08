@@ -44,7 +44,7 @@ Schritt 17 ist kein Release-Gate. Er verbessert zukünftige Themen-, Hook- und V
 
 ## YouTube Longform mit Claude Code (Opus 5.5)
 
-Für neue YouTube-Produktionen ist **Claude Code** der aktive Coding-/Motion-Agent; `CLAUDE.md` ist sein Root-Einstieg. Das Remotion-Plugin ist ein optionaler externer Setup-Schritt des Operators und nicht durch das Repo installiert.
+Für neue YouTube-Produktionen ist **Claude Code** der aktive Coding-/Motion-Agent; **CLAUDE.md** ist sein Root-Einstieg. Das Remotion-Plugin ist ein optionaler externer Setup-Schritt des Operators und nicht durch das Repo installiert.
 
 | Produktionsschritt | Claude-Skill | Ergebnis |
 |---|---|---|
