@@ -12,7 +12,7 @@ export const VISUAL_REVIEW_PRESETS = Object.freeze({
   claudeMotionProof: {
     compositionId: 'KI-Claude-Motion-Proof-15s',
     layout: 'landscape',
-    frames: [0, 28, 65, 106, 120, 152, 192, 225, 245, 280, 325, 344, 380, 410, 449],
+    frames: [0, 45, 102, 120, 170, 224, 265, 330, 390, 449],
     outputDir: 'out/claude-motion-proof',
   },
   aiAppLongform: {
