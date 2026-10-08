@@ -9,6 +9,12 @@ export const VISUAL_REVIEW_PRESETS = Object.freeze({
     frames: [30, 120, 210, 330, 390, 510, 570, 690, 750, 870, 930, 1050],
     outputDir: 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review',
   },
+  claudeMotionProof: {
+    compositionId: 'KI-Claude-Motion-Proof-15s',
+    layout: 'landscape',
+    frames: [0, 28, 65, 106, 120, 152, 192, 225, 245, 280, 325, 344, 380, 410, 449],
+    outputDir: 'out/claude-motion-proof',
+  },
   aiAppLongform: {
     compositionId: 'KI-Longform-AIAppWorkflow',
     layout: 'landscape',
