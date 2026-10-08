@@ -154,7 +154,7 @@ export const HookVisual:React.FC=()=>{
     </div>
 
     <div style={{
-      position:'absolute',left:118,rigth:0,bottom:38,
+      position:'absolute',left:118,bottom:38,
       display:'flex',gap:14,opacity:resolve,
     }}>
       <MiniPill>Prompt</MiniPill><MiniPill tone="blue">Struktur</MiniPill><MiniPill tone="green">prüfbares System</MiniPill>
