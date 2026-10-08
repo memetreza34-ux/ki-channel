@@ -1,6 +1,5 @@
 import React,{useMemo} from 'react';
 import {AbsoluteFill,Html5Audio,Sequence,useCurrentFrame} from 'remotion';
-import {BRAND} from '../../../brand/brand';
 import {AI_APP_WORKFLOW_CHAPTERS,type LongformChapter} from './contract';
 import {BranchVisual,BuildVisual,FinishVisual,FlowVisual,HookVisual,RepoVisual,ScopeVisual,TestVisual} from './CreativeVisualsV2';
 import {easedProgress} from '../../motion/easing';
