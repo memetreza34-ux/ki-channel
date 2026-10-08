@@ -1,7 +1,7 @@
 import React,{useMemo} from 'react';
 import {AbsoluteFill,Html5Audio,Sequence,useCurrentFrame} from 'remotion';
 import {AI_APP_WORKFLOW_CHAPTERS,type LongformChapter} from './contract';
-import {BranchVisual,BuildVisual,FinishVisual,FlowVisual,HookVisual,RepoVisual,ScopeVisual,TestVisual} from './CreativeVisualsV2';
+import {BranchVisual,BuildVisual,FinishVisual,FlowVisual,HookVisual,RepoVisual,ScopeVisual,TestVisual} from './CreativeVisualsV3';
 import {easedProgress} from '../../motion/easing';
 import {SignalThread} from '../SignalThread';
 import {YOUTUBE_VISUAL_LANGUAGE} from '../visualLanguage';
@@ -17,12 +17,14 @@ const visuals:Record<LongformChapter['id'],React.FC>={
   finish:FinishVisual,
 };
 
-const signalThreadChapters = new Set<LongformChapter['id']>(['hook','flow','repo','branch','finish']);
+const signalThreadChapters = new Set<LongformChapter['id']>(['hook','flow','repo','branch']);
+const darkChapters = new Set<LongformChapter['id']>(['finish']);
 
 const Chapter:React.FC<{chapter:LongformChapter;index:number}>=({chapter,index})=>{
   const frame=useCurrentFrame();
   const enter=easedProgress(frame,0,18);
   const Visual=visuals[chapter.id];
+  const dark=darkChapters.has(chapter.id);
 
   return <AbsoluteFill>
     <div
@@ -43,7 +45,7 @@ const Chapter:React.FC<{chapter:LongformChapter;index:number}>=({chapter,index})
           fontWeight:750,
           fontSize:18,
           letterSpacing:2.2,
-          color:YOUTUBE_VISUAL_LANGUAGE.colors.purple,
+          color:dark?YOUTUBE_VISUAL_LANGUAGE.colors.purpleLight:YOUTUBE_VISUAL_LANGUAGE.colors.purple,
         }}
       >
         {String(index+1).padStart(2,'0')}
@@ -63,7 +65,7 @@ const Chapter:React.FC<{chapter:LongformChapter;index:number}>=({chapter,index})
           fontWeight:800,
           fontSize:36,
           letterSpacing:-1.1,
-          color:YOUTUBE_VISUAL_LANGUAGE.colors.ink,
+          color:dark?YOUTUBE_VISUAL_LANGUAGE.colors.lightInk:YOUTUBE_VISUAL_LANGUAGE.colors.ink,
         }}
       >
         {chapter.title}
