@@ -9,6 +9,12 @@ export const VISUAL_REVIEW_PRESETS = Object.freeze({
     frames: [30, 120, 210, 330, 390, 510, 570, 690, 750, 870, 930, 1050],
     outputDir: 'ki/reels/2026-09-21_bis_2026-09-27/04_GPT-5-5-fliegt-aus-ChatGPT-raus/05-export/visual-review',
   },
+  aiAppLongform: {
+    compositionId: 'KI-Longform-AIAppWorkflow',
+    layout: 'landscape',
+    frames: [120, 620, 900, 1950, 2250, 3150, 3450, 4380, 4680, 6030, 6300, 7500, 7800, 8420, 8700, 9750],
+    outputDir: 'ki/youtube-longform/2026-08-16/01_Mit-KI-eine-App-bauen/05-export/visual-review',
+  },
 });
 
 export const getVisualReviewPreset = (name) => {
