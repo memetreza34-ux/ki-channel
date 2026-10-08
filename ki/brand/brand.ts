@@ -10,8 +10,12 @@ export const BRAND = {
   font:     FONT.body,
   // Full typography palette for new code that explicitly distinguishes display/body.
   fonts:    FONT,
-  titleFont: FONT.title,
+  // KI-Longform nutzt bewusst Inter auch als Display-Schrift.
+  // Bebas Neue bleibt im Shared Core verfügbar, ist aber keine KI-Default-Typografie mehr.
+  titleFont: FONT.body,
+  displayFont: FONT.body,
   bodyFont:  FONT.body,
+  codeFont: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
   // Theme:
   accent:   '#B98CFF',       // 🟣 Lila — premium/besonders
   accentDk: '#6E45C9',
