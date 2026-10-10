@@ -12,6 +12,14 @@ Mit Arman auf Deutsch, kurz und klar.
 
 Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in einem eigenen Projekt bauen.
 
+## Drei Phasen (jedes Kanal-Video)
+
+Armans Ordner (wie bei FinanzNeo): `kanal/youtube/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `export/` (siehe `kanal/README.md`).
+
+1. **Phase 1 – Skript (Claude, ohne Freigabe-Stopps):** Thema, Recherche, `studio/projekte/<thema>/skript.md` (Fakten + Quelle + Datum, Szenenplan), Kanal-Ordner anlegen, `audio/script.txt` (nur Sprechtext, Absätze mit Leerzeile, 1:1 kopierbar) + `audio/LIES-MICH.txt`. **Keine Animation, kein Render.** Dann auf Armans Audio warten.
+2. **Phase 2 – Audio (Arman):** Aufnahme in `audio/` (eine Datei oder `1.m4a … n.m4a`).
+3. **Phase 3 – Video (Claude):** Audio säubern → Wortzeiten → Absatzgrenzen → Szenen direkt auf die echte Stimme bauen, Sounds (keine Musik), ansehen, Render, -14 LUFS. `export/` füllen: `video.mp4`, `cover.png` (1280×720), `caption.txt` (Titel, Beschreibung, Kapitel mit Zeiten, Quellen, 5 Hashtags), `untertitel-zeitstempel.txt` (`00:00 Satz` je Zeile, wie FinanzNeo).
+
 ## Ablauf (eigenes Projekt)
 
 1. **Briefing klären:** Thema, Kernaussage in einem Satz, Format, Länge, Plattform. Fehlt etwas Wichtiges → fragen, sonst sinnvoll annehmen und sagen.
@@ -124,3 +132,34 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 - Einstieg: `studio/studio-entry.ts` → `studio/StudioRoot.tsx` (diese Benennung braucht Remotion Studio, um Formular-Änderungen speichern zu können – nicht umbenennen). Änderungen im Studio-Formular von `Spot`/`Erklaerer` landen automatisch in `StudioRoot.tsx`.
 - Renders (`studio/out`), Audio und `whisper.cpp/` bleiben lokal (gitignored).
 - Git: Arbeitsbranch, kein Push/Merge nach `main` ohne Armans OK.
+
+## Stimme & Musik
+
+- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json`, erzeugt Musik in neuer Länge und Wortzeiten. Videos, die auf Piper-Zeiten gebaut sind (`absaetze-piper.json`), rechnen alle Zeiten absatzweise auf die Aufnahme um (siehe `echt()`/`piperZeit()` in `wie-denkt-ki/Video.tsx`). Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
+- **Keine eigene Stimme:** Die Stimme spricht immer Arman (Entscheidung 2026-10-10). Kein Piper/TTS im Video, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
+- **Musik: standardmäßig KEINE** (Arman, 2026-10-10: „am besten gar nicht“). Nur auf ausdrücklichen Wunsch, dann sehr leise. Werkzeug: `python3 studio/scripts/musik-kanal.py <ziel.wav> <länge_s> <abschnitte.json>` – eigener Groove (92 BPM), Abschnitte `groove`, `dunkel`, `outro` aus den Absatzzeiten setzen.
+- **Sounds/Toki-Stimme/Sound-Logo:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES`.
+- ElevenLabs-MCP ist derzeit falsch eingerichtet (und Gratis-Konto ohne Bibliotheksstimmen) – nicht darauf verlassen.
+
+## Kanal-Look (Standard für neue Videos)
+
+`projekte/kanal-look/stil.tsx`: `KANAL`, `SERIEN` (News Blau, Tool-Test Lila, Erklärt Gelb, Recht Grün), `Toki` (Arme, Gesichter, Atmen, Blinzeln), `Shape`, `Hintergrund`. Bausteine `Karte`, `Stempel`, `Sprechblase` aus `kanal-look/Serien.tsx`. Vorbild für ein ganzes Video: `projekte/wie-denkt-ki/Video.tsx` (eine durchgehende Welt, Kamera fährt von Station zu Station, alle Zeiten in Sekunden aus `absaetze.json`).
+
+Gelernt beim ersten Video:
+- Toki-Laute nur in Sprechpausen zwischen Absätzen setzen, sonst kollidieren sie mit der Stimme.
+- `Karte` mit eigenem `style.opacity`: wird mit der Einblendung multipliziert (früher überschrieben → Karte war vor ihrem Auftritt sichtbar).
+- Kamerafahrten immer auch **mitten in der Fahrt** ansehen (`look --frames=…`), nicht nur an den Stationen.
+- Breite Inhalte (Token-Sätze, Satz mit Slots) vorher durchrechnen: lieber feste Breiten pro Chip, dann stimmen Flugziele und Ränder.
+- Ende: Lautheit des fertigen MP4 auf -14 LUFS (YouTube) bringen, Untertitel als `.srt` aus Skript + `absaetze.json` erzeugen.
+
+Gelernt beim zweiten Video („Warum KI lügt“, Armans Feedback: Anfang zu wenig Motion):
+- **Die ersten 30 Sekunden sind die wichtigsten:** alle 2–3 s eine sichtbare Bewegung (Objekt fliegt rein, Kamera zoomt, Stempel knallt mit Wackeln), nicht nur Karten mit Text. Lieber eine kleine Szene (Gerichtssaal mit Richtertisch, Akte landet) als ein Dokument-Fenster.
+- **Toki ab Sekunde 0:** nicht erst nach 40 s auftreten lassen. Toki spielt im Hook mit (trägt die Akte, erschrickt beim Stempel).
+- **Kein festes Muster pro Station:** nicht immer Überschrift + weiße Karte + Toki rechts. Abwechseln mit Vollbild-Momenten, großer Schrift, Zoom auf ein Detail, geteiltem Bild.
+- **Kamera auch innerhalb einer Station:** auf das Element zoomen, über das gerade gesprochen wird (`CameraRig`), nicht nur seitlich zwischen Stationen fahren.
+- **Keine leeren Karten:** Karte erscheint erst mit ihrem Inhalt, nicht Sekunden vorher leer.
+- **Weniger Text, mehr Bild:** gesprochene Sätze nicht als Text wiederholen; Icons, Objekte, Zahlen statt Sätze.
+- **Toki handelt:** zeigt, trägt, schiebt, reagiert – nicht nur daneben stehen und gucken.
+- **Prüfen:** die ersten 30 s Sekunde für Sekunde ansehen (`look --range=0-900 --count=30`), dazu den Agenten `video-kritiker` vor der Abgabe.
+- **Aufnahme:** Arman nimmt in 24 kHz auf → in der Aufnahme-App „Hohe Qualität/Verlustfrei“ einstellen.
+- **Gleiches Design, aber zum Thema passend (Arman):** Kanal-Look bleibt (hell, Inter, Toki, Serienfarbe, Karten). Innerhalb davon jedes Video individuell gestalten: eigene Themen-Welt und Requisiten (z. B. Gericht → Richtertisch, Akten, Hammer; Weltall → Sterne, Teleskop), passende Hintergrundformen, Toki mit Themen-Accessoire (Richterhut, Lupe, Helm), eigene Übergänge, die zum Thema passen. Nie ein Fremd-Design – immer Kanal-Look + Thema.

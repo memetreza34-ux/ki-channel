@@ -1,4 +1,4 @@
-// Automatisch erzeugt von: node studio/scripts/icons.mjs --lottie-index
+// Automatisch erzeugt von: npm run icons -- --lottie
 // Liste der Dateien in studio/public/lottie/.
 
 export const LOTTIE_EMOJI = ["augen","blitz","bombe","chart","daumen","erde","feuer","funkeln","gehirn","geldfluegel","geschenk","glocke","gluehbirne","haende","haken","herz","hundert","klatschen","knall","konfetti","kopf-explodiert","kreuz","kristallkugel","laptop","muskel","nachdenken","pokal","rakete","regenbogen","roboter","sanduhr","schloss","sirene","sprechblase","stern","warnung","wecker","werkzeug","winken","zahnrad","ziel"] as const;

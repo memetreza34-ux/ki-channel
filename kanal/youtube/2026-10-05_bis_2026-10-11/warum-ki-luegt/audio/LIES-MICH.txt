@@ -1,0 +1,8 @@
+So geht's:
+1. script.txt öffnen und 1 zu 1 vorlesen (oder in deine App kopieren).
+2. Aufnahme in DIESEN Ordner legen – eine Datei (z. B. voiceover.m4a) reicht.
+   Wenn du lieber absatzweise aufnimmst: 1.m4a, 2.m4a, … geht auch.
+3. Claude Bescheid sagen: „Audio ist drin, mach Phase 3“.
+
+Aussprache: „Bard“ = englisch Baard · „James-Webb“ = Dschäims Webb · „Air Canada“ = englisch · „KI“ = Ka-I · „Toki“ = Tooo-ki
+Tipps: ruhiger Raum, Handy ca. 20 cm vor dem Mund, etwas langsamer als normal, freundlich wie zu einem Freund.

@@ -20,7 +20,10 @@ Du bist ein erfahrener Motion-Designer und prüfst ein Erklärvideo aus `studio/
 - leere Flächen oder Gedränge, klarer Blickfang pro Szene
 - sichtbare Veränderung pro Szene (Start → Veränderung → Ergebnis) – oder steht es nur rum?
 - doppelter Text, Text-Rollen (Überschrift / Untertitel / Label)
-- Frame 0 / Hook
+- Frame 0 / Hook – und die ersten 30 Sekunden: passiert alle 2–3 s etwas Sichtbares? Ist Toki von Anfang an dabei und aktiv?
+- Abwechslung: wiederholt sich dasselbe Stations-Layout (Überschrift + Karte + Toki rechts) zu oft? Gibt es Zooms/Vollbild-Momente?
+- leere Karten (Karte steht da, Inhalt kommt erst später), zu viel Text statt Bild
+- passt die Gestaltung zum Thema (Themen-Welt, Requisiten) und bleibt trotzdem im Kanal-Look?
 - Konsistenz von Farben, Größen, Positionen zwischen Szenen
 - inhaltliche Fehler, Tippfehler, unbelegte Zahlen
 

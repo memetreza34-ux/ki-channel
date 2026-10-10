@@ -44,3 +44,4 @@ __pycache__/
 
 # ---- Rohe Asset-Pakete (lokal, Auswahl liegt in studio/public) ----
 studio/assets-roh/
+tts/
