@@ -1,0 +1,651 @@
+1
+00:00:00,000 --> 00:00:03,680
+New York, im Jahr 2023.
+
+2
+00:00:03,730 --> 00:00:05,684
+Ein Anwalt reicht vor Gericht einen Schriftsatz ein
+
+3
+00:00:05,734 --> 00:00:08,309
+voller Urteile, die seine Argumente stützen.
+
+4
+00:00:08,359 --> 00:00:09,509
+Das Problem:
+
+5
+00:00:09,560 --> 00:00:12,269
+Diese Urteile gibt es nicht.
+
+6
+00:00:12,320 --> 00:00:15,629
+Er hatte sie sich von ChatGPT heraussuchen lassen.
+
+7
+00:00:15,679 --> 00:00:19,339
+Und ChatGPT hatte sie einfach erfunden.
+
+8
+00:00:19,390 --> 00:00:22,259
+Mit Namen, Aktenzeichen, Zitaten.
+
+9
+00:00:22,309 --> 00:00:24,620
+Am Ende mussten er und sein Kollege eine Strafe
+
+10
+00:00:24,670 --> 00:00:26,820
+von fünftausend Dollar zahlen.
+
+11
+00:00:26,870 --> 00:00:29,289
+Das nennt man Halluzinieren:
+
+12
+00:00:29,339 --> 00:00:31,059
+Eine KI sagt etwas Falsches
+
+13
+00:00:31,109 --> 00:00:33,550
+und klingt dabei völlig überzeugt.
+
+14
+00:00:33,600 --> 00:00:35,020
+Heute schauen wir uns an,
+
+15
+00:00:35,070 --> 00:00:38,060
+warum das passiert, wo es besonders oft passiert,
+
+16
+00:00:38,109 --> 00:00:40,750
+und wie du dich mit fünf einfachen Regeln davor
+
+17
+00:00:40,799 --> 00:00:41,320
+schützt.
+
+18
+00:00:41,369 --> 00:00:42,810
+Toki ist wieder dabei.
+
+19
+00:00:42,859 --> 00:00:46,340
+Kurz zur Erinnerung aus dem letzten Video:
+
+20
+00:00:46,390 --> 00:00:48,780
+Eine KI wie ChatGPT schlägt nichts nach.
+
+21
+00:00:48,829 --> 00:00:50,870
+Sie sagt Stück für Stück vorher,
+
+22
+00:00:50,920 --> 00:00:54,130
+welches Wort am wahrscheinlichsten als Nächstes kommt.
+
+23
+00:00:54,179 --> 00:00:56,530
+Genau daraus entstehen Halluzinationen.
+
+24
+00:00:56,579 --> 00:00:58,740
+Und zwar aus vier Gründen.
+
+25
+00:00:58,789 --> 00:00:59,750
+Grund eins:
+
+26
+00:00:59,799 --> 00:01:02,150
+Die KI hat ihr Wissen nicht gespeichert wie ein
+
+27
+00:01:02,200 --> 00:01:02,830
+Lexikon.
+
+28
+00:01:02,880 --> 00:01:05,859
+Beim Training hat sie riesige Mengen Text gelesen und
+
+29
+00:01:05,909 --> 00:01:07,460
+daraus Muster gelernt.
+
+30
+00:01:07,510 --> 00:01:09,900
+Dinge, die tausendfach im Internet stehen,
+
+31
+00:01:09,950 --> 00:01:11,430
+sitzen fest – zum Beispiel,
+
+32
+00:01:11,480 --> 00:01:13,799
+dass Berlin die Hauptstadt von Deutschland ist.
+
+33
+00:01:13,849 --> 00:01:15,710
+Aber Dinge, die selten vorkommen,
+
+34
+00:01:15,760 --> 00:01:16,780
+verschwimmen.
+
+35
+00:01:16,829 --> 00:01:19,390
+Der Geburtstag einer wenig bekannten Person.
+
+36
+00:01:19,439 --> 00:01:21,620
+Das Aktenzeichen eines bestimmten Urteils.
+
+37
+00:01:21,670 --> 00:01:25,409
+Davon hat die KI nur eine ungefähre Vorstellung.
+
+38
+00:01:25,459 --> 00:01:26,430
+Grund zwei:
+
+39
+00:01:26,480 --> 00:01:28,960
+Die KI muss immer weiterreden.
+
+40
+00:01:29,010 --> 00:01:31,424
+Sie berechnet für jedes nächste Wort Wahrscheinlichkeiten
+
+41
+00:01:31,474 --> 00:01:33,130
+und wählt eins aus.
+
+42
+00:01:33,180 --> 00:01:36,070
+Auch dann, wenn keines davon wirklich sicher ist.
+
+43
+00:01:36,120 --> 00:01:38,549
+Es gibt in diesem Moment keine eingebaute Stelle,
+
+44
+00:01:38,599 --> 00:01:39,469
+an der sie merkt:
+
+45
+00:01:39,519 --> 00:01:40,829
+Hier weiß ich nichts.
+
+46
+00:01:40,879 --> 00:01:43,090
+Also entsteht ein Satz, der gut klingt.
+
+47
+00:01:43,140 --> 00:01:45,269
+Ob er stimmt, ist eine andere Frage.
+
+48
+00:01:45,319 --> 00:01:48,120
+Grund drei ist überraschend.
+
+49
+00:01:48,170 --> 00:01:52,210
+Forscher von OpenAI haben im September 2025 gezeigt:
+
+50
+00:01:52,260 --> 00:01:55,240
+Die Tests, mit denen KIs bewertet werden,
+
+51
+00:01:55,290 --> 00:01:56,750
+belohnen oft das Raten.
+
+52
+00:01:56,799 --> 00:01:58,460
+Stell dir eine Prüfung vor.
+
+53
+00:01:58,510 --> 00:02:01,540
+Für eine richtige Antwort gibt es einen Punkt.
+
+54
+00:02:01,590 --> 00:02:03,469
+Für „Weiß ich nicht“ gibt es null Punkte.
+
+55
+00:02:03,519 --> 00:02:05,290
+Und für eine falsche Antwort
+
+56
+00:02:05,340 --> 00:02:06,350
+auch null.
+
+57
+00:02:06,400 --> 00:02:07,790
+Was lohnt sich dann?
+
+58
+00:02:07,840 --> 00:02:08,310
+Raten.
+
+59
+00:02:08,360 --> 00:02:10,509
+Fragt man eine KI nach einem Geburtstag,
+
+60
+00:02:10,560 --> 00:02:12,439
+den sie nicht kennt, und sie rät einfach ein
+
+61
+00:02:12,490 --> 00:02:16,289
+Datum, liegt sie in einem von 365 Fällen richtig.
+
+62
+00:02:16,340 --> 00:02:18,879
+Mit „Weiß ich nicht“ liegt sie nie richtig.
+
+63
+00:02:18,930 --> 00:02:21,989
+Über tausende Fragen sieht das ratende Modell auf der
+
+64
+00:02:22,039 --> 00:02:23,839
+Punktetafel besser aus.
+
+65
+00:02:23,889 --> 00:02:24,479
+Grund vier:
+
+66
+00:02:24,530 --> 00:02:26,469
+Der Tonfall verrät nichts.
+
+67
+00:02:26,520 --> 00:02:30,359
+Eine richtige und eine erfundene Antwort klingen bei einer
+
+68
+00:02:30,409 --> 00:02:31,729
+KI oft genau gleich:
+
+69
+00:02:31,780 --> 00:02:33,989
+freundlich, flüssig, selbstsicher.
+
+70
+00:02:34,039 --> 00:02:37,310
+Bei Menschen hören wir Unsicherheit manchmal heraus
+
+71
+00:02:37,360 --> 00:02:40,500
+ein Zögern, ein „ich glaube“.
+
+72
+00:02:40,550 --> 00:02:43,889
+Bei der KI fehlt dieses Warnsignal meistens.
+
+73
+00:02:43,939 --> 00:02:45,099
+Mach mal den Test.
+
+74
+00:02:45,150 --> 00:02:47,109
+Hier sind zwei Sätze über den Eiffelturm.
+
+75
+00:02:47,159 --> 00:02:47,829
+Satz A:
+
+76
+00:02:47,879 --> 00:02:51,839
+Der Eiffelturm ist rund dreihundertdreißig Meter hoch.
+
+77
+00:02:51,889 --> 00:02:52,349
+Satz B:
+
+78
+00:02:52,400 --> 00:02:55,750
+Der Eiffelturm wurde im Jahr 1902 eröffnet.
+
+79
+00:02:55,800 --> 00:02:58,289
+Beide klingen gleich sicher, oder?
+
+80
+00:02:58,340 --> 00:02:59,949
+Richtig ist nur Satz A.
+
+81
+00:03:00,000 --> 00:03:03,189
+Eröffnet wurde der Turm schon 1889.
+
+82
+00:03:03,240 --> 00:03:06,129
+Genau so fühlt sich eine Halluzination an:
+
+83
+00:03:06,180 --> 00:03:09,019
+Man sieht ihr den Fehler nicht an.
+
+84
+00:03:09,069 --> 00:03:11,359
+Und das hat schon echte Folgen gehabt.
+
+85
+00:03:11,409 --> 00:03:14,729
+Im Februar 2023 stellte Google seinen Chatbot Bard in
+
+86
+00:03:14,780 --> 00:03:16,479
+einem Werbevideo vor.
+
+87
+00:03:16,530 --> 00:03:20,530
+Darin behauptete Bard, das James-Webb-Teleskop habe die ersten Fotos
+
+88
+00:03:20,580 --> 00:03:24,349
+eines Planeten außerhalb unseres Sonnensystems gemacht.
+
+89
+00:03:24,400 --> 00:03:27,649
+Falsch – solche Fotos gab es schon 2004.
+
+90
+00:03:27,699 --> 00:03:31,049
+Am selben Tag verlor Googles Mutterkonzern an der Börse
+
+91
+00:03:31,099 --> 00:03:33,569
+rund hundert Milliarden Dollar an Wert.
+
+92
+00:03:33,620 --> 00:03:34,709
+Oder Air Canada.
+
+93
+00:03:34,759 --> 00:03:37,469
+Der Chatbot der Fluglinie erklärte einem Kunden,
+
+94
+00:03:37,520 --> 00:03:40,569
+er könne einen Rabatt für einen Trauerfall auch nachträglich
+
+95
+00:03:40,620 --> 00:03:41,280
+beantragen.
+
+96
+00:03:41,330 --> 00:03:42,310
+Das stimmte nicht.
+
+97
+00:03:42,360 --> 00:03:44,429
+Die Airline wollte nicht zahlen und meinte,
+
+98
+00:03:44,479 --> 00:03:47,469
+der Chatbot sei für seine Aussagen selbst verantwortlich.
+
+99
+00:03:47,520 --> 00:03:50,549
+Das Schiedsgericht sah das 2024 anders:
+
+100
+00:03:50,599 --> 00:03:52,264
+Der Chatbot ist Teil der Webseite
+
+101
+00:03:52,314 --> 00:03:54,109
+also haftet die Firma.
+
+102
+00:03:54,159 --> 00:03:56,069
+Wo musst du besonders aufpassen?
+
+103
+00:03:56,120 --> 00:03:57,989
+Erstens bei Quellen:
+
+104
+00:03:58,039 --> 00:04:02,599
+Links, Buchtitel, Studien und Zitate werden gern erfunden.
+
+105
+00:04:02,650 --> 00:04:05,310
+Zweitens bei genauen Zahlen und Daten.
+
+106
+00:04:05,360 --> 00:04:10,169
+Drittens bei Nischenwissen, über das wenig geschrieben wurde.
+
+107
+00:04:10,219 --> 00:04:12,629
+Viertens bei ganz aktuellen Ereignissen,
+
+108
+00:04:12,680 --> 00:04:14,919
+die nach dem Training passiert sind.
+
+109
+00:04:14,969 --> 00:04:17,509
+Und fünftens bei Fragen zu bestimmten Personen.
+
+110
+00:04:17,560 --> 00:04:19,430
+Wird das besser?
+
+111
+00:04:19,480 --> 00:04:20,229
+Ja.
+
+112
+00:04:20,279 --> 00:04:23,800
+Viele KIs können inzwischen im Internet suchen und zeigen
+
+113
+00:04:23,850 --> 00:04:24,969
+dir ihre Quellen.
+
+114
+00:04:25,019 --> 00:04:27,680
+Neuere Modelle denken vor der Antwort länger nach und
+
+115
+00:04:27,730 --> 00:04:29,139
+erfinden seltener etwas.
+
+116
+00:04:29,189 --> 00:04:29,759
+Aber:
+
+117
+00:04:29,810 --> 00:04:33,360
+Selbst die Hersteller sagen, dass Halluzinationen weiter vorkommen.
+
+118
+00:04:33,410 --> 00:04:35,050
+Null wird es so schnell nicht.
+
+119
+00:04:35,100 --> 00:04:38,360
+Und Vorsicht bei einem beliebten Trick:
+
+120
+00:04:38,410 --> 00:04:40,680
+einfach nachfragen, „Bist du sicher?“.
+
+121
+00:04:40,730 --> 00:04:41,750
+Das hilft manchmal.
+
+122
+00:04:41,800 --> 00:04:44,449
+Aber oft entschuldigt sich die KI dann sofort und
+
+123
+00:04:44,500 --> 00:04:46,604
+ändert eine richtige Antwort in eine falsche
+
+124
+00:04:46,654 --> 00:04:48,500
+nur weil du gezweifelt hast.
+
+125
+00:04:48,550 --> 00:04:50,329
+Sie will dir gefallen.
+
+126
+00:04:50,379 --> 00:04:53,389
+Nachfragen ersetzt also kein Nachprüfen.
+
+127
+00:04:53,439 --> 00:04:56,680
+Darum hier fünf Regeln, mit denen du sicher bist.
+
+128
+00:04:56,730 --> 00:04:57,459
+Regel eins:
+
+129
+00:04:57,509 --> 00:04:58,819
+Lass dir Quellen geben
+
+130
+00:04:58,870 --> 00:05:00,310
+und öffne sie wirklich.
+
+131
+00:05:00,360 --> 00:05:02,719
+Ein Link, der nicht funktioniert,
+
+132
+00:05:02,769 --> 00:05:04,209
+ist ein Warnzeichen.
+
+133
+00:05:04,259 --> 00:05:04,990
+Regel zwei:
+
+134
+00:05:05,040 --> 00:05:07,229
+Erlaube der KI, nichts zu wissen.
+
+135
+00:05:07,279 --> 00:05:08,289
+Schreib zum Beispiel dazu:
+
+136
+00:05:08,339 --> 00:05:09,849
+„Wenn du dir nicht sicher bist,
+
+137
+00:05:09,899 --> 00:05:11,750
+sag es.“ Das senkt die Gefahr,
+
+138
+00:05:11,800 --> 00:05:12,469
+dass sie rät.
+
+139
+00:05:12,519 --> 00:05:13,300
+Regel drei:
+
+140
+00:05:13,350 --> 00:05:15,019
+Gib ihr den Text selbst.
+
+141
+00:05:15,069 --> 00:05:18,029
+Wenn die KI ein Dokument zusammenfassen soll,
+
+142
+00:05:18,079 --> 00:05:20,819
+füge es ein, statt sie aus dem Gedächtnis antworten
+
+143
+00:05:20,870 --> 00:05:21,420
+zu lassen.
+
+144
+00:05:21,470 --> 00:05:23,349
+Dann arbeitet sie mit echten Fakten.
+
+145
+00:05:23,399 --> 00:05:24,420
+Regel vier:
+
+146
+00:05:24,470 --> 00:05:27,389
+Prüfe Wichtiges an einer zweiten Stelle.
+
+147
+00:05:27,439 --> 00:05:29,529
+Eine Zahl, ein Datum, ein Name
+
+148
+00:05:29,579 --> 00:05:33,019
+kurz gegenchecken dauert eine Minute.
+
+149
+00:05:33,069 --> 00:05:34,009
+Und Regel fünf:
+
+150
+00:05:34,060 --> 00:05:37,430
+Bei Gesundheit, Recht und Geld ist die KI höchstens
+
+151
+00:05:37,480 --> 00:05:38,639
+ein Startpunkt.
+
+152
+00:05:38,689 --> 00:05:41,689
+Die Entscheidung triffst du mit einer echten Fachperson.
+
+153
+00:05:41,740 --> 00:05:42,750
+Halten wir fest:
+
+154
+00:05:42,800 --> 00:05:44,849
+Eine KI lügt nicht absichtlich.
+
+155
+00:05:44,899 --> 00:05:48,149
+Sie ist ein extrem guter Vorhersager für das nächste
+
+156
+00:05:48,199 --> 00:05:51,189
+Wort – und manchmal sagt sie eben etwas vorher,
+
+157
+00:05:51,240 --> 00:05:53,909
+das gut klingt, aber nicht stimmt.
+
+158
+00:05:53,959 --> 00:05:55,479
+Du bist derjenige, der prüft.
+
+159
+00:05:55,529 --> 00:05:57,469
+Wenn du mehr darüber wissen willst,
+
+160
+00:05:57,519 --> 00:05:59,649
+wie KI wirklich funktioniert:
+
+161
+00:05:59,699 --> 00:06:00,740
+Abonnieren.
+
+162
+00:06:00,790 --> 00:06:02,165
+Dann sehen wir uns beim nächsten Mal
+
+163
+00:06:02,215 --> 00:06:05,215
+mit Toki.

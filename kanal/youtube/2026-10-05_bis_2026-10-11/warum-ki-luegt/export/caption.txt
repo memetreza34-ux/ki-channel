@@ -1,0 +1,39 @@
+Warum KI lügt – und wie du es merkst
+
+Ein Anwalt reicht vor Gericht Urteile ein, die es gar nicht gibt – erfunden von ChatGPT. Das nennt man Halluzination: Eine KI sagt etwas Falsches und klingt dabei völlig überzeugt.
+
+In diesem Video siehst du die vier Gründe, warum KIs Dinge erfinden, zwei echte Fälle mit teuren Folgen (Google Bard und Air Canada), wo du besonders aufpassen musst – und fünf einfache Regeln, mit denen du dich schützt.
+
+Kapitel:
+0:00 Ein Anwalt und erfundene Urteile
+0:26 Was ist eine Halluzination?
+0:58 Grund 1: Seltenes Wissen verschwimmt
+1:25 Grund 2: Die KI muss immer weiterreden
+1:45 Grund 3: Tests belohnen das Raten
+2:23 Grund 4: Der Tonfall verrät nichts
+2:43 Selbsttest: Welcher Satz stimmt?
+3:09 Echter Fall: Google Bard
+3:33 Echter Fall: Air Canada
+3:54 Hier erfindet KI besonders oft
+4:17 Wird das besser?
+4:35 Die Falle „Bist du sicher?“
+4:53 5 Regeln gegen Halluzinationen
+5:41 Merksatz
+
+Die 5 Regeln:
+1. Lass dir Quellen geben – und öffne sie wirklich.
+2. Erlaube der KI, nichts zu wissen („Wenn du dir nicht sicher bist, sag es.“).
+3. Gib ihr den Text selbst, statt sie aus dem Gedächtnis antworten zu lassen.
+4. Prüfe Wichtiges an einer zweiten Stelle.
+5. Bei Gesundheit, Recht und Geld: Entscheidung mit einer echten Fachperson.
+
+Quellen (Stand 10.10.2026):
+• Mata v. Avianca, US-Bundesgericht New York, Juni 2023 – Sanktion 5.000 USD: https://tech.co/news/us-lawyers-fined-fake-chat-gpt
+• OpenAI, „Why Language Models Hallucinate“, 5. September 2025: https://openai.com/index/why-language-models-hallucinate/
+• Google Bard und das James-Webb-Teleskop, Februar 2023: https://www.itnews.asia/news/alphabet-shares-dive-after-googles-bard-makes-mistake-in-ad-590727
+• Moffatt v. Air Canada, Civil Resolution Tribunal British Columbia, 14. Februar 2024: https://dailyhive.com/canada/air-canada-chatbot-decision
+• Eiffelturm, Höhe 330 m: https://www.toureiffel.paris/en/news/history-and-culture/300-330-meters-story-towers-height
+
+Beispielwerte und Diagramme im Video sind als „Beispiel“ bzw. „schematisch“ gekennzeichnet. Nachgebaute Chat-Fenster sind Illustrationen, keine echten Screenshots.
+
+#KI #KünstlicheIntelligenz #ChatGPT #Halluzination #KIerklärt

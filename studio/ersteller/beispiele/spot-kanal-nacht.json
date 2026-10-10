@@ -1,0 +1,11 @@
+{
+  "vorlage": "spot",
+  "formate": ["vertical", "square"],
+  "design": "nacht",
+  "format": "vertical",
+  "hook": ["Jede Woche", "neue KI-Tools."],
+  "held": {"titel": "Wir sortieren für dich.", "hervorheben": ["sortieren"], "lottie": "emoji/gehirn", "icon": "ph:brain-duotone"},
+  "punkte": ["Was ist neu?", "Was kann es wirklich?", "Für wen lohnt es sich?"],
+  "cta": {"titel": "KI verstehen statt Hype.", "knopf": "Folgen"},
+  "sounds": true
+}

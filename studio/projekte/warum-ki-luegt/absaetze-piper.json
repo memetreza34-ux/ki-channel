@@ -1,0 +1,116 @@
+[
+  {
+    "nr": 1,
+    "start": 0.6,
+    "ende": 25.202,
+    "text": "New York, im Jahr 2023. Ein Anwalt reicht vor Gericht einen Schriftsatz ein – voller Urteile, die seine Argumente stützen. Das Problem: Diese Urteile gibt es nicht. Er hatte sie sich von ChatGPT heraussuchen lassen. Und ChatGPT hatte sie einfach erfunden. Mit Namen, Aktenzeichen, Zitaten. Am Ende mussten er und sein Kollege eine Strafe von fünftausend Dollar zahlen."
+  },
+  {
+    "nr": 2,
+    "start": 26.502,
+    "ende": 40.747,
+    "text": "Das nennt man Halluzinieren: Eine KI sagt etwas Falsches – und klingt dabei völlig überzeugt. Heute schauen wir uns an, warum das passiert, wo es besonders oft passiert, und wie du dich mit fünf einfachen Regeln davor schützt. Toki ist wieder dabei."
+  },
+  {
+    "nr": 3,
+    "start": 42.047,
+    "ende": 56.304,
+    "text": "Kurz zur Erinnerung aus dem letzten Video: Eine KI wie ChatGPT schlägt nichts nach. Sie sagt Stück für Stück vorher, welches Wort am wahrscheinlichsten als Nächstes kommt. Genau daraus entstehen Halluzinationen. Und zwar aus vier Gründen."
+  },
+  {
+    "nr": 4,
+    "start": 57.604,
+    "ende": 82.74,
+    "text": "Grund eins: Die KI hat ihr Wissen nicht gespeichert wie ein Lexikon. Beim Training hat sie riesige Mengen Text gelesen und daraus Muster gelernt. Dinge, die tausendfach im Internet stehen, sitzen fest – zum Beispiel, dass Berlin die Hauptstadt von Deutschland ist. Aber Dinge, die selten vorkommen, verschwimmen. Der Geburtstag einer wenig bekannten Person. Das Aktenzeichen eines bestimmten Urteils. Davon hat die KI nur eine ungefähre Vorstellung."
+  },
+  {
+    "nr": 5,
+    "start": 84.04,
+    "ende": 102.0,
+    "text": "Grund zwei: Die KI muss immer weiterreden. Sie berechnet für jedes nächste Wort Wahrscheinlichkeiten – und wählt eins aus. Auch dann, wenn keines davon wirklich sicher ist. Es gibt in diesem Moment keine eingebaute Stelle, an der sie merkt: Hier weiß ich nichts. Also entsteht ein Satz, der gut klingt. Ob er stimmt, ist eine andere Frage."
+  },
+  {
+    "nr": 6,
+    "start": 103.3,
+    "ende": 138.293,
+    "text": "Grund drei ist überraschend. Forscher von OpenAI haben im September 2025 gezeigt: Die Tests, mit denen KIs bewertet werden, belohnen oft das Raten. Stell dir eine Prüfung vor. Für eine richtige Antwort gibt es einen Punkt. Für „Weiß ich nicht“ gibt es null Punkte. Und für eine falsche Antwort – auch null. Was lohnt sich dann? Raten. Fragt man eine KI nach einem Geburtstag, den sie nicht kennt, und sie rät einfach ein Datum, liegt sie in einem von 365 Fällen richtig. Mit „Weiß ich nicht“ liegt sie nie richtig. Über tausende Fragen sieht das ratende Modell auf der Punktetafel besser aus."
+  },
+  {
+    "nr": 7,
+    "start": 139.593,
+    "ende": 155.754,
+    "text": "Grund vier: Der Tonfall verrät nichts. Eine richtige und eine erfundene Antwort klingen bei einer KI oft genau gleich: freundlich, flüssig, selbstsicher. Bei Menschen hören wir Unsicherheit manchmal heraus – ein Zögern, ein „ich glaube“. Bei der KI fehlt dieses Warnsignal meistens."
+  },
+  {
+    "nr": 8,
+    "start": 157.054,
+    "ende": 180.309,
+    "text": "Mach mal den Test. Hier sind zwei Sätze über den Eiffelturm. Satz A: Der Eiffelturm ist rund dreihundertdreißig Meter hoch. Satz B: Der Eiffelturm wurde im Jahr 1902 eröffnet. Beide klingen gleich sicher, oder? Richtig ist nur Satz A. Eröffnet wurde der Turm schon 1889. Genau so fühlt sich eine Halluzination an: Man sieht ihr den Fehler nicht an."
+  },
+  {
+    "nr": 9,
+    "start": 181.609,
+    "ende": 204.213,
+    "text": "Und das hat schon echte Folgen gehabt. Im Februar 2023 stellte Google seinen Chatbot Bard in einem Werbevideo vor. Darin behauptete Bard, das James-Webb-Teleskop habe die ersten Fotos eines Planeten außerhalb unseres Sonnensystems gemacht. Falsch – solche Fotos gab es schon 2004. Am selben Tag verlor Googles Mutterkonzern an der Börse rund hundert Milliarden Dollar an Wert."
+  },
+  {
+    "nr": 10,
+    "start": 205.513,
+    "ende": 226.701,
+    "text": "Oder Air Canada. Der Chatbot der Fluglinie erklärte einem Kunden, er könne einen Rabatt für einen Trauerfall auch nachträglich beantragen. Das stimmte nicht. Die Airline wollte nicht zahlen und meinte, der Chatbot sei für seine Aussagen selbst verantwortlich. Das Schiedsgericht sah das 2024 anders: Der Chatbot ist Teil der Webseite – also haftet die Firma."
+  },
+  {
+    "nr": 11,
+    "start": 228.001,
+    "ende": 247.982,
+    "text": "Wo musst du besonders aufpassen? Erstens bei Quellen: Links, Buchtitel, Studien und Zitate werden gern erfunden. Zweitens bei genauen Zahlen und Daten. Drittens bei Nischenwissen, über das wenig geschrieben wurde. Viertens bei ganz aktuellen Ereignissen, die nach dem Training passiert sind. Und fünftens bei Fragen zu bestimmten Personen."
+  },
+  {
+    "nr": 12,
+    "start": 249.282,
+    "ende": 265.815,
+    "text": "Wird das besser? Ja. Viele KIs können inzwischen im Internet suchen und zeigen dir ihre Quellen. Neuere Modelle denken vor der Antwort länger nach und erfinden seltener etwas. Aber: Selbst die Hersteller sagen, dass Halluzinationen weiter vorkommen. Null wird es so schnell nicht."
+  },
+  {
+    "nr": 13,
+    "start": 267.115,
+    "ende": 282.719,
+    "text": "Und Vorsicht bei einem beliebten Trick: einfach nachfragen, „Bist du sicher?“. Das hilft manchmal. Aber oft entschuldigt sich die KI dann sofort und ändert eine richtige Antwort in eine falsche – nur weil du gezweifelt hast. Sie will dir gefallen. Nachfragen ersetzt also kein Nachprüfen."
+  },
+  {
+    "nr": 14,
+    "start": 284.019,
+    "ende": 293.667,
+    "text": "Darum hier fünf Regeln, mit denen du sicher bist. Regel eins: Lass dir Quellen geben – und öffne sie wirklich. Ein Link, der nicht funktioniert, ist ein Warnzeichen."
+  },
+  {
+    "nr": 15,
+    "start": 294.967,
+    "ende": 303.407,
+    "text": "Regel zwei: Erlaube der KI, nichts zu wissen. Schreib zum Beispiel dazu: „Wenn du dir nicht sicher bist, sag es.“ Das senkt die Gefahr, dass sie rät."
+  },
+  {
+    "nr": 16,
+    "start": 304.707,
+    "ende": 315.423,
+    "text": "Regel drei: Gib ihr den Text selbst. Wenn die KI ein Dokument zusammenfassen soll, füge es ein, statt sie aus dem Gedächtnis antworten zu lassen. Dann arbeitet sie mit echten Fakten."
+  },
+  {
+    "nr": 17,
+    "start": 316.723,
+    "ende": 324.409,
+    "text": "Regel vier: Prüfe Wichtiges an einer zweiten Stelle. Eine Zahl, ein Datum, ein Name – kurz gegenchecken dauert eine Minute."
+  },
+  {
+    "nr": 18,
+    "start": 325.709,
+    "ende": 333.522,
+    "text": "Und Regel fünf: Bei Gesundheit, Recht und Geld ist die KI höchstens ein Startpunkt. Die Entscheidung triffst du mit einer echten Fachperson."
+  },
+  {
+    "nr": 19,
+    "start": 334.822,
+    "ende": 353.178,
+    "text": "Halten wir fest: Eine KI lügt nicht absichtlich. Sie ist ein extrem guter Vorhersager für das nächste Wort – und manchmal sagt sie eben etwas vorher, das gut klingt, aber nicht stimmt. Du bist derjenige, der prüft. Wenn du mehr darüber wissen willst, wie KI wirklich funktioniert: Abonnieren. Dann sehen wir uns beim nächsten Mal – mit Toki."
+  }
+]

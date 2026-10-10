@@ -19,3 +19,11 @@ Bewusst nicht installiert: `after-effects`, `logo-animation`, `motion-background
 Lineare Bewegung ist im Produktionscode nicht zulaessig, ausser fuer Endlos-Schleifen
 (Spinner, Marquee). Fuer alles andere laeuft die Zeitachse ueber
 `easedProgress` aus `ki/src/motion/easing.ts`.
+
+## Eigene Skills
+
+| Skill | Wofuer |
+|---|---|
+| `erklaervideo` | Ablauf fuer neue Videos in `studio/` (Idee → Szenen → Sichtpruefung → Voiceover → MP4). Vertrag: `studio/CLAUDE.md`. |
+
+Agent dazu: `.claude/agents/video-kritiker.md` (unabhaengige Sichtpruefung eines Kontaktbogens).

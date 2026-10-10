@@ -1,0 +1,56 @@
+[
+  {
+    "nr": 1,
+    "start": 0.6,
+    "ende": 9.458,
+    "text": "Du stellst einer KI eine Frage – und Sekunden später steht da eine perfekte Antwort. Aber was passiert eigentlich dazwischen? Das hier ist Toki. Toki zeigt es dir."
+  },
+  {
+    "nr": 2,
+    "start": 10.358,
+    "ende": 20.831,
+    "text": "Schritt eins: Die KI liest keine Wörter so wie wir. Sie zerlegt deinen Text in kleine Stücke – sogenannte Tokens. Das sind ganze Wörter oder Wortteile. Aus „Himmel“ wird zum Beispiel „Him“ und „mel“."
+  },
+  {
+    "nr": 3,
+    "start": 21.731,
+    "ende": 36.324,
+    "text": "Schritt zwei: Jedes Token wird zu einer langen Reihe von Zahlen. Denn ein Computer kann nicht lesen – aber er kann rechnen. Und ähnliche Wörter bekommen ähnliche Zahlen. Stell dir das wie eine riesige Landkarte vor: König und Königin liegen nah beieinander, Banane liegt ganz woanders."
+  },
+  {
+    "nr": 4,
+    "start": 37.224,
+    "ende": 50.216,
+    "text": "Woher weiß die KI, was sie mit diesen Zahlen machen soll? Aus dem Training. Dabei hat das Modell riesige Mengen Text gelesen – Bücher, Webseiten, Artikel. Und immer wieder eine einzige Aufgabe geübt: Welches Wort kommt als Nächstes?"
+  },
+  {
+    "nr": 5,
+    "start": 51.116,
+    "ende": 59.905,
+    "text": "Genau das passiert jetzt auch bei deiner Frage. Für das nächste Token berechnet die KI Wahrscheinlichkeiten. „Blau“ ist sehr wahrscheinlich, „grau“ weniger, „schön“ kaum."
+  },
+  {
+    "nr": 6,
+    "start": 60.805,
+    "ende": 71.381,
+    "text": "Sie wählt ein Token aus, hängt es an – und rechnet dann alles noch einmal neu. Token für Token, so lange, bis die Antwort fertig ist. Darum siehst du Antworten oft Stück für Stück erscheinen."
+  },
+  {
+    "nr": 7,
+    "start": 72.281,
+    "ende": 90.021,
+    "text": "Das erklärt auch eine Schwäche: Eine KI klingt immer flüssig – aber nicht immer richtig. Fehlt ihr das Wissen, wählt sie trotzdem das Wort, das am besten passt. Dann erfindet sie Dinge, zum Beispiel eine falsche Höhe für den Mount Everest. Das nennt man Halluzinieren. Und das ist keine Absicht: Die KI weiß einfach nicht, dass sie etwas nicht weiß."
+  },
+  {
+    "nr": 8,
+    "start": 90.921,
+    "ende": 97.156,
+    "text": "Eine KI ist also kein Lexikon, das Fakten nachschlägt. Sie ist ein extrem guter Vorhersager für das nächste Wort."
+  },
+  {
+    "nr": 9,
+    "start": 98.056,
+    "ende": 106.891,
+    "text": "Deshalb gilt: Nutze KI – aber prüfe Wichtiges immer selbst. Und wenn du mehr über KI verstehen willst: Abonnieren. Dann zeigt Toki dir beim nächsten Mal mehr."
+  }
+]

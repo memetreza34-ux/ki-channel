@@ -1,0 +1,17 @@
+{
+  "vorlage": "erklaerer",
+  "formate": ["vertical"],
+  "design": "nacht",
+  "format": "vertical",
+  "uebergang": "slide-up",
+  "sounds": true,
+  "szenen": [
+    {"typ": "titel", "kicker": "KI erklärt", "titel": "Warum KI sich Dinge ausdenkt", "hervorheben": ["ausdenkt"], "lottie": "emoji/kopf-explodiert", "effekt": "strahlen", "sekunden": 3.5, "untertitel": "Warum erfindet KI manchmal Fakten?"},
+    {"typ": "chat", "frage": "Wer gewann 1987 den Goldenen Toaster?", "antwort": "Den Goldenen Toaster 1987 gewann Dr. Lena Hartwig für ihre Arbeit an Brotsensoren.", "sekunden": 6, "untertitel": "Den Preis gibt es nicht – die Antwort klingt trotzdem sicher."},
+    {"typ": "tokens", "titel": "KI rät das nächste Wort", "tokens": ["Der", " Preis", " ging", " an", " Dr.", " Lena", " …"], "effekt": "raster", "sekunden": 5, "untertitel": "Ein Sprachmodell setzt Wort für Wort das Wahrscheinlichste fort."},
+    {"typ": "vergleich", "titel": "Klingt gut ≠ stimmt", "vorher": "Was du erwartest: Die KI schlägt die Antwort nach.", "nachher": "Was passiert: Sie schreibt, was plausibel klingt.", "sekunden": 5.5, "untertitel": "Es gibt kein eingebautes Nachschlagen – nur Wahrscheinlichkeiten."},
+    {"typ": "liste", "titel": "So schützt du dich", "punkte": ["Nach Quellen fragen", "Wichtiges selbst prüfen", "„Weiß ich nicht“ erlauben"], "ton": "gut", "sekunden": 5.5, "untertitel": "Quellen verlangen, Wichtiges prüfen und Unsicherheit erlauben."},
+    {"typ": "aussage", "text": "KI ist ein Ideengeber, kein Lexikon.", "hervorheben": ["Ideengeber"], "lottie": "emoji/gluehbirne", "effekt": "partikel", "sekunden": 3.5, "untertitel": "Nutze KI zum Denken – und prüfe die Fakten."},
+    {"typ": "ende", "titel": "Mehr KI, einfach erklärt.", "knopf": "Folgen", "sekunden": 3}
+  ]
+}
