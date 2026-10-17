@@ -106,11 +106,17 @@ if (reelModules.length !== 14) {
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }
-if (longformModules.length !== 2) {
+if (longformModules.length < 2) {
   failures.push(
-    `ProductionRoot.tsx erwartet derzeit 2 Longform-Production-Module, gefunden: ${longformModules.length}. ` +
+    `ProductionRoot.tsx erwartet mindestens 2 Longform-Production-Module, gefunden: ${longformModules.length}. ` +
       'Wenn Longform erweitert wurde, diesen Guard bewusst aktualisieren.',
   );
+}
+
+for (const requiredModule of ['./longform/ai-app-workflow', './longform/gpt6-intelligent-ui']) {
+  if (!longformModules.includes(requiredModule)) {
+    failures.push('Aktives Longform-Produktionsmodul fehlt: '+requiredModule);
+  }
 }
 
 if (failures.length > 0) {

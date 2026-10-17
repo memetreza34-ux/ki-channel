@@ -16,3 +16,5 @@ Pflichtstandard: CONTINUOUS_IMPROVEMENT.md. Dieses Protokoll wird nach jedem tat
 - Was ist die nächste kontrollierbare Qualitätsverbesserung?
 
 Nach ungefähr fünf fertigen Videos: systemweites Audit, wiederkehrende Risiken und aktive Verbesserungsprioritäten aktualisieren. Zuschauer-Learnings aus veröffentlichten Videos separat in LEARNINGS.md pflegen. Keine nicht überprüften globalen Regeln aus einem Einzelfall ableiten.
+
+| 2026-10-17 | GPT-6 Intelligent UI, Phase-1-Code | Hinzufügen des zweiten Longform-Moduls ließ feste Ein-Modul-Zähler in Wiring-Gate und ProductionRoot-Test scheitern (GitHub Actions PR #73, fehlgeschlagene Runs dokumentiert). | P1 / Pipeline | Neues Video vollständig registriert, beide bestehenden Module explizit geprüft | `scripts/check-production-visual-contracts.mjs`: mindestens zwei Longform-Module und konkrete Modulnamen statt exakter Gesamtzahl; `scripts/check-repository-wiring.mjs` / `ki/src/productionRootIsolation.test.ts`: zukunftsfähige Mindestanzahl. | CI auf dem neuen Commit erneut ausführen; noch nicht als bestanden markieren. |
