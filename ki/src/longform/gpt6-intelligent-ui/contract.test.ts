@@ -26,8 +26,8 @@ describe('GPT-6 Intelligent UI – longform production contract', () => {
   it('contains more than card layouts, with no fake capture', () => {
     const source=readFileSync(resolve('ki/src/longform/gpt6-intelligent-ui/IntelligentUIVisuals.tsx'),'utf8');
     expect(source).toContain('SCHEMATISCHE ILLUSTRATION');
-    expect(source).toContain('Sparbeispiel');
-    expect(source).toContain('Stromkreis');
+    expect(source).toContain('SPARBEISPIEL');
+    expect(source).toContain('STROMKREIS');
     expect(source).not.toContain('Math.random');
     expect(new Set(INTELLIGENT_UI_VISUAL_PROFILES.map(x=>x.fingerprint.primaryPrimitive)).size).toBeGreaterThanOrEqual(6);
   });
