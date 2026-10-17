@@ -22,13 +22,13 @@ Hinweis: Feature-Verfügbarkeit und unterstützte Clients können sich ändern; 
 ## Kapitel (vorläufig; Phase 3 muss am echten Audio verifizieren)
 
 00:00 Text wird zur Oberfläche
-00:35 Wann Visuals helfen
-01:15 Die Technik dahinter
-01:56 Beispiel: Sparrechner
-02:36 Beispiel: Lernen
-03:16 Warum die Grenzen zählen
-03:56 Wo es verfügbar ist
-04:45 Was sich wirklich ändert
+00:41 Wann Visuals helfen
+01:23 Die Technik dahinter
+02:08 Beispiel: Sparrechner
+02:48 Beispiel: Lernen
+03:28 Warum die Grenzen zählen
+04:09 Wo es verfügbar ist
+04:51 Was sich wirklich ändert
 
 ## Publishing
 
