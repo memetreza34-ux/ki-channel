@@ -106,9 +106,9 @@ if (reelModules.length !== 14) {
       'Wenn ein Reel hinzugefügt oder entfernt wurde, diesen Guard bewusst aktualisieren.',
   );
 }
-if (longformModules.length !== 1) {
+if (longformModules.length !== 2) {
   failures.push(
-    `ProductionRoot.tsx erwartet derzeit 1 Longform-Production-Modul, gefunden: ${longformModules.length}. ` +
+    `ProductionRoot.tsx erwartet derzeit 2 Longform-Production-Module, gefunden: ${longformModules.length}. ` +
       'Wenn Longform erweitert wurde, diesen Guard bewusst aktualisieren.',
   );
 }
