@@ -30,6 +30,8 @@ Neue Reels verwenden den V2-Produktionsvertrag aus dem Scaffold.
 
 ## Phase 1 — ChatGPT: komplette Grundlage
 
+**Pflicht nach Phase 1:** Sobald die Grundlage vollständig und die Dateien auf GitHub veröffentlicht sind, dem Nutzer **in dieser Chat-Antwort** zwei anklickbare und geprüfte GitHub-Dateilinks für **Bildprompts/Bildkonzept** und **Sprechertext zum Kopieren** geben. Nicht auf Phase 2 warten. Das Verfahren steht in PHASE1_CHAT_HANDOFF.md; npm run phase1:links erzeugt lokal geprüfte Linkvorschläge.
+
 Ziel: Nach Phase 1 muss der Mensch im Normalfall nur noch das Voiceover erzeugen. Externe Medien/REAL_CAPTURE kommen nur hinzu, wenn die Visual Strategy sie ausdrücklich als notwendig begründet.
 
 ### Schritt 1 — Creative Brief
@@ -212,6 +214,8 @@ Wenn der Sprechertext geändert werden soll, zurück zu Phase 1.
 ---
 
 ## Phase 3 — Codex oder Antigravity: Assembly und Release
+
+**P0 Stetige Verbesserung:** Nach jedem Render echte Bild-/Tonqualität und Nutzerfeedback prüfen; pro Video post-video-improvement.md dokumentieren, Fehler korrigieren und Änderungen neu prüfen. Globales QUALITY_CHANGELOG.md für wiederverwendbare Änderungen aktualisieren. Über alle Videos hinaus systematisch verbessern; siehe CONTINUOUS_IMPROVEMENT.md.
 
 Phase 3 verwendet die Phase-1-Grundlage und baut nicht kreativ von Null neu.
 
