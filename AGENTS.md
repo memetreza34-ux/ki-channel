@@ -1,5 +1,12 @@
 # KI-Channel — Agent Operating Contract
 
+## Oberste Produktionsregeln – zwingend
+
+**Priorität P0: Stetige Verbesserung.** Bei jedem tatsächlich gerenderten Video (auch Tests) und jedem Nutzerfeedback die Qualität kritisch auswerten, Fehler am Video beheben und wiederkehrende Fehler durch zentrale Regeln, Templates, Code oder Tests künftig verhindern. Nach jedem Video eine Qualitätsakte unter 06-projektdateien/post-video-improvement.md und einen kanalweiten Eintrag in ki/gehirn/QUALITY_CHANGELOG.md anlegen. Auch unabhängig von Einzelvideos den Prozess regelmäßig verbessern. Nichts ohne Beleg als „perfekt“ oder PASS bezeichnen. Verbindlich: ki/gehirn/CONTINUOUS_IMPROVEMENT.md.
+
+**Nach jeder vollständig abgeschlossenen Phase 1 SOFORT zwei Links im Chat:** (1) Bildprompts/Bildkonzept: bei Reels 02-bilder/image-prompts.md, bei Longform 02-visuals/image-prompts.md; (2) finaler Sprechertext: 01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt. GitHub-Dateilinks prüfen und direkt in derselben Chat-Antwort schicken, auch bei REMOTION_NATIVE ohne externe Bilder (dann Bildkonzept). Keine ungeprüften oder nicht veröffentlichten Links. Verbindlich: ki/gehirn/PHASE1_CHAT_HANDOFF.md.
+
+
 ## Start here
 
 Vor jeder Arbeit zuerst `REPO-STATE.md` lesen. Bei Dateien unter `ki/` danach `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.
