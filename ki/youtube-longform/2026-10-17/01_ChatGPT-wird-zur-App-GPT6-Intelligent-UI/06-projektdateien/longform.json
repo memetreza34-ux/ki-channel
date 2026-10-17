@@ -1,0 +1,74 @@
+{
+  "version": 2,
+  "id": "gpt6-intelligent-ui",
+  "title": "ChatGPT wird zur App: Was GPT-6 jetzt verändert",
+  "compositionId": "KI-Longform-IntelligentUI",
+  "thumbnailCompositionId": "KI-Longform-IntelligentUI-Thumbnail",
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "baselineDurationInFrames": 10050
+  },
+  "targetDurationSeconds": {
+    "min": 300,
+    "max": 360,
+    "baseline": 335
+  },
+  "wordCount": 788,
+  "visualPolicy": "REMOTION_NATIVE",
+  "externalAssetsRequired": false,
+  "realProductCaptureRequired": false,
+  "voiceoverStatus": "MISSING_PHASE_2",
+  "realCaptureStatus": "NOT_REQUIRED",
+  "chapters": [
+    {
+      "id": "hook",
+      "title": "Text wird zur Oberfläche",
+      "startFrame": 0,
+      "endFrame": 1230
+    },
+    {
+      "id": "format",
+      "title": "Weniger lesen, mehr sehen",
+      "startFrame": 1230,
+      "endFrame": 2490
+    },
+    {
+      "id": "architecture",
+      "title": "Wie es technisch funktioniert",
+      "startFrame": 2490,
+      "endFrame": 3840
+    },
+    {
+      "id": "savings",
+      "title": "Beispiel: Sparrechner",
+      "startFrame": 3840,
+      "endFrame": 5040
+    },
+    {
+      "id": "learning",
+      "title": "Beispiel: Lernen",
+      "startFrame": 5040,
+      "endFrame": 6240
+    },
+    {
+      "id": "limits",
+      "title": "Was eine schöne UI nicht kann",
+      "startFrame": 6240,
+      "endFrame": 7470
+    },
+    {
+      "id": "availability",
+      "title": "Für wen gibt es das?",
+      "startFrame": 7470,
+      "endFrame": 8730
+    },
+    {
+      "id": "payoff",
+      "title": "Die nächste Form von Chat",
+      "startFrame": 8730,
+      "endFrame": 10050
+    }
+  ]
+}

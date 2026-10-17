@@ -1,5 +1,12 @@
 # KI-Reels — Produktionsvertrag V2
 
+## Höchste Prioritäten für alle Videoproduktionen
+
+**P0 – kontinuierliche Verbesserung:** Nach jedem Video die tatsächliche Renderqualität und das Feedback prüfen, lokale Korrekturen nachtesten, systemweite Defekte dauerhaft im Repository beheben und in ki/gehirn/QUALITY_CHANGELOG.md dokumentieren. Für jedes Video die Qualitätsakte 06-projektdateien/post-video-improvement.md führen. Auch unabhängig von Videos systematisch besser werden. Leitfaden: ki/gehirn/CONTINUOUS_IMPROVEMENT.md.
+
+**Pflicht nach Phase 1 im selben Chat:** Sobald Phase 1 vollständig abgeschlossen und auf GitHub gepusht ist, ungefragt zwei geprüfte anklickbare GitHub-Dateilinks senden: Bildprompt-Link (Reel 02-bilder/image-prompts.md; Longform 02-visuals/image-prompts.md) und Skript-Link (01-script-audio/VOICEOVER-ZUM-KOPIEREN.txt). Bei reinem Remotion-Bildaufbau trotzdem das Bildkonzept verlinken, keine Bilder erfinden. Leitfaden: ki/gehirn/PHASE1_CHAT_HANDOFF.md.
+
+
 Gilt für alle Produktionspakete unter `ki/reels/` und erweitert `REPO-STATE.md`, `AGENTS.md`, `ki/AGENTS.md` und `ki/gehirn/MASTER.md`.
 
 Legacy-Reels ohne `06-projektdateien/production-contract-v2.json` bleiben lesbar. **Neue Reels** werden mit V2 angelegt.

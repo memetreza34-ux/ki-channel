@@ -13,7 +13,7 @@
   "scripts": {
     "repo:wiring-check": "node scripts/check-repository-wiring.mjs",
     "ki:reel:structure-check": "node scripts/check-ki-reel-folder-structure.mjs",
-    "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run",
+    "test": "npm run repo:wiring-check && npm run ki:reel:structure-check && vitest run && npm run quality:contract-test",
     "typecheck:motion": "tsc --noEmit -p ki/tsconfig.motion.json",
     "typecheck:animation-library": "tsc --noEmit -p ki/tsconfig.animation-library.json",
     "typecheck": "npm run typecheck:motion && npm run typecheck:animation-library",
@@ -111,7 +111,9 @@
     "creative-recipes:full-release-check": "npm run creative-recipes:verify && npm run creative-recipes:render && npm run creative-recipes:check",
     "bits:find": "npx -y remotion-bits find",
     "bits:fetch": "npx -y remotion-bits fetch",
-    "bits:mcp": "npx -y remotion-bits mcp"
+    "bits:mcp": "npx -y remotion-bits mcp",
+    "phase1:links": "node scripts/phase1-chat-links.mjs",
+    "quality:contract-test": "node --test scripts/__tests__/quality-phase1.test.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^8.17.10",
