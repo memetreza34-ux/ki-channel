@@ -1,0 +1,6225 @@
+[
+  {
+    "text": "New",
+    "startMs": 0,
+    "endMs": 670,
+    "timestampMs": 940,
+    "confidence": 0.873913
+  },
+  {
+    "text": " York",
+    "startMs": 670,
+    "endMs": 1000,
+    "timestampMs": 1340,
+    "confidence": 0.993373
+  },
+  {
+    "text": " im",
+    "startMs": 1000,
+    "endMs": 1330,
+    "timestampMs": 1600,
+    "confidence": 0.967487
+  },
+  {
+    "text": " Jahr",
+    "startMs": 1330,
+    "endMs": 1850,
+    "timestampMs": 1840,
+    "confidence": 0.765283
+  },
+  {
+    "text": " 2023.",
+    "startMs": 1850,
+    "endMs": 3730,
+    "timestampMs": 3140,
+    "confidence": 0.990131
+  },
+  {
+    "text": " Ein",
+    "startMs": 3730,
+    "endMs": 3860,
+    "timestampMs": 3860,
+    "confidence": 0.525612
+  },
+  {
+    "text": " Anwalt",
+    "startMs": 3860,
+    "endMs": 4120,
+    "timestampMs": 4120,
+    "confidence": 0.998609
+  },
+  {
+    "text": " reicht",
+    "startMs": 4120,
+    "endMs": 4390,
+    "timestampMs": 4480,
+    "confidence": 0.968698
+  },
+  {
+    "text": " vor",
+    "startMs": 4390,
+    "endMs": 4520,
+    "timestampMs": 4700,
+    "confidence": 0.984968
+  },
+  {
+    "text": " Gericht",
+    "startMs": 4520,
+    "endMs": 4900,
+    "timestampMs": 4840,
+    "confidence": 0.992202
+  },
+  {
+    "text": " einen",
+    "startMs": 4900,
+    "endMs": 5040,
+    "timestampMs": 5160,
+    "confidence": 0.937695
+  },
+  {
+    "text": " Schriftsatz",
+    "startMs": 5040,
+    "endMs": 5670,
+    "timestampMs": 5300,
+    "confidence": 0.612226
+  },
+  {
+    "text": " ein,",
+    "startMs": 5670,
+    "endMs": 5800,
+    "timestampMs": 6000,
+    "confidence": 0.740227
+  },
+  {
+    "text": " voller",
+    "startMs": 5800,
+    "endMs": 6360,
+    "timestampMs": 6340,
+    "confidence": 0.869202
+  },
+  {
+    "text": " Urteile,",
+    "startMs": 6360,
+    "endMs": 7000,
+    "timestampMs": 6800,
+    "confidence": 0.837758
+  },
+  {
+    "text": " die",
+    "startMs": 7000,
+    "endMs": 7140,
+    "timestampMs": 7180,
+    "confidence": 0.999611
+  },
+  {
+    "text": " seine",
+    "startMs": 7140,
+    "endMs": 7380,
+    "timestampMs": 7360,
+    "confidence": 0.992411
+  },
+  {
+    "text": " Argumente",
+    "startMs": 7380,
+    "endMs": 7800,
+    "timestampMs": 7640,
+    "confidence": 0.998826
+  },
+  {
+    "text": " stützen.",
+    "startMs": 7800,
+    "endMs": 8360,
+    "timestampMs": 8060,
+    "confidence": 0.998432
+  },
+  {
+    "text": " Das",
+    "startMs": 8360,
+    "endMs": 9010,
+    "timestampMs": 9200,
+    "confidence": 0.876425
+  },
+  {
+    "text": " Problem,",
+    "startMs": 9010,
+    "endMs": 9560,
+    "timestampMs": 9640,
+    "confidence": 0.99802
+  },
+  {
+    "text": " diese",
+    "startMs": 9560,
+    "endMs": 10180,
+    "timestampMs": 10460,
+    "confidence": 0.980432
+  },
+  {
+    "text": " Urteile",
+    "startMs": 10180,
+    "endMs": 10760,
+    "timestampMs": 10820,
+    "confidence": 0.996274
+  },
+  {
+    "text": " gibt",
+    "startMs": 10760,
+    "endMs": 11160,
+    "timestampMs": 11400,
+    "confidence": 0.984147
+  },
+  {
+    "text": " es",
+    "startMs": 11160,
+    "endMs": 11360,
+    "timestampMs": 11620,
+    "confidence": 0.996261
+  },
+  {
+    "text": " nicht.",
+    "startMs": 11360,
+    "endMs": 12320,
+    "timestampMs": 12000,
+    "confidence": 0.997029
+  },
+  {
+    "text": " Er",
+    "startMs": 12320,
+    "endMs": 12420,
+    "timestampMs": 12580,
+    "confidence": 0.906559
+  },
+  {
+    "text": " hatte",
+    "startMs": 12420,
+    "endMs": 12650,
+    "timestampMs": 12760,
+    "confidence": 0.919342
+  },
+  {
+    "text": " sie",
+    "startMs": 12650,
+    "endMs": 12840,
+    "timestampMs": 12960,
+    "confidence": 0.894323
+  },
+  {
+    "text": " sich",
+    "startMs": 12840,
+    "endMs": 13150,
+    "timestampMs": 13100,
+    "confidence": 0.998567
+  },
+  {
+    "text": " von",
+    "startMs": 13150,
+    "endMs": 13380,
+    "timestampMs": 13320,
+    "confidence": 0.995319
+  },
+  {
+    "text": " Chad",
+    "startMs": 13380,
+    "endMs": 13710,
+    "timestampMs": 13620,
+    "confidence": 0.148711
+  },
+  {
+    "text": " GPT",
+    "startMs": 13710,
+    "endMs": 13910,
+    "timestampMs": 13860,
+    "confidence": 0.488301
+  },
+  {
+    "text": " heraussuchen",
+    "startMs": 13910,
+    "endMs": 14830,
+    "timestampMs": 14400,
+    "confidence": 0.682293
+  },
+  {
+    "text": " lassen.",
+    "startMs": 14830,
+    "endMs": 15680,
+    "timestampMs": 15080,
+    "confidence": 0.999664
+  },
+  {
+    "text": " Und",
+    "startMs": 15680,
+    "endMs": 15750,
+    "timestampMs": 15920,
+    "confidence": 0.972207
+  },
+  {
+    "text": " Chad",
+    "startMs": 15750,
+    "endMs": 16070,
+    "timestampMs": 16160,
+    "confidence": 0.985109
+  },
+  {
+    "text": " GPT",
+    "startMs": 16070,
+    "endMs": 16280,
+    "timestampMs": 16500,
+    "confidence": 0.995902
+  },
+  {
+    "text": " hatte",
+    "startMs": 16280,
+    "endMs": 16670,
+    "timestampMs": 17340,
+    "confidence": 0.945341
+  },
+  {
+    "text": " sie",
+    "startMs": 16670,
+    "endMs": 17090,
+    "timestampMs": 17580,
+    "confidence": 0.99582
+  },
+  {
+    "text": " einfach",
+    "startMs": 17090,
+    "endMs": 17440,
+    "timestampMs": 17920,
+    "confidence": 0.980795
+  },
+  {
+    "text": " erfunden.",
+    "startMs": 17440,
+    "endMs": 19390,
+    "timestampMs": 18120,
+    "confidence": 0.997849
+  },
+  {
+    "text": " Mit",
+    "startMs": 19390,
+    "endMs": 19560,
+    "timestampMs": 19660,
+    "confidence": 0.841664
+  },
+  {
+    "text": " Namen,",
+    "startMs": 19560,
+    "endMs": 20280,
+    "timestampMs": 20040,
+    "confidence": 0.878451
+  },
+  {
+    "text": " Aktenzeichen,",
+    "startMs": 20280,
+    "endMs": 21440,
+    "timestampMs": 20560,
+    "confidence": 0.990265
+  },
+  {
+    "text": " Zitaten.",
+    "startMs": 21440,
+    "endMs": 22310,
+    "timestampMs": 21560,
+    "confidence": 0.990569
+  },
+  {
+    "text": " Am",
+    "startMs": 22310,
+    "endMs": 22560,
+    "timestampMs": 23100,
+    "confidence": 0.955031
+  },
+  {
+    "text": " Ende",
+    "startMs": 22560,
+    "endMs": 22680,
+    "timestampMs": 23280,
+    "confidence": 0.998083
+  },
+  {
+    "text": " mussten",
+    "startMs": 22680,
+    "endMs": 23100,
+    "timestampMs": 23520,
+    "confidence": 0.953999
+  },
+  {
+    "text": " er",
+    "startMs": 23100,
+    "endMs": 23220,
+    "timestampMs": 23740,
+    "confidence": 0.998053
+  },
+  {
+    "text": " und",
+    "startMs": 23220,
+    "endMs": 23400,
+    "timestampMs": 23860,
+    "confidence": 0.995084
+  },
+  {
+    "text": " sein",
+    "startMs": 23400,
+    "endMs": 23640,
+    "timestampMs": 23960,
+    "confidence": 0.994055
+  },
+  {
+    "text": " Kollege",
+    "startMs": 23640,
+    "endMs": 24070,
+    "timestampMs": 24320,
+    "confidence": 0.978903
+  },
+  {
+    "text": " eine",
+    "startMs": 24070,
+    "endMs": 24310,
+    "timestampMs": 24600,
+    "confidence": 0.994531
+  },
+  {
+    "text": " Strafe",
+    "startMs": 24310,
+    "endMs": 24670,
+    "timestampMs": 24820,
+    "confidence": 0.983796
+  },
+  {
+    "text": " von",
+    "startMs": 24670,
+    "endMs": 24850,
+    "timestampMs": 25160,
+    "confidence": 0.992598
+  },
+  {
+    "text": " 5000",
+    "startMs": 24850,
+    "endMs": 25590,
+    "timestampMs": 25680,
+    "confidence": 0.730985
+  },
+  {
+    "text": " Dollar",
+    "startMs": 25590,
+    "endMs": 26040,
+    "timestampMs": 26020,
+    "confidence": 0.918793
+  },
+  {
+    "text": " zahlen.",
+    "startMs": 26060,
+    "endMs": 26870,
+    "timestampMs": 26040,
+    "confidence": 0.62377
+  },
+  {
+    "text": " Das",
+    "startMs": 26870,
+    "endMs": 27310,
+    "timestampMs": 27580,
+    "confidence": 0.995011
+  },
+  {
+    "text": " nennt",
+    "startMs": 27310,
+    "endMs": 27610,
+    "timestampMs": 27760,
+    "confidence": 0.998972
+  },
+  {
+    "text": " man",
+    "startMs": 27610,
+    "endMs": 27890,
+    "timestampMs": 28400,
+    "confidence": 0.996424
+  },
+  {
+    "text": " Halluzinieren.",
+    "startMs": 27890,
+    "endMs": 29340,
+    "timestampMs": 28740,
+    "confidence": 0.84308
+  },
+  {
+    "text": " Eine",
+    "startMs": 29340,
+    "endMs": 29720,
+    "timestampMs": 30380,
+    "confidence": 0.996001
+  },
+  {
+    "text": " KI",
+    "startMs": 29720,
+    "endMs": 30070,
+    "timestampMs": 30580,
+    "confidence": 0.983546
+  },
+  {
+    "text": " sagt",
+    "startMs": 30070,
+    "endMs": 30310,
+    "timestampMs": 30940,
+    "confidence": 0.994987
+  },
+  {
+    "text": " etwas",
+    "startMs": 30310,
+    "endMs": 30740,
+    "timestampMs": 31240,
+    "confidence": 0.988927
+  },
+  {
+    "text": " Falsches",
+    "startMs": 30740,
+    "endMs": 31480,
+    "timestampMs": 31480,
+    "confidence": 0.786831
+  },
+  {
+    "text": " und",
+    "startMs": 31480,
+    "endMs": 31730,
+    "timestampMs": 32220,
+    "confidence": 0.970269
+  },
+  {
+    "text": " klingt",
+    "startMs": 31730,
+    "endMs": 32420,
+    "timestampMs": 32360,
+    "confidence": 0.957707
+  },
+  {
+    "text": " dabei",
+    "startMs": 32420,
+    "endMs": 32520,
+    "timestampMs": 32820,
+    "confidence": 0.916478
+  },
+  {
+    "text": " völlig",
+    "startMs": 32520,
+    "endMs": 33040,
+    "timestampMs": 33100,
+    "confidence": 0.951882
+  },
+  {
+    "text": " überzeugt.",
+    "startMs": 33040,
+    "endMs": 33600,
+    "timestampMs": 33480,
+    "confidence": 0.652958
+  },
+  {
+    "text": " Heute",
+    "startMs": 33600,
+    "endMs": 34410,
+    "timestampMs": 34780,
+    "confidence": 0.997594
+  },
+  {
+    "text": " schauen",
+    "startMs": 34410,
+    "endMs": 34500,
+    "timestampMs": 35000,
+    "confidence": 0.995765
+  },
+  {
+    "text": " wir",
+    "startMs": 34500,
+    "endMs": 34610,
+    "timestampMs": 35140,
+    "confidence": 0.99915
+  },
+  {
+    "text": " uns",
+    "startMs": 34610,
+    "endMs": 34810,
+    "timestampMs": 35280,
+    "confidence": 0.996748
+  },
+  {
+    "text": " an,",
+    "startMs": 34810,
+    "endMs": 35070,
+    "timestampMs": 35460,
+    "confidence": 0.994776
+  },
+  {
+    "text": " warum",
+    "startMs": 35070,
+    "endMs": 35410,
+    "timestampMs": 35700,
+    "confidence": 0.995085
+  },
+  {
+    "text": " das",
+    "startMs": 35410,
+    "endMs": 35610,
+    "timestampMs": 35960,
+    "confidence": 0.995103
+  },
+  {
+    "text": " passiert,",
+    "startMs": 35610,
+    "endMs": 36310,
+    "timestampMs": 36340,
+    "confidence": 0.996953
+  },
+  {
+    "text": " wo",
+    "startMs": 36310,
+    "endMs": 36520,
+    "timestampMs": 36660,
+    "confidence": 0.988265
+  },
+  {
+    "text": " es",
+    "startMs": 36520,
+    "endMs": 36540,
+    "timestampMs": 36860,
+    "confidence": 0.984883
+  },
+  {
+    "text": " besonders",
+    "startMs": 36540,
+    "endMs": 37150,
+    "timestampMs": 37180,
+    "confidence": 0.998706
+  },
+  {
+    "text": " oft",
+    "startMs": 37150,
+    "endMs": 37440,
+    "timestampMs": 37540,
+    "confidence": 0.99523
+  },
+  {
+    "text": " passiert",
+    "startMs": 37440,
+    "endMs": 38110,
+    "timestampMs": 37960,
+    "confidence": 0.974514
+  },
+  {
+    "text": " und",
+    "startMs": 38110,
+    "endMs": 38790,
+    "timestampMs": 38720,
+    "confidence": 0.603553
+  },
+  {
+    "text": " wie",
+    "startMs": 38790,
+    "endMs": 38830,
+    "timestampMs": 38900,
+    "confidence": 0.964606
+  },
+  {
+    "text": " du",
+    "startMs": 38830,
+    "endMs": 38920,
+    "timestampMs": 39060,
+    "confidence": 0.98145
+  },
+  {
+    "text": " dich",
+    "startMs": 38920,
+    "endMs": 39120,
+    "timestampMs": 39160,
+    "confidence": 0.983552
+  },
+  {
+    "text": " mit",
+    "startMs": 39120,
+    "endMs": 39280,
+    "timestampMs": 39400,
+    "confidence": 0.514907
+  },
+  {
+    "text": " fünf",
+    "startMs": 39280,
+    "endMs": 39590,
+    "timestampMs": 39760,
+    "confidence": 0.942257
+  },
+  {
+    "text": " einfachen",
+    "startMs": 39590,
+    "endMs": 40140,
+    "timestampMs": 40180,
+    "confidence": 0.965793
+  },
+  {
+    "text": " Regeln",
+    "startMs": 40140,
+    "endMs": 40500,
+    "timestampMs": 40560,
+    "confidence": 0.997857
+  },
+  {
+    "text": " davor",
+    "startMs": 40500,
+    "endMs": 40800,
+    "timestampMs": 40800,
+    "confidence": 0.964253
+  },
+  {
+    "text": " schützt.",
+    "startMs": 40800,
+    "endMs": 41430,
+    "timestampMs": 41120,
+    "confidence": 0.999502
+  },
+  {
+    "text": " Turki",
+    "startMs": 41430,
+    "endMs": 41940,
+    "timestampMs": 42200,
+    "confidence": 0.255477
+  },
+  {
+    "text": " ist",
+    "startMs": 41940,
+    "endMs": 41970,
+    "timestampMs": 42460,
+    "confidence": 0.994696
+  },
+  {
+    "text": " wieder",
+    "startMs": 41970,
+    "endMs": 42310,
+    "timestampMs": 42620,
+    "confidence": 0.993938
+  },
+  {
+    "text": " dabei.",
+    "startMs": 42310,
+    "endMs": 42860,
+    "timestampMs": 43020,
+    "confidence": 0.999157
+  },
+  {
+    "text": " Kurz",
+    "startMs": 42860,
+    "endMs": 43330,
+    "timestampMs": 44480,
+    "confidence": 0.886111
+  },
+  {
+    "text": " zur",
+    "startMs": 43330,
+    "endMs": 43720,
+    "timestampMs": 44640,
+    "confidence": 0.987524
+  },
+  {
+    "text": " Erinnerung",
+    "startMs": 43720,
+    "endMs": 44960,
+    "timestampMs": 44780,
+    "confidence": 0.994378
+  },
+  {
+    "text": " aus",
+    "startMs": 44960,
+    "endMs": 45200,
+    "timestampMs": 45220,
+    "confidence": 0.849014
+  },
+  {
+    "text": " dem",
+    "startMs": 45200,
+    "endMs": 45240,
+    "timestampMs": 45320,
+    "confidence": 0.903358
+  },
+  {
+    "text": " letzten",
+    "startMs": 45240,
+    "endMs": 45730,
+    "timestampMs": 45620,
+    "confidence": 0.985203
+  },
+  {
+    "text": " Video.",
+    "startMs": 45730,
+    "endMs": 46390,
+    "timestampMs": 46060,
+    "confidence": 0.997617
+  },
+  {
+    "text": " Eine",
+    "startMs": 46390,
+    "endMs": 46590,
+    "timestampMs": 46620,
+    "confidence": 0.996922
+  },
+  {
+    "text": " KI",
+    "startMs": 46590,
+    "endMs": 46760,
+    "timestampMs": 46920,
+    "confidence": 0.988099
+  },
+  {
+    "text": " wie",
+    "startMs": 46760,
+    "endMs": 46910,
+    "timestampMs": 47120,
+    "confidence": 0.967265
+  },
+  {
+    "text": " Chad",
+    "startMs": 46910,
+    "endMs": 47230,
+    "timestampMs": 47320,
+    "confidence": 0.986509
+  },
+  {
+    "text": " GPT",
+    "startMs": 47230,
+    "endMs": 47400,
+    "timestampMs": 47600,
+    "confidence": 0.986993
+  },
+  {
+    "text": " schlägt",
+    "startMs": 47400,
+    "endMs": 47930,
+    "timestampMs": 48080,
+    "confidence": 0.991558
+  },
+  {
+    "text": " nichts",
+    "startMs": 47930,
+    "endMs": 48350,
+    "timestampMs": 48540,
+    "confidence": 0.986173
+  },
+  {
+    "text": " nach.",
+    "startMs": 48350,
+    "endMs": 48830,
+    "timestampMs": 48980,
+    "confidence": 0.99814
+  },
+  {
+    "text": " Sie",
+    "startMs": 48830,
+    "endMs": 49080,
+    "timestampMs": 49660,
+    "confidence": 0.997771
+  },
+  {
+    "text": " sagt",
+    "startMs": 49080,
+    "endMs": 49460,
+    "timestampMs": 49960,
+    "confidence": 0.997402
+  },
+  {
+    "text": " Stück",
+    "startMs": 49460,
+    "endMs": 49740,
+    "timestampMs": 50220,
+    "confidence": 0.986547
+  },
+  {
+    "text": " für",
+    "startMs": 49740,
+    "endMs": 50050,
+    "timestampMs": 50440,
+    "confidence": 0.996613
+  },
+  {
+    "text": " Stück",
+    "startMs": 50050,
+    "endMs": 50450,
+    "timestampMs": 50660,
+    "confidence": 0.993348
+  },
+  {
+    "text": " vorher,",
+    "startMs": 50450,
+    "endMs": 50920,
+    "timestampMs": 50900,
+    "confidence": 0.981727
+  },
+  {
+    "text": " welches",
+    "startMs": 50920,
+    "endMs": 51360,
+    "timestampMs": 51420,
+    "confidence": 0.992301
+  },
+  {
+    "text": " Wort",
+    "startMs": 51360,
+    "endMs": 51610,
+    "timestampMs": 51980,
+    "confidence": 0.99636
+  },
+  {
+    "text": " am",
+    "startMs": 51610,
+    "endMs": 51730,
+    "timestampMs": 52140,
+    "confidence": 0.995942
+  },
+  {
+    "text": " wahrscheinlichsten",
+    "startMs": 51730,
+    "endMs": 52880,
+    "timestampMs": 52720,
+    "confidence": 0.920421
+  },
+  {
+    "text": " als",
+    "startMs": 52880,
+    "endMs": 53070,
+    "timestampMs": 53100,
+    "confidence": 0.994958
+  },
+  {
+    "text": " nächstes",
+    "startMs": 53070,
+    "endMs": 53620,
+    "timestampMs": 53300,
+    "confidence": 0.7687
+  },
+  {
+    "text": " kommt.",
+    "startMs": 53620,
+    "endMs": 54180,
+    "timestampMs": 53700,
+    "confidence": 0.997185
+  },
+  {
+    "text": " Genau",
+    "startMs": 54180,
+    "endMs": 54470,
+    "timestampMs": 54640,
+    "confidence": 0.978131
+  },
+  {
+    "text": " daraus",
+    "startMs": 54470,
+    "endMs": 54850,
+    "timestampMs": 54960,
+    "confidence": 0.996086
+  },
+  {
+    "text": " entstehen",
+    "startMs": 54850,
+    "endMs": 55440,
+    "timestampMs": 55580,
+    "confidence": 0.998708
+  },
+  {
+    "text": " Halluzinationen.",
+    "startMs": 55440,
+    "endMs": 56580,
+    "timestampMs": 55900,
+    "confidence": 0.997872
+  },
+  {
+    "text": " Und",
+    "startMs": 56580,
+    "endMs": 57040,
+    "timestampMs": 57220,
+    "confidence": 0.993623
+  },
+  {
+    "text": " zwar",
+    "startMs": 57040,
+    "endMs": 57170,
+    "timestampMs": 57400,
+    "confidence": 0.999298
+  },
+  {
+    "text": " aus",
+    "startMs": 57170,
+    "endMs": 57420,
+    "timestampMs": 57640,
+    "confidence": 0.995638
+  },
+  {
+    "text": " vier",
+    "startMs": 57420,
+    "endMs": 57760,
+    "timestampMs": 57920,
+    "confidence": 0.972192
+  },
+  {
+    "text": " Gründen.",
+    "startMs": 57760,
+    "endMs": 58790,
+    "timestampMs": 58100,
+    "confidence": 0.986387
+  },
+  {
+    "text": " Grund",
+    "startMs": 58790,
+    "endMs": 59150,
+    "timestampMs": 59100,
+    "confidence": 0.97923
+  },
+  {
+    "text": " eins.",
+    "startMs": 59150,
+    "endMs": 59800,
+    "timestampMs": 59760,
+    "confidence": 0.710764
+  },
+  {
+    "text": " Die",
+    "startMs": 59800,
+    "endMs": 59950,
+    "timestampMs": 60440,
+    "confidence": 0.989402
+  },
+  {
+    "text": " KI",
+    "startMs": 59950,
+    "endMs": 60260,
+    "timestampMs": 60620,
+    "confidence": 0.995646
+  },
+  {
+    "text": " hat",
+    "startMs": 60260,
+    "endMs": 60370,
+    "timestampMs": 60840,
+    "confidence": 0.989617
+  },
+  {
+    "text": " ihr",
+    "startMs": 60370,
+    "endMs": 60620,
+    "timestampMs": 61040,
+    "confidence": 0.995668
+  },
+  {
+    "text": " Wissen",
+    "startMs": 60620,
+    "endMs": 61200,
+    "timestampMs": 61200,
+    "confidence": 0.991231
+  },
+  {
+    "text": " nicht",
+    "startMs": 61200,
+    "endMs": 61500,
+    "timestampMs": 61520,
+    "confidence": 0.982373
+  },
+  {
+    "text": " gespeichert",
+    "startMs": 61500,
+    "endMs": 62080,
+    "timestampMs": 61800,
+    "confidence": 0.984675
+  },
+  {
+    "text": " wie",
+    "startMs": 62080,
+    "endMs": 62080,
+    "timestampMs": 62200,
+    "confidence": 0.718607
+  },
+  {
+    "text": " ein",
+    "startMs": 62080,
+    "endMs": 62200,
+    "timestampMs": 62400,
+    "confidence": 0.936011
+  },
+  {
+    "text": " Lexikon.",
+    "startMs": 62200,
+    "endMs": 62880,
+    "timestampMs": 62680,
+    "confidence": 0.689084
+  },
+  {
+    "text": " Beim",
+    "startMs": 62880,
+    "endMs": 63330,
+    "timestampMs": 63520,
+    "confidence": 0.998083
+  },
+  {
+    "text": " Training",
+    "startMs": 63330,
+    "endMs": 63700,
+    "timestampMs": 64040,
+    "confidence": 0.998275
+  },
+  {
+    "text": " hat",
+    "startMs": 63700,
+    "endMs": 63900,
+    "timestampMs": 64240,
+    "confidence": 0.990871
+  },
+  {
+    "text": " sie",
+    "startMs": 63900,
+    "endMs": 64100,
+    "timestampMs": 64580,
+    "confidence": 0.997992
+  },
+  {
+    "text": " riesige",
+    "startMs": 64100,
+    "endMs": 64570,
+    "timestampMs": 64980,
+    "confidence": 0.994693
+  },
+  {
+    "text": " Mengen",
+    "startMs": 64570,
+    "endMs": 64970,
+    "timestampMs": 65280,
+    "confidence": 0.990509
+  },
+  {
+    "text": " Text",
+    "startMs": 64970,
+    "endMs": 65240,
+    "timestampMs": 65720,
+    "confidence": 0.998643
+  },
+  {
+    "text": " gelesen",
+    "startMs": 65240,
+    "endMs": 65760,
+    "timestampMs": 66060,
+    "confidence": 0.998706
+  },
+  {
+    "text": " und",
+    "startMs": 65760,
+    "endMs": 65910,
+    "timestampMs": 66480,
+    "confidence": 0.9924
+  },
+  {
+    "text": " daraus",
+    "startMs": 65910,
+    "endMs": 66310,
+    "timestampMs": 66560,
+    "confidence": 0.986545
+  },
+  {
+    "text": " Muster",
+    "startMs": 66310,
+    "endMs": 66710,
+    "timestampMs": 67020,
+    "confidence": 0.984342
+  },
+  {
+    "text": " gelernt.",
+    "startMs": 66710,
+    "endMs": 67510,
+    "timestampMs": 67500,
+    "confidence": 0.998176
+  },
+  {
+    "text": " Dinge,",
+    "startMs": 67510,
+    "endMs": 68160,
+    "timestampMs": 68240,
+    "confidence": 0.944651
+  },
+  {
+    "text": " die",
+    "startMs": 68160,
+    "endMs": 68330,
+    "timestampMs": 68520,
+    "confidence": 0.999813
+  },
+  {
+    "text": " tausendfach",
+    "startMs": 68330,
+    "endMs": 68940,
+    "timestampMs": 68720,
+    "confidence": 0.798472
+  },
+  {
+    "text": " im",
+    "startMs": 68940,
+    "endMs": 69050,
+    "timestampMs": 69260,
+    "confidence": 0.997957
+  },
+  {
+    "text": " Internet",
+    "startMs": 69050,
+    "endMs": 69500,
+    "timestampMs": 69620,
+    "confidence": 0.99774
+  },
+  {
+    "text": " stehen,",
+    "startMs": 69500,
+    "endMs": 69950,
+    "timestampMs": 69980,
+    "confidence": 0.996462
+  },
+  {
+    "text": " sitzen",
+    "startMs": 69950,
+    "endMs": 70290,
+    "timestampMs": 70300,
+    "confidence": 0.99207
+  },
+  {
+    "text": " fest.",
+    "startMs": 70290,
+    "endMs": 70660,
+    "timestampMs": 70700,
+    "confidence": 0.998982
+  },
+  {
+    "text": " Zum",
+    "startMs": 70660,
+    "endMs": 70900,
+    "timestampMs": 71320,
+    "confidence": 0.960611
+  },
+  {
+    "text": " Beispiel,",
+    "startMs": 70900,
+    "endMs": 71480,
+    "timestampMs": 71540,
+    "confidence": 0.977929
+  },
+  {
+    "text": " dass",
+    "startMs": 71480,
+    "endMs": 71700,
+    "timestampMs": 71780,
+    "confidence": 0.945307
+  },
+  {
+    "text": " Berlin",
+    "startMs": 71700,
+    "endMs": 72040,
+    "timestampMs": 72160,
+    "confidence": 0.998249
+  },
+  {
+    "text": " die",
+    "startMs": 72040,
+    "endMs": 72190,
+    "timestampMs": 72420,
+    "confidence": 0.953635
+  },
+  {
+    "text": " Hauptstadt",
+    "startMs": 72190,
+    "endMs": 72680,
+    "timestampMs": 72600,
+    "confidence": 0.948939
+  },
+  {
+    "text": " von",
+    "startMs": 72680,
+    "endMs": 72760,
+    "timestampMs": 72920,
+    "confidence": 0.682845
+  },
+  {
+    "text": " Deutschland",
+    "startMs": 72760,
+    "endMs": 73450,
+    "timestampMs": 73340,
+    "confidence": 0.99899
+  },
+  {
+    "text": " ist.",
+    "startMs": 73450,
+    "endMs": 73850,
+    "timestampMs": 73600,
+    "confidence": 0.999237
+  },
+  {
+    "text": " Aber",
+    "startMs": 73850,
+    "endMs": 74080,
+    "timestampMs": 74360,
+    "confidence": 0.998015
+  },
+  {
+    "text": " Dinge,",
+    "startMs": 74080,
+    "endMs": 74510,
+    "timestampMs": 74600,
+    "confidence": 0.992657
+  },
+  {
+    "text": " die",
+    "startMs": 74510,
+    "endMs": 74700,
+    "timestampMs": 74820,
+    "confidence": 0.999783
+  },
+  {
+    "text": " selten",
+    "startMs": 74700,
+    "endMs": 75070,
+    "timestampMs": 75120,
+    "confidence": 0.999542
+  },
+  {
+    "text": " vorkommen,",
+    "startMs": 75070,
+    "endMs": 75760,
+    "timestampMs": 75480,
+    "confidence": 0.981603
+  },
+  {
+    "text": " verschwimmen.",
+    "startMs": 75760,
+    "endMs": 76830,
+    "timestampMs": 76100,
+    "confidence": 0.994289
+  },
+  {
+    "text": " Der",
+    "startMs": 76830,
+    "endMs": 76890,
+    "timestampMs": 77120,
+    "confidence": 0.983391
+  },
+  {
+    "text": " Geburtstag",
+    "startMs": 76890,
+    "endMs": 77580,
+    "timestampMs": 77320,
+    "confidence": 0.97132
+  },
+  {
+    "text": " einer",
+    "startMs": 77580,
+    "endMs": 77880,
+    "timestampMs": 77820,
+    "confidence": 0.997931
+  },
+  {
+    "text": " wenig",
+    "startMs": 77880,
+    "endMs": 78180,
+    "timestampMs": 78400,
+    "confidence": 0.992951
+  },
+  {
+    "text": " bekannten",
+    "startMs": 78180,
+    "endMs": 78740,
+    "timestampMs": 78560,
+    "confidence": 0.92738
+  },
+  {
+    "text": " Person.",
+    "startMs": 78740,
+    "endMs": 79440,
+    "timestampMs": 79260,
+    "confidence": 0.972735
+  },
+  {
+    "text": " Das",
+    "startMs": 79440,
+    "endMs": 79560,
+    "timestampMs": 79840,
+    "confidence": 0.991945
+  },
+  {
+    "text": " Aktenzeichen",
+    "startMs": 79560,
+    "endMs": 80160,
+    "timestampMs": 80060,
+    "confidence": 0.994901
+  },
+  {
+    "text": " eines",
+    "startMs": 80160,
+    "endMs": 80460,
+    "timestampMs": 80820,
+    "confidence": 0.991514
+  },
+  {
+    "text": " bestimmten",
+    "startMs": 80460,
+    "endMs": 81090,
+    "timestampMs": 81100,
+    "confidence": 0.998091
+  },
+  {
+    "text": " Urteils.",
+    "startMs": 81090,
+    "endMs": 81670,
+    "timestampMs": 81480,
+    "confidence": 0.996151
+  },
+  {
+    "text": " Davon",
+    "startMs": 81670,
+    "endMs": 82210,
+    "timestampMs": 82380,
+    "confidence": 0.793658
+  },
+  {
+    "text": " hat",
+    "startMs": 82210,
+    "endMs": 82370,
+    "timestampMs": 82580,
+    "confidence": 0.993707
+  },
+  {
+    "text": " die",
+    "startMs": 82370,
+    "endMs": 82620,
+    "timestampMs": 82800,
+    "confidence": 0.990964
+  },
+  {
+    "text": " KI",
+    "startMs": 82620,
+    "endMs": 82860,
+    "timestampMs": 82940,
+    "confidence": 0.979966
+  },
+  {
+    "text": " nur",
+    "startMs": 82860,
+    "endMs": 83040,
+    "timestampMs": 83180,
+    "confidence": 0.829154
+  },
+  {
+    "text": " eine",
+    "startMs": 83040,
+    "endMs": 83360,
+    "timestampMs": 83560,
+    "confidence": 0.998296
+  },
+  {
+    "text": " ungefähre",
+    "startMs": 83360,
+    "endMs": 84160,
+    "timestampMs": 83920,
+    "confidence": 0.945018
+  },
+  {
+    "text": " Vorstellung.",
+    "startMs": 84160,
+    "endMs": 85460,
+    "timestampMs": 84380,
+    "confidence": 0.999676
+  },
+  {
+    "text": " Grund",
+    "startMs": 85460,
+    "endMs": 85680,
+    "timestampMs": 85660,
+    "confidence": 0.993494
+  },
+  {
+    "text": " zwei.",
+    "startMs": 85680,
+    "endMs": 86480,
+    "timestampMs": 86200,
+    "confidence": 0.927484
+  },
+  {
+    "text": " Die",
+    "startMs": 86480,
+    "endMs": 86500,
+    "timestampMs": 86640,
+    "confidence": 0.991249
+  },
+  {
+    "text": " KI",
+    "startMs": 86500,
+    "endMs": 86640,
+    "timestampMs": 87120,
+    "confidence": 0.995308
+  },
+  {
+    "text": " muss",
+    "startMs": 86640,
+    "endMs": 86960,
+    "timestampMs": 87440,
+    "confidence": 0.997457
+  },
+  {
+    "text": " immer",
+    "startMs": 86960,
+    "endMs": 87360,
+    "timestampMs": 87860,
+    "confidence": 0.998769
+  },
+  {
+    "text": " weiter",
+    "startMs": 87360,
+    "endMs": 87840,
+    "timestampMs": 88220,
+    "confidence": 0.990922
+  },
+  {
+    "text": " reden.",
+    "startMs": 87840,
+    "endMs": 89010,
+    "timestampMs": 88500,
+    "confidence": 0.814922
+  },
+  {
+    "text": " Sie",
+    "startMs": 89010,
+    "endMs": 89080,
+    "timestampMs": 89160,
+    "confidence": 0.968537
+  },
+  {
+    "text": " berechnet",
+    "startMs": 89080,
+    "endMs": 89530,
+    "timestampMs": 89400,
+    "confidence": 0.980782
+  },
+  {
+    "text": " für",
+    "startMs": 89530,
+    "endMs": 89640,
+    "timestampMs": 89880,
+    "confidence": 0.809093
+  },
+  {
+    "text": " jedes",
+    "startMs": 89640,
+    "endMs": 90120,
+    "timestampMs": 90200,
+    "confidence": 0.580101
+  },
+  {
+    "text": " nächste",
+    "startMs": 90120,
+    "endMs": 90600,
+    "timestampMs": 90580,
+    "confidence": 0.995961
+  },
+  {
+    "text": " Wort",
+    "startMs": 90600,
+    "endMs": 90910,
+    "timestampMs": 90900,
+    "confidence": 0.998034
+  },
+  {
+    "text": " Wahrscheinlichkeiten",
+    "startMs": 90910,
+    "endMs": 92040,
+    "timestampMs": 91160,
+    "confidence": 0.959783
+  },
+  {
+    "text": " und",
+    "startMs": 92040,
+    "endMs": 92380,
+    "timestampMs": 92620,
+    "confidence": 0.583791
+  },
+  {
+    "text": " wählt",
+    "startMs": 92380,
+    "endMs": 92580,
+    "timestampMs": 92760,
+    "confidence": 0.994017
+  },
+  {
+    "text": " eins",
+    "startMs": 92580,
+    "endMs": 92820,
+    "timestampMs": 93060,
+    "confidence": 0.957625
+  },
+  {
+    "text": " aus.",
+    "startMs": 92820,
+    "endMs": 93180,
+    "timestampMs": 93560,
+    "confidence": 0.997733
+  },
+  {
+    "text": " Auch",
+    "startMs": 93180,
+    "endMs": 93660,
+    "timestampMs": 94060,
+    "confidence": 0.999195
+  },
+  {
+    "text": " dann,",
+    "startMs": 93660,
+    "endMs": 93880,
+    "timestampMs": 94320,
+    "confidence": 0.938013
+  },
+  {
+    "text": " wenn",
+    "startMs": 93880,
+    "endMs": 94020,
+    "timestampMs": 94580,
+    "confidence": 0.990803
+  },
+  {
+    "text": " keines",
+    "startMs": 94020,
+    "endMs": 94380,
+    "timestampMs": 94800,
+    "confidence": 0.989968
+  },
+  {
+    "text": " davon",
+    "startMs": 94380,
+    "endMs": 94680,
+    "timestampMs": 95140,
+    "confidence": 0.979438
+  },
+  {
+    "text": " wirklich",
+    "startMs": 94680,
+    "endMs": 95200,
+    "timestampMs": 95500,
+    "confidence": 0.980857
+  },
+  {
+    "text": " sicher",
+    "startMs": 95200,
+    "endMs": 95640,
+    "timestampMs": 95740,
+    "confidence": 0.784441
+  },
+  {
+    "text": " ist.",
+    "startMs": 95640,
+    "endMs": 96120,
+    "timestampMs": 96000,
+    "confidence": 0.999645
+  },
+  {
+    "text": " Es",
+    "startMs": 96120,
+    "endMs": 96120,
+    "timestampMs": 96640,
+    "confidence": 0.995289
+  },
+  {
+    "text": " gibt",
+    "startMs": 96120,
+    "endMs": 96480,
+    "timestampMs": 96800,
+    "confidence": 0.998666
+  },
+  {
+    "text": " in",
+    "startMs": 96480,
+    "endMs": 96510,
+    "timestampMs": 96980,
+    "confidence": 0.996493
+  },
+  {
+    "text": " diesem",
+    "startMs": 96510,
+    "endMs": 96840,
+    "timestampMs": 97140,
+    "confidence": 0.98438
+  },
+  {
+    "text": " Moment",
+    "startMs": 96840,
+    "endMs": 97200,
+    "timestampMs": 97420,
+    "confidence": 0.993085
+  },
+  {
+    "text": " keine",
+    "startMs": 97200,
+    "endMs": 97500,
+    "timestampMs": 97800,
+    "confidence": 0.997238
+  },
+  {
+    "text": " eingebaute",
+    "startMs": 97500,
+    "endMs": 98100,
+    "timestampMs": 98280,
+    "confidence": 0.999081
+  },
+  {
+    "text": " Stelle,",
+    "startMs": 98100,
+    "endMs": 98600,
+    "timestampMs": 98820,
+    "confidence": 0.9965
+  },
+  {
+    "text": " an",
+    "startMs": 98600,
+    "endMs": 98700,
+    "timestampMs": 99060,
+    "confidence": 0.997626
+  },
+  {
+    "text": " der",
+    "startMs": 98700,
+    "endMs": 98880,
+    "timestampMs": 99100,
+    "confidence": 0.999451
+  },
+  {
+    "text": " sie",
+    "startMs": 98880,
+    "endMs": 99060,
+    "timestampMs": 99260,
+    "confidence": 0.994021
+  },
+  {
+    "text": " merkt,",
+    "startMs": 99060,
+    "endMs": 99520,
+    "timestampMs": 99520,
+    "confidence": 0.99736
+  },
+  {
+    "text": " hier",
+    "startMs": 99520,
+    "endMs": 99770,
+    "timestampMs": 100200,
+    "confidence": 0.701894
+  },
+  {
+    "text": " weiß",
+    "startMs": 99770,
+    "endMs": 100090,
+    "timestampMs": 100480,
+    "confidence": 0.992316
+  },
+  {
+    "text": " ich",
+    "startMs": 100090,
+    "endMs": 100280,
+    "timestampMs": 100680,
+    "confidence": 0.927499
+  },
+  {
+    "text": " nichts.",
+    "startMs": 100280,
+    "endMs": 100880,
+    "timestampMs": 100960,
+    "confidence": 0.99429
+  },
+  {
+    "text": " Also",
+    "startMs": 100880,
+    "endMs": 101310,
+    "timestampMs": 101920,
+    "confidence": 0.777696
+  },
+  {
+    "text": " entsteht",
+    "startMs": 101310,
+    "endMs": 101630,
+    "timestampMs": 102180,
+    "confidence": 0.992456
+  },
+  {
+    "text": " ein",
+    "startMs": 101630,
+    "endMs": 101820,
+    "timestampMs": 102440,
+    "confidence": 0.996592
+  },
+  {
+    "text": " Satz,",
+    "startMs": 101820,
+    "endMs": 102200,
+    "timestampMs": 102620,
+    "confidence": 0.997012
+  },
+  {
+    "text": " der",
+    "startMs": 102200,
+    "endMs": 102380,
+    "timestampMs": 102840,
+    "confidence": 0.999302
+  },
+  {
+    "text": " gut",
+    "startMs": 102380,
+    "endMs": 102570,
+    "timestampMs": 103140,
+    "confidence": 0.998811
+  },
+  {
+    "text": " klingt.",
+    "startMs": 102570,
+    "endMs": 103140,
+    "timestampMs": 103380,
+    "confidence": 0.987136
+  },
+  {
+    "text": " Ob",
+    "startMs": 103140,
+    "endMs": 103260,
+    "timestampMs": 104020,
+    "confidence": 0.99729
+  },
+  {
+    "text": " er",
+    "startMs": 103260,
+    "endMs": 103380,
+    "timestampMs": 104240,
+    "confidence": 0.977312
+  },
+  {
+    "text": " stimmt,",
+    "startMs": 103380,
+    "endMs": 103890,
+    "timestampMs": 104460,
+    "confidence": 0.998757
+  },
+  {
+    "text": " ist",
+    "startMs": 103890,
+    "endMs": 104070,
+    "timestampMs": 104860,
+    "confidence": 0.994879
+  },
+  {
+    "text": " eine",
+    "startMs": 104070,
+    "endMs": 104320,
+    "timestampMs": 105100,
+    "confidence": 0.997227
+  },
+  {
+    "text": " andere",
+    "startMs": 104320,
+    "endMs": 104700,
+    "timestampMs": 105260,
+    "confidence": 0.995904
+  },
+  {
+    "text": " Frage.",
+    "startMs": 104700,
+    "endMs": 105320,
+    "timestampMs": 105580,
+    "confidence": 0.998923
+  },
+  {
+    "text": " Grund",
+    "startMs": 105320,
+    "endMs": 106680,
+    "timestampMs": 106720,
+    "confidence": 0.919044
+  },
+  {
+    "text": " drei",
+    "startMs": 106680,
+    "endMs": 106800,
+    "timestampMs": 106920,
+    "confidence": 0.690818
+  },
+  {
+    "text": " ist",
+    "startMs": 106800,
+    "endMs": 107000,
+    "timestampMs": 106980,
+    "confidence": 0.779905
+  },
+  {
+    "text": " überraschend.",
+    "startMs": 107000,
+    "endMs": 108170,
+    "timestampMs": 107180,
+    "confidence": 0.998689
+  },
+  {
+    "text": " Forscher",
+    "startMs": 108170,
+    "endMs": 108790,
+    "timestampMs": 108380,
+    "confidence": 0.997893
+  },
+  {
+    "text": " von",
+    "startMs": 108790,
+    "endMs": 108990,
+    "timestampMs": 108660,
+    "confidence": 0.998083
+  },
+  {
+    "text": " OpenAI",
+    "startMs": 108990,
+    "endMs": 109400,
+    "timestampMs": 109060,
+    "confidence": 0.963098
+  },
+  {
+    "text": " haben",
+    "startMs": 109400,
+    "endMs": 109760,
+    "timestampMs": 110180,
+    "confidence": 0.973996
+  },
+  {
+    "text": " im",
+    "startMs": 109760,
+    "endMs": 109920,
+    "timestampMs": 110500,
+    "confidence": 0.996162
+  },
+  {
+    "text": " September",
+    "startMs": 109920,
+    "endMs": 110630,
+    "timestampMs": 110860,
+    "confidence": 0.9935
+  },
+  {
+    "text": " 2025",
+    "startMs": 110630,
+    "endMs": 111480,
+    "timestampMs": 111860,
+    "confidence": 0.96495
+  },
+  {
+    "text": " gezeigt,",
+    "startMs": 111480,
+    "endMs": 112260,
+    "timestampMs": 112340,
+    "confidence": 0.996354
+  },
+  {
+    "text": " die",
+    "startMs": 112260,
+    "endMs": 112580,
+    "timestampMs": 112880,
+    "confidence": 0.965081
+  },
+  {
+    "text": " Tests,",
+    "startMs": 112580,
+    "endMs": 113240,
+    "timestampMs": 113220,
+    "confidence": 0.976142
+  },
+  {
+    "text": " mit",
+    "startMs": 113240,
+    "endMs": 113460,
+    "timestampMs": 113640,
+    "confidence": 0.999291
+  },
+  {
+    "text": " denen",
+    "startMs": 113460,
+    "endMs": 113830,
+    "timestampMs": 113880,
+    "confidence": 0.996234
+  },
+  {
+    "text": " KIs",
+    "startMs": 113830,
+    "endMs": 114040,
+    "timestampMs": 114160,
+    "confidence": 0.470433
+  },
+  {
+    "text": " bewertet",
+    "startMs": 114040,
+    "endMs": 114640,
+    "timestampMs": 114560,
+    "confidence": 0.996736
+  },
+  {
+    "text": " werden,",
+    "startMs": 114640,
+    "endMs": 115290,
+    "timestampMs": 115200,
+    "confidence": 0.998769
+  },
+  {
+    "text": " belohnen",
+    "startMs": 115290,
+    "endMs": 115780,
+    "timestampMs": 115680,
+    "confidence": 0.991745
+  },
+  {
+    "text": " oft",
+    "startMs": 115780,
+    "endMs": 116000,
+    "timestampMs": 116200,
+    "confidence": 0.99437
+  },
+  {
+    "text": " das",
+    "startMs": 116000,
+    "endMs": 116220,
+    "timestampMs": 116580,
+    "confidence": 0.994624
+  },
+  {
+    "text": " Raten.",
+    "startMs": 116220,
+    "endMs": 116800,
+    "timestampMs": 116780,
+    "confidence": 0.897987
+  },
+  {
+    "text": " Stell",
+    "startMs": 116800,
+    "endMs": 117100,
+    "timestampMs": 117760,
+    "confidence": 0.945024
+  },
+  {
+    "text": " dir",
+    "startMs": 117100,
+    "endMs": 117560,
+    "timestampMs": 117900,
+    "confidence": 0.966809
+  },
+  {
+    "text": " eine",
+    "startMs": 117560,
+    "endMs": 117680,
+    "timestampMs": 118120,
+    "confidence": 0.998468
+  },
+  {
+    "text": " Prüfung",
+    "startMs": 117680,
+    "endMs": 118360,
+    "timestampMs": 118300,
+    "confidence": 0.998085
+  },
+  {
+    "text": " vor.",
+    "startMs": 118360,
+    "endMs": 118510,
+    "timestampMs": 118840,
+    "confidence": 0.977262
+  },
+  {
+    "text": " Für",
+    "startMs": 118510,
+    "endMs": 119340,
+    "timestampMs": 119420,
+    "confidence": 0.869045
+  },
+  {
+    "text": " eine",
+    "startMs": 119340,
+    "endMs": 119570,
+    "timestampMs": 119620,
+    "confidence": 0.998772
+  },
+  {
+    "text": " richtige",
+    "startMs": 119570,
+    "endMs": 120030,
+    "timestampMs": 119960,
+    "confidence": 0.998721
+  },
+  {
+    "text": " Antwort",
+    "startMs": 120030,
+    "endMs": 120440,
+    "timestampMs": 120320,
+    "confidence": 0.999743
+  },
+  {
+    "text": " gibt",
+    "startMs": 120440,
+    "endMs": 120670,
+    "timestampMs": 120480,
+    "confidence": 0.974022
+  },
+  {
+    "text": " es",
+    "startMs": 120670,
+    "endMs": 120780,
+    "timestampMs": 120700,
+    "confidence": 0.99822
+  },
+  {
+    "text": " einen",
+    "startMs": 120780,
+    "endMs": 121070,
+    "timestampMs": 120940,
+    "confidence": 0.991832
+  },
+  {
+    "text": " Punkt.",
+    "startMs": 121070,
+    "endMs": 121590,
+    "timestampMs": 121300,
+    "confidence": 0.999516
+  },
+  {
+    "text": " Für",
+    "startMs": 121590,
+    "endMs": 121760,
+    "timestampMs": 121940,
+    "confidence": 0.998681
+  },
+  {
+    "text": " weiß",
+    "startMs": 121760,
+    "endMs": 122050,
+    "timestampMs": 122260,
+    "confidence": 0.465744
+  },
+  {
+    "text": " ich",
+    "startMs": 122050,
+    "endMs": 122220,
+    "timestampMs": 122460,
+    "confidence": 0.982407
+  },
+  {
+    "text": " nicht",
+    "startMs": 122220,
+    "endMs": 122520,
+    "timestampMs": 122660,
+    "confidence": 0.988587
+  },
+  {
+    "text": " gibt",
+    "startMs": 122520,
+    "endMs": 122740,
+    "timestampMs": 122840,
+    "confidence": 0.744516
+  },
+  {
+    "text": " es",
+    "startMs": 122740,
+    "endMs": 122980,
+    "timestampMs": 123060,
+    "confidence": 0.996326
+  },
+  {
+    "text": " null",
+    "startMs": 122980,
+    "endMs": 123100,
+    "timestampMs": 123320,
+    "confidence": 0.565749
+  },
+  {
+    "text": " Punkte.",
+    "startMs": 123100,
+    "endMs": 123520,
+    "timestampMs": 123580,
+    "confidence": 0.986918
+  },
+  {
+    "text": " Und",
+    "startMs": 123520,
+    "endMs": 124160,
+    "timestampMs": 124220,
+    "confidence": 0.820273
+  },
+  {
+    "text": " für",
+    "startMs": 124160,
+    "endMs": 124280,
+    "timestampMs": 124380,
+    "confidence": 0.630327
+  },
+  {
+    "text": " eine",
+    "startMs": 124280,
+    "endMs": 124570,
+    "timestampMs": 124540,
+    "confidence": 0.998399
+  },
+  {
+    "text": " falsche",
+    "startMs": 124570,
+    "endMs": 125080,
+    "timestampMs": 124720,
+    "confidence": 0.999115
+  },
+  {
+    "text": " Antwort",
+    "startMs": 125080,
+    "endMs": 125600,
+    "timestampMs": 125160,
+    "confidence": 0.998957
+  },
+  {
+    "text": " auch",
+    "startMs": 125600,
+    "endMs": 125880,
+    "timestampMs": 125560,
+    "confidence": 0.980726
+  },
+  {
+    "text": " null.",
+    "startMs": 125880,
+    "endMs": 126400,
+    "timestampMs": 125740,
+    "confidence": 0.766677
+  },
+  {
+    "text": " Was",
+    "startMs": 126400,
+    "endMs": 126620,
+    "timestampMs": 126560,
+    "confidence": 0.998315
+  },
+  {
+    "text": " lohnt",
+    "startMs": 126620,
+    "endMs": 126980,
+    "timestampMs": 126700,
+    "confidence": 0.998828
+  },
+  {
+    "text": " sich",
+    "startMs": 126980,
+    "endMs": 127490,
+    "timestampMs": 126940,
+    "confidence": 0.998814
+  },
+  {
+    "text": " dann?",
+    "startMs": 127490,
+    "endMs": 127840,
+    "timestampMs": 127160,
+    "confidence": 0.974498
+  },
+  {
+    "text": " Raten.",
+    "startMs": 127840,
+    "endMs": 128360,
+    "timestampMs": 127860,
+    "confidence": 0.964474
+  },
+  {
+    "text": " Fragt",
+    "startMs": 128360,
+    "endMs": 128750,
+    "timestampMs": 128920,
+    "confidence": 0.911856
+  },
+  {
+    "text": " man",
+    "startMs": 128750,
+    "endMs": 128970,
+    "timestampMs": 129180,
+    "confidence": 0.997453
+  },
+  {
+    "text": " eine",
+    "startMs": 128970,
+    "endMs": 129230,
+    "timestampMs": 129380,
+    "confidence": 0.985876
+  },
+  {
+    "text": " KI",
+    "startMs": 129230,
+    "endMs": 129370,
+    "timestampMs": 129660,
+    "confidence": 0.992292
+  },
+  {
+    "text": " nach",
+    "startMs": 129370,
+    "endMs": 129820,
+    "timestampMs": 129860,
+    "confidence": 0.990868
+  },
+  {
+    "text": " einem",
+    "startMs": 129820,
+    "endMs": 129960,
+    "timestampMs": 130060,
+    "confidence": 0.910675
+  },
+  {
+    "text": " Geburtstag,",
+    "startMs": 129960,
+    "endMs": 130560,
+    "timestampMs": 130260,
+    "confidence": 0.9981
+  },
+  {
+    "text": " den",
+    "startMs": 130560,
+    "endMs": 130710,
+    "timestampMs": 130780,
+    "confidence": 0.997855
+  },
+  {
+    "text": " sie",
+    "startMs": 130710,
+    "endMs": 130860,
+    "timestampMs": 130920,
+    "confidence": 0.998731
+  },
+  {
+    "text": " nicht",
+    "startMs": 130860,
+    "endMs": 131120,
+    "timestampMs": 131180,
+    "confidence": 0.999153
+  },
+  {
+    "text": " kennt,",
+    "startMs": 131120,
+    "endMs": 131520,
+    "timestampMs": 131360,
+    "confidence": 0.998264
+  },
+  {
+    "text": " und",
+    "startMs": 131520,
+    "endMs": 131630,
+    "timestampMs": 131660,
+    "confidence": 0.998468
+  },
+  {
+    "text": " sie",
+    "startMs": 131630,
+    "endMs": 131780,
+    "timestampMs": 131840,
+    "confidence": 0.993885
+  },
+  {
+    "text": " rät",
+    "startMs": 131780,
+    "endMs": 132010,
+    "timestampMs": 131960,
+    "confidence": 0.874172
+  },
+  {
+    "text": " einfach",
+    "startMs": 132010,
+    "endMs": 132330,
+    "timestampMs": 132420,
+    "confidence": 0.996398
+  },
+  {
+    "text": " ein",
+    "startMs": 132330,
+    "endMs": 132490,
+    "timestampMs": 132620,
+    "confidence": 0.989195
+  },
+  {
+    "text": " Datum,",
+    "startMs": 132490,
+    "endMs": 132840,
+    "timestampMs": 132840,
+    "confidence": 0.995991
+  },
+  {
+    "text": " liegt",
+    "startMs": 132840,
+    "endMs": 133100,
+    "timestampMs": 133320,
+    "confidence": 0.981457
+  },
+  {
+    "text": " sie",
+    "startMs": 133100,
+    "endMs": 133300,
+    "timestampMs": 133600,
+    "confidence": 0.996284
+  },
+  {
+    "text": " in",
+    "startMs": 133300,
+    "endMs": 133480,
+    "timestampMs": 133760,
+    "confidence": 0.989808
+  },
+  {
+    "text": " einem",
+    "startMs": 133480,
+    "endMs": 133920,
+    "timestampMs": 134020,
+    "confidence": 0.913699
+  },
+  {
+    "text": " von",
+    "startMs": 133920,
+    "endMs": 134070,
+    "timestampMs": 134360,
+    "confidence": 0.671899
+  },
+  {
+    "text": " 365",
+    "startMs": 134070,
+    "endMs": 135200,
+    "timestampMs": 135180,
+    "confidence": 0.945732
+  },
+  {
+    "text": " Fällen",
+    "startMs": 135210,
+    "endMs": 135660,
+    "timestampMs": 135200,
+    "confidence": 0.941968
+  },
+  {
+    "text": " richtig.",
+    "startMs": 135660,
+    "endMs": 136340,
+    "timestampMs": 136160,
+    "confidence": 0.995281
+  },
+  {
+    "text": " Mit",
+    "startMs": 136340,
+    "endMs": 136530,
+    "timestampMs": 136700,
+    "confidence": 0.997067
+  },
+  {
+    "text": " weiß",
+    "startMs": 136530,
+    "endMs": 136860,
+    "timestampMs": 136940,
+    "confidence": 0.770405
+  },
+  {
+    "text": " ich",
+    "startMs": 136860,
+    "endMs": 137050,
+    "timestampMs": 137180,
+    "confidence": 0.990229
+  },
+  {
+    "text": " nicht,",
+    "startMs": 137050,
+    "endMs": 137670,
+    "timestampMs": 137580,
+    "confidence": 0.999173
+  },
+  {
+    "text": " liegt",
+    "startMs": 137670,
+    "endMs": 137860,
+    "timestampMs": 137880,
+    "confidence": 0.994825
+  },
+  {
+    "text": " sie",
+    "startMs": 137860,
+    "endMs": 138050,
+    "timestampMs": 138020,
+    "confidence": 0.997809
+  },
+  {
+    "text": " nie",
+    "startMs": 138050,
+    "endMs": 138240,
+    "timestampMs": 138220,
+    "confidence": 0.997143
+  },
+  {
+    "text": " richtig.",
+    "startMs": 138240,
+    "endMs": 138930,
+    "timestampMs": 138660,
+    "confidence": 0.999462
+  },
+  {
+    "text": " Über",
+    "startMs": 138930,
+    "endMs": 139290,
+    "timestampMs": 139540,
+    "confidence": 0.99342
+  },
+  {
+    "text": " tausende",
+    "startMs": 139290,
+    "endMs": 139780,
+    "timestampMs": 139760,
+    "confidence": 0.813036
+  },
+  {
+    "text": " Fragen",
+    "startMs": 139780,
+    "endMs": 140240,
+    "timestampMs": 140340,
+    "confidence": 0.989551
+  },
+  {
+    "text": " sieht",
+    "startMs": 140240,
+    "endMs": 140620,
+    "timestampMs": 140620,
+    "confidence": 0.886943
+  },
+  {
+    "text": " das",
+    "startMs": 140620,
+    "endMs": 140720,
+    "timestampMs": 140940,
+    "confidence": 0.950209
+  },
+  {
+    "text": " ratende",
+    "startMs": 140720,
+    "endMs": 141200,
+    "timestampMs": 141160,
+    "confidence": 0.761235
+  },
+  {
+    "text": " Modell",
+    "startMs": 141200,
+    "endMs": 141620,
+    "timestampMs": 141540,
+    "confidence": 0.992994
+  },
+  {
+    "text": " auf",
+    "startMs": 141620,
+    "endMs": 141870,
+    "timestampMs": 141760,
+    "confidence": 0.996812
+  },
+  {
+    "text": " der",
+    "startMs": 141870,
+    "endMs": 142040,
+    "timestampMs": 141960,
+    "confidence": 0.997702
+  },
+  {
+    "text": " Punktetafel",
+    "startMs": 142040,
+    "endMs": 142820,
+    "timestampMs": 142140,
+    "confidence": 0.746102
+  },
+  {
+    "text": " besser",
+    "startMs": 142820,
+    "endMs": 143460,
+    "timestampMs": 142720,
+    "confidence": 0.999397
+  },
+  {
+    "text": " aus.",
+    "startMs": 143460,
+    "endMs": 143890,
+    "timestampMs": 143100,
+    "confidence": 0.995285
+  },
+  {
+    "text": " Grund",
+    "startMs": 143890,
+    "endMs": 144030,
+    "timestampMs": 144200,
+    "confidence": 0.992447
+  },
+  {
+    "text": " vier.",
+    "startMs": 144030,
+    "endMs": 144530,
+    "timestampMs": 144900,
+    "confidence": 0.901779
+  },
+  {
+    "text": " Der",
+    "startMs": 144530,
+    "endMs": 144950,
+    "timestampMs": 145280,
+    "confidence": 0.992472
+  },
+  {
+    "text": " Tonfall",
+    "startMs": 144950,
+    "endMs": 145240,
+    "timestampMs": 145640,
+    "confidence": 0.995514
+  },
+  {
+    "text": " verrät",
+    "startMs": 145240,
+    "endMs": 145740,
+    "timestampMs": 146160,
+    "confidence": 0.987161
+  },
+  {
+    "text": " nichts.",
+    "startMs": 145740,
+    "endMs": 146520,
+    "timestampMs": 146720,
+    "confidence": 0.980961
+  },
+  {
+    "text": " Eine",
+    "startMs": 146520,
+    "endMs": 147480,
+    "timestampMs": 147680,
+    "confidence": 0.880594
+  },
+  {
+    "text": " richtige",
+    "startMs": 147480,
+    "endMs": 147920,
+    "timestampMs": 148020,
+    "confidence": 0.975744
+  },
+  {
+    "text": " und",
+    "startMs": 147920,
+    "endMs": 148160,
+    "timestampMs": 148260,
+    "confidence": 0.804983
+  },
+  {
+    "text": " eine",
+    "startMs": 148160,
+    "endMs": 148410,
+    "timestampMs": 148480,
+    "confidence": 0.921864
+  },
+  {
+    "text": " erfundene",
+    "startMs": 148410,
+    "endMs": 148990,
+    "timestampMs": 148740,
+    "confidence": 0.994419
+  },
+  {
+    "text": " Antwort",
+    "startMs": 148990,
+    "endMs": 149450,
+    "timestampMs": 149340,
+    "confidence": 0.998748
+  },
+  {
+    "text": " klingen",
+    "startMs": 149450,
+    "endMs": 149900,
+    "timestampMs": 149520,
+    "confidence": 0.995158
+  },
+  {
+    "text": " bei",
+    "startMs": 149900,
+    "endMs": 150090,
+    "timestampMs": 149780,
+    "confidence": 0.997478
+  },
+  {
+    "text": " einer",
+    "startMs": 150090,
+    "endMs": 150410,
+    "timestampMs": 150000,
+    "confidence": 0.997976
+  },
+  {
+    "text": " KI",
+    "startMs": 150410,
+    "endMs": 150550,
+    "timestampMs": 150280,
+    "confidence": 0.996711
+  },
+  {
+    "text": " oft",
+    "startMs": 150550,
+    "endMs": 150730,
+    "timestampMs": 150580,
+    "confidence": 0.997075
+  },
+  {
+    "text": " genau",
+    "startMs": 150730,
+    "endMs": 151050,
+    "timestampMs": 150940,
+    "confidence": 0.992559
+  },
+  {
+    "text": " gleich.",
+    "startMs": 151050,
+    "endMs": 151780,
+    "timestampMs": 151400,
+    "confidence": 0.996786
+  },
+  {
+    "text": " Freundlich,",
+    "startMs": 151780,
+    "endMs": 152540,
+    "timestampMs": 152120,
+    "confidence": 0.948907
+  },
+  {
+    "text": " flüssig,",
+    "startMs": 152540,
+    "endMs": 153160,
+    "timestampMs": 152920,
+    "confidence": 0.989062
+  },
+  {
+    "text": " selbstsicher.",
+    "startMs": 153160,
+    "endMs": 154040,
+    "timestampMs": 153940,
+    "confidence": 0.819733
+  },
+  {
+    "text": " Bei",
+    "startMs": 154040,
+    "endMs": 154600,
+    "timestampMs": 155100,
+    "confidence": 0.991798
+  },
+  {
+    "text": " Menschen",
+    "startMs": 154600,
+    "endMs": 154890,
+    "timestampMs": 155420,
+    "confidence": 0.993297
+  },
+  {
+    "text": " hören",
+    "startMs": 154890,
+    "endMs": 155280,
+    "timestampMs": 155860,
+    "confidence": 0.995759
+  },
+  {
+    "text": " wir",
+    "startMs": 155280,
+    "endMs": 155510,
+    "timestampMs": 156120,
+    "confidence": 0.998085
+  },
+  {
+    "text": " Unsicherheit",
+    "startMs": 155510,
+    "endMs": 156370,
+    "timestampMs": 156360,
+    "confidence": 0.967034
+  },
+  {
+    "text": " manchmal",
+    "startMs": 156370,
+    "endMs": 156950,
+    "timestampMs": 157060,
+    "confidence": 0.997973
+  },
+  {
+    "text": " heraus.",
+    "startMs": 156950,
+    "endMs": 157770,
+    "timestampMs": 157540,
+    "confidence": 0.993125
+  },
+  {
+    "text": " Ein",
+    "startMs": 157770,
+    "endMs": 157820,
+    "timestampMs": 158060,
+    "confidence": 0.972535
+  },
+  {
+    "text": " Zögern,",
+    "startMs": 157820,
+    "endMs": 158450,
+    "timestampMs": 158160,
+    "confidence": 0.969886
+  },
+  {
+    "text": " ein,",
+    "startMs": 158450,
+    "endMs": 158880,
+    "timestampMs": 159260,
+    "confidence": 0.969499
+  },
+  {
+    "text": " ich",
+    "startMs": 158880,
+    "endMs": 159380,
+    "timestampMs": 159640,
+    "confidence": 0.923527
+  },
+  {
+    "text": " glaube.",
+    "startMs": 159380,
+    "endMs": 160550,
+    "timestampMs": 159880,
+    "confidence": 0.994829
+  },
+  {
+    "text": " Bei",
+    "startMs": 160550,
+    "endMs": 160860,
+    "timestampMs": 160980,
+    "confidence": 0.984384
+  },
+  {
+    "text": " der",
+    "startMs": 160860,
+    "endMs": 161000,
+    "timestampMs": 161180,
+    "confidence": 0.963128
+  },
+  {
+    "text": " KI",
+    "startMs": 161000,
+    "endMs": 161200,
+    "timestampMs": 161180,
+    "confidence": 0.923948
+  },
+  {
+    "text": " fehlt",
+    "startMs": 161230,
+    "endMs": 161580,
+    "timestampMs": 161680,
+    "confidence": 0.997898
+  },
+  {
+    "text": " dieses",
+    "startMs": 161580,
+    "endMs": 162040,
+    "timestampMs": 162020,
+    "confidence": 0.981744
+  },
+  {
+    "text": " Warnsignal",
+    "startMs": 162040,
+    "endMs": 162790,
+    "timestampMs": 162120,
+    "confidence": 0.737672
+  },
+  {
+    "text": " meistens.",
+    "startMs": 162790,
+    "endMs": 163940,
+    "timestampMs": 162800,
+    "confidence": 0.996478
+  },
+  {
+    "text": " Mach",
+    "startMs": 163940,
+    "endMs": 164030,
+    "timestampMs": 164200,
+    "confidence": 0.925707
+  },
+  {
+    "text": " mal",
+    "startMs": 164030,
+    "endMs": 164190,
+    "timestampMs": 164320,
+    "confidence": 0.720141
+  },
+  {
+    "text": " den",
+    "startMs": 164190,
+    "endMs": 164400,
+    "timestampMs": 164480,
+    "confidence": 0.997094
+  },
+  {
+    "text": " Test.",
+    "startMs": 164400,
+    "endMs": 165150,
+    "timestampMs": 164760,
+    "confidence": 0.993585
+  },
+  {
+    "text": " Hier",
+    "startMs": 165150,
+    "endMs": 165250,
+    "timestampMs": 165640,
+    "confidence": 0.996413
+  },
+  {
+    "text": " sind",
+    "startMs": 165250,
+    "endMs": 165560,
+    "timestampMs": 165880,
+    "confidence": 0.996706
+  },
+  {
+    "text": " zwei",
+    "startMs": 165560,
+    "endMs": 165870,
+    "timestampMs": 166200,
+    "confidence": 0.988502
+  },
+  {
+    "text": " Sätze",
+    "startMs": 165870,
+    "endMs": 166400,
+    "timestampMs": 166360,
+    "confidence": 0.968888
+  },
+  {
+    "text": " über",
+    "startMs": 166400,
+    "endMs": 166580,
+    "timestampMs": 166660,
+    "confidence": 0.97739
+  },
+  {
+    "text": " den",
+    "startMs": 166580,
+    "endMs": 166680,
+    "timestampMs": 166800,
+    "confidence": 0.993002
+  },
+  {
+    "text": " Eiffelturm.",
+    "startMs": 166680,
+    "endMs": 167160,
+    "timestampMs": 166980,
+    "confidence": 0.990956
+  },
+  {
+    "text": " Satz",
+    "startMs": 167160,
+    "endMs": 167520,
+    "timestampMs": 168060,
+    "confidence": 0.987424
+  },
+  {
+    "text": " A.",
+    "startMs": 167520,
+    "endMs": 167880,
+    "timestampMs": 168840,
+    "confidence": 0.595004
+  },
+  {
+    "text": " Der",
+    "startMs": 167880,
+    "endMs": 168150,
+    "timestampMs": 169140,
+    "confidence": 0.954968
+  },
+  {
+    "text": " Eiffelturm",
+    "startMs": 168150,
+    "endMs": 169050,
+    "timestampMs": 169360,
+    "confidence": 0.998068
+  },
+  {
+    "text": " ist",
+    "startMs": 169050,
+    "endMs": 169320,
+    "timestampMs": 169840,
+    "confidence": 0.997691
+  },
+  {
+    "text": " rund",
+    "startMs": 169320,
+    "endMs": 169690,
+    "timestampMs": 170180,
+    "confidence": 0.994567
+  },
+  {
+    "text": " 330",
+    "startMs": 169690,
+    "endMs": 170520,
+    "timestampMs": 170920,
+    "confidence": 0.989195
+  },
+  {
+    "text": " Meter",
+    "startMs": 170520,
+    "endMs": 170970,
+    "timestampMs": 171260,
+    "confidence": 0.933513
+  },
+  {
+    "text": " hoch.",
+    "startMs": 170970,
+    "endMs": 171890,
+    "timestampMs": 171660,
+    "confidence": 0.993585
+  },
+  {
+    "text": " Satz",
+    "startMs": 171890,
+    "endMs": 172070,
+    "timestampMs": 172320,
+    "confidence": 0.986252
+  },
+  {
+    "text": " B.",
+    "startMs": 172070,
+    "endMs": 172400,
+    "timestampMs": 173060,
+    "confidence": 0.95808
+  },
+  {
+    "text": " Der",
+    "startMs": 172400,
+    "endMs": 172700,
+    "timestampMs": 173540,
+    "confidence": 0.987649
+  },
+  {
+    "text": " Eiffelturm",
+    "startMs": 172700,
+    "endMs": 173520,
+    "timestampMs": 173740,
+    "confidence": 0.999014
+  },
+  {
+    "text": " wurde",
+    "startMs": 173520,
+    "endMs": 174120,
+    "timestampMs": 174160,
+    "confidence": 0.991845
+  },
+  {
+    "text": " im",
+    "startMs": 174120,
+    "endMs": 174200,
+    "timestampMs": 174340,
+    "confidence": 0.969034
+  },
+  {
+    "text": " Jahr",
+    "startMs": 174200,
+    "endMs": 174400,
+    "timestampMs": 174520,
+    "confidence": 0.97666
+  },
+  {
+    "text": " 1902",
+    "startMs": 174400,
+    "endMs": 175160,
+    "timestampMs": 174880,
+    "confidence": 0.944344
+  },
+  {
+    "text": " eröffnet.",
+    "startMs": 175160,
+    "endMs": 175800,
+    "timestampMs": 175560,
+    "confidence": 0.944175
+  },
+  {
+    "text": " Beide",
+    "startMs": 175800,
+    "endMs": 176170,
+    "timestampMs": 176780,
+    "confidence": 0.990652
+  },
+  {
+    "text": " klingen",
+    "startMs": 176170,
+    "endMs": 176720,
+    "timestampMs": 177100,
+    "confidence": 0.997191
+  },
+  {
+    "text": " gleichsicher,",
+    "startMs": 176720,
+    "endMs": 177800,
+    "timestampMs": 177500,
+    "confidence": 0.998331
+  },
+  {
+    "text": " oder?",
+    "startMs": 177800,
+    "endMs": 178340,
+    "timestampMs": 178040,
+    "confidence": 0.999268
+  },
+  {
+    "text": " Richtig",
+    "startMs": 178340,
+    "endMs": 178880,
+    "timestampMs": 179080,
+    "confidence": 0.992123
+  },
+  {
+    "text": " ist",
+    "startMs": 178880,
+    "endMs": 179110,
+    "timestampMs": 179460,
+    "confidence": 0.996478
+  },
+  {
+    "text": " nur",
+    "startMs": 179110,
+    "endMs": 179340,
+    "timestampMs": 179660,
+    "confidence": 0.998251
+  },
+  {
+    "text": " Satz",
+    "startMs": 179340,
+    "endMs": 179640,
+    "timestampMs": 179860,
+    "confidence": 0.991656
+  },
+  {
+    "text": " A.",
+    "startMs": 179640,
+    "endMs": 180000,
+    "timestampMs": 180520,
+    "confidence": 0.92809
+  },
+  {
+    "text": " Eröffnet",
+    "startMs": 180000,
+    "endMs": 180720,
+    "timestampMs": 180960,
+    "confidence": 0.989515
+  },
+  {
+    "text": " wurde",
+    "startMs": 180720,
+    "endMs": 181050,
+    "timestampMs": 181460,
+    "confidence": 0.995184
+  },
+  {
+    "text": " der",
+    "startMs": 181050,
+    "endMs": 181250,
+    "timestampMs": 181640,
+    "confidence": 0.99246
+  },
+  {
+    "text": " Turm",
+    "startMs": 181250,
+    "endMs": 181720,
+    "timestampMs": 181760,
+    "confidence": 0.972808
+  },
+  {
+    "text": " schon",
+    "startMs": 181720,
+    "endMs": 181840,
+    "timestampMs": 182020,
+    "confidence": 0.917356
+  },
+  {
+    "text": " 1889.",
+    "startMs": 181840,
+    "endMs": 183240,
+    "timestampMs": 182340,
+    "confidence": 0.941395
+  },
+  {
+    "text": " Genau",
+    "startMs": 183240,
+    "endMs": 183770,
+    "timestampMs": 184800,
+    "confidence": 0.52006
+  },
+  {
+    "text": " so",
+    "startMs": 183770,
+    "endMs": 183880,
+    "timestampMs": 185020,
+    "confidence": 0.997615
+  },
+  {
+    "text": " fühlt",
+    "startMs": 183880,
+    "endMs": 184330,
+    "timestampMs": 185180,
+    "confidence": 0.997288
+  },
+  {
+    "text": " sich",
+    "startMs": 184330,
+    "endMs": 184520,
+    "timestampMs": 185420,
+    "confidence": 0.999085
+  },
+  {
+    "text": " eine",
+    "startMs": 184520,
+    "endMs": 184820,
+    "timestampMs": 185620,
+    "confidence": 0.996234
+  },
+  {
+    "text": " Halluzination",
+    "startMs": 184820,
+    "endMs": 185830,
+    "timestampMs": 185820,
+    "confidence": 0.973972
+  },
+  {
+    "text": " an.",
+    "startMs": 185830,
+    "endMs": 186180,
+    "timestampMs": 186620,
+    "confidence": 0.999363
+  },
+  {
+    "text": " Man",
+    "startMs": 186180,
+    "endMs": 186410,
+    "timestampMs": 187060,
+    "confidence": 0.996843
+  },
+  {
+    "text": " sieht",
+    "startMs": 186410,
+    "endMs": 186880,
+    "timestampMs": 187300,
+    "confidence": 0.995797
+  },
+  {
+    "text": " ihr",
+    "startMs": 186880,
+    "endMs": 187020,
+    "timestampMs": 187460,
+    "confidence": 0.959177
+  },
+  {
+    "text": " den",
+    "startMs": 187020,
+    "endMs": 187290,
+    "timestampMs": 187700,
+    "confidence": 0.998635
+  },
+  {
+    "text": " Fehler",
+    "startMs": 187290,
+    "endMs": 187710,
+    "timestampMs": 187960,
+    "confidence": 0.97728
+  },
+  {
+    "text": " nicht",
+    "startMs": 187710,
+    "endMs": 188170,
+    "timestampMs": 188220,
+    "confidence": 0.997447
+  },
+  {
+    "text": " an.",
+    "startMs": 188170,
+    "endMs": 189070,
+    "timestampMs": 188740,
+    "confidence": 0.983432
+  },
+  {
+    "text": " Und",
+    "startMs": 189070,
+    "endMs": 189640,
+    "timestampMs": 189640,
+    "confidence": 0.92813
+  },
+  {
+    "text": " das",
+    "startMs": 189640,
+    "endMs": 189760,
+    "timestampMs": 189820,
+    "confidence": 0.977935
+  },
+  {
+    "text": " hat",
+    "startMs": 189760,
+    "endMs": 189890,
+    "timestampMs": 189940,
+    "confidence": 0.915695
+  },
+  {
+    "text": " schon",
+    "startMs": 189890,
+    "endMs": 189960,
+    "timestampMs": 189940,
+    "confidence": 0.663617
+  },
+  {
+    "text": " echte",
+    "startMs": 189960,
+    "endMs": 190280,
+    "timestampMs": 189960,
+    "confidence": 0.998511
+  },
+  {
+    "text": " Folgen",
+    "startMs": 190280,
+    "endMs": 190670,
+    "timestampMs": 190560,
+    "confidence": 0.996327
+  },
+  {
+    "text": " gehabt.",
+    "startMs": 190670,
+    "endMs": 191410,
+    "timestampMs": 191040,
+    "confidence": 0.995372
+  },
+  {
+    "text": " Im",
+    "startMs": 191410,
+    "endMs": 191440,
+    "timestampMs": 191600,
+    "confidence": 0.993214
+  },
+  {
+    "text": " Februar",
+    "startMs": 191440,
+    "endMs": 191870,
+    "timestampMs": 191880,
+    "confidence": 0.998862
+  },
+  {
+    "text": " 2023",
+    "startMs": 191870,
+    "endMs": 192680,
+    "timestampMs": 192980,
+    "confidence": 0.99681
+  },
+  {
+    "text": " stellte",
+    "startMs": 192680,
+    "endMs": 193130,
+    "timestampMs": 193280,
+    "confidence": 0.995304
+  },
+  {
+    "text": " Google",
+    "startMs": 193130,
+    "endMs": 193530,
+    "timestampMs": 193760,
+    "confidence": 0.993502
+  },
+  {
+    "text": " seinen",
+    "startMs": 193530,
+    "endMs": 193930,
+    "timestampMs": 194080,
+    "confidence": 0.995315
+  },
+  {
+    "text": " Chatbot",
+    "startMs": 193930,
+    "endMs": 194390,
+    "timestampMs": 194420,
+    "confidence": 0.974715
+  },
+  {
+    "text": " Bard",
+    "startMs": 194390,
+    "endMs": 194650,
+    "timestampMs": 194960,
+    "confidence": 0.150291
+  },
+  {
+    "text": " in",
+    "startMs": 194650,
+    "endMs": 194780,
+    "timestampMs": 195180,
+    "confidence": 0.985643
+  },
+  {
+    "text": " einem",
+    "startMs": 194780,
+    "endMs": 195100,
+    "timestampMs": 195380,
+    "confidence": 0.987426
+  },
+  {
+    "text": " Werbevideo",
+    "startMs": 195100,
+    "endMs": 195880,
+    "timestampMs": 195660,
+    "confidence": 0.982995
+  },
+  {
+    "text": " vor.",
+    "startMs": 195880,
+    "endMs": 196530,
+    "timestampMs": 196360,
+    "confidence": 0.999668
+  },
+  {
+    "text": " Darin",
+    "startMs": 196530,
+    "endMs": 196670,
+    "timestampMs": 196820,
+    "confidence": 0.995298
+  },
+  {
+    "text": " behauptete",
+    "startMs": 196670,
+    "endMs": 197390,
+    "timestampMs": 197100,
+    "confidence": 0.999672
+  },
+  {
+    "text": " Bard,",
+    "startMs": 197390,
+    "endMs": 197820,
+    "timestampMs": 197820,
+    "confidence": 0.983459
+  },
+  {
+    "text": " das",
+    "startMs": 197820,
+    "endMs": 198070,
+    "timestampMs": 198500,
+    "confidence": 0.718665
+  },
+  {
+    "text": " James",
+    "startMs": 198070,
+    "endMs": 198500,
+    "timestampMs": 198920,
+    "confidence": 0.957392
+  },
+  {
+    "text": " Webb",
+    "startMs": 198500,
+    "endMs": 198690,
+    "timestampMs": 199160,
+    "confidence": 0.820364
+  },
+  {
+    "text": " Teleskop",
+    "startMs": 198690,
+    "endMs": 199260,
+    "timestampMs": 199500,
+    "confidence": 0.932954
+  },
+  {
+    "text": " habe",
+    "startMs": 199260,
+    "endMs": 199550,
+    "timestampMs": 199920,
+    "confidence": 0.967947
+  },
+  {
+    "text": " die",
+    "startMs": 199550,
+    "endMs": 199770,
+    "timestampMs": 200180,
+    "confidence": 0.977763
+  },
+  {
+    "text": " ersten",
+    "startMs": 199770,
+    "endMs": 200200,
+    "timestampMs": 200520,
+    "confidence": 0.996786
+  },
+  {
+    "text": " Fotos",
+    "startMs": 200200,
+    "endMs": 200580,
+    "timestampMs": 200820,
+    "confidence": 0.992303
+  },
+  {
+    "text": " eines",
+    "startMs": 200580,
+    "endMs": 200930,
+    "timestampMs": 201180,
+    "confidence": 0.996932
+  },
+  {
+    "text": " Planeten",
+    "startMs": 200930,
+    "endMs": 201600,
+    "timestampMs": 201540,
+    "confidence": 0.988749
+  },
+  {
+    "text": " außerhalb",
+    "startMs": 201600,
+    "endMs": 202200,
+    "timestampMs": 202120,
+    "confidence": 0.506245
+  },
+  {
+    "text": " unseres",
+    "startMs": 202200,
+    "endMs": 202710,
+    "timestampMs": 202560,
+    "confidence": 0.997307
+  },
+  {
+    "text": " Sonnensystems",
+    "startMs": 202710,
+    "endMs": 204110,
+    "timestampMs": 202800,
+    "confidence": 0.986547
+  },
+  {
+    "text": " gemacht.",
+    "startMs": 204110,
+    "endMs": 204400,
+    "timestampMs": 203600,
+    "confidence": 0.999039
+  },
+  {
+    "text": " Falsch.",
+    "startMs": 204400,
+    "endMs": 205050,
+    "timestampMs": 204420,
+    "confidence": 0.996711
+  },
+  {
+    "text": " Solche",
+    "startMs": 205050,
+    "endMs": 205490,
+    "timestampMs": 205300,
+    "confidence": 0.997177
+  },
+  {
+    "text": " Fotos",
+    "startMs": 205490,
+    "endMs": 205850,
+    "timestampMs": 205660,
+    "confidence": 0.997522
+  },
+  {
+    "text": " gab",
+    "startMs": 205850,
+    "endMs": 206070,
+    "timestampMs": 205920,
+    "confidence": 0.997204
+  },
+  {
+    "text": " es",
+    "startMs": 206070,
+    "endMs": 206220,
+    "timestampMs": 206020,
+    "confidence": 0.997699
+  },
+  {
+    "text": " schon",
+    "startMs": 206220,
+    "endMs": 206590,
+    "timestampMs": 206300,
+    "confidence": 0.9969
+  },
+  {
+    "text": " 2004.",
+    "startMs": 206590,
+    "endMs": 207700,
+    "timestampMs": 207020,
+    "confidence": 0.994336
+  },
+  {
+    "text": " Am",
+    "startMs": 207700,
+    "endMs": 207940,
+    "timestampMs": 208180,
+    "confidence": 0.992214
+  },
+  {
+    "text": " selben",
+    "startMs": 207940,
+    "endMs": 208280,
+    "timestampMs": 208340,
+    "confidence": 0.996645
+  },
+  {
+    "text": " Tag",
+    "startMs": 208280,
+    "endMs": 208670,
+    "timestampMs": 208740,
+    "confidence": 0.993004
+  },
+  {
+    "text": " verlor",
+    "startMs": 208670,
+    "endMs": 208920,
+    "timestampMs": 208980,
+    "confidence": 0.951168
+  },
+  {
+    "text": " Googles",
+    "startMs": 208920,
+    "endMs": 209390,
+    "timestampMs": 209400,
+    "confidence": 0.917099
+  },
+  {
+    "text": " Mutterkonzern",
+    "startMs": 209390,
+    "endMs": 210260,
+    "timestampMs": 209840,
+    "confidence": 0.99145
+  },
+  {
+    "text": " an",
+    "startMs": 210260,
+    "endMs": 210390,
+    "timestampMs": 210360,
+    "confidence": 0.997794
+  },
+  {
+    "text": " der",
+    "startMs": 210390,
+    "endMs": 210590,
+    "timestampMs": 210460,
+    "confidence": 0.999413
+  },
+  {
+    "text": " Börse",
+    "startMs": 210590,
+    "endMs": 211100,
+    "timestampMs": 210580,
+    "confidence": 0.997817
+  },
+  {
+    "text": " rund",
+    "startMs": 211100,
+    "endMs": 211250,
+    "timestampMs": 211020,
+    "confidence": 0.995211
+  },
+  {
+    "text": " 100",
+    "startMs": 211250,
+    "endMs": 211870,
+    "timestampMs": 211440,
+    "confidence": 0.901361
+  },
+  {
+    "text": " Milliarden",
+    "startMs": 211870,
+    "endMs": 212570,
+    "timestampMs": 211960,
+    "confidence": 0.971907
+  },
+  {
+    "text": " Dollar",
+    "startMs": 212570,
+    "endMs": 213100,
+    "timestampMs": 212240,
+    "confidence": 0.989931
+  },
+  {
+    "text": " an",
+    "startMs": 213100,
+    "endMs": 213170,
+    "timestampMs": 212480,
+    "confidence": 0.995078
+  },
+  {
+    "text": " Wert.",
+    "startMs": 213170,
+    "endMs": 213620,
+    "timestampMs": 212700,
+    "confidence": 0.993292
+  },
+  {
+    "text": " Oder",
+    "startMs": 213620,
+    "endMs": 213840,
+    "timestampMs": 214060,
+    "confidence": 0.996299
+  },
+  {
+    "text": " eher",
+    "startMs": 213840,
+    "endMs": 214240,
+    "timestampMs": 214500,
+    "confidence": 0.517157
+  },
+  {
+    "text": " Canada.",
+    "startMs": 214240,
+    "endMs": 214760,
+    "timestampMs": 214840,
+    "confidence": 0.462496
+  },
+  {
+    "text": " Der",
+    "startMs": 214760,
+    "endMs": 215200,
+    "timestampMs": 215560,
+    "confidence": 0.731811
+  },
+  {
+    "text": " Chatbot",
+    "startMs": 215200,
+    "endMs": 215410,
+    "timestampMs": 215840,
+    "confidence": 0.996637
+  },
+  {
+    "text": " der",
+    "startMs": 215410,
+    "endMs": 215580,
+    "timestampMs": 216140,
+    "confidence": 0.996934
+  },
+  {
+    "text": " Fluglinie",
+    "startMs": 215580,
+    "endMs": 216140,
+    "timestampMs": 216400,
+    "confidence": 0.985413
+  },
+  {
+    "text": " erklärte",
+    "startMs": 216140,
+    "endMs": 216730,
+    "timestampMs": 216940,
+    "confidence": 0.996098
+  },
+  {
+    "text": " einem",
+    "startMs": 216730,
+    "endMs": 217020,
+    "timestampMs": 217280,
+    "confidence": 0.995505
+  },
+  {
+    "text": " Kunden,",
+    "startMs": 217020,
+    "endMs": 217520,
+    "timestampMs": 217600,
+    "confidence": 0.999516
+  },
+  {
+    "text": " er",
+    "startMs": 217520,
+    "endMs": 217670,
+    "timestampMs": 218100,
+    "confidence": 0.994171
+  },
+  {
+    "text": " könne",
+    "startMs": 217670,
+    "endMs": 218010,
+    "timestampMs": 218260,
+    "confidence": 0.999367
+  },
+  {
+    "text": " einen",
+    "startMs": 218010,
+    "endMs": 218330,
+    "timestampMs": 218560,
+    "confidence": 0.989772
+  },
+  {
+    "text": " Rabatt",
+    "startMs": 218330,
+    "endMs": 218850,
+    "timestampMs": 218800,
+    "confidence": 0.987194
+  },
+  {
+    "text": " für",
+    "startMs": 218850,
+    "endMs": 218960,
+    "timestampMs": 219100,
+    "confidence": 0.986734
+  },
+  {
+    "text": " einen",
+    "startMs": 218960,
+    "endMs": 219180,
+    "timestampMs": 219340,
+    "confidence": 0.988634
+  },
+  {
+    "text": " Trauerfall",
+    "startMs": 219180,
+    "endMs": 219640,
+    "timestampMs": 219620,
+    "confidence": 0.846275
+  },
+  {
+    "text": " auch",
+    "startMs": 219650,
+    "endMs": 219870,
+    "timestampMs": 219640,
+    "confidence": 0.996295
+  },
+  {
+    "text": " nachträglich",
+    "startMs": 219870,
+    "endMs": 220620,
+    "timestampMs": 220400,
+    "confidence": 0.999226
+  },
+  {
+    "text": " beantragen.",
+    "startMs": 220620,
+    "endMs": 221330,
+    "timestampMs": 221060,
+    "confidence": 0.998911
+  },
+  {
+    "text": " Das",
+    "startMs": 221330,
+    "endMs": 221520,
+    "timestampMs": 222180,
+    "confidence": 0.997379
+  },
+  {
+    "text": " stimmte",
+    "startMs": 221520,
+    "endMs": 221940,
+    "timestampMs": 222240,
+    "confidence": 0.936626
+  },
+  {
+    "text": " nicht.",
+    "startMs": 221940,
+    "endMs": 222360,
+    "timestampMs": 222720,
+    "confidence": 0.999375
+  },
+  {
+    "text": " Die",
+    "startMs": 222360,
+    "endMs": 222550,
+    "timestampMs": 223200,
+    "confidence": 0.992095
+  },
+  {
+    "text": " Airline",
+    "startMs": 222550,
+    "endMs": 222990,
+    "timestampMs": 223360,
+    "confidence": 0.894975
+  },
+  {
+    "text": " wollte",
+    "startMs": 222990,
+    "endMs": 223290,
+    "timestampMs": 223660,
+    "confidence": 0.991845
+  },
+  {
+    "text": " nicht",
+    "startMs": 223290,
+    "endMs": 223590,
+    "timestampMs": 223880,
+    "confidence": 0.989064
+  },
+  {
+    "text": " zahlen",
+    "startMs": 223590,
+    "endMs": 224080,
+    "timestampMs": 224080,
+    "confidence": 0.980376
+  },
+  {
+    "text": " und",
+    "startMs": 224080,
+    "endMs": 224240,
+    "timestampMs": 224340,
+    "confidence": 0.957923
+  },
+  {
+    "text": " meinte,",
+    "startMs": 224240,
+    "endMs": 224480,
+    "timestampMs": 224520,
+    "confidence": 0.872398
+  },
+  {
+    "text": " der",
+    "startMs": 224480,
+    "endMs": 224680,
+    "timestampMs": 225120,
+    "confidence": 0.989244
+  },
+  {
+    "text": " Chatbot",
+    "startMs": 224680,
+    "endMs": 225080,
+    "timestampMs": 225380,
+    "confidence": 0.997193
+  },
+  {
+    "text": " sei",
+    "startMs": 225080,
+    "endMs": 225210,
+    "timestampMs": 225700,
+    "confidence": 0.999066
+  },
+  {
+    "text": " für",
+    "startMs": 225210,
+    "endMs": 225430,
+    "timestampMs": 225900,
+    "confidence": 0.991329
+  },
+  {
+    "text": " seine",
+    "startMs": 225430,
+    "endMs": 225720,
+    "timestampMs": 226120,
+    "confidence": 0.997402
+  },
+  {
+    "text": " Aussagen",
+    "startMs": 225720,
+    "endMs": 226150,
+    "timestampMs": 226360,
+    "confidence": 0.997232
+  },
+  {
+    "text": " selbst",
+    "startMs": 226150,
+    "endMs": 226490,
+    "timestampMs": 226880,
+    "confidence": 0.996512
+  },
+  {
+    "text": " verantwortlich.",
+    "startMs": 226490,
+    "endMs": 227520,
+    "timestampMs": 227120,
+    "confidence": 0.752636
+  },
+  {
+    "text": " Das",
+    "startMs": 227520,
+    "endMs": 227710,
+    "timestampMs": 228280,
+    "confidence": 0.961724
+  },
+  {
+    "text": " Schiedsgericht",
+    "startMs": 227710,
+    "endMs": 228600,
+    "timestampMs": 228500,
+    "confidence": 0.888993
+  },
+  {
+    "text": " sah",
+    "startMs": 228600,
+    "endMs": 228960,
+    "timestampMs": 229120,
+    "confidence": 0.929457
+  },
+  {
+    "text": " das",
+    "startMs": 228960,
+    "endMs": 229200,
+    "timestampMs": 229340,
+    "confidence": 0.894016
+  },
+  {
+    "text": " 2024",
+    "startMs": 229200,
+    "endMs": 230010,
+    "timestampMs": 230000,
+    "confidence": 0.984526
+  },
+  {
+    "text": " anders.",
+    "startMs": 230010,
+    "endMs": 230600,
+    "timestampMs": 230600,
+    "confidence": 0.998852
+  },
+  {
+    "text": " Der",
+    "startMs": 230600,
+    "endMs": 230960,
+    "timestampMs": 231140,
+    "confidence": 0.958961
+  },
+  {
+    "text": " Chatbot",
+    "startMs": 230960,
+    "endMs": 231280,
+    "timestampMs": 231460,
+    "confidence": 0.997194
+  },
+  {
+    "text": " ist",
+    "startMs": 231280,
+    "endMs": 231480,
+    "timestampMs": 231820,
+    "confidence": 0.997775
+  },
+  {
+    "text": " Teil",
+    "startMs": 231480,
+    "endMs": 231780,
+    "timestampMs": 232060,
+    "confidence": 0.991647
+  },
+  {
+    "text": " der",
+    "startMs": 231780,
+    "endMs": 231950,
+    "timestampMs": 232260,
+    "confidence": 0.999104
+  },
+  {
+    "text": " Webseite.",
+    "startMs": 231950,
+    "endMs": 232680,
+    "timestampMs": 232460,
+    "confidence": 0.715621
+  },
+  {
+    "text": " Also",
+    "startMs": 232680,
+    "endMs": 233130,
+    "timestampMs": 233460,
+    "confidence": 0.99187
+  },
+  {
+    "text": " haftet",
+    "startMs": 233130,
+    "endMs": 233350,
+    "timestampMs": 233760,
+    "confidence": 0.959161
+  },
+  {
+    "text": " die",
+    "startMs": 233350,
+    "endMs": 233550,
+    "timestampMs": 234020,
+    "confidence": 0.998925
+  },
+  {
+    "text": " Firma.",
+    "startMs": 233550,
+    "endMs": 234160,
+    "timestampMs": 234260,
+    "confidence": 0.983145
+  },
+  {
+    "text": " Wo",
+    "startMs": 234160,
+    "endMs": 234610,
+    "timestampMs": 234980,
+    "confidence": 0.978885
+  },
+  {
+    "text": " musst",
+    "startMs": 234610,
+    "endMs": 234720,
+    "timestampMs": 235200,
+    "confidence": 0.982173
+  },
+  {
+    "text": " du",
+    "startMs": 234720,
+    "endMs": 234740,
+    "timestampMs": 235320,
+    "confidence": 0.924503
+  },
+  {
+    "text": " besonders",
+    "startMs": 234740,
+    "endMs": 235320,
+    "timestampMs": 235680,
+    "confidence": 0.997282
+  },
+  {
+    "text": " aufpassen?",
+    "startMs": 235320,
+    "endMs": 236120,
+    "timestampMs": 235940,
+    "confidence": 0.999119
+  },
+  {
+    "text": " Erstens",
+    "startMs": 236120,
+    "endMs": 236820,
+    "timestampMs": 237100,
+    "confidence": 0.642739
+  },
+  {
+    "text": " bei",
+    "startMs": 236820,
+    "endMs": 237060,
+    "timestampMs": 237660,
+    "confidence": 0.737376
+  },
+  {
+    "text": " Quellen.",
+    "startMs": 237060,
+    "endMs": 238040,
+    "timestampMs": 237960,
+    "confidence": 0.995023
+  },
+  {
+    "text": " Links,",
+    "startMs": 238040,
+    "endMs": 238920,
+    "timestampMs": 239040,
+    "confidence": 0.930779
+  },
+  {
+    "text": " Buchtitel,",
+    "startMs": 238920,
+    "endMs": 239760,
+    "timestampMs": 239400,
+    "confidence": 0.462669
+  },
+  {
+    "text": " Studien",
+    "startMs": 239760,
+    "endMs": 240400,
+    "timestampMs": 240480,
+    "confidence": 0.851311
+  },
+  {
+    "text": " und",
+    "startMs": 240400,
+    "endMs": 240640,
+    "timestampMs": 240720,
+    "confidence": 0.856245
+  },
+  {
+    "text": " Zitate",
+    "startMs": 240640,
+    "endMs": 241080,
+    "timestampMs": 240920,
+    "confidence": 0.820572
+  },
+  {
+    "text": " werden",
+    "startMs": 241080,
+    "endMs": 241550,
+    "timestampMs": 241500,
+    "confidence": 0.998571
+  },
+  {
+    "text": " gern",
+    "startMs": 241550,
+    "endMs": 241830,
+    "timestampMs": 241860,
+    "confidence": 0.576809
+  },
+  {
+    "text": " erfunden.",
+    "startMs": 241830,
+    "endMs": 242650,
+    "timestampMs": 242100,
+    "confidence": 0.995786
+  },
+  {
+    "text": " Zweitens",
+    "startMs": 242650,
+    "endMs": 243240,
+    "timestampMs": 243380,
+    "confidence": 0.99455
+  },
+  {
+    "text": " bei",
+    "startMs": 243240,
+    "endMs": 243460,
+    "timestampMs": 244200,
+    "confidence": 0.961357
+  },
+  {
+    "text": " genauen",
+    "startMs": 243460,
+    "endMs": 243980,
+    "timestampMs": 244520,
+    "confidence": 0.973441
+  },
+  {
+    "text": " Zahlen",
+    "startMs": 243980,
+    "endMs": 244430,
+    "timestampMs": 245040,
+    "confidence": 0.998795
+  },
+  {
+    "text": " und",
+    "startMs": 244430,
+    "endMs": 244650,
+    "timestampMs": 245360,
+    "confidence": 0.996025
+  },
+  {
+    "text": " Daten.",
+    "startMs": 244650,
+    "endMs": 245360,
+    "timestampMs": 245660,
+    "confidence": 0.993494
+  },
+  {
+    "text": " Drittens",
+    "startMs": 245360,
+    "endMs": 246720,
+    "timestampMs": 246600,
+    "confidence": 0.943014
+  },
+  {
+    "text": " bei",
+    "startMs": 246720,
+    "endMs": 246930,
+    "timestampMs": 247400,
+    "confidence": 0.927193
+  },
+  {
+    "text": " Nischenwissen,",
+    "startMs": 246930,
+    "endMs": 248040,
+    "timestampMs": 247660,
+    "confidence": 0.980054
+  },
+  {
+    "text": " über",
+    "startMs": 248040,
+    "endMs": 248370,
+    "timestampMs": 248040,
+    "confidence": 0.997111
+  },
+  {
+    "text": " das",
+    "startMs": 248370,
+    "endMs": 248570,
+    "timestampMs": 248540,
+    "confidence": 0.982021
+  },
+  {
+    "text": " wenig",
+    "startMs": 248570,
+    "endMs": 248900,
+    "timestampMs": 248780,
+    "confidence": 0.998599
+  },
+  {
+    "text": " geschrieben",
+    "startMs": 248900,
+    "endMs": 249630,
+    "timestampMs": 249200,
+    "confidence": 0.99798
+  },
+  {
+    "text": " wurde.",
+    "startMs": 249630,
+    "endMs": 250220,
+    "timestampMs": 250160,
+    "confidence": 0.998864
+  },
+  {
+    "text": " Viertens",
+    "startMs": 250220,
+    "endMs": 250680,
+    "timestampMs": 250540,
+    "confidence": 0.993953
+  },
+  {
+    "text": " bei",
+    "startMs": 250680,
+    "endMs": 250850,
+    "timestampMs": 251400,
+    "confidence": 0.968586
+  },
+  {
+    "text": " ganz",
+    "startMs": 250850,
+    "endMs": 251220,
+    "timestampMs": 251740,
+    "confidence": 0.990354
+  },
+  {
+    "text": " aktuellen",
+    "startMs": 251220,
+    "endMs": 251740,
+    "timestampMs": 252100,
+    "confidence": 0.998277
+  },
+  {
+    "text": " Ereignissen,",
+    "startMs": 251740,
+    "endMs": 252680,
+    "timestampMs": 252360,
+    "confidence": 0.985737
+  },
+  {
+    "text": " die",
+    "startMs": 252680,
+    "endMs": 252840,
+    "timestampMs": 253000,
+    "confidence": 0.778287
+  },
+  {
+    "text": " nach",
+    "startMs": 252840,
+    "endMs": 253200,
+    "timestampMs": 253320,
+    "confidence": 0.970297
+  },
+  {
+    "text": " dem",
+    "startMs": 253200,
+    "endMs": 253360,
+    "timestampMs": 253580,
+    "confidence": 0.977519
+  },
+  {
+    "text": " Training",
+    "startMs": 253360,
+    "endMs": 253860,
+    "timestampMs": 253820,
+    "confidence": 0.997615
+  },
+  {
+    "text": " passiert",
+    "startMs": 253860,
+    "endMs": 254350,
+    "timestampMs": 254180,
+    "confidence": 0.985253
+  },
+  {
+    "text": " sind.",
+    "startMs": 254350,
+    "endMs": 254970,
+    "timestampMs": 254660,
+    "confidence": 0.998464
+  },
+  {
+    "text": " Und",
+    "startMs": 254970,
+    "endMs": 255030,
+    "timestampMs": 255420,
+    "confidence": 0.974751
+  },
+  {
+    "text": " fünftens",
+    "startMs": 255030,
+    "endMs": 255530,
+    "timestampMs": 255460,
+    "confidence": 0.667078
+  },
+  {
+    "text": " bei",
+    "startMs": 255530,
+    "endMs": 255690,
+    "timestampMs": 256180,
+    "confidence": 0.993055
+  },
+  {
+    "text": " Fragen",
+    "startMs": 255690,
+    "endMs": 256060,
+    "timestampMs": 256520,
+    "confidence": 0.998367
+  },
+  {
+    "text": " zu",
+    "startMs": 256060,
+    "endMs": 256180,
+    "timestampMs": 256820,
+    "confidence": 0.99731
+  },
+  {
+    "text": " bestimmten",
+    "startMs": 256180,
+    "endMs": 256790,
+    "timestampMs": 257060,
+    "confidence": 0.992271
+  },
+  {
+    "text": " Personen.",
+    "startMs": 256790,
+    "endMs": 257560,
+    "timestampMs": 257720,
+    "confidence": 0.986973
+  },
+  {
+    "text": " Wird",
+    "startMs": 257560,
+    "endMs": 258340,
+    "timestampMs": 259080,
+    "confidence": 0.869211
+  },
+  {
+    "text": " das",
+    "startMs": 258340,
+    "endMs": 258490,
+    "timestampMs": 259280,
+    "confidence": 0.966861
+  },
+  {
+    "text": " besser?",
+    "startMs": 258490,
+    "endMs": 259480,
+    "timestampMs": 259580,
+    "confidence": 0.988917
+  },
+  {
+    "text": " Ja.",
+    "startMs": 259480,
+    "endMs": 260280,
+    "timestampMs": 260700,
+    "confidence": 0.808689
+  },
+  {
+    "text": " Viele",
+    "startMs": 260280,
+    "endMs": 261280,
+    "timestampMs": 261400,
+    "confidence": 0.701358
+  },
+  {
+    "text": " KI's",
+    "startMs": 261280,
+    "endMs": 261500,
+    "timestampMs": 261720,
+    "confidence": 0.684379
+  },
+  {
+    "text": " können",
+    "startMs": 261500,
+    "endMs": 261910,
+    "timestampMs": 262040,
+    "confidence": 0.990766
+  },
+  {
+    "text": " inzwischen",
+    "startMs": 261910,
+    "endMs": 262490,
+    "timestampMs": 262240,
+    "confidence": 0.944995
+  },
+  {
+    "text": " im",
+    "startMs": 262490,
+    "endMs": 262620,
+    "timestampMs": 262620,
+    "confidence": 0.997582
+  },
+  {
+    "text": " Internet",
+    "startMs": 262620,
+    "endMs": 263070,
+    "timestampMs": 262980,
+    "confidence": 0.996065
+  },
+  {
+    "text": " suchen",
+    "startMs": 263070,
+    "endMs": 263420,
+    "timestampMs": 263280,
+    "confidence": 0.997822
+  },
+  {
+    "text": " und",
+    "startMs": 263420,
+    "endMs": 263590,
+    "timestampMs": 263580,
+    "confidence": 0.966166
+  },
+  {
+    "text": " zeigen",
+    "startMs": 263590,
+    "endMs": 263940,
+    "timestampMs": 263840,
+    "confidence": 0.999047
+  },
+  {
+    "text": " die",
+    "startMs": 263940,
+    "endMs": 264110,
+    "timestampMs": 264020,
+    "confidence": 0.838051
+  },
+  {
+    "text": " ihre",
+    "startMs": 264110,
+    "endMs": 264340,
+    "timestampMs": 264240,
+    "confidence": 0.968477
+  },
+  {
+    "text": " Quellen.",
+    "startMs": 264340,
+    "endMs": 265020,
+    "timestampMs": 264440,
+    "confidence": 0.999155
+  },
+  {
+    "text": " Neuere",
+    "startMs": 265020,
+    "endMs": 265240,
+    "timestampMs": 265340,
+    "confidence": 0.96935
+  },
+  {
+    "text": " Modelle",
+    "startMs": 265240,
+    "endMs": 265760,
+    "timestampMs": 265760,
+    "confidence": 0.986624
+  },
+  {
+    "text": " denken",
+    "startMs": 265760,
+    "endMs": 266080,
+    "timestampMs": 266120,
+    "confidence": 0.939883
+  },
+  {
+    "text": " vor",
+    "startMs": 266080,
+    "endMs": 266260,
+    "timestampMs": 266340,
+    "confidence": 0.998369
+  },
+  {
+    "text": " der",
+    "startMs": 266260,
+    "endMs": 266440,
+    "timestampMs": 266500,
+    "confidence": 0.982962
+  },
+  {
+    "text": " Antwort",
+    "startMs": 266440,
+    "endMs": 266870,
+    "timestampMs": 266760,
+    "confidence": 0.999569
+  },
+  {
+    "text": " länger",
+    "startMs": 266870,
+    "endMs": 267310,
+    "timestampMs": 267020,
+    "confidence": 0.990439
+  },
+  {
+    "text": " nach",
+    "startMs": 267310,
+    "endMs": 267550,
+    "timestampMs": 267320,
+    "confidence": 0.992536
+  },
+  {
+    "text": " und",
+    "startMs": 267550,
+    "endMs": 267730,
+    "timestampMs": 267600,
+    "confidence": 0.966829
+  },
+  {
+    "text": " erfinden",
+    "startMs": 267730,
+    "endMs": 268220,
+    "timestampMs": 267780,
+    "confidence": 0.981336
+  },
+  {
+    "text": " seltener",
+    "startMs": 268220,
+    "endMs": 268700,
+    "timestampMs": 268160,
+    "confidence": 0.997082
+  },
+  {
+    "text": " etwas.",
+    "startMs": 268700,
+    "endMs": 269190,
+    "timestampMs": 268620,
+    "confidence": 0.994074
+  },
+  {
+    "text": " Aber",
+    "startMs": 269190,
+    "endMs": 269810,
+    "timestampMs": 269520,
+    "confidence": 0.997314
+  },
+  {
+    "text": " selbst",
+    "startMs": 269810,
+    "endMs": 269860,
+    "timestampMs": 270200,
+    "confidence": 0.966018
+  },
+  {
+    "text": " die",
+    "startMs": 269860,
+    "endMs": 269990,
+    "timestampMs": 270420,
+    "confidence": 0.996879
+  },
+  {
+    "text": " Hersteller",
+    "startMs": 269990,
+    "endMs": 270720,
+    "timestampMs": 270620,
+    "confidence": 0.993783
+  },
+  {
+    "text": " sagen,",
+    "startMs": 270720,
+    "endMs": 271080,
+    "timestampMs": 271160,
+    "confidence": 0.712714
+  },
+  {
+    "text": " dass",
+    "startMs": 271080,
+    "endMs": 271330,
+    "timestampMs": 271520,
+    "confidence": 0.977782
+  },
+  {
+    "text": " Halluzinationen",
+    "startMs": 271330,
+    "endMs": 272250,
+    "timestampMs": 271700,
+    "confidence": 0.971193
+  },
+  {
+    "text": " weiter",
+    "startMs": 272250,
+    "endMs": 272650,
+    "timestampMs": 272800,
+    "confidence": 0.997836
+  },
+  {
+    "text": " vorkommen.",
+    "startMs": 272650,
+    "endMs": 273410,
+    "timestampMs": 273000,
+    "confidence": 0.927668
+  },
+  {
+    "text": " Null",
+    "startMs": 273410,
+    "endMs": 273800,
+    "timestampMs": 274100,
+    "confidence": 0.977506
+  },
+  {
+    "text": " wird",
+    "startMs": 273800,
+    "endMs": 273840,
+    "timestampMs": 274460,
+    "confidence": 0.996649
+  },
+  {
+    "text": " es",
+    "startMs": 273840,
+    "endMs": 273960,
+    "timestampMs": 274600,
+    "confidence": 0.977513
+  },
+  {
+    "text": " so",
+    "startMs": 273960,
+    "endMs": 274080,
+    "timestampMs": 274760,
+    "confidence": 0.99601
+  },
+  {
+    "text": " schnell",
+    "startMs": 274080,
+    "endMs": 274510,
+    "timestampMs": 274900,
+    "confidence": 0.999249
+  },
+  {
+    "text": " nicht.",
+    "startMs": 274510,
+    "endMs": 275100,
+    "timestampMs": 275240,
+    "confidence": 0.99822
+  },
+  {
+    "text": " Und",
+    "startMs": 275100,
+    "endMs": 276440,
+    "timestampMs": 276700,
+    "confidence": 0.842031
+  },
+  {
+    "text": " Vorsicht",
+    "startMs": 276440,
+    "endMs": 276990,
+    "timestampMs": 276940,
+    "confidence": 0.96725
+  },
+  {
+    "text": " bei",
+    "startMs": 276990,
+    "endMs": 277080,
+    "timestampMs": 277240,
+    "confidence": 0.780661
+  },
+  {
+    "text": " einem",
+    "startMs": 277080,
+    "endMs": 277320,
+    "timestampMs": 277300,
+    "confidence": 0.6317
+  },
+  {
+    "text": " beliebten",
+    "startMs": 277320,
+    "endMs": 277890,
+    "timestampMs": 277320,
+    "confidence": 0.99772
+  },
+  {
+    "text": " Trick.",
+    "startMs": 277890,
+    "endMs": 278410,
+    "timestampMs": 278200,
+    "confidence": 0.992657
+  },
+  {
+    "text": " Einfach",
+    "startMs": 278410,
+    "endMs": 278840,
+    "timestampMs": 279020,
+    "confidence": 0.934684
+  },
+  {
+    "text": " nachfragen,",
+    "startMs": 278840,
+    "endMs": 279590,
+    "timestampMs": 279500,
+    "confidence": 0.905953
+  },
+  {
+    "text": " bist",
+    "startMs": 279590,
+    "endMs": 279920,
+    "timestampMs": 280100,
+    "confidence": 0.971771
+  },
+  {
+    "text": " du",
+    "startMs": 279920,
+    "endMs": 279970,
+    "timestampMs": 280260,
+    "confidence": 0.987472
+  },
+  {
+    "text": " sicher?",
+    "startMs": 279970,
+    "endMs": 280730,
+    "timestampMs": 280580,
+    "confidence": 0.998628
+  },
+  {
+    "text": " Das",
+    "startMs": 280730,
+    "endMs": 281050,
+    "timestampMs": 281320,
+    "confidence": 0.988482
+  },
+  {
+    "text": " hilft",
+    "startMs": 281050,
+    "endMs": 281080,
+    "timestampMs": 281540,
+    "confidence": 0.998243
+  },
+  {
+    "text": " manchmal,",
+    "startMs": 281080,
+    "endMs": 281800,
+    "timestampMs": 281960,
+    "confidence": 0.98818
+  },
+  {
+    "text": " aber",
+    "startMs": 281800,
+    "endMs": 282300,
+    "timestampMs": 282540,
+    "confidence": 0.871052
+  },
+  {
+    "text": " oft",
+    "startMs": 282300,
+    "endMs": 282680,
+    "timestampMs": 282740,
+    "confidence": 0.995158
+  },
+  {
+    "text": " entschuldigt",
+    "startMs": 282680,
+    "endMs": 283240,
+    "timestampMs": 283040,
+    "confidence": 0.780199
+  },
+  {
+    "text": " sich",
+    "startMs": 283240,
+    "endMs": 283470,
+    "timestampMs": 283500,
+    "confidence": 0.99709
+  },
+  {
+    "text": " die",
+    "startMs": 283470,
+    "endMs": 283640,
+    "timestampMs": 283700,
+    "confidence": 0.989942
+  },
+  {
+    "text": " KI",
+    "startMs": 283640,
+    "endMs": 283750,
+    "timestampMs": 283880,
+    "confidence": 0.995277
+  },
+  {
+    "text": " dann",
+    "startMs": 283750,
+    "endMs": 283980,
+    "timestampMs": 284080,
+    "confidence": 0.973294
+  },
+  {
+    "text": " sofort",
+    "startMs": 283980,
+    "endMs": 284330,
+    "timestampMs": 284460,
+    "confidence": 0.99709
+  },
+  {
+    "text": " und",
+    "startMs": 284330,
+    "endMs": 284500,
+    "timestampMs": 284800,
+    "confidence": 0.984756
+  },
+  {
+    "text": " ändert",
+    "startMs": 284500,
+    "endMs": 284900,
+    "timestampMs": 285020,
+    "confidence": 0.996096
+  },
+  {
+    "text": " eine",
+    "startMs": 284900,
+    "endMs": 285130,
+    "timestampMs": 285400,
+    "confidence": 0.994636
+  },
+  {
+    "text": " richtige",
+    "startMs": 285130,
+    "endMs": 285600,
+    "timestampMs": 285800,
+    "confidence": 0.996502
+  },
+  {
+    "text": " Antwort",
+    "startMs": 285600,
+    "endMs": 286010,
+    "timestampMs": 286260,
+    "confidence": 0.999115
+  },
+  {
+    "text": " in",
+    "startMs": 286010,
+    "endMs": 286120,
+    "timestampMs": 286520,
+    "confidence": 0.995995
+  },
+  {
+    "text": " eine",
+    "startMs": 286120,
+    "endMs": 286350,
+    "timestampMs": 286780,
+    "confidence": 0.99763
+  },
+  {
+    "text": " falsche,",
+    "startMs": 286350,
+    "endMs": 286960,
+    "timestampMs": 286980,
+    "confidence": 0.996225
+  },
+  {
+    "text": " nur",
+    "startMs": 286960,
+    "endMs": 287560,
+    "timestampMs": 287720,
+    "confidence": 0.828408
+  },
+  {
+    "text": " weil",
+    "startMs": 287560,
+    "endMs": 287720,
+    "timestampMs": 287800,
+    "confidence": 0.836102
+  },
+  {
+    "text": " du",
+    "startMs": 287720,
+    "endMs": 287840,
+    "timestampMs": 288000,
+    "confidence": 0.873138
+  },
+  {
+    "text": " gezweifelt",
+    "startMs": 287840,
+    "endMs": 288040,
+    "timestampMs": 288160,
+    "confidence": 0.587502
+  },
+  {
+    "text": " hast.",
+    "startMs": 288040,
+    "endMs": 288550,
+    "timestampMs": 288700,
+    "confidence": 0.999108
+  },
+  {
+    "text": " Sie",
+    "startMs": 288550,
+    "endMs": 289060,
+    "timestampMs": 289200,
+    "confidence": 0.99393
+  },
+  {
+    "text": " will",
+    "startMs": 289060,
+    "endMs": 289070,
+    "timestampMs": 289360,
+    "confidence": 0.974847
+  },
+  {
+    "text": " dir",
+    "startMs": 289070,
+    "endMs": 289280,
+    "timestampMs": 289500,
+    "confidence": 0.995241
+  },
+  {
+    "text": " gefallen.",
+    "startMs": 289280,
+    "endMs": 290380,
+    "timestampMs": 289920,
+    "confidence": 0.997175
+  },
+  {
+    "text": " Nachfragen",
+    "startMs": 290380,
+    "endMs": 290820,
+    "timestampMs": 290880,
+    "confidence": 0.998504
+  },
+  {
+    "text": " ersetzt",
+    "startMs": 290820,
+    "endMs": 291330,
+    "timestampMs": 291520,
+    "confidence": 0.99926
+  },
+  {
+    "text": " also",
+    "startMs": 291330,
+    "endMs": 291650,
+    "timestampMs": 292140,
+    "confidence": 0.989595
+  },
+  {
+    "text": " kein",
+    "startMs": 291650,
+    "endMs": 291910,
+    "timestampMs": 292300,
+    "confidence": 0.99365
+  },
+  {
+    "text": " Nachprüfen.",
+    "startMs": 291910,
+    "endMs": 293440,
+    "timestampMs": 292620,
+    "confidence": 0.956162
+  },
+  {
+    "text": " Darum",
+    "startMs": 293440,
+    "endMs": 293940,
+    "timestampMs": 294140,
+    "confidence": 0.951094
+  },
+  {
+    "text": " hier",
+    "startMs": 293940,
+    "endMs": 294320,
+    "timestampMs": 294540,
+    "confidence": 0.984021
+  },
+  {
+    "text": " fünf",
+    "startMs": 294320,
+    "endMs": 294660,
+    "timestampMs": 294880,
+    "confidence": 0.868797
+  },
+  {
+    "text": " Regeln,",
+    "startMs": 294660,
+    "endMs": 295080,
+    "timestampMs": 295100,
+    "confidence": 0.990616
+  },
+  {
+    "text": " mit",
+    "startMs": 295080,
+    "endMs": 295290,
+    "timestampMs": 295400,
+    "confidence": 0.999485
+  },
+  {
+    "text": " denen",
+    "startMs": 295290,
+    "endMs": 295650,
+    "timestampMs": 295520,
+    "confidence": 0.944656
+  },
+  {
+    "text": " du",
+    "startMs": 295650,
+    "endMs": 295790,
+    "timestampMs": 295720,
+    "confidence": 0.995835
+  },
+  {
+    "text": " sicher",
+    "startMs": 295790,
+    "endMs": 296210,
+    "timestampMs": 295940,
+    "confidence": 0.998925
+  },
+  {
+    "text": " bist.",
+    "startMs": 296210,
+    "endMs": 296730,
+    "timestampMs": 296200,
+    "confidence": 0.996877
+  },
+  {
+    "text": " Regel",
+    "startMs": 296730,
+    "endMs": 297080,
+    "timestampMs": 296960,
+    "confidence": 0.844817
+  },
+  {
+    "text": " eins,",
+    "startMs": 297080,
+    "endMs": 297510,
+    "timestampMs": 297640,
+    "confidence": 0.66224
+  },
+  {
+    "text": " lass",
+    "startMs": 297510,
+    "endMs": 297800,
+    "timestampMs": 298000,
+    "confidence": 0.912611
+  },
+  {
+    "text": " dir",
+    "startMs": 297800,
+    "endMs": 298010,
+    "timestampMs": 298220,
+    "confidence": 0.987671
+  },
+  {
+    "text": " Quellen",
+    "startMs": 298010,
+    "endMs": 298510,
+    "timestampMs": 298480,
+    "confidence": 0.996316
+  },
+  {
+    "text": " geben",
+    "startMs": 298510,
+    "endMs": 298870,
+    "timestampMs": 298920,
+    "confidence": 0.99214
+  },
+  {
+    "text": " und",
+    "startMs": 298870,
+    "endMs": 299220,
+    "timestampMs": 299460,
+    "confidence": 0.729005
+  },
+  {
+    "text": " öffne",
+    "startMs": 299220,
+    "endMs": 299500,
+    "timestampMs": 299680,
+    "confidence": 0.99144
+  },
+  {
+    "text": " sie",
+    "startMs": 299500,
+    "endMs": 299840,
+    "timestampMs": 299960,
+    "confidence": 0.99059
+  },
+  {
+    "text": " wirklich.",
+    "startMs": 299840,
+    "endMs": 300360,
+    "timestampMs": 300380,
+    "confidence": 0.977519
+  },
+  {
+    "text": " Ein",
+    "startMs": 300360,
+    "endMs": 300840,
+    "timestampMs": 300980,
+    "confidence": 0.760223
+  },
+  {
+    "text": " Link,",
+    "startMs": 300840,
+    "endMs": 301160,
+    "timestampMs": 301140,
+    "confidence": 0.71177
+  },
+  {
+    "text": " der",
+    "startMs": 301160,
+    "endMs": 301380,
+    "timestampMs": 301160,
+    "confidence": 0.999028
+  },
+  {
+    "text": " nicht",
+    "startMs": 301380,
+    "endMs": 301750,
+    "timestampMs": 301500,
+    "confidence": 0.99899
+  },
+  {
+    "text": " funktioniert,",
+    "startMs": 301750,
+    "endMs": 302770,
+    "timestampMs": 302000,
+    "confidence": 0.998612
+  },
+  {
+    "text": " ist",
+    "startMs": 302770,
+    "endMs": 302990,
+    "timestampMs": 302220,
+    "confidence": 0.994017
+  },
+  {
+    "text": " ein",
+    "startMs": 302990,
+    "endMs": 303210,
+    "timestampMs": 302380,
+    "confidence": 0.996303
+  },
+  {
+    "text": " Warnzeichen.",
+    "startMs": 303210,
+    "endMs": 304260,
+    "timestampMs": 302480,
+    "confidence": 0.980301
+  },
+  {
+    "text": " Regel",
+    "startMs": 304260,
+    "endMs": 304700,
+    "timestampMs": 303840,
+    "confidence": 0.783993
+  },
+  {
+    "text": " zwei,",
+    "startMs": 304700,
+    "endMs": 305040,
+    "timestampMs": 304480,
+    "confidence": 0.930459
+  },
+  {
+    "text": " erlaube",
+    "startMs": 305040,
+    "endMs": 305540,
+    "timestampMs": 304940,
+    "confidence": 0.996107
+  },
+  {
+    "text": " der",
+    "startMs": 305540,
+    "endMs": 305760,
+    "timestampMs": 305380,
+    "confidence": 0.998719
+  },
+  {
+    "text": " KI",
+    "startMs": 305760,
+    "endMs": 305900,
+    "timestampMs": 305600,
+    "confidence": 0.995966
+  },
+  {
+    "text": " nichts",
+    "startMs": 305900,
+    "endMs": 306360,
+    "timestampMs": 306180,
+    "confidence": 0.912654
+  },
+  {
+    "text": " zu",
+    "startMs": 306360,
+    "endMs": 306480,
+    "timestampMs": 306460,
+    "confidence": 0.997489
+  },
+  {
+    "text": " wissen.",
+    "startMs": 306480,
+    "endMs": 307280,
+    "timestampMs": 306760,
+    "confidence": 0.99415
+  },
+  {
+    "text": " Schreib",
+    "startMs": 307280,
+    "endMs": 307280,
+    "timestampMs": 307260,
+    "confidence": 0.964016
+  },
+  {
+    "text": " zum",
+    "startMs": 307280,
+    "endMs": 307470,
+    "timestampMs": 307480,
+    "confidence": 0.86342
+  },
+  {
+    "text": " Beispiel",
+    "startMs": 307470,
+    "endMs": 307970,
+    "timestampMs": 307740,
+    "confidence": 0.992846
+  },
+  {
+    "text": " dazu,",
+    "startMs": 307970,
+    "endMs": 308340,
+    "timestampMs": 308220,
+    "confidence": 0.995175
+  },
+  {
+    "text": " wenn",
+    "startMs": 308340,
+    "endMs": 308650,
+    "timestampMs": 308880,
+    "confidence": 0.919151
+  },
+  {
+    "text": " du",
+    "startMs": 308650,
+    "endMs": 308710,
+    "timestampMs": 309080,
+    "confidence": 0.998372
+  },
+  {
+    "text": " dir",
+    "startMs": 308710,
+    "endMs": 308900,
+    "timestampMs": 309200,
+    "confidence": 0.995993
+  },
+  {
+    "text": " nicht",
+    "startMs": 308900,
+    "endMs": 309210,
+    "timestampMs": 309400,
+    "confidence": 0.997364
+  },
+  {
+    "text": " sicher",
+    "startMs": 309210,
+    "endMs": 309590,
+    "timestampMs": 309620,
+    "confidence": 0.999306
+  },
+  {
+    "text": " bist,",
+    "startMs": 309590,
+    "endMs": 310030,
+    "timestampMs": 309960,
+    "confidence": 0.996957
+  },
+  {
+    "text": " sage",
+    "startMs": 310030,
+    "endMs": 310210,
+    "timestampMs": 310360,
+    "confidence": 0.482736
+  },
+  {
+    "text": " es.",
+    "startMs": 310210,
+    "endMs": 310520,
+    "timestampMs": 310700,
+    "confidence": 0.989715
+  },
+  {
+    "text": " Das",
+    "startMs": 310520,
+    "endMs": 310900,
+    "timestampMs": 311280,
+    "confidence": 0.994454
+  },
+  {
+    "text": " senkt",
+    "startMs": 310900,
+    "endMs": 311110,
+    "timestampMs": 311440,
+    "confidence": 0.961249
+  },
+  {
+    "text": " die",
+    "startMs": 311110,
+    "endMs": 311210,
+    "timestampMs": 311700,
+    "confidence": 0.998521
+  },
+  {
+    "text": " Gefahr,",
+    "startMs": 311210,
+    "endMs": 311800,
+    "timestampMs": 311920,
+    "confidence": 0.999007
+  },
+  {
+    "text": " dass",
+    "startMs": 311800,
+    "endMs": 311990,
+    "timestampMs": 312120,
+    "confidence": 0.928933
+  },
+  {
+    "text": " sie",
+    "startMs": 311990,
+    "endMs": 312140,
+    "timestampMs": 312260,
+    "confidence": 0.978793
+  },
+  {
+    "text": " rät.",
+    "startMs": 312140,
+    "endMs": 312520,
+    "timestampMs": 312400,
+    "confidence": 0.798048
+  },
+  {
+    "text": " Regel",
+    "startMs": 312520,
+    "endMs": 313200,
+    "timestampMs": 313540,
+    "confidence": 0.978286
+  },
+  {
+    "text": " drei,",
+    "startMs": 313200,
+    "endMs": 313350,
+    "timestampMs": 313980,
+    "confidence": 0.947673
+  },
+  {
+    "text": " gib",
+    "startMs": 313350,
+    "endMs": 313570,
+    "timestampMs": 314520,
+    "confidence": 0.969905
+  },
+  {
+    "text": " ihr",
+    "startMs": 313570,
+    "endMs": 313790,
+    "timestampMs": 314660,
+    "confidence": 0.783617
+  },
+  {
+    "text": " den",
+    "startMs": 313790,
+    "endMs": 314010,
+    "timestampMs": 314760,
+    "confidence": 0.995934
+  },
+  {
+    "text": " Text",
+    "startMs": 314010,
+    "endMs": 314370,
+    "timestampMs": 315060,
+    "confidence": 0.998235
+  },
+  {
+    "text": " selbst.",
+    "startMs": 314370,
+    "endMs": 315070,
+    "timestampMs": 315580,
+    "confidence": 0.997261
+  },
+  {
+    "text": " Wenn",
+    "startMs": 315070,
+    "endMs": 315330,
+    "timestampMs": 316280,
+    "confidence": 0.998262
+  },
+  {
+    "text": " die",
+    "startMs": 315330,
+    "endMs": 315500,
+    "timestampMs": 316520,
+    "confidence": 0.998197
+  },
+  {
+    "text": " KI",
+    "startMs": 315500,
+    "endMs": 315870,
+    "timestampMs": 316740,
+    "confidence": 0.996837
+  },
+  {
+    "text": " ein",
+    "startMs": 315870,
+    "endMs": 316090,
+    "timestampMs": 316940,
+    "confidence": 0.988561
+  },
+  {
+    "text": " Dokument",
+    "startMs": 316090,
+    "endMs": 316470,
+    "timestampMs": 317140,
+    "confidence": 0.996012
+  },
+  {
+    "text": " zusammenfassen",
+    "startMs": 316470,
+    "endMs": 317520,
+    "timestampMs": 317800,
+    "confidence": 0.998144
+  },
+  {
+    "text": " soll,",
+    "startMs": 317520,
+    "endMs": 318080,
+    "timestampMs": 318340,
+    "confidence": 0.996388
+  },
+  {
+    "text": " füge",
+    "startMs": 318080,
+    "endMs": 318680,
+    "timestampMs": 318640,
+    "confidence": 0.747344
+  },
+  {
+    "text": " es",
+    "startMs": 318680,
+    "endMs": 318880,
+    "timestampMs": 319080,
+    "confidence": 0.97723
+  },
+  {
+    "text": " ein,",
+    "startMs": 318880,
+    "endMs": 319040,
+    "timestampMs": 319440,
+    "confidence": 0.902348
+  },
+  {
+    "text": " statt",
+    "startMs": 319040,
+    "endMs": 319310,
+    "timestampMs": 319720,
+    "confidence": 0.998388
+  },
+  {
+    "text": " sie",
+    "startMs": 319310,
+    "endMs": 319500,
+    "timestampMs": 319840,
+    "confidence": 0.994249
+  },
+  {
+    "text": " aus",
+    "startMs": 319500,
+    "endMs": 319630,
+    "timestampMs": 320020,
+    "confidence": 0.998468
+  },
+  {
+    "text": " dem",
+    "startMs": 319630,
+    "endMs": 319790,
+    "timestampMs": 320180,
+    "confidence": 0.994704
+  },
+  {
+    "text": " Gedächtnis",
+    "startMs": 319790,
+    "endMs": 320400,
+    "timestampMs": 320360,
+    "confidence": 0.998889
+  },
+  {
+    "text": " antworten",
+    "startMs": 320400,
+    "endMs": 320870,
+    "timestampMs": 320900,
+    "confidence": 0.9583
+  },
+  {
+    "text": " zu",
+    "startMs": 320870,
+    "endMs": 320980,
+    "timestampMs": 321260,
+    "confidence": 0.997653
+  },
+  {
+    "text": " lassen.",
+    "startMs": 320980,
+    "endMs": 321470,
+    "timestampMs": 321480,
+    "confidence": 0.999478
+  },
+  {
+    "text": " Dann",
+    "startMs": 321470,
+    "endMs": 321950,
+    "timestampMs": 322140,
+    "confidence": 0.995693
+  },
+  {
+    "text": " arbeitet",
+    "startMs": 321950,
+    "endMs": 322130,
+    "timestampMs": 322460,
+    "confidence": 0.995683
+  },
+  {
+    "text": " sie",
+    "startMs": 322130,
+    "endMs": 322290,
+    "timestampMs": 322600,
+    "confidence": 0.997645
+  },
+  {
+    "text": " mit",
+    "startMs": 322290,
+    "endMs": 322480,
+    "timestampMs": 322800,
+    "confidence": 0.998296
+  },
+  {
+    "text": " echten",
+    "startMs": 322480,
+    "endMs": 322770,
+    "timestampMs": 322960,
+    "confidence": 0.992292
+  },
+  {
+    "text": " Fakten.",
+    "startMs": 322770,
+    "endMs": 323400,
+    "timestampMs": 323320,
+    "confidence": 0.980111
+  },
+  {
+    "text": " Regel",
+    "startMs": 323400,
+    "endMs": 324000,
+    "timestampMs": 324840,
+    "confidence": 0.802097
+  },
+  {
+    "text": " vier,",
+    "startMs": 324000,
+    "endMs": 324470,
+    "timestampMs": 325300,
+    "confidence": 0.909663
+  },
+  {
+    "text": " prüfe",
+    "startMs": 324470,
+    "endMs": 324810,
+    "timestampMs": 325600,
+    "confidence": 0.981493
+  },
+  {
+    "text": " Wichtiges",
+    "startMs": 324810,
+    "endMs": 325530,
+    "timestampMs": 326040,
+    "confidence": 0.788404
+  },
+  {
+    "text": " an",
+    "startMs": 325530,
+    "endMs": 325700,
+    "timestampMs": 326600,
+    "confidence": 0.995805
+  },
+  {
+    "text": " einer",
+    "startMs": 325700,
+    "endMs": 326110,
+    "timestampMs": 326840,
+    "confidence": 0.996972
+  },
+  {
+    "text": " zweiten",
+    "startMs": 326110,
+    "endMs": 326690,
+    "timestampMs": 327180,
+    "confidence": 0.996364
+  },
+  {
+    "text": " Stelle.",
+    "startMs": 326690,
+    "endMs": 327440,
+    "timestampMs": 327520,
+    "confidence": 0.988921
+  },
+  {
+    "text": " Eine",
+    "startMs": 327440,
+    "endMs": 328030,
+    "timestampMs": 328240,
+    "confidence": 0.943878
+  },
+  {
+    "text": " Zahl,",
+    "startMs": 328030,
+    "endMs": 328360,
+    "timestampMs": 328640,
+    "confidence": 0.993642
+  },
+  {
+    "text": " ein",
+    "startMs": 328360,
+    "endMs": 328610,
+    "timestampMs": 329000,
+    "confidence": 0.936488
+  },
+  {
+    "text": " Datum,",
+    "startMs": 328610,
+    "endMs": 329200,
+    "timestampMs": 329240,
+    "confidence": 0.992206
+  },
+  {
+    "text": " ein",
+    "startMs": 329200,
+    "endMs": 329400,
+    "timestampMs": 329600,
+    "confidence": 0.778591
+  },
+  {
+    "text": " Name,",
+    "startMs": 329400,
+    "endMs": 329760,
+    "timestampMs": 329960,
+    "confidence": 0.986703
+  },
+  {
+    "text": " kurz",
+    "startMs": 329760,
+    "endMs": 330560,
+    "timestampMs": 330540,
+    "confidence": 0.780539
+  },
+  {
+    "text": " gegenchecken,",
+    "startMs": 330560,
+    "endMs": 331630,
+    "timestampMs": 330860,
+    "confidence": 0.631611
+  },
+  {
+    "text": " dauert",
+    "startMs": 331630,
+    "endMs": 331960,
+    "timestampMs": 331520,
+    "confidence": 0.9979
+  },
+  {
+    "text": " eine",
+    "startMs": 331960,
+    "endMs": 332240,
+    "timestampMs": 331940,
+    "confidence": 0.983509
+  },
+  {
+    "text": " Minute.",
+    "startMs": 332240,
+    "endMs": 333070,
+    "timestampMs": 332300,
+    "confidence": 0.991894
+  },
+  {
+    "text": " Und",
+    "startMs": 333070,
+    "endMs": 333130,
+    "timestampMs": 333360,
+    "confidence": 0.993131
+  },
+  {
+    "text": " Regel",
+    "startMs": 333130,
+    "endMs": 333430,
+    "timestampMs": 333540,
+    "confidence": 0.882712
+  },
+  {
+    "text": " fünf,",
+    "startMs": 333430,
+    "endMs": 334060,
+    "timestampMs": 334020,
+    "confidence": 0.927446
+  },
+  {
+    "text": " bei",
+    "startMs": 334060,
+    "endMs": 334130,
+    "timestampMs": 334680,
+    "confidence": 0.997073
+  },
+  {
+    "text": " Gesundheit,",
+    "startMs": 334130,
+    "endMs": 335000,
+    "timestampMs": 335080,
+    "confidence": 0.998717
+  },
+  {
+    "text": " Recht",
+    "startMs": 335000,
+    "endMs": 335510,
+    "timestampMs": 335760,
+    "confidence": 0.887651
+  },
+  {
+    "text": " und",
+    "startMs": 335510,
+    "endMs": 335820,
+    "timestampMs": 336000,
+    "confidence": 0.985722
+  },
+  {
+    "text": " Geld",
+    "startMs": 335820,
+    "endMs": 336230,
+    "timestampMs": 336320,
+    "confidence": 0.988634
+  },
+  {
+    "text": " ist",
+    "startMs": 336230,
+    "endMs": 336600,
+    "timestampMs": 336620,
+    "confidence": 0.905678
+  },
+  {
+    "text": " die",
+    "startMs": 336600,
+    "endMs": 336640,
+    "timestampMs": 336880,
+    "confidence": 0.936979
+  },
+  {
+    "text": " KI",
+    "startMs": 336640,
+    "endMs": 336920,
+    "timestampMs": 337020,
+    "confidence": 0.866279
+  },
+  {
+    "text": " höchstens",
+    "startMs": 336920,
+    "endMs": 337480,
+    "timestampMs": 337280,
+    "confidence": 0.87238
+  },
+  {
+    "text": " ein",
+    "startMs": 337480,
+    "endMs": 337670,
+    "timestampMs": 337840,
+    "confidence": 0.99803
+  },
+  {
+    "text": " Startpunkt.",
+    "startMs": 337670,
+    "endMs": 338690,
+    "timestampMs": 338040,
+    "confidence": 0.994203
+  },
+  {
+    "text": " Die",
+    "startMs": 338690,
+    "endMs": 338750,
+    "timestampMs": 338900,
+    "confidence": 0.998083
+  },
+  {
+    "text": " Entscheidung",
+    "startMs": 338750,
+    "endMs": 339460,
+    "timestampMs": 339360,
+    "confidence": 0.998961
+  },
+  {
+    "text": " triffst",
+    "startMs": 339460,
+    "endMs": 339900,
+    "timestampMs": 339580,
+    "confidence": 0.963543
+  },
+  {
+    "text": " du",
+    "startMs": 339900,
+    "endMs": 340030,
+    "timestampMs": 339780,
+    "confidence": 0.99674
+  },
+  {
+    "text": " mit",
+    "startMs": 340030,
+    "endMs": 340220,
+    "timestampMs": 339920,
+    "confidence": 0.999371
+  },
+  {
+    "text": " einer",
+    "startMs": 340220,
+    "endMs": 340540,
+    "timestampMs": 340160,
+    "confidence": 0.998967
+  },
+  {
+    "text": " echten",
+    "startMs": 340540,
+    "endMs": 340920,
+    "timestampMs": 340420,
+    "confidence": 0.995822
+  },
+  {
+    "text": " Fachperson.",
+    "startMs": 340920,
+    "endMs": 341740,
+    "timestampMs": 340740,
+    "confidence": 0.999378
+  },
+  {
+    "text": " Halten",
+    "startMs": 341740,
+    "endMs": 342230,
+    "timestampMs": 342420,
+    "confidence": 0.910966
+  },
+  {
+    "text": " wir",
+    "startMs": 342230,
+    "endMs": 342310,
+    "timestampMs": 342620,
+    "confidence": 0.999497
+  },
+  {
+    "text": " fest,",
+    "startMs": 342310,
+    "endMs": 342800,
+    "timestampMs": 342920,
+    "confidence": 0.999397
+  },
+  {
+    "text": " eine",
+    "startMs": 342800,
+    "endMs": 343070,
+    "timestampMs": 343600,
+    "confidence": 0.997082
+  },
+  {
+    "text": " KI",
+    "startMs": 343070,
+    "endMs": 343290,
+    "timestampMs": 344020,
+    "confidence": 0.997952
+  },
+  {
+    "text": " lügt",
+    "startMs": 343290,
+    "endMs": 343580,
+    "timestampMs": 344340,
+    "confidence": 0.978472
+  },
+  {
+    "text": " nicht",
+    "startMs": 343580,
+    "endMs": 343920,
+    "timestampMs": 344720,
+    "confidence": 0.999333
+  },
+  {
+    "text": " absichtlich.",
+    "startMs": 343920,
+    "endMs": 344900,
+    "timestampMs": 345040,
+    "confidence": 0.998403
+  },
+  {
+    "text": " Sie",
+    "startMs": 344900,
+    "endMs": 345110,
+    "timestampMs": 345920,
+    "confidence": 0.998015
+  },
+  {
+    "text": " ist",
+    "startMs": 345110,
+    "endMs": 345320,
+    "timestampMs": 346080,
+    "confidence": 0.999531
+  },
+  {
+    "text": " ein",
+    "startMs": 345320,
+    "endMs": 345790,
+    "timestampMs": 346240,
+    "confidence": 0.454765
+  },
+  {
+    "text": " extrem",
+    "startMs": 345790,
+    "endMs": 345950,
+    "timestampMs": 346760,
+    "confidence": 0.997107
+  },
+  {
+    "text": " guter",
+    "startMs": 345950,
+    "endMs": 346300,
+    "timestampMs": 346960,
+    "confidence": 0.997649
+  },
+  {
+    "text": " Vorhersager",
+    "startMs": 346300,
+    "endMs": 347070,
+    "timestampMs": 347280,
+    "confidence": 0.998877
+  },
+  {
+    "text": " für",
+    "startMs": 347070,
+    "endMs": 347350,
+    "timestampMs": 347880,
+    "confidence": 0.994275
+  },
+  {
+    "text": " das",
+    "startMs": 347350,
+    "endMs": 347560,
+    "timestampMs": 348020,
+    "confidence": 0.998616
+  },
+  {
+    "text": " nächste",
+    "startMs": 347560,
+    "endMs": 348200,
+    "timestampMs": 348220,
+    "confidence": 0.997251
+  },
+  {
+    "text": " Wort",
+    "startMs": 348200,
+    "endMs": 348480,
+    "timestampMs": 348520,
+    "confidence": 0.966918
+  },
+  {
+    "text": " und",
+    "startMs": 348480,
+    "endMs": 348720,
+    "timestampMs": 349200,
+    "confidence": 0.991094
+  },
+  {
+    "text": " manchmal",
+    "startMs": 348720,
+    "endMs": 349350,
+    "timestampMs": 349760,
+    "confidence": 0.992839
+  },
+  {
+    "text": " sagt",
+    "startMs": 349350,
+    "endMs": 349670,
+    "timestampMs": 350020,
+    "confidence": 0.996048
+  },
+  {
+    "text": " sie",
+    "startMs": 349670,
+    "endMs": 349910,
+    "timestampMs": 350260,
+    "confidence": 0.997714
+  },
+  {
+    "text": " eben",
+    "startMs": 349910,
+    "endMs": 350230,
+    "timestampMs": 350420,
+    "confidence": 0.975238
+  },
+  {
+    "text": " etwas",
+    "startMs": 350230,
+    "endMs": 350620,
+    "timestampMs": 350700,
+    "confidence": 0.993472
+  },
+  {
+    "text": " vorher,",
+    "startMs": 350620,
+    "endMs": 351240,
+    "timestampMs": 351080,
+    "confidence": 0.881471
+  },
+  {
+    "text": " das",
+    "startMs": 351240,
+    "endMs": 351480,
+    "timestampMs": 351380,
+    "confidence": 0.928954
+  },
+  {
+    "text": " gut",
+    "startMs": 351480,
+    "endMs": 351720,
+    "timestampMs": 351680,
+    "confidence": 0.999169
+  },
+  {
+    "text": " klingt,",
+    "startMs": 351720,
+    "endMs": 352450,
+    "timestampMs": 351880,
+    "confidence": 0.995818
+  },
+  {
+    "text": " aber",
+    "startMs": 352450,
+    "endMs": 352660,
+    "timestampMs": 352700,
+    "confidence": 0.998574
+  },
+  {
+    "text": " nicht",
+    "startMs": 352660,
+    "endMs": 353050,
+    "timestampMs": 352940,
+    "confidence": 0.995213
+  },
+  {
+    "text": " stimmt.",
+    "startMs": 353050,
+    "endMs": 353960,
+    "timestampMs": 353220,
+    "confidence": 0.993765
+  },
+  {
+    "text": " Du",
+    "startMs": 353960,
+    "endMs": 354000,
+    "timestampMs": 354100,
+    "confidence": 0.982311
+  },
+  {
+    "text": " bist",
+    "startMs": 354000,
+    "endMs": 354250,
+    "timestampMs": 354320,
+    "confidence": 0.984052
+  },
+  {
+    "text": " derjenige,",
+    "startMs": 354250,
+    "endMs": 354440,
+    "timestampMs": 354420,
+    "confidence": 0.942412
+  },
+  {
+    "text": " der",
+    "startMs": 354440,
+    "endMs": 354650,
+    "timestampMs": 354820,
+    "confidence": 0.999592
+  },
+  {
+    "text": " prüft.",
+    "startMs": 354650,
+    "endMs": 355530,
+    "timestampMs": 355000,
+    "confidence": 0.961137
+  },
+  {
+    "text": " Wenn",
+    "startMs": 355530,
+    "endMs": 355700,
+    "timestampMs": 356040,
+    "confidence": 0.944975
+  },
+  {
+    "text": " du",
+    "startMs": 355700,
+    "endMs": 355800,
+    "timestampMs": 356260,
+    "confidence": 0.995721
+  },
+  {
+    "text": " mehr",
+    "startMs": 355800,
+    "endMs": 355980,
+    "timestampMs": 356540,
+    "confidence": 0.998605
+  },
+  {
+    "text": " darüber",
+    "startMs": 355980,
+    "endMs": 356540,
+    "timestampMs": 356940,
+    "confidence": 0.988363
+  },
+  {
+    "text": " wissen",
+    "startMs": 356540,
+    "endMs": 356960,
+    "timestampMs": 357160,
+    "confidence": 0.998338
+  },
+  {
+    "text": " willst,",
+    "startMs": 356960,
+    "endMs": 357520,
+    "timestampMs": 357480,
+    "confidence": 0.995706
+  },
+  {
+    "text": " wie",
+    "startMs": 357520,
+    "endMs": 357730,
+    "timestampMs": 357720,
+    "confidence": 0.998471
+  },
+  {
+    "text": " KI",
+    "startMs": 357730,
+    "endMs": 357970,
+    "timestampMs": 358160,
+    "confidence": 0.995492
+  },
+  {
+    "text": " wirklich",
+    "startMs": 357970,
+    "endMs": 358430,
+    "timestampMs": 358660,
+    "confidence": 0.993798
+  },
+  {
+    "text": " funktioniert,",
+    "startMs": 358430,
+    "endMs": 359700,
+    "timestampMs": 359160,
+    "confidence": 0.998868
+  },
+  {
+    "text": " abonnieren.",
+    "startMs": 359700,
+    "endMs": 360790,
+    "timestampMs": 360120,
+    "confidence": 0.943054
+  },
+  {
+    "text": " Dann",
+    "startMs": 360790,
+    "endMs": 360880,
+    "timestampMs": 361040,
+    "confidence": 0.946951
+  },
+  {
+    "text": " sehen",
+    "startMs": 360880,
+    "endMs": 361120,
+    "timestampMs": 361220,
+    "confidence": 0.998449
+  },
+  {
+    "text": " wir",
+    "startMs": 361120,
+    "endMs": 361260,
+    "timestampMs": 361320,
+    "confidence": 0.998365
+  },
+  {
+    "text": " uns",
+    "startMs": 361260,
+    "endMs": 361430,
+    "timestampMs": 361460,
+    "confidence": 0.998811
+  },
+  {
+    "text": " beim",
+    "startMs": 361430,
+    "endMs": 361590,
+    "timestampMs": 361640,
+    "confidence": 0.997356
+  },
+  {
+    "text": " nächsten",
+    "startMs": 361590,
+    "endMs": 362020,
+    "timestampMs": 361860,
+    "confidence": 0.995372
+  },
+  {
+    "text": " Mal.",
+    "startMs": 362020,
+    "endMs": 362410,
+    "timestampMs": 362260,
+    "confidence": 0.909623
+  },
+  {
+    "text": " Mit",
+    "startMs": 362410,
+    "endMs": 362440,
+    "timestampMs": 362680,
+    "confidence": 0.953923
+  },
+  {
+    "text": " Toki.",
+    "startMs": 362440,
+    "endMs": 362820,
+    "timestampMs": 362800,
+    "confidence": 0.636901
+  }
+]

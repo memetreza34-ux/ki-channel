@@ -1,0 +1,80 @@
+[
+  {
+    "nr": 1,
+    "start": 0.8,
+    "ende": 4.469,
+    "text": "Hallo! Ich bin Pip. Komm, wir zählen zusammen!"
+  },
+  {
+    "nr": 2,
+    "start": 5.369,
+    "ende": 6.831,
+    "text": "Eins! Ein Apfel."
+  },
+  {
+    "nr": 3,
+    "start": 8.831,
+    "ende": 10.175,
+    "text": "Zwei! Zwei Bälle."
+  },
+  {
+    "nr": 4,
+    "start": 12.175,
+    "ende": 13.581,
+    "text": "Drei! Drei Sterne."
+  },
+  {
+    "nr": 5,
+    "start": 15.581,
+    "ende": 16.973,
+    "text": "Vier! Vier Fische."
+  },
+  {
+    "nr": 6,
+    "start": 18.973,
+    "ende": 20.632,
+    "text": "Fünf! Fünf Blumen."
+  },
+  {
+    "nr": 7,
+    "start": 22.832,
+    "ende": 24.396,
+    "text": "Und jetzt alle zusammen!"
+  },
+  {
+    "nr": 8,
+    "start": 24.996,
+    "ende": 25.471,
+    "text": "Eins!"
+  },
+  {
+    "nr": 9,
+    "start": 25.921,
+    "ende": 26.29,
+    "text": "Zwei!"
+  },
+  {
+    "nr": 10,
+    "start": 26.74,
+    "ende": 27.101,
+    "text": "Drei!"
+  },
+  {
+    "nr": 11,
+    "start": 27.551,
+    "ende": 27.944,
+    "text": "Vier!"
+  },
+  {
+    "nr": 12,
+    "start": 28.394,
+    "ende": 28.869,
+    "text": "Fünf!"
+  },
+  {
+    "nr": 13,
+    "start": 29.769,
+    "ende": 31.488,
+    "text": "Super gemacht! Tschüss!"
+  }
+]

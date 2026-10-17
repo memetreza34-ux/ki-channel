@@ -1,0 +1,15 @@
+[
+  {"text": "Hallo! Ich bin Pip. Komm, wir zählen zusammen!", "pause": 0.9},
+  {"text": "Eins! Ein Apfel.", "pause": 2.0},
+  {"text": "Zwei! Zwei Bälle.", "pause": 2.0},
+  {"text": "Drei! Drei Sterne.", "pause": 2.0},
+  {"text": "Vier! Vier Fische.", "pause": 2.0},
+  {"text": "Fünf! Fünf Blumen.", "pause": 2.2},
+  {"text": "Und jetzt alle zusammen!", "pause": 0.6},
+  {"text": "Eins!", "pause": 0.45},
+  {"text": "Zwei!", "pause": 0.45},
+  {"text": "Drei!", "pause": 0.45},
+  {"text": "Vier!", "pause": 0.45},
+  {"text": "Fünf!", "pause": 0.9},
+  {"text": "Super gemacht! Tschüss!", "pause": 3.0}
+]

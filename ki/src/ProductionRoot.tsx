@@ -155,7 +155,7 @@ export const ProductionRoot: React.FC = () => (
     <Folder name="KI-YouTube-Longform">
       <Composition id={AI_APP_WORKFLOW_COMPOSITION_ID} component={LongformAIAppWorkflow} defaultProps={{}} durationInFrames={AI_APP_WORKFLOW_DURATION_IN_FRAMES} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
       <Composition id={AI_APP_WORKFLOW_THUMBNAIL_ID} component={ThumbnailAIAppWorkflow} defaultProps={{}} durationInFrames={1} fps={AI_APP_WORKFLOW_FPS} width={AI_APP_WORKFLOW_WIDTH} height={AI_APP_WORKFLOW_HEIGHT}/>
-      <Composition id={INTELLIGENT_UI_COMPOSITION_ID} component={LongformIntelligentUI} defaultProps={{}} durationInFrames={INTELLIGENT_UI_DURATION_IN_FRAMES} fps={INTELLIGENT_UI_FPS} width={INTELLIGENT_UI_WIDTH} height={INTELLIGENT_UI_HEIGHT}/>
+      <Composition id={INTELLIGENT_UI_COMPOSITION_ID} component={LongformIntelligentUI} defaultProps={{voiceoverSrc: '__phase3/gpt6-intelligent-ui/voiceover.wav'}} durationInFrames={INTELLIGENT_UI_DURATION_IN_FRAMES} fps={INTELLIGENT_UI_FPS} width={INTELLIGENT_UI_WIDTH} height={INTELLIGENT_UI_HEIGHT}/>
       <Composition id={INTELLIGENT_UI_THUMBNAIL_ID} component={ThumbnailIntelligentUI} defaultProps={{}} durationInFrames={1} fps={INTELLIGENT_UI_FPS} width={INTELLIGENT_UI_WIDTH} height={INTELLIGENT_UI_HEIGHT}/>
     </Folder>
   </>

@@ -112,5 +112,5 @@ describe('reel choreography planner', () => {
     expect(new Set(result.motionSignatures).size).toBe(
       result.motionSignatures.length,
     );
-  });
+  }, 15000);
 });

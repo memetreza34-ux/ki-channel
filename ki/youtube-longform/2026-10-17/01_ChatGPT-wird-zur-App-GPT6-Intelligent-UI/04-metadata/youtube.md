@@ -14,21 +14,22 @@ Offizielle Quellen (geprüft am 17.10.2026):
 - OpenAI Produktankündigung vom 07.10.2026: https://openai.com/de-DE/index/gpt-6-for-everyone/
 - OpenAI Help: Intelligent UI: https://help.openai.com/en/articles/20001598-intelligent-ui-in-chatgpt
 - OpenAI Help: GPT-6 / Modelle: https://help.openai.com/en/articles/20001354-gpt-6-and-other-models-in-chatgpt
+- OpenAI Community: GPT-6 and Intelligent UI in ChatGPT: https://community.openai.com/t/gpt-6-and-intelligent-ui-in-chatgpt/1404139
 
 Hinweis: Feature-Verfügbarkeit und unterstützte Clients können sich ändern; bitte jeweils aktuelle offizielle Angaben prüfen.
 
 #GPT6 #ChatGPT #KünstlicheIntelligenz #KI #IntelligentUI
 
-## Kapitel (vorläufig; Phase 3 muss am echten Audio verifizieren)
+## Kapitel (Fassung v2, Kapitelwechsel aus den Wortzeiten)
 
-00:00 Text wird zur Oberfläche
-00:41 Wann Visuals helfen
-01:23 Die Technik dahinter
-02:08 Beispiel: Sparrechner
-02:48 Beispiel: Lernen
-03:28 Warum die Grenzen zählen
-04:09 Wo es verfügbar ist
-04:51 Was sich wirklich ändert
+00:00 Ein Chat wird bedienbar
+00:39 Text oder Darstellung?
+01:17 Wie die Oberfläche entsteht
+02:04 Beispiel 1: Sparrechner
+02:46 Beispiel 2: Lernen
+03:29 Beispiel 3: Die wichtigste Grenze
+04:12 Wo gibt es Intelligent UI?
+04:53 Der eigentliche Wandel
 
 ## Publishing
 

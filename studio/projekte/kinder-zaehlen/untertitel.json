@@ -1,0 +1,296 @@
+[
+  {
+    "text": "Hallo,",
+    "startMs": 0,
+    "endMs": 820,
+    "timestampMs": 1140,
+    "confidence": 0.751643
+  },
+  {
+    "text": " ich",
+    "startMs": 820,
+    "endMs": 990,
+    "timestampMs": 1700,
+    "confidence": 0.977249
+  },
+  {
+    "text": " bin",
+    "startMs": 990,
+    "endMs": 1470,
+    "timestampMs": 1920,
+    "confidence": 0.999077
+  },
+  {
+    "text": " Piep.",
+    "startMs": 1470,
+    "endMs": 2000,
+    "timestampMs": 2240,
+    "confidence": 0.722876
+  },
+  {
+    "text": " Komm,",
+    "startMs": 2000,
+    "endMs": 2740,
+    "timestampMs": 2880,
+    "confidence": 0.776803
+  },
+  {
+    "text": " wir",
+    "startMs": 2740,
+    "endMs": 3110,
+    "timestampMs": 3420,
+    "confidence": 0.996189
+  },
+  {
+    "text": " zählen",
+    "startMs": 3110,
+    "endMs": 3970,
+    "timestampMs": 3700,
+    "confidence": 0.993203
+  },
+  {
+    "text": " zusammen.",
+    "startMs": 3970,
+    "endMs": 5040,
+    "timestampMs": 4440,
+    "confidence": 0.986305
+  },
+  {
+    "text": " Eins,",
+    "startMs": 5040,
+    "endMs": 6430,
+    "timestampMs": 5900,
+    "confidence": 0.348902
+  },
+  {
+    "text": " ein",
+    "startMs": 6430,
+    "endMs": 7030,
+    "timestampMs": 6400,
+    "confidence": 0.972568
+  },
+  {
+    "text": " Apfel.",
+    "startMs": 7030,
+    "endMs": 8320,
+    "timestampMs": 6700,
+    "confidence": 0.996814
+  },
+  {
+    "text": " Zwei,",
+    "startMs": 8320,
+    "endMs": 9550,
+    "timestampMs": 9140,
+    "confidence": 0.978267
+  },
+  {
+    "text": " zwei",
+    "startMs": 9550,
+    "endMs": 10130,
+    "timestampMs": 9860,
+    "confidence": 0.980834
+  },
+  {
+    "text": " Bälle.",
+    "startMs": 10130,
+    "endMs": 11800,
+    "timestampMs": 10060,
+    "confidence": 0.990743
+  },
+  {
+    "text": " Drei,",
+    "startMs": 11800,
+    "endMs": 12840,
+    "timestampMs": 12480,
+    "confidence": 0.963293
+  },
+  {
+    "text": " drei",
+    "startMs": 12840,
+    "endMs": 13530,
+    "timestampMs": 13120,
+    "confidence": 0.992437
+  },
+  {
+    "text": " Sterne.",
+    "startMs": 13530,
+    "endMs": 15160,
+    "timestampMs": 13480,
+    "confidence": 0.996284
+  },
+  {
+    "text": " Vier,",
+    "startMs": 15160,
+    "endMs": 16450,
+    "timestampMs": 15940,
+    "confidence": 0.997373
+  },
+  {
+    "text": " vier",
+    "startMs": 16450,
+    "endMs": 17320,
+    "timestampMs": 16560,
+    "confidence": 0.99768
+  },
+  {
+    "text": " Fische.",
+    "startMs": 17320,
+    "endMs": 18680,
+    "timestampMs": 16800,
+    "confidence": 0.997986
+  },
+  {
+    "text": " Fünf,",
+    "startMs": 18680,
+    "endMs": 19900,
+    "timestampMs": 19240,
+    "confidence": 0.995723
+  },
+  {
+    "text": " fünf",
+    "startMs": 19900,
+    "endMs": 20780,
+    "timestampMs": 20100,
+    "confidence": 0.996729
+  },
+  {
+    "text": " Blumen.",
+    "startMs": 20780,
+    "endMs": 22400,
+    "timestampMs": 20340,
+    "confidence": 0.997725
+  },
+  {
+    "text": " Und",
+    "startMs": 22400,
+    "endMs": 22830,
+    "timestampMs": 23080,
+    "confidence": 0.947601
+  },
+  {
+    "text": " jetzt",
+    "startMs": 22830,
+    "endMs": 23370,
+    "timestampMs": 23480,
+    "confidence": 0.997341
+  },
+  {
+    "text": " alle",
+    "startMs": 23370,
+    "endMs": 23600,
+    "timestampMs": 23760,
+    "confidence": 0.995877
+  },
+  {
+    "text": " zusammen.",
+    "startMs": 23600,
+    "endMs": 24720,
+    "timestampMs": 24400,
+    "confidence": 0.99907
+  },
+  {
+    "text": " Eins,",
+    "startMs": 24720,
+    "endMs": 25990,
+    "timestampMs": 25660,
+    "confidence": 0.978651
+  },
+  {
+    "text": " zwei,",
+    "startMs": 25990,
+    "endMs": 26740,
+    "timestampMs": 26360,
+    "confidence": 0.995146
+  },
+  {
+    "text": " drei,",
+    "startMs": 26740,
+    "endMs": 27580,
+    "timestampMs": 27140,
+    "confidence": 0.994349
+  },
+  {
+    "text": " vier,",
+    "startMs": 27580,
+    "endMs": 28450,
+    "timestampMs": 28100,
+    "confidence": 0.957293
+  },
+  {
+    "text": " fünf.",
+    "startMs": 28450,
+    "endMs": 29440,
+    "timestampMs": 28860,
+    "confidence": 0.980961
+  },
+  {
+    "text": " Super",
+    "startMs": 29770,
+    "endMs": 29920,
+    "timestampMs": 30240,
+    "confidence": 0.989817
+  },
+  {
+    "text": " gemacht.",
+    "startMs": 29920,
+    "endMs": 31050,
+    "timestampMs": 30900,
+    "confidence": 0.992725
+  },
+  {
+    "text": " Tschüss.",
+    "startMs": 31050,
+    "endMs": 31760,
+    "timestampMs": 31260,
+    "confidence": 0.964075
+  },
+  {
+    "text": " [Siehe",
+    "startMs": 31760,
+    "endMs": 32000,
+    "timestampMs": 33740,
+    "confidence": 0.995429
+  },
+  {
+    "text": " Video",
+    "startMs": 32000,
+    "endMs": 32220,
+    "timestampMs": 33740,
+    "confidence": 0.987489
+  },
+  {
+    "text": " von",
+    "startMs": 32220,
+    "endMs": 32350,
+    "timestampMs": 33740,
+    "confidence": 0.95301
+  },
+  {
+    "text": " \"Berlin\"",
+    "startMs": 32350,
+    "endMs": 32680,
+    "timestampMs": 33740,
+    "confidence": 0.997322
+  },
+  {
+    "text": " in",
+    "startMs": 32680,
+    "endMs": 32760,
+    "timestampMs": 33740,
+    "confidence": 0.436027
+  },
+  {
+    "text": " der",
+    "startMs": 32760,
+    "endMs": 32890,
+    "timestampMs": 33740,
+    "confidence": 1
+  },
+  {
+    "text": " Videobeschreibung]",
+    "startMs": 32890,
+    "endMs": 33760,
+    "timestampMs": 33740,
+    "confidence": 0.900603
+  }
+]

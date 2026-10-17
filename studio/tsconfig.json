@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {"noEmit": true},
+  "include": ["studio-entry.ts", "StudioRoot.tsx", "kit", "projekte", "ersteller"]
+}

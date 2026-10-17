@@ -1,0 +1,12 @@
+{
+  "vorlage": "spot",
+  "formate": ["vertical", "square", "portrait"],
+  "design": "pop",
+  "format": "vertical",
+  "hook": ["Neue KI?", "Kein Plan?", "Wir erklären's."],
+  "held": {"titel": "KI einfach erklärt.", "hervorheben": ["einfach"], "icon": "fluent-emoji-flat:robot"},
+  "punkte": ["Kurz", "Ehrlich", "Mit Beispielen"],
+  "sticker": "Gratis",
+  "cta": {"titel": "Mehr KI, einfach erklärt.", "knopf": "Jetzt folgen"},
+  "sounds": true
+}

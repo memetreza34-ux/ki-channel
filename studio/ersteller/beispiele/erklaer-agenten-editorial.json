@@ -1,0 +1,16 @@
+{
+  "vorlage": "erklaerer",
+  "formate": ["landscape", "vertical"],
+  "design": "editorial",
+  "format": "landscape",
+  "uebergang": "slide-left",
+  "sounds": true,
+  "szenen": [
+    {"typ": "titel", "kicker": "KI-Agenten", "titel": "Chatbot oder Agent?", "hervorheben": ["Agent"], "icon": "fluent-emoji-flat:robot", "sekunden": 3.5, "untertitel": "Was unterscheidet einen KI-Agenten von einem Chatbot?"},
+    {"typ": "vergleich", "titel": "Antworten vs. erledigen", "vorher": "Chatbot: beantwortet deine Frage – den Rest machst du.", "nachher": "Agent: plant Schritte und nutzt Werkzeuge, um eine Aufgabe zu erledigen.", "sekunden": 5, "untertitel": "Ein Chatbot antwortet. Ein Agent arbeitet eine Aufgabe ab."},
+    {"typ": "schritte", "titel": "So arbeitet ein Agent", "schritte": [{"titel": "Ziel verstehen"}, {"titel": "Plan machen"}, {"titel": "Werkzeuge nutzen", "text": "z. B. Browser oder Code"}, {"titel": "Ergebnis prüfen"}], "sekunden": 5.5, "untertitel": "Ziel verstehen, planen, Werkzeuge nutzen, prüfen."},
+    {"typ": "icons", "titel": "Typische Werkzeuge", "icons": [{"icon": "ph:globe-duotone", "text": "Browser"}, {"icon": "ph:code-duotone", "text": "Code"}, {"icon": "ph:calendar-duotone", "text": "Kalender"}, {"icon": "ph:envelope-duotone", "text": "E-Mail"}], "sekunden": 4, "untertitel": "Agenten greifen auf Werkzeuge zu, die man ihnen freigibt."},
+    {"typ": "aussage", "text": "Mehr Freiheit heißt: genauer hinschauen.", "hervorheben": ["hinschauen"], "lottie": "emoji/augen", "sekunden": 3.5, "untertitel": "Je mehr ein Agent darf, desto wichtiger ist Kontrolle."},
+    {"typ": "ende", "titel": "Mehr KI, einfach erklärt.", "knopf": "Folgen", "sekunden": 3}
+  ]
+}
