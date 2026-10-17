@@ -1,6 +1,6 @@
 # Kanal-Learnings
 
-Diese Datei enthält nur Erkenntnisse aus **real veröffentlichten Reels**. Regeln: `POST_PUBLISH_LEARNING.md`.
+Diese Datei enthält nur Erkenntnisse aus **real veröffentlichten Reels**. Fehler und Verbesserungen aus echten Render-Reviews sowie Feedback zu noch nicht veröffentlichten Videos gehören in QUALITY_CHANGELOG.md (siehe CONTINUOUS_IMPROVEMENT.md). Regeln: `POST_PUBLISH_LEARNING.md`.
 
 | Learning | Evidenz-Reels | Stärke | Konsequenz | Status |
 |---|---|---|---|---|
