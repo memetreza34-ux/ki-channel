@@ -26,48 +26,48 @@
       "id": "hook",
       "title": "Text wird zur Oberfläche",
       "startFrame": 0,
-      "endFrame": 1050
+      "endFrame": 1230
     },
     {
       "id": "format",
       "title": "Weniger lesen, mehr sehen",
-      "startFrame": 1050,
-      "endFrame": 2250
+      "startFrame": 1230,
+      "endFrame": 2490
     },
     {
       "id": "architecture",
       "title": "Wie es technisch funktioniert",
-      "startFrame": 2250,
-      "endFrame": 3480
+      "startFrame": 2490,
+      "endFrame": 3840
     },
     {
       "id": "savings",
       "title": "Beispiel: Sparrechner",
-      "startFrame": 3480,
-      "endFrame": 4680
+      "startFrame": 3840,
+      "endFrame": 5040
     },
     {
       "id": "learning",
       "title": "Beispiel: Lernen",
-      "startFrame": 4680,
-      "endFrame": 5880
+      "startFrame": 5040,
+      "endFrame": 6240
     },
     {
       "id": "limits",
       "title": "Was eine schöne UI nicht kann",
-      "startFrame": 5880,
-      "endFrame": 7080
+      "startFrame": 6240,
+      "endFrame": 7470
     },
     {
       "id": "availability",
       "title": "Für wen gibt es das?",
-      "startFrame": 7080,
-      "endFrame": 8550
+      "startFrame": 7470,
+      "endFrame": 8730
     },
     {
       "id": "payoff",
       "title": "Die nächste Form von Chat",
-      "startFrame": 8550,
+      "startFrame": 8730,
       "endFrame": 10050
     }
   ]
