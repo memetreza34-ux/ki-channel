@@ -24,6 +24,7 @@ import {projekt as warumKiLuegt} from './warum-ki-luegt/Video';
 import {thumbnail as warumKiLuegtThumb} from './warum-ki-luegt/Thumbnail';
 import {projekt as gpt6IntelligentUi} from './gpt6-intelligent-ui/Video';
 import {thumbnail as gpt6IntelligentUiThumb} from './gpt6-intelligent-ui/Thumbnail';
+import {premiumProbe as gpt6PremiumProbe} from './gpt6-intelligent-ui/PremiumProbe';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -57,5 +58,6 @@ export const PROJEKTE: Project[] = [
   warumKiLuegtThumb,
   gpt6IntelligentUi,
   gpt6IntelligentUiThumb,
+  gpt6PremiumProbe,
   // neu:eintrag
 ];

@@ -162,4 +162,20 @@ Gelernt beim zweiten Video („Warum KI lügt“, Armans Feedback: Anfang zu wen
 - **Toki handelt:** zeigt, trägt, schiebt, reagiert – nicht nur daneben stehen und gucken.
 - **Prüfen:** die ersten 30 s Sekunde für Sekunde ansehen (`look --range=0-900 --count=30`), dazu den Agenten `video-kritiker` vor der Abgabe.
 - **Aufnahme:** Arman nimmt in 24 kHz auf → in der Aufnahme-App „Hohe Qualität/Verlustfrei“ einstellen.
-- **Gleiches Design, aber zum Thema passend (Arman):** Kanal-Look bleibt (hell, Inter, Toki, Serienfarbe, Karten). Innerhalb davon jedes Video individuell gestalten: eigene Themen-Welt und Requisiten (z. B. Gericht → Richtertisch, Akten, Hammer; Weltall → Sterne, Teleskop), passende Hintergrundformen, Toki mit Themen-Accessoire (Richterhut, Lupe, Helm), eigene Übergänge, die zum Thema passen. Nie ein Fremd-Design – immer Kanal-Look + Thema.
+- **Gleiches Design, aber zum Thema passend (Arman):** Kanal-Look bleibt (hell, Inter, Toki, Serienfarbe; Karten nur für echte UI/Dokumente – siehe Premium-Stil). Innerhalb davon jedes Video individuell gestalten: eigene Themen-Welt und Requisiten (z. B. Gericht → Richtertisch, Akten, Hammer; Weltall → Sterne, Teleskop), passende Hintergrundformen, Toki mit Themen-Accessoire (Richterhut, Lupe, Helm), eigene Übergänge, die zum Thema passen. Nie ein Fremd-Design – immer Kanal-Look + Thema.
+
+## Premium-Stil (Standard für neue Videos, Arman 2026-10-18)
+
+Gegen den „AI-Slop“-Eindruck (Baukasten aus Karten, Pillen, Icon-Kacheln, vielen Farben, Ploppen). Premium heißt **weniger, dafür gezielter** – nicht mehr Effekte. Kanal-Look und Toki bleiben. Vorbild: `projekte/gpt6-intelligent-ui/PremiumProbe.tsx` (Composition `Gpt6IntelligentUi-Premium-Probe`).
+
+- **Ein Blickfang pro Moment.** Inhalte stehen frei im Raum (große Zahl, ein Objekt, eine Aussage) statt in weißen Karten/Fenstern. Karte/Fenster nur, wenn es wirklich eine Oberfläche, ein Dokument oder eine Nachricht ist.
+- **Eine Akzentfarbe:** Serienfarbe + Tinte/Grau. Koralle nur für Toki. Rot/Grün nur für falsch/richtig. Keine Regenbogen-Kacheln.
+- **Schrift:** große Zahlen/Aussagen (Zahlen ≥ 160 px) mit Gewichtskontrast (z. B. Zahl 800, „€“ 300), `tabular-nums`. Labels als Kapitälchen (24 px, `letterSpacing: 0.16em`, Grau) statt Pillen mit Icons.
+- **Bewegung erklärt, statt zu ploppen:** Zahlen rollen wie ein Zählwerk (leichte Bewegungsunschärfe bei schnellen Wechseln), Linien und Durchstreichungen werden gezeichnet, Objekte verwandeln sich, Gruppen laufen als Welle. Federn (`bouncy`) nur für Toki.
+- **Kamera lebt:** immer ein leichtes Schweben (Drift), dazu gezielte Push-ins auf das, worüber gerade gesprochen wird. Übergänge mit Kontinuität statt immer derselben Seitwärtsfahrt.
+- **Atmosphäre:** weiches Licht (große radiale Verläufe) statt harter Kreise, feines Filmkorn (~7 %), leichte Vignette, ruhiger Boden ohne Kieselsteine.
+- **Icons sparsam,** lieber eigene Objekte (wie Fabrik, Stromkreis) als Icon-in-Kachel.
+- **Wenige Sounds,** nur bei echten Ereignissen (Ergebnis, Klick, Ankunft) – nicht bei jedem Element.
+- **Skript ohne KI-Floskeln:** direkt, so wie Arman spricht; keine Mehrfach-Absicherungen („Der Trick ist …“, viermal „nur Illustration“). Der Illustrations-Hinweis steht einmal klein im Bild und einmal gesprochen.
+- **Weiter gültig:** Frame 0 zeigt schon etwas, alle 2–3 s sichtbare Veränderung in den ersten 30 s, Toki ab Sekunde 0 und Toki bedient die Oberflächen.
+

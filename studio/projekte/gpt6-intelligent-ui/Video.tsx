@@ -27,7 +27,7 @@ const WOERTER = woerter as Wort[];
 const norm = (s: string) => s.toLowerCase().replace(/[^a-zäöüß0-9]/g, '');
 
 /** Startzeit (s) des ersten Worts ab `ab`, das mit `wort` beginnt. */
-const at = (wort: string, ab = 0): number => {
+export const at = (wort: string, ab = 0): number => {
   const q = norm(wort);
   const hit = WOERTER.find(([s, , w]) => s >= ab - 0.05 && norm(w).startsWith(q));
   if (!hit) throw new Error(`Wortzeit fehlt: "${wort}" ab ${ab}s`);
@@ -54,13 +54,13 @@ const LINIE = KANAL.line;
 
 const useT = () => useCurrentFrame() / FPS;
 /** 0 → 1 ab Sekunde `start` über `dur` Sekunden. */
-const p = (t: number, start: number, dur = 0.45, ease: EaseName = 'out') => progress(t * FPS, start * FPS, dur * FPS, ease);
+export const p = (t: number, start: number, dur = 0.45, ease: EaseName = 'out') => progress(t * FPS, start * FPS, dur * FPS, ease);
 /** Feder ab Sekunde `start`. */
-const sp = (t: number, start: number, preset: SpringName = 'snappy') => pop(t * FPS, FPS, start * FPS, preset);
+export const sp = (t: number, start: number, preset: SpringName = 'snappy') => pop(t * FPS, FPS, start * FPS, preset);
 /** 1 → 0 ab Sekunde `start`. */
 const raus = (t: number, start: number, dur = 0.35) => 1 - p(t, start, dur, 'in');
 /** Kurzer Puls (0 → 1 → 0) um Sekunde `start`. */
-const puls = (t: number, start: number, dur = 0.6) => {
+export const puls = (t: number, start: number, dur = 0.6) => {
   const q = (t - start) / dur;
   return q < 0 || q > 1 ? 0 : Math.sin(q * Math.PI);
 };
@@ -2325,7 +2325,7 @@ type TK = {
 const K0 = 1.2;
 
 /** Fußpunkt, damit die Hand (Seite, Armwinkel) genau auf (hx, hy) liegt. */
-const fussFuer = (hx: number, hy: number, seite: 1 | -1, grad: number, k: number) => {
+export const fussFuer = (hx: number, hy: number, seite: 1 | -1, grad: number, k: number) => {
   const a = (grad * Math.PI) / 180;
   return {x: hx - seite * (99 + 66 * Math.sin(a)) * k, y: hy - (-96 + 66 * Math.cos(a)) * k};
 };
