@@ -1,0 +1,41 @@
+Wie viel Strom frisst KI wirklich?
+
+„Eine Frage an ChatGPT braucht zehnmal so viel Strom wie eine Google-Suche.“ Diesen Satz hast du bestimmt schon gehört – er stammt aus einer Schätzung von 2023 und ist nach heutigen Zahlen ungefähr zehnmal zu hoch. Trotzdem wollen Microsoft und Google stillgelegte Atomkraftwerke wieder ans Netz bringen. Wie passt das zusammen?
+
+In diesem Video siehst du mit echten Zahlen, wie viel Strom eine einzelne KI-Frage braucht, warum lange Dokumente, Bilder und vor allem Videos ein Vielfaches kosten, wie viel Strom alle Rechenzentren der Welt verbrauchen – und was das für dich heißt.
+
+Kapitel:
+0:00 Die berühmte 10×-Zahl
+0:18 Der Widerspruch: Atomkraft für Rechenzentren
+0:34 So viel Strom braucht eine Frage
+1:01 Zum Vergleich: Lampe, Fernseher, Teewasser
+1:23 Warum die alte Zahl so hoch war
+1:39 Lange Dokumente und Denk-Modelle
+1:58 Bilder und Videos
+2:23 Milliarden Anfragen pro Tag
+2:49 Alle Rechenzentren der Welt
+3:18 Prognose bis 2030
+3:31 Wo es eng wird: Irland und Virginia
+3:46 Three Mile Island: Atomstrom für KI
+4:09 Und das Wasser?
+4:34 Was heißt das für dich?
+5:03 Fazit
+
+Quellen (Stand 23.10.2026):
+• Google, Umweltwirkung von Gemini-Anfragen (0,24 Wh, 0,26 ml Wasser, Faktor 33), 21.08.2025: https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference
+• Sam Altman, „The Gentle Singularity“ (0,34 Wh pro Anfrage), Juni 2025: https://blog.samaltman.com/the-gentle-singularity
+• Epoch AI, „How much energy does ChatGPT use?“ (≈ 0,3 Wh, lange Eingaben bis 40 Wh, alte 3-Wh-Schätzung), 07.02.2025: https://epoch.ai/gradient-updates/how-much-energy-does-chatgpt-use
+• MIT Technology Review, „We did the math on AI's energy footprint“ (Bild, 5-Sekunden-Video), 20.05.2025 – Zusammenfassung: https://simonwillison.net/2025/May/20/ai-energy-footprint/
+• OpenAI über Axios: 2,5 Milliarden Prompts pro Tag, Juli 2025: https://techcrunch.com/2025/07/21/chatgpt-users-send-2-5-billion-prompts-a-day/
+• IEA, „Key Questions on Energy and AI“ (485 TWh 2025, ≈ 950 TWh 2030), April 2026: https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary
+• Our World in Data, Rechenzentren und KI (Irland, Virginia), Juli 2026: https://ourworldindata.org/how-much-energy-do-data-centers-and-artificial-intelligence-use
+• Umweltbundesamt, Bruttostromverbrauch Deutschland 2025 (526 TWh), Mai 2026: https://www.umweltbundesamt.de/daten/energie/stromverbrauch
+• CSO Irland, Rechenzentren 2025 = 23 % des Stroms, Juli 2026: https://www.irishtimes.com/business/2026/07/07/data-centres-account-for-almost-one-quarter-of-irish-electricity-usage-in-2025/
+• Microsoft & Constellation, Three Mile Island Block 1, Vertrag über 20 Jahre (Sept. 2024): https://www.publicpower.org/node/24269 · Neustart 2027 geplant: https://penncapital-star.com/energy-environment/concern-persists-as-crane-nuclear-plant-progresses-toward-2027-restart/
+• NextEra & Google, Duane Arnold (Iowa), Okt. 2025: https://www.ans.org/news/2025-10-28/article-7501/nextera-and-google-ink-a-deal-to-restart-duane-arnold/
+• Wasserkocher 0,115 kWh pro Liter (Stiftung Warentest): https://www.stuttgarter-zeitung.de/wissen/wasserkocher-oder-herd-was-ist-sparsamer-mhsd-78917134.html
+• „Flasche Wasser pro E-Mail“: UC Riverside für die Washington Post, 2024 (inkl. Wasser für die Stromerzeugung)
+
+Hinweise: Die Firmenangaben von Google und OpenAI sind nicht unabhängig geprüft. Vergleiche mit Lampe (10 W), Fernseher (≈ 100 W) und Wasserkocher sind eigene, gerundete Rechnungen. Das Chat-Eingabefeld ist eine Illustration, kein Screenshot; Landkarten sind vereinfacht.
+
+#KI #KünstlicheIntelligenz #ChatGPT #Strom #Rechenzentren

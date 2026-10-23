@@ -191,6 +191,8 @@ type TokiProps = {
   smile?: number;
   label?: string;
   labelIn?: number;
+  /** Themen-Accessoire (Helm, Hut …) im Koordinatensystem der Figur (300 × 290, Körper oben bei y = 62). */
+  accessoire?: React.ReactNode;
   /** Offener Mund (staunen, rufen, sprechen). */
   mouthO?: number;
   /** Arme in Grad: 0 = hängt, 90 = waagrecht zur Seite, 170 = nach oben. */
@@ -229,6 +231,7 @@ export const Toki: React.FC<TokiProps> = ({
   smile,
   label,
   labelIn = 1,
+  accessoire,
   mouthO,
   armL = 18,
   armR = 18,
@@ -356,6 +359,7 @@ export const Toki: React.FC<TokiProps> = ({
             {label}
           </text>
         ) : null}
+        {accessoire}
       </svg>
     </div>
   );

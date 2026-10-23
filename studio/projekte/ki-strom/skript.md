@@ -1,7 +1,9 @@
 # Wie viel Strom frisst KI wirklich?
 
 Format: landscape (YouTube 16:9) · Look: Kanal-Look im **Premium-Stil**, Serie „Recht & Gesellschaft“ (Grün `#0E9F8E`) · Länge: ca. 5:30 · Stand: 2026-10-23
-Stimme: Arman (eigene Aufnahme – keine synthetische Stimme) · Musik: keine, nur wenige leise Sounds · Phase 1 fertig, wartet auf Aufnahme
+Stimme: Arman (eigene Aufnahme – keine synthetische Stimme) · Musik: keine, nur wenige leise Sounds · Phase 3 gerendert 2026-10-23 (Composition `KiStrom`, Cover `KiStrom-Thumbnail`), wartet auf Armans Abnahme
+
+Phase 3: Aufnahme kam als `Ki 1.mp4`–`Ki 3.mp4` (5:19) → gesäubert, `studio/public/projekte/ki-strom/voiceover.wav`, Wortzeiten `woerter.json` (whisper medium). Gegenhören: bei 0:17 hat whisper „zehnmal **so** hoch“ statt „**zu** hoch“ verstanden – die Klanganalyse spricht für „zu“.
 
 ## Ziel
 Der Zuschauer weiß danach, wie viel Strom eine KI-Frage wirklich braucht (≈ 0,3 Wh statt der alten 3 Wh), was deutlich mehr braucht (lange Dokumente, Bilder, Video) – und warum trotzdem Atomkraftwerke für Rechenzentren wieder anlaufen sollen.
