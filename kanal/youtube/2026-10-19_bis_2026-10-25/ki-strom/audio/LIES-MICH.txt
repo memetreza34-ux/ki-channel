@@ -1,0 +1,19 @@
+So geht's:
+1. script.txt öffnen und 1 zu 1 vorlesen (oder in deine App kopieren). 15 Absätze, ca. 5:30 Minuten.
+2. Aufnahme in DIESEN Ordner legen – eine Datei (z. B. voiceover.m4a) reicht.
+   Wenn du lieber absatzweise aufnimmst: 1.m4a, 2.m4a, … 15.m4a geht auch.
+3. Claude Bescheid sagen: „Audio ist drin, mach Phase 3“.
+
+Zahlen:
+0,24 = null Komma zwei vier · 0,34 = null Komma drei vier · 0,3 = null Komma drei
+485 = vierhundertfünfundachtzig · 950 = neunhundertfünfzig · 940 = neunhundertvierzig
+Terawattstunden = Tera-Watt-Stunden · Dreiunddreißigstel = ein Dreiunddreißigstel
+
+Aussprache:
+„Epoch AI“ = englisch, Ie-pock Ei-Ai · „Sam Altman“ = englisch · „Gemini“ = Dschemini
+„Copilot“ = englisch, Ko-pailot · „MIT Technology Review“ = Em-Ai-Tie Teknolodschi Riwju
+„Three Mile Island“ = englisch, Sri Mail Ailänd · „Iowa“ = Ai-o-wa · „Virginia“ = Wördschinja
+„KI“ = Ka-I · „Toki“ = Tooo-ki
+
+Tipps: ruhiger Raum, Handy ca. 20 cm vor dem Mund, in der Aufnahme-App „Hohe Qualität/Verlustfrei“ einstellen,
+etwas langsamer als normal. Bei „Und jetzt rate mal“ (Absatz 4) ruhig kurz Pause machen – da kommt das Quiz.
