@@ -1,6 +1,8 @@
 import reelJson from '../../../reels/2026-09-21_bis_2026-09-27/02_Warum-KI-deine-PDF-manchmal-falsch-beantwortet/06-projektdateien/reel.json';
 import subtitleJson from '../../../reels/2026-09-21_bis_2026-09-27/02_Warum-KI-deine-PDF-manchmal-falsch-beantwortet/03-caption/subtitle-cues.json';
 import {assertAuthoredVisualDiversity} from '../../animation-library/authoredProductionGate';
+import {countReelCaptionWords} from '../captionContract';
+import {REEL_CAPTION_SAFE} from '../captionSafe';
 import {PDF_RETRIEVAL_VISUAL_PROFILES} from './visualProfiles';
 
 export type PdfRetrievalScene={sceneId:string;startFrame:number;endFrame:number;headline:string;icon:string;implementation:'NEW_BUILD';spokenText:string;beatIds:readonly string[]};
@@ -25,6 +27,7 @@ export const assertPdfRetrievalContract=():void=>{
   for(const scene of PDF_RETRIEVAL_SCENES){if(scene.startFrame!==cursor||scene.endFrame<=scene.startFrame)throw new Error(`invalid scene range: ${scene.sceneId}`);if(ids.has(scene.sceneId))throw new Error(`duplicate scene: ${scene.sceneId}`);if(scene.implementation!=='NEW_BUILD')throw new Error(`scene is not NEW_BUILD: ${scene.sceneId}`);scene.beatIds.forEach((beat)=>{if(beats.has(beat))throw new Error(`duplicate beat: ${beat}`);beats.add(beat)});ids.add(scene.sceneId);cursor=scene.endFrame;}
   if(cursor!==PDF_RETRIEVAL_DURATION_IN_FRAMES)throw new Error('scenes do not cover composition');
   if(beats.size!==15)throw new Error('expected fifteen unique beats');
+  for(const cue of PDF_RETRIEVAL_SUBTITLES){const wordCount=countReelCaptionWords(cue.text);if(wordCount>REEL_CAPTION_SAFE.maxWordsPerGroup)throw new Error(`subtitle too long (${wordCount} words): ${cue.sceneId}`);if(cue.text.split(/\r?\n/).length>REEL_CAPTION_SAFE.maxVisibleLines)throw new Error(`subtitle has too many lines: ${cue.sceneId}`);}
   for(const scene of PDF_RETRIEVAL_SCENES){const cues=PDF_RETRIEVAL_SUBTITLES.filter((cue)=>cue.sceneId===scene.sceneId).sort((a,b)=>a.startFrame-b.startFrame);if(cues.length<2)throw new Error(`too few cues: ${scene.sceneId}`);if(cues.some((cue)=>cue.startFrame<scene.startFrame||cue.endFrame>scene.endFrame))throw new Error(`subtitle outside scene: ${scene.sceneId}`);if(normalizePdfText(cues.map((cue)=>cue.text).join(' '))!==normalizePdfText(scene.spokenText))throw new Error(`subtitle mismatch: ${scene.sceneId}`);}
   const planned=PDF_RETRIEVAL_SCENES.map((scene)=>scene.sceneId).join('|');const profiled=PDF_RETRIEVAL_VISUAL_PROFILES.map((profile)=>profile.sceneId).join('|');if(planned!==profiled)throw new Error('visual profiles must cover scene order');
   assertAuthoredVisualDiversity(PDF_RETRIEVAL_VISUAL_PROFILES);
