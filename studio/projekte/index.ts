@@ -28,6 +28,8 @@ import {premiumProbe as gpt6PremiumProbe} from './gpt6-intelligent-ui/PremiumPro
 import {projekt as kiStrom} from './ki-strom/Video';
 import {thumbnail as kiStromThumb} from './ki-strom/Thumbnail';
 import {shorts} from './shorts/Short';
+import {daten} from './shorts/Daten';
+import {szenen} from './shorts/Szenen';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -65,5 +67,7 @@ export const PROJEKTE: Project[] = [
   kiStrom,
   kiStromThumb,
   ...shorts,
+  ...daten,
+  ...szenen,
   // neu:eintrag
 ];
