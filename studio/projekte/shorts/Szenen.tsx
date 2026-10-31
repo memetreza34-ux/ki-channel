@@ -7,6 +7,10 @@ import land from './land-110m.json';
 /**
  * Drei Beispiel-Szenen im Daten-Look (Allgemeinwissen):
  * Blitze (≈ 44 pro Sekunde, NASA) · Jeans (≈ 7.500 Liter Wasser, UNEP) · Erdbahn (29,8 km/s, NASA).
+ *
+ * Bewegungssprache (Premium, ruhig-präzise): Eintritte mit outQuint über 12 Frames, Weg ≤ 24 px,
+ * Objekte skalieren 0,92 → 1 statt einzublenden, ab Frame 0 ist alles sichtbar, ein Höhepunkt pro Szene.
+ * Alles Wichtige liegt zwischen y 200 und y 1480 (Plattform-UI unten).
  */
 
 const BG = '#0E1424';
@@ -17,36 +21,37 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const outQuint = Easing.bezier(0.22, 1, 0.36, 1);
 const zahl = (n: number, stellen = 0) => n.toLocaleString('de-DE', {minimumFractionDigits: stellen, maximumFractionDigits: stellen});
 const SZENE = 140;
+const ZAEHLER_TOP = 1190;
 
 /* ───────────── gemeinsame Bausteine ───────────── */
 
 const Titel: React.FC<{text: React.ReactNode}> = ({text}) => {
   const f = useCurrentFrame();
-  const t = interpolate(f, [0, 14], [0, 1], {...clamp, easing: outQuint});
-  return <div style={{position: 'absolute', left: 80, right: 120, top: 230, fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 82, lineHeight: 1.04, letterSpacing: '-0.035em', color: HELL, opacity: t, transform: `translateY(${(1 - t) * 24}px)`}}>{text}</div>;
+  const t = interpolate(f, [0, 12], [0, 1], {...clamp, easing: outQuint});
+  return <div style={{position: 'absolute', left: 80, right: 80, top: 230, fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 92, lineHeight: 1.02, letterSpacing: '-0.035em', color: HELL, transform: `translateY(${(1 - t) * 8}px)`}}>{text}</div>;
 };
 
-const Zaehler: React.FC<{wert: number; einheit: string; label: string; quelle: string; top: number; stellen?: number}> = ({wert, einheit, label, quelle, top, stellen = 0}) => (
-  <div style={{position: 'absolute', left: 80, right: 80, top, display: 'flex', flexDirection: 'column', gap: 12}}>
-    <div style={{fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 40, color: STAHL}}>{label}</div>
-    <div style={{fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: 170, lineHeight: 1, letterSpacing: '-0.05em', color: HELL, fontVariantNumeric: 'tabular-nums'}}>
-      {zahl(wert, stellen)}
-      <span style={{fontSize: 64, marginLeft: 18, letterSpacing: 0, color: AKZENT}}>{einheit}</span>
+/** Objekt-Auftritt: skaliert 0,92 → 1, bleibt sichtbar. */
+const useAuftritt = () => {
+  const f = useCurrentFrame();
+  return 0.92 + 0.08 * spring({frame: f, fps: 30, config: {damping: 18, stiffness: 120}});
+};
+
+const Zaehler: React.FC<{wert: number; einheit: string; label: string; quelle: string; stellen?: number; puls?: number}> = ({wert, einheit, label, quelle, stellen = 0, puls = 0}) => (
+  <div style={{position: 'absolute', left: 80, right: 80, top: ZAEHLER_TOP, display: 'flex', flexDirection: 'column', gap: 14}}>
+    <div style={{display: 'flex', alignItems: 'baseline', gap: 22}}>
+      <div style={{fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: 170, lineHeight: 1, letterSpacing: '-0.05em', fontVariantNumeric: 'tabular-nums', color: puls > 0.05 ? AKZENT : HELL, transform: `scale(${1 + puls * 0.06})`, transformOrigin: 'left bottom'}}>
+        {zahl(wert, stellen)}
+      </div>
+      <div style={{fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 84, color: AKZENT, letterSpacing: '-0.02em'}}>{einheit}</div>
     </div>
-    <div style={{fontFamily: 'JetBrains Mono, monospace', fontWeight: 500, fontSize: 24, letterSpacing: '0.06em', color: STAHL}}>{quelle}</div>
+    <div style={{fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 42, color: HELL, opacity: 0.9}}>{label}</div>
+    <div style={{fontFamily: 'JetBrains Mono, monospace', fontWeight: 500, fontSize: 28, letterSpacing: '0.06em', color: STAHL, opacity: 0.8}}>{quelle}</div>
   </div>
 );
 
-const Marke: React.FC = () => (
-  <div style={{position: 'absolute', left: 80, bottom: 150, display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 30, color: STAHL}}>
-    <svg width="34" height="34" viewBox="-20 -20 40 40">
-      <polygon points="0,-18 16,-9 0,0 -16,-9" fill="#9BF2D3" />
-      <polygon points="-16,-9 0,0 0,18 -16,9" fill="#47E0B0" />
-      <polygon points="16,-9 0,0 0,18 16,9" fill="#2FB98E" />
-    </svg>
-    denkwürfel
-  </div>
-);
+/** Kurzer Puls (0 → 1 → 0) über 8 Frames ab Frame `ab`. */
+const pulsBei = (f: number, ab: number) => (f >= ab && f < ab + 8 ? Math.sin(((f - ab) / 8) * Math.PI) : 0);
 
 /* ───────────── Weltkarte (TopoJSON → Ringe) ───────────── */
 
@@ -87,7 +92,7 @@ const projiziere = (lon: number, lat: number, lon0: number, lat0: number, R: num
   return [(x / n) * R, (-y / n) * R, false];
 };
 
-const Globus: React.FC<{R: number; lon0: number; lat0: number; children?: React.ReactNode}> = ({R, lon0, lat0, children}) => {
+const Globus: React.FC<{R: number; lon0: number; lat0: number; id: string; licht?: [number, number]; children?: React.ReactNode}> = ({R, lon0, lat0, id, licht = [-0.4, -0.45], children}) => {
   const pfade = useMemo(
     () =>
       ringe
@@ -112,24 +117,26 @@ const Globus: React.FC<{R: number; lon0: number; lat0: number; children?: React.
     }
     return linien.join(' ');
   }, [R, lon0, lat0]);
+  const lx = 50 + licht[0] * 50;
+  const ly = 50 + licht[1] * 50;
   return (
     <svg width={R * 2 + 40} height={R * 2 + 40} viewBox={`${-R - 20} ${-R - 20} ${R * 2 + 40} ${R * 2 + 40}`} style={{overflow: 'visible'}}>
       <defs>
-        <radialGradient id="meer" cx="35%" cy="30%" r="80%">
-          <stop offset="0" stopColor="#24406E" />
-          <stop offset="1" stopColor="#111C36" />
+        <radialGradient id={`meer-${id}`} cx={`${lx}%`} cy={`${ly}%`} r="85%">
+          <stop offset="0" stopColor="#2A4A80" />
+          <stop offset="1" stopColor="#0F1A33" />
         </radialGradient>
-        <radialGradient id="schatten" cx="30%" cy="25%" r="90%">
-          <stop offset="0.55" stopColor="#000" stopOpacity="0" />
-          <stop offset="1" stopColor="#000" stopOpacity="0.45" />
+        <radialGradient id={`schatten-${id}`} cx={`${lx}%`} cy={`${ly}%`} r="95%">
+          <stop offset="0.5" stopColor="#000" stopOpacity="0" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.6" />
         </radialGradient>
       </defs>
-      <circle r={R + 14} fill="none" stroke="#3D5A99" strokeOpacity="0.25" strokeWidth="14" />
-      <circle r={R} fill="url(#meer)" />
-      <path d={gitter} stroke="#6E8BC7" strokeOpacity="0.18" strokeWidth="1.5" fill="none" />
-      <path d={pfade} fill="#B9C3D6" fillRule="evenodd" stroke="#DCE3EE" strokeWidth="1.2" />
+      <circle r={R + R * 0.035} fill="none" stroke="#3D5A99" strokeOpacity="0.22" strokeWidth={R * 0.035} />
+      <circle r={R} fill={`url(#meer-${id})`} />
+      <path d={gitter} stroke="#6E8BC7" strokeOpacity="0.14" strokeWidth="1.5" fill="none" />
+      <path d={pfade} fill="#5B6B8C" fillRule="evenodd" stroke="#8FA0C2" strokeWidth="1" />
       {children}
-      <circle r={R} fill="url(#schatten)" />
+      <circle r={R} fill={`url(#schatten-${id})`} />
     </svg>
   );
 };
@@ -138,145 +145,154 @@ const Globus: React.FC<{R: number; lon0: number; lat0: number; children?: React.
 
 const Blitze: React.FC = () => {
   const f = useCurrentFrame();
-  const R = 380;
-  const lon0 = 10 + f * 0.18;
-  const lat0 = 18;
-  // ≈ 44 Blitze pro Sekunde → bei 30 fps ≈ 1,47 pro Frame
-  const blitze = useMemo(() => Array.from({length: 220}, (_, i) => ({t: i / 1.47 + 8, lon: -100 + random(`bl${i}`) * 220, lat: -35 + random(`bb${i}`) * 75})), []);
-  const sek = Math.max(0, (f - 8) / 30);
-  const rein = spring({frame: f, fps: 30, config: {damping: 16, stiffness: 90}});
+  const R = 340;
+  const lon0 = 10 + f * 0.22;
+  const lat0 = 14;
+  const skala = useAuftritt();
+  // ≈ 44 Blitze pro Sekunde → bei 30 fps ≈ 1,47 pro Frame; vor allem Tropen und Subtropen
+  const blitze = useMemo(() => Array.from({length: 210}, (_, i) => ({t: i / 1.47, lon: -100 + random(`bl${i}`) * 230, lat: -28 + random(`bb${i}`) * 58, gross: i % 5 === 0})), []);
+  const anzahl = Math.floor((f / 30) * 44);
+  const HUNDERT = Math.ceil((100 / 44) * 30);
   return (
     <AbsoluteFill>
       <Titel text={<>So oft <span style={{color: AKZENT}}>blitzt</span> es gerade auf der Erde</>} />
-      <div style={{position: 'absolute', left: 540 - R - 20, top: 520, transform: `scale(${0.85 + rein * 0.15})`, opacity: rein}}>
-        <Globus R={R} lon0={lon0} lat0={lat0}>
+      <div style={{position: 'absolute', left: 540 - R - 20, top: 470, transform: `scale(${skala})`}}>
+        <Globus R={R} lon0={lon0} lat0={lat0} id="blitz">
+          <defs>
+            <filter id="gluehen" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="8" />
+            </filter>
+          </defs>
           {blitze.map((b, i) => {
             const alter = f - b.t;
-            if (alter < 0 || alter > 14) return null;
+            if (alter < 0 || alter > 8) return null;
             const [x, y, sichtbar] = projiziere(b.lon, b.lat, lon0, lat0, R);
             if (!sichtbar) return null;
-            const glanz = alter < 3 ? 1 : interpolate(alter, [3, 14], [1, 0], clamp);
+            const glanz = alter < 2 ? 1 : interpolate(alter, [2, 8], [1, 0], clamp);
+            const r = b.gross ? 22 : 12;
             return (
               <g key={i} transform={`translate(${x} ${y})`} opacity={glanz}>
-                <circle r={6 + alter * 2.4} fill="none" stroke="#FFE07A" strokeWidth={3} opacity={0.6} />
-                <circle r={9} fill="#FFF6C8" />
-                <path d="M2,-22 L-8,2 H0 L-4,20 L10,-4 H2 Z" fill="#FFE07A" stroke={BG} strokeWidth={2} />
+                <circle r={r * 2.2} fill="#FFE07A" opacity={0.75} filter="url(#gluehen)" />
+                <circle r={r * 0.6} fill="#FFFFFF" />
+                {b.gross ? <path d="M3,-30 L-11,3 H0 L-5,28 L14,-6 H3 Z" fill="#FFF3B0" /> : null}
               </g>
             );
           })}
         </Globus>
       </div>
-      <Zaehler top={1350} label="Blitze, seit dieses Video läuft" wert={Math.floor(sek * 44)} einheit="Blitze" quelle="≈ 44 PRO SEKUNDE · NASA" />
-      <Sfx name="kWhoosh" at={0} volume={0.4} />
-      {Array.from({length: 4}, (_, i) => (
-        <Sfx key={i} name="kTick" at={38 + i * 30} volume={0.25} />
-      ))}
+      <Zaehler wert={anzahl} einheit="Blitze" label="seit dieses Video läuft" quelle="QUELLE: NASA · ≈ 44 PRO SEKUNDE" puls={pulsBei(f, HUNDERT)} />
+      <Sfx name="kWhoosh" at={0} volume={0.35} />
+      <Sfx name="kDing" at={HUNDERT} volume={0.5} />
     </AbsoluteFill>
   );
 };
 
 /* ───────────── Szene 2: Jeans ───────────── */
 
-const JEANS = 'M150,40 H410 L432,120 L470,560 H330 L284,210 L240,560 H100 L128,120 Z';
+const JEANS = 'M150,40 H410 L434,120 L476,560 H326 L292,252 Q284,228 276,252 L242,560 H92 L126,120 Z';
 
 const Jeans: React.FC = () => {
   const f = useCurrentFrame();
-  const fuell = interpolate(f, [16, 104], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
-  const liter = 7500 * fuell;
-  const welle = (x: number) => Math.sin(x / 40 + f / 6) * 10;
-  const pegel = 560 - fuell * 540;
-  const wasser = `M80,${pegel + welle(80)} ` + Array.from({length: 14}, (_, i) => `L${80 + i * 32},${pegel + welle(80 + i * 32)}`).join(' ') + ' L500,600 L80,600 Z';
-  const rein = spring({frame: f, fps: 30, config: {damping: 15, stiffness: 100}});
+  const skala = useAuftritt();
+  const fuell = interpolate(f, [12, 100], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const pegel = 560 - fuell * 470;
+  const welle = (x: number) => Math.sin(x / 38 + f / 6) * 9;
+  const punkte = Array.from({length: 15}, (_, i) => [70 + i * 32, pegel + welle(70 + i * 32)] as const);
+  const wasser = `M${punkte.map(([x, y]) => `${x},${y}`).join(' L')} L520,600 L70,600 Z`;
+  const kante = `M${punkte.map(([x, y]) => `${x},${y}`).join(' L')}`;
+  const ende = pulsBei(f, 100);
   return (
     <AbsoluteFill>
       <Titel text={<>So viel <span style={{color: AKZENT}}>Wasser</span> steckt in einer Jeans</>} />
-      <div style={{position: 'absolute', left: 260, top: 560, transform: `translateY(${(1 - rein) * 60}px)`, opacity: rein}}>
-        <svg width="560" height="640" viewBox="40 0 480 620">
+      <div style={{position: 'absolute', left: 245, top: 440, transform: `scale(${skala * (1 + ende * 0.03)})`}}>
+        <svg width="590" height="730" viewBox="60 20 460 570">
           <defs>
             <clipPath id="hose">
               <path d={JEANS} />
             </clipPath>
             <linearGradient id="denim" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#3A5A8C" />
-              <stop offset="1" stopColor="#24395E" />
+              <stop offset="0" stopColor="#3D5E92" />
+              <stop offset="1" stopColor="#233A60" />
             </linearGradient>
           </defs>
-          <ellipse cx="285" cy="590" rx="210" ry="14" fill="#000" opacity="0.35" />
           <path d={JEANS} fill="url(#denim)" />
           <g clipPath="url(#hose)">
-            <path d={wasser} fill="#4FB4F0" opacity="0.88" />
-            {Array.from({length: 10}, (_, i) => {
-              const y = ((f * 3 + i * 57) % 520) + 40;
-              return y > pegel ? <circle key={i} cx={130 + ((i * 71) % 300)} cy={600 - (y - 40)} r={4 + (i % 3)} fill="#CFEFFF" opacity={0.6} /> : null;
+            <rect x="60" y={pegel} width="480" height={600 - pegel} fill="#0B1830" opacity={0.25} />
+            <path d={wasser} fill="#57BDF5" opacity={0.55} />
+            <path d={kante} fill="none" stroke="#CFEFFF" strokeWidth="3" />
+            {Array.from({length: 12}, (_, i) => {
+              const y = 560 - ((f * 2.5 + i * 47) % 460);
+              return y > pegel + 14 ? <circle key={i} cx={120 + ((i * 67) % 330)} cy={y} r={5 + (i % 3) * 2} fill="none" stroke="#CFEFFF" strokeWidth="2" opacity={0.7} /> : null;
             })}
+            <rect x="60" y="538" width="480" height="22" fill="#4C6FA6" />
           </g>
           <path d={JEANS} fill="none" stroke={HELL} strokeWidth="5" strokeLinejoin="round" />
-          <path d="M150,40 H410 L414,62 H146 Z" fill="#1B2C49" stroke={HELL} strokeWidth="4" />
-          <path d="M284,62 V200 M180,80 Q200,130 250,124 M388,80 Q368,130 318,124" stroke="#C9A35A" strokeWidth="4" fill="none" strokeDasharray="10 8" />
-          <circle cx="284" cy="52" r="7" fill="#C9A35A" />
+          <path d="M150,40 H410 L414,64 H146 Z" fill="#1E3150" stroke={HELL} strokeWidth="4" strokeLinejoin="round" />
+          {[178, 236, 332, 390].map((x) => (
+            <rect key={x} x={x - 6} y={34} width="12" height="36" rx="3" fill="#2B4470" stroke={HELL} strokeWidth="3" />
+          ))}
+          <circle cx="284" cy="52" r="8" fill="#C9A35A" stroke={HELL} strokeWidth="2" />
+          <path d="M284,64 V178 Q284,196 268,204" stroke="#C9A35A" strokeWidth="3" fill="none" strokeDasharray="9 7" />
+          <path d="M172,82 Q188,132 242,128 M396,82 Q380,132 326,128" stroke="#C9A35A" strokeWidth="3" fill="none" strokeDasharray="9 7" />
         </svg>
       </div>
-      <Zaehler top={1300} label="für den Anbau der Baumwolle u. a." wert={liter} einheit="Liter" quelle="≈ 7.500 LITER PRO JEANS · UNEP" />
-      <Sfx name="kSwish" at={0} volume={0.45} />
-      <Sfx name="kAnstieg" at={16} volume={0.35} />
-      <Sfx name="kDing" at={104} volume={0.5} />
+      <Zaehler wert={7500 * fuell} einheit="Liter" label="vor allem für den Baumwoll-Anbau" quelle="QUELLE: UNEP 2019" puls={ende} />
+      <Sfx name="kSwish" at={0} volume={0.4} />
+      <Sfx name="kAnstieg" at={12} volume={0.3} />
+      <Sfx name="kDing" at={100} volume={0.5} />
     </AbsoluteFill>
   );
 };
 
 /* ───────────── Szene 3: Erdbahn ───────────── */
 
+const BAHN = {cx: 540, cy: 820, rx: 440, ry: 150};
+
 const Erdbahn: React.FC = () => {
   const f = useCurrentFrame();
   const sek = f / 30;
-  const winkel = -100 + f * 0.35;
-  const cx = 300;
-  const cy = 1000;
-  const r = 560;
-  const ex = cx + Math.cos(winkel * RAD) * r;
-  const ey = cy + Math.sin(winkel * RAD) * r * 0.62;
-  const spur = Array.from({length: 40}, (_, i) => {
-    const w = (winkel - i * 0.9) * RAD;
-    return `${cx + Math.cos(w) * r},${cy + Math.sin(w) * r * 0.62}`;
-  });
+  const start = 168;
+  const winkel = start - f * 1.1; // läuft vorne (unten) von links nach rechts vorbei
+  const pos = (w: number) => [BAHN.cx + Math.cos(w * RAD) * BAHN.rx, BAHN.cy + Math.sin(w * RAD) * BAHN.ry] as const;
+  const [ex, ey] = pos(winkel);
+  const tiefe = Math.sin(winkel * RAD); // 1 = ganz vorne
+  const erdR = 58 * (1 + tiefe * 0.25);
+  const spur = Array.from({length: Math.max(2, Math.floor(f / 2) + 1)}, (_, i) => pos(start - Math.min(i * 2.2, f * 1.1)));
+  const HUNDERT = Math.ceil((100 / 29.8) * 30);
+  const licht: [number, number] = [(BAHN.cx - ex) / 600, (BAHN.cy - ey) / 600];
   return (
     <AbsoluteFill>
-      <Titel text={<>So weit ist die Erde <span style={{color: AKZENT}}>geflogen</span>, seit du das hier schaust</>} />
+      <Titel text={<>So weit ist die Erde gerade <span style={{color: AKZENT}}>geflogen</span></>} />
       <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
         <defs>
-          <radialGradient id="sonne">
-            <stop offset="0" stopColor="#FFF3C4" />
-            <stop offset="0.35" stopColor="#FFC24A" />
+          <radialGradient id="sonne-glow">
+            <stop offset="0" stopColor="#FFD27A" stopOpacity="0.55" />
             <stop offset="1" stopColor="#FF6B4A" stopOpacity="0" />
           </radialGradient>
+          <radialGradient id="sonne-kern" cx="42%" cy="40%">
+            <stop offset="0" stopColor="#FFF6D6" />
+            <stop offset="0.45" stopColor="#FFCB55" />
+            <stop offset="1" stopColor="#F59A3A" />
+          </radialGradient>
         </defs>
-        <ellipse cx={cx} cy={cy} rx={r} ry={r * 0.62} fill="none" stroke={STAHL} strokeOpacity="0.35" strokeWidth="3" strokeDasharray="6 14" />
-        <circle cx={cx} cy={cy} r={260} fill="url(#sonne)" opacity={0.55 + Math.sin(f / 8) * 0.05} />
-        <circle cx={cx} cy={cy} r={120} fill="#FFC24A" />
-        <circle cx={cx} cy={cy} r={120} fill="none" stroke="#FFE59A" strokeWidth="6" />
-        <polyline points={spur.join(' ')} fill="none" stroke={AKZENT} strokeWidth="8" strokeLinecap="round" opacity="0.9" />
-        <circle cx={ex} cy={ey} r={46} fill="#2E6CC9" />
-        <path d={`M${ex - 30},${ey - 14} q16,-18 30,-6 q10,10 24,2 q-6,24 -26,22 q-18,-2 -28,-18 Z`} fill="#6CC46E" />
-        <circle cx={ex} cy={ey} r={46} fill="none" stroke={HELL} strokeWidth="4" />
+        <ellipse cx={BAHN.cx} cy={BAHN.cy} rx={BAHN.rx} ry={BAHN.ry} fill="none" stroke={STAHL} strokeOpacity="0.35" strokeWidth="3" strokeDasharray="6 14" />
+        <circle cx={BAHN.cx} cy={BAHN.cy} r={250} fill="url(#sonne-glow)" opacity={0.9 + Math.sin(f / 9) * 0.06} />
+        <circle cx={BAHN.cx} cy={BAHN.cy} r={110} fill="url(#sonne-kern)" />
+        <polyline points={spur.map(([x, y]) => `${x},${y}`).join(' ')} fill="none" stroke={AKZENT} strokeWidth="7" strokeLinecap="round" />
       </svg>
-      <Zaehler top={1360} label="Strecke seit Videostart" wert={sek * 29.8} stellen={0} einheit="km" quelle="29,8 KM PRO SEKUNDE · NASA" />
-      <Sfx name="kWhoosh" at={0} volume={0.45} />
-      {Array.from({length: 4}, (_, i) => (
-        <Sfx key={i} name="kTick" at={30 + i * 30} volume={0.25} />
-      ))}
+      <div style={{position: 'absolute', left: ex - erdR - 20, top: ey - erdR - 20, transform: `scale(${useAuftritt()})`}}>
+        <Globus R={erdR} lon0={f * 1.5} lat0={20} id="erde" licht={licht} />
+      </div>
+      <Zaehler wert={sek * 29.8} einheit="km" label="seit dieses Video läuft" quelle="QUELLE: NASA · 29,8 KM PRO SEKUNDE" puls={pulsBei(f, HUNDERT)} />
+      <Sfx name="kWhoosh" at={0} volume={0.4} />
+      <Sfx name="kDing" at={HUNDERT} volume={0.5} />
     </AbsoluteFill>
   );
 };
 
-const Fortschritt: React.FC = () => {
-  const f = useCurrentFrame();
-  const {durationInFrames} = useVideoConfig();
-  return <div style={{position: 'absolute', left: 0, bottom: 0, height: 8, width: `${(f / durationInFrames) * 100}%`, background: AKZENT}} />;
-};
-
 const Szenen: React.FC = () => (
   <AbsoluteFill style={{background: BG, overflow: 'hidden'}}>
-    <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 52%, rgba(90,130,220,0.10), transparent 70%)'}} />
+    <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 45%, rgba(90,130,220,0.10), transparent 70%)'}} />
     <Sequence durationInFrames={SZENE}>
       <Blitze />
     </Sequence>
@@ -286,8 +302,6 @@ const Szenen: React.FC = () => (
     <Sequence from={SZENE * 2} durationInFrames={SZENE}>
       <Erdbahn />
     </Sequence>
-    <Marke />
-    <Fortschritt />
   </AbsoluteFill>
 );
 
