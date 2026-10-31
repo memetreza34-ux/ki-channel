@@ -30,6 +30,7 @@ import {thumbnail as kiStromThumb} from './ki-strom/Thumbnail';
 import {shorts} from './shorts/Short';
 import {daten} from './wissen/Daten';
 import {szenen} from './wissen/Szenen';
+import {faecher} from './wissen/Faecher';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -69,5 +70,6 @@ export const PROJEKTE: Project[] = [
   ...shorts,
   ...daten,
   ...szenen,
+  ...faecher,
   // neu:eintrag
 ];
