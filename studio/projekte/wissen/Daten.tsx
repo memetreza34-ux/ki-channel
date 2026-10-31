@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, random, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Project} from '../types';
+import {AKZENT, BG, HELL, STAHL, clamp, outQuint, zahl} from './bausteine';
 
 /**
  * Test „Daten-Short“: ein fester Titel, in der Mitte immer genau ein Objekt oder eine Zahl.
@@ -9,14 +10,7 @@ import type {Project} from '../types';
  * 2,5 Mrd. Anfragen pro Tag (OpenAI ggü. Axios, Juli 2025) → ≈ 850 MWh/Tag ≈ 7,4 Mio. Liter Teewasser.
  */
 
-const BG = '#0E1424';
-const HELL = '#F3EFE7';
-const AKZENT = '#FF6B4A';
-const STAHL = '#8A93A8';
-const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
-const outQuint = Easing.bezier(0.22, 1, 0.36, 1);
 
-const zahl = (n: number, stellen = 0) => n.toLocaleString('de-DE', {minimumFractionDigits: stellen, maximumFractionDigits: stellen});
 
 const Rollen: React.FC<{von: number; bis: number; ab: number; dauer?: number; stellen?: number; einheit?: string; groesse: number; farbe?: string}> = ({von, bis, ab, dauer = 26, stellen = 0, einheit, groesse, farbe = HELL}) => {
   const f = useCurrentFrame();
