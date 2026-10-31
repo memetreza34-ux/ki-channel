@@ -2,7 +2,7 @@
 /**
  * Legt ein neues Video-Projekt aus der Vorlage an und registriert es.
  *
- *   npm run neu -- warum-ki-luegt                 Erklärvideo im Hochformat (Reels/Shorts/TikTok)
+ *   npm run neu -- zellen-im-koerper               Erklärvideo im Hochformat (Reels/Shorts/TikTok)
  *   npm run neu -- ki-agenten-erklaert landscape  Erklärvideo für YouTube 16:9
  *   npm run neu -- kanal-werbung --vorlage=werbung   Werbeclip in 9:16, 1:1 und 4:5
  *   Formate: vertical | landscape | square | portrait
@@ -22,7 +22,7 @@ if (!(vorlage in VORLAGEN)) {
 const [slug, format = 'vertical'] = rest;
 
 if (!slug || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
-  console.error('Bitte Namen in Kleinbuchstaben mit Bindestrichen angeben, z. B.: npm run neu -- warum-ki-luegt');
+  console.error('Bitte Namen in Kleinbuchstaben mit Bindestrichen angeben, z. B.: npm run neu -- zellen-im-koerper');
   process.exit(1);
 }
 if (!FORMATS.includes(format)) {

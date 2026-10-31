@@ -1,7 +1,8 @@
 # Studio — Arbeitsvertrag
 
-Hier entstehen alle neuen Videos: Erklärvideos, Reels/Shorts/TikToks, YouTube-Videos, Werbung.
-`ki/` ist der Altbestand (bisherige Reels + Prüfsystem) und wird nur angefasst, wenn Arman es ausdrücklich sagt.
+Hier entstehen alle Videos des Kanals **Denkwürfel**: ein Erklärkanal für Allgemeinwissen in Zahlen (Biologie, Geschichte, Politik, Geographie, Ideologien …) als 9:16-Shorts.
+
+**Standard für jedes neue Video: Skill `wissens-short`** – Look, Bewegungssprache, Sicherheitszonen, Sounds, Musik und Checkliste stehen dort. Baukasten und Beispiele: `projekte/wissen/` (`bausteine.tsx`, `Szenen.tsx`, `Faecher.tsx`, `Daten.tsx`). Bilder/MP4: `npm run wissen -- <ID> [--bilder=0,60]` (braucht kein System-ffmpeg).
 
 Mit Arman auf Deutsch, kurz und klar.
 
@@ -14,11 +15,11 @@ Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in ei
 
 ## Drei Phasen (jedes Kanal-Video)
 
-Armans Ordner (wie bei FinanzNeo): `kanal/youtube/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `export/` (siehe `kanal/README.md`).
+Armans Ordner: `kanal/shorts/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `export/` (siehe `kanal/README.md`).
 
 1. **Phase 1 – Skript (Claude, ohne Freigabe-Stopps):** Thema, Recherche, `studio/projekte/<thema>/skript.md` (Fakten + Quelle + Datum, Szenenplan), Kanal-Ordner anlegen, `audio/script.txt` (nur Sprechtext, Absätze mit Leerzeile, 1:1 kopierbar) + `audio/LIES-MICH.txt`. **Keine Animation, kein Render.** Dann auf Armans Audio warten.
 2. **Phase 2 – Audio (Arman):** Aufnahme in `audio/` (eine Datei oder `1.m4a … n.m4a`).
-3. **Phase 3 – Video (Claude):** Audio säubern → Wortzeiten → Absatzgrenzen → Szenen direkt auf die echte Stimme bauen, Sounds (keine Musik), ansehen, Render, -14 LUFS. `export/` füllen: `video.mp4`, `cover.png` (1280×720), `caption.txt` (Titel, Beschreibung, Kapitel mit Zeiten, Quellen, 5 Hashtags), `untertitel-zeitstempel.txt` (`00:00 Satz` je Zeile, wie FinanzNeo).
+3. **Phase 3 – Video (Claude):** Audio säubern → Wortzeiten → Absatzgrenzen → Szenen direkt auf die echte Stimme bauen, Sounds + leise Musik (`musik-wissen.py`), ansehen, Render, -14 LUFS. `export/` füllen: `video.mp4`, `cover.png` (1280×720), `caption.txt` (Titel, Beschreibung, Kapitel mit Zeiten, Quellen, 5 Hashtags), `untertitel-zeitstempel.txt` (`00:00 Satz` je Zeile, wie FinanzNeo).
 
 ## Ablauf (eigenes Projekt)
 
@@ -43,7 +44,7 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 - **Kontinuität vor Effekt:** dasselbe Objekt über Szenen weiterführen (z. B. Kamera zoomt ins Handy → nächste Szene startet im Zoom). Sonst harter Schnitt.
 - **Text-Rollen:** Überschrift (3–7 Wörter) ordnet ein · Untertitel = gesprochener Text · Labels kurz · nie denselben Satz zweimal im Bild.
 - **Ton:** Soundeffekte leise (0,3–0,5) und nur an echten Ereignissen (Klick, Ankunft, Ergebnis).
-- **Look:** Markenstandard ist das Design `editorial` (hell, dunkle Schrift, Lila). Andere Designs, wenn Arman sie will oder das Format es verlangt (z. B. `pop` für laute Werbung). Faceless.
+- **Look:** Kanal-Look ist der Denkwürfel-Daten-Look aus `projekte/wissen/bausteine.tsx` (dunkles Blau, Korallrot). Die `ThemeProvider`-Designs unten gelten nur für Werbung/Spots. Faceless.
 
 ## Designs
 
@@ -108,7 +109,7 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 - **3D** braucht GPU-Rendering: alle Skripte und `npm run studio` nutzen `--gl=angle`. Bei eigenen Render-Befehlen daran denken.
 - **Weitere Remotion-Pakete** sind installiert: `@remotion/transitions`, `paths`, `shapes`, `noise`, `layout-utils` (Text einpassen), `motion-blur`, `three`, `lottie`, `captions`.
 - **Neuer Baustein:** erst im Projekt bauen. Wird er ein zweites Mal gebraucht → ins Kit verschieben und im `Kit-Katalog` zeigen (`npm run look -- Kit-Katalog`).
-- Referenzen (so soll es mindestens aussehen): `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `Effekte-Katalog-1/-2`, `Medien-Katalog`, `So-Antwortet-KI` (Erklärvideo), `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
+- Referenzen (so soll es mindestens aussehen): `Faecher-Beispiele`, `Szenen-Beispiele`, `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `Effekte-Katalog-1/-2`, `Medien-Katalog`, `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
 
 ## Werbeclips
 
@@ -135,47 +136,8 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 
 ## Stimme & Musik
 
-- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json`, erzeugt Musik in neuer Länge und Wortzeiten. Videos, die auf Piper-Zeiten gebaut sind (`absaetze-piper.json`), rechnen alle Zeiten absatzweise auf die Aufnahme um (siehe `echt()`/`piperZeit()` in `wie-denkt-ki/Video.tsx`). Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
+- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json`, erzeugt Musik in neuer Länge und Wortzeiten. Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
 - **Keine eigene Stimme:** Die Stimme spricht immer Arman (Entscheidung 2026-10-10). Kein Piper/TTS im Video, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
-- **Musik: standardmäßig KEINE** (Arman, 2026-10-10: „am besten gar nicht“). Nur auf ausdrücklichen Wunsch, dann sehr leise. Werkzeug: `python3 studio/scripts/musik-kanal.py <ziel.wav> <länge_s> <abschnitte.json>` – eigener Groove (92 BPM), Abschnitte `groove`, `dunkel`, `outro` aus den Absatzzeiten setzen.
-- **Sounds/Toki-Stimme/Sound-Logo:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES`.
+- **Musik: leise eigene Musik** (Arman, 2026-10-31): `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav`, im Video `<Music src="musik/wissen.wav" volume={0.22} captions={…} duckTo={0.35} />`.
+- **Kanal-Sounds:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES` (Zuordnung siehe Skill `wissens-short`).
 - ElevenLabs-MCP ist derzeit falsch eingerichtet (und Gratis-Konto ohne Bibliotheksstimmen) – nicht darauf verlassen.
-
-## Kanal-Look (Standard für neue Videos)
-
-`projekte/kanal-look/stil.tsx`: `KANAL`, `SERIEN` (News Blau, Tool-Test Lila, Erklärt Gelb, Recht Grün), `Toki` (Arme, Gesichter, Atmen, Blinzeln), `Shape`, `Hintergrund`. Bausteine `Karte`, `Stempel`, `Sprechblase` aus `kanal-look/Serien.tsx`. Vorbild für ein ganzes Video: `projekte/wie-denkt-ki/Video.tsx` (eine durchgehende Welt, Kamera fährt von Station zu Station, alle Zeiten in Sekunden aus `absaetze.json`).
-
-Gelernt beim ersten Video:
-- Toki-Laute nur in Sprechpausen zwischen Absätzen setzen, sonst kollidieren sie mit der Stimme.
-- `Karte` mit eigenem `style.opacity`: wird mit der Einblendung multipliziert (früher überschrieben → Karte war vor ihrem Auftritt sichtbar).
-- Kamerafahrten immer auch **mitten in der Fahrt** ansehen (`look --frames=…`), nicht nur an den Stationen.
-- Breite Inhalte (Token-Sätze, Satz mit Slots) vorher durchrechnen: lieber feste Breiten pro Chip, dann stimmen Flugziele und Ränder.
-- Ende: Lautheit des fertigen MP4 auf -14 LUFS (YouTube) bringen, Untertitel als `.srt` aus Skript + `absaetze.json` erzeugen.
-
-Gelernt beim zweiten Video („Warum KI lügt“, Armans Feedback: Anfang zu wenig Motion):
-- **Die ersten 30 Sekunden sind die wichtigsten:** alle 2–3 s eine sichtbare Bewegung (Objekt fliegt rein, Kamera zoomt, Stempel knallt mit Wackeln), nicht nur Karten mit Text. Lieber eine kleine Szene (Gerichtssaal mit Richtertisch, Akte landet) als ein Dokument-Fenster.
-- **Toki ab Sekunde 0:** nicht erst nach 40 s auftreten lassen. Toki spielt im Hook mit (trägt die Akte, erschrickt beim Stempel).
-- **Kein festes Muster pro Station:** nicht immer Überschrift + weiße Karte + Toki rechts. Abwechseln mit Vollbild-Momenten, großer Schrift, Zoom auf ein Detail, geteiltem Bild.
-- **Kamera auch innerhalb einer Station:** auf das Element zoomen, über das gerade gesprochen wird (`CameraRig`), nicht nur seitlich zwischen Stationen fahren.
-- **Keine leeren Karten:** Karte erscheint erst mit ihrem Inhalt, nicht Sekunden vorher leer.
-- **Weniger Text, mehr Bild:** gesprochene Sätze nicht als Text wiederholen; Icons, Objekte, Zahlen statt Sätze.
-- **Toki handelt:** zeigt, trägt, schiebt, reagiert – nicht nur daneben stehen und gucken.
-- **Prüfen:** die ersten 30 s Sekunde für Sekunde ansehen (`look --range=0-900 --count=30`), dazu den Agenten `video-kritiker` vor der Abgabe.
-- **Aufnahme:** Arman nimmt in 24 kHz auf → in der Aufnahme-App „Hohe Qualität/Verlustfrei“ einstellen.
-- **Gleiches Design, aber zum Thema passend (Arman):** Kanal-Look bleibt (hell, Inter, Toki, Serienfarbe; Karten nur für echte UI/Dokumente – siehe Premium-Stil). Innerhalb davon jedes Video individuell gestalten: eigene Themen-Welt und Requisiten (z. B. Gericht → Richtertisch, Akten, Hammer; Weltall → Sterne, Teleskop), passende Hintergrundformen, Toki mit Themen-Accessoire (Richterhut, Lupe, Helm), eigene Übergänge, die zum Thema passen. Nie ein Fremd-Design – immer Kanal-Look + Thema.
-
-## Premium-Stil (Standard für neue Videos, Arman 2026-10-18)
-
-Gegen den „AI-Slop“-Eindruck (Baukasten aus Karten, Pillen, Icon-Kacheln, vielen Farben, Ploppen). Premium heißt **weniger, dafür gezielter** – nicht mehr Effekte. Kanal-Look und Toki bleiben. Vorbild: `projekte/gpt6-intelligent-ui/PremiumProbe.tsx` (Composition `Gpt6IntelligentUi-Premium-Probe`).
-
-- **Ein Blickfang pro Moment.** Inhalte stehen frei im Raum (große Zahl, ein Objekt, eine Aussage) statt in weißen Karten/Fenstern. Karte/Fenster nur, wenn es wirklich eine Oberfläche, ein Dokument oder eine Nachricht ist.
-- **Eine Akzentfarbe:** Serienfarbe + Tinte/Grau. Koralle nur für Toki. Rot/Grün nur für falsch/richtig. Keine Regenbogen-Kacheln.
-- **Schrift:** große Zahlen/Aussagen (Zahlen ≥ 160 px) mit Gewichtskontrast (z. B. Zahl 800, „€“ 300), `tabular-nums`. Labels als Kapitälchen (24 px, `letterSpacing: 0.16em`, Grau) statt Pillen mit Icons.
-- **Bewegung erklärt, statt zu ploppen:** Zahlen rollen wie ein Zählwerk (leichte Bewegungsunschärfe bei schnellen Wechseln), Linien und Durchstreichungen werden gezeichnet, Objekte verwandeln sich, Gruppen laufen als Welle. Federn (`bouncy`) nur für Toki.
-- **Kamera lebt:** immer ein leichtes Schweben (Drift), dazu gezielte Push-ins auf das, worüber gerade gesprochen wird. Übergänge mit Kontinuität statt immer derselben Seitwärtsfahrt.
-- **Atmosphäre:** weiches Licht (große radiale Verläufe) statt harter Kreise, feines Filmkorn (~7 %), leichte Vignette, ruhiger Boden ohne Kieselsteine.
-- **Icons sparsam,** lieber eigene Objekte (wie Fabrik, Stromkreis) als Icon-in-Kachel.
-- **Wenige Sounds,** nur bei echten Ereignissen (Ergebnis, Klick, Ankunft) – nicht bei jedem Element.
-- **Skript ohne KI-Floskeln:** direkt, so wie Arman spricht; keine Mehrfach-Absicherungen („Der Trick ist …“, viermal „nur Illustration“). Der Illustrations-Hinweis steht einmal klein im Bild und einmal gesprochen.
-- **Weiter gültig:** Frame 0 zeigt schon etwas, alle 2–3 s sichtbare Veränderung in den ersten 30 s, Toki ab Sekunde 0 und Toki bedient die Oberflächen.
-

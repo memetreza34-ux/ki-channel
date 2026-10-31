@@ -22,7 +22,7 @@ const WHISPER_DIR = resolve(ROOT, 'whisper.cpp');
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const slug = rest[0];
 if (!slug) {
-  console.error('Bitte Projekt angeben, z. B.: npm run untertitel -- so-antwortet-ki');
+  console.error('Bitte Projekt angeben, z. B.: npm run untertitel -- zellen-im-koerper');
   process.exit(1);
 }
 

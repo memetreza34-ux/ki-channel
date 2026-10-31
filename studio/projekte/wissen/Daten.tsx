@@ -5,7 +5,7 @@ import {AKZENT, BG, HELL, STAHL, clamp, outQuint, zahl} from './bausteine';
 
 /**
  * Test „Daten-Short“: ein fester Titel, in der Mitte immer genau ein Objekt oder eine Zahl.
- * Zahlen aus projekte/ki-strom/skript.md (geprüft 2026-10-23):
+ * Zahlen (geprüft 2026-10-23, Quellen: Altman „The Gentle Singularity“, Stiftung Warentest, OpenAI ggü. Axios):
  * 0,34 Wh pro Anfrage (Altman, Juni 2025) · 1 Liter Teewasser = 115 Wh (Stiftung Warentest) ≈ 340 Fragen ·
  * 2,5 Mrd. Anfragen pro Tag (OpenAI ggü. Axios, Juli 2025) → ≈ 850 MWh/Tag ≈ 7,4 Mio. Liter Teewasser.
  */
