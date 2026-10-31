@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, interpolate, random, Sequence, useCurrentFrame} from 'remotion';
+import {Music} from '../../kit/Music';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, Globus, HELL, RAD, STAHL, Titel, Zaehler, clamp, projiziere, pulsBei, useAuftritt} from './bausteine';
@@ -167,6 +168,7 @@ const Erdbahn: React.FC = () => {
 const Szenen: React.FC = () => (
   <AbsoluteFill style={{background: BG, overflow: 'hidden'}}>
     <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 45%, rgba(90,130,220,0.10), transparent 70%)'}} />
+    <Music src="musik/wissen.wav" volume={0.22} fadeInFrames={10} fadeOutFrames={30} />
     <Sequence durationInFrames={SZENE}>
       <Blitze />
     </Sequence>
