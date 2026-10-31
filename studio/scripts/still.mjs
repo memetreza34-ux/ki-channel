@@ -3,6 +3,7 @@
  * Einzelbild als PNG – für Thumbnails, Cover-Bilder, Vorschau.
  *
  *   npm run still -- So-Antwortet-KI --frame=90
+ *   npm run still -- Kanal-Banner --scale=1.3334   (z. B. 1920×1080 → 2560×1440)
  *
  * Ergebnis: studio/out/<ID>/still-<frame>.png in voller Auflösung.
  */
@@ -24,5 +25,6 @@ const composition = await selectComposition({serveUrl, id, inputProps, chromiumO
 const dir = resolve(OUT, id);
 mkdirSync(dir, {recursive: true});
 const output = resolve(dir, `still-${frame}.png`);
-await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output, imageFormat: 'png'});
+const scale = Number(flags.scale ?? 1);
+await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output, imageFormat: 'png', scale});
 console.log(`Bild: ${output}`);

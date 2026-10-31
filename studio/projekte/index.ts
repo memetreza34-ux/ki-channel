@@ -22,6 +22,7 @@ import {projekt as newsProbe} from './news-probe/Video';
 import {projekt as dokuProbe} from './doku-probe/Video';
 import {projekt as warumKiLuegt} from './warum-ki-luegt/Video';
 import {thumbnail as warumKiLuegtThumb} from './warum-ki-luegt/Thumbnail';
+import {kanalbilder} from './kanal-look/Kanalbild';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -53,5 +54,6 @@ export const PROJEKTE: Project[] = [
   dokuProbe,
   warumKiLuegt,
   warumKiLuegtThumb,
+  ...kanalbilder,
   // neu:eintrag
 ];
