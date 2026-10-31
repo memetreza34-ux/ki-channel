@@ -36,7 +36,9 @@ Alles Wichtige zwischen **y 200 und y 1480**. Darunter verdecken TikTok/Instagra
 
 ## Sounds (eigene Kanal-Sounds, `Sfx` aus `kit/Stage`)
 
-`kWhoosh`/`kSwish` Szenenwechsel · `kAnstieg` Füllen/Wachsen · `kDing` Pointe · `kPop` Objekt erscheint · `kTick` nur an echten Ereignissen. Leise (0,3–0,5). Musik: Stand 2026-10-31 noch offen – ohne Armans Ja keine Musik.
+`kWhoosh`/`kSwish` Szenenwechsel · `kAnstieg` Füllen/Wachsen · `kDing` Pointe · `kPop` Objekt erscheint · `kTick` nur an echten Ereignissen. Leise (0,3–0,5).
+
+**Musik (Armans Ja vom 2026-10-31):** eigene Synthese `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav` (40 s, loopbar). Einbinden mit `<Music src="musik/wissen.wav" volume={0.22} captions={wortzeiten} duckTo={0.35} />` – immer leise, unter der Stimme abgesenkt.
 
 ## Checkliste vor dem Abgeben (an Bildern prüfen)
 
