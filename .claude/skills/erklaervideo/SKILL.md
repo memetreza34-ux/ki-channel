@@ -7,6 +7,8 @@ description: Produziert ein Video im Studio dieses Repos – Erklärvideo, Reel/
 
 Zuerst `studio/CLAUDE.md` lesen – dort stehen Ablauf, Gestaltungsregeln und alle Bausteine.
 
+**Shorts für den Kanal (Allgemeinwissen in Zahlen, seit 2026-10-31): Skill `wissens-short` nehmen, nicht diesen.**
+
 ## Kanal-Videos (YouTube): immer in drei Phasen
 
 1. **Phase 1 – nur Skript, keine Animation:** Thema, Recherche (Fakten mit Quelle + Datum), `studio/projekte/<thema>/skript.md` mit Szenenplan und **Themen-Welt** (Kanal-Look + passende Requisiten, Toki-Accessoire). Ordner `kanal/youtube/<Mo>_bis_<So>/<thema>/` anlegen, `audio/script.txt` (nur Sprechtext, 1:1 kopierbar) + `audio/LIES-MICH.txt`. Dann aufhören und auf Armans Audio warten.
