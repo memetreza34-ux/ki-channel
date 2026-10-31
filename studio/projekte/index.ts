@@ -10,6 +10,7 @@ import {projekt as werbungDemo} from './werbung-demo/Video';
 import {daten} from './wissen/Daten';
 import {szenen} from './wissen/Szenen';
 import {faecher} from './wissen/Faecher';
+import {werkzeuge} from './wissen/WerkzeugBeispiele';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -29,5 +30,6 @@ export const PROJEKTE: Project[] = [
   ...daten,
   ...szenen,
   ...faecher,
+  ...werkzeuge,
   // neu:eintrag
 ];

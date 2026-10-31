@@ -46,6 +46,19 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 - **Ton:** Soundeffekte leise (0,3–0,5) und nur an echten Ereignissen (Klick, Ankunft, Ergebnis).
 - **Look:** Kanal-Look ist der Denkwürfel-Daten-Look aus `projekte/wissen/bausteine.tsx` (dunkles Blau, Korallrot). Die `ThemeProvider`-Designs unten gelten nur für Werbung/Spots. Faceless.
 
+## Werkzeuge für jedes Thema (`projekte/wissen/erklaer-werkzeuge.tsx`)
+
+Im Denkwürfel-Look, Beispiele in Composition `Werkzeug-Beispiele`:
+
+| Baustein | Wofür |
+|---|---|
+| `Formel` | LaTeX-Formel (KaTeX), deckt sich von links auf; `\akzent{…}` färbt und pulsiert (`pulsAb`); `schritte` formt um (Gleichung lösen) |
+| `Karte` | echte Ländergrenzen (Natural Earth, gemeinfrei): Kamerafahrt `von` → `nach` (Zoom 1 = Welt), Länder färben sich (`laender`, englische Namen, Liste: `landNamen()`), Punkte mit Label, Route als Großkreis |
+| `Zeitleiste` | senkrecht, echte Zeitabstände; Linie wächst, Einträge poppen beim Erreichen; zu dichte Jahre rutschen nach unten |
+| `Figur` | Strichmännchen mit weichen Posenwechseln: `stehen zeigen denken jubeln schulterzucken erschrocken`, optional `gehen` |
+
+- **Archivbilder (Geschichte, Kunst, Personen, Dokumente):** `npm run bilder -- "<begriff>" --bild` sucht auf Wikimedia Commons, zeigt nur freie Lizenzen (gemeinfrei, CC0, CC BY, CC BY-SA), Vorschau unter `studio/out/bilder/`. Laden: `npm run bilder -- --laden=<ID> --projekt=<slug>` → `studio/public/projekte/<slug>/bilder/`, Urheber + Lizenz in `quellen.md`. Bei CC BY/BY-SA Namensnennung in die Videobeschreibung. Im Video mit `<Footage>`.
+
 ## Designs
 
 `<ThemeProvider theme="…">` um das Video (der Ersteller hat dafür das Feld `design`). Alle Bausteine übernehmen Farben, Schriften, Rundungen, Schatten und Hintergrund.
