@@ -136,7 +136,7 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 
 ## Stimme & Musik
 
-- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json`, erzeugt Musik in neuer Länge und Wortzeiten. Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
+- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json` und Wortzeiten. Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
 - **Keine eigene Stimme:** Die Stimme spricht immer Arman (Entscheidung 2026-10-10). Kein Piper/TTS im Video, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
 - **Musik: leise eigene Musik** (Arman, 2026-10-31): `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav`, im Video `<Music src="musik/wissen.wav" volume={0.22} captions={…} duckTo={0.35} />`.
 - **Kanal-Sounds:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES` (Zuordnung siehe Skill `wissens-short`).
