@@ -3,7 +3,7 @@ import {AbsoluteFill, Sequence, useCurrentFrame} from 'remotion';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, HELL, STAHL, Titel, Zaehler, pulsBei, useAuftritt} from './bausteine';
-import {Figur, Formel, Karte, Rangliste, Raster, Zeitleiste} from './erklaer-werkzeuge';
+import {Figur, Formel, Kassenbon, Karte, Rangliste, Raster, Zeitleiste} from './erklaer-werkzeuge';
 import {Videouhr} from './technik-bausteine';
 
 /**
@@ -14,6 +14,7 @@ import {Videouhr} from './technik-bausteine';
  * Figur – 206 Knochen im Erwachsenen (Standardwert der Anatomie)
  * Rangliste – sichtbar markierte Beispieldaten (keine echten Platzierungen)
  * Raster – 2026: 365 Tage, 1. Januar ist Donnerstag → 52 Samstage + 52 Sonntage = 104 Wochenendtage (Kalender)
+ * Kassenbon – sichtbar markierte Beispieldaten
  * Videouhr – Erdumfang am Äquator 40.075 km ÷ Sterntag 86.164 s ≈ 465 m/s (eigene Rechnung)
  */
 
@@ -171,10 +172,28 @@ const RasterSzene: React.FC = () => (
   </AbsoluteFill>
 );
 
+const BonSzene: React.FC = () => (
+  <AbsoluteFill>
+    <Titel text={<>Ein <span style={{color: AKZENT}}>Einkauf</span> als Kassenbon</>} />
+    <Kassenbon
+      kopf="Wocheneinkauf"
+      zeilen={[
+        {text: 'Brot', betrag: 3.49, ab: 10},
+        {text: 'Milch 2×', betrag: 2.38, ab: 22},
+        {text: 'Äpfel 1 kg', betrag: 2.99, ab: 34},
+        {text: 'Käse', betrag: 4.29, ab: 46},
+        {text: 'Kaffee', betrag: 8.99, ab: 58},
+        {text: 'Rabatt', betrag: -2.0, ab: 72, akzent: true},
+      ]}
+    />
+    <div style={{position: 'absolute', left: 80, top: 1420, fontFamily: 'JetBrains Mono, monospace', fontSize: 28, letterSpacing: '0.06em', color: STAHL}}>BEISPIELDATEN – KEINE ECHTEN PREISE</div>
+  </AbsoluteFill>
+);
+
 const Werkzeuge: React.FC = () => (
   <AbsoluteFill style={{background: BG, overflow: 'hidden', color: HELL}}>
     <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 45%, rgba(90,130,220,0.10), transparent 70%)'}} />
-    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene, UhrSzene, RanglistenSzene, RasterSzene].map((Szene, i) => (
+    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene, UhrSzene, RanglistenSzene, RasterSzene, BonSzene].map((Szene, i) => (
       <Sequence key={i} from={i * SZENE} durationInFrames={SZENE}>
         <Szene />
       </Sequence>
@@ -182,4 +201,4 @@ const Werkzeuge: React.FC = () => (
   </AbsoluteFill>
 );
 
-export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 7, ordner: 'Wissen'}];
+export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 8, ordner: 'Wissen'}];

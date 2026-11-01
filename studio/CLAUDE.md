@@ -57,6 +57,7 @@ Im Denkwürfel-Look, Beispiele in Composition `Werkzeug-Beispiele`:
 | `Zeitleiste` | senkrecht, echte Zeitabstände; Linie wächst, Einträge poppen beim Erreichen; zu dichte Jahre rutschen nach unten |
 | `Rangliste` | Ranglisten-Linien über Jahre (Bump-Chart), Jahr läuft oben mit, `hervor` = Akzentlinie |
 | `Raster` | viele Kästchen (Tage, Wochen, Menschen), Phasen färben sich wellenartig ein, Legende darunter |
+| `Kassenbon` | Bon wächst Zeile für Zeile, Summe rechnet live mit (Abzüge negativ, `akzent` färbt eine Zeile) |
 | `Figur` | Strichmännchen mit weichen Posenwechseln: `stehen zeigen denken jubeln schulterzucken erschrocken`, optional `gehen` |
 
 - **3D-Welten:** `Modell` (`kit/Modell3D`) setzt GLB-Modelle (Kenney, CC0, in `public/modelle/kenney/`) in eine `<ThreeCanvas>`; `useSzeneLaden` + `<SzeneBereit>` sorgen dafür, dass schon Frame 0 fertig gezeichnet ist. `Kino` + `Studiolicht` (`kit/Kino3D`) geben Leuchten, Miniatur-Unschärfe, Vignette und Spiegelungen. Beispiele: `Zug-Probe-3D` (Welt), `Tacho-Probe-Technik` (Technik).

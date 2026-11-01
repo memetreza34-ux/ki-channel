@@ -362,3 +362,53 @@ export const Raster: React.FC<{anzahl: number; spalten: number; phasen: RasterPh
     </div>
   );
 };
+
+/* ───────────── Kassenbon ───────────── */
+
+export type BonZeile = {text: string; betrag: number; ab: number; akzent?: boolean};
+
+const euro = (n: number) => `${n < 0 ? '−' : ''}${Math.abs(n).toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})} €`;
+
+/**
+ * Kassenbon, der Zeile für Zeile länger wird: jede Zeile druckt sich ab `ab` aus, das Papier wächst mit,
+ * die Summe unten rechnet live mit (Summe der sichtbaren Beträge, negative Beträge = Abzüge).
+ * Für „So sieht X als Kassenbon aus“ – Gehalt, Steuern, Preise, Zusammensetzungen.
+ */
+export const Kassenbon: React.FC<{zeilen: BonZeile[]; kopf: string; summeText?: string; links?: number; top?: number; breite?: number; zeilenHoehe?: number}> = ({zeilen, kopf, summeText = 'SUMME', links = 190, top = 520, breite = 700, zeilenHoehe = 62}) => {
+  const f = useCurrentFrame();
+  const sichtbar = zeilen.map((z) => interpolate(f, [z.ab, z.ab + 8], [0, 1], {...clamp, easing: outQuint}));
+  const anzahl = sichtbar.reduce((s, t) => s + t, 0);
+  const summe = zeilen.reduce((s, z, i) => s + z.betrag * sichtbar[i], 0);
+  const kopfHoehe = 150;
+  const fussHoehe = 150;
+  const hoehe = kopfHoehe + anzahl * zeilenHoehe + fussHoehe;
+  const zacke = 16;
+  const zacken = Math.round(breite / (zacke * 2));
+  // Abrisskante von rechts nach links, damit der Pfad geschlossen bleibt
+  const rand = Array.from({length: zacken}, (_, i) => `L${Math.max(0, breite - (i * 2 + 1) * zacke)},${hoehe + zacke} L${Math.max(0, breite - (i * 2 + 2) * zacke)},${hoehe}`).join(' ');
+  const PAPIER = '#F3EFE7';
+  const TINTE = '#1A2033';
+  const mono: React.CSSProperties = {fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: TINTE, letterSpacing: '0.02em'};
+  return (
+    <div style={{position: 'absolute', left: links, top, width: breite, filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.45))'}}>
+      <svg width={breite} height={hoehe + zacke} style={{position: 'absolute', left: 0, top: 0}}>
+        <path d={`M0,0 L${breite},0 L${breite},${hoehe} ${rand} L0,${hoehe} Z`} fill={PAPIER} />
+      </svg>
+      <div style={{position: 'relative', padding: '40px 44px 0'}}>
+        <div style={{...mono, fontSize: 34, textAlign: 'center', textTransform: 'uppercase'}}>{kopf}</div>
+        <div style={{borderTop: `3px dashed ${TINTE}`, opacity: 0.35, margin: '30px 0 18px'}} />
+        {zeilen.map((z, i) => (
+          <div key={i} style={{display: 'flex', justifyContent: 'space-between', height: zeilenHoehe * sichtbar[i], overflow: 'hidden', alignItems: 'center', opacity: sichtbar[i]}}>
+            <span style={{...mono, fontSize: 34, color: z.akzent ? AKZENT : TINTE}}>{z.text}</span>
+            <span style={{...mono, fontSize: 34, color: z.akzent ? AKZENT : TINTE, fontVariantNumeric: 'tabular-nums'}}>{euro(z.betrag)}</span>
+          </div>
+        ))}
+        <div style={{borderTop: `3px solid ${TINTE}`, margin: '22px 0 16px'}} />
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'baseline'}}>
+          <span style={{...mono, fontSize: 38}}>{summeText}</span>
+          <span style={{fontFamily: INTER, fontWeight: 800, fontSize: 60, letterSpacing: '-0.03em', color: TINTE, fontVariantNumeric: 'tabular-nums'}}>{euro(Math.round(summe * 100) / 100)}</span>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -115,7 +115,7 @@ Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median ·
 | Balken-Rangliste | `BarList` (Kit), `Zaehler` | vorhanden |
 | Ranglisten-Linien über Jahrzehnte (Bump-Chart) | `Rangliste` (`erklaer-werkzeuge.tsx`) | vorhanden |
 | Raster aus vielen Kästchen (Leben in Wochen) | `Raster` (Phasen färben sich wellenartig ein) | vorhanden |
-| Kassenbon, der Zeile für Zeile wächst | – | im Projekt bauen (einfaches HTML), bei zweitem Einsatz ins Kit |
+| Kassenbon, der Zeile für Zeile wächst | `Kassenbon` (`erklaer-werkzeuge.tsx`) | vorhanden |
 | Archivbilder/historische Fotos | `npm run bilder` (Wikimedia, freie Lizenzen) | vorhanden |
 | Mikro-Sounds im 2-s-Takt (Welt) | Kanal-Sounds `kTick`, `kPop`, `kDing`, `kWhoosh` | vorhanden |
 | Leise Musik (Welt) | `musik-wissen.py` → `musik/wissen.wav` | vorhanden |
