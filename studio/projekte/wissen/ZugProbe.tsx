@@ -2,6 +2,7 @@ import React from 'react';
 import {ThreeCanvas} from '@remotion/three';
 import {useThree} from '@react-three/fiber';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {Kino, Studiolicht} from '../../kit/Kino3D';
 import {Modell, SzeneBereit, useSzeneLaden} from '../../kit/Modell3D';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
@@ -139,6 +140,8 @@ const Welt: React.FC<{f: number; handle: number}> = ({f, handle}) => {
       {Array.from({length: 16}, (_, i) => (
         <Baum key={i} x={2.6 + (i % 3) * 0.9} z={-30 + i * 4 + (i % 2) * 1.3} h={0.9 + ((i * 7) % 5) * 0.12} />
       ))}
+      <Studiolicht staerke={0.6} />
+      <Kino bloom={0.6} schwelle={0.7} tiltShift={0.12} vignette={0.55} />
       <SzeneBereit handle={handle} />
     </>
   );

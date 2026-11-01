@@ -57,6 +57,8 @@ Im Denkwürfel-Look, Beispiele in Composition `Werkzeug-Beispiele`:
 | `Zeitleiste` | senkrecht, echte Zeitabstände; Linie wächst, Einträge poppen beim Erreichen; zu dichte Jahre rutschen nach unten |
 | `Figur` | Strichmännchen mit weichen Posenwechseln: `stehen zeigen denken jubeln schulterzucken erschrocken`, optional `gehen` |
 
+- **3D-Welten:** `Modell` (`kit/Modell3D`) setzt GLB-Modelle (Kenney, CC0, in `public/modelle/kenney/`) in eine `<ThreeCanvas>`; `useSzeneLaden` + `<SzeneBereit>` sorgen dafür, dass schon Frame 0 fertig gezeichnet ist. `Kino` + `Studiolicht` (`kit/Kino3D`) geben Leuchten, Miniatur-Unschärfe, Vignette und Spiegelungen. Beispiele: `Zug-Probe-3D` (Welt), `Tacho-Probe-Technik` (Technik).
+- **Technik-Look** (`projekte/wissen/technik-bausteine.tsx`): `Callout` (Beschriftung mit Linie am 3D-Bauteil, Punkt per `projiziere3D`), `MessPanel` (Live-Anzeige), `EckTag` („Illustration“), `roentgen()` (durchsichtiges Leuchtmaterial), `Untertitel` (Wort für Wort, Schlüsselwörter unterstrichen).
 - **Archivbilder (Geschichte, Kunst, Personen, Dokumente):** `npm run bilder -- "<begriff>" --bild` sucht auf Wikimedia Commons, zeigt nur freie Lizenzen (gemeinfrei, CC0, CC BY, CC BY-SA), Vorschau unter `studio/out/bilder/`. Laden: `npm run bilder -- --laden=<ID> --projekt=<slug>` → `studio/public/projekte/<slug>/bilder/`, Urheber + Lizenz in `quellen.md`. Bei CC BY/BY-SA Namensnennung in die Videobeschreibung. Im Video mit `<Footage>`.
 
 ## Designs

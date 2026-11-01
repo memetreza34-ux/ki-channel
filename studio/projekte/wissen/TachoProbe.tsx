@@ -2,6 +2,8 @@ import React, {useMemo} from 'react';
 import {ThreeCanvas} from '@remotion/three';
 import {useThree} from '@react-three/fiber';
 import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
+import {Kino} from '../../kit/Kino3D';
+import {SzeneBereit, useSzeneLaden} from '../../kit/Modell3D';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, Titel, clamp, pulsBei, zahl} from './bausteine';
@@ -56,7 +58,7 @@ const sensorPuls = (f: number) => {
   return p;
 };
 
-const Rad: React.FC<{f: number}> = ({f}) => {
+const Rad: React.FC<{f: number; handle: number}> = ({f, handle}) => {
   const reifen = useMemo(() => roentgen('#A9C2FF', 1.5, 2.0), []);
   const felge = useMemo(() => roentgen('#7F9BE0', 1.2, 1.6), []);
   const nabe = useMemo(() => roentgen('#C9D6FF', 1.2, 1.4), []);
@@ -110,12 +112,15 @@ const Rad: React.FC<{f: number}> = ({f}) => {
           <meshBasicMaterial color={AKZENT} transparent opacity={puls * 0.22} depthWrite={false} />
         </mesh>
       ) : null}
+      <Kino bloom={1.1} schwelle={0.35} vignette={0.6} />
+      <SzeneBereit handle={handle} />
     </>
   );
 };
 
 const TachoProbe: React.FC = () => {
   const f = useCurrentFrame();
+  const handle = useSzeneLaden();
   const k = kamera(f);
   const sensorPx = projiziere3D(SENSOR, k);
   const magnetPx = projiziere3D(magnetPunkt(f), k);
@@ -127,7 +132,7 @@ const TachoProbe: React.FC = () => {
   return (
     <AbsoluteFill style={{background: `radial-gradient(1100px 900px at 50% 48%, #18244A 0%, ${BG} 70%)`}}>
       <ThreeCanvas width={1080} height={1920} camera={{fov: 32, position: kamera(0).pos, near: 0.1, far: 200}}>
-        <Rad f={f} />
+        <Rad f={f} handle={handle} />
       </ThreeCanvas>
       <AbsoluteFill style={{background: `linear-gradient(180deg, ${BG}F2 0%, ${BG}99 14%, ${BG}00 24%)`}} />
       <Titel text={<>So misst dein Tacho das <span style={{color: AKZENT}}>Tempo</span></>} />
