@@ -123,6 +123,12 @@ Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median ·
 | Fotorealistische Renderings (Kriegsschiff auf Meer, Auto-Schnittbild) | – | **Lücke:** braucht detaillierte 3D-Modelle (z. B. CC0 von Poly Haven/Sketchfab) – nur nach Rückfrage laden; sonst stilisiert lösen |
 | 3D-Menschen (Apple-Watch-Reel) | `Figur` (2D-Strichmännchen) | bewusst nicht: Kanal ist faceless |
 
+#### Bilder von draußen
+
+- Erst selbst bauen (3D, SVG, Karte) – echte Fotos nur, wenn das Original zählt (historisches Foto, echter Ort, Weltall).
+- Quellen ohne Key: Wikimedia Commons (`npm run bilder`), NASA-Archiv (`--quelle=nasa`), Pixabay (`npm run broll`). Vor jedem Download Datei + Lizenz nennen; Lizenzzeile kommt automatisch in `quellen.md`.
+- KI-generierte Bilder nur mit Armans Freigabe für genau dieses Video, im Bild mit `EckTag` „KI-Illustration“ (der verbundene Generator hat derzeit kein Guthaben).
+
 ## Bewegungssprache (fest)
 
 - Eintritte outQuint über 12 Frames, Weg ≤ 24 px; Objekte skalieren 0,92 → 1 (`useAuftritt`), nicht einblenden.
