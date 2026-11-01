@@ -12,6 +12,7 @@ import {szenen} from './wissen/Szenen';
 import {faecher} from './wissen/Faecher';
 import {werkzeuge} from './wissen/WerkzeugBeispiele';
 import {zugProbe} from './wissen/ZugProbe';
+import {tachoProbe} from './wissen/TachoProbe';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -33,5 +34,6 @@ export const PROJEKTE: Project[] = [
   ...faecher,
   ...werkzeuge,
   ...zugProbe,
+  ...tachoProbe,
   // neu:eintrag
 ];
