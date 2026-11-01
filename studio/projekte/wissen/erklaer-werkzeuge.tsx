@@ -270,3 +270,95 @@ export const Figur: React.FC<{posen: Array<{pose: PosenName; ab: number}>; groes
     </svg>
   );
 };
+
+/* ───────────── Rangliste über die Zeit (Bump-Chart) ───────────── */
+
+export type RanglistenReihe = {name: string; plaetze: number[]; farbe?: string};
+
+/**
+ * Ranglisten-Linien über Jahre: jede Reihe zeichnet sich von links nach rechts, Name sitzt am Linienkopf,
+ * oben läuft das Jahr mit. `plaetze[i]` = Platz im Jahr `jahre[i]` (1 = oben). `hervor` = Name in Akzentfarbe.
+ */
+export const Rangliste: React.FC<{jahre: number[]; reihen: RanglistenReihe[]; links?: number; top?: number; breite?: number; hoehe?: number; ab?: number; dauer?: number; hervor?: string}> = ({jahre, reihen, links = 140, top = 520, breite = 640, hoehe = 760, ab = 6, dauer = 100, hervor}) => {
+  const f = useCurrentFrame();
+  const lauf = interpolate(f, [ab, ab + dauer], [0, 1], {...clamp, easing: weich});
+  const n = jahre.length;
+  const plaetze = Math.max(...reihen.flatMap((r) => r.plaetze));
+  const x = (i: number) => (i / (n - 1)) * breite;
+  const y = (p: number) => ((p - 1) / Math.max(1, plaetze - 1)) * hoehe;
+  const pos = lauf * (n - 1);
+  const i0 = Math.floor(pos);
+  const anteil = pos - i0;
+  const jahr = Math.round(jahre[0] + (jahre[n - 1] - jahre[0]) * lauf);
+  return (
+    <>
+      <div style={{position: 'absolute', left: 80, top: top - 190, fontFamily: INTER, fontWeight: 800, fontSize: 72, letterSpacing: '-0.03em', color: HELL, fontVariantNumeric: 'tabular-nums'}}>{jahr}</div>
+      <svg width={breite + 300} height={hoehe + 80} style={{position: 'absolute', left: links, top: top - 40, overflow: 'visible'}}>
+        {Array.from({length: plaetze}, (_, p) => (
+          <text key={p} x={-30} y={y(p + 1) + 12} textAnchor="end" fontFamily={INTER} fontWeight={800} fontSize={34} fill={STAHL}>
+            {p + 1}.
+          </text>
+        ))}
+        {reihen.map((r) => {
+          const farbe = r.name === hervor ? AKZENT : (r.farbe ?? '#6E7FA6');
+          const punkte: Array<[number, number]> = r.plaetze.slice(0, i0 + 1).map((p, i) => [x(i), y(p)]);
+          if (i0 < n - 1) {
+            const a = r.plaetze[i0];
+            const b = r.plaetze[i0 + 1];
+            punkte.push([x(i0) + (x(i0 + 1) - x(i0)) * anteil, y(a + (b - a) * weich(anteil))]);
+          }
+          const d = punkte.map(([px, py], i) => `${i ? 'L' : 'M'}${px},${py}`).join('');
+          const [kx, ky] = punkte[punkte.length - 1];
+          return (
+            <g key={r.name}>
+              <path d={d} fill="none" stroke={farbe} strokeWidth={r.name === hervor ? 10 : 6} strokeLinejoin="round" strokeLinecap="round" opacity={r.name === hervor ? 1 : 0.85} />
+              <circle cx={kx} cy={ky} r={r.name === hervor ? 14 : 10} fill={farbe} stroke={BG} strokeWidth={4} />
+              <text x={kx + 24} y={ky + 13} fontFamily={SPACE} fontWeight={700} fontSize={38} fill={farbe} paintOrder="stroke" stroke={BG} strokeWidth={8}>
+                {r.name}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </>
+  );
+};
+
+/* ───────────── Kästchen-Raster ───────────── */
+
+export type RasterPhase = {name: string; farbe: string; ab: number; trifft: (i: number) => boolean};
+
+/**
+ * Viele Kästchen (Tage, Wochen, Menschen …), die sich nacheinander einfärben. Phasen färben ihre Kästchen
+ * gestaffelt ab `ab` ein (Welle von oben nach unten); die zuletzt erreichte Phase steht als Legende darunter.
+ */
+export const Raster: React.FC<{anzahl: number; spalten: number; phasen: RasterPhase[]; links?: number; top?: number; breite?: number; luecke?: number; welle?: number; seitenverhaeltnis?: number}> = ({anzahl, spalten, phasen, links = 80, top = 460, breite = 920, luecke = 6, welle = 40, seitenverhaeltnis = 0.6}) => {
+  const f = useCurrentFrame();
+  const zelle = (breite - luecke * (spalten - 1)) / spalten;
+  const zeilen = Math.ceil(anzahl / spalten);
+  return (
+    <div style={{position: 'absolute', left: links, top, width: breite}}>
+      <svg width={breite} height={zeilen * (zelle * seitenverhaeltnis + luecke)} style={{display: 'block'}}>
+        {Array.from({length: anzahl}, (_, i) => {
+          const sp = i % spalten;
+          const ze = Math.floor(i / spalten);
+          let farbe = '#1E2A47';
+          for (const p of phasen) {
+            if (!p.trifft(i)) continue;
+            const t = interpolate(f, [p.ab + (ze / zeilen) * welle, p.ab + (ze / zeilen) * welle + 6], [0, 1], clamp);
+            if (t > 0.5) farbe = p.farbe;
+          }
+          return <rect key={i} x={sp * (zelle + luecke)} y={ze * (zelle * seitenverhaeltnis + luecke)} width={zelle} height={zelle * seitenverhaeltnis} rx={4} fill={farbe} />;
+        })}
+      </svg>
+      <div style={{display: 'flex', gap: 28, marginTop: 24, flexWrap: 'wrap'}}>
+        {phasen.map((p) => (
+          <div key={p.name} style={{display: 'flex', alignItems: 'center', gap: 12, opacity: f >= p.ab ? 1 : 0.25, fontFamily: SPACE, fontWeight: 700, fontSize: 38, color: HELL}}>
+            <div style={{width: 28, height: 20, borderRadius: 4, background: p.farbe}} />
+            {p.name}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

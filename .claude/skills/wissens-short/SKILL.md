@@ -113,8 +113,9 @@ Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median ·
 | Untertitel Wort für Wort, Schlüsselwort unterstrichen, Lautwort farbig | `Untertitel` (`schluessel`, `farbig`) | vorhanden |
 | Formeln | `Formel` (KaTeX) | vorhanden |
 | Balken-Rangliste | `BarList` (Kit), `Zaehler` | vorhanden |
-| Ranglisten-Linien über Jahrzehnte (Bump-Chart) | – | fehlt: bei Bedarf im Projekt bauen (SVG-Pfade + `evolvePath`) |
-| Raster aus vielen Kästchen (Leben in Wochen) / Kassenbon, der wächst | – | fehlt als Baustein, mit SVG/HTML schnell im Projekt baubar |
+| Ranglisten-Linien über Jahrzehnte (Bump-Chart) | `Rangliste` (`erklaer-werkzeuge.tsx`) | vorhanden |
+| Raster aus vielen Kästchen (Leben in Wochen) | `Raster` (Phasen färben sich wellenartig ein) | vorhanden |
+| Kassenbon, der Zeile für Zeile wächst | – | im Projekt bauen (einfaches HTML), bei zweitem Einsatz ins Kit |
 | Archivbilder/historische Fotos | `npm run bilder` (Wikimedia, freie Lizenzen) | vorhanden |
 | Mikro-Sounds im 2-s-Takt (Welt) | Kanal-Sounds `kTick`, `kPop`, `kDing`, `kWhoosh` | vorhanden |
 | Leise Musik (Welt) | `musik-wissen.py` → `musik/wissen.wav` | vorhanden |

@@ -3,7 +3,7 @@ import {AbsoluteFill, Sequence, useCurrentFrame} from 'remotion';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, HELL, STAHL, Titel, Zaehler, pulsBei, useAuftritt} from './bausteine';
-import {Figur, Formel, Karte, Zeitleiste} from './erklaer-werkzeuge';
+import {Figur, Formel, Karte, Rangliste, Raster, Zeitleiste} from './erklaer-werkzeuge';
 import {Videouhr} from './technik-bausteine';
 
 /**
@@ -12,6 +12,8 @@ import {Videouhr} from './technik-bausteine';
  * Karte – Deutschland hat 9 Nachbarländer (Auswärtiges Amt)
  * Zeitleiste – Raumfahrt: Sputnik 1957, Gagarin 1961, Apollo 11 1969, erstes ISS-Modul 1998 (NASA/ESA)
  * Figur – 206 Knochen im Erwachsenen (Standardwert der Anatomie)
+ * Rangliste – sichtbar markierte Beispieldaten (keine echten Platzierungen)
+ * Raster – 2026: 365 Tage, 1. Januar ist Donnerstag → 52 Samstage + 52 Sonntage = 104 Wochenendtage (Kalender)
  * Videouhr – Erdumfang am Äquator 40.075 km ÷ Sterntag 86.164 s ≈ 465 m/s (eigene Rechnung)
  */
 
@@ -128,10 +130,51 @@ const UhrSzene: React.FC = () => (
   </AbsoluteFill>
 );
 
+const RanglistenSzene: React.FC = () => (
+  <AbsoluteFill>
+    <Titel text={<>Wer war wann <span style={{color: AKZENT}}>vorne</span>?</>} />
+    <Rangliste
+      top={600}
+      hoehe={640}
+      hervor="Team C"
+      jahre={[1970, 1980, 1990, 2000, 2010, 2020]}
+      reihen={[
+        {name: 'Team A', plaetze: [1, 1, 3, 4, 5, 5]},
+        {name: 'Team B', plaetze: [2, 3, 1, 2, 3, 4]},
+        {name: 'Team C', plaetze: [5, 4, 4, 1, 1, 1]},
+        {name: 'Team D', plaetze: [3, 2, 2, 3, 4, 3]},
+        {name: 'Team E', plaetze: [4, 5, 5, 5, 2, 2]},
+      ]}
+    />
+    <div style={{position: 'absolute', left: 80, top: 1380, fontFamily: 'JetBrains Mono, monospace', fontSize: 28, letterSpacing: '0.06em', color: STAHL}}>BEISPIELDATEN – KEINE ECHTEN PLATZIERUNGEN</div>
+  </AbsoluteFill>
+);
+
+// 2026: Tag 0 = Donnerstag (Mo = 0 … So = 6)
+const wochentag = (i: number) => (3 + i) % 7;
+
+const RasterSzene: React.FC = () => (
+  <AbsoluteFill>
+    <Titel text={<>2026 in Tagen: so viel ist <span style={{color: AKZENT}}>Wochenende</span></>} />
+    <Raster
+      anzahl={365}
+      spalten={14}
+      top={500}
+      luecke={5}
+      seitenverhaeltnis={0.38}
+      phasen={[
+        {name: 'Werktag', farbe: '#3A4A70', ab: 4, trifft: (i) => wochentag(i) < 5},
+        {name: 'Wochenende · 104', farbe: AKZENT, ab: 50, trifft: (i) => wochentag(i) >= 5},
+      ]}
+    />
+    <div style={{position: 'absolute', left: 80, top: 1420, fontFamily: 'JetBrains Mono, monospace', fontSize: 28, letterSpacing: '0.06em', color: STAHL}}>QUELLE: KALENDER 2026 (OHNE FEIERTAGE)</div>
+  </AbsoluteFill>
+);
+
 const Werkzeuge: React.FC = () => (
   <AbsoluteFill style={{background: BG, overflow: 'hidden', color: HELL}}>
     <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 45%, rgba(90,130,220,0.10), transparent 70%)'}} />
-    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene, UhrSzene].map((Szene, i) => (
+    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene, UhrSzene, RanglistenSzene, RasterSzene].map((Szene, i) => (
       <Sequence key={i} from={i * SZENE} durationInFrames={SZENE}>
         <Szene />
       </Sequence>
@@ -139,4 +182,4 @@ const Werkzeuge: React.FC = () => (
   </AbsoluteFill>
 );
 
-export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 5, ordner: 'Wissen'}];
+export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 7, ordner: 'Wissen'}];
