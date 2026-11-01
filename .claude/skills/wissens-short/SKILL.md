@@ -12,7 +12,7 @@ Code: `studio/projekte/wissen/` – `bausteine.tsx` (Farben, Titel, Zähler, Pul
 ## Ablauf (3 Phasen wie immer)
 
 1. **Thema + Fakten:** eine überraschende Zahl, die man in *einem* Bild zeigen kann. Quelle + Datum aus Primärquelle (NASA, UN, Statistisches Bundesamt, Firmenangabe …). Eigene Rechnungen als „rund“ kennzeichnen und im Skript vorrechnen.
-2. **Skript** (`kanal/shorts/<Mo>_bis_<So>/<thema>/audio/script.txt` + `LIES-MICH.txt`): Satz 1 = Titel als Frage/Behauptung, dann 4–7 Beats (Zahl → Mechanismus/Vergleich → Wendung → Pointe, letzter Satz führt in den Anfang zurück), 120–190 Wörter. Danach aufhören – **Stimme nur Arman**, nie synthetisch.
+2. **Skript** (`kanal/shorts/<Mo>_bis_<So>/<thema>/audio/script.txt` + `LIES-MICH.txt`): Satz 1 = Titel als Frage/Behauptung, dann 4–7 Beats (Zahl → Mechanismus/Vergleich → Wendung → Pointe, letzter Satz führt in den Anfang zurück), 130–220 Wörter (≈ 180 Wörter/Minute), Regeln unter „Skript“ weiter unten. Danach aufhören – **Stimme nur Arman**, nie synthetisch.
 3. **Video aus dem Audio:** Wortzeiten (`npm run untertitel`), Beats wortgenau legen, mit Bausteinen bauen, Probebilder prüfen, Agent `video-kritiker` laufen lassen, nachbessern, rendern, -14 LUFS.
 
 ## Look
@@ -40,7 +40,7 @@ Vorbilder: Instagram **schraffuren** (Welt) und **scroll.engineer** (Technik). N
 
 ### Was die Vorbilder konkret machen (Bild-für-Bild-Analyse 2026-11-01)
 
-Ausgewertet: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher“ (66 s), „Gehalt als Kassenbon“ (62 s), „Blackout“; scroll.engineer „Apple Watch“ (84 s), „Navy-Täuschkörper“ (83 s), „Google Maps“, „Turbolader“. Ton/Skript noch **nicht** ausgewertet (kein Ton im Browser) – fehlt bis Arman Aufnahmen schickt.
+Ausgewertet: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher“ (66 s), „Gehalt als Kassenbon“ (62 s), „Blackout“; scroll.engineer „Apple Watch“ (84 s), „Navy-Täuschkörper“ (83 s), „Google Maps“, „Turbolader“. Ton gemessen (Lautheit, Pausen, Bassband, Effekt-Spitzen per Web-Audio im Browser, nichts heruntergeladen) bei „Navy“ und „Gehalt“; Skript aus den eingebrannten Untertiteln gelesen (Anfang + Ende).
 
 | Muster | schraffuren | scroll.engineer | Für uns |
 |---|---|---|---|
@@ -52,8 +52,25 @@ Ausgewertet: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher�
 | Untertitel | Satzstücke 4–7 Wörter, weiß, teils roter Kasten | 3–4 Wörter, Wort für Wort: aktives Wort hell/fett, Rest grau, Kasten mit Akzentbalken; Schlüsselwort unterstrichen | Wort-für-Wort im Kanal-Look (`Untertitel` in `technik-bausteine.tsx`) |
 | Labels | kleine Ortsnamen, Zahlen am Objekt („+19 Min“) | Mono-Labels mit Pfeil („‹ BLOOD VESSELS“), Callout-Pillen | `Callout`, kurze Mono-Labels |
 | Ehrlichkeit | Quelle winzig unten links, dauerhaft | Tag „illustrative reconstruction“, „magnified illustration“ | `EckTag` + Quelle |
-| Schluss | Pointe in einem Satz („Und du zehn Cent.“), letztes Bild = erstes Bild → **Loop** | letzter Satz führt in den ersten zurück → **Loop** | Ende so bauen, dass es nahtlos in Frame 0 übergeht |
+| Schluss | Pointe als Rechenergebnis mit „also“ („… kommen bei dir also nur knapp 0,53 € an.“), letztes Bild = erstes Bild → **Loop** | Loop (Apple Watch) oder Frage an die Zuschauer („Would you trust a fake radar signal to defend a billion dollar warship?“) | Pointe-Satz, dann Bild in Frame 0 zurückführen; Fragen nur, wenn echte Meinungsfrage |
 | Farbe | Schwarz/Creme + eine Signalfarbe (Rot) | gedämpft Grau/Blau + eine Leuchtfarbe (Grün, Orange) | bleibt: Blau + Koralle |
+
+#### Skript (aus Untertiteln gelesen)
+
+- **Erster Satz = ganze Behauptung inklusive Rätsel**, in ≤ 5 s: „The U.S. Navy built a rocket that tricks incoming missiles into chasing a warship that doesn't exist.“ → dann sofort der Name/Fachbegriff („It's called Nulka.“). schraffuren: Frage-Satz + sofort das Bild-Versprechen („So sieht ein ganz normales Gehalt in Deutschland als Kassenbon aus.“).
+- **Tempo ≈ 180 Wörter/Minute** bei beiden (Arman eher zügig sprechen; 60 s ≈ 170–180 Wörter).
+- **Du-Ansprache und Alltagsbezug** (schraffuren: „bei dir“, „Deinen Chef kostet das …“); Zahlen konkret mit Einheit, kein „rund“-Gemurmel.
+- **Sätze kurz:** Atempause etwa alle 3,5 s → ein Satz ≈ 10 Wörter. Ein Satz = ein Bildwechsel.
+- Keine Begrüßung, kein „In diesem Video“, kein Abo-Aufruf im Sprechtext.
+
+#### Ton (gemessen)
+
+| | schraffuren „Gehalt“ | scroll.engineer „Navy“ | Für uns |
+|---|---|---|---|
+| Stille | keine echte Stille; 11 Atempausen 0,3–0,7 s | praktisch keine Pausen (4 × ≤ 0,6 s in 83 s) | Stimme + Musik durchgehend, Pausen zwischen Sätzen kurz schneiden (≤ 0,5 s) |
+| Unterlage | leise, kaum Bass (Bassband ≈ −55 dB) | dichter, basslastiger Klangteppich (≈ −41 dB), leiseste Stelle noch 19 % der Normallautstärke | Welt: leise Musik (`musik-wissen.py`); Technik: tieferer, dichterer Teppich (Drone/Atmo) |
+| Effekte | ≈ alle 2 s ein kleiner Ton – an **jedem** sichtbaren Ereignis (neue Kassenbon-Zeile) | ≈ alle 4 s ein Akzent – an Schnitten/Einschlägen | Welt: viele leise Mikro-Sounds an Ereignissen (`kTick`, `kPop`); Technik: wenige, tiefe Akzente an Schnitten (`kWhoosh`, `impact`) |
+| Dynamik | lebendig (Spitze ≈ 2,8 × Median) | stark verdichtet (≈ 1,7 × Median) | Endmischung −14 LUFS; Technik stärker komprimieren |
 
 ## Bewegungssprache (fest)
 
