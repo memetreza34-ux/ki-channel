@@ -4,6 +4,7 @@ import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, HELL, STAHL, Titel, Zaehler, pulsBei, useAuftritt} from './bausteine';
 import {Figur, Formel, Karte, Zeitleiste} from './erklaer-werkzeuge';
+import {Videouhr} from './technik-bausteine';
 
 /**
  * Vier Beispiel-Szenen für die neuen Werkzeuge:
@@ -11,6 +12,7 @@ import {Figur, Formel, Karte, Zeitleiste} from './erklaer-werkzeuge';
  * Karte – Deutschland hat 9 Nachbarländer (Auswärtiges Amt)
  * Zeitleiste – Raumfahrt: Sputnik 1957, Gagarin 1961, Apollo 11 1969, erstes ISS-Modul 1998 (NASA/ESA)
  * Figur – 206 Knochen im Erwachsenen (Standardwert der Anatomie)
+ * Videouhr – Erdumfang am Äquator 40.075 km ÷ Sterntag 86.164 s ≈ 465 m/s (eigene Rechnung)
  */
 
 const SZENE = 150;
@@ -117,10 +119,19 @@ const FigurSzene: React.FC = () => {
   );
 };
 
+const UhrSzene: React.FC = () => (
+  <AbsoluteFill>
+    <Titel text={<>So weit dreht dich die <span style={{color: AKZENT}}>Erde</span>, während du schaust</>} />
+    <Videouhr proSekunde={465} einheit="m" top={620} />
+    <div style={{position: 'absolute', left: 80, right: 80, top: 760, fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 42, color: STAHL}}>am Äquator · 465 m pro Sekunde</div>
+    <div style={{position: 'absolute', left: 80, top: 1400, fontFamily: 'JetBrains Mono, monospace', fontSize: 28, letterSpacing: '0.06em', color: STAHL}}>RECHNUNG: 40.075 KM ÷ 86.164 S</div>
+  </AbsoluteFill>
+);
+
 const Werkzeuge: React.FC = () => (
   <AbsoluteFill style={{background: BG, overflow: 'hidden', color: HELL}}>
     <AbsoluteFill style={{background: 'radial-gradient(900px 700px at 50% 45%, rgba(90,130,220,0.10), transparent 70%)'}} />
-    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene].map((Szene, i) => (
+    {[FormelSzene, KartenSzene, ZeitSzene, FigurSzene, UhrSzene].map((Szene, i) => (
       <Sequence key={i} from={i * SZENE} durationInFrames={SZENE}>
         <Szene />
       </Sequence>
@@ -128,4 +139,4 @@ const Werkzeuge: React.FC = () => (
   </AbsoluteFill>
 );
 
-export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 4, ordner: 'Wissen'}];
+export const werkzeuge: Project[] = [{id: 'Werkzeug-Beispiele', component: Werkzeuge, format: 'vertical', durationInFrames: SZENE * 5, ordner: 'Wissen'}];

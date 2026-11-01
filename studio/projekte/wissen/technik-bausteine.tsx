@@ -134,10 +134,11 @@ export const EckTag: React.FC<{texte: string[]; top?: number}> = ({texte, top = 
 
 /**
  * Wort für Wort zum Voiceover (Machart scroll.engineer, Kanal-Look): 3–4 Wörter pro Seite, aktives Wort hell und fett,
- * gesprochene Wörter hell, kommende grau; Kasten mit Akzentbalken. `schluessel` = Wörter, die unterstrichen werden.
+ * gesprochene Wörter hell, kommende grau; Kasten mit Akzentbalken. `schluessel` = Wörter, die unterstrichen werden,
+ * `farbig` = Lautwörter/Begriffe immer in Akzentfarbe (z. B. „STUTUTU“).
  * `captions` = Wortzeiten aus `npm run untertitel` (untertitel.json).
  */
-export const Untertitel: React.FC<{captions: Caption[]; schluessel?: string[]; top?: number; seiteMs?: number}> = ({captions, schluessel = [], top = 1080, seiteMs = 900}) => {
+export const Untertitel: React.FC<{captions: Caption[]; schluessel?: string[]; farbig?: string[]; top?: number; seiteMs?: number}> = ({captions, schluessel = [], farbig = [], top = 1080, seiteMs = 900}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const {pages} = useMemo(() => createTikTokStyleCaptions({captions, combineTokensWithinMilliseconds: seiteMs}), [captions, seiteMs]);
@@ -146,6 +147,7 @@ export const Untertitel: React.FC<{captions: Caption[]; schluessel?: string[]; t
   if (!seite) return null;
   const rein = interpolate(jetzt - seite.startMs, [0, 120], [0, 1], clamp);
   const wichtig = new Set(schluessel.map((w) => w.toLowerCase()));
+  const akzentWoerter = new Set(farbig.map((w) => w.toLowerCase()));
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top, display: 'flex', justifyContent: 'center', pointerEvents: 'none'}}>
       <div style={{position: 'relative', maxWidth: 860, padding: '14px 28px 16px 40px', borderRadius: 16, background: 'rgba(10,15,28,0.88)', opacity: rein, transform: `translateY(${(1 - rein) * 10}px)`}}>
@@ -157,12 +159,64 @@ export const Untertitel: React.FC<{captions: Caption[]; schluessel?: string[]; t
             const wort = t.text.trim().replace(/[.,!?;:„“"]/g, '').toLowerCase();
             const unterstrichen = wichtig.has(wort) && (aktiv || gesagt);
             return (
-              <span key={i} style={{color: aktiv || gesagt ? HELL : '#5D6886', textDecoration: unterstrichen ? `underline ${AKZENT} 6px` : 'none', textUnderlineOffset: 10}}>
+              <span key={i} style={{color: akzentWoerter.has(wort) ? AKZENT : aktiv || gesagt ? HELL : '#5D6886', textDecoration: unterstrichen ? `underline ${AKZENT} 6px` : 'none', textUnderlineOffset: 10}}>
                 {t.text}
               </span>
             );
           })}
         </div>
+      </div>
+    </div>
+  );
+};
+
+/* ───────────── Kapitel, Status, Videouhr ───────────── */
+
+/** Kapitel-Label oben links pro Abschnitt („▢ DER SATELLIT“). Wechselt mit kurzem Wisch, sobald `abschnitte[i].ab` erreicht ist. */
+export const Kapitel: React.FC<{abschnitte: Array<{text: string; ab: number}>; top?: number}> = ({abschnitte, top = 150}) => {
+  const f = useCurrentFrame();
+  const aktiv = [...abschnitte].reverse().find((a) => f >= a.ab);
+  if (!aktiv) return null;
+  const t = interpolate(f - aktiv.ab, [0, 8], [0, 1], clamp);
+  return (
+    <div style={{position: 'absolute', left: 80, top, display: 'flex', alignItems: 'center', gap: 12, fontFamily: MONO, fontWeight: 700, fontSize: 28, letterSpacing: '0.1em', color: HELL, textTransform: 'uppercase', clipPath: `inset(0 ${(1 - t) * 100}% 0 0)`}}>
+      <div style={{width: 18, height: 18, border: `3px solid ${AKZENT}`, borderRadius: 3}} />
+      {aktiv.text}
+    </div>
+  );
+};
+
+/** Status-Chip unten links, der den Zustand wechselt (REPORTED → OFFLINE → NEARBY). Punkt pulsiert beim Wechsel. */
+export const StatusChip: React.FC<{zustaende: Array<{text: string; ab: number; akzent?: boolean}>; top?: number}> = ({zustaende, top = 1000}) => {
+  const f = useCurrentFrame();
+  const aktiv = [...zustaende].reverse().find((z) => f >= z.ab);
+  if (!aktiv) return null;
+  const puls = interpolate(f - aktiv.ab, [0, 6, 16], [0, 1, 0], clamp);
+  const farbe = aktiv.akzent ? AKZENT : HELL;
+  return (
+    <div style={{position: 'absolute', left: 80, top, display: 'flex', alignItems: 'center', gap: 14, padding: '10px 22px', borderRadius: 999, background: 'rgba(10,15,28,0.86)', border: '2px solid #2A3654', fontFamily: MONO, fontWeight: 700, fontSize: 28, letterSpacing: '0.1em', color: farbe}}>
+      <div style={{width: 16, height: 16, borderRadius: 8, background: farbe, boxShadow: `0 0 ${8 + puls * 20}px ${farbe}`, transform: `scale(${1 + puls * 0.5})`}} />
+      {aktiv.text}
+    </div>
+  );
+};
+
+/**
+ * Videouhr „Während du schaust …“: zeigt die echte Videozeit (0:13) und einen Wert, der pro Sekunde wächst
+ * (z. B. Euro, Liter, Geburten). `proSekunde` aus belegter Quelle, `start` = ab welchem Frame gezählt wird.
+ */
+export const Videouhr: React.FC<{proSekunde: number; einheit: string; start?: number; stellen?: number; top?: number}> = ({proSekunde, einheit, start = 0, stellen = 0, top = 380}) => {
+  const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const sek = Math.max(0, (f - start) / fps);
+  const mm = Math.floor(sek / 60);
+  const ss = Math.floor(sek % 60).toString().padStart(2, '0');
+  const wert = (sek * proSekunde).toLocaleString('de-DE', {minimumFractionDigits: stellen, maximumFractionDigits: stellen});
+  return (
+    <div style={{position: 'absolute', left: 80, right: 80, top, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontFamily: INTER, fontWeight: 800, letterSpacing: '-0.03em', fontVariantNumeric: 'tabular-nums'}}>
+      <div style={{fontSize: 96, color: HELL}}>{mm}:{ss}</div>
+      <div style={{fontSize: 72, color: AKZENT}}>
+        {wert} <span style={{fontSize: 48}}>{einheit}</span>
       </div>
     </div>
   );

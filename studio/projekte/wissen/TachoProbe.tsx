@@ -7,7 +7,7 @@ import {SzeneBereit, useSzeneLaden} from '../../kit/Modell3D';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, Titel, clamp, pulsBei, zahl} from './bausteine';
-import {Callout, EckTag, MessPanel, projiziere3D, roentgen, type KameraStand} from './technik-bausteine';
+import {Callout, EckTag, Kapitel, MessPanel, StatusChip, projiziere3D, roentgen, type KameraStand} from './technik-bausteine';
 
 /**
  * Probe Bildwelt „Technik“: Wie misst ein Fahrrad-Tacho das Tempo?
@@ -137,6 +137,8 @@ const TachoProbe: React.FC = () => {
       <AbsoluteFill style={{background: `linear-gradient(180deg, ${BG}F2 0%, ${BG}99 14%, ${BG}00 24%)`}} />
       <Titel text={<>So misst dein Tacho das <span style={{color: AKZENT}}>Tempo</span></>} />
       <EckTag texte={['Illustration', 'Zeitlupe ×4']} top={130} />
+      <Kapitel top={440} abschnitte={[{text: 'Das Rad', ab: 0}, {text: 'Der Sensor', ab: 36}, {text: 'Die Messung', ab: ERSTER}]} />
+      <StatusChip top={1080} zustaende={[{text: 'Wartet', ab: 0}, {text: 'Magnet erkannt', ab: ERSTER}, {text: 'Gemessen', ab: ZWEITER, akzent: true}]} />
       <Callout punkt={sensorPx} text="Sensor" ab={36} versatz={[-170, -190]} />
       <Callout punkt={magnetPx} text="Magnet" ab={44} bis={104} versatz={[150, 130]} akzent />
       <MessPanel
