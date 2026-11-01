@@ -40,19 +40,19 @@ Vorbilder: Instagram **schraffuren** (Welt) und **scroll.engineer** (Technik). N
 
 ### Was die Vorbilder konkret machen (Bild-für-Bild-Analyse 2026-11-01)
 
-Ausgewertet: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher“ (66 s), „Gehalt als Kassenbon“ (62 s), „Blackout“; scroll.engineer „Apple Watch“ (84 s), „Navy-Täuschkörper“ (83 s), „Google Maps“, „Turbolader“. Ton gemessen (Lautheit, Pausen, Bassband, Effekt-Spitzen per Web-Audio im Browser, nichts heruntergeladen) bei „Navy“ und „Gehalt“; Skript aus den eingebrannten Untertiteln gelesen (Anfang + Ende).
+Ausgewertet, je 6 Reels Bild für Bild über die ganze Länge: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher“ (66 s), „Gehalt als Kassenbon“ (62 s), „Blackout“, „Dein Leben in Wochen“ (62 s), „Ewige Tabelle der Bundesliga“ (60 s); scroll.engineer „Apple Watch“ (84 s), „Navy-Täuschkörper“ (83 s), „Google Maps“, „Turbolader“, „AirTags“ (98 s), „SpaceX-Handy“ (83 s). Ton bei je 3 Reels komplett gemessen (Lautheit, Pausen, Bassband, Effekt-Spitzen per Web-Audio im Browser, nichts heruntergeladen); Skript aus den eingebrannten Untertiteln gelesen (Anfang + Ende).
 
 | Muster | schraffuren | scroll.engineer | Für uns |
 |---|---|---|---|
-| Länge | 54–66 s | 80–85 s | **45–75 s** statt 15–45 s; Länge kommt aus der Geschichte, nicht aus der Regel |
+| Länge | 54–66 s | 83–98 s | **45–75 s** statt 15–45 s; Länge kommt aus der Geschichte, nicht aus der Regel |
 | Bild 0 | Titel groß + Held-Objekt sofort (Karte, Balken, Kassenbon) | mitten im Mechanismus (Hautschnitt, Rakete über Wasser), Untertitel läuft ab Wort 1 | Frame 0 = Titel + Held, schon in Bewegung |
-| Held | **ein** Objekt trägt das ganze Video und verändert sich (Kassenbon wird länger, Summe sinkt; Balken wachsen; Karte → 3D-Landschaft) | ein Gerät/Ort, Kamera wechselt Blickwinkel (außen → Schnitt → Detail → außen) | ein Held pro Video, der sich verwandelt statt neuer Szenen |
+| Held | **ein** Objekt trägt das ganze Video und verändert sich (Kassenbon wird länger, Summe sinkt; Balken wachsen; Wochen-Raster färbt sich nach Lebensphasen; Ranglisten-Linien laufen durch 60 Jahre; Karte → 3D-Landschaft) | ein Gerät/Ort, Kamera wechselt Blickwinkel (außen → Schnitt → Detail → außen) | ein Held pro Video, der sich verwandelt statt neuer Szenen |
 | Schnitte | selten (alle 10–20 s), meist Kamerafahrt/Zoom als Übergang | alle 5–10 s neue Einstellung, oft harter Schnitt | Welt: Fahrten; Technik: Einstellungswechsel erlaubt |
-| Live-Element | „Während du dieses Video schaust …“ + Uhr 0:13 und mitlaufender Betrag | Messwert-Panel live | mind. ein Wert läuft mit der Videozeit |
+| Live-Element | „Während du dieses Video schaust …“ + Uhr 0:13 und mitlaufender Betrag; Jahr + Tabellenführer oben links wechseln mit | Messwert-Panel live; **Status-Chip** unten links wechselt (REPORTED → OFFLINE → NEARBY → PRECISE) | mind. ein Wert läuft mit der Videozeit |
 | Untertitel | Satzstücke 4–7 Wörter, weiß, teils roter Kasten | 3–4 Wörter, Wort für Wort: aktives Wort hell/fett, Rest grau, Kasten mit Akzentbalken; Schlüsselwort unterstrichen | Wort-für-Wort im Kanal-Look (`Untertitel` in `technik-bausteine.tsx`) |
-| Labels | kleine Ortsnamen, Zahlen am Objekt („+19 Min“) | Mono-Labels mit Pfeil („‹ BLOOD VESSELS“), Callout-Pillen | `Callout`, kurze Mono-Labels |
-| Ehrlichkeit | Quelle winzig unten links, dauerhaft | Tag „illustrative reconstruction“, „magnified illustration“ | `EckTag` + Quelle |
-| Schluss | Pointe als Rechenergebnis mit „also“ („… kommen bei dir also nur knapp 0,53 € an.“), letztes Bild = erstes Bild → **Loop** | Loop (Apple Watch) oder Frage an die Zuschauer („Would you trust a fake radar signal to defend a billion dollar warship?“) | Pointe-Satz, dann Bild in Frame 0 zurückführen; Fragen nur, wenn echte Meinungsfrage |
+| Labels | kleine Ortsnamen, Zahlen am Objekt („+19 Min“) | Mono-Labels mit Pfeil („‹ BLOOD VESSELS“), Callout-Pillen; **Kapitel-Label** oben links pro Abschnitt („▢ ORBITING CELL TOWER“ → „▢ THE SATELLITE“ → „▢ ORBITAL SPEED“); große Zahl als Karte mit Umrechnung („17,000 mph ≈ 7.7 km every second“) | `Callout`, kurze Mono-Labels, Kapitel-Label (`EckTag` links oben), Zahl immer mit greifbarer Umrechnung |
+| Ehrlichkeit | Quelle winzig unten links, dauerhaft | Tag „illustrative reconstruction“, „magnified illustration“, „recreated model · not to scale · time-lapse“ | `EckTag` + Quelle |
+| Schluss | Pointe als Rechenergebnis mit „also“ („… kommen bei dir also nur knapp 0,53 € an.“) oder Frage an den Zuschauer („Und du wartest noch?“), letztes Bild = erstes Bild → **Loop** | Loop (Apple Watch) oder Frage an die Zuschauer – 2 von 6 enden mit „Would you trust …?“ | Pointe-Satz, dann Bild in Frame 0 zurückführen; Fragen nur, wenn echte Meinungsfrage |
 | Farbe | Schwarz/Creme + eine Signalfarbe (Rot) | gedämpft Grau/Blau + eine Leuchtfarbe (Grün, Orange) | bleibt: Blau + Koralle |
 
 #### Skript (aus Untertiteln gelesen)
@@ -65,12 +65,23 @@ Ausgewertet: schraffuren „Zug endet in Basel“ (54 s), „Musk wird reicher�
 
 #### Ton (gemessen)
 
-| | schraffuren „Gehalt“ | scroll.engineer „Navy“ | Für uns |
+Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median · ein Effekt-Akzent alle … s):
+
+| Reel | Pausen | Bass | Dynamik | Akzent alle |
+|---|---|---|---|---|
+| schraffuren „Gehalt“ (62 s) | 11 (4,5 s) | −55,5 dB | 2,8 | 2,1 s |
+| schraffuren „Leben in Wochen“ (62 s) | 7 (4,9 s) | −57,6 dB | 4,8 | 2,1 s |
+| schraffuren „Bundesliga“ (60 s) | 3 (0,9 s) | −55,2 dB | 2,6 | 2,1 s |
+| scroll.engineer „Navy“ (83 s) | 4 (1,8 s) | −41,5 dB | 1,7 | 4,2 s |
+| scroll.engineer „AirTags“ (98 s) | 0 | −43,7 dB | 1,8 | 3,4 s |
+| scroll.engineer „SpaceX“ (83 s) | 21 (10,2 s) | −58,3 dB | 1,8 | 3,2 s |
+
+| | schraffuren (Welt) | scroll.engineer (Technik) | Für uns |
 |---|---|---|---|
-| Stille | keine echte Stille; 11 Atempausen 0,3–0,7 s | praktisch keine Pausen (4 × ≤ 0,6 s in 83 s) | Stimme + Musik durchgehend, Pausen zwischen Sätzen kurz schneiden (≤ 0,5 s) |
-| Unterlage | leise, kaum Bass (Bassband ≈ −55 dB) | dichter, basslastiger Klangteppich (≈ −41 dB), leiseste Stelle noch 19 % der Normallautstärke | Welt: leise Musik (`musik-wissen.py`); Technik: tieferer, dichterer Teppich (Drone/Atmo) |
-| Effekte | ≈ alle 2 s ein kleiner Ton – an **jedem** sichtbaren Ereignis (neue Kassenbon-Zeile) | ≈ alle 4 s ein Akzent – an Schnitten/Einschlägen | Welt: viele leise Mikro-Sounds an Ereignissen (`kTick`, `kPop`); Technik: wenige, tiefe Akzente an Schnitten (`kWhoosh`, `impact`) |
-| Dynamik | lebendig (Spitze ≈ 2,8 × Median) | stark verdichtet (≈ 1,7 × Median) | Endmischung −14 LUFS; Technik stärker komprimieren |
+| Stille | kaum; kurze Atempausen zwischen Sätzen | meist gar keine (2 von 3), einmal bewusste Pausen | Stimme + Unterlage durchgehend, Satzpausen auf ≤ 0,5 s kürzen |
+| Unterlage | leise, kaum Bass (≈ −56 dB) | meist dichter, basslastiger Teppich (≈ −42 dB) | Welt: leise Musik (`musik-wissen.py`); Technik: tiefer Drone/Atmo-Teppich |
+| Effekte | sehr regelmäßig **alle ≈ 2 s** ein kleiner Ton – an jedem sichtbaren Ereignis (Bon-Zeile, Kästchen, Linie) | **alle 3–4 s** ein Akzent – an Schnitten/Einschlägen | Welt: Mikro-Sounds im 2-s-Takt an Ereignissen (`kTick`, `kPop`); Technik: tiefe Akzente an Schnitten (`kWhoosh`, `impact`) |
+| Dynamik | lebendig (2,6–4,8) | stark verdichtet (1,7–1,8), in allen drei gleich | Endmischung −14 LUFS; Technik stärker komprimieren |
 
 ## Bewegungssprache (fest)
 
