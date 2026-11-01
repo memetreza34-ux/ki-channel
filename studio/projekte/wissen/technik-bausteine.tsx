@@ -1,5 +1,6 @@
-import React from 'react';
-import {interpolate, spring, useCurrentFrame} from 'remotion';
+import React, {useMemo} from 'react';
+import {createTikTokStyleCaptions, type Caption} from '@remotion/captions';
+import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {AdditiveBlending, Color, DoubleSide, PerspectiveCamera, ShaderMaterial, Vector3} from 'three';
 import {AKZENT, BG, HELL, STAHL, clamp} from './bausteine';
 
@@ -128,3 +129,41 @@ export const EckTag: React.FC<{texte: string[]; top?: number}> = ({texte, top = 
     ))}
   </div>
 );
+
+/* ───────────── Untertitel ───────────── */
+
+/**
+ * Wort für Wort zum Voiceover (Machart scroll.engineer, Kanal-Look): 3–4 Wörter pro Seite, aktives Wort hell und fett,
+ * gesprochene Wörter hell, kommende grau; Kasten mit Akzentbalken. `schluessel` = Wörter, die unterstrichen werden.
+ * `captions` = Wortzeiten aus `npm run untertitel` (untertitel.json).
+ */
+export const Untertitel: React.FC<{captions: Caption[]; schluessel?: string[]; top?: number; seiteMs?: number}> = ({captions, schluessel = [], top = 1080, seiteMs = 900}) => {
+  const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const {pages} = useMemo(() => createTikTokStyleCaptions({captions, combineTokensWithinMilliseconds: seiteMs}), [captions, seiteMs]);
+  const jetzt = (f / fps) * 1000;
+  const seite = pages.find((p) => jetzt >= p.startMs && jetzt < p.startMs + p.durationMs);
+  if (!seite) return null;
+  const rein = interpolate(jetzt - seite.startMs, [0, 120], [0, 1], clamp);
+  const wichtig = new Set(schluessel.map((w) => w.toLowerCase()));
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top, display: 'flex', justifyContent: 'center', pointerEvents: 'none'}}>
+      <div style={{position: 'relative', maxWidth: 860, padding: '14px 28px 16px 40px', borderRadius: 16, background: 'rgba(10,15,28,0.88)', opacity: rein, transform: `translateY(${(1 - rein) * 10}px)`}}>
+        <div style={{position: 'absolute', left: 0, top: 12, bottom: 12, width: 8, borderRadius: 4, background: AKZENT}} />
+        <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 58, lineHeight: 1.15, whiteSpace: 'pre-wrap', textAlign: 'left'}}>
+          {seite.tokens.map((t, i) => {
+            const aktiv = jetzt >= t.fromMs && jetzt < t.toMs;
+            const gesagt = jetzt >= t.toMs;
+            const wort = t.text.trim().replace(/[.,!?;:„“"]/g, '').toLowerCase();
+            const unterstrichen = wichtig.has(wort) && (aktiv || gesagt);
+            return (
+              <span key={i} style={{color: aktiv || gesagt ? HELL : '#5D6886', textDecoration: unterstrichen ? `underline ${AKZENT} 6px` : 'none', textUnderlineOffset: 10}}>
+                {t.text}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
