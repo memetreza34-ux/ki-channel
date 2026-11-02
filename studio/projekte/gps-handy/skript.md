@@ -1,6 +1,6 @@
 # Wie weiß dein Handy, wo du bist? (GPS)
 
-**Status:** Phase 1 fertig (2026-11-01) – wartet auf Armans Aufnahme in
+**Status:** Phase 1 fertig (2026-11-01). Stummer Rohschnitt mit geschätzten Zeiten: Composition `GPS-Rohschnitt` (`projekte/wissen/GpsRohschnitt.tsx`, 2026-11-02). Wartet auf Armans Aufnahme in
 `kanal/shorts/2026-11-02_bis_2026-11-08/gps-handy/audio/`.
 
 - **Kernaussage:** Dein Handy empfängt nur – es misst, wie spät die Zeitsignale von vier Satelliten ankommen, und rechnet daraus deinen Ort. Ohne Einsteins Relativitätstheorie läge es jeden Tag ~10 km daneben.
