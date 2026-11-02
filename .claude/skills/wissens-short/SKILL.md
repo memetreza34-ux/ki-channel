@@ -17,6 +17,9 @@ Code: `studio/projekte/wissen/` – `bausteine.tsx` (Farben, Titel, Zähler, Pul
 
 ## Look
 
+**Text-Diät (Arman, 2026-11-02):** Das Bild erzählt, der Text kommt aus der Stimme (Wort-für-Wort-`Untertitel`). Pro Szene unter dem Titel nur Bild + **höchstens eine** große Zahl oder **ein** Label + winzige Quelle. Keine Erklärsätze, keine Panels mit mehreren Zeilen, keine Statuszeilen-Stapel. Requisiten mit Licht, Verlauf und Tiefe (Glas, Metall, Leuchten, Sternenhimmel) statt flacher Kästen. Referenz: `GPS-Rohschnitt`.
+
+
 - Grund `BG #0E1424`, Text `HELL #F3EFE7`, **eine** Akzentfarbe `AKZENT #FF6B4A` (Schlüsselwort im Titel, Einheit, Höhepunkt), Nebeninfo `STAHL #8A93A8`.
 - Titel oben (Space Grotesk 700, 92 px, max. 2 Zeilen), steht die ganze Szene.
 - Zahlen in Inter 800 (nicht Space Grotesk – deren „1“ wirkt falsch), 170 px, Einheit in Akzent daneben.
