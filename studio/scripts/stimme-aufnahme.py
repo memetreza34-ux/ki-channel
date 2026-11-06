@@ -72,6 +72,6 @@ master = 'equalizer=f=200:t=q:w=1:g=1.5,equalizer=f=3500:t=q:w=1.2:g=1.5,acompre
 subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(roh), '-af', master, '-ar', str(SR), '-ac', '1', str(public / 'voiceover.wav')], check=True)
 (projekt / 'absaetze.json').write_text(json.dumps(zeiten, ensure_ascii=False, indent=2))
 
-subprocess.run(['npm', 'run', 'untertitel', '--silent', '--', slug], check=True, cwd=ROOT)
+subprocess.run(['npm', 'run', 'untertitel', '--silent', '--', slug], check=True, cwd=ROOT, shell=sys.platform == 'win32')
 
 print(f'\nFertig: Sprache {t:.1f}s. Musik: public/musik/wissen.wav (musik-wissen.py). Jetzt Szenen auf absaetze.json bauen.')

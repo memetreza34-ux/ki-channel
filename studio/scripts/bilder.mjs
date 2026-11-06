@@ -18,7 +18,7 @@
 import {execFileSync} from 'node:child_process';
 import {appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {OUT, parseArgs, STUDIO} from './lib.mjs';
+import {DRAWTEXT_SCHRIFT, OUT, parseArgs, STUDIO} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const CACHE = resolve(OUT, 'bilder');
@@ -199,7 +199,7 @@ if (flags.bild) {
     const beschriftet = resolve(CACHE, `thumb-${t.id}-l.jpg`);
     // -frames:v 1: animierte GIFs haben mehrere Bilder; kaputte Vorschauen überspringen statt abbrechen
     try {
-      execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', roh, '-frames:v', '1', '-vf', `scale=480:360:force_original_aspect_ratio=decrease,pad=480:360:(ow-iw)/2:(oh-ih)/2:color=0x0E1424,drawbox=x=0:y=0:w=iw:h=40:color=black@0.6:t=fill,drawtext=text='${t.id}':x=10:y=8:fontsize=24:fontcolor=white`, beschriftet]);
+      execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', roh, '-frames:v', '1', '-vf', `scale=480:360:force_original_aspect_ratio=decrease,pad=480:360:(ow-iw)/2:(oh-ih)/2:color=0x0E1424,drawbox=x=0:y=0:w=iw:h=40:color=black@0.6:t=fill,drawtext=${DRAWTEXT_SCHRIFT}text='${t.id}':x=10:y=8:fontsize=24:fontcolor=white`, beschriftet]);
       dateien.push(beschriftet);
     } catch {
       console.log(`  (Vorschau für ${t.id} übersprungen)`);

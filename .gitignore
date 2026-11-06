@@ -41,3 +41,6 @@ __pycache__/
 
 # Claude Code worktree sessions (local, not project data)
 .claude/worktrees/
+
+# Kenney-Pakete: die ZIPs sind doppelt, ausgepackt liegt alles daneben
+studio/assets-roh/kenney-3d/zip/

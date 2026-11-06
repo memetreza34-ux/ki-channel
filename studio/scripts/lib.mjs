@@ -9,6 +9,9 @@ export const OUT = resolve(STUDIO, 'out');
 /** GPU-Rendering (nötig für 3D/WebGL, auf dem Mac auch schneller). */
 export const CHROMIUM = {gl: 'angle'};
 
+/** ffmpeg-drawtext findet unter Windows ohne Fontconfig keine Schrift: Arial fest angeben. */
+export const DRAWTEXT_SCHRIFT = process.platform === 'win32' ? "fontfile='C\\:/Windows/Fonts/arial.ttf':" : '';
+
 /** Liest `--name=wert` und freie Argumente. */
 export const parseArgs = (argv) => {
   const flags = {};

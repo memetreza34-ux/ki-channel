@@ -15,7 +15,7 @@
 import {execFileSync} from 'node:child_process';
 import {appendFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {OUT, parseArgs, ROOT, STUDIO} from './lib.mjs';
+import {DRAWTEXT_SCHRIFT, OUT, parseArgs, ROOT, STUDIO} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const CACHE = resolve(OUT, 'broll');
@@ -156,7 +156,7 @@ if (flags.bild) {
       writeFileSync(f, Buffer.from(await r.arrayBuffer()));
     }
     const labelled = resolve(CACHE, `thumb-${h.id}-l.jpg`);
-    execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', f, '-vf', `scale=480:270:force_original_aspect_ratio=increase,crop=480:270,drawbox=x=0:y=0:w=iw:h=40:color=black@0.6:t=fill,drawtext=text='${h.id}  ${h.dauer}':x=10:y=8:fontsize=24:fontcolor=white`, labelled]);
+    execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', f, '-vf', `scale=480:270:force_original_aspect_ratio=increase,crop=480:270,drawbox=x=0:y=0:w=iw:h=40:color=black@0.6:t=fill,drawtext=${DRAWTEXT_SCHRIFT}text='${h.id}  ${h.dauer}':x=10:y=8:fontsize=24:fontcolor=white`, labelled]);
     files.push(labelled);
   }
   if (files.length > 0) {

@@ -4,7 +4,7 @@
   "private": true,
   "description": "Denkwürfel – Erklärkanal (Allgemeinwissen in Zahlen) mit Remotion",
   "engines": {
-    "node": ">=20 <21"
+    "node": ">=20.11"
   },
   "scripts": {
     "studio": "remotion studio studio/studio-entry.ts --public-dir=studio/public --gl=angle",

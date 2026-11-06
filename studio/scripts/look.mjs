@@ -12,9 +12,9 @@
  */
 import {renderStill, selectComposition} from '@remotion/renderer';
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, rmSync} from 'node:fs';
+import {copyFileSync, mkdirSync, rmSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {bundleStudio, CHROMIUM, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
+import {bundleStudio, CHROMIUM, DRAWTEXT_SCHRIFT, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
 
 const {flags, rest} = parseArgs(process.argv.slice(2));
 const id = rest[0];
@@ -47,7 +47,7 @@ for (const frame of frames) {
   const label = `${frame}  ·  ${(frame / composition.fps).toFixed(1)}s`;
   execFileSync('ffmpeg', [
     '-loglevel', 'error', '-y', '-i', raw,
-    '-vf', `drawbox=x=0:y=0:w=iw:h=44:color=black@0.55:t=fill,drawtext=text='${label}':x=14:y=10:fontsize=26:fontcolor=white`,
+    '-vf', `drawbox=x=0:y=0:w=iw:h=44:color=black@0.55:t=fill,drawtext=${DRAWTEXT_SCHRIFT}text='${label}':x=14:y=10:fontsize=26:fontcolor=white`,
     out,
   ]);
   rmSync(raw);
@@ -79,6 +79,6 @@ const filter =
     const y = r === 0 ? '0' : Array.from({length: r}, () => 'h0').join('+');
     return `${x}_${y}`;
   }).join('|')}:fill=black`;
-if (tiles.length === 1) execFileSync('cp', [tiles[0], sheet]);
+if (tiles.length === 1) copyFileSync(tiles[0], sheet);
 else execFileSync('ffmpeg', ['-loglevel', 'error', '-y', ...inputs, '-filter_complex', filter, '-frames:v', '1', '-q:v', '3', sheet]);
 console.log(`Kontaktbogen: ${sheet}`);
