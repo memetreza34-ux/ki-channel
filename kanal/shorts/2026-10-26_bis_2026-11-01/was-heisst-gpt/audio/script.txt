@@ -1,0 +1,11 @@
+Du benutzt ChatGPT vielleicht jeden Tag. Aber weißt du, wofür GPT eigentlich steht?
+
+G steht für generativ. Die KI erzeugt etwas Neues – Texte, Antworten, Code.
+
+P steht für pre-trained, also vortrainiert. Bevor du überhaupt die erste Frage stellst, hat sie schon riesige Mengen Text gelesen.
+
+Und T steht für Transformer. Das ist der wichtigste Buchstabe. Den Transformer haben Forscher von Google 2017 erfunden, in einem Paper mit dem Titel „Attention Is All You Need“. Fast alle großen KIs von heute bauen darauf auf – auch Gemini und Claude.
+
+Generativ, vortrainiert, Transformer. Jetzt weißt du's.
+
+Folg Denkwürfel für mehr KI in einfach.

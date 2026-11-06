@@ -1,0 +1,7 @@
+Wie viele R hat das Wort Strawberry? Drei. Lange Zeit hat ChatGPT hier trotzdem gesagt: zwei.
+
+Warum scheitert eine so schlaue KI an so einer einfachen Frage? Weil sie keine Buchstaben sieht. Eine KI zerlegt Text in kleine Stücke, sogenannte Tokens. Strawberry ist für sie nicht S-T-R-A-W und so weiter, sondern ungefähr drei Brocken: „str“, „aw“ und „berry“. Die Buchstaben darin kann sie nicht einfach abzählen.
+
+Neuere Modelle denken erst Schritt für Schritt nach und kriegen das inzwischen hin. Und das Rätsel wurde so berühmt, dass OpenAI ein Denk-Modell intern angeblich sogar „Strawberry“ genannt hat.
+
+Folg Denkwürfel, wenn du KI wirklich verstehen willst.
