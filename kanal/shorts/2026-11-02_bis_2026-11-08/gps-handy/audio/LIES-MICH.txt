@@ -1,0 +1,20 @@
+Short: Wie weiß dein Handy, wo du bist? (GPS) – ca. 60 Sekunden
+
+So geht's:
+1. audio/script.txt öffnen und 1 zu 1 vorlesen.
+2. Am liebsten je Absatz eine Datei (1.m4a, 2.m4a … 8.m4a) – oder alles in einer Datei.
+3. Aufnahme in DIESEN audio-Ordner legen.
+4. Claude Bescheid sagen: „Audio für GPS ist drin, mach Phase 3“.
+
+Sprechen:
+- Zügig, ca. 180 Wörter pro Minute – lieber etwas schneller als zu langsam.
+- Satz 1 mit Energie und Überraschung: „kein einziges Signal“ betonen.
+- Pausen zwischen den Absätzen kurz halten, Claude kürzt sie ohnehin auf eine halbe Sekunde.
+- „Jetzt der verrückte Teil“ ruhig mit kleinem Grinsen.
+- Der letzte Satz klingt wie der erste – so läuft das Video im Loop nahtlos weiter.
+
+Aussprache:
+- GPS = deutsch „Ge-Pe-Es“
+- Einstein = deutsch „Ein-schtein“
+
+Tipps: ruhiger Raum, Handy ca. 20 cm vor dem Mund, freundlich wie zu einem Freund.

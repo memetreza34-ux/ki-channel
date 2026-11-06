@@ -1,0 +1,29 @@
+Du hast diesen Satz bestimmt schon gehört: Eine Frage an ChatGPT braucht zehnmal so viel Strom wie eine Google-Suche. Er steht in Zeitungen, in Präsentationen, in Kommentaren. Das Problem: Die Rechnung dahinter stammt aus dem Jahr 2023. Und nach heutigen Zahlen ist sie ungefähr zehnmal zu hoch.
+
+Bevor du dich jetzt zurücklehnst: Gleichzeitig wollen Microsoft und Google stillgelegte Atomkraftwerke wieder ans Netz bringen – für ihre Rechenzentren. Wie passt das zusammen? Eine einzelne Frage braucht fast nichts, und trotzdem wird der Strom knapp? Genau das klären wir heute. Mit echten Zahlen.
+
+Fangen wir mit einer einzelnen Frage an. Seit 2025 gibt es dazu zum ersten Mal Zahlen von den Firmen selbst. Google sagt: Eine typische Textfrage an Gemini braucht 0,24 Wattstunden. OpenAI-Chef Sam Altman nennt für ChatGPT 0,34 Wattstunden. Und die unabhängigen Forscher von Epoch AI kommen auf etwa 0,3. Drei Quellen, fast dieselbe Zahl. Unabhängig geprüft sind die Firmenangaben zwar nicht – aber sie passen zusammen.
+
+Was heißt 0,3 Wattstunden? Eine LED-Lampe braucht so viel in knapp zwei Minuten. Ein Fernseher in ungefähr zehn Sekunden. Und jetzt rate mal: Was braucht mehr Strom – hundert Fragen an eine KI oder einmal einen Liter Teewasser kochen? Das Teewasser. Und zwar deutlich. Ein Wasserkocher braucht dafür so viel wie über dreihundert KI-Fragen.
+
+Warum war die alte Zahl so viel höher? Erstens hat man 2023 mit sehr langen Antworten gerechnet. Zweitens sind Chips und Modelle seitdem viel sparsamer geworden. Google sagt sogar: Innerhalb eines Jahres ist der Strom pro Gemini-Frage auf ein Dreiunddreißigstel gefallen.
+
+Aber Achtung: Die 0,3 Wattstunden gelten für eine kurze Textfrage. Lädst du ein sehr langes Dokument hoch, kann eine einzige Antwort laut Epoch AI bis zu 40 Wattstunden brauchen. Das ist über hundertmal so viel. Modelle, die vor der Antwort lange nachdenken, brauchen ebenfalls mehr. Und dann gibt es noch Bilder und Videos.
+
+Das MIT Technology Review hat das nachgemessen – mit offenen Modellen, die jeder herunterladen kann. Ein Bild brauchte ungefähr so viel Strom wie zwei Textfragen. Ein fünf Sekunden langes Video dagegen: rund 940 Wattstunden. Das sind fast dreitausend Textfragen. Für fünf Sekunden. Andere Videomodelle sind sparsamer, aber Video bleibt mit Abstand die teuerste Art, KI zu benutzen.
+
+Jetzt die andere Seite der Rechnung. ChatGPT bekam schon Mitte 2025 rund zweieinhalb Milliarden Anfragen – pro Tag. Und ChatGPT ist nur eine KI von vielen. Dazu kommen Gemini, Meta, Copilot, KI in Apps und in Firmen. Und bevor ein Modell überhaupt antworten kann, wird es trainiert: wochen- oder monatelang, auf zehntausenden Chips gleichzeitig.
+
+Zusammen ergibt das eine Zahl, die man sich merken sollte. Alle Rechenzentren der Welt haben 2025 laut der Internationalen Energieagentur rund 485 Terawattstunden Strom verbraucht. Das ist fast so viel wie ganz Deutschland in einem Jahr. Darin steckt nicht nur KI, sondern auch Cloud, Streaming und Webseiten. Aber am schnellsten wächst die KI: Rechenzentren speziell für KI haben 2025 rund fünfzig Prozent mehr Strom gebraucht als im Jahr davor.
+
+Und es geht weiter. Bis 2030 soll sich der Verbrauch aller Rechenzentren ungefähr verdoppeln, auf rund 950 Terawattstunden. Der Teil für KI soll sich sogar verdreifachen.
+
+Eng wird es vor allem dort, wo viele Rechenzentren auf einem Fleck stehen. In Irland brauchen sie inzwischen fast ein Viertel des gesamten Stroms – fast so viel wie alle Haushalte im Land zusammen. Im US-Bundesstaat Virginia ist es sogar mehr als ein Viertel.
+
+Deshalb suchen die Tech-Konzerne neue Kraftwerke. Microsoft hat einen Vertrag über zwanzig Jahre unterschrieben, damit ein stillgelegter Reaktor in Three Mile Island wieder Strom liefert. Ausgerechnet an dem Ort, an dem es 1979 – in einem anderen Block – den schwersten Atomunfall der USA gab. Der Neustart ist für 2027 geplant. Google hat einen ähnlichen Vertrag für ein Atomkraftwerk in Iowa.
+
+Und das Wasser? Rechenzentren werden gekühlt, oft mit Wasser. Google nennt pro Textfrage etwa fünf Tropfen. Vielleicht hast du auch gehört, eine KI-Mail koste eine ganze Flasche Wasser. Diese Schätzung von 2024 galt für eine komplette E-Mail mit einem älteren Modell, und sie zählt auch das Wasser mit, das in Kraftwerken für den Strom verbraucht wird. Beide Zahlen messen also verschiedene Dinge.
+
+Was heißt das jetzt für dich? Erstens: Für normale Fragen an eine KI brauchst du kein schlechtes Gewissen. Ein Liter Teewasser braucht mehr Strom als dreihundert Fragen. Zweitens: Bilder, Videos und riesige Dokumente sind eine andere Liga – die setzt du am besten bewusst ein. Und drittens: Die große Frage ist nicht deine einzelne Frage. Sondern woher der Strom für Milliarden Fragen kommt – aus Kohle und Gas, oder aus Sonne, Wind und Atom.
+
+Halten wir fest: Eine einzelne KI-Frage ist winzig. Milliarden davon sind es nicht. Wenn du verstehen willst, wie KI wirklich funktioniert – ohne Panik und ohne Hype: Abonnieren. Bis zum nächsten Mal, mit Toki.

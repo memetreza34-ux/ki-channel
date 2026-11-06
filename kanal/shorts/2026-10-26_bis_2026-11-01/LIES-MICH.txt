@@ -1,0 +1,18 @@
+3 eigene Shorts – je ca. 30–40 Sekunden
+
+So geht's:
+1. In jedem Ordner audio/script.txt öffnen und 1 zu 1 vorlesen.
+2. Die Aufnahme in DENSELBEN audio-Ordner legen (z. B. voiceover.m4a).
+3. Claude Bescheid sagen: „Audio für die Shorts ist drin, mach Phase 3“.
+
+Wichtig bei Shorts: Den ersten Satz mit Energie sprechen – der entscheidet, ob jemand weiterwischt.
+Nicht zu langsam, lieber etwas zügiger als beim langen Video.
+
+Aussprache:
+- „Strawberry“ = englisch Strooberi · „str“, „aw“, „berry“ = einzeln: „s-t-r“, „au“, „berri“
+- „Sam Altman“ = englisch Säm Oltmän
+- „pre-trained“ = englisch pri-träind · „Transformer“ = englisch Tränsformer
+- „Attention Is All You Need“ = englisch Ättenschn is ool ju niid
+- „Claude“ = Klood · „Gemini“ = Dschemini
+
+Tipps: ruhiger Raum, Handy ca. 20 cm vor dem Mund, freundlich wie zu einem Freund.

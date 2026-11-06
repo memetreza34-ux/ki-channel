@@ -1,0 +1,464 @@
+1
+00:00:00,626 --> 00:00:02,568
+Du hast diesen Satz bestimmt schon gehört:
+
+2
+00:00:02,618 --> 00:00:06,330
+Eine Frage an ChatGPT braucht zehnmal so viel Strom wie eine Google-Suche.
+
+3
+00:00:06,380 --> 00:00:07,510
+Er steht in Zeitungen,
+
+4
+00:00:07,560 --> 00:00:09,630
+in Präsentationen, in Kommentaren.
+
+5
+00:00:09,680 --> 00:00:13,950
+Das Problem: Die Rechnung dahinter stammt aus dem Jahr 2023.
+
+6
+00:00:14,000 --> 00:00:18,170
+Und nach heutigen Zahlen ist sie ungefähr zehnmal zu hoch.
+
+7
+00:00:18,482 --> 00:00:19,970
+Bevor du dich jetzt zurücklehnst:
+
+8
+00:00:20,020 --> 00:00:22,530
+Gleichzeitig wollen Microsoft und Google stillgelegte
+
+9
+00:00:22,580 --> 00:00:24,572
+Atomkraftwerke wieder ans Netz bringen
+
+10
+00:00:24,622 --> 00:00:25,790
+für ihre Rechenzentren.
+
+11
+00:00:25,840 --> 00:00:27,492
+Wie passt das zusammen?
+
+12
+00:00:27,542 --> 00:00:29,667
+Eine einzelne Frage braucht fast nichts,
+
+13
+00:00:29,717 --> 00:00:31,477
+und trotzdem wird der Strom knapp?
+
+14
+00:00:31,527 --> 00:00:33,500
+Genau das klären wir heute.
+
+15
+00:00:33,550 --> 00:00:34,830
+Mit echten Zahlen.
+
+16
+00:00:34,880 --> 00:00:37,112
+Fangen wir mit einer einzelnen Frage an.
+
+17
+00:00:37,162 --> 00:00:41,550
+Seit 2025 gibt es dazu zum ersten Mal Zahlen von den Firmen selbst.
+
+18
+00:00:41,600 --> 00:00:46,350
+Google sagt: Eine typische Textfrage an Gemini braucht 0,24 Wattstunden.
+
+19
+00:00:46,400 --> 00:00:51,110
+OpenAI-Chef Sam Altman nennt für ChatGPT 0,34 Wattstunden.
+
+20
+00:00:51,160 --> 00:00:55,880
+Und die unabhängigen Forscher von Epoch AI kommen auf etwa 0,3.
+
+21
+00:00:55,930 --> 00:00:58,510
+Drei Quellen, fast dieselbe Zahl.
+
+22
+00:00:58,560 --> 00:01:00,625
+Unabhängig geprüft sind die Firmenangaben zwar nicht
+
+23
+00:01:00,675 --> 00:01:01,810
+aber sie passen zusammen.
+
+24
+00:01:02,050 --> 00:01:04,650
+Was heißt 0,3 Wattstunden?
+
+25
+00:01:05,019 --> 00:01:07,910
+Eine LED-Lampe braucht so viel in knapp zwei Minuten.
+
+26
+00:01:07,960 --> 00:01:10,297
+Ein Fernseher in ungefähr zehn Sekunden.
+
+27
+00:01:10,347 --> 00:01:12,873
+Und jetzt rate mal: Was braucht mehr Strom
+
+28
+00:01:12,923 --> 00:01:17,570
+hundert Fragen an eine KI oder einmal einen Liter Teewasser kochen?
+
+29
+00:01:18,064 --> 00:01:18,270
+Das Teewasser.
+
+30
+00:01:18,320 --> 00:01:19,450
+Und zwar deutlich.
+
+31
+00:01:19,500 --> 00:01:23,770
+Ein Wasserkocher braucht dafür so viel wie über dreihundert KI-Fragen.
+
+32
+00:01:24,028 --> 00:01:26,583
+Warum war die alte Zahl so viel höher?
+
+33
+00:01:26,633 --> 00:01:30,090
+Erstens hat man 2023 mit sehr langen Antworten gerechnet.
+
+34
+00:01:30,140 --> 00:01:33,270
+Zweitens sind Chips und Modelle seitdem viel sparsamer geworden.
+
+35
+00:01:33,320 --> 00:01:36,050
+Google sagt sogar: Innerhalb eines Jahres ist der Strom
+
+36
+00:01:36,100 --> 00:01:39,470
+pro Gemini-Frage auf ein Dreiunddreißigstel gefallen.
+
+37
+00:01:39,520 --> 00:01:44,816
+Aber Achtung: Die 0,3 Wattstunden gelten für eine kurze Textfrage.
+
+38
+00:01:44,866 --> 00:01:46,970
+Lädst du ein sehr langes Dokument hoch,
+
+39
+00:01:47,020 --> 00:01:51,175
+kann eine einzige Antwort laut Epoch AI bis zu 40 Wattstunden brauchen.
+
+40
+00:01:51,225 --> 00:01:53,250
+Das ist über hundertmal so viel.
+
+41
+00:01:53,300 --> 00:01:55,360
+Modelle, die vor der Antwort lange nachdenken,
+
+42
+00:01:55,410 --> 00:01:56,590
+brauchen ebenfalls mehr.
+
+43
+00:01:56,640 --> 00:01:58,610
+Und dann gibt es noch Bilder und Videos.
+
+44
+00:01:58,887 --> 00:02:00,730
+Das MIT Technology Review hat das nachgemessen
+
+45
+00:02:00,780 --> 00:02:02,110
+mit offenen Modellen,
+
+46
+00:02:02,160 --> 00:02:04,550
+die jeder herunterladen kann.
+
+47
+00:02:04,600 --> 00:02:08,377
+Ein Bild brauchte ungefähr so viel Strom wie zwei Textfragen.
+
+48
+00:02:08,427 --> 00:02:11,020
+Ein fünf Sekunden langes Video dagegen:
+
+49
+00:02:11,070 --> 00:02:13,370
+rund 940 Wattstunden.
+
+50
+00:02:13,525 --> 00:02:15,920
+Das sind fast dreitausend Textfragen.
+
+51
+00:02:15,970 --> 00:02:17,390
+Für fünf Sekunden.
+
+52
+00:02:17,440 --> 00:02:19,520
+Andere Videomodelle sind sparsamer,
+
+53
+00:02:19,570 --> 00:02:22,150
+aber Video bleibt mit Abstand die teuerste Art,
+
+54
+00:02:22,200 --> 00:02:23,450
+KI zu benutzen.
+
+55
+00:02:23,726 --> 00:02:25,775
+Jetzt die andere Seite der Rechnung.
+
+56
+00:02:25,825 --> 00:02:30,520
+ChatGPT bekam schon Mitte 2025 rund zweieinhalb Milliarden
+
+57
+00:02:30,570 --> 00:02:32,450
+Anfragen – pro Tag.
+
+58
+00:02:32,517 --> 00:02:35,566
+Und ChatGPT ist nur eine KI von vielen.
+
+59
+00:02:35,616 --> 00:02:37,910
+Dazu kommen Gemini, Meta,
+
+60
+00:02:37,960 --> 00:02:41,330
+Copilot, KI in Apps und in Firmen.
+
+61
+00:02:41,508 --> 00:02:43,770
+Und bevor ein Modell überhaupt antworten kann,
+
+62
+00:02:43,820 --> 00:02:46,370
+wird es trainiert: wochen- oder monatelang,
+
+63
+00:02:46,420 --> 00:02:49,099
+auf zehntausenden Chips gleichzeitig.
+
+64
+00:02:49,149 --> 00:02:50,380
+Zusammen ergibt das eine Zahl,
+
+65
+00:02:50,430 --> 00:02:51,860
+die man sich merken sollte.
+
+66
+00:02:51,910 --> 00:02:56,570
+Alle Rechenzentren der Welt haben 2025 laut der Internationalen
+
+67
+00:02:56,620 --> 00:03:01,250
+Energieagentur rund 485 Terawattstunden Strom verbraucht.
+
+68
+00:03:01,384 --> 00:03:05,390
+Das ist fast so viel wie ganz Deutschland in einem Jahr.
+
+69
+00:03:05,440 --> 00:03:06,590
+Darin steckt nicht nur KI,
+
+70
+00:03:06,640 --> 00:03:09,078
+sondern auch Cloud, Streaming und Webseiten.
+
+71
+00:03:09,128 --> 00:03:11,870
+Aber am schnellsten wächst die KI:
+
+72
+00:03:11,920 --> 00:03:15,650
+Rechenzentren speziell für KI haben 2025 rund fünfzig
+
+73
+00:03:15,700 --> 00:03:19,010
+Prozent mehr Strom gebraucht als im Jahr davor.
+
+74
+00:03:19,298 --> 00:03:20,940
+Und es geht weiter.
+
+75
+00:03:20,990 --> 00:03:23,960
+Bis 2030 soll sich der Verbrauch aller Rechenzentren
+
+76
+00:03:24,010 --> 00:03:27,556
+ungefähr verdoppeln, auf rund 950 Terawattstunden.
+
+77
+00:03:27,606 --> 00:03:31,296
+Der Teil für KI soll sich sogar verdreifachen.
+
+78
+00:03:31,346 --> 00:03:32,790
+Eng wird es vor allem dort,
+
+79
+00:03:32,840 --> 00:03:35,230
+wo viele Rechenzentren auf einem Fleck stehen.
+
+80
+00:03:35,280 --> 00:03:38,090
+In Irland brauchen sie inzwischen fast ein Viertel des
+
+81
+00:03:38,140 --> 00:03:42,179
+gesamten Stroms – fast so viel wie alle Haushalte im Land zusammen.
+
+82
+00:03:42,229 --> 00:03:45,950
+Im US-Bundesstaat Virginia ist es sogar mehr als ein Viertel.
+
+83
+00:03:46,000 --> 00:03:48,710
+Deshalb suchen die Tech-Konzerne neue Kraftwerke.
+
+84
+00:03:48,760 --> 00:03:51,740
+Microsoft hat einen Vertrag über zwanzig Jahre unterschrieben,
+
+85
+00:03:51,790 --> 00:03:55,830
+damit ein stillgelegter Reaktor in Three Mile Island wieder Strom liefert.
+
+86
+00:03:55,880 --> 00:03:57,400
+Ausgerechnet an dem Ort,
+
+87
+00:03:57,450 --> 00:03:59,655
+an dem es 1979 – in einem anderen Block
+
+88
+00:03:59,705 --> 00:04:02,750
+den schwersten Atomunfall der USA gab.
+
+89
+00:04:02,800 --> 00:04:06,010
+Der Neustart ist für 2027 geplant.
+
+90
+00:04:06,060 --> 00:04:10,090
+Google hat einen ähnlichen Vertrag für ein Atomkraftwerk in Iowa.
+
+91
+00:04:10,171 --> 00:04:11,630
+Und das Wasser?
+
+92
+00:04:11,680 --> 00:04:13,570
+Rechenzentren werden gekühlt,
+
+93
+00:04:13,620 --> 00:04:14,510
+oft mit Wasser.
+
+94
+00:04:14,560 --> 00:04:17,470
+Google nennt pro Textfrage etwa fünf Tropfen.
+
+95
+00:04:17,520 --> 00:04:19,170
+Vielleicht hast du auch gehört,
+
+96
+00:04:19,220 --> 00:04:21,619
+eine KI-Mail koste eine ganze Flasche Wasser.
+
+97
+00:04:21,669 --> 00:04:25,380
+Diese Schätzung von 2024 galt für eine komplette E-Mail
+
+98
+00:04:25,430 --> 00:04:26,930
+mit einem älteren Modell,
+
+99
+00:04:26,980 --> 00:04:28,790
+und sie zählt auch das Wasser mit,
+
+100
+00:04:28,840 --> 00:04:31,590
+das in Kraftwerken für den Strom verbraucht wird.
+
+101
+00:04:31,640 --> 00:04:34,501
+Beide Zahlen messen also verschiedene Dinge.
+
+102
+00:04:34,551 --> 00:04:36,070
+Was heißt das jetzt für dich?
+
+103
+00:04:36,120 --> 00:04:41,150
+Erstens: Für normale Fragen an eine KI brauchst du kein schlechtes Gewissen.
+
+104
+00:04:41,200 --> 00:04:45,150
+Ein Liter Teewasser braucht mehr Strom als dreihundert Fragen.
+
+105
+00:04:45,200 --> 00:04:48,070
+Zweitens: Bilder, Videos und riesige Dokumente sind
+
+106
+00:04:48,120 --> 00:04:51,370
+eine andere Liga – die setzt du am besten bewusst ein.
+
+107
+00:04:51,420 --> 00:04:55,410
+Und drittens: Die große Frage ist nicht deine einzelne Frage.
+
+108
+00:04:55,460 --> 00:04:59,200
+Sondern woher der Strom für Milliarden Fragen kommt
+
+109
+00:04:59,250 --> 00:05:01,940
+aus Kohle und Gas, oder aus Sonne,
+
+110
+00:05:01,990 --> 00:05:03,298
+Wind und Atom.
+
+111
+00:05:03,348 --> 00:05:07,610
+Halten wir fest: Eine einzelne KI-Frage ist winzig.
+
+112
+00:05:07,660 --> 00:05:09,880
+Milliarden davon sind es nicht.
+
+113
+00:05:09,930 --> 00:05:11,540
+Wenn du verstehen willst,
+
+114
+00:05:11,590 --> 00:05:13,225
+wie KI wirklich funktioniert
+
+115
+00:05:13,275 --> 00:05:16,104
+ohne Panik und ohne Hype: Abonnieren.
+
+116
+00:05:16,154 --> 00:05:17,880
+Bis zum nächsten Mal, mit Toki.
+

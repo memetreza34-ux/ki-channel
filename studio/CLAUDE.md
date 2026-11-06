@@ -1,0 +1,162 @@
+# Studio — Arbeitsvertrag
+
+Hier entstehen alle Videos des Kanals **Denkwürfel**: ein Erklärkanal für Allgemeinwissen in Zahlen (Biologie, Geschichte, Politik, Geographie, Ideologien …) als 9:16-Shorts.
+
+**Standard für jedes neue Video: Skill `wissens-short`** – Look, Bewegungssprache, Sicherheitszonen, Sounds, Musik und Checkliste stehen dort. Baukasten und Beispiele: `projekte/wissen/` (`bausteine.tsx`, `Szenen.tsx`, `Faecher.tsx`, `Daten.tsx`). Bilder/MP4: `npm run wissen -- <ID> [--bilder=0,60]` (braucht kein System-ffmpeg).
+
+Mit Arman auf Deutsch, kurz und klar.
+
+## Zwei Wege
+
+- **Ersteller (schnell):** Für 8-Sekunden-Spots und Erklärvideos aus Standard-Szenen. Eine JSON-Datei nach dem Muster in `studio/ersteller/beispiele/` schreiben → `npm run erstellen -- <datei.json> --nur-bilder` ansehen → `npm run erstellen -- <datei.json>` rendert alle Formate aus `"formate"`. Arman kann dasselbe in `npm run studio` über das Formular der Compositions `Spot` / `Erklaerer` (Ordner „Ersteller“) machen. Szenentypen: `titel aussage liste schritte vergleich zahl chat icons tokens code orbit mindmap ablauf woerter meldungen broll bildschirm ende` (Felder: `studio/ersteller/schema.ts`). Jede Szene kann `effekt` haben: `strahlen partikel meteore raster konfetti`. Titel/Held können statt Icon ein `objekt3d` (`wuerfel kugel ring chip`) zeigen.
+- **Eigenes Projekt (frei):** Wenn die Standard-Szenen nicht reichen (eigene Mechanik, Kamerafahrten, Mockups, Screenshots) → Ablauf unten.
+
+Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in einem eigenen Projekt bauen.
+
+## Drei Phasen (jedes Kanal-Video)
+
+Armans Ordner: `kanal/shorts/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `export/` (siehe `kanal/README.md`).
+
+1. **Phase 1 – Skript (Claude, ohne Freigabe-Stopps):** Thema, Recherche, `studio/projekte/<thema>/skript.md` (Fakten + Quelle + Datum, Szenenplan), Kanal-Ordner anlegen, `audio/script.txt` (nur Sprechtext, Absätze mit Leerzeile, 1:1 kopierbar) + `audio/LIES-MICH.txt`. **Keine Animation, kein Render.** Dann auf Armans Audio warten.
+2. **Phase 2 – Audio (Arman):** Aufnahme in `audio/` (eine Datei oder `1.m4a … n.m4a`).
+3. **Phase 3 – Video (Claude):** Audio säubern → Wortzeiten → Absatzgrenzen → Szenen direkt auf die echte Stimme bauen, Sounds + leise Musik (`musik-wissen.py`), ansehen, Render, -14 LUFS. `export/` füllen: `video.mp4`, `cover.png` (1280×720), `caption.txt` (Titel, Beschreibung, Kapitel mit Zeiten, Quellen, 5 Hashtags), `untertitel-zeitstempel.txt` (`00:00 Satz` je Zeile, wie FinanzNeo).
+
+## Ablauf (eigenes Projekt)
+
+1. **Briefing klären:** Thema, Kernaussage in einem Satz, Format, Länge, Plattform. Fehlt etwas Wichtiges → fragen, sonst sinnvoll annehmen und sagen.
+2. **Projekt anlegen:** `npm run neu -- <slug> [vertical|landscape|square|portrait]` für Erklärvideos, `npm run neu -- <slug> --vorlage=werbung` für Werbeclips (gleich in 9:16, 1:1 und 4:5). Dann `skript.md` füllen (Hook, Sprechertext, Szenen, Fakten mit Quelle).
+3. **Fakten prüfen:** KI-News, Modelle, Preise, Limits ändern sich ständig → im Web prüfen, Quelle + Datum in `skript.md`.
+4. **Szene für Szene bauen.** Nach jeder Szene: `npm run look -- <ID> --range=<von>-<bis> --count=6` und die Bilder **ansehen**. Erst weiter, wenn die Szene gut aussieht.
+5. **Ganzes Video prüfen:** `npm run look -- <ID> --count=18`, dann selbst kritisieren oder den Agenten `video-kritiker` drüberschauen lassen. Fehler beheben, erneut ansehen.
+6. **Voiceover** spricht Arman selbst ein (keine KI-Stimme). Datei liegt in `studio/public/projekte/<slug>/voiceover.mp3|wav` → `npm run untertitel -- <slug>` → Szenenzeiten an die echten Wortzeiten anpassen → `VOICEOVER` im Projekt setzen. Untertitel gegen das Skript gegenlesen.
+7. **Musik** liefert Arman (z. B. YouTube Audio Library) als `studio/public/projekte/<slug>/musik.mp3` → `MUSIK` setzen; `<Music>` senkt sie unter der Stimme automatisch ab. Für TikTok/Instagram oft besser ohne Musik rendern und den Trend-Sound in der App wählen – vorher fragen.
+8. **Rendern:** `npm run render -- <ID>` → `studio/out/<ID>.mp4` (bei Werbung jedes Format: `<ID>`, `<ID>-square`, `<ID>-portrait`). Cover/Thumbnail: `npm run still -- <ID> --frame=<n>`. Stichproben ansehen, dann Arman schicken.
+
+Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt nichts über Qualität.
+
+## Was gute Motion hier ausmacht
+
+- **Eine Aussage pro Szene**, ein klarer Blickfang. Die Fläche nutzen: im Hochformat liegt der Hauptinhalt zwischen y≈300 und y≈1450; Ränder laut `SAFE` in `kit/theme.ts` frei halten (Plattform-Buttons, Beschreibung).
+- **Groß genug fürs Handy:** Überschrift 90–120 px, Labels ≥ 40 px, nichts unter 28 px (Hochformat, 1080 breit).
+- **Bewegung erklärt etwas:** Zustand A → sichtbare Veränderung → Zustand B. Keine Deko-Bewegung, keine Farbflächen ohne Bedeutung, nichts nur „damit sich was bewegt“.
+- **Gruppen gestaffelt** (`stagger`), nie alles gleichzeitig. Kurven aus `EASE` / `SPRING`. Linear nur für gleichmäßigen Takt (Tippen, Text-Stream) und Endlos-Schleifen.
+- **Frame 0 zeigt schon etwas** – der Hook muss sofort stehen.
+- **Kontinuität vor Effekt:** dasselbe Objekt über Szenen weiterführen (z. B. Kamera zoomt ins Handy → nächste Szene startet im Zoom). Sonst harter Schnitt.
+- **Text-Rollen:** Überschrift (3–7 Wörter) ordnet ein · Untertitel = gesprochener Text · Labels kurz · nie denselben Satz zweimal im Bild.
+- **Ton:** Soundeffekte leise (0,3–0,5) und nur an echten Ereignissen (Klick, Ankunft, Ergebnis).
+- **Look:** Kanal-Look ist der Denkwürfel-Daten-Look aus `projekte/wissen/bausteine.tsx` (dunkles Blau, Korallrot). Die `ThemeProvider`-Designs unten gelten nur für Werbung/Spots. Faceless.
+
+## Werkzeuge für jedes Thema (`projekte/wissen/erklaer-werkzeuge.tsx`)
+
+Im Denkwürfel-Look, Beispiele in Composition `Werkzeug-Beispiele`:
+
+| Baustein | Wofür |
+|---|---|
+| `Formel` | LaTeX-Formel (KaTeX), deckt sich von links auf; `\akzent{…}` färbt und pulsiert (`pulsAb`); `schritte` formt um (Gleichung lösen) |
+| `Karte` | echte Ländergrenzen (Natural Earth, gemeinfrei): Kamerafahrt `von` → `nach` (Zoom 1 = Welt), Länder färben sich (`laender`, englische Namen, Liste: `landNamen()`), Punkte mit Label, Route als Großkreis |
+| `Zeitleiste` | senkrecht, echte Zeitabstände; Linie wächst, Einträge poppen beim Erreichen; zu dichte Jahre rutschen nach unten |
+| `Rangliste` | Ranglisten-Linien über Jahre (Bump-Chart), Jahr läuft oben mit, `hervor` = Akzentlinie |
+| `Raster` | viele Kästchen (Tage, Wochen, Menschen), Phasen färben sich wellenartig ein, Legende darunter |
+| `Kassenbon` | Bon wächst Zeile für Zeile, Summe rechnet live mit (Abzüge negativ, `akzent` färbt eine Zeile) |
+| `Figur` | Strichmännchen mit weichen Posenwechseln: `stehen zeigen denken jubeln schulterzucken erschrocken`, optional `gehen` |
+
+- **3D-Welten:** `Modell` (`kit/Modell3D`) setzt GLB-Modelle (Kenney, CC0, in `public/modelle/kenney/`) in eine `<ThreeCanvas>`; `useSzeneLaden` + `<SzeneBereit>` sorgen dafür, dass schon Frame 0 fertig gezeichnet ist. `Kino` + `Studiolicht` (`kit/Kino3D`) geben Leuchten, Miniatur-Unschärfe, Vignette und Spiegelungen. Beispiele: `Zug-Probe-3D` (Welt), `Tacho-Probe-Technik` (Technik).
+- **Technik-Look** (`projekte/wissen/technik-bausteine.tsx`): `Callout` (Beschriftung mit Linie am 3D-Bauteil, Punkt per `projiziere3D`), `MessPanel` (Live-Anzeige), `EckTag` („Illustration“), `roentgen()` (durchsichtiges Leuchtmaterial), `Untertitel` (Wort für Wort, Schlüsselwörter unterstrichen, Lautwörter farbig), `Kapitel` (Abschnitts-Label oben links), `StatusChip` (Zustand wechselt), `Videouhr` („Während du schaust …“). Klangteppich für Technik-Videos: `python3 studio/scripts/musik-technik.py` → `public/musik/technik.wav`.
+- **Bilder von draußen:** Weltall, Erde von oben, Raketen: `npm run bilder -- "<englischer begriff>" --quelle=nasa --bild` (NASA-Archiv, in der Regel gemeinfrei, fremde Urheber werden ausgefiltert). Fotos ohne Gesichter: `npm run broll` (Pixabay).
+- **Archivbilder (Geschichte, Kunst, Personen, Dokumente, Tiere, Orte):** `npm run bilder -- "<begriff>" --bild` sucht auf Wikimedia Commons, zeigt nur freie Lizenzen (gemeinfrei, CC0, CC BY, CC BY-SA), Vorschau unter `studio/out/bilder/`. Laden: `npm run bilder -- --laden=<ID> --projekt=<slug>` → `studio/public/projekte/<slug>/bilder/`, Urheber + Lizenz in `quellen.md`. Bei CC BY/BY-SA Namensnennung in die Videobeschreibung. Im Video mit `<Footage>`.
+
+## Designs
+
+`<ThemeProvider theme="…">` um das Video (der Ersteller hat dafür das Feld `design`). Alle Bausteine übernehmen Farben, Schriften, Rundungen, Schatten und Hintergrund.
+
+| Design | Look | Gut für |
+|---|---|---|
+| `editorial` | hell, Lila, Inter | Markenstandard, Erklärvideos |
+| `nacht` | dunkel, Neon-Lila/Cyan, Space Grotesk, Raster | Tech, Tools, News |
+| `pop` | Creme/Gelb/Rot, Archivo Black, schwarze Ränder, harte Schatten | laute Werbung, Hooks |
+| `pastell` | rosa/mint, Nunito, sehr rund | freundlich, Einsteiger |
+| `minimal` | weiß, schwarz, rot, eckig | seriös, Zahlen, Fakten |
+| `papier` | Notizbuch, Fraunces + Caveat, Linien | Lernen, Schritt-für-Schritt |
+
+Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, nicht `COLORS` (das ist nur `editorial`).
+
+
+## Kit (`studio/kit`, Import aus `'../../kit'`)
+
+| Baustein | Wofür |
+|---|---|
+| `Background` | Bühne im Stil des Designs (`variant="accent"` für Endkarten) |
+| `SafeArea` | Inhalt automatisch in die sichere Zone des Formats setzen |
+| `Headline`, `BodyText`, `Pill`, `Marker` | Überschrift Wort für Wort mit Highlight/Marker, Fließtext, Kapitel-Label, Leuchtmarker |
+| `Caption` / `CaptionTrack` | Untertitel als Satz / wortgenau zum Voiceover (`untertitel.json`) |
+| `Icon`, `IconBadge`, `BrandLogo` | Icons zeichnen sich / poppen / öffnen sich (`animate`), danach Dauerbewegung (`loop`: float, pulse, wiggle, spin, bounce); Icon auf Kachel; Firmenlogos |
+| `Lottie` | animierte Emojis (`emoji/rakete`) und UI-Icons (`ui/checkmark`, einfärbbar mit `color="accent"`) |
+| `Arrow` | gezeichneter Pfeil zwischen zwei Punkten, optional Datenfluss (`flow`) |
+| `ChatBubble`, `StreamText`, `TypingDots` | KI-Chat: Tipp-Punkte, Antwort Wort für Wort |
+| `PhoneMockup`, `BrowserMockup`, `TerminalMockup` | Geräte/Fenster (neutral, kein echtes Markengerät) |
+| `Counter`, `BarList`, `TokenChips` | Zahl zählt hoch, Balken/Rangliste mit Gewinner, Text → Tokens |
+| `LineChart`, `Donut` | Kurve zeichnet sich, Ring füllt sich mit mitzählender Prozentzahl |
+| `Checklist`, `Steps` | Punkte werden abgehakt (oder durchgekreuzt) · nummerierte Schritte mit Verbindungslinie |
+| `BeforeAfter` | Vorher/Nachher mit wischender Trennlinie |
+| `ScreenFocus` | Zoomt in Screenshot/Bildschirmaufnahme/Mockup auf eine Stelle, Rest abgedunkelt |
+| `PunchText` | Werbe-Knaller: ein Wort pro Schlag, passt sich automatisch der Breite an |
+| `Sticker` | Störer „NEU“/„GRATIS“ mit Wackeln |
+| `EndCard` | Abspann mit pulsierendem Knopf (Kanalname/Logo optional, sobald festgelegt) |
+| `Scenes`, `scenesDuration` | Szenenfolge mit Übergängen: `cut` (Standard), `fade`, `slide-up/-down/-left/-right`, `wipe`, `zoom` |
+| `Music` | Hintergrundmusik mit Ein-/Ausblenden und automatischem Absenken unter der Stimme |
+| `CameraRig`, `Cursor` | Kamerafahrt (Zoom/Schwenk), Mauszeiger mit Klick |
+| `Sfx` | Sound an einem Frame, 41 Stück (Liste in `SFX_FILES`, anhören: Composition `Sound-Katalog`) |
+| `LightRays`, `Particles`, `Meteors`, `PerspectiveGrid`, `Confetti`, `Ripple` | Atmosphäre: Lichtstrahlen (Enthüllung), schwebende Punkte, Sternschnuppen, 3D-Boden, Konfetti-Knall, Wellenringe („KI denkt“) |
+| `Scramble`, `WordRotate` | Text entschlüsselt sich · „KI für Texte/Bilder/Code“ mit wechselndem Wort |
+| `CodeWindow`, `FileTree`, `Notifications` | Code tippt sich (+/− Diff, Ausgabe) · Ordnerstruktur · Handy-Benachrichtigungen stapeln sich |
+| `IconOrbit`, `Mindmap`, `Flow` | Icons kreisen um eine Mitte · Mitte mit Ästen · Ablauf aus Icon-Stationen mit Pfeilen |
+| `Footage` | B-Roll: Video/Foto mit Ken-Burns, Einfärbung, Abdunkeln, Vignette, optional gerahmt |
+| `Illustration` | SVG (z. B. unDraw) – Akzentfarbe wird zur Designfarbe |
+| `Objekt3D` | drehendes 3D-Objekt in Designfarben (`wuerfel kugel ring chip`) |
+| `useLayout` | Maße/sichere Zone des aktuellen Formats; `u` skaliert Größen für andere Formate mit |
+| `progress`, `pop`, `visible`, `stagger`, `mix` | Zeitachsen-Helfer (`kit/motion.ts`) |
+
+- **Icons (≈ 22.000):** als Name `"set:name"` → `<Icon icon="ph:robot-duotone" />`. Sammlungen: `lucide` (1.700, Linien), `ph` Phosphor (9.000, Stile `-thin -light -bold -fill -duotone`), `tabler` (6.200, Linien, zeichnen sich), `logos` (2.200 farbige Firmenlogos inkl. `logos:openai-icon`, `logos:microsoft-icon`, `logos:claude-icon`, `logos:google-gemini`), `fluent-emoji-flat` (3.200 bunte Emoji-Illustrationen). Suchen: `npm run icons -- <englisches wort> --bild` (Bild unter `studio/out/icon-suche/`). Lucide geht auch als Import (`import {Brain} from 'lucide'`).
+- **Lottie:** `npm run icons -- --lottie` listet alle; ansehen in `Lottie-Katalog-Emoji` / `Lottie-Katalog-UI`. **Pflicht bei `emoji/…`:** In die Plattform-Beschreibung „Animierte Emojis: Google Noto, CC BY 4.0“ schreiben.
+- **Logos:** Firmenlogos nur redaktionell (das Produkt wird genannt/erklärt), nie verändern oder nachzeichnen. `simple-icons` (`<BrandLogo logo={siClaude} tile />`) oder `logos:`-Icons.
+- **Schriften:** kommen aus dem Design (`useTheme().font.body / heading / display / mono`). Überschriften (`Headline`) und Knaller (`PunchText`) verkleinern sich automatisch, wenn ein langes Wort sonst aus dem Bild liefe.
+- **Sounds nach Zweck:** Klick/Bedienung `click tap key typing hover toggle` · Erscheinen `pop blip whoosh whooshFast swipe swipeOut slideIn swoosh` · Gewicht `impact thud punch punchHeavy boom tink bell` · Ergebnis `success successBig notify ding chime levelUp question error wrong` · Spannung/Technik `riser riseShort fall reveal glitch think computing energy` · Jingles `jingleSteel jinglePizzi jingleHit`. Arman hat sie noch nicht alle gehört – unpassende Sounds aus `studio/assets-roh/kenney/` (lokal, alle 6 Kenney-Pakete) ersetzen.
+- **Mehrere Formate:** `format: ['vertical', 'square', 'portrait']` im Projekt. Dann Layout mit `SafeArea` und `useLayout().u` bauen statt mit festen Pixelpositionen.
+- **B-Roll:** `npm run broll -- "<englischer begriff>" --bild` sucht bei Pixabay (Key in `.env` als `PIXABAY_KEY`), Vorschau unter `studio/out/broll/`. Laden nur, was ins Video kommt: `npm run broll -- --laden=<id> --projekt=<slug>` → Datei in `studio/public/projekte/<slug>/broll/`, Quelle automatisch in `studio/projekte/<slug>/quellen.md`. Faceless: Clips ohne erkennbare Gesichter wählen (Hände, Bildschirme, Orte, Objekte).
+- **Bildschirmaufnahmen/Screenshots** (die beste B-Roll für KI-News): Arman nimmt auf, Datei nach `studio/public/projekte/<slug>/`; im Video `ScreenFocus src=…` (oder Ersteller-Szene `bildschirm`) mit Zoom auf die wichtige Stelle.
+- **Illustrationen:** einzeln von unDraw (Farbe #6c63ff lassen) nach `studio/public/illustrationen/`; `<Illustration src=… />` färbt sie passend ein. Keine Massen-Downloads (unDraw-Lizenz).
+- **3D** braucht GPU-Rendering: alle Skripte und `npm run studio` nutzen `--gl=angle`. Bei eigenen Render-Befehlen daran denken.
+- **Weitere Remotion-Pakete** sind installiert: `@remotion/transitions`, `paths`, `shapes`, `noise`, `layout-utils` (Text einpassen), `motion-blur`, `three`, `lottie`, `captions`.
+- **Neuer Baustein:** erst im Projekt bauen. Wird er ein zweites Mal gebraucht → ins Kit verschieben und im `Kit-Katalog` zeigen (`npm run look -- Kit-Katalog`).
+- Referenzen (so soll es mindestens aussehen): `Faecher-Beispiele`, `Szenen-Beispiele`, `Kit-Katalog`, `Kit-Katalog-Erklaeren`, `Design-Katalog`, `Effekte-Katalog-1/-2`, `Medien-Katalog`, `Werbung-Demo` (Werbeclip in 3 Formaten), Ordner `Beispiele` (Ersteller in verschiedenen Designs).
+
+## Werbeclips
+
+- Aufbau 10–15 s: Knaller-Hook (≤ 2 s) → Problem → Lösung/Nutzen → Handlungsaufforderung. Vorlage: `--vorlage=werbung`.
+- Ein Gedanke pro Szene, viel Tempo, wenig Text. Übergänge dürfen hier häufiger sein als im Erklärvideo, aber nie zwei Texte übereinander überblenden (`slide`/`zoom` statt `fade` zwischen Textszenen).
+- Keine Versprechen ohne Beleg („gratis“, „x-mal schneller“, Preise). Kanalname/Handle/Logo erst verwenden, wenn Arman sie festgelegt hat.
+
+## Wahrheit & Medien
+
+- Keine erfundenen Zahlen oder Fakten. Beispielwerte sichtbar als „Beispiel“ kennzeichnen.
+- Keine KI-generierten Bilder, Videos oder Stimmen ohne Armans ausdrückliche Freigabe für genau dieses Video. Erlaubt ohne Rückfrage: Code-Grafik (React/SVG), alle Icon-Sammlungen oben, die Lottie-Dateien in `public/lottie` (bei `emoji/` mit Namensnennung), die Kenney-CC0-Sounds in `public/sfx`, Dateien von Arman. Neue Downloads nur nach Rückfrage (Datei, Quelle, Größe, Lizenz).
+- Nachgebaute App-Oberflächen sind Illustration – nie als echten Screenshot ausgeben.
+- Nur melden, was wirklich passiert ist: gebaut ≠ gerendert ≠ angesehen ≠ freigegeben.
+
+## Technik
+
+- Composition-ID = Projektname in `projekte/<slug>/Video.tsx` (`projekt.id`), registriert in `projekte/index.ts`.
+- Deterministisch rendern: kein `Math.random()`, keine Netzwerkaufrufe im Video, Assets nur über `staticFile()` aus `studio/public`.
+- `npm run studio` startet Remotion Studio zum Durchklicken. `npm run studio:check` = Typecheck. `npx vitest run studio` = Tests (Musik, Szenen, Formate, Ersteller-Beispiele).
+- `look`, `render`, `still` nehmen auch `--props=<datei.json>` und `--format=<format>` (für `Spot`/`Erklaerer`).
+- Einstieg: `studio/studio-entry.ts` → `studio/StudioRoot.tsx` (diese Benennung braucht Remotion Studio, um Formular-Änderungen speichern zu können – nicht umbenennen). Änderungen im Studio-Formular von `Spot`/`Erklaerer` landen automatisch in `StudioRoot.tsx`.
+- Renders (`studio/out`), Audio und `whisper.cpp/` bleiben lokal (gitignored).
+- Git: Arbeitsbranch, kein Push/Merge nach `main` ohne Armans OK.
+
+## Stimme & Musik
+
+- **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json` und Wortzeiten. Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
+- **Keine eigene Stimme:** Die Stimme spricht immer Arman (Entscheidung 2026-10-10). Kein Piper/TTS im Video, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
+- **Musik: leise eigene Musik** (Arman, 2026-10-31): `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav`, im Video `<Music src="musik/wissen.wav" volume={0.22} captions={…} duckTo={0.35} />`.
+- **Kanal-Sounds:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES` (Zuordnung siehe Skill `wissens-short`).
+- ElevenLabs-MCP ist derzeit falsch eingerichtet (und Gratis-Konto ohne Bibliotheksstimmen) – nicht darauf verlassen.

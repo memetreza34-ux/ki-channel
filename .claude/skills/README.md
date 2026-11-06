@@ -5,10 +5,10 @@ Unveraendert uebernommen, nur die fuer diesen Kanal relevante Teilmenge.
 
 | Skill | Wofuer |
 |---|---|
-| `animation-principles` | Timing, Easing-Kurven, Stagger, Gewicht. Die Zahlenbasis fuer `ki/src/motion/easing.ts`. |
+| `animation-principles` | Timing, Easing-Kurven, Stagger, Gewicht. Die Zahlenbasis fuer `studio/kit/motion.ts`. |
 | `motion-art-direction` | Was ueberhaupt Bewegung verdient: Hero / Support / Texture. |
 | `beat-sync-editing` | Schnittrhythmus, Retiming, Speed-Ramps. Ergaenzt `motion-system/beatTiming.ts`. |
-| `shot-composition` | Raster, Safe Areas, Fokushierarchie. Ergaenzt `ki/gehirn/CAPTION_SAFE_POSITION.md`. |
+| `shot-composition` | Raster, Safe Areas, Fokushierarchie. Ergaenzt die Sicherheitszonen im Skill `wissens-short`. |
 | `color-motion` | Farbverlaeufe und perzeptuelle Interpolation ueber Zeit. |
 
 Bewusst nicht installiert: `after-effects`, `logo-animation`, `motion-background`,
@@ -17,5 +17,14 @@ Bewusst nicht installiert: `after-effects`, `logo-animation`, `motion-background
 ## Verbindliche Regel
 
 Lineare Bewegung ist im Produktionscode nicht zulaessig, ausser fuer Endlos-Schleifen
-(Spinner, Marquee). Fuer alles andere laeuft die Zeitachse ueber
-`easedProgress` aus `ki/src/motion/easing.ts`.
+(Spinner, Marquee) und live mitlaufende Zaehler. Fuer alles andere Kurven aus
+`studio/projekte/wissen/bausteine.tsx` (`outQuint`) bzw. `studio/kit/motion.ts`.
+
+## Eigene Skills
+
+| Skill | Wofuer |
+|---|---|
+| `wissens-short` | Standard fuer jedes Kanal-Video: Allgemeinwissen-Short im Denkwuerfel-Look. |
+| `erklaervideo` | Allgemeiner Ablauf fuer andere Videos in `studio/` (Werbung, Spots). Vertrag: `studio/CLAUDE.md`. |
+
+Agent dazu: `.claude/agents/video-kritiker.md` (unabhaengige Sichtpruefung eines Kontaktbogens).

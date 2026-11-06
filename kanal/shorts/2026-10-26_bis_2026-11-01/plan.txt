@@ -1,0 +1,25 @@
+SZENENPLAN UND QUELLEN (für Phase 3 – Arman muss das nicht lesen)
+Format 1080×1920, Kanal-Look, Toki ab Sekunde 0, eine Akzentfarbe, keine Musik.
+
+1) strawberry – Serie „KI erklärt“
+   - Hook: großes Wort STRAWBERRY, die drei R leuchten auf, Zähler rollt auf 3; daneben Chat-Blase „2“ mit rotem Kreuz.
+   - Token: das Wort zerfällt in drei Token-Klötze str | aw | berry, Toki hält einen davon hoch, die Buchstaben darin verschwimmen.
+   - Denk-Modell: Gedankenblase, Buchstaben werden einzeln abgehakt → 3 ✓.
+   - Pointe: kleine Erdbeere mit Codename-Etikett „Strawberry“.
+   Quellen: OpenAI-Tokenizer (platform.openai.com/tokenizer) – genaue Aufteilung vor dem Bau dort prüfen und Text ggf. anpassen;
+   Reuters, 12.07.2024, Bericht über OpenAIs Projekt „Strawberry“ (daher „angeblich“).
+
+2) bitte-danke – Serie „KI erklärt“
+   - Hook: Chat-Eingabe tippt „danke!“, Münzen fallen.
+   - Rechenzentrum: Serverreihen, Stromzähler läuft; „× Hunderte Millionen“ vervielfacht die kleinen „danke“-Blasen.
+   - Altman: Zitat-Karte (ohne Foto, nur Name), Zahl „zig Mio. $“ rollt hoch.
+   - Pointe: Toki zwinkert, Blase „Ich merk mir das.“
+   Quelle: Sam Altman auf X, 16.04.2025: „tens of millions of dollars well spent – you never know“.
+
+3) was-heisst-gpt – Serie „KI erklärt“
+   - Hook: Logo-freier Schriftzug „Chat GPT“, Fragezeichen über G-P-T.
+   - Drei Buchstaben klappen nacheinander auf: G = generativ (Text entsteht), P = vortrainiert (Bücherstapel), T = Transformer (größer, Akzentfarbe).
+   - Paper-Karte „Attention Is All You Need · 2017 · Google“; Stammbaum mit Ästen ChatGPT, Gemini, Claude.
+   - Pointe: alle drei Wörter stehen untereinander, Haken.
+   Quellen: Vaswani u. a., „Attention Is All You Need“, NeurIPS 2017 (arxiv.org/abs/1706.03762);
+   Radford u. a., „Improving Language Understanding by Generative Pre-Training“, OpenAI 2018.

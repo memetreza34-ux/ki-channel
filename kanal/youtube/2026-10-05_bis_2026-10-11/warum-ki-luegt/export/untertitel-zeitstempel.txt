@@ -1,0 +1,163 @@
+00:00 New York, im Jahr 2023.
+00:03 Ein Anwalt reicht vor Gericht einen Schriftsatz ein
+00:05 voller Urteile, die seine Argumente stützen.
+00:08 Das Problem:
+00:09 Diese Urteile gibt es nicht.
+00:12 Er hatte sie sich von ChatGPT heraussuchen lassen.
+00:15 Und ChatGPT hatte sie einfach erfunden.
+00:19 Mit Namen, Aktenzeichen, Zitaten.
+00:22 Am Ende mussten er und sein Kollege eine Strafe
+00:24 von fünftausend Dollar zahlen.
+00:26 Das nennt man Halluzinieren:
+00:29 Eine KI sagt etwas Falsches
+00:31 und klingt dabei völlig überzeugt.
+00:33 Heute schauen wir uns an,
+00:35 warum das passiert, wo es besonders oft passiert,
+00:38 und wie du dich mit fünf einfachen Regeln davor
+00:40 schützt.
+00:41 Toki ist wieder dabei.
+00:42 Kurz zur Erinnerung aus dem letzten Video:
+00:46 Eine KI wie ChatGPT schlägt nichts nach.
+00:48 Sie sagt Stück für Stück vorher,
+00:50 welches Wort am wahrscheinlichsten als Nächstes kommt.
+00:54 Genau daraus entstehen Halluzinationen.
+00:56 Und zwar aus vier Gründen.
+00:58 Grund eins:
+00:59 Die KI hat ihr Wissen nicht gespeichert wie ein
+01:02 Lexikon.
+01:02 Beim Training hat sie riesige Mengen Text gelesen und
+01:05 daraus Muster gelernt.
+01:07 Dinge, die tausendfach im Internet stehen,
+01:09 sitzen fest – zum Beispiel,
+01:11 dass Berlin die Hauptstadt von Deutschland ist.
+01:13 Aber Dinge, die selten vorkommen,
+01:15 verschwimmen.
+01:16 Der Geburtstag einer wenig bekannten Person.
+01:19 Das Aktenzeichen eines bestimmten Urteils.
+01:21 Davon hat die KI nur eine ungefähre Vorstellung.
+01:25 Grund zwei:
+01:26 Die KI muss immer weiterreden.
+01:29 Sie berechnet für jedes nächste Wort Wahrscheinlichkeiten
+01:31 und wählt eins aus.
+01:33 Auch dann, wenn keines davon wirklich sicher ist.
+01:36 Es gibt in diesem Moment keine eingebaute Stelle,
+01:38 an der sie merkt:
+01:39 Hier weiß ich nichts.
+01:40 Also entsteht ein Satz, der gut klingt.
+01:43 Ob er stimmt, ist eine andere Frage.
+01:45 Grund drei ist überraschend.
+01:48 Forscher von OpenAI haben im September 2025 gezeigt:
+01:52 Die Tests, mit denen KIs bewertet werden,
+01:55 belohnen oft das Raten.
+01:56 Stell dir eine Prüfung vor.
+01:58 Für eine richtige Antwort gibt es einen Punkt.
+02:01 Für „Weiß ich nicht“ gibt es null Punkte.
+02:03 Und für eine falsche Antwort
+02:05 auch null.
+02:06 Was lohnt sich dann?
+02:07 Raten.
+02:08 Fragt man eine KI nach einem Geburtstag,
+02:10 den sie nicht kennt, und sie rät einfach ein
+02:12 Datum, liegt sie in einem von 365 Fällen richtig.
+02:16 Mit „Weiß ich nicht“ liegt sie nie richtig.
+02:18 Über tausende Fragen sieht das ratende Modell auf der
+02:22 Punktetafel besser aus.
+02:23 Grund vier:
+02:24 Der Tonfall verrät nichts.
+02:26 Eine richtige und eine erfundene Antwort klingen bei einer
+02:30 KI oft genau gleich:
+02:31 freundlich, flüssig, selbstsicher.
+02:34 Bei Menschen hören wir Unsicherheit manchmal heraus
+02:37 ein Zögern, ein „ich glaube“.
+02:40 Bei der KI fehlt dieses Warnsignal meistens.
+02:43 Mach mal den Test.
+02:45 Hier sind zwei Sätze über den Eiffelturm.
+02:47 Satz A:
+02:47 Der Eiffelturm ist rund dreihundertdreißig Meter hoch.
+02:51 Satz B:
+02:52 Der Eiffelturm wurde im Jahr 1902 eröffnet.
+02:55 Beide klingen gleich sicher, oder?
+02:58 Richtig ist nur Satz A.
+03:00 Eröffnet wurde der Turm schon 1889.
+03:03 Genau so fühlt sich eine Halluzination an:
+03:06 Man sieht ihr den Fehler nicht an.
+03:09 Und das hat schon echte Folgen gehabt.
+03:11 Im Februar 2023 stellte Google seinen Chatbot Bard in
+03:14 einem Werbevideo vor.
+03:16 Darin behauptete Bard, das James-Webb-Teleskop habe die ersten Fotos
+03:20 eines Planeten außerhalb unseres Sonnensystems gemacht.
+03:24 Falsch – solche Fotos gab es schon 2004.
+03:27 Am selben Tag verlor Googles Mutterkonzern an der Börse
+03:31 rund hundert Milliarden Dollar an Wert.
+03:33 Oder Air Canada.
+03:34 Der Chatbot der Fluglinie erklärte einem Kunden,
+03:37 er könne einen Rabatt für einen Trauerfall auch nachträglich
+03:40 beantragen.
+03:41 Das stimmte nicht.
+03:42 Die Airline wollte nicht zahlen und meinte,
+03:44 der Chatbot sei für seine Aussagen selbst verantwortlich.
+03:47 Das Schiedsgericht sah das 2024 anders:
+03:50 Der Chatbot ist Teil der Webseite
+03:52 also haftet die Firma.
+03:54 Wo musst du besonders aufpassen?
+03:56 Erstens bei Quellen:
+03:58 Links, Buchtitel, Studien und Zitate werden gern erfunden.
+04:02 Zweitens bei genauen Zahlen und Daten.
+04:05 Drittens bei Nischenwissen, über das wenig geschrieben wurde.
+04:10 Viertens bei ganz aktuellen Ereignissen,
+04:12 die nach dem Training passiert sind.
+04:14 Und fünftens bei Fragen zu bestimmten Personen.
+04:17 Wird das besser?
+04:19 Ja.
+04:20 Viele KIs können inzwischen im Internet suchen und zeigen
+04:23 dir ihre Quellen.
+04:25 Neuere Modelle denken vor der Antwort länger nach und
+04:27 erfinden seltener etwas.
+04:29 Aber:
+04:29 Selbst die Hersteller sagen, dass Halluzinationen weiter vorkommen.
+04:33 Null wird es so schnell nicht.
+04:35 Und Vorsicht bei einem beliebten Trick:
+04:38 einfach nachfragen, „Bist du sicher?“.
+04:40 Das hilft manchmal.
+04:41 Aber oft entschuldigt sich die KI dann sofort und
+04:44 ändert eine richtige Antwort in eine falsche
+04:46 nur weil du gezweifelt hast.
+04:48 Sie will dir gefallen.
+04:50 Nachfragen ersetzt also kein Nachprüfen.
+04:53 Darum hier fünf Regeln, mit denen du sicher bist.
+04:56 Regel eins:
+04:57 Lass dir Quellen geben
+04:58 und öffne sie wirklich.
+05:00 Ein Link, der nicht funktioniert,
+05:02 ist ein Warnzeichen.
+05:04 Regel zwei:
+05:05 Erlaube der KI, nichts zu wissen.
+05:07 Schreib zum Beispiel dazu:
+05:08 „Wenn du dir nicht sicher bist,
+05:09 sag es.“ Das senkt die Gefahr,
+05:11 dass sie rät.
+05:12 Regel drei:
+05:13 Gib ihr den Text selbst.
+05:15 Wenn die KI ein Dokument zusammenfassen soll,
+05:18 füge es ein, statt sie aus dem Gedächtnis antworten
+05:20 zu lassen.
+05:21 Dann arbeitet sie mit echten Fakten.
+05:23 Regel vier:
+05:24 Prüfe Wichtiges an einer zweiten Stelle.
+05:27 Eine Zahl, ein Datum, ein Name
+05:29 kurz gegenchecken dauert eine Minute.
+05:33 Und Regel fünf:
+05:34 Bei Gesundheit, Recht und Geld ist die KI höchstens
+05:37 ein Startpunkt.
+05:38 Die Entscheidung triffst du mit einer echten Fachperson.
+05:41 Halten wir fest:
+05:42 Eine KI lügt nicht absichtlich.
+05:44 Sie ist ein extrem guter Vorhersager für das nächste
+05:48 Wort – und manchmal sagt sie eben etwas vorher,
+05:51 das gut klingt, aber nicht stimmt.
+05:53 Du bist derjenige, der prüft.
+05:55 Wenn du mehr darüber wissen willst,
+05:57 wie KI wirklich funktioniert:
+05:59 Abonnieren.
+06:00 Dann sehen wir uns beim nächsten Mal
+06:02 mit Toki.

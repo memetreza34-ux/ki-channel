@@ -1,0 +1,15 @@
+Dein Handy schickt für GPS kein einziges Signal ins All. Es hört nur zu.
+
+Über dir kreisen gerade gut dreißig GPS-Satelliten. Jeder fliegt in rund zwanzigtausend Kilometern Höhe und umrundet die Erde zweimal am Tag.
+
+Und jeder funkt ununterbrochen nur zwei Dinge: Wo bin ich? Und wie spät ist es bei mir? Gemessen mit Atomuhren an Bord.
+
+Das Signal braucht bis zu dir etwa sieben Hundertstelsekunden. Dein Handy misst diese Verspätung. Und weil Funk mit Lichtgeschwindigkeit fliegt, wird aus Zeit eine Entfernung.
+
+Eine Entfernung ergibt eine Kugel um den Satelliten. Drei Kugeln schneiden sich in einem Punkt. Der vierte Satellit gleicht die ungenaue Uhr in deinem Handy aus. Und dieser Punkt bist du.
+
+Jetzt der verrückte Teil: Da oben vergeht die Zeit schneller. Die Uhren der Satelliten gehen jeden Tag achtunddreißig Millionstelsekunden vor. Klingt nach nichts.
+
+Aber ohne Einsteins Korrektur würde dein Standort jeden Tag um rund zehn Kilometer verrutschen. Während du dieses Video schaust, schon um mehrere Meter.
+
+Deshalb werden die Uhren schon vor dem Start absichtlich ein winziges bisschen langsamer gestellt. Und dein Handy? Schickt dafür bis heute kein einziges Signal ins All.

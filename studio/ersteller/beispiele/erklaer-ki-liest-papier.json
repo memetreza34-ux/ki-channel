@@ -1,0 +1,17 @@
+{
+  "vorlage": "erklaerer",
+  "formate": ["vertical"],
+  "design": "papier",
+  "format": "vertical",
+  "uebergang": "cut",
+  "sounds": true,
+  "szenen": [
+    {"typ": "titel", "kicker": "KI einfach erklärt", "titel": "Wie liest eine KI deinen Text?", "hervorheben": ["liest"], "lottie": "emoji/augen", "sekunden": 3.5, "untertitel": "Wie liest eine KI eigentlich deinen Text?"},
+    {"typ": "tokens", "titel": "Erst wird zerlegt", "tokens": ["Wie", "liest", "eine", "KI", "?"], "sekunden": 4, "untertitel": "Zuerst wird dein Text in kleine Stücke zerlegt: Tokens."},
+    {"typ": "aussage", "text": "Tokens sind oft Wortteile – nicht ganze Wörter.", "hervorheben": ["Wortteile"], "icon": "tabler:puzzle", "sekunden": 3.5, "untertitel": "Ein Token ist oft nur ein Wortteil."},
+    {"typ": "zahl", "titel": "Danach: Wahrscheinlichkeiten", "wert": 62, "einheit": "%", "ring": true, "text": "für das nächste Wort", "beispiel": true, "sekunden": 4, "untertitel": "Dann schätzt sie, welches Wort am wahrscheinlichsten folgt."},
+    {"typ": "chat", "frage": "Warum ist der Himmel blau?", "antwort": "Das Sonnenlicht wird in der Luft gestreut – blaues Licht am stärksten.", "sekunden": 5},
+    {"typ": "liste", "titel": "Merke dir", "punkte": ["Text wird zu Tokens", "Wort für Wort geschätzt", "Antwort trotzdem prüfen"], "ton": "gut", "sekunden": 4.5, "untertitel": "Das Wichtigste in drei Punkten."},
+    {"typ": "ende", "titel": "Mehr KI, einfach erklärt.", "knopf": "Folgen", "sekunden": 3}
+  ]
+}
