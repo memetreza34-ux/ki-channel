@@ -313,7 +313,7 @@ const S4: React.FC = () => {
           <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 76, color: AKZENT}}>s</div>
         </div>
         <div style={{position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 16, opacity: wegSicht, transform: `scale(${0.94 + 0.06 * wegSicht})`}}>
-          <div style={{fontFamily: INTER, fontWeight: 800, fontSize: 160, letterSpacing: '-0.05em', color: HELL}}>20.000</div>
+          <div style={{fontFamily: INTER, fontWeight: 800, fontSize: 160, letterSpacing: '-0.05em', color: HELL}}>20.200</div>
           <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 76, color: AKZENT}}>km</div>
         </div>
       </div>

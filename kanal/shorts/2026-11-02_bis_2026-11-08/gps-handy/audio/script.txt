@@ -6,7 +6,7 @@ Und jeder funkt ununterbrochen nur zwei Dinge: Wo bin ich? Und wie spät ist es 
 
 Das Signal braucht bis zu dir etwa sieben Hundertstelsekunden. Dein Handy misst diese Verspätung. Und weil Funk mit Lichtgeschwindigkeit fliegt, wird aus Zeit eine Entfernung.
 
-Eine Entfernung ergibt eine Kugel um den Satelliten. Drei Kugeln schneiden sich in einem Punkt. Der vierte Satellit gleicht die ungenaue Uhr in deinem Handy aus. Und dieser Punkt bist du.
+Eine Entfernung ergibt eine Kugel um den Satelliten. Drei Kugeln lassen nur einen Punkt auf der Erde übrig. Der vierte Satellit gleicht die ungenaue Uhr in deinem Handy aus. Und dieser Punkt bist du.
 
 Jetzt der verrückte Teil: Da oben vergeht die Zeit schneller. Die Uhren der Satelliten gehen jeden Tag achtunddreißig Millionstelsekunden vor. Klingt nach nichts.
 
