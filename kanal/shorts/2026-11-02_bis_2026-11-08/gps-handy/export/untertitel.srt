@@ -1,0 +1,95 @@
+1
+00:00:00,020 --> 00:00:03,280
+Dein Handy schickt für GPS kein einziges Signal ins All.
+
+2
+00:00:03,280 --> 00:00:04,500
+Es hört nur zu.
+
+3
+00:00:04,500 --> 00:00:07,720
+Über dir kreisen gerade gut dreißig GPS-Satelliten.
+
+4
+00:00:07,720 --> 00:00:12,560
+Jeder fliegt in rund zwanzigtausend Kilometern Höhe und umrundet die Erde zweimal am Tag.
+
+5
+00:00:12,560 --> 00:00:14,920
+Und jeder funkt ununterbrochen nur zwei Dinge:
+
+6
+00:00:14,920 --> 00:00:15,920
+Wo bin ich?
+
+7
+00:00:15,920 --> 00:00:17,360
+Und wie spät ist es bei mir?
+
+8
+00:00:17,360 --> 00:00:19,160
+Gemessen mit Atomuhren an Bord.
+
+9
+00:00:19,160 --> 00:00:22,800
+Das Signal braucht bis zu dir etwa sieben Hundertstelsekunden.
+
+10
+00:00:22,800 --> 00:00:24,840
+Dein Handy misst diese Verspätung.
+
+11
+00:00:24,840 --> 00:00:28,960
+Und weil Funk mit Lichtgeschwindigkeit fliegt, wird aus Zeit eine Entfernung.
+
+12
+00:00:28,970 --> 00:00:31,960
+Eine Entfernung ergibt eine Kugel um den Satelliten.
+
+13
+00:00:31,960 --> 00:00:34,880
+Drei Kugeln lassen nur einen Punkt auf der Erde übrig.
+
+14
+00:00:34,880 --> 00:00:38,240
+Der vierte Satellit gleicht die ungenaue Uhr in deinem Handy aus.
+
+15
+00:00:38,240 --> 00:00:39,840
+Und dieser Punkt bist du.
+
+16
+00:00:39,840 --> 00:00:41,400
+Jetzt der verrückte Teil:
+
+17
+00:00:41,400 --> 00:00:43,160
+Da oben vergeht die Zeit schneller.
+
+18
+00:00:43,160 --> 00:00:47,320
+Die Uhren der Satelliten gehen jeden Tag achtunddreißig Millionstelsekunden vor.
+
+19
+00:00:47,320 --> 00:00:48,840
+Klingt nach nichts.
+
+20
+00:00:48,840 --> 00:00:55,000
+Aber ohne Einsteins Korrektur würde dein Standort jeden Tag um rund zehn Kilometer verrutschen.
+
+21
+00:00:55,000 --> 00:00:58,320
+Während du dieses Video schaust, schon um mehrere Meter.
+
+22
+00:00:58,330 --> 00:01:03,360
+Deshalb werden die Uhren schon vor dem Start absichtlich ein winziges bisschen langsamer gestellt.
+
+23
+00:01:03,360 --> 00:01:04,360
+Und dein Handy?
+
+24
+00:01:04,360 --> 00:01:06,720
+Schickt dafür bis heute kein einziges Signal ins All.

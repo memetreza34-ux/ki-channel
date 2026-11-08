@@ -1,0 +1,22 @@
+So weiß dein Handy, wo du bist
+
+Dein Handy schickt für GPS kein einziges Signal ins All – es hört nur zu. Über dir kreisen gut dreißig Satelliten mit Atomuhren an Bord. Aus der Laufzeit ihrer Signale rechnet dein Handy deinen Standort. Und ohne Einstein läge es jeden Tag rund zehn Kilometer daneben.
+
+Kapitel:
+0:00 Dein Handy
+0:04 Die Satelliten
+0:12 Das Signal
+0:18 Zeit wird Weg
+0:28 Der Schnittpunkt
+0:39 Einstein
+0:48 Während du schaust
+0:57 Die Lösung
+
+Quellen (Stand 08.11.2026):
+• GPS.gov, Space Segment (Zahl der Satelliten, Bahnhöhe ≈ 20.200 km, zwei Umläufe pro Tag, Atomuhren): https://www.gps.gov/space-segment
+• R. Pogge, Ohio State University, „Real-World Relativity: The GPS Navigation System“ (+38 Mikrosekunden pro Tag, ≈ 10 km Fehler pro Tag): https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html
+• N. Ashby, „Relativity in the Global Positioning System“, Living Reviews in Relativity 6 (2003) (Uhren vor dem Start langsamer gestellt): https://link.springer.com/article/10.12942/lrr-2003-1
+
+Hinweise: Laufzeit (≈ 0,067 s) und „mehrere Meter während des Videos“ (≈ 0,116 m pro Sekunde) sind eigene, gerundete Rechnungen. Alle Bilder sind Illustrationen, nicht maßstabsgetreu. Die Erzählstimme ist ein KI-Klon meiner eigenen Stimme.
+
+#GPS #Physik #Einstein #Allgemeinwissen #Wissen

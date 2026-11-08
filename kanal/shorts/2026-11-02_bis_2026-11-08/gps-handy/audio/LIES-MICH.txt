@@ -18,3 +18,6 @@ Aussprache:
 - Einstein = deutsch „Ein-schtein“
 
 Tipps: ruhiger Raum, Handy ca. 20 cm vor dem Mund, freundlich wie zu einem Freund.
+
+Stand 2026-11-08: Arman hat den Klon seiner Stimme freigegeben.
+Tonspur für Phase 3: gps-klon-v2.wav (67,0 s, aus kanal/stimme/proben/qwen-normal-gps-ganz-v2.wav).

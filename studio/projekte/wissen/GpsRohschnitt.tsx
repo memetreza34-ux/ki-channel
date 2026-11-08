@@ -1,21 +1,65 @@
 import React from 'react';
-import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame} from 'remotion';
+import type {Caption} from '@remotion/captions';
+import {AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame} from 'remotion';
+import {Music} from '../../kit/Music';
 import {Sfx} from '../../kit/Stage';
 import type {Project} from '../types';
 import {AKZENT, BG, Globus, HELL, STAHL, Titel, clamp, outQuint, zahl} from './bausteine';
-import {Callout, EckTag, Kapitel, Videouhr} from './technik-bausteine';
+import {Callout, EckTag, Kapitel, Untertitel, Videouhr} from './technik-bausteine';
+import untertitelJson from '../gps-handy/untertitel.json';
 
 /**
- * GPS – stummer Rohschnitt (Phase 3 vorgezogen auf Armans „los“, 2026-11-02).
+ * GPS – zwei Compositions aus denselben Szenen:
+ * `GPS-Rohschnitt`: stummer Rohschnitt (Phase 3 vorgezogen auf Armans „los“, 2026-11-02), Zeiten geschätzt.
+ * `GPS-Short`: auf die freigegebene Klon-Stimme (2026-11-08), Ereignisse wortgenau aus projekte/gps-handy/untertitel.json.
+ *
  * Erzählt über das Bild: kein Sprechtext im Bild (kommt später als Untertitel aus Armans Aufnahme),
  * pro Szene höchstens eine Zahl oder ein Label. Zeiten geschätzt (≈ 3 Wörter/s je Absatz aus
  * kanal/shorts/2026-11-02_bis_2026-11-08/gps-handy/audio/script.txt). Fakten + Quellen: projekte/gps-handy/skript.md.
  */
 
-// Szenenlängen in Frames (Wörter je Absatz × 10)
-const LAENGEN = [140, 210, 220, 250, 310, 220, 250, 250];
-const START = LAENGEN.map((_, i) => LAENGEN.slice(0, i).reduce((s, x) => s + x, 0));
-const GESAMT = LAENGEN.reduce((s, x) => s + x, 0);
+/** Ereignis-Frames je Szene (relativ zum Szenenstart). */
+type Zeiten = {
+  laengen: number[];
+  s1: {pfeil: number; kreuz: number; pfeilAus: number; wellen: number; pin: number};
+  s2: {bahnen: number; hoehe: [number, number]; zahl: number; quelle: number; ticks: number[]};
+  s3: {roentgen: number; callout: number; pakete: number[]};
+  s4: {lauf: [number, number]; zeitAus: number; weg: number};
+  s5: {kugeln: number[]; treffer: number; vierter: number; callout: number};
+  s6: {davon: [number, number]; zahl: number; quelle: number};
+  s7: {uhr: number};
+  s8: {dreh: [number, number]; pfeil: number; pfeilAus: number; quelle: number; zurueck: number};
+};
+
+// Rohschnitt: Szenenlängen = Wörter je Absatz × 10
+const ROH: Zeiten = {
+  laengen: [140, 210, 220, 250, 310, 220, 250, 250],
+  s1: {pfeil: 4, kreuz: 34, pfeilAus: 60, wellen: 64, pin: 80},
+  s2: {bahnen: 8, hoehe: [30, 110], zahl: 26, quelle: 110, ticks: [30, 60, 90]},
+  s3: {roentgen: 60, callout: 70, pakete: [100, 130, 160]},
+  s4: {lauf: [20, 90], zeitAus: 130, weg: 136},
+  s5: {kugeln: [20, 55, 90], treffer: 150, vierter: 175, callout: 220},
+  s6: {davon: [30, 150], zahl: 150, quelle: 160},
+  s7: {uhr: 0},
+  s8: {dreh: [50, 80], pfeil: 44, pfeilAus: 90, quelle: 70, zurueck: 150},
+};
+
+// Stimme: Szenen beginnen an den Absatzpausen der Tonspur, Ereignisse auf das Wort (Kommentar = Wort)
+const TON: Zeiten = {
+  laengen: [122, 240, 204, 288, 329, 265, 282, 296],
+  s1: {pfeil: 4, kreuz: 44 /* kein */, pfeilAus: 90, wellen: 96 /* es hört */, pin: 108},
+  s2: {bahnen: 58 /* 30 GPS-Satelliten */, hoehe: [128, 170] /* 20.000 */, zahl: 124, quelle: 175, ticks: [63, 74, 133]},
+  s3: {pakete: [86, 121, 140] /* Wo bin ich? Wie spät? */, roentgen: 152, callout: 160 /* Gemessen mit Atomuhren */},
+  s4: {lauf: [40, 100] /* sieben Hundertstel Sekunden */, zeitAus: 222, weg: 232 /* Lichtgeschwindigkeit fliegt */},
+  s5: {kugeln: [61, 105, 125] /* Kugel, Drei Kugeln */, treffer: 148 /* Punkt */, vierter: 200 /* vierte */, callout: 300 /* dieser Punkt bist du: Pin pulst */},
+  s6: {davon: [62, 170] /* Da oben vergeht */, zahl: 174 /* 38 */, quelle: 185},
+  s7: {uhr: 120 /* 10 Kilometer */},
+  s8: {dreh: [120, 150] /* langsamer gestellt */, pfeil: 114, pfeilAus: 165, quelle: 100, zurueck: 168 /* Und dein Handy? */},
+};
+
+const starts = (z: Zeiten) => z.laengen.map((_, i) => z.laengen.slice(0, i).reduce((s, x) => s + x, 0));
+const summe = (z: Zeiten) => z.laengen.reduce((s, x) => s + x, 0);
+const WORTZEITEN = untertitelJson as Caption[];
 
 const MONO = 'JetBrains Mono, monospace';
 const SPACE = 'Space Grotesk, sans-serif';
@@ -149,7 +193,7 @@ const Zeigeruhr: React.FC<{x: number; y: number; r: number; winkel: number; akze
         <line x1={-Math.sin(a) * 20} y1={Math.cos(a) * 20} x2={Math.sin(a) * (r - 30)} y2={-Math.cos(a) * (r - 30)} stroke={farbe} strokeWidth={6} strokeLinecap="round" style={{filter: `drop-shadow(0 0 8px ${farbe})`}} />
         <circle r={10} fill={farbe} />
       </svg>
-      <div style={{position: 'absolute', left: x - 150, width: 300, top: y + r + 34, textAlign: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: '0.12em', color: akzent ? AKZENT : STAHL}}>{label}</div>
+      <div style={{position: 'absolute', left: x - 220, width: 440, top: y + r + 34, textAlign: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 40, letterSpacing: '0.1em', color: akzent ? AKZENT : STAHL}}>{label}</div>
     </>
   );
 };
@@ -173,7 +217,7 @@ const Wellen: React.FC<{x: number; y: number; ab: number; anzahl?: number; reich
   );
 };
 
-const Quelle: React.FC<{text: string; ab?: number; top?: number}> = ({text, ab = 0, top = 1440}) => {
+const Quelle: React.FC<{text: string; ab?: number; top?: number}> = ({text, ab = 0, top = 1350}) => {
   const f = useCurrentFrame();
   return <div style={{position: 'absolute', left: 80, top, fontFamily: MONO, fontSize: 28, letterSpacing: '0.06em', color: STAHL, opacity: 0.8 * ein(f, ab)}}>{text}</div>;
 };
@@ -181,41 +225,41 @@ const Quelle: React.FC<{text: string; ab?: number; top?: number}> = ({text, ab =
 /* ───────────── Szenen ───────────── */
 
 /** 1 · Der Pfeil nach oben wird durchgestrichen – stattdessen kommen Wellen von oben. */
-const S1: React.FC = () => {
+const S1: React.FC<{z: Zeiten}> = ({z: {s1: z}}) => {
   const f = useCurrentFrame();
-  const pfeil = ein(f, 4, 14);
-  const kreuz = ein(f, 34, 10);
-  const pin = spring({frame: f - 80, fps: 30, config: {damping: 12, stiffness: 160}});
+  const pfeil = ein(f, z.pfeil, 14);
+  const kreuz = ein(f, z.kreuz, 10);
+  const pin = spring({frame: f - z.pin, fps: 30, config: {damping: 12, stiffness: 160}});
   return (
     <AbsoluteFill>
-      <Handy x={540} y={1080} pin={f < 80 ? 0.5 : 0.5 + 0.5 * pin} />
+      <Handy x={540} y={1080} pin={f < z.pin ? 0.5 : 0.5 + 0.5 * pin} />
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
-        <g opacity={pfeil * (1 - ein(f, 60, 10))}>
+        <g opacity={pfeil * (1 - ein(f, z.pfeilAus, 10))}>
           <line x1={540} y1={800} x2={540} y2={800 - 220 * pfeil} stroke={HELL} strokeWidth={12} strokeLinecap="round" />
           <path d={`M505,${620 + (1 - pfeil) * 220} L540,${580 + (1 - pfeil) * 220} L575,${620 + (1 - pfeil) * 220}`} fill="none" stroke={HELL} strokeWidth={12} strokeLinecap="round" strokeLinejoin="round" />
           <line x1={445} y1={600} x2={445 + 190 * kreuz} y2={600 + 190 * kreuz} stroke={AKZENT} strokeWidth={16} strokeLinecap="round" />
           <line x1={635} y1={600} x2={635 - 190 * kreuz} y2={600 + 190 * kreuz} stroke={AKZENT} strokeWidth={16} strokeLinecap="round" />
         </g>
       </svg>
-      <Wellen x={540} y={580} ab={64} reichweite={220} />
-      <Sfx name="kTick" at={6} volume={0.35} />
-      <Sfx name="kFalsch" at={34} volume={0.35} />
-      <Sfx name="kPop" at={80} volume={0.4} />
+      <Wellen x={540} y={580} ab={z.wellen} reichweite={220} />
+      <Sfx name="kTick" at={z.pfeil + 2} volume={0.35} />
+      <Sfx name="kFalsch" at={z.kreuz} volume={0.35} />
+      <Sfx name="kPop" at={z.pin} volume={0.4} />
     </AbsoluteFill>
   );
 };
 
 /** 2 · Erde mit Bahnringen, Satelliten kreisen, Höhe zählt hoch. */
-const S2: React.FC = () => {
+const S2: React.FC<{z: Zeiten}> = ({z: {s2: z}}) => {
   const f = useCurrentFrame();
   const auf = ein(f, 0, 18);
   const R = 220;
   const cx = 540;
   const cy = 840;
   const bahnen = [0, 30, 60, 90, 120, 150];
-  const hoehe = Math.round(interpolate(f, [30, 110], [0, 20200], {...clamp, easing: outQuint}) / 100) * 100;
+  const hoehe = Math.round(interpolate(f, z.hoehe, [0, 20200], {...clamp, easing: outQuint}) / 100) * 100;
   const bahn = (w: number, i: number, vorn: boolean) => {
-    const sicht = ein(f, 8 + i * 5, 14);
+    const sicht = ein(f, z.bahnen + i * 5, 14);
     const winkel = (f * 0.9 + i * 47) * (Math.PI / 180);
     const rx = 430;
     const ry = 120;
@@ -237,17 +281,17 @@ const S2: React.FC = () => {
   return (
     <AbsoluteFill>
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>{bahnen.map((w, i) => bahn(w, i, false))}</svg>
-      <div style={{position: 'absolute', left: cx - R - 20, top: cy - R - 20, transform: `scale(${0.9 + 0.1 * auf})`, opacity: auf, filter: 'drop-shadow(0 0 50px rgba(110,150,255,0.35))'}}>
+      <div style={{position: 'absolute', left: cx - R - 20, top: cy - R - 20, transform: `scale(${0.92 + 0.08 * auf})`, filter: 'drop-shadow(0 0 50px rgba(110,150,255,0.35))'}}>
         <Globus R={R} lon0={10 + f * 0.15} lat0={25} id="gps-erde" />
       </div>
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>{bahnen.map((w, i) => bahn(w, i, true))}</svg>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1170, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 18, opacity: ein(f, 26)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1080, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 18, opacity: ein(f, z.hoehe[0])}}>
         <div style={{fontFamily: INTER, fontWeight: 800, fontSize: 170, letterSpacing: '-0.05em', color: HELL, fontVariantNumeric: 'tabular-nums'}}>{zahl(hoehe)}</div>
         <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 80, color: AKZENT}}>km</div>
       </div>
-      <Quelle text="QUELLE: GPS.GOV" ab={110} />
+      <Quelle text="QUELLE: GPS.GOV" ab={z.quelle} top={1290} />
       <Sfx name="kWhoosh" at={0} volume={0.35} />
-      {[30, 60, 90].map((d) => (
+      {z.ticks.map((d) => (
         <Sfx key={d} name="kTick" at={d} volume={0.3} />
       ))}
     </AbsoluteFill>
@@ -255,10 +299,10 @@ const S2: React.FC = () => {
 };
 
 /** 3 · Kamera fährt an den Satelliten, Röntgen auf die Atomuhr; Ort + Zeit fliegen als Lichtpunkte los. */
-const S3: React.FC = () => {
+const S3: React.FC<{z: Zeiten}> = ({z: {s3: z}}) => {
   const f = useCurrentFrame();
   const auf = ein(f, 0, 22);
-  const roe = ein(f, 60, 14);
+  const roe = ein(f, z.roentgen, 14);
   const paket = (ab: number, dx: number) => {
     const t = interpolate(f, [ab, ab + 50], [0, 1], clamp);
     if (t <= 0 || t >= 1) return null;
@@ -269,9 +313,9 @@ const S3: React.FC = () => {
       <div style={{position: 'absolute', inset: 0, transform: `scale(${0.8 + 0.2 * auf})`, transformOrigin: '540px 780px'}}>
         <Satellit x={540} y={780} s={1.55} durchsicht={roe} drehung={-6 + f * 0.02} uhrWinkel={f * 6} />
       </div>
-      <Callout punkt={[540, 780]} text="Atomuhr" ab={70} versatz={[230, 230]} akzent />
+      <Callout punkt={[540, 780]} text="Atomuhr" ab={z.callout} versatz={[-130, 230]} akzent />
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
-        {[100, 130, 160].map((ab) => (
+        {z.pakete.map((ab) => (
           <g key={ab}>
             {paket(ab, -140)}
             {paket(ab + 8, 140)}
@@ -279,8 +323,8 @@ const S3: React.FC = () => {
         ))}
       </svg>
       <Sfx name="kWhoosh" at={0} volume={0.3} />
-      <Sfx name="kDing" at={70} volume={0.4} />
-      {[100, 130, 160].map((d) => (
+      <Sfx name="kDing" at={z.callout} volume={0.4} />
+      {z.pakete.map((d) => (
         <Sfx key={d} name="kTipp" at={d} volume={0.3} />
       ))}
     </AbsoluteFill>
@@ -288,16 +332,16 @@ const S3: React.FC = () => {
 };
 
 /** 4 · Lichtpunkt fliegt zum Handy; eine einzige Zahl: Laufzeit → Entfernung. */
-const S4: React.FC = () => {
+const S4: React.FC<{z: Zeiten}> = ({z: {s4: z}}) => {
   const f = useCurrentFrame();
-  const lauf = interpolate(f, [20, 90], [0, 1], clamp);
+  const lauf = interpolate(f, z.lauf, [0, 1], clamp);
   const y = 650 + lauf * 230;
-  const zeitSicht = 1 - ein(f, 130, 10);
-  const wegSicht = ein(f, 136, 12);
+  const zeitSicht = 1 - ein(f, z.zeitAus, 10);
+  const wegSicht = ein(f, z.weg, 12);
   return (
     <AbsoluteFill>
       <Satellit x={540} y={600} s={0.75} />
-      <Handy x={540} y={1010} s={0.5} pin={0.5 + 0.5 * ein(f, 90, 10)} />
+      <Handy x={540} y={1010} s={0.5} pin={0.5 + 0.5 * ein(f, z.lauf[1], 10)} />
       <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
         <line x1={540} y1={660} x2={540} y2={880} stroke={BLAU} strokeOpacity={0.3} strokeWidth={4} strokeDasharray="6 12" />
         {lauf > 0 && lauf < 1 ? (
@@ -307,8 +351,8 @@ const S4: React.FC = () => {
           </>
         ) : null}
       </svg>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1210, height: 200}}>
-        <div style={{position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 16, opacity: zeitSicht * ein(f, 20)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1110, height: 200}}>
+        <div style={{position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 16, opacity: zeitSicht * ein(f, z.lauf[0])}}>
           <div style={{fontFamily: INTER, fontWeight: 800, fontSize: 160, letterSpacing: '-0.05em', color: HELL, fontVariantNumeric: 'tabular-nums'}}>{(0.067 * lauf).toFixed(3).replace('.', ',')}</div>
           <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 76, color: AKZENT}}>s</div>
         </div>
@@ -317,15 +361,15 @@ const S4: React.FC = () => {
           <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 76, color: AKZENT}}>km</div>
         </div>
       </div>
-      <Sfx name="kSwish" at={20} volume={0.35} />
-      <Sfx name="kLanden" at={90} volume={0.35} />
-      <Sfx name="kDing" at={136} volume={0.45} />
+      <Sfx name="kSwish" at={z.lauf[0]} volume={0.35} />
+      <Sfx name="kLanden" at={z.lauf[1]} volume={0.35} />
+      <Sfx name="kDing" at={z.weg} volume={0.45} />
     </AbsoluteFill>
   );
 };
 
 /** 5 · Drei Kugeln (hier Kreise) schneiden sich im Standort, ein vierter Satellit stellt die Uhr. */
-const S5: React.FC = () => {
+const S5: React.FC<{z: Zeiten}> = ({z: {s5: z}}) => {
   const f = useCurrentFrame();
   const P: [number, number] = [540, 960];
   const sats: Array<[number, number]> = [
@@ -333,8 +377,9 @@ const S5: React.FC = () => {
     [770, 800],
     [590, 1200],
   ];
-  const treffer = spring({frame: f - 150, fps: 30, config: {damping: 11, stiffness: 160}});
-  const vierter = ein(f, 175, 14);
+  const treffer = spring({frame: f - z.treffer, fps: 30, config: {damping: 11, stiffness: 160}});
+  const vierter = ein(f, z.vierter, 14);
+  const puls = interpolate(f, [z.callout, z.callout + 6, z.callout + 20], [0, 1, 0], clamp);
   const satIcon = (sx: number, sy: number, key: React.Key, alpha = 1) => (
     <g key={key} opacity={alpha}>
       <circle cx={sx} cy={sy} r={34} fill={BLAU} opacity={0.18} />
@@ -354,7 +399,7 @@ const S5: React.FC = () => {
         </defs>
         {sats.map(([sx, sy], i) => {
           const d = Math.hypot(P[0] - sx, P[1] - sy);
-          const r = d * interpolate(f, [20 + i * 35, 70 + i * 35], [0, 1], {...clamp, easing: outQuint});
+          const r = d * interpolate(f, [z.kugeln[i], z.kugeln[i] + 50], [0, 1], {...clamp, easing: outQuint});
           return <circle key={`k${i}`} cx={sx} cy={sy} r={r} fill="url(#kugel-fuellung)" stroke={BLAU} strokeOpacity={0.7} strokeWidth={3} />;
         })}
         {sats.map(([sx, sy], i) => satIcon(sx, sy, `s${i}`))}
@@ -362,55 +407,54 @@ const S5: React.FC = () => {
           <line x1={900} y1={640} x2={P[0] + 18} y2={P[1] - 18} stroke={HELL} strokeOpacity={0.5} strokeWidth={3} strokeDasharray="4 10" />
           {satIcon(900, 620, 'vier')}
         </g>
-        <circle cx={P[0]} cy={P[1]} r={60 * treffer} fill={AKZENT} opacity={f >= 150 ? 0.25 : 0} />
-        <circle cx={P[0]} cy={P[1]} r={18 + treffer * 8} fill={AKZENT} stroke={HELL} strokeWidth={5} opacity={f >= 150 ? 1 : 0} style={{filter: `drop-shadow(0 0 20px ${AKZENT})`}} />
+        <circle cx={P[0]} cy={P[1]} r={60 * treffer + 50 * puls} fill={AKZENT} opacity={f >= z.treffer ? 0.25 + 0.2 * puls : 0} />
+        <circle cx={P[0]} cy={P[1]} r={18 + treffer * 8} fill={AKZENT} stroke={HELL} strokeWidth={5} opacity={f >= z.treffer ? 1 : 0} style={{filter: `drop-shadow(0 0 20px ${AKZENT})`}} />
       </svg>
-      <Callout punkt={P} text="Das bist du" ab={220} versatz={[230, 260]} akzent />
-      {[20, 55, 90].map((d) => (
+      {z.kugeln.map((d) => (
         <Sfx key={d} name="kTick" at={d} volume={0.3} />
       ))}
-      <Sfx name="kPop" at={150} volume={0.45} />
-      <Sfx name="kTipp" at={175} volume={0.35} />
-      <Sfx name="kErfolg" at={220} volume={0.4} />
+      <Sfx name="kPop" at={z.treffer} volume={0.45} />
+      <Sfx name="kTipp" at={z.vierter} volume={0.35} />
+      <Sfx name="kErfolg" at={z.callout} volume={0.4} />
     </AbsoluteFill>
   );
 };
 
 /** 6 · Zwei Zeigeruhren: oben läuft die Zeit schneller. Eine Zahl: +38 µs pro Tag. */
-const S6: React.FC = () => {
+const S6: React.FC<{z: Zeiten}> = ({z: {s6: z}}) => {
   const f = useCurrentFrame();
   const unten = f * 6;
-  const oben = f * 6 + interpolate(f, [30, 150], [0, 70], clamp);
-  const zahlSicht = ein(f, 150, 12);
-  const puls = interpolate(f, [150, 155, 164], [0, 1, 0], clamp);
+  const oben = f * 6 + interpolate(f, z.davon, [0, 70], clamp);
+  const zahlSicht = ein(f, z.zahl, 12);
+  const puls = interpolate(f, [z.zahl, z.zahl + 5, z.zahl + 14], [0, 1, 0], clamp);
   return (
     <AbsoluteFill>
-      <div style={{opacity: ein(f, 0, 14)}}>
+      <div style={{transform: `scale(${0.92 + 0.08 * ein(f, 0, 14)})`, transformOrigin: '540px 760px'}}>
         <Zeigeruhr x={300} y={760} r={170} winkel={unten} label="ERDE" />
         <Zeigeruhr x={780} y={760} r={170} winkel={oben} label="SATELLIT" akzent />
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1110, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 16, opacity: zahlSicht, transform: `scale(${1 + puls * 0.06})`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1070, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 16, opacity: zahlSicht, transform: `scale(${1 + puls * 0.06})`}}>
         <div style={{fontFamily: INTER, fontWeight: 800, fontSize: 170, letterSpacing: '-0.05em', color: AKZENT}}>+38</div>
         <div style={{fontFamily: SPACE, fontWeight: 700, fontSize: 70, color: HELL}}>µs / Tag</div>
       </div>
-      <Quelle text="QUELLE: R. POGGE, OHIO STATE UNIVERSITY" ab={160} top={1340} />
-      <Sfx name="kTick" at={30} volume={0.3} />
-      <Sfx name="kAnstieg" at={60} volume={0.3} />
-      <Sfx name="kDing" at={150} volume={0.45} />
+      <Quelle text="QUELLE: R. POGGE, OHIO STATE UNIVERSITY" ab={z.quelle} top={1290} />
+      <Sfx name="kTick" at={z.davon[0]} volume={0.3} />
+      <Sfx name="kAnstieg" at={z.davon[0] + 20} volume={0.3} />
+      <Sfx name="kDing" at={z.zahl} volume={0.45} />
     </AbsoluteFill>
   );
 };
 
 /** 7 · Stadtplan: der Standortpunkt driftet weg, die Videouhr zählt die Meter seit Videobeginn. */
-const S7: React.FC = () => {
+const S7: React.FC<{z: Zeiten; start: number}> = ({z: {s7: z}, start}) => {
   const f = useCurrentFrame();
-  // Maßstab: 100 px = 1 m; Drift 0,116 m/s (10 km ÷ 86.400 s)
-  const drift = (f / 30) * 0.116 * 100;
-  const kx = 430;
+  // Maßstab: 50 px = 1 m; Drift 0,116 m/s (10 km ÷ 86.400 s), gezählt ab Videobeginn wie die Videouhr
+  const drift = ((start + f) / 30) * 0.116 * 50;
+  const kx = 300;
   const ky = 860;
   return (
     <AbsoluteFill>
-      <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0, opacity: ein(f, 0, 14)}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
         <defs>
           <clipPath id="gps-plan">
             <rect x={80} y={560} width={920} height={600} rx={36} />
@@ -435,21 +479,23 @@ const S7: React.FC = () => {
         <circle cx={kx + drift} cy={ky - drift * 0.35} r={36} fill={AKZENT} opacity={0.25} />
         <circle cx={kx + drift} cy={ky - drift * 0.35} r={18} fill={AKZENT} stroke={HELL} strokeWidth={4} style={{filter: `drop-shadow(0 0 16px ${AKZENT})`}} />
         <line x1={120} x2={220} y1={1120} y2={1120} stroke={HELL} strokeWidth={5} />
-        <text x={234} y={1131} fontFamily={MONO} fontSize={30} fill={HELL}>1 m</text>
+        <text x={234} y={1134} fontFamily={MONO} fontSize={40} fill={HELL}>2 m</text>
       </svg>
-      <Videouhr proSekunde={0.116} einheit="m" stellen={1} start={-START[6]} top={1220} />
-      <Sfx name="kAnstieg" at={10} volume={0.3} />
+      <div style={{opacity: ein(f, z.uhr)}}>
+        <Videouhr proSekunde={0.116} einheit="m" stellen={1} start={-start} top={1190} rechts={150} />
+      </div>
+      <Sfx name="kAnstieg" at={z.uhr + 10} volume={0.3} />
     </AbsoluteFill>
   );
 };
 
 /** 8 · Die Atomuhr wird vor dem Start zurückgedreht, dann zurück zum Handy (Loop zu Szene 1). */
-const S8: React.FC = () => {
+const S8: React.FC<{z: Zeiten}> = ({z: {s8: z}}) => {
   const f = useCurrentFrame();
-  const zurueck = ein(f, 150, 20);
-  // Zeiger läuft, wird bei Frame 50–80 ein Stück zurückgedreht
-  const winkel = f * 6 - interpolate(f, [50, 80], [0, 90], {...clamp, easing: outQuint});
-  const pfeil = ein(f, 44, 10) * (1 - ein(f, 90, 10));
+  const zurueck = ein(f, z.zurueck, 20);
+  // Zeiger läuft, wird dann ein Stück zurückgedreht
+  const winkel = f * 6 - interpolate(f, z.dreh, [0, 90], {...clamp, easing: outQuint});
+  const pfeil = ein(f, z.pfeil, 10) * (1 - ein(f, z.pfeilAus, 10));
   return (
     <AbsoluteFill>
       <div style={{opacity: 1 - zurueck}}>
@@ -459,32 +505,60 @@ const S8: React.FC = () => {
           <path d="M 790 860 A 270 270 0 0 0 640 760" fill="none" stroke={AKZENT} strokeWidth={10} strokeLinecap="round" />
           <path d="M 655 735 L 632 762 L 666 780" fill="none" stroke={AKZENT} strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <Quelle text="QUELLE: N. ASHBY, LIVING REVIEWS (2003)" ab={70} top={1300} />
+        <Quelle text="QUELLE: N. ASHBY, LIVING REVIEWS (2003)" ab={z.quelle} top={1300} />
       </div>
       <div style={{opacity: zurueck}}>
         <Handy x={540} y={1080} pin={0.5} />
       </div>
-      <Sfx name="kTipp" at={50} volume={0.4} />
-      <Sfx name="kWhoosh" at={150} volume={0.35} />
+      <Sfx name="kTipp" at={z.dreh[0]} volume={0.4} />
+      <Sfx name="kWhoosh" at={z.zurueck} volume={0.35} />
     </AbsoluteFill>
   );
 };
 
-const SZENEN = [S1, S2, S3, S4, S5, S6, S7, S8];
 const KAPITEL = ['Dein Handy', 'Die Satelliten', 'Das Signal', 'Zeit wird Weg', 'Der Schnittpunkt', 'Einstein', 'Während du schaust', 'Die Lösung'];
 
-const GpsRohschnitt: React.FC = () => (
-  <AbsoluteFill style={{background: BG}}>
-    <Himmel />
-    <Titel text={<>So weiß dein Handy, <span style={{color: AKZENT}}>wo du bist</span></>} />
-    <EckTag texte={['Illustration']} top={130} />
-    <Kapitel top={450} abschnitte={KAPITEL.map((text, i) => ({text, ab: START[i]}))} />
-    {SZENEN.map((Szene, i) => (
-      <Sequence key={i} from={START[i]} durationInFrames={LAENGEN[i]} layout="none">
-        <Szene />
-      </Sequence>
-    ))}
-  </AbsoluteFill>
-);
+const Gps: React.FC<{z: Zeiten; mitTon?: boolean}> = ({z, mitTon = false}) => {
+  const start = starts(z);
+  const szenen = [S1, S2, S3, S4, S5, S6, S7, S8];
+  return (
+    <AbsoluteFill style={{background: BG}}>
+      <Himmel />
+      <Titel text={<>So weiß dein Handy, <span style={{color: AKZENT}}>wo du bist</span></>} />
+      <EckTag texte={['Illustration']} top={130} />
+      <KapitelMitLoop ende={summe(z)} abschnitte={KAPITEL.map((text, i) => ({text, ab: start[i]}))} />
+      {szenen.map((Szene, i) => (
+        <Sequence key={i} from={start[i]} durationInFrames={z.laengen[i]} layout="none">
+          {i === 6 ? <S7 z={z} start={start[6]} /> : <Szene z={z} start={0} />}
+        </Sequence>
+      ))}
+      {mitTon ? (
+        <>
+          <Audio src={staticFile('projekte/gps-handy/voiceover.wav')} />
+          <Music src="musik/wissen.wav" volume={0.22} captions={WORTZEITEN} duckTo={0.35} />
+          <Untertitel captions={WORTZEITEN} schluessel={['Signal', 'Atomuhren', 'Entfernung', 'Punkt', 'schneller', 'Einsteins']} farbig={['kein', '38', '10']} top={UNTERTITEL_TOP} />
+        </>
+      ) : null}
+    </AbsoluteFill>
+  );
+};
 
-export const gpsRohschnitt: Project[] = [{id: 'GPS-Rohschnitt', component: GpsRohschnitt, format: 'vertical', durationInFrames: GESAMT, ordner: 'Wissen'}];
+/** Kapitel-Label blendet in den letzten 15 Frames aus, damit das letzte Bild wieder Frame 0 gleicht (Loop). */
+const KapitelMitLoop: React.FC<{ende: number; abschnitte: Array<{text: string; ab: number}>}> = ({ende, abschnitte}) => {
+  const f = useCurrentFrame();
+  return (
+    <div style={{opacity: interpolate(f, [ende - 15, ende - 3], [1, 0], clamp)}}>
+      <Kapitel top={450} abschnitte={abschnitte} />
+    </div>
+  );
+};
+
+const UNTERTITEL_TOP = 1360;
+
+const GpsRohschnitt: React.FC = () => <Gps z={ROH} />;
+const GpsShort: React.FC = () => <Gps z={TON} mitTon />;
+
+export const gpsRohschnitt: Project[] = [
+  {id: 'GPS-Rohschnitt', component: GpsRohschnitt, format: 'vertical', durationInFrames: summe(ROH), ordner: 'Wissen'},
+  {id: 'GPS-Short', component: GpsShort, format: 'vertical', durationInFrames: summe(TON), ordner: 'Wissen'},
+];

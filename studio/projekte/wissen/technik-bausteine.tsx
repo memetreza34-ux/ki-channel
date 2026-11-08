@@ -205,7 +205,7 @@ export const StatusChip: React.FC<{zustaende: Array<{text: string; ab: number; a
  * Videouhr „Während du schaust …“: zeigt die echte Videozeit (0:13) und einen Wert, der pro Sekunde wächst
  * (z. B. Euro, Liter, Geburten). `proSekunde` aus belegter Quelle, `start` = ab welchem Frame gezählt wird.
  */
-export const Videouhr: React.FC<{proSekunde: number; einheit: string; start?: number; stellen?: number; top?: number}> = ({proSekunde, einheit, start = 0, stellen = 0, top = 380}) => {
+export const Videouhr: React.FC<{proSekunde: number; einheit: string; start?: number; stellen?: number; top?: number; rechts?: number}> = ({proSekunde, einheit, start = 0, stellen = 0, top = 380, rechts = 80}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const sek = Math.max(0, (f - start) / fps);
@@ -213,7 +213,7 @@ export const Videouhr: React.FC<{proSekunde: number; einheit: string; start?: nu
   const ss = Math.floor(sek % 60).toString().padStart(2, '0');
   const wert = (sek * proSekunde).toLocaleString('de-DE', {minimumFractionDigits: stellen, maximumFractionDigits: stellen});
   return (
-    <div style={{position: 'absolute', left: 80, right: 80, top, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontFamily: INTER, fontWeight: 800, letterSpacing: '-0.03em', fontVariantNumeric: 'tabular-nums'}}>
+    <div style={{position: 'absolute', left: 80, right: rechts, top, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontFamily: INTER, fontWeight: 800, letterSpacing: '-0.03em', fontVariantNumeric: 'tabular-nums'}}>
       <div style={{fontSize: 96, color: HELL}}>{mm}:{ss}</div>
       <div style={{fontSize: 72, color: AKZENT}}>
         {wert} <span style={{fontSize: 48}}>{einheit}</span>
