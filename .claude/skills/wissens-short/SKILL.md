@@ -15,16 +15,67 @@ Code: `studio/projekte/wissen/` – `bausteine.tsx` (Farben, Titel, Zähler, Pul
 2. **Skript** (`kanal/shorts/<Mo>_bis_<So>/<thema>/audio/script.txt` + `LIES-MICH.txt`): Satz 1 = Titel als Frage/Behauptung, dann 4–7 Beats (Zahl → Mechanismus/Vergleich → Wendung → Pointe, letzter Satz führt in den Anfang zurück), 130–220 Wörter (≈ 180 Wörter/Minute), Regeln unter „Skript“ weiter unten. Danach aufhören – **Stimme nur Arman**, nie synthetisch.
 3. **Video aus dem Audio:** Wortzeiten (`npm run untertitel`), Beats wortgenau legen, mit Bausteinen bauen, Probebilder prüfen, Agent `video-kritiker` laufen lassen, nachbessern, rendern, -14 LUFS.
 
-## Look
+## Look und Regelwerk Text · Untertitel · Titel · Animation (Arman, 2026-11-08)
 
-**Text-Diät (Arman, 2026-11-02):** Das Bild erzählt, der Text kommt aus der Stimme (Wort-für-Wort-`Untertitel`). Pro Szene unter dem Titel nur Bild + **höchstens eine** große Zahl oder **ein** Label + winzige Quelle. Keine Erklärsätze, keine Panels mit mehreren Zeilen, keine Statuszeilen-Stapel. Requisiten mit Licht, Verlauf und Tiefe (Glas, Metall, Leuchten, Sternenhimmel) statt flacher Kästen. Referenz: `GPS-Rohschnitt`.
+Grundlage: Vorbild-Analyse vom 08.11. (`vorbild-analyse-2026-11-08.md`, 11 Reels je Kanal). Bausteine: `projekte/wissen/stil.tsx` (Text) und `projekte/wissen/welten.tsx` (Bühnen), Beispiele in Composition `Stil-Katalog`.
 
+**Farben:** Grund `BG #0E1424`, Text `HELL #F3EFE7`, **eine** Akzentfarbe `AKZENT #FF6B4A`, Nebeninfo `STAHL #8A93A8`. Eine Welt darf eigene Grundtöne haben (warmes Zimmer, grüne Insel), die Akzentfarbe bleibt.
 
-- Grund `BG #0E1424`, Text `HELL #F3EFE7`, **eine** Akzentfarbe `AKZENT #FF6B4A` (Schlüsselwort im Titel, Einheit, Höhepunkt), Nebeninfo `STAHL #8A93A8`.
-- Titel oben (Space Grotesk 700, 92 px, max. 2 Zeilen), steht die ganze Szene.
-- Zahlen in Inter 800 (nicht Space Grotesk – deren „1“ wirkt falsch), 170 px, Einheit in Akzent daneben.
-- Quelle klein darunter (JetBrains Mono, 28 px, „QUELLE: …“), nie die Pointe vorwegnehmen.
-- Ein Objekt in der Mitte, groß (≈ 60 % Breite), sauber gezeichnet mit Licht/Schatten – keine Clipart, keine Icon-Kacheln.
+### Überschrift
+- **Welt-Video (schraffuren-Art):** `TitelStart`, weiß, 68 px, linksbündig oben, höchstens 3 Zeilen, ein Wort in Akzent. Steht nur, bis der erste Satz gesprochen ist (2–5 s), dann blendet sie aus. Nie das ganze Video lang.
+- **Technik-Video (scroll.engineer-Art):** keine Überschrift. Der erste Untertitel ist der Hook.
+- Das **Titelbild (Cover)** ist etwas anderes: groß, 3 Zeilen, darunter das Held-Objekt. Eigenes Standbild.
+
+### Untertitel (immer an, viele schauen ohne Ton)
+- **Stil Satz** (`UntertitelSatz`, Welt): Satzstücke mit 3–6 Wörtern erscheinen als Ganzes, in einem kleinen dunklen Kasten mit weißer Schrift, 46 px. Kein Hervorheben.
+- **Stil Wort** (`UntertitelWort`, Technik): 3–5 Wörter, das gerade gesprochene Wort weiß hinterlegt. Betonte Wörter stehen in GROSSBUCHSTABEN (höchstens eins pro Satz, im Skript markieren), ein Schlüsselbegriff darf unterstrichen sein.
+- **Position:** Mitte des unteren Drittels, y ≈ 1250–1400, nie unter 1480. Der Untertitel liegt nie auf dem Höhepunkt, das Objekt rückt dann höher.
+
+### Wann Text, wann keiner
+- **Ja:**
+  - die eine Zahl, um die es gerade geht (1–2 große Zahlen im ganzen Video, sonst klein am Objekt: `Mass` „13 mm“, „40 µm“),
+  - ein Vergleichspaar (`ZahlPaar` 79,0 ↔ 83,3),
+  - Ortsname oder Jahr als kleines Label,
+  - Quelle winzig unten links.
+- **Nein:**
+  - Sätze, die schon gesprochen werden (dafür gibt es den Untertitel),
+  - Kapitel-Labels, Statuszeilen, Erklärkästen, Legenden ohne Not,
+  - das Schild „Illustration“ bei offensichtlich gezeichneten Bildern.
+- **Hinweis `Hinweis` („nachgebaut“, „Illustration“)** nur, wenn das Bild wie ein Foto oder ein echtes Produkt wirkt. Dann winzig oben links.
+
+### Animation, die man sofort versteht
+- **Ein Held bleibt das ganze Video** und verwandelt sich (Kalender reißt ab, Dächer färben sich, Karte füllt sich, Gerät wird aufgeschnitten). Lieber eine Bühne mit Verwandlung als acht Szenen mit neuen Objekten.
+- **Jeder Satz = ein sichtbares Ereignis**, genau auf dem Schlüsselwort (±3 Frames).
+- **Eine Sache bewegt sich zur Zeit**, der Rest ist ruhig.
+- **Zustand über Farbe, Größe, Lage zeigen, nicht über Text** (rot/grün, voll/leer, hier/dort).
+- **Vorher bleibt sichtbar** (Spur, Geisterbild, alter Platz als Ring), damit man den Unterschied sieht.
+- **Ursache → Wirkung als Weg:** Lichtpunkt mit Spur, Pfeil für Kraft oder Luftstrom, Welle.
+- **Kamera nach Bildwelt:**
+  - Welt: Kamera fast fest, langsames Zoomen, die Objekte verändern sich.
+  - Technik: Einstellung wechselt alle 1,5–3 s (außen → Schnitt → Detail/Makro mit Maßstab → zurück).
+- **Loop:** Das letzte Bild gleicht dem ersten.
+- Requisiten mit Licht, Verlauf und Tiefe statt flacher Kästen. Keine Clipart, keine Icon-Kacheln.
+
+### Welten (fertige Bühnen in `welten.tsx`)
+| Welt | Wofür | Art |
+|---|---|---|
+| `WeltZimmer` | Alltag, Psychologie, Zeit, Geld | warme Flach-Illustration (schraffuren) |
+| `WeltInsel` | Politik, Stadt, Gesellschaft, Bauwerke | isometrisches 3D-Diorama mit Kenney-Modellen (schraffuren) |
+| `Karte` (`erklaer-werkzeuge.tsx`) | Länder, Regionen, Routen | dunkle Karte, Farbwelle |
+| `WeltTunnel` | ein Gerät oder Bauteil groß zeigen | Studio-Tunnel mit Lichtleisten, Spiegelboden (scroll.engineer) |
+| `WeltNachtstrasse` | Verkehr, Auto, Licht, Navigation | nächtliche Straße, Nebel, Fahrbahnlinien (scroll.engineer) |
+| `WeltAll` | Raumfahrt, Satelliten, Erde | Sternenhimmel mit Tiefe |
+| `WeltLandschaft` | Natur, Biologie, Geografie, Wetter | Waldrand mit Zelt und Lagerfeuer, Abend oder Tag (3D, Kenney Nature) |
+| `WeltZimmer3D` | Alltag, Wohnen, Arbeit, Technik zu Hause | aufgeschnittenes Zimmer als Diorama, Tag/Abend-Licht (3D, Kenney Furniture) |
+
+**3D-Modelle (alle Kenney, CC0)** liegen in `public/modelle/kenney/`:
+- `stadt/`: Häuser, Hochhäuser
+- `zug/`: Schnellzug, Gleis
+- `auto/`: 13 Fahrzeuge, Pylone
+- `natur/`: 28 Bäume, Büsche, Blumen, Felsen, Zelt, Feuer, Zaun, Obelisk
+- `moebel/`: 24 Schreibtisch, Bildschirm, Sofa, Regal, Lampen, Bett, Wände
+
+Die vollständigen Pakete liegen in `studio/assets-roh/kenney-3d/` (Stadt, Straßen, Zug, Auto, Natur, Möbel) und sind bei Bedarf weiter nutzbar. Ein `Modell` ist etwa 1 Einheit groß, in den Welten mit `scale` 1,4–3 einsetzen.
 
 ## Zwei Bildwelten – pro Video entscheiden (Arman, 2026-11-01)
 
@@ -38,7 +89,7 @@ Vorbilder: Instagram **schraffuren** (Welt) und **scroll.engineer** (Technik). N
 | Beispiel | `Zug-Probe-3D` | – |
 
 - **Pro Video eine Hauptwelt** wählen und in `skript.md` begründen. Mischen pro Szene erlaubt, wenn es der Story dient: z. B. Welt für Einstieg und Zahl → Kamera taucht ins Objekt → Technik für den Mechanismus.
-- Gemeinsam bleibt: Denkwürfel-Farben, eine Akzentfarbe, Titel oben, Quelle, Armans Stimme, faceless.
+- Gemeinsam bleibt: Denkwürfel-Farben, eine Akzentfarbe, Titel oben, Quelle, Armans Stimme (Aufnahme oder freigegebener Klon, siehe `kanal/STIMMPROFIL.md`), faceless.
 - Nachgebaute Geräte/Apps immer mit Ecken-Tag `nachgebaut` – nie als echte Aufnahme ausgeben.
 
 ### Was die Vorbilder konkret machen (Bild-für-Bild-Analyse 2026-11-01)
@@ -57,6 +108,8 @@ Ausgewertet, je 6 Reels Bild für Bild über die ganze Länge: schraffuren „Zu
 | Ehrlichkeit | Quelle winzig unten links, dauerhaft | Tag „illustrative reconstruction“, „magnified illustration“, „recreated model · not to scale · time-lapse“ | `EckTag` + Quelle |
 | Schluss | Pointe als Rechenergebnis/Wendung („… kommen bei dir also nur knapp 0,53 € an.“, „Und du zehn Cent.“, „Sie lässt sie nur nicht mehr in ihr Netz.“) oder Frage („Und du wartest noch?“); letztes Bild = erstes Bild → **Loop** | 4 von 6 enden mit Frage an die Zuschauer („Would you trust …?“, „Would you rather hear …?“, „Did you know …?“), 1 mit Auflösung als Pointe (Maps: „the phones sitting inside are the sensors“) | Pointe-Satz, dann Bild in Frame 0 zurückführen; Fragen nur, wenn echte Meinungsfrage |
 | Farbe | Schwarz/Creme + eine Signalfarbe (Rot) | gedämpft Grau/Blau + eine Leuchtfarbe (Grün, Orange) | bleibt: Blau + Koralle |
+
+**Zweite, gründlichere Runde (2026-11-08):** `vorbild-analyse-2026-11-08.md` in diesem Ordner: Themen und Aufrufe, Skript-Baupläne („Erfinde es selbst“, Brückensätze), Betonung über Großbuchstaben, Bild ohne Dauertitel und Schilder, Messwerte zu Musik und Sounds, Tabelle „Was wir können“.
 
 #### Skript (aus Untertiteln gelesen)
 
@@ -135,7 +188,7 @@ Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median ·
 ## Bewegungssprache (fest)
 
 - Eintritte outQuint über 12 Frames, Weg ≤ 24 px; Objekte skalieren 0,92 → 1 (`useAuftritt`), nicht einblenden.
-- **Frame 0 zeigt Titel + Objekt** (Hook).
+- **Frame 0 zeigt den Held**, im Welt-Stil dazu die Überschrift (Hook).
 - Pro Szene genau **ein Höhepunkt**: `pulsBei(f, ab)` auf der Zahl + `kDing`.
 - Zähler laufen live mit (z. B. „seit dieses Video läuft“) – stärkstes Mittel gegen Wegwischen.
 
@@ -147,11 +200,18 @@ Alles Wichtige zwischen **y 200 und y 1480**. Darunter verdecken TikTok/Instagra
 
 `kWhoosh`/`kSwish` Szenenwechsel · `kAnstieg` Füllen/Wachsen · `kDing` Pointe · `kPop` Objekt erscheint · `kTick` nur an echten Ereignissen. Leise (0,3–0,5).
 
+**Zwei Klangwelten (Vorbild-Messung 08.11.):**
+- **Welt (schraffuren-Art):** leise helle Musik (−6 bis −10 dB unter der Stimme), kaum Bass, alle 1,6–2,6 s ein kleiner Ton genau am sichtbaren Ereignis. Dafür `kTick`, `kPop`, `vPapier` (Seite reißt), `vBlaettern`, `vStempel`, `vKritzeln`, `vMuenze`.
+- **Technik (scroll.engineer-Art):** dichter Teppich mit Bass (`musik-technik.py`, −2 bis −7 dB unter der Stimme), alle 2,7–3,4 s ein Akzent an Schnitten. Dafür `vEinschlag` (Sub-Bass), `vVorbei` (langer Vorbeiflug), `vZahnrad`, `vServo`, `vBrummen`, `vZap`, `vScan`, dazu Kenney-Metall/Glas (`vMetall`, `vGlas`).
+- Anhören: Composition `Sound-Katalog`.
+
 **Musik (Armans Ja vom 2026-10-31):** eigene Synthese `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav` (40 s, loopbar). Einbinden mit `<Music src="musik/wissen.wav" volume={0.22} captions={wortzeiten} duckTo={0.35} />` – immer leise, unter der Stimme abgesenkt.
 
 ## Checkliste vor dem Abgeben (an Bildern prüfen)
 
-- [ ] Frame 0: Titel + Objekt sichtbar.
+- [ ] Frame 0: Held sichtbar (Welt-Stil: plus Überschrift, die nach 2–5 s verschwindet).
+- [ ] Kein Text, der nur wiederholt, was gesprochen wird; kein Kapitel-Label, kein unnötiges Schild.
+- [ ] Jeder Satz hat ein sichtbares Ereignis auf dem Schlüsselwort.
 - [ ] Ein Blickfang pro Bild, keine großen leeren Flächen.
 - [ ] Nichts unter y 1480 oder rechts in der Button-Spalte.
 - [ ] Jede Zahl mit Quelle; nichts doppelt (Titel ≠ Label ≠ Quelle).

@@ -14,6 +14,7 @@ import {werkzeuge} from './wissen/WerkzeugBeispiele';
 import {zugProbe} from './wissen/ZugProbe';
 import {tachoProbe} from './wissen/TachoProbe';
 import {gpsRohschnitt} from './wissen/GpsRohschnitt';
+import {stilKatalog} from './wissen/StilKatalog';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -37,5 +38,6 @@ export const PROJEKTE: Project[] = [
   ...zugProbe,
   ...tachoProbe,
   ...gpsRohschnitt,
+  ...stilKatalog,
   // neu:eintrag
 ];

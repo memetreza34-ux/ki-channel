@@ -48,3 +48,13 @@ Icons und Logos kommen nicht als Dateien, sondern aus npm-Paketen (werden beim R
 Bei allen Firmenlogos gehören die Marken ihren Inhabern: nur redaktionell verwenden (Produkt wird genannt/erklärt), nie verändert oder als eigenes Zeichen.
 
 Projekt-Audio (`projekte/<slug>/voiceover.*`) bleibt lokal und wird nicht committet.
+
+## Ergänzungen 2026-11-08
+
+| Pfad | Quelle | Lizenz |
+|---|---|---|
+| `sfx/vorbild/*.ogg` (11) | eigene Synthese, `studio/scripts/sounds-vorbild.py` | eigen |
+| `sfx/vorbild/metall.ogg`, `glas.ogg` | Kenney.nl Impact Sounds (`impactMetal_heavy_001`, `impactGlass_medium_000`) | CC0 |
+| `modelle/kenney/auto/*.glb` (13 + Textures) | Kenney.nl Car Kit 3.1, mit Armans Freigabe am 08.11. geladen (4,8 MB), komplettes Paket in `studio/assets-roh/kenney-3d/car-kit/` | CC0 |
+| `modelle/kenney/natur/*.glb` (28) | Kenney.nl Nature Kit 2.1, mit Armans Freigabe am 08.11. geladen (10,5 MB), komplettes Paket in `studio/assets-roh/kenney-3d/nature-kit/` | CC0 |
+| `modelle/kenney/moebel/*.glb` (24) | Kenney.nl Furniture Kit 2.0, mit Armans Freigabe am 08.11. geladen (5,1 MB), komplettes Paket in `studio/assets-roh/kenney-3d/furniture-kit/` | CC0 |

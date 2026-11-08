@@ -223,6 +223,22 @@ export const SFX_FILES = {
   kLogoKurz: 'kanal/logo-kurz.ogg',
   kMuenze: 'kanal/muenze.ogg',
   kMuenzen: 'kanal/muenzen.ogg',
+  // Zwei Klangwelten der Vorbild-Analyse (studio/scripts/sounds-vorbild.py, 2026-11-08)
+  // Welt (schraffuren-Art): klein, trocken, hell – an jedem sichtbaren Ereignis
+  vPapier: 'vorbild/papier.ogg',
+  vBlaettern: 'vorbild/blaettern.ogg',
+  vStempel: 'vorbild/stempel.ogg',
+  vKritzeln: 'vorbild/kritzeln.ogg',
+  // Technik (scroll.engineer-Art): tief, kinoreif – an Schnitten und Bauteilen
+  vEinschlag: 'vorbild/einschlag.ogg',
+  vVorbei: 'vorbild/vorbei.ogg',
+  vZahnrad: 'vorbild/zahnrad.ogg',
+  vServo: 'vorbild/servo.ogg',
+  vBrummen: 'vorbild/brummen.ogg',
+  vZap: 'vorbild/zap.ogg',
+  vScan: 'vorbild/scan.ogg',
+  vMetall: 'vorbild/metall.ogg',
+  vGlas: 'vorbild/glas.ogg',
 } as const;
 
 export type SfxName = keyof typeof SFX_FILES;
