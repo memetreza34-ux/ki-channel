@@ -28,7 +28,7 @@ Armans Ordner: `kanal/shorts/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `
 3. **Fakten prüfen:** KI-News, Modelle, Preise, Limits ändern sich ständig → im Web prüfen, Quelle + Datum in `skript.md`.
 4. **Szene für Szene bauen.** Nach jeder Szene: `npm run look -- <ID> --range=<von>-<bis> --count=6` und die Bilder **ansehen**. Erst weiter, wenn die Szene gut aussieht.
 5. **Ganzes Video prüfen:** `npm run look -- <ID> --count=18`, dann selbst kritisieren oder den Agenten `video-kritiker` drüberschauen lassen. Fehler beheben, erneut ansehen.
-6. **Voiceover** spricht Arman selbst ein (keine KI-Stimme). Datei liegt in `studio/public/projekte/<slug>/voiceover.mp3|wav` → `npm run untertitel -- <slug>` → Szenenzeiten an die echten Wortzeiten anpassen → `VOICEOVER` im Projekt setzen. Untertitel gegen das Skript gegenlesen.
+6. **Voiceover** spricht Arman selbst ein oder kommt als freigegebener Klon seiner Stimme (`kanal/STIMMPROFIL.md`), nie eine fremde KI-Stimme. Datei liegt in `studio/public/projekte/<slug>/voiceover.mp3|wav` → `npm run untertitel -- <slug>` → Szenenzeiten an die echten Wortzeiten anpassen → `VOICEOVER` im Projekt setzen. Untertitel gegen das Skript gegenlesen.
 7. **Musik** liefert Arman (z. B. YouTube Audio Library) als `studio/public/projekte/<slug>/musik.mp3` → `MUSIK` setzen; `<Music>` senkt sie unter der Stimme automatisch ab. Für TikTok/Instagram oft besser ohne Musik rendern und den Trend-Sound in der App wählen – vorher fragen.
 8. **Rendern:** `npm run render -- <ID>` → `studio/out/<ID>.mp4` (bei Werbung jedes Format: `<ID>`, `<ID>-square`, `<ID>-portrait`). Cover/Thumbnail: `npm run still -- <ID> --frame=<n>`. Stichproben ansehen, dann Arman schicken.
 
@@ -156,7 +156,7 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 ## Stimme & Musik
 
 - **Armans Aufnahme (Standard):** je Absatz eine Datei `1.m4a … n.m4a` nach `public/projekte/<slug>/aufnahme/` → `python3 studio/scripts/stimme-aufnahme.py <slug>` säubert, setzt zusammen, schreibt `voiceover.wav` + `absaetze.json` und Wortzeiten. Sprechzettel für Arman: `projekte/<slug>/SPRECHZETTEL.md`.
-- **Keine eigene Stimme:** Die Stimme spricht immer Arman (Entscheidung 2026-10-10). Kein Piper/TTS im Video, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
+- **Stimme nur Arman:** Armans Aufnahme oder der Klon seiner eigenen Stimme (Freigabe 2026-11-08, Ablauf in `kanal/STIMMPROFIL.md`, Skript `kanal/stimme/mac-stimme-normal.py`). Jeder Klon-Text braucht vor dem Einbau Armans Hörfreigabe. Keine andere TTS- oder fremde Stimme, auch nicht als Platzhalter. Kein Zeitraster nötig: Animation entsteht erst in Phase 3 auf der echten Aufnahme.
 - **Musik: leise eigene Musik** (Arman, 2026-10-31): `python3 studio/scripts/musik-wissen.py` → `public/musik/wissen.wav`, im Video `<Music src="musik/wissen.wav" volume={0.22} captions={…} duckTo={0.35} />`.
 - **Kanal-Sounds:** `python3 studio/scripts/sounds-kanal.py` → `public/sfx/kanal/`, Namen `k…` in `SFX_FILES` (Zuordnung siehe Skill `wissens-short`).
 - ElevenLabs-MCP ist derzeit falsch eingerichtet (und Gratis-Konto ohne Bibliotheksstimmen) – nicht darauf verlassen.

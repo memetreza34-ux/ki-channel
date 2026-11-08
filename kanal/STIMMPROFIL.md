@@ -1,6 +1,6 @@
 # Stimmprofil Denkwürfel
 
-Entwurf vom 2026-11-07. Noch nicht eingesetzt: Es gilt weiter „Stimme nur Arman“, bis Arman eine Stimme freigibt.
+Entwurf vom 2026-11-07. Seit 2026-11-08 freigegeben: Arman hat den Klon seiner Stimme (normale Qwen-Version) für das GPS-Video freigegeben. Jeder weitere Klon-Text braucht seine Hörfreigabe.
 
 **Idee:** Die Bauart des Sprechens stammt aus der Vorbild-Analyse in `.claude/skills/wissens-short/SKILL.md`. Die Stimme selbst ist eine andere.
 
@@ -42,3 +42,13 @@ Arman will prüfen, ob ein Klon seiner eigenen Stimme die Aufnahme ersetzen kann
 - **Nächster Test auf dem MacBook M4:** `bash kanal/stimme/mac-stimme.sh` nutzt die C-Version von Qwen3-TTS mit `referenz-30s.wav`. Sie arbeitet ohne Referenztext und kann deshalb anders klingen. Arman vergleicht sie nach Gehör mit `proben/qwen-gps-1.wav`.
 - **Klingt die C-Version schlechter:** die normale Qwen-Version (`qwen-tts` 0.1.1) auf dem Mac testen.
 - **Freigabe:** Erst wenn Arman einen ganzen Text in dieser Stimme freigibt, ändert sich die Regel „Stimme nur Arman“.
+
+## Stand am MacBook M4 (2026-11-08)
+
+- **Neue Referenz:** Arman hat am Mac 26 s neu eingesprochen (`Test.mp4`, als `referenz-30s.wav` umgewandelt). Wortlaut steht in `mac-stimme-normal.py`.
+- **Ablage:** Programme und Modell liegen auf der SSD T7. Die C-Version unter `~/stimme-klon` (Verknüpfung auf T7). Die normale Version im Abbild `T7/stimme-klon/stimme-klon.sparseimage`, weil exFAT mit seinen `._`-Dateien Python-Pakete zerstört. Vor dem Lauf `hdiutil attach` (siehe Skriptkopf).
+- **C-Version** (`proben/qwen-c-gps-1.wav`): Testsatz in 11,5 s, ohne Referenztext. Arman: schlechter als die normale Version.
+- **Normale Version** (`mac-stimme-normal.py`, qwen-tts 0.1.1 auf der Apple-GPU): Arman zieht sie vor. Ganzer GPS-Text als `proben/qwen-normal-gps-ganz.wav`: 67,5 s, 172 Wörter pro Minute, Rechenzeit 340 s plus 77 s Laden.
+- **Zu prüfen beim Anhören:** Whisper hört „sieben Hundertstelsekunden“ als „700 stillsekunden“ und „achtunddreißig Millionstelsekunden“ als „38.000.000 Sekunden“. Ob der Klon oder Whisper danebenliegt, entscheidet das Gehör.
+- **Nachbesserung:** Absatz 4 und 6 neu mit getrennter Schreibweise („Hundertstel Sekunden“, „Millionstel Sekunden“). Arman wählte beide neu. Ergebnis `proben/qwen-normal-gps-ganz-v2.wav`: 67,0 s, 169 Wörter pro Minute. Für Klon-Texte Bruchzahlen deshalb getrennt schreiben.
+- **Freigabe 2026-11-08:** Arman gibt `qwen-normal-gps-ganz-v2.wav` für das GPS-Video frei. Regeln in `.claude/arman-regeln.md`, `studio/CLAUDE.md` und Skill `wissens-short` angepasst.
