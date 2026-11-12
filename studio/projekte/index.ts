@@ -15,6 +15,12 @@ import {zugProbe} from './wissen/ZugProbe';
 import {tachoProbe} from './wissen/TachoProbe';
 import {gpsRohschnitt} from './wissen/GpsRohschnitt';
 import {stilKatalog} from './wissen/StilKatalog';
+import {gpsAnimation} from './wissen/GpsAnimation';
+import {gpsKurz} from './wissen/GpsKurz';
+import {gpsFotoTest} from './wissen/GpsFotoTest';
+import {gpsStilprobe} from './wissen/GpsStilprobe';
+import {mittelStilbilder} from './wissen/MittelStilbilder';
+import {gpsMittel} from './wissen/GpsMittel';
 // neu:import
 
 export const PROJEKTE: Project[] = [
@@ -39,5 +45,11 @@ export const PROJEKTE: Project[] = [
   ...tachoProbe,
   ...gpsRohschnitt,
   ...stilKatalog,
+  ...gpsAnimation,
+  ...gpsKurz,
+  ...gpsFotoTest,
+  ...gpsStilprobe,
+  ...mittelStilbilder,
+  ...gpsMittel,
   // neu:eintrag
 ];

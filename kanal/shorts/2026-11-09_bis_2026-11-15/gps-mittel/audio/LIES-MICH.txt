@@ -1,0 +1,5 @@
+Short: So findet dich dein Handy (GPS) im Mittelding-Stil – 57 Sekunden
+
+Stand 2026-11-12: Arman hat diese Klon-Fassung freigegeben.
+Tonspur: gps-mittel-klon.wav (55,4 s, Pausen gekürzt; Rohton liegt als studio/public/projekte/gps-mittel/voiceover-roh.wav).
+Composition im Studio: GPS-Mittel.

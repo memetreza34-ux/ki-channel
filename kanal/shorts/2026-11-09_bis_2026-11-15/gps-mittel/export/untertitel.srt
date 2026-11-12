@@ -1,0 +1,156 @@
+1
+00:00:00,020 --> 00:00:01,740
+Dein Handy findet dich überall auf
+
+2
+00:00:01,740 --> 00:00:03,320
+der Erde auf wenige Meter genau,
+
+3
+00:00:03,320 --> 00:00:05,140
+ohne ein einziges Signal ins All
+
+4
+00:00:05,140 --> 00:00:06,080
+zu schicken.
+
+5
+00:00:06,080 --> 00:00:07,920
+Denn über dir kreisen gut 30
+
+6
+00:00:07,920 --> 00:00:08,800
+Satelliten.
+
+7
+00:00:08,800 --> 00:00:11,920
+Jeder in 20.200 Kilometern Höhe.
+
+8
+00:00:11,920 --> 00:00:13,660
+Und alle funken pausenlos nur zwei
+
+9
+00:00:13,660 --> 00:00:14,160
+Dinge.
+
+10
+00:00:14,160 --> 00:00:15,160
+Hier bin ich.
+
+11
+00:00:15,160 --> 00:00:16,270
+Und so spät ist es bei
+
+12
+00:00:16,270 --> 00:00:16,680
+mir.
+
+13
+00:00:16,680 --> 00:00:18,240
+Gemessen mit Atomuhren.
+
+14
+00:00:18,240 --> 00:00:19,520
+Jetzt kommt der Trick.
+
+15
+00:00:19,520 --> 00:00:21,380
+Das Signal braucht ein paar Hundertstel
+
+16
+00:00:21,380 --> 00:00:22,480
+Sekunden bis zu dir.
+
+17
+00:00:22,480 --> 00:00:24,240
+Dein Handy misst diese Verspätung.
+
+18
+00:00:24,240 --> 00:00:26,140
+Und weil Funk mit Lichtgeschwindigkeit fliegt,
+
+19
+00:00:26,140 --> 00:00:27,720
+wird aus Zeit ein Abstand.
+
+20
+00:00:27,720 --> 00:00:28,770
+Ein Abstand heißt,
+
+21
+00:00:28,770 --> 00:00:30,160
+du bist irgendwo auf einer Kugel
+
+22
+00:00:30,160 --> 00:00:31,200
+um den Satelliten.
+
+23
+00:00:31,200 --> 00:00:32,200
+Drei Kugeln?
+
+24
+00:00:32,200 --> 00:00:33,310
+Nur noch ein Punkt auf der
+
+25
+00:00:33,310 --> 00:00:33,720
+Erde.
+
+26
+00:00:33,720 --> 00:00:35,400
+Ein vierter Satellit stellt die Uhr
+
+27
+00:00:35,400 --> 00:00:36,000
+im Handy.
+
+28
+00:00:36,000 --> 00:00:37,440
+Und dieser Punkt bist du.
+
+29
+00:00:37,440 --> 00:00:38,960
+Aber jetzt wird es verrückt.
+
+30
+00:00:38,960 --> 00:00:40,640
+Da oben läuft die Zeit schneller.
+
+31
+00:00:40,640 --> 00:00:43,320
+Jeden Tag 38 Millionstel Sekunden.
+
+32
+00:00:43,320 --> 00:00:44,720
+Klingt nach nichts.
+
+33
+00:00:44,720 --> 00:00:46,730
+Doch ohne Einsteins Korrektur läge dein
+
+34
+00:00:46,730 --> 00:00:49,520
+Standort jeden Tag 10 Kilometer daneben.
+
+35
+00:00:49,520 --> 00:00:51,030
+Deshalb werden die Uhren schon vor
+
+36
+00:00:51,030 --> 00:00:52,870
+dem Start ein winziges bisschen langsamer
+
+37
+00:00:52,870 --> 00:00:53,480
+gestellt.
+
+38
+00:00:53,480 --> 00:00:55,060
+Und dein Handy hört einfach weiter
+
+39
+00:00:55,060 --> 00:00:55,360
+zu.
+

@@ -122,7 +122,7 @@ export const WeltZimmer: React.FC<{stimmung?: keyof typeof ZIMMER; naechste?: ke
 /* ══════════════ 3D-Welten ══════════════ */
 
 /** Hülle für alle 3D-Welten: Canvas, Kamera, Kino-Look, Laden abwarten. */
-const Buehne3D: React.FC<{hintergrund: string; kamera: Kamera3D; orthografisch?: boolean; kino?: React.ComponentProps<typeof Kino>; children: React.ReactNode}> = ({hintergrund, kamera, orthografisch = false, kino, children}) => {
+export const Buehne3D: React.FC<{hintergrund: string; kamera: Kamera3D; orthografisch?: boolean; kino?: React.ComponentProps<typeof Kino>; children: React.ReactNode}> = ({hintergrund, kamera, orthografisch = false, kino, children}) => {
   const handle = useSzeneLaden();
   return (
     <AbsoluteFill style={{background: hintergrund}}>

@@ -1,0 +1,1171 @@
+[
+ {
+  "text": "Dein",
+  "startMs": 20,
+  "endMs": 220,
+  "timestampMs": 0,
+  "confidence": 0.971547
+ },
+ {
+  "text": " Handy",
+  "startMs": 220,
+  "endMs": 500,
+  "timestampMs": 620,
+  "confidence": 0.997465
+ },
+ {
+  "text": " findet",
+  "startMs": 500,
+  "endMs": 830,
+  "timestampMs": 960,
+  "confidence": 0.996599
+ },
+ {
+  "text": " dich",
+  "startMs": 830,
+  "endMs": 1050,
+  "timestampMs": 1180,
+  "confidence": 0.897188
+ },
+ {
+  "text": " überall",
+  "startMs": 1050,
+  "endMs": 1490,
+  "timestampMs": 1560,
+  "confidence": 0.98998
+ },
+ {
+  "text": " auf",
+  "startMs": 1490,
+  "endMs": 1740,
+  "timestampMs": 1780,
+  "confidence": 0.994217
+ },
+ {
+  "text": " der",
+  "startMs": 1740,
+  "endMs": 1810,
+  "timestampMs": 1920,
+  "confidence": 0.997558
+ },
+ {
+  "text": " Erde",
+  "startMs": 1810,
+  "endMs": 2080,
+  "timestampMs": 2120,
+  "confidence": 0.990665
+ },
+ {
+  "text": " auf",
+  "startMs": 2080,
+  "endMs": 2300,
+  "timestampMs": 2340,
+  "confidence": 0.912933
+ },
+ {
+  "text": " wenige",
+  "startMs": 2300,
+  "endMs": 2650,
+  "timestampMs": 2540,
+  "confidence": 0.989426
+ },
+ {
+  "text": " Meter",
+  "startMs": 2650,
+  "endMs": 2960,
+  "timestampMs": 2880,
+  "confidence": 0.982799
+ },
+ {
+  "text": " genau,",
+  "startMs": 2960,
+  "endMs": 3320,
+  "timestampMs": 3260,
+  "confidence": 0.987769
+ },
+ {
+  "text": " ohne",
+  "startMs": 3320,
+  "endMs": 3590,
+  "timestampMs": 3660,
+  "confidence": 0.995194
+ },
+ {
+  "text": " ein",
+  "startMs": 3590,
+  "endMs": 3780,
+  "timestampMs": 3940,
+  "confidence": 0.993976
+ },
+ {
+  "text": " einziges",
+  "startMs": 3780,
+  "endMs": 4360,
+  "timestampMs": 4120,
+  "confidence": 0.989513
+ },
+ {
+  "text": " Signal",
+  "startMs": 4360,
+  "endMs": 4760,
+  "timestampMs": 4600,
+  "confidence": 0.997168
+ },
+ {
+  "text": " ins",
+  "startMs": 4760,
+  "endMs": 4940,
+  "timestampMs": 4820,
+  "confidence": 0.988056
+ },
+ {
+  "text": " All",
+  "startMs": 4940,
+  "endMs": 5140,
+  "timestampMs": 5020,
+  "confidence": 0.987165
+ },
+ {
+  "text": " zu",
+  "startMs": 5140,
+  "endMs": 5270,
+  "timestampMs": 5260,
+  "confidence": 0.995968
+ },
+ {
+  "text": " schicken.",
+  "startMs": 5270,
+  "endMs": 6080,
+  "timestampMs": 5380,
+  "confidence": 0.99859
+ },
+ {
+  "text": " Denn",
+  "startMs": 6080,
+  "endMs": 6340,
+  "timestampMs": 6360,
+  "confidence": 0.994217
+ },
+ {
+  "text": " über",
+  "startMs": 6340,
+  "endMs": 6670,
+  "timestampMs": 6600,
+  "confidence": 0.993441
+ },
+ {
+  "text": " dir",
+  "startMs": 6670,
+  "endMs": 6860,
+  "timestampMs": 6740,
+  "confidence": 0.93777
+ },
+ {
+  "text": " kreisen",
+  "startMs": 6860,
+  "endMs": 7350,
+  "timestampMs": 6960,
+  "confidence": 0.973885
+ },
+ {
+  "text": " gut",
+  "startMs": 7350,
+  "endMs": 7500,
+  "timestampMs": 7500,
+  "confidence": 0.995727
+ },
+ {
+  "text": " 30",
+  "startMs": 7500,
+  "endMs": 7920,
+  "timestampMs": 7900,
+  "confidence": 0.972656
+ },
+ {
+  "text": " Satelliten.",
+  "startMs": 7920,
+  "endMs": 8800,
+  "timestampMs": 8040,
+  "confidence": 0.934402
+ },
+ {
+  "text": " Jeder",
+  "startMs": 8800,
+  "endMs": 9190,
+  "timestampMs": 9180,
+  "confidence": 0.990735
+ },
+ {
+  "text": " in",
+  "startMs": 9190,
+  "endMs": 9440,
+  "timestampMs": 9440,
+  "confidence": 0.993911
+ },
+ {
+  "text": " 20.200",
+  "startMs": 9440,
+  "endMs": 10730,
+  "timestampMs": 9800,
+  "confidence": 0.97924
+ },
+ {
+  "text": " Kilometern",
+  "startMs": 10730,
+  "endMs": 11690,
+  "timestampMs": 10880,
+  "confidence": 0.724862
+ },
+ {
+  "text": " Höhe.",
+  "startMs": 11690,
+  "endMs": 11920,
+  "timestampMs": 11340,
+  "confidence": 0.992542
+ },
+ {
+  "text": " Und",
+  "startMs": 11920,
+  "endMs": 12120,
+  "timestampMs": 12160,
+  "confidence": 0.997775
+ },
+ {
+  "text": " alle",
+  "startMs": 12120,
+  "endMs": 12400,
+  "timestampMs": 12380,
+  "confidence": 0.999485
+ },
+ {
+  "text": " funken",
+  "startMs": 12400,
+  "endMs": 12720,
+  "timestampMs": 12580,
+  "confidence": 0.951051
+ },
+ {
+  "text": " pausenlos",
+  "startMs": 12720,
+  "endMs": 13240,
+  "timestampMs": 12920,
+  "confidence": 0.982299
+ },
+ {
+  "text": " nur",
+  "startMs": 13240,
+  "endMs": 13420,
+  "timestampMs": 13460,
+  "confidence": 0.97609
+ },
+ {
+  "text": " zwei",
+  "startMs": 13420,
+  "endMs": 13660,
+  "timestampMs": 13640,
+  "confidence": 0.909868
+ },
+ {
+  "text": " Dinge.",
+  "startMs": 13660,
+  "endMs": 14160,
+  "timestampMs": 13940,
+  "confidence": 0.993566
+ },
+ {
+  "text": " Hier",
+  "startMs": 14160,
+  "endMs": 14550,
+  "timestampMs": 14420,
+  "confidence": 0.975671
+ },
+ {
+  "text": " bin",
+  "startMs": 14550,
+  "endMs": 14850,
+  "timestampMs": 14620,
+  "confidence": 0.998753
+ },
+ {
+  "text": " ich.",
+  "startMs": 14850,
+  "endMs": 15160,
+  "timestampMs": 14960,
+  "confidence": 0.999169
+ },
+ {
+  "text": " Und",
+  "startMs": 15160,
+  "endMs": 15400,
+  "timestampMs": 15400,
+  "confidence": 0.997554
+ },
+ {
+  "text": " so",
+  "startMs": 15400,
+  "endMs": 15470,
+  "timestampMs": 15640,
+  "confidence": 0.999028
+ },
+ {
+  "text": " spät",
+  "startMs": 15470,
+  "endMs": 15810,
+  "timestampMs": 15800,
+  "confidence": 0.998833
+ },
+ {
+  "text": " ist",
+  "startMs": 15810,
+  "endMs": 15970,
+  "timestampMs": 16020,
+  "confidence": 0.998517
+ },
+ {
+  "text": " es",
+  "startMs": 15970,
+  "endMs": 16140,
+  "timestampMs": 16160,
+  "confidence": 0.984038
+ },
+ {
+  "text": " bei",
+  "startMs": 16140,
+  "endMs": 16270,
+  "timestampMs": 16300,
+  "confidence": 0.997748
+ },
+ {
+  "text": " mir.",
+  "startMs": 16270,
+  "endMs": 16680,
+  "timestampMs": 16600,
+  "confidence": 0.999058
+ },
+ {
+  "text": " Gemessen",
+  "startMs": 16680,
+  "endMs": 17210,
+  "timestampMs": 16920,
+  "confidence": 0.988485
+ },
+ {
+  "text": " mit",
+  "startMs": 17210,
+  "endMs": 17410,
+  "timestampMs": 17280,
+  "confidence": 0.99787
+ },
+ {
+  "text": " Atomuhren.",
+  "startMs": 17410,
+  "endMs": 18240,
+  "timestampMs": 17520,
+  "confidence": 0.964205
+ },
+ {
+  "text": " Jetzt",
+  "startMs": 18240,
+  "endMs": 18660,
+  "timestampMs": 18640,
+  "confidence": 0.995247
+ },
+ {
+  "text": " kommt",
+  "startMs": 18660,
+  "endMs": 18870,
+  "timestampMs": 18900,
+  "confidence": 0.99731
+ },
+ {
+  "text": " der",
+  "startMs": 18870,
+  "endMs": 19020,
+  "timestampMs": 19080,
+  "confidence": 0.999245
+ },
+ {
+  "text": " Trick.",
+  "startMs": 19020,
+  "endMs": 19520,
+  "timestampMs": 19300,
+  "confidence": 0.997364
+ },
+ {
+  "text": " Das",
+  "startMs": 19520,
+  "endMs": 19760,
+  "timestampMs": 19760,
+  "confidence": 0.997447
+ },
+ {
+  "text": " Signal",
+  "startMs": 19760,
+  "endMs": 20010,
+  "timestampMs": 20140,
+  "confidence": 0.998022
+ },
+ {
+  "text": " braucht",
+  "startMs": 20010,
+  "endMs": 20400,
+  "timestampMs": 20400,
+  "confidence": 0.999001
+ },
+ {
+  "text": " ein",
+  "startMs": 20400,
+  "endMs": 20570,
+  "timestampMs": 20660,
+  "confidence": 0.992701
+ },
+ {
+  "text": " paar",
+  "startMs": 20570,
+  "endMs": 20780,
+  "timestampMs": 20760,
+  "confidence": 0.996637
+ },
+ {
+  "text": " Hundertstel",
+  "startMs": 20780,
+  "endMs": 21380,
+  "timestampMs": 20960,
+  "confidence": 0.633842
+ },
+ {
+  "text": " Sekunden",
+  "startMs": 21380,
+  "endMs": 21900,
+  "timestampMs": 21540,
+  "confidence": 0.989557
+ },
+ {
+  "text": " bis",
+  "startMs": 21900,
+  "endMs": 21970,
+  "timestampMs": 21900,
+  "confidence": 0.977907
+ },
+ {
+  "text": " zu",
+  "startMs": 21970,
+  "endMs": 22080,
+  "timestampMs": 22120,
+  "confidence": 0.996702
+ },
+ {
+  "text": " dir.",
+  "startMs": 22080,
+  "endMs": 22480,
+  "timestampMs": 22260,
+  "confidence": 0.921862
+ },
+ {
+  "text": " Dein",
+  "startMs": 22480,
+  "endMs": 22700,
+  "timestampMs": 22700,
+  "confidence": 0.998049
+ },
+ {
+  "text": " Handy",
+  "startMs": 22700,
+  "endMs": 22990,
+  "timestampMs": 23060,
+  "confidence": 0.999056
+ },
+ {
+  "text": " misst",
+  "startMs": 22990,
+  "endMs": 23300,
+  "timestampMs": 23220,
+  "confidence": 0.97789
+ },
+ {
+  "text": " diese",
+  "startMs": 23300,
+  "endMs": 23560,
+  "timestampMs": 23520,
+  "confidence": 0.99612
+ },
+ {
+  "text": " Verspätung.",
+  "startMs": 23560,
+  "endMs": 24240,
+  "timestampMs": 23760,
+  "confidence": 0.997995
+ },
+ {
+  "text": " Und",
+  "startMs": 24240,
+  "endMs": 24370,
+  "timestampMs": 24420,
+  "confidence": 0.997645
+ },
+ {
+  "text": " weil",
+  "startMs": 24370,
+  "endMs": 24620,
+  "timestampMs": 24580,
+  "confidence": 0.997094
+ },
+ {
+  "text": " Funk",
+  "startMs": 24620,
+  "endMs": 24710,
+  "timestampMs": 24800,
+  "confidence": 0.982731
+ },
+ {
+  "text": " mit",
+  "startMs": 24710,
+  "endMs": 24840,
+  "timestampMs": 25020,
+  "confidence": 0.998567
+ },
+ {
+  "text": " Lichtgeschwindigkeit",
+  "startMs": 24840,
+  "endMs": 25790,
+  "timestampMs": 25220,
+  "confidence": 0.998477
+ },
+ {
+  "text": " fliegt,",
+  "startMs": 25790,
+  "endMs": 26140,
+  "timestampMs": 25960,
+  "confidence": 0.996987
+ },
+ {
+  "text": " wird",
+  "startMs": 26140,
+  "endMs": 26380,
+  "timestampMs": 26320,
+  "confidence": 0.655008
+ },
+ {
+  "text": " aus",
+  "startMs": 26380,
+  "endMs": 26580,
+  "timestampMs": 26560,
+  "confidence": 0.97518
+ },
+ {
+  "text": " Zeit",
+  "startMs": 26580,
+  "endMs": 26840,
+  "timestampMs": 26720,
+  "confidence": 0.990286
+ },
+ {
+  "text": " ein",
+  "startMs": 26840,
+  "endMs": 27040,
+  "timestampMs": 26880,
+  "confidence": 0.996782
+ },
+ {
+  "text": " Abstand.",
+  "startMs": 27040,
+  "endMs": 27720,
+  "timestampMs": 27160,
+  "confidence": 0.99701
+ },
+ {
+  "text": " Ein",
+  "startMs": 27720,
+  "endMs": 27880,
+  "timestampMs": 27940,
+  "confidence": 0.991144
+ },
+ {
+  "text": " Abstand",
+  "startMs": 27880,
+  "endMs": 28250,
+  "timestampMs": 28220,
+  "confidence": 0.998452
+ },
+ {
+  "text": " heißt,",
+  "startMs": 28250,
+  "endMs": 28770,
+  "timestampMs": 28700,
+  "confidence": 0.9931
+ },
+ {
+  "text": " du",
+  "startMs": 28770,
+  "endMs": 28820,
+  "timestampMs": 28900,
+  "confidence": 0.973758
+ },
+ {
+  "text": " bist",
+  "startMs": 28820,
+  "endMs": 29120,
+  "timestampMs": 29120,
+  "confidence": 0.999237
+ },
+ {
+  "text": " irgendwo",
+  "startMs": 29120,
+  "endMs": 29410,
+  "timestampMs": 29540,
+  "confidence": 0.994545
+ },
+ {
+  "text": " auf",
+  "startMs": 29410,
+  "endMs": 29570,
+  "timestampMs": 29700,
+  "confidence": 0.998376
+ },
+ {
+  "text": " einer",
+  "startMs": 29570,
+  "endMs": 29890,
+  "timestampMs": 29900,
+  "confidence": 0.997512
+ },
+ {
+  "text": " Kugel",
+  "startMs": 29890,
+  "endMs": 30160,
+  "timestampMs": 30160,
+  "confidence": 0.995513
+ },
+ {
+  "text": " um",
+  "startMs": 30160,
+  "endMs": 30320,
+  "timestampMs": 30380,
+  "confidence": 0.805956
+ },
+ {
+  "text": " den",
+  "startMs": 30320,
+  "endMs": 30560,
+  "timestampMs": 30580,
+  "confidence": 0.990195
+ },
+ {
+  "text": " Satelliten.",
+  "startMs": 30560,
+  "endMs": 31200,
+  "timestampMs": 30680,
+  "confidence": 0.885537
+ },
+ {
+  "text": " Drei",
+  "startMs": 31200,
+  "endMs": 31500,
+  "timestampMs": 31520,
+  "confidence": 0.776702
+ },
+ {
+  "text": " Kugeln?",
+  "startMs": 31500,
+  "endMs": 32200,
+  "timestampMs": 31820,
+  "confidence": 0.987074
+ },
+ {
+  "text": " Nur",
+  "startMs": 32200,
+  "endMs": 32400,
+  "timestampMs": 32300,
+  "confidence": 0.505153
+ },
+ {
+  "text": " noch",
+  "startMs": 32400,
+  "endMs": 32650,
+  "timestampMs": 32480,
+  "confidence": 0.997965
+ },
+ {
+  "text": " ein",
+  "startMs": 32650,
+  "endMs": 32730,
+  "timestampMs": 32700,
+  "confidence": 0.910226
+ },
+ {
+  "text": " Punkt",
+  "startMs": 32730,
+  "endMs": 33000,
+  "timestampMs": 32840,
+  "confidence": 0.998799
+ },
+ {
+  "text": " auf",
+  "startMs": 33000,
+  "endMs": 33160,
+  "timestampMs": 33040,
+  "confidence": 0.996584
+ },
+ {
+  "text": " der",
+  "startMs": 33160,
+  "endMs": 33310,
+  "timestampMs": 33200,
+  "confidence": 0.998708
+ },
+ {
+  "text": " Erde.",
+  "startMs": 33310,
+  "endMs": 33720,
+  "timestampMs": 33420,
+  "confidence": 0.999157
+ },
+ {
+  "text": " Ein",
+  "startMs": 33720,
+  "endMs": 33890,
+  "timestampMs": 34020,
+  "confidence": 0.979806
+ },
+ {
+  "text": " vierter",
+  "startMs": 33890,
+  "endMs": 34280,
+  "timestampMs": 34220,
+  "confidence": 0.595755
+ },
+ {
+  "text": " Satellit",
+  "startMs": 34280,
+  "endMs": 34720,
+  "timestampMs": 34540,
+  "confidence": 0.999752
+ },
+ {
+  "text": " stellt",
+  "startMs": 34720,
+  "endMs": 35100,
+  "timestampMs": 35060,
+  "confidence": 0.99358
+ },
+ {
+  "text": " die",
+  "startMs": 35100,
+  "endMs": 35230,
+  "timestampMs": 35220,
+  "confidence": 0.99803
+ },
+ {
+  "text": " Uhr",
+  "startMs": 35230,
+  "endMs": 35400,
+  "timestampMs": 35320,
+  "confidence": 0.99956
+ },
+ {
+  "text": " im",
+  "startMs": 35400,
+  "endMs": 35510,
+  "timestampMs": 35520,
+  "confidence": 0.998361
+ },
+ {
+  "text": " Handy.",
+  "startMs": 35510,
+  "endMs": 36000,
+  "timestampMs": 35800,
+  "confidence": 0.998759
+ },
+ {
+  "text": " Und",
+  "startMs": 36000,
+  "endMs": 36180,
+  "timestampMs": 36380,
+  "confidence": 0.998102
+ },
+ {
+  "text": " dieser",
+  "startMs": 36180,
+  "endMs": 36600,
+  "timestampMs": 36560,
+  "confidence": 0.999093
+ },
+ {
+  "text": " Punkt",
+  "startMs": 36600,
+  "endMs": 36860,
+  "timestampMs": 36780,
+  "confidence": 0.999504
+ },
+ {
+  "text": " bist",
+  "startMs": 36860,
+  "endMs": 37110,
+  "timestampMs": 37040,
+  "confidence": 0.995025
+ },
+ {
+  "text": " du.",
+  "startMs": 37110,
+  "endMs": 37440,
+  "timestampMs": 37200,
+  "confidence": 0.976682
+ },
+ {
+  "text": " Aber",
+  "startMs": 37440,
+  "endMs": 37660,
+  "timestampMs": 37780,
+  "confidence": 0.998666
+ },
+ {
+  "text": " jetzt",
+  "startMs": 37660,
+  "endMs": 38050,
+  "timestampMs": 38040,
+  "confidence": 0.998098
+ },
+ {
+  "text": " wird",
+  "startMs": 38050,
+  "endMs": 38190,
+  "timestampMs": 38200,
+  "confidence": 0.99725
+ },
+ {
+  "text": " es",
+  "startMs": 38190,
+  "endMs": 38260,
+  "timestampMs": 38420,
+  "confidence": 0.996139
+ },
+ {
+  "text": " verrückt.",
+  "startMs": 38260,
+  "endMs": 38960,
+  "timestampMs": 38560,
+  "confidence": 0.999386
+ },
+ {
+  "text": " Da",
+  "startMs": 38960,
+  "endMs": 39060,
+  "timestampMs": 39260,
+  "confidence": 0.991145
+ },
+ {
+  "text": " oben",
+  "startMs": 39060,
+  "endMs": 39270,
+  "timestampMs": 39420,
+  "confidence": 0.997154
+ },
+ {
+  "text": " läuft",
+  "startMs": 39270,
+  "endMs": 39680,
+  "timestampMs": 39660,
+  "confidence": 0.999123
+ },
+ {
+  "text": " die",
+  "startMs": 39680,
+  "endMs": 39800,
+  "timestampMs": 39880,
+  "confidence": 0.999249
+ },
+ {
+  "text": " Zeit",
+  "startMs": 39800,
+  "endMs": 39960,
+  "timestampMs": 40060,
+  "confidence": 0.998513
+ },
+ {
+  "text": " schneller.",
+  "startMs": 39960,
+  "endMs": 40640,
+  "timestampMs": 40420,
+  "confidence": 0.999192
+ },
+ {
+  "text": " Jeden",
+  "startMs": 40640,
+  "endMs": 40990,
+  "timestampMs": 40980,
+  "confidence": 0.997478
+ },
+ {
+  "text": " Tag",
+  "startMs": 40990,
+  "endMs": 41200,
+  "timestampMs": 41340,
+  "confidence": 0.995687
+ },
+ {
+  "text": " 38",
+  "startMs": 41200,
+  "endMs": 41620,
+  "timestampMs": 42060,
+  "confidence": 0.977275
+ },
+ {
+  "text": " Millionstel",
+  "startMs": 41620,
+  "endMs": 42520,
+  "timestampMs": 42440,
+  "confidence": 0.464511
+ },
+ {
+  "text": " Sekunden.",
+  "startMs": 42520,
+  "endMs": 43320,
+  "timestampMs": 42800,
+  "confidence": 0.591582
+ },
+ {
+  "text": " Klingt",
+  "startMs": 43320,
+  "endMs": 43750,
+  "timestampMs": 43560,
+  "confidence": 0.994939
+ },
+ {
+  "text": " nach",
+  "startMs": 43750,
+  "endMs": 44030,
+  "timestampMs": 43840,
+  "confidence": 0.999447
+ },
+ {
+  "text": " nichts.",
+  "startMs": 44030,
+  "endMs": 44720,
+  "timestampMs": 44120,
+  "confidence": 0.9947
+ },
+ {
+  "text": " Doch",
+  "startMs": 44720,
+  "endMs": 45020,
+  "timestampMs": 45000,
+  "confidence": 0.9991
+ },
+ {
+  "text": " ohne",
+  "startMs": 45020,
+  "endMs": 45180,
+  "timestampMs": 45280,
+  "confidence": 0.997356
+ },
+ {
+  "text": " Einsteins",
+  "startMs": 45180,
+  "endMs": 45763.0,
+  "timestampMs": 45560,
+  "confidence": 0.741959
+ },
+ {
+  "text": " Korrektur",
+  "startMs": 45763.0,
+  "endMs": 46240,
+  "timestampMs": 45560,
+  "confidence": 0.741959
+ },
+ {
+  "text": " läge",
+  "startMs": 46240,
+  "endMs": 46520,
+  "timestampMs": 46460,
+  "confidence": 0.883765
+ },
+ {
+  "text": " dein",
+  "startMs": 46520,
+  "endMs": 46730,
+  "timestampMs": 46760,
+  "confidence": 0.914679
+ },
+ {
+  "text": " Standort",
+  "startMs": 46730,
+  "endMs": 47290,
+  "timestampMs": 47080,
+  "confidence": 0.994088
+ },
+ {
+  "text": " jeden",
+  "startMs": 47290,
+  "endMs": 47630,
+  "timestampMs": 47660,
+  "confidence": 0.946469
+ },
+ {
+  "text": " Tag",
+  "startMs": 47630,
+  "endMs": 47930,
+  "timestampMs": 47880,
+  "confidence": 0.997071
+ },
+ {
+  "text": " 10",
+  "startMs": 47930,
+  "endMs": 48240,
+  "timestampMs": 48160,
+  "confidence": 0.605079
+ },
+ {
+  "text": " Kilometer",
+  "startMs": 48240,
+  "endMs": 48820,
+  "timestampMs": 48380,
+  "confidence": 0.933572
+ },
+ {
+  "text": " daneben.",
+  "startMs": 48820,
+  "endMs": 49520,
+  "timestampMs": 48800,
+  "confidence": 0.998631
+ },
+ {
+  "text": " Deshalb",
+  "startMs": 49520,
+  "endMs": 49890,
+  "timestampMs": 50000,
+  "confidence": 0.997847
+ },
+ {
+  "text": " werden",
+  "startMs": 49890,
+  "endMs": 50200,
+  "timestampMs": 50240,
+  "confidence": 0.999668
+ },
+ {
+  "text": " die",
+  "startMs": 50200,
+  "endMs": 50390,
+  "timestampMs": 50480,
+  "confidence": 0.99891
+ },
+ {
+  "text": " Uhren",
+  "startMs": 50390,
+  "endMs": 50640,
+  "timestampMs": 50620,
+  "confidence": 0.836575
+ },
+ {
+  "text": " schon",
+  "startMs": 50640,
+  "endMs": 50940,
+  "timestampMs": 50920,
+  "confidence": 0.978164
+ },
+ {
+  "text": " vor",
+  "startMs": 50940,
+  "endMs": 51030,
+  "timestampMs": 51080,
+  "confidence": 0.99616
+ },
+ {
+  "text": " dem",
+  "startMs": 51030,
+  "endMs": 51180,
+  "timestampMs": 51360,
+  "confidence": 0.998148
+ },
+ {
+  "text": " Start",
+  "startMs": 51180,
+  "endMs": 51500,
+  "timestampMs": 51520,
+  "confidence": 0.995516
+ },
+ {
+  "text": " ein",
+  "startMs": 51500,
+  "endMs": 51590,
+  "timestampMs": 51740,
+  "confidence": 0.901483
+ },
+ {
+  "text": " winziges",
+  "startMs": 51590,
+  "endMs": 52000,
+  "timestampMs": 51920,
+  "confidence": 0.966916
+ },
+ {
+  "text": " bisschen",
+  "startMs": 52000,
+  "endMs": 52400,
+  "timestampMs": 52460,
+  "confidence": 0.960996
+ },
+ {
+  "text": " langsamer",
+  "startMs": 52400,
+  "endMs": 52870,
+  "timestampMs": 52740,
+  "confidence": 0.985365
+ },
+ {
+  "text": " gestellt.",
+  "startMs": 52870,
+  "endMs": 53480,
+  "timestampMs": 53360,
+  "confidence": 0.936742
+ },
+ {
+  "text": " Und",
+  "startMs": 53480,
+  "endMs": 53670,
+  "timestampMs": 53760,
+  "confidence": 0.925202
+ },
+ {
+  "text": " dein",
+  "startMs": 53670,
+  "endMs": 53870,
+  "timestampMs": 53860,
+  "confidence": 0.981208
+ },
+ {
+  "text": " Handy",
+  "startMs": 53870,
+  "endMs": 54110,
+  "timestampMs": 54260,
+  "confidence": 0.99962
+ },
+ {
+  "text": " hört",
+  "startMs": 54110,
+  "endMs": 54370,
+  "timestampMs": 54480,
+  "confidence": 0.996548
+ },
+ {
+  "text": " einfach",
+  "startMs": 54370,
+  "endMs": 54740,
+  "timestampMs": 54880,
+  "confidence": 0.999245
+ },
+ {
+  "text": " weiter",
+  "startMs": 54740,
+  "endMs": 55060,
+  "timestampMs": 55180,
+  "confidence": 0.997242
+ },
+ {
+  "text": " zu.",
+  "startMs": 55060,
+  "endMs": 55360,
+  "timestampMs": 55340,
+  "confidence": 0.997337
+ }
+]

@@ -37,7 +37,7 @@ export const roentgen = (farbe = '#9FB8FF', staerke = 1.4, kante = 2.2) =>
     vertexShader: `varying vec3 vN; varying vec3 vV;
       void main(){ vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position,1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
     fragmentShader: `uniform vec3 farbe; uniform float staerke; uniform float kante; varying vec3 vN; varying vec3 vV;
-      void main(){ float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), kante); gl_FragColor = vec4(farbe * (0.08 + f) * staerke, 0.08 + f); }`,
+      void main(){ float f = pow(clamp(1.0 - abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0), kante); gl_FragColor = vec4(farbe * (0.08 + f) * staerke, 0.08 + f); }`,
     transparent: true,
     depthWrite: false,
     blending: AdditiveBlending,

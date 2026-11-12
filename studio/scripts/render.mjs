@@ -35,6 +35,8 @@ await renderMedia({
   jpegQuality: 92,
   frameRange,
   outputLocation,
+  // --concurrency=1: weniger parallele Tabs, falls große 3D-Texturen den Grafikspeicher füllen (schwarze Einzelbilder)
+  ...(flags.concurrency ? {concurrency: Number(flags.concurrency)} : {}),
   onProgress: ({progress}) => {
     const pct = Math.floor(progress * 100);
     if (pct % 10 === 0 && pct !== last) {

@@ -82,7 +82,7 @@ export const UntertitelSatz: React.FC<{captions: Caption[]; top?: number; maxWoe
  * `gross` = Wörter, die als Betonung in GROSSBUCHSTABEN stehen (höchstens eins pro Satz, im Skript markieren);
  * Wörter, die schon in Großbuchstaben in den Wortzeiten stehen, bleiben so. `unterstrichen` = Schlüsselbegriffe.
  */
-export const UntertitelWort: React.FC<{captions: Caption[]; top?: number; gross?: string[]; unterstrichen?: string[]; seiteMs?: number}> = ({captions, top = 1300, gross = [], unterstrichen = [], seiteMs = 800}) => {
+export const UntertitelWort: React.FC<{captions: Caption[]; top?: number; gross?: string[]; unterstrichen?: string[]; seiteMs?: number}> = ({captions, top = 1430, gross = [], unterstrichen = [], seiteMs = 800}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const {pages} = useMemo(() => createTikTokStyleCaptions({captions, combineTokensWithinMilliseconds: seiteMs}), [captions, seiteMs]);

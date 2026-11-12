@@ -29,7 +29,11 @@ Grundlage: Vorbild-Analyse vom 08.11. (`vorbild-analyse-2026-11-08.md`, 11 Reels
 ### Untertitel (immer an, viele schauen ohne Ton)
 - **Stil Satz** (`UntertitelSatz`, Welt): Satzstücke mit 3–6 Wörtern erscheinen als Ganzes, in einem kleinen dunklen Kasten mit weißer Schrift, 46 px. Kein Hervorheben.
 - **Stil Wort** (`UntertitelWort`, Technik): 3–5 Wörter, das gerade gesprochene Wort weiß hinterlegt. Betonte Wörter stehen in GROSSBUCHSTABEN (höchstens eins pro Satz, im Skript markieren), ein Schlüsselbegriff darf unterstrichen sein.
-- **Position:** Mitte des unteren Drittels, y ≈ 1250–1400, nie unter 1480. Der Untertitel liegt nie auf dem Höhepunkt, das Objekt rückt dann höher.
+- **Position (gemessen 09.11.):**
+  - scroll.engineer: Mitte bei 76–78 % der Höhe, also y ≈ 1460 (`top` ≈ 1430), Breite ≈ 60 %.
+  - schraffuren: direkt unter dem Held bei 67–80 %.
+  - Das Hauptobjekt füllt 15–70 % der Höhe (y 290–1350), der Untertitel liegt darunter und nie auf dem Objekt.
+  - Überschrift (Welt-Stil): oben links bei 15–20 %. Hinweis-Schild: oben links bei 11 %.
 
 ### Wann Text, wann keiner
 - **Ja:**
