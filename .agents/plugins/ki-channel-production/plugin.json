@@ -1,5 +1,0 @@
-{
-  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
-  "name": "ki-channel-production",
-  "description": "Workspace plugin for the KI-channel Remotion production pipeline, story motion, browser QA and release verification."
-}
