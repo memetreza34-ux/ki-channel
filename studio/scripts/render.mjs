@@ -6,7 +6,7 @@
  *   npm run render -- So-Antwortet-KI --range=0-300   nur ein Ausschnitt (Probe)
  */
 import {renderMedia, selectComposition} from '@remotion/renderer';
-import {mkdirSync} from 'node:fs';
+import {mkdirSync, rmSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {bundleStudio, CHROMIUM, loadInputProps, OUT, parseArgs, parseRange} from './lib.mjs';
 
@@ -25,6 +25,7 @@ mkdirSync(OUT, {recursive: true});
 const outputLocation = resolve(OUT, frameRange ? `${id}_${frameRange[0]}-${frameRange[1]}.mp4` : `${id}.mp4`);
 
 let last = -1;
+try {
 await renderMedia({
   serveUrl,
   composition,
@@ -46,3 +47,6 @@ await renderMedia({
   },
 });
 console.log(`\nVideo: ${outputLocation}`);
+} finally {
+  rmSync(serveUrl, {recursive: true, force: true});
+}

@@ -12,10 +12,10 @@ winget install Git.Git OpenJS.NodeJS.LTS Python.Python.3.12 Gyan.FFmpeg
 
 ## 2. Projekt holen
 
-Wichtig ist `-b claude/studio`, denn `main` enthält das Studio nicht.
+Seit 2026-11-13 enthält `main` das ganze Studio.
 
 ```powershell
-git clone -b claude/studio https://github.com/memetreza34-ux/ki-channel.git
+git clone https://github.com/memetreza34-ux/ki-channel.git
 cd ki-channel
 npm ci
 ```
@@ -38,7 +38,7 @@ python studio/scripts/musik-technik.py
 
 ```powershell
 npm run studio:check
-npm run wissen -- GPS-Rohschnitt --bilder=300
+npm run look -- GPS-Mittel --frames=300
 npm run studio
 ```
 

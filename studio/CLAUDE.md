@@ -2,7 +2,7 @@
 
 Hier entstehen alle Videos des Kanals **Denkwürfel**: ein Erklärkanal für Allgemeinwissen in Zahlen (Biologie, Geschichte, Politik, Geographie, Ideologien …) als 9:16-Shorts.
 
-**Standard für jedes neue Video: Skill `wissens-short`** – Look, Bewegungssprache, Sicherheitszonen, Sounds, Musik und Checkliste stehen dort. Baukasten und Beispiele: `projekte/wissen/` (`bausteine.tsx`, `Szenen.tsx`, `Faecher.tsx`, `Daten.tsx`). Bilder/MP4: `npm run wissen -- <ID> [--bilder=0,60]` (braucht kein System-ffmpeg).
+**Standard für jedes neue Video: Skill `wissens-short`** – Look, Bewegungssprache, Sicherheitszonen, Sounds, Musik und Checkliste stehen dort. Grundlook seit 2026-11-11 ist das **Mittelding** (`projekte/wissen/mittel.tsx`, Beispiele `GPS-Mittel` und `Mittel-Stilbilder`). Weitere Bausteine: `projekte/wissen/` (`bausteine.tsx`, `stil.tsx`, `welten.tsx`). Prüfbilder: `npm run look -- <ID>`, MP4: `npm run render -- <ID>` (beide gehen auch ohne System-ffmpeg; dann ohne Kontaktbogen).
 
 Mit Arman auf Deutsch, kurz und klar.
 
@@ -18,7 +18,7 @@ Im Zweifel mit dem Ersteller anfangen; einzelne Szenen, die mehr brauchen, in ei
 Armans Ordner: `kanal/shorts/<Montag>_bis_<Sonntag>/<thema>/` mit `audio/` und `export/` (siehe `kanal/README.md`).
 
 1. **Phase 1 – Skript (Claude, ohne Freigabe-Stopps):** Thema, Recherche, `studio/projekte/<thema>/skript.md` (Fakten + Quelle + Datum, Szenenplan), Kanal-Ordner anlegen, `audio/script.txt` (nur Sprechtext, Absätze mit Leerzeile, 1:1 kopierbar) + `audio/LIES-MICH.txt`. **Keine Animation, kein Render.** Dann auf Armans Audio warten.
-2. **Phase 2 – Audio (Arman):** Aufnahme in `audio/` (eine Datei oder `1.m4a … n.m4a`).
+2. **Phase 2 – Audio (Arman):** Aufnahme in `audio/` (eine Datei oder `1.m4a … n.m4a`) – oder Klon seiner Stimme (`kanal/STIMMPROFIL.md`): erzeugen, Pausen kürzen (`kanal/stimme/pausen-kuerzen.py`), dann erst Arman vorspielen; ins Video nur nach seiner Hörfreigabe.
 3. **Phase 3 – Video (Claude):** Audio säubern → Wortzeiten → Absatzgrenzen → Szenen direkt auf die echte Stimme bauen, Sounds + leise Musik (`musik-wissen.py`), ansehen, Render, -14 LUFS. `export/` füllen: `video.mp4`, `cover.png` (1280×720), `caption.txt` (Titel, Beschreibung, Kapitel mit Zeiten, Quellen, 5 Hashtags), `untertitel-zeitstempel.txt` (`00:00 Satz` je Zeile, wie FinanzNeo).
 
 ## Ablauf (eigenes Projekt)
@@ -44,7 +44,7 @@ Ohne angesehene Bilder gilt nichts als fertig. Ein bestandener Typecheck sagt ni
 - **Kontinuität vor Effekt:** dasselbe Objekt über Szenen weiterführen (z. B. Kamera zoomt ins Handy → nächste Szene startet im Zoom). Sonst harter Schnitt.
 - **Text-Rollen:** Überschrift (3–7 Wörter) ordnet ein · Untertitel = gesprochener Text · Labels kurz · nie denselben Satz zweimal im Bild.
 - **Ton:** Soundeffekte leise (0,3–0,5) und nur an echten Ereignissen (Klick, Ankunft, Ergebnis).
-- **Look:** Kanal-Look ist der Denkwürfel-Daten-Look aus `projekte/wissen/bausteine.tsx` (dunkles Blau, Korallrot). Die `ThemeProvider`-Designs unten gelten nur für Werbung/Spots. Faceless.
+- **Look:** Kanal-Look ist das Mittelding (`projekte/wissen/mittel.tsx`): isometrische 3D-Bühne in Navy, matte Objekte, Korallrot als einzige Akzentfarbe, Wort-Untertitel aus `stil.tsx`. Ereignisse hängen an gesprochenen Wörtern (Muster: `bei('wort')` in `GpsMittel.tsx`). Die `ThemeProvider`-Designs unten gelten nur für Werbung/Spots. Faceless.
 
 ## Werkzeuge für jedes Thema (`projekte/wissen/erklaer-werkzeuge.tsx`)
 
@@ -60,8 +60,8 @@ Im Denkwürfel-Look, Beispiele in Composition `Werkzeug-Beispiele`:
 | `Kassenbon` | Bon wächst Zeile für Zeile, Summe rechnet live mit (Abzüge negativ, `akzent` färbt eine Zeile) |
 | `Figur` | Strichmännchen mit weichen Posenwechseln: `stehen zeigen denken jubeln schulterzucken erschrocken`, optional `gehen` |
 
-- **3D-Welten:** `Modell` (`kit/Modell3D`) setzt GLB-Modelle (Kenney, CC0, in `public/modelle/kenney/`) in eine `<ThreeCanvas>`; `useSzeneLaden` + `<SzeneBereit>` sorgen dafür, dass schon Frame 0 fertig gezeichnet ist. `Kino` + `Studiolicht` (`kit/Kino3D`) geben Leuchten, Miniatur-Unschärfe, Vignette und Spiegelungen. Beispiele: `Zug-Probe-3D` (Welt), `Tacho-Probe-Technik` (Technik).
-- **Technik-Look** (`projekte/wissen/technik-bausteine.tsx`): `Callout` (Beschriftung mit Linie am 3D-Bauteil, Punkt per `projiziere3D`), `MessPanel` (Live-Anzeige), `EckTag` („Illustration“), `roentgen()` (durchsichtiges Leuchtmaterial), `Untertitel` (Wort für Wort, Schlüsselwörter unterstrichen, Lautwörter farbig), `Kapitel` (Abschnitts-Label oben links), `StatusChip` (Zustand wechselt), `Videouhr` („Während du schaust …“). Klangteppich für Technik-Videos: `python3 studio/scripts/musik-technik.py` → `public/musik/technik.wav`.
+- **3D-Welten:** `Modell` (`kit/Modell3D`) setzt GLB-Modelle (Kenney, CC0, in `public/modelle/kenney/`) in eine `<ThreeCanvas>`; `useSzeneLaden` + `<SzeneBereit>` sorgen dafür, dass schon Frame 0 fertig gezeichnet ist. `Kino` + `Studiolicht` (`kit/Kino3D`) geben Leuchten, Miniatur-Unschärfe, Vignette und Spiegelungen. Beispiele: `Stil-Katalog` (Welten), `GPS-Mittel` (Mittelding).
+- **Technik-Look** (`projekte/wissen/technik-bausteine.tsx`): `Callout` (Beschriftung mit Linie am 3D-Bauteil, Punkt per `projiziere3D`), `MessPanel` (Live-Anzeige), `EckTag` („Illustration“, nur bei fotoähnlichen Bildern), `roentgen()` (durchsichtiges Leuchtmaterial), `Untertitel` (Wort für Wort, Schlüsselwörter unterstrichen, Lautwörter farbig), `Kapitel` (Abschnitts-Label oben links – im Kanal gestrichen, Regel „Bild erzählt“), `StatusChip` (Zustand wechselt), `Videouhr` („Während du schaust …“). Klangteppich für Technik-Videos: `python3 studio/scripts/musik-technik.py` → `public/musik/technik.wav`.
 - **Bilder von draußen:** Weltall, Erde von oben, Raketen: `npm run bilder -- "<englischer begriff>" --quelle=nasa --bild` (NASA-Archiv, in der Regel gemeinfrei, fremde Urheber werden ausgefiltert). Fotos ohne Gesichter: `npm run broll` (Pixabay).
 - **Archivbilder (Geschichte, Kunst, Personen, Dokumente, Tiere, Orte):** `npm run bilder -- "<begriff>" --bild` sucht auf Wikimedia Commons, zeigt nur freie Lizenzen (gemeinfrei, CC0, CC BY, CC BY-SA), Vorschau unter `studio/out/bilder/`. Laden: `npm run bilder -- --laden=<ID> --projekt=<slug>` → `studio/public/projekte/<slug>/bilder/`, Urheber + Lizenz in `quellen.md`. Bei CC BY/BY-SA Namensnennung in die Videobeschreibung. Im Video mit `<Footage>`.
 
@@ -120,7 +120,7 @@ Ansehen: Composition `Design-Katalog`. Farben im Code über `useTheme().c.*`, ni
 - **Lottie:** `npm run icons -- --lottie` listet alle; ansehen in `Lottie-Katalog-Emoji` / `Lottie-Katalog-UI`. **Pflicht bei `emoji/…`:** In die Plattform-Beschreibung „Animierte Emojis: Google Noto, CC BY 4.0“ schreiben.
 - **Logos:** Firmenlogos nur redaktionell (das Produkt wird genannt/erklärt), nie verändern oder nachzeichnen. `simple-icons` (`<BrandLogo logo={siClaude} tile />`) oder `logos:`-Icons.
 - **Schriften:** kommen aus dem Design (`useTheme().font.body / heading / display / mono`). Überschriften (`Headline`) und Knaller (`PunchText`) verkleinern sich automatisch, wenn ein langes Wort sonst aus dem Bild liefe.
-- **Sounds nach Zweck:** Klick/Bedienung `click tap key typing hover toggle` · Erscheinen `pop blip whoosh whooshFast swipe swipeOut slideIn swoosh` · Gewicht `impact thud punch punchHeavy boom tink bell` · Ergebnis `success successBig notify ding chime levelUp question error wrong` · Spannung/Technik `riser riseShort fall reveal glitch think computing energy` · Jingles `jingleSteel jinglePizzi jingleHit`. Arman hat sie noch nicht alle gehört – unpassende Sounds aus `studio/assets-roh/kenney/` (lokal, alle 6 Kenney-Pakete) ersetzen.
+- **Sounds nach Zweck:** Klick/Bedienung `click tap key typing hover toggle` · Erscheinen `pop blip whoosh whooshFast swipe swipeOut slideIn swoosh` · Gewicht `impact thud punch punchHeavy boom tink bell` · Ergebnis `success successBig notify ding chime levelUp question error wrong` · Spannung/Technik `riser riseShort fall reveal glitch think computing energy` · Jingles `jingleSteel jinglePizzi jingleHit`. Arman hat sie noch nicht alle gehört – unpassende Sounds aus `studio/assets-roh/kenney/` (nur lokal, nicht im Git, Liste in `assets-roh/LIES-MICH.md`) ersetzen.
 - **Mehrere Formate:** `format: ['vertical', 'square', 'portrait']` im Projekt. Dann Layout mit `SafeArea` und `useLayout().u` bauen statt mit festen Pixelpositionen.
 - **B-Roll:** `npm run broll -- "<englischer begriff>" --bild` sucht bei Pixabay (Key in `.env` als `PIXABAY_KEY`), Vorschau unter `studio/out/broll/`. Laden nur, was ins Video kommt: `npm run broll -- --laden=<id> --projekt=<slug>` → Datei in `studio/public/projekte/<slug>/broll/`, Quelle automatisch in `studio/projekte/<slug>/quellen.md`. Faceless: Clips ohne erkennbare Gesichter wählen (Hände, Bildschirme, Orte, Objekte).
 - **Bildschirmaufnahmen/Screenshots** (die beste B-Roll für KI-News): Arman nimmt auf, Datei nach `studio/public/projekte/<slug>/`; im Video `ScreenFocus src=…` (oder Ersteller-Szene `bildschirm`) mit Zoom auf die wichtige Stelle.

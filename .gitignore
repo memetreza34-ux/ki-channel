@@ -43,4 +43,6 @@ __pycache__/
 .claude/worktrees/
 
 # Kenney-Pakete: die ZIPs sind doppelt, ausgepackt liegt alles daneben
-studio/assets-roh/kenney-3d/zip/
+# Rohpakete nur lokal (seit 2026-11-13), Liste in LIES-MICH.md
+studio/assets-roh/*
+!studio/assets-roh/LIES-MICH.md

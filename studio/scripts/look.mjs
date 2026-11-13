@@ -9,6 +9,7 @@
  *   npm run look -- Spot --props=studio/ersteller/beispiele/spot-kanal-pop.json --format=square
  *
  * Ergebnis: studio/out/<ID>/look/sheet.jpg (+ Einzelbilder daneben)
+ * Ohne ffmpeg auf dem System (z. B. Windows) gibt es nur die Einzelbilder, keinen Bogen.
  */
 import {renderStill, selectComposition} from '@remotion/renderer';
 import {execFileSync} from 'node:child_process';
@@ -21,6 +22,13 @@ const id = rest[0];
 if (!id) {
   console.error('Bitte Composition-ID angeben, z. B.: npm run look -- So-Antwortet-KI');
   process.exit(1);
+}
+
+let hatFfmpeg = true;
+try {
+  execFileSync('ffmpeg', ['-version'], {stdio: 'ignore'});
+} catch {
+  hatFfmpeg = false;
 }
 
 const serveUrl = await bundleStudio();
@@ -44,6 +52,13 @@ for (const frame of frames) {
   const raw = resolve(dir, `raw-${String(frame).padStart(5, '0')}.jpg`);
   const out = resolve(dir, `frame-${String(frame).padStart(5, '0')}.jpg`);
   await renderStill({serveUrl, composition, chromiumOptions: CHROMIUM, inputProps, frame, output: raw, imageFormat: 'jpeg', jpegQuality: 88, scale});
+  if (!hatFfmpeg) {
+    copyFileSync(raw, out);
+    rmSync(raw);
+    labelled.push(out);
+    process.stdout.write(`${frame} `);
+    continue;
+  }
   const label = `${frame}  ·  ${(frame / composition.fps).toFixed(1)}s`;
   execFileSync('ffmpeg', [
     '-loglevel', 'error', '-y', '-i', raw,
@@ -55,6 +70,11 @@ for (const frame of frames) {
   process.stdout.write(`${frame} `);
 }
 console.log('');
+rmSync(serveUrl, {recursive: true, force: true});
+if (!hatFfmpeg) {
+  console.log(`Kein ffmpeg gefunden – Einzelbilder in: ${dir}`);
+  process.exit(0);
+}
 
 const vertical = composition.height > composition.width;
 const cols = Math.min(frames.length, vertical ? 6 : 4);

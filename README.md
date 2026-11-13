@@ -7,4 +7,4 @@ Erklärkanal für Allgemeinwissen in Zahlen – Biologie, Geschichte, Politik, G
 - Produktion: Skill `wissens-short` (in `.claude/skills/`), Prüfung: Agent `video-kritiker`.
 - Kanal-Ordner für Skripte, Aufnahmen und Exporte: `kanal/`.
 
-Start: `npm run studio` · Bilder/MP4 eines Wissens-Shorts: `npm run wissen -- <ID> [--bilder=0,60]`
+Start: `npm run studio` · Prüfbilder: `npm run look -- <ID>` · MP4: `npm run render -- <ID>`

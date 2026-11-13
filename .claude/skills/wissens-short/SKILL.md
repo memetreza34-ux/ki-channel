@@ -79,7 +79,7 @@ Grundlage: Vorbild-Analyse vom 08.11. (`vorbild-analyse-2026-11-08.md`, 11 Reels
 - `natur/`: 28 Bäume, Büsche, Blumen, Felsen, Zelt, Feuer, Zaun, Obelisk
 - `moebel/`: 24 Schreibtisch, Bildschirm, Sofa, Regal, Lampen, Bett, Wände
 
-Die vollständigen Pakete liegen in `studio/assets-roh/kenney-3d/` (Stadt, Straßen, Zug, Auto, Natur, Möbel) und sind bei Bedarf weiter nutzbar. Ein `Modell` ist etwa 1 Einheit groß, in den Welten mit `scale` 1,4–3 einsetzen.
+Die vollständigen Pakete liegen lokal in `studio/assets-roh/kenney-3d/` (Stadt, Straßen, Zug, Auto, Natur, Möbel; nicht im Git, Liste in `studio/assets-roh/LIES-MICH.md`) und sind bei Bedarf weiter nutzbar. Ein `Modell` ist etwa 1 Einheit groß, in den Welten mit `scale` 1,4–3 einsetzen.
 
 ## Zwei Bildwelten – pro Video entscheiden (Arman, 2026-11-01)
 
@@ -90,7 +90,7 @@ Vorbilder: Instagram **schraffuren** (Welt) und **scroll.engineer** (Technik). N
 | Frage | „Wie viel / wie oft / wo?“ – Zahl, Vergleich, Gesellschaft, Geografie, Alltag | „Wie funktioniert …?“ – Mechanismus in Technik, Körper, Natur, Physik |
 | Bild | kleine 3D-Welt schräg von oben (Kenney-Modelle, `Modell` aus `kit/Modell3D`), Abendlicht, Karte/Route | Kamera fliegt **in** das Objekt: Ego-Perspektive, Durchsicht/Röntgen, Schnitt, Explosionsansicht; Lehm-Look (einfache Formen, Dunst) oder dunkel-kinoreif |
 | Text im Bild | Titel oben, große Zahl + Quelle | Callouts: Pille mit Linie + Kreis am Bauteil („Turbine“), Messwert-Panel live (z. B. „15 km/h · sonst 100“), Ecken-Tag `nachgebaut` / `Illustration` (Mono, klein) |
-| Beispiel | `Zug-Probe-3D` | – |
+| Beispiel | `Stil-Katalog` | `GPS-Mittel` (Mittelding) |
 
 - **Pro Video eine Hauptwelt** wählen und in `skript.md` begründen. Mischen pro Szene erlaubt, wenn es der Story dient: z. B. Welt für Einstieg und Zahl → Kamera taucht ins Objekt → Technik für den Mechanismus.
 - Gemeinsam bleibt: Denkwürfel-Farben, eine Akzentfarbe, Titel oben, Quelle, Armans Stimme (Aufnahme oder freigegebener Klon, siehe `kanal/STIMMPROFIL.md`), faceless.
@@ -168,8 +168,8 @@ Messwerte je Reel (Pausen ≥ 0,3 s · Bassband Ø · Dynamik = Spitze/Median ·
 | Callout-Pille mit Linie am Bauteil | `Callout` + `projiziere3D` | vorhanden |
 | Messwert-Panel („15 mph · usual 65“) | `MessPanel` | vorhanden |
 | Status-Chip (REPORTED → OFFLINE → NEARBY) | `StatusChip` | vorhanden |
-| Kapitel-Label oben links | `Kapitel` | vorhanden |
-| Hinweis „illustrative reconstruction / not to scale“ | `EckTag` | vorhanden |
+| Kapitel-Label oben links | `Kapitel` | vorhanden, bei uns gestrichen |
+| Hinweis „illustrative reconstruction / not to scale“ | `EckTag` | nur bei fotoähnlichen Bildern |
 | Untertitel Wort für Wort, Schlüsselwort unterstrichen, Lautwort farbig | `Untertitel` (`schluessel`, `farbig`) | vorhanden |
 | Formeln | `Formel` (KaTeX) | vorhanden |
 | Balken-Rangliste | `BarList` (Kit), `Zaehler` | vorhanden |

@@ -18,7 +18,6 @@
     "neu": "node studio/scripts/neu.mjs",
     "untertitel": "node studio/scripts/untertitel.mjs",
     "studio:check": "tsc -p studio/tsconfig.json",
-    "wissen": "node studio/scripts/wissen-render.mjs",
     "test": "vitest run studio"
   },
   "dependencies": {
